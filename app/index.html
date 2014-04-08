@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+<head>
+    <title>Pundit 2</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Pundit 2">
+    <meta name="viewport" content="width=device-width">
+
+    <!-- TODO: Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+    <!-- build:css(.tmp) css/main.css -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css">
+    <!-- endbuild -->
+</head>
+<body>
+    
+    <div data-ng-app="Pundit2">
+        <br>
+        <br>
+        <div ng-controller="DemoCtrl" class="pundit2">
+            <button class="btn" ng-click="getAnnotations()">Get annotations</button>
+            <button class="btn" ng-click="startReview()">Start review ({{Annotate.currAnn}}/{{Annotate.annotationNumber}})</button>
+            <div>
+                Accepted: {{Annotate.ann.byState['accepted'].join(', ')}}
+            </div>
+            <div>
+                Removed: {{Annotate.ann.byState['removed'].join(', ')}}
+            </div>
+            <div class="panel-body">
+                <p>Pisa è un comune italiano di 86.591 abitanti[1], capoluogo della provincia omonima in Toscana.</p>
+
+                <p>Sesto comune della Toscana per popolazione, la città si inserisce in un territorio della provincia con caratteristiche omogenee (denominato "area pisana"), che con i comuni vicini di Calci, Cascina, San Giuliano Terme e Vecchiano e Vicopisano, arriva a contare circa 190.000 abitanti distribuiti in circa 475 km².</p>
+                <p>Costituisce inoltre un vertice del cosiddetto "triangolo industriale" costituito dai comuni di Livorno, Pisa e Collesalvetti, la cui popolazione complessiva ammonta ad oltre 260.000 abitanti in circa 400 km².</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- build:js scripts/libs.js -->
+    <script src="../bower_components/jquery/dist/jquery.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../bower_components/angular/angular.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../bower_components/angular-resource/angular-resource.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../bower_components/angular-mocks/angular-mocks.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../bower_components/angular-strap/dist/angular-strap.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../bower_components/angular-strap/dist/angular-strap.tpl.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../bower_components/angular-animate/angular-animate.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../bower_components/angular-sanitize/angular-sanitize.js" type="text/javascript" charset="utf-8"></script>
+    <!-- endbuild -->
+    
+    <!-- build:js({.tmp,app}) scripts/korbo-ee.js -->
+    <script src="src/templates.js"></script>
+
+    <script src="src/AnnomaticModule/AnnomaticModule.js"></script>
+    <script src="src/AnnomaticModule/annotate.service.js"></script>
+    <script src="src/AnnomaticModule/datatxt-resource.factory.js"></script>
+    <script src="src/AnnomaticModule/annotation-popover.ctrl.js"></script>
+    <script src="src/AnnomaticModule/automatic-annotation.ctrl.js"></script>
+
+    <script src="src/pundit2.js"></script>
+    <script src="src/demo.ctrl.js"></script>
+    <!-- endbuild -->
+
+</body>
+</html>

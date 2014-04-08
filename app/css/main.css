@@ -1,0 +1,21 @@
+.ann-auto {
+  cursor: pointer;
+}
+.ann-auto:hover {
+  border-bottom: 1px solid red;
+}
+.ann-auto.ann-waiting {
+  background-color: #fc0;
+}
+.ann-auto.ann-active {
+  background-color: #4bd;
+}
+.ann-auto.ann-ok {
+  background-color: #3f3;
+}
+.ann-auto.ann-removed {
+  border: 1px dashed red;
+}
+.pundit2 {
+  border: 2px solid red;
+}
