@@ -4,10 +4,18 @@ angular.module('Pundit2.AnnomaticModule')
     var service = {};
 
     service.ann = {
-        byId: {},
+        // The annotations, by number
         byNum: [],
+        // list of numbers for the given id
+        byId: {},
+        // scopes for the popovers, indexed by num
         autoAnnScopes: [],
-        byState: {}
+        // list of numbers for the given state
+        byState: {},
+        // list of numbers for the given type
+        byType: {},
+        // Key-value pair for the types
+        typesOptions: []
     }
 
     // Wraps an annotation with a certain span, with a certain controller
@@ -44,29 +52,47 @@ angular.module('Pundit2.AnnomaticModule')
     var analyze = function() {
 
         service.ann.byId = {};
+        service.ann.typesOptions = [];
         
         for (var s in stateClassMap)
             service.ann.byState[s] = [];
         
         for (var l=service.annotationNumber; l--;) {
             var ann = service.ann.byNum[l],
-                id = ann.id;
+                id = ann.id,
+                types = ann.types || [];
 
-            // byId[] contains a list of nums for the given id
+            // index by id
             var byId = service.ann.byId; 
             if (id in byId) {
                 byId[id].push(l);
             } else {
                 byId[id] = [l];
             }
+            
+            console.log('ffs', types, ann);
+            
+            // index by type
+            var byType = service.ann.byType;
+            for (var typeLen=types.length; typeLen--;) {
+                var t = types[typeLen];
+                if (t in byType) {
+                    byType[t].push(l);
+                } else {
+                    service.ann.typesOptions.push({value: t, label: t.substr(-10) });
+                    byType[t] = [l];
+                }
+            }
 
             // Init all annotations to waiting
             ann.state = "waiting";
             ann.lastState = "waiting";
             
-            // byState[] contains a list of nums for the given state
             service.ann.byState[ann.state].push(l)
         }
+        
+        console.log('type', service.ann.byType, service.ann.typesOptions);
+        
     };
     
     var updateStates = function(num, from, to) {
@@ -80,7 +106,6 @@ angular.module('Pundit2.AnnomaticModule')
         byState[from].splice(idx, 1);
         
     }
-
 
     service.setState = function(num, state) {
         var ann = service.ann.byNum[num];
@@ -102,12 +127,11 @@ angular.module('Pundit2.AnnomaticModule')
         service.ann.autoAnnScopes[num].stateClass = stateClassMap[ann.state];
     }
 
-    service.getDataTXTAnnotations = function(node, $scope) {
+    service.getDataTXTAnnotations = function(node) {
         var element = angular.element(node),
             content = element.html();
 
-        service.annotations = DataTXTResource.getAnnotations(
-            {
+        service.annotations = DataTXTResource.getAnnotations({
                 "$app_id": "cc85cdd8",
                 "$app_key": "668e4ac4f00f64c43ab4fefd5c8899fa",
                 text: content

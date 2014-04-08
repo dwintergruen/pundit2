@@ -6,7 +6,7 @@ angular.module('Pundit2')
     $scope.getAnnotations = function() {
         if (gotAnnotations) return;
         gotAnnotations = true;
-        Annotate.getDataTXTAnnotations(angular.element('div.panel-body'), $scope);
+        Annotate.getDataTXTAnnotations(angular.element('div.panel-body'));
     };
     $scope.startReview = function() {
         Annotate.reviewNext(0);

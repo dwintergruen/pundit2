@@ -7,7 +7,8 @@ angular.module('Pundit2.AnnomaticModule')
         }
         
         // As soon as num is injected in the controller, we create the popover
-        // for this annotation
+        // for this annotation. 
+        // Passing content as a string or 0 will result in an error :\
         $scope.popover = $popover(
             angular.element('.ann-'+$scope.num),
             {
