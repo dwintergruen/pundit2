@@ -1,0 +1,23 @@
+{
+    "dependencies": {
+        "angular": "~1.2.15",
+        "angular-resource": "~1.2.15",
+        "angular-route": "~1.2.15",
+        "angular-mocks": "~1.2.15",
+        "angular-sanitize": "~1.2.15",
+        "angular-animate": "~1.2.15",
+        "angular-strap": "~2.0.0",
+        "bootstrap": "3.x.x",
+
+        "jquery": "2.x.x",
+
+        "angular-cookies": "~1.2.15",
+        "angular-touch": "~1.2.15",
+        "lunr.js": "0.4.3",
+        "google-code-prettify": "1.0.1"
+    },
+    "devDependencies": {
+    },
+    "name": "pundit2",
+    "version": "0.0.1"
+}
