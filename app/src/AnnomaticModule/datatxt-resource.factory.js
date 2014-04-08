@@ -7,7 +7,7 @@ angular.module('Pundit2.AnnomaticModule')
         getAnnotations: {
             params: {
                 "lang": 'it',
-                "min_confidence": 0.9, // 0.0 (A LOT) - 1.0 (very precise)
+                "min_confidence": 0.3, // 0.0 (A LOT) - 1.0 (very precise)
                 "min_length": 3, // lenght of the words to analyze
                 "include_types": true,
                 // "include_categories": true,
