@@ -41,6 +41,21 @@ module.exports = function(grunt) {
             }
         },
         
+        uglify: {
+            bookmarklet: {
+                files: {
+                    '<%= conf.build %>/scripts/bookmarklet.js': ['.tmp/concat/scripts/*.js']
+                }
+            }
+        },
+        cssmin: {
+            bookmarklet: {
+                files: {
+                    '<%= conf.build %>/css/pundit-bm.css': ['.tmp/concat/css/pundit.css']
+                }
+            }
+        },
+        
 
         // Instruct the .html page with custom directives to concat/uglify/cssmin
         // and replace the inclusion directives in the production html files
@@ -206,7 +221,8 @@ module.exports = function(grunt) {
                         '.htaccess',
                         'css/fonts/*'
                     ]
-                }, {
+                }, 
+                {
                     expand: true,
                     cwd: '.tmp/images',
                     dest: '<%= conf.build %>/css/img',
@@ -240,8 +256,9 @@ module.exports = function(grunt) {
             dist: {
                 files: {
                     src: [
-                        '<%= conf.build %>/scripts/{,*/}*.js',
-                        '<%= conf.build %>/css/{,*/}*.css',
+                        '<%= conf.build %>/scripts/libs.js',
+                        '<%= conf.build %>/scripts/pundit2.js',
+                        '<%= conf.build %>/css/pundit.css',
                         '<%= conf.build %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
                         '<%= conf.build %>/css/fonts/*'
                     ]
