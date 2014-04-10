@@ -4,3 +4,4 @@
 /build/
 .DS_Store
 /coverage/
+/examples/*.html
