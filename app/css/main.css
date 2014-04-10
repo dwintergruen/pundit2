@@ -1,1 +1,24 @@
-.ann-auto{cursor:pointer}.ann-auto:hover{border-bottom:1px solid red}.ann-auto.ann-waiting{background-color:#fc0}.ann-auto.ann-active{background-color:#4bd}.ann-auto.ann-ok{background-color:#3f3}.ann-auto.ann-removed{border:1px dashed red}.pundit2{border:2px solid red}
+.ann-auto.ann-hidden {
+  background-color: inherit !important;
+}
+.ann-auto:not(.ann-hidden) {
+  cursor: pointer;
+}
+.ann-auto:not(.ann-hidden):hover {
+  border-bottom: 1px solid red;
+}
+.ann-auto:not(.ann-hidden).ann-waiting {
+  background-color: #fc0;
+}
+.ann-auto:not(.ann-hidden).ann-active {
+  background-color: #4bd;
+}
+.ann-auto:not(.ann-hidden).ann-ok {
+  background-color: #3f3;
+}
+.ann-auto:not(.ann-hidden).ann-removed {
+  border: 1px dashed red;
+}
+.pundit2 {
+  border: 2px solid red;
+}

@@ -5,8 +5,7 @@ angular.module('Pundit2.AnnomaticModule')
     // annotation
     $scope.num = parseInt($scope.content, 10);
     $scope.ann = Annotate.ann;
-
-
+    
     $scope.instances = $scope.ann.byId[$scope.ann.byNum[$scope.num].id].length;
 
     $scope.setOk = function(num) {

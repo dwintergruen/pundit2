@@ -1,4 +1,30 @@
-angular.module('templates-main', ['src/AnnomaticModule/annotation-popover.tmpl.html']);
+angular.module('templates-main', ['src/AnnomaticModule/annomatic-panel.dir.tmpl.html', 'src/AnnomaticModule/annotation-popover.tmpl.html']);
+
+angular.module("src/AnnomaticModule/annomatic-panel.dir.tmpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("src/AnnomaticModule/annomatic-panel.dir.tmpl.html",
+    "<header class=\"panel panel-danger\" ng-controller=\"AnnomaticPanelCtrl\">\n" +
+    "    <div class=\"panel-heading\">\n" +
+    "        <button class=\"btn\" ng-click=\"getAnnotations()\">Get annotations</button>\n" +
+    "        <button class=\"btn\" ng-click=\"startReview()\">Start review ({{Annotate.currAnn}}/{{Annotate.annotationNumber}})</button>\n" +
+    "\n" +
+    "        <div>\n" +
+    "            <label>Filter types:&nbsp;</label>\n" +
+    "            <button type=\"button\" class=\"btn btn-default\" ng-model=\"filteredTypes\" data-html=\"1\" data-multiple=\"1\" data-animation=\"am-flip-x\" ng-options=\"type.value as type.label for type in Annotate.ann.typesOptions\" bs-select>\n" +
+    "              Action <span class=\"caret\"></span>\n" +
+    "            </button>\n" +
+    "        </div>\n" +
+    "    </div>\n" +
+    "    <div class=\"panel-header\">\n" +
+    "        Accepted: {{Annotate.ann.byState['accepted'].join(', ')}}\n" +
+    "    </div>\n" +
+    "    <div class=\"panel-header\">\n" +
+    "        Removed: {{Annotate.ann.byState['removed'].join(', ')}}\n" +
+    "    </div>\n" +
+    "    <div class=\"panel-header\">\n" +
+    "        filteredTypes: {{Annotate.filteredTypes}}\n" +
+    "    </div>\n" +
+    "</header>");
+}]);
 
 angular.module("src/AnnomaticModule/annotation-popover.tmpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("src/AnnomaticModule/annotation-popover.tmpl.html",

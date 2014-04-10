@@ -1,5 +1,5 @@
 angular.module('Pundit2.AnnomaticModule')
-.factory('Annotate', function(DataTXTResource, $compile, $rootScope) {
+.factory('Annotate', function(DataTXTResource, $compile, $rootScope, $timeout) {
 
     var service = {};
 
@@ -44,14 +44,17 @@ angular.module('Pundit2.AnnomaticModule')
         'waiting' : 'ann-waiting',
         'active'  : 'ann-active',
         'accepted': 'ann-ok',
-        'removed' : 'ann-removed'
+        'removed' : 'ann-removed',
+        'hidden'  : 'ann-hidden'
     };
     
     // Creates various utility indexes and counts stuff around to
     // who various informations to the user
     var analyze = function() {
 
-        service.ann.byId = {};
+        var byId = service.ann.byId,
+            byType = service.ann.byType;
+
         service.ann.typesOptions = [];
         
         for (var s in stateClassMap)
@@ -63,17 +66,13 @@ angular.module('Pundit2.AnnomaticModule')
                 types = ann.types || [];
 
             // index by id
-            var byId = service.ann.byId; 
             if (id in byId) {
                 byId[id].push(l);
             } else {
                 byId[id] = [l];
             }
             
-            console.log('ffs', types, ann);
-            
             // index by type
-            var byType = service.ann.byType;
             for (var typeLen=types.length; typeLen--;) {
                 var t = types[typeLen];
                 if (t in byType) {
@@ -89,26 +88,27 @@ angular.module('Pundit2.AnnomaticModule')
             ann.lastState = "waiting";
             
             service.ann.byState[ann.state].push(l)
-        }
+        } // for l
         
-        console.log('type', service.ann.byType, service.ann.typesOptions);
+        for (var l=service.ann.typesOptions.length; l--;) {
+            var op = service.ann.typesOptions[l],
+                uri = op.value;
+                
+            op.label = op.label + "("+ byType[uri].length+")";
+        }
         
     };
     
     var updateStates = function(num, from, to) {
-        // console.log('tolgo a', from, service.ann.byState[from]);
-        // console.log('aggiungo da', to, service.ann.byState[to]);
-        
-        byState = service.ann.byState;
-
+        var byState = service.ann.byState,
+            idx = byState[from].indexOf(num);
         byState[to].push(num);
-        var idx = byState[from].indexOf(num);
         byState[from].splice(idx, 1);
-        
     }
 
     service.setState = function(num, state) {
-        var ann = service.ann.byNum[num];
+        var ann = service.ann.byNum[num],
+            scope = service.ann.autoAnnScopes[num]; 
 
         // Update counters and indexes for states
         updateStates(num, ann.state, state);
@@ -117,14 +117,22 @@ angular.module('Pundit2.AnnomaticModule')
         ann.lastState = ann.state;
 
         ann.state = state;
-        service.ann.autoAnnScopes[num].stateClass = stateClassMap[state];
+        scope.stateClass = stateClassMap[state];
+        if (ann.hidden) {
+            scope.stateClass += ' '+stateClassMap['hidden'];
+        }
     }
     
     service.setLastState = function(num) {
-        var ann = service.ann.byNum[num];
+        var ann = service.ann.byNum[num],
+            scope = service.ann.autoAnnScopes[num];
+            
         updateStates(num, ann.state, ann.lastState);
         ann.state = ann.lastState;
-        service.ann.autoAnnScopes[num].stateClass = stateClassMap[ann.state];
+        scope.stateClass = stateClassMap[ann.state];
+        if (ann.hidden) {
+            scope.stateClass += ' '+stateClassMap['hidden'];
+        }
     }
 
     service.getDataTXTAnnotations = function(node) {
@@ -146,11 +154,69 @@ angular.module('Pundit2.AnnomaticModule')
                 analyze();
                 $compile(element.contents())($rootScope);
             },
-            function (){ 
+            function (){
                 console.log('error', arguments);
             }
         );
 
+    };
+    
+    service.hideAnn = function(num) {
+        service.ann.byNum[num].hidden = true;
+        service.ann.autoAnnScopes[num].stateClass = stateClassMap['hidden'];
+    };
+    service.showAnn = function(num) {
+        var ann = service.ann.byNum[num];
+        ann.hidden = false;
+        service.ann.autoAnnScopes[num].stateClass = stateClassMap[ann.state];
+    };
+    
+    // Given an array of types, shows only the annotations with that
+    // type.
+    service.setTypeFilter = function(types) {
+    
+        var byType = service.ann.byType,
+            byNum = service.ann.byNum,
+            toShow = {};
+        
+        // No filters: just show all
+        if (types.length === 0) {
+            for (var l=byNum.length; l--;)
+                service.showAnn(l);
+        } else {
+            // Get a unique list of ids to show
+            for (var t in types) {
+                var type = types[t];
+                for (var l=byType[type].length; l--;) {
+                    toShow[byType[type][l]] = true;
+                }
+            }
+        
+            // Cycle over all annotations and show/hide when needed
+            for (var l=byNum.length; l--;) {
+                if (l in toShow)
+                    service.showAnn(l);
+                else
+                    service.hideAnn(l);
+            }
+        }
+
+        // Force an apply after modifying the classes
+        var phase = $rootScope.$$phase;
+        if (phase === '$apply' || phase === '$digest') {
+            $timeout(function() {
+                $rootScope.$apply();
+            }, 1);
+        } else {
+            $rootScope.$apply();
+        }
+
+    };
+    
+    var getIdsByTypes = function(types) {
+        var byType = service.ann.byType,
+        byNum = service.ann.byNum;
+        
     };
 
     service.closeAll = function() {
@@ -171,12 +237,14 @@ angular.module('Pundit2.AnnomaticModule')
         
         service.closeAll();
 
+        // No from, start from last currentAnn
         if (typeof(from) === "undefined") {
             from = service.currAnn;
         } else {
             from = parseInt(from, 10);
         }
         
+        // Start from 0 if we reach the ends
         if (from >= service.annotationNumber) {
             service.currAnn = 0;
         } else {
@@ -184,13 +252,18 @@ angular.module('Pundit2.AnnomaticModule')
         }
         
         // Look for the next 'waiting' state starting from the current one
-        if (service.currAnn < service.annotationNumber) {
-            while (service.ann.byNum[service.currAnn] && service.ann.byNum[service.currAnn].state !== "waiting") {
-                service.currAnn++;
-                if (service.currAnn === service.annotationNumber) break;
-            }
+        while (service.ann.byNum[service.currAnn].hidden === true || service.ann.byNum[service.currAnn].state !== "waiting") {
+            service.currAnn++;
+            if (service.currAnn === service.annotationNumber) break;
         }
-        service.ann.autoAnnScopes[service.currAnn].show();
+
+        if (service.currAnn < service.annotationNumber) {
+            service.ann.autoAnnScopes[service.currAnn].show();
+        } else {
+            // TODO: notify review is done for the current filters?
+            console.log('All reviewed, for the current filters!')
+        }
+
     };
 
     return service;
