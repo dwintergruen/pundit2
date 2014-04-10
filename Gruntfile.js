@@ -45,7 +45,7 @@ module.exports = function(grunt) {
         // Instruct the .html page with custom directives to concat/uglify/cssmin
         // and replace the inclusion directives in the production html files
         useminPrepare: {
-            html: '<%= conf.app %>/index.html',
+            html: '<%= conf.app %>/examples/index.html',
             options: {
                 dest: '<%= conf.build %>'
             }
@@ -95,6 +95,7 @@ module.exports = function(grunt) {
         htmlmin: {
             final: {
                 options: {
+                    removeComments: true,
                     removeCommentsFromCDATA: true,
                     collapseWhitespace: true,
                     collapseBooleanAttributes: true,
@@ -107,15 +108,15 @@ module.exports = function(grunt) {
                 files: [{
                     expand: true,
                     cwd: '<%= conf.build %>',
-                    src: ['*.html', 'views/*.html'],
+                    src: ['*.html'],
                     dest: '<%= conf.build %>'
                 }]
             },
             dist: {
                 files: [{
                     expand: true,
-                    cwd: '<%= conf.app %>',
-                    src: ['*.html', 'views/*.html'],
+                    cwd: '<%= conf.app %>/examples/',
+                    src: ['*.html'],
                     dest: '<%= conf.build %>'
                 }]
             }
@@ -254,7 +255,7 @@ module.exports = function(grunt) {
                     paths: ["<%= conf.app %>/css"]
                 },
                 files: {
-                    "<%= conf.app %>/css/main.css": "<%= conf.app %>/styles/pundit2.less"
+                    "<%= conf.app %>/css/pundit2.css": "<%= conf.app %>/styles/pundit2.less"
                 }
             },
             dist: {
@@ -263,7 +264,7 @@ module.exports = function(grunt) {
                     cleancss: true
                 },
                 files: {
-                    "<%= conf.app %>/css/main.css": "<%= conf.app %>/styles/pundit2.less"
+                    "<%= conf.app %>/css/pundit2.css": "<%= conf.app %>/styles/pundit2.less"
                 }
             }
         },
@@ -302,6 +303,12 @@ module.exports = function(grunt) {
                 ],
                 tasks: ['jshint', 'karma:unit'],
             },
+            buildhtml: {
+                files: [
+                    '<%= conf.app %>/examples/src/*'
+                ],
+                tasks: ['examples']
+            },
             html: {
                 files: [
                     '<%= conf.app %>/**/*.tmpl.html'
@@ -324,7 +331,7 @@ module.exports = function(grunt) {
 
         open: {
             server: {
-                url: 'http://localhost:<%= connect.options.port %>/app/'
+                url: 'http://localhost:<%= connect.options.port %>/app/examples/'
             },
             
             doc: {
@@ -421,10 +428,56 @@ module.exports = function(grunt) {
                     }
                 }
             }
+        },
+        
+        htmlbuild: {
+            options: {
+                parseTag: 'buildexamples'
+            },
+            pre: {
+                src: "<%= conf.app %>/examples/src/*.pre.inc",
+                dest: "<%= conf.app %>/examples/examples.list.html",
+            },
+            dev: {
+                src: "<%= conf.app %>/examples/src/*.html",
+                dest: "<%= conf.app %>/examples/",
+                options: {
+                    data: {
+                        examples: '<%= conf.examples %>'
+                    },
+                    sections: {
+                        header: [
+                            '<%= conf.app %>/examples/src/_header.inc',
+                            '<%= conf.app %>/examples/src/_libs.inc',
+                            '<%= conf.app %>/examples/src/_pundit.inc',
+                            '<%= conf.app %>/examples/examples.list.html'
+                        ],
+                        footer: [
+                            '<%= conf.app %>/examples/src/_footer.inc'
+                        ]
+                    }
+                }
+            }
         }
 
     });
     
+    
+    grunt.registerTask('examples', 'creates examples', ['listExamples', 'htmlbuild:pre', 'htmlbuild:dev']);
+    
+    grunt.registerTask('listExamples', 'List examples', function() {
+        var examples = grunt.file.expand('app/examples/src/*html'),
+            examplesLinks = [];
+        
+        for (var i in examples) {
+            var idx = examples[i].lastIndexOf('/'),
+                name = examples[i].substr(idx+1);
+            examplesLinks[i] = " <a href='"+name+"'>"+name+"</a>";
+        }
+        
+        conf.examples = examples;
+        conf.examplesLinks = examplesLinks;
+    });
     
     grunt.registerTask('dgeni', 'Generate docs via Dgeni.', function() {
         var dgeni = require('dgeni');
@@ -441,12 +494,12 @@ module.exports = function(grunt) {
         ['bower', 'shell:protractorInstall']);
 
     grunt.registerTask('build', 'Builds a production-ready version of the application',
-        ['clean:dist', 'useminPrepare', 'less:dist', 'copy:css', 'imagemin',
-            'htmlmin', 'html2js', 'concat', 'copy:dist', 'ngmin', 'cssmin', 'uglify',
+        ['clean:dist', 'html2js', 'examples', 'useminPrepare', 'less:dist', 'copy:css', 'imagemin',
+            'htmlmin', 'concat', 'copy:dist', 'ngmin', 'cssmin', 'uglify',
             'rev', 'usemin', 'htmlmin:final']);
 
     grunt.registerTask('dev', 'Live dev workflow: watches app files and reloads the browser automatically',
-        ['connect:livereload', 'open:server', 'watch']);
+        ['less:dist', 'html2js', 'examples', 'connect:livereload', 'open:server', 'watch']);
     grunt.registerTask('dev:unit', 'Live dev UNIT tests workflow: watches for test files and runs unit tests automatically',
         ['test:unit', 'watch:unit']);
 

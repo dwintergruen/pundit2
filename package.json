@@ -36,12 +36,13 @@
     "karma-coverage": "~0.1.0",
     "karma": "~0.10",
     "karma-spec-reporter": "~0.0.8",
-    "dgeni": "^0.2.2",
-    "dgeni-packages": "^0.7.0",
+    "dgeni": "~0.2.2",
+    "dgeni-packages": "~0.7.0",
     "canonical-path": "0.0.2",
     "lodash": "~2.1.0",
     "winston": "~0.7.2",
-    "marked": "~0.3.0"
+    "marked": "~0.3.0",
+    "grunt-html-build": "~0.3.1"
   },
   "devDependencies": {
 
