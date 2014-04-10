@@ -19,6 +19,3 @@
 .ann-auto:not(.ann-hidden).ann-removed {
   border: 1px dashed red;
 }
-.pundit2 {
-  border: 2px solid red;
-}

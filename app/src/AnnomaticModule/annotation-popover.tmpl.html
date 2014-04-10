@@ -1,14 +1,16 @@
 <div class="popover" ng-controller="AnnotationPopoverCtrl">
     <div class="arrow"></div>
     <div class="popover-content">
-        ({{content}}: {{ann.byNum[num].state}}//{{ann.byNum[num].lastState}}) {{ann.byNum[num].title}} ( {{ann.byNum[num].id}} )<br>
+        ({{num}}) {{ann.byNum[num].title}}
+        <br>
+
         <div>
-            <button class="btn btn-sm btn-info" ng-click="setPreview(content)">Preview</button>
             <button class="btn btn-sm btn-success" ng-click="setOk(content)">Accept</button>
+            <button class="btn btn-sm btn-danger" ng-click="setKo(content)">Remove</button>
         </div>
+
         <div>
-            <button class="btn btn-sm btn-danger bs-checkbox" ng-click="setKo(content)">Remove</button>
-            <button class="btn btn-sm btn-warning bs-checkbox" ng-click="goNext(content)">Next</button>
+            <button class="btn btn-sm btn-warning" ng-click="goNext(content)">Next</button>
         </div>
         
         <div ng-show="instances > 1">
@@ -17,5 +19,6 @@
                 ng-mouseover="toggleSimilar(content)" 
                 ng-mouseout="toggleSimilar(content)">accept all {{instances}}</button>
         </div>
+
     </div>
 </div>

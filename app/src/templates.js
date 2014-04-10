@@ -31,14 +31,16 @@ angular.module("src/AnnomaticModule/annotation-popover.tmpl.html", []).run(["$te
     "<div class=\"popover\" ng-controller=\"AnnotationPopoverCtrl\">\n" +
     "    <div class=\"arrow\"></div>\n" +
     "    <div class=\"popover-content\">\n" +
-    "        ({{content}}: {{ann.byNum[num].state}}//{{ann.byNum[num].lastState}}) {{ann.byNum[num].title}} ( {{ann.byNum[num].id}} )<br>\n" +
+    "        ({{num}}) {{ann.byNum[num].title}}\n" +
+    "        <br>\n" +
+    "\n" +
     "        <div>\n" +
-    "            <button class=\"btn btn-sm btn-info\" ng-click=\"setPreview(content)\">Preview</button>\n" +
     "            <button class=\"btn btn-sm btn-success\" ng-click=\"setOk(content)\">Accept</button>\n" +
+    "            <button class=\"btn btn-sm btn-danger\" ng-click=\"setKo(content)\">Remove</button>\n" +
     "        </div>\n" +
+    "\n" +
     "        <div>\n" +
-    "            <button class=\"btn btn-sm btn-danger bs-checkbox\" ng-click=\"setKo(content)\">Remove</button>\n" +
-    "            <button class=\"btn btn-sm btn-warning bs-checkbox\" ng-click=\"goNext(content)\">Next</button>\n" +
+    "            <button class=\"btn btn-sm btn-warning\" ng-click=\"goNext(content)\">Next</button>\n" +
     "        </div>\n" +
     "        \n" +
     "        <div ng-show=\"instances > 1\">\n" +
@@ -47,6 +49,7 @@ angular.module("src/AnnomaticModule/annotation-popover.tmpl.html", []).run(["$te
     "                ng-mouseover=\"toggleSimilar(content)\" \n" +
     "                ng-mouseout=\"toggleSimilar(content)\">accept all {{instances}}</button>\n" +
     "        </div>\n" +
+    "\n" +
     "    </div>\n" +
     "</div>");
 }]);
