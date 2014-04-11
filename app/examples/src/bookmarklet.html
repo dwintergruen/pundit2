@@ -1,45 +1,78 @@
 <!-- buildexamples:section header --><!-- /buildexamples -->
 
-How to do a bookmarklet .. mmh.
-
-
 <style>
-    span.pundit2_bookmarklet a {
+    .bm-container {
+        margin: 20px;
+        padding: 20px;
+    }
+    .bm-draggable a {
         font-size: 14px;
-        font-family: "Candara", "Lucida Grande", "Trebuchet MS", sans-serif;
-        background: #BFB1B1;
-        color: #2E2C2C;
-        padding: 2px 10px 2px 30px;
+        background: #ccc;
+        color: #000;
+        padding: 2px 10px 2px 10px;
         text-align:right;
-        border: 1px #ccc solid;
+        border: 1px #aaa solid;
         text-decoration: none;
         line-height: 30px;
     }
 </style>
-    </head>
-    <body>
+
+<div class="bm-container">
+    <h3>Bookmarklet howto</h3>
+    <ol>
+        <li>Build pundit2 (<code>grunt build</code>)</li>
+        <li>In <code>/build/bm/</code> there will be:
+            <ul>
+                <li>3 folders (<code>css</code>, <code>fonts</code>, <code>scripts</code>): copy them to your 
+                    publicly accessible web path (let's call it $PATH)</li>
+                <li>InitBookmarklet.js
+                    <ul>
+                        <li>customize it with your publicly accessible web path (<code>var p = '$PATH'</code>)</li>
+                        <li>customize it with your configuration options</li>
+                        <li>copy it to $PATH</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li>Create a file to install the bookmarklet:
+            <ul>
+                <li>Something like.. this page! :)</li>
+                <li>The <code>&lt;a href="javascript:(function(){ ... }())"&gt;</code> tag will get bookmarked</li>
+                <li>Customize that function with your $PATH (<code>d.src = '$PATH/InitBookmarklet.js';</code>)</li>
+                <li>The bookmark name is the content of the A tag</li>
+            </ul>
+        </li>
+        <li>
+            To update the bookmarklet code to the latest pundit version, just rebuild it and replace <code>pundit-bm.css</code>
+            and the <code>pundit-bm.js</code> files. All of the rest can just sit there without modifications.
+        </li>
+        <li>
+            To change the configuration of a bookmarklet, just modify <code>InitBookmarklet.js</code>.
+        </li>
+        <li>
+            To change the $PATH of a bookmarklet, modify it in <code>InitBookmarklet.js</code> and in the installation html file. 
+            <em>IN THIS CASE ONLY, ALL OF THE USERS MUST UPDATE THEIR BOOKMARKS.</em>
+        </li>
+
+    </ol>
+</div>
         
-        <div id = "pundit-main-content" style="margin-left:5px">
-            <img src="http://thepund.it/assets/img/pundit.png" style="height:30px;"></img>
-            <br/><br/>
-            <p>Drag this bookmarklet to your bookmark bar to launch Pundit on every Web site.</p>
-            <span class="pundit_bookmarklet">
-                <a title="Bookmark this link" href="javascript:(function(){
-                        var h = document.getElementsByTagName('head')[0],
-                        d = document.createElement('script');
-                        d.type = 'text/javascript';
-                        d.src = 'http://localhost/pundit2/app/examples/InitBookmarklet.js?'+Math.random()*4;
-                        d.async = false;
-                        h.appendChild(d);
-                    })()"> 
-                    <span>Pundit 2</span>
-                </a>
-            </span>
-        </div>
-
-
-
-
-
+<div class="bm-container">
+    <img src="http://www.thepund.it/wp-content/uploads/2013/05/Pundit.png" style="height:30px;" />
+    <br/><br/>
+    <p>Drag the "Pundit 2" button to your bookmark bar to launch Pundit on every Web site.</p>
+    <span class="bm-draggable">
+        <a title="Bookmark this link" href="javascript:(function(){
+                var h = document.getElementsByTagName('head')[0],
+                d = document.createElement('script');
+                d.type = 'text/javascript';
+                d.src = 'http://localhost/pundit2/build/bm/InitBookmarklet.js?'+Math.random()*4;
+                d.async = false;
+                h.appendChild(d);
+            })()"> 
+            <span>Pundit 2 bookmarklet</span>
+        </a>
+    </span>
+</div>
 
 <!-- buildexamples:section footer --><!-- /buildexamples -->
