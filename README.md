@@ -17,7 +17,7 @@ To install the project and be ready to develop you need a few components:
 >     sudo apt-get install npm
 >     sudo npm -g install grunt-cli grunt
 
-#### Install openpal
+#### Install pundit2
 WARNING: this step must NOT be run as root, npm will just let you down.
 
 >     npm install
@@ -35,6 +35,8 @@ for grunt to build them correctly. Or copy one of the existing into a new one, d
 
 The list of examples is built and included everywhere automatically.
 
+To get a list of grunt targets: 
+>       grunt --help
 
 ## Build
 >     grunt build
