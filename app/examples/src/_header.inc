@@ -13,7 +13,9 @@
 
     <!-- TODO: Place favicon.ico and apple-touch-icon.png in the root directory -->
 
+    <!-- build:css css/pundit-examples.css -->
     <link rel="stylesheet" href="src/pundit-examples.css">
+    <!-- endbuild -->
 
     <!-- build:css css/pundit.css -->
     <link rel="stylesheet" href="../../bower_components/bootstrap/dist/css/bootstrap.css">
