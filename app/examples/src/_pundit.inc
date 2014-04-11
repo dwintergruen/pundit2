@@ -17,6 +17,4 @@
     <script src="../src/AnnomaticModule/datatxt-resource.factory.js"></script>
     <script src="../src/AnnomaticModule/annotation-popover.ctrl.js"></script>
     <script src="../src/AnnomaticModule/automatic-annotation.ctrl.js"></script>
-
-    <script src="../src/demo.ctrl.js"></script>
     <!-- endbuild -->
