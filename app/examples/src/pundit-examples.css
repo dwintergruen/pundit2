@@ -1,0 +1,29 @@
+header.examples, footer.examples {
+    background: #2a697a;
+    color: #fff;
+}
+header.examples h1, 
+header.examples h2, 
+header.examples h3 {
+    margin: 0px;
+    padding: 10px;
+    color: #fff;
+} 
+
+header.examples-list {
+    background: #ddd;
+    color: #2a697a;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+
+header.examples-list a {
+    padding: 2px;
+}
+
+footer.examples a {
+    color: #fc0;
+}
+footer.examples a:hover {
+    color: #fc0;
+}

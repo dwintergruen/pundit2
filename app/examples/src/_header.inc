@@ -13,6 +13,8 @@
 
     <!-- TODO: Place favicon.ico and apple-touch-icon.png in the root directory -->
 
+    <link rel="stylesheet" href="src/pundit-examples.css">
+
     <!-- build:css css/pundit.css -->
     <link rel="stylesheet" href="../../bower_components/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" href="../css/pundit2.css">
@@ -20,4 +22,6 @@
     
 </head>
 <body>
-    <header>Examples header</header>
+    <header class="examples">
+        <h2>Pundit 2 examples</h2>
+    </header>

@@ -482,9 +482,9 @@ module.exports = function(grunt) {
                     sections: {
                         header: [
                             '<%= conf.app %>/examples/src/_header.inc',
+                            '<%= conf.app %>/examples/examples.list.html',
                             '<%= conf.app %>/examples/src/_libs.inc',
-                            '<%= conf.app %>/examples/src/_pundit.inc',
-                            '<%= conf.app %>/examples/examples.list.html'
+                            '<%= conf.app %>/examples/src/_pundit.inc'
                         ],
                         footer: [
                             '<%= conf.app %>/examples/src/_footer.inc'
