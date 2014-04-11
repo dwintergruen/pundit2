@@ -44,14 +44,14 @@ module.exports = function(grunt) {
         uglify: {
             bookmarklet: {
                 files: {
-                    '<%= conf.build %>/scripts/bookmarklet.js': ['.tmp/concat/scripts/*.js']
+                    '<%= conf.build %>/bm/scripts/pundit-bm.js': ['.tmp/concat/scripts/*.js']
                 }
             }
         },
         cssmin: {
             bookmarklet: {
                 files: {
-                    '<%= conf.build %>/css/pundit-bm.css': ['.tmp/concat/css/pundit.css']
+                    '<%= conf.build %>/bm/css/pundit-bm.css': ['.tmp/concat/css/pundit.css']
                 }
             }
         },
@@ -211,7 +211,8 @@ module.exports = function(grunt) {
                 }]
             },
             dist: {
-                files: [{
+                files: [
+                {
                     expand: true,
                     dot: true,
                     cwd: '<%= conf.app %>',
@@ -238,6 +239,22 @@ module.exports = function(grunt) {
                         'fonts/*'
                     ]
                 }]
+            },
+            bookmarklet: {
+                files: [
+                    {
+                        expand: true,
+                        cwd: 'bower_components/bootstrap/dist',
+                        dest: '<%= conf.build %>/bm',
+                        src: 'fonts/*'
+                    },
+                    {
+                        expand: true,
+                        cwd: '<%= conf.app %>/examples/',
+                        dest: '<%= conf.build %>/bm',
+                        src: 'InitBookmarklet.js'
+                    }
+                ]
             },
             css: {
                 expand: true,
@@ -513,7 +530,7 @@ module.exports = function(grunt) {
     grunt.registerTask('build', 'Builds a production-ready version of the application',
         ['clean:dist', 'html2js', 'examples', 'useminPrepare', 'less:dist', 'copy:css', 'imagemin',
             'htmlmin', 'concat', 'copy:dist', 'ngmin', 'cssmin', 'uglify',
-            'rev', 'usemin', 'htmlmin:final']);
+            'rev', 'usemin', 'htmlmin:final', 'copy:bookmarklet']);
 
     grunt.registerTask('dev', 'Live dev workflow: watches app files and reloads the browser automatically',
         ['less:dist', 'html2js', 'examples', 'connect:livereload', 'open:server', 'watch']);

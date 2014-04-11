@@ -5,7 +5,7 @@
         d = document.createElement('script'),
         l = document.createElement('link');
 
-    console.log('Init bookmarklet with path '+p);
+    console.log('Initializing the bookmarklet from path '+p);
 
     l.rel = 'stylesheet';
     l.href = p+'/css/pundit-bm.css';
@@ -21,6 +21,6 @@
     d.src = p+'/scripts/bookmarklet.js';
     h.appendChild(d);
 
-    console.log('Bookmarklet done, have fun!');
+    console.log('Bookmarklet loading done, have fun!');
 
 })();
