@@ -1,6 +1,6 @@
 (function() {
     
-    var p = 'http://localhost/pundit2/build',
+    var p = 'http://localhost/pundit2/build/bm',
         h = document.getElementsByTagName('head')[0],
         d = document.createElement('script'),
         l = document.createElement('link');
@@ -18,8 +18,18 @@
     somePunditConfig = {};
 
     d.type = 'text/javascript';
-    d.src = p+'/scripts/bookmarklet.js';
+    d.src = p+'/scripts/pundit-bm.js';
     h.appendChild(d);
+
+    var b = document.getElementsByTagName('body')[0],
+        div = document.createElement('div'),
+        am = document.createElement('annomatic-panel');
+        
+    am.setAttribute('class', 'fixed');
+    
+    div.setAttribute('data-ng-app', "Pundit2");
+    div.appendChild(am);
+    b.appendChild(div);
 
     console.log('Bookmarklet loading done, have fun!');
 
