@@ -49,7 +49,7 @@ angular.module('Pundit2.AnnomaticModule')
     };
     
     // Creates various utility indexes and counts stuff around to
-    // who various informations to the user
+    // show various informations to the user
     var analyze = function() {
 
         var byId = service.ann.byId,
