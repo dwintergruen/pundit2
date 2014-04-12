@@ -1,4 +1,4 @@
-angular.module('Pundit2.AnnomaticModule')
+angular.module('Pundit2.Annomatic')
 .controller('AnnomaticPanelCtrl', function($scope, Annotate, $window) {
 
     // Get ready to use the service

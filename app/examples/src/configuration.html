@@ -1,0 +1,19 @@
+<!-- buildexamples:section header --><!-- /buildexamples -->
+
+<script>
+var ConfigDemoCtrl = function($scope, Config) {
+    $scope.Config = Config;
+}
+</script>
+
+<div data-ng-app="Pundit2">
+
+        <div ng-controller="ConfigDemoCtrl">
+            Annotation server base url: {{Config.annotationServerBaseURL}}<br />
+            Vocabolaries: {{Config.vocabularies.length}} ({{Config.vocabularies.join(', ')}})<br />
+            Use basic relations: {{Config.useBasicRelations}}<br />
+        </div>
+
+</div>
+
+<!-- buildexamples:section footer --><!-- /buildexamples -->

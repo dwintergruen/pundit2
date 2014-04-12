@@ -1,4 +1,4 @@
-angular.module('Pundit2.AnnomaticModule')
+angular.module('Pundit2.Annomatic')
 .factory('DataTXTResource', function($resource) {
 
     var baseURL = "https://api.dandelion.eu/datatxt/nex/v1";

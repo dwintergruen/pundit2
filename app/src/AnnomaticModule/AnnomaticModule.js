@@ -1,7 +1,7 @@
 /**
  * @ngdoc module
- * @name Pundit2.AnnomaticModule
- * @module Pundit2.AnnomaticModule
+ * @name Pundit2.Annomatic
+ * @module Pundit2.Annomatic
  * @description Something ..
 **/
-angular.module('Pundit2.AnnomaticModule', []);
+angular.module('Pundit2.Annomatic', []);

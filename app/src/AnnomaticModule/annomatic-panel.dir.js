@@ -1,4 +1,4 @@
-angular.module('Pundit2.AnnomaticModule')
+angular.module('Pundit2.Annomatic')
 .directive('annomaticPanel', function() {
     return {
         restrict: 'AE',

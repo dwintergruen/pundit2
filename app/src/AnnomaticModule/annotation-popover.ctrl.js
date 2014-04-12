@@ -1,4 +1,4 @@
-angular.module('Pundit2.AnnomaticModule')
+angular.module('Pundit2.Annomatic')
 .controller('AnnotationPopoverCtrl', function($scope, Annotate) {
 
     // Using popover's content variable to pass the number of the 

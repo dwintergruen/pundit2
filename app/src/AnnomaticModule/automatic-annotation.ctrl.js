@@ -1,4 +1,4 @@
-angular.module('Pundit2.AnnomaticModule')
+angular.module('Pundit2.Annomatic')
 .controller('AutomaticAnnotationCtrl', function($scope, $popover, Annotate, $timeout) {
 
     $scope.$watch('num', function(num, oldValue) {

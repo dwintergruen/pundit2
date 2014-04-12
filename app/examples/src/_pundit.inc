@@ -10,6 +10,9 @@
 
     <script src="../src/pundit2.js"></script>
 
+    <script src="../src/CoreModule/CoreModule.js"></script>
+    <script src="../src/CoreModule/Config.service.js"></script>
+
     <script src="../src/AnnomaticModule/AnnomaticModule.js"></script>
     <script src="../src/AnnomaticModule/annomatic-panel.dir.js"></script>
     <script src="../src/AnnomaticModule/annomatic-panel.ctrl.js"></script>

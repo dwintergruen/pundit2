@@ -1,4 +1,4 @@
-angular.module('Pundit2.AnnomaticModule')
+angular.module('Pundit2.Annomatic')
 .factory('Annotate', function(DataTXTResource, $compile, $rootScope, $timeout) {
 
     var service = {};
