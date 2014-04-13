@@ -16,7 +16,9 @@ angular.module('Pundit2.Annomatic')
         byType: {},
         // Key-value pair for the types
         typesOptions: []
-    }
+    };
+    
+    service.annotationNumber = 0;
 
     // Wraps an annotation with a certain span, with a certain controller
     // to handle clicks etc. 

@@ -436,11 +436,14 @@ module.exports = function(grunt) {
                 autoWatch: false,
                 singleRun: true
             },
+            watch: {
+                autoWatch: true,
+                singleRun: false
+            },
             unitCoverage: {
                 autoWatch: false,
                 singleRun: true,
                 reporters: ['progress', 'coverage'],
-                
                 coverageReporter: {
                     type: 'html',
                     dir: '../coverage/'
