@@ -30,7 +30,7 @@ angular.module('Pundit2.Annomatic')
         var before = text.substring(0, annotation.start),
             after = text.substring(annotation.end, text.length),
             annotated = text.substring(annotation.start, annotation.end),
-            title = '', 
+            title = '',
             content = '';
         
         title = annotation.label;
@@ -59,8 +59,9 @@ angular.module('Pundit2.Annomatic')
 
         service.ann.typesOptions = [];
         
-        for (var s in stateClassMap)
+        for (var s in stateClassMap) {
             service.ann.byState[s] = [];
+        }
         
         for (var l=service.annotationNumber; l--;) {
             var ann = service.ann.byNum[l],
@@ -88,11 +89,11 @@ angular.module('Pundit2.Annomatic')
             // Init all annotations to waiting
             ann.state = "waiting";
             ann.lastState = "waiting";
-            
-            service.ann.byState[ann.state].push(l)
+
+            service.ann.byState[ann.state].push(l);
         } // for l
         
-        for (var l=service.ann.typesOptions.length; l--;) {
+        for (l=service.ann.typesOptions.length; l--;) {
             var op = service.ann.typesOptions[l],
                 uri = op.value;
                 
@@ -106,11 +107,11 @@ angular.module('Pundit2.Annomatic')
             idx = byState[from].indexOf(num);
         byState[to].push(num);
         byState[from].splice(idx, 1);
-    }
+    };
 
     service.setState = function(num, state) {
         var ann = service.ann.byNum[num],
-            scope = service.ann.autoAnnScopes[num]; 
+            scope = service.ann.autoAnnScopes[num];
 
         // Update counters and indexes for states
         updateStates(num, ann.state, state);
@@ -121,9 +122,9 @@ angular.module('Pundit2.Annomatic')
         ann.state = state;
         scope.stateClass = stateClassMap[state];
         if (ann.hidden) {
-            scope.stateClass += ' '+stateClassMap['hidden'];
+            scope.stateClass += ' '+stateClassMap.hidden;
         }
-    }
+    };
     
     service.setLastState = function(num) {
         var ann = service.ann.byNum[num],
@@ -133,9 +134,9 @@ angular.module('Pundit2.Annomatic')
         ann.state = ann.lastState;
         scope.stateClass = stateClassMap[ann.state];
         if (ann.hidden) {
-            scope.stateClass += ' '+stateClassMap['hidden'];
+            scope.stateClass += ' '+stateClassMap.hidden;
         }
-    }
+    };
 
     service.getDataTXTAnnotations = function(node) {
         var element = angular.element(node),
@@ -157,7 +158,7 @@ angular.module('Pundit2.Annomatic')
                 $compile(element.contents())($rootScope);
             },
             function (){
-                console.log('error', arguments);
+                // console.log('error', arguments);
             }
         );
 
@@ -165,7 +166,7 @@ angular.module('Pundit2.Annomatic')
     
     service.hideAnn = function(num) {
         service.ann.byNum[num].hidden = true;
-        service.ann.autoAnnScopes[num].stateClass = stateClassMap['hidden'];
+        service.ann.autoAnnScopes[num].stateClass = stateClassMap.hidden;
     };
     service.showAnn = function(num) {
         var ann = service.ann.byNum[num];
@@ -183,23 +184,25 @@ angular.module('Pundit2.Annomatic')
         
         // No filters: just show all
         if (types.length === 0) {
-            for (var l=byNum.length; l--;)
-                service.showAnn(l);
+            for (var i=byNum.length; i--;) {
+                service.showAnn(i);
+            }
         } else {
             // Get a unique list of ids to show
             for (var t in types) {
                 var type = types[t];
-                for (var l=byType[type].length; l--;) {
-                    toShow[byType[type][l]] = true;
+                for (var j=byType[type].length; j--;) {
+                    toShow[byType[type][j]] = true;
                 }
             }
         
             // Cycle over all annotations and show/hide when needed
-            for (var l=byNum.length; l--;) {
-                if (l in toShow)
-                    service.showAnn(l);
-                else
-                    service.hideAnn(l);
+            for (var k=byNum.length; k--;) {
+                if (k in toShow) {
+                    service.showAnn(k);
+                } else {
+                    service.hideAnn(k);
+                }
             }
         }
 
@@ -215,15 +218,9 @@ angular.module('Pundit2.Annomatic')
 
     };
     
-    var getIdsByTypes = function(types) {
-        var byType = service.ann.byType,
-        byNum = service.ann.byNum;
-        
-    };
-
     service.closeAll = function() {
-        for (var l=service.ann.byState['active'].length; l--;){
-            var num = service.ann.byState['active'][l];
+        for (var l=service.ann.byState.active.length; l--;){
+            var num = service.ann.byState.active[l];
             service.ann.autoAnnScopes[num].hide();
         }
     };
@@ -232,8 +229,8 @@ angular.module('Pundit2.Annomatic')
     service.currAnn = 0;
     service.reviewNext = function(from) {
 
-        if (service.ann.byState['waiting'].length === 0) {
-            console.log('All reviewed!');
+        if (service.ann.byState.waiting.length === 0) {
+            // console.log('All reviewed!');
             return;
         }
         
@@ -256,14 +253,14 @@ angular.module('Pundit2.Annomatic')
         // Look for the next 'waiting' state starting from the current one
         while (service.ann.byNum[service.currAnn].hidden === true || service.ann.byNum[service.currAnn].state !== "waiting") {
             service.currAnn++;
-            if (service.currAnn === service.annotationNumber) break;
+            if (service.currAnn === service.annotationNumber) { break; }
         }
 
         if (service.currAnn < service.annotationNumber) {
             service.ann.autoAnnScopes[service.currAnn].show();
         } else {
             // TODO: notify review is done for the current filters?
-            console.log('All reviewed, for the current filters!')
+            // console.log('All reviewed, for the current filters!');
         }
 
     };

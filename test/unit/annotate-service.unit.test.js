@@ -66,7 +66,7 @@ describe('Annotate service', function() {
                     }
                 },
             ]
-        }
+        };
         
     beforeEach(module('Pundit2'));
     beforeEach(function() {

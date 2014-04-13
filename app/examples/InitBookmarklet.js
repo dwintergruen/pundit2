@@ -5,7 +5,7 @@
         d = document.createElement('script'),
         l = document.createElement('link');
 
-    console.log('Initializing the bookmarklet from path '+p);
+    // console.log('Initializing the bookmarklet from path '+p);
 
     l.rel = 'stylesheet';
     l.href = p+'/css/pundit-bm.css';
@@ -15,7 +15,7 @@
     h.appendChild(l);
 
     // Important: without var !!
-    somePunditConfig = {};
+    punditConfig = {};
 
     d.type = 'text/javascript';
     d.src = p+'/scripts/pundit-bm.js';
@@ -25,12 +25,13 @@
         div = document.createElement('div'),
         am = document.createElement('annomatic-panel');
         
+    // TODO: remove this hack to show the annomatic panel (in a fixed
+    // position even) as soon as there's something else to show!
     am.setAttribute('class', 'fixed');
-    
     div.setAttribute('data-ng-app', "Pundit2");
     div.appendChild(am);
     b.appendChild(div);
 
-    console.log('Bookmarklet loading done, have fun!');
+    // console.log('Bookmarklet loading done, have fun!');
 
 })();

@@ -222,7 +222,7 @@ module.exports = function(grunt) {
                         '.htaccess',
                         'css/fonts/*'
                     ]
-                }, 
+                },
                 {
                     expand: true,
                     cwd: '.tmp/images',
@@ -386,8 +386,8 @@ module.exports = function(grunt) {
                 "eqeqeq": true,
                 "multistr": true,
                 "globals": {
-                    angular: true,
-                    d3: true
+                    punditConfig: true,
+                    angular: true
                 }
             },
             tests: {
@@ -397,16 +397,17 @@ module.exports = function(grunt) {
                     "sub": true,
                     "globals": {
                         describe: true,
-                        ddescribe: true,
+                        // ddescribe: true,
                         it: true,
-                        iit: true,
+                        // iit: true,
                         expect: true,
                         beforeEach: true,
                         afterEach: true,
                         inject: true,
                         protractor: true,
                         jasmine: true,
-                        angular: true
+                        angular: true,
+                        punditConfig: true
                     }
                 },
                 files: {
@@ -416,7 +417,8 @@ module.exports = function(grunt) {
             app: {
                 options: {
                     "globals": {
-                        "angular": true
+                        punditConfig: true,
+                        angular: true
                     }
                 },
                 files: {

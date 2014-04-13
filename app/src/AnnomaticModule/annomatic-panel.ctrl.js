@@ -4,7 +4,7 @@ angular.module('Pundit2.Annomatic')
     // Get ready to use the service
     var gotAnnotations = false;
     $scope.getAnnotations = function() {
-        if (gotAnnotations) return;
+        if (gotAnnotations) { return; }
         gotAnnotations = true;
         Annotate.getDataTXTAnnotations(annotationsRootNode);
     };
@@ -15,7 +15,7 @@ angular.module('Pundit2.Annomatic')
     $scope.Annotate = Annotate;
     
     $scope.$watch('filteredTypes', function(filtered, oldFiltered) {
-        if (typeof(filtered) === "undefined" && typeof(oldFiltered) === "undefined") return;
+        if (typeof(filtered) === "undefined" && typeof(oldFiltered) === "undefined") { return; }
         Annotate.setTypeFilter(filtered);
     });
 
@@ -45,9 +45,9 @@ angular.module('Pundit2.Annomatic')
 
 
     var ancestor;
-    angular.element('body').on('mousedown', function(event) {
+    angular.element('body').on('mousedown', function() {
 
-        angular.element('body').on('mousemove', function(event) {
+        angular.element('body').on('mousemove', function() {
             var r = getSelectedRange();
             if (r && r.commonAncestorContainer !== ancestor) {
                 if (ancestor) {
@@ -63,7 +63,7 @@ angular.module('Pundit2.Annomatic')
         });
     });
 
-    angular.element('body').on('mouseup', function(event) {
+    angular.element('body').on('mouseup', function() {
         angular.element('body').off('mousemove');
         
         if (ancestor) {
