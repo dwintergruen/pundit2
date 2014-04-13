@@ -446,9 +446,13 @@ module.exports = function(grunt) {
                 autoWatch: false,
                 singleRun: true,
                 reporters: ['progress', 'coverage'],
+                preprocessors: {
+                    "app/**/*.tmpl.html": 'ng-html2js',
+                    "app/**/*.js": 'coverage'
+                },
                 coverageReporter: {
                     type: 'html',
-                    dir: '../coverage/'
+                    dir: '<%= conf.build %>/coverage/'
                 }
             }
         },
