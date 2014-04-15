@@ -1,7 +1,7 @@
-angular.module('templates-main', ['src/AnnomaticModule/annomatic-panel.dir.tmpl.html', 'src/AnnomaticModule/annotation-popover.tmpl.html']);
+angular.module('templates-main', ['src/Annomatic/AnnomaticPanel.dir.tmpl.html', 'src/Annomatic/AnnotationPopover.tmpl.html']);
 
-angular.module("src/AnnomaticModule/annomatic-panel.dir.tmpl.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("src/AnnomaticModule/annomatic-panel.dir.tmpl.html",
+angular.module("src/Annomatic/AnnomaticPanel.dir.tmpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("src/Annomatic/AnnomaticPanel.dir.tmpl.html",
     "<header class=\"panel panel-danger\" ng-controller=\"AnnomaticPanelCtrl\">\n" +
     "    <div class=\"panel-heading\">\n" +
     "        <button class=\"btn\" ng-click=\"getAnnotations()\">Get annotations</button>\n" +
@@ -26,8 +26,8 @@ angular.module("src/AnnomaticModule/annomatic-panel.dir.tmpl.html", []).run(["$t
     "</header>");
 }]);
 
-angular.module("src/AnnomaticModule/annotation-popover.tmpl.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("src/AnnomaticModule/annotation-popover.tmpl.html",
+angular.module("src/Annomatic/AnnotationPopover.tmpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("src/Annomatic/AnnotationPopover.tmpl.html",
     "<div class=\"popover\" ng-controller=\"AnnotationPopoverCtrl\">\n" +
     "    <div class=\"arrow\"></div>\n" +
     "    <div class=\"popover-content\">\n" +

@@ -8,16 +8,19 @@
     <!-- build:js scripts/pundit2.js -->
     <script src="../src/templates.js"></script>
 
-    <script src="../src/pundit2.js"></script>
+    <script src="../src/Pundit2.js"></script>
 
-    <script src="../src/CoreModule/CoreModule.js"></script>
-    <script src="../src/CoreModule/Config.service.js"></script>
+    <script src="../src/Core/Core.js"></script>
+    <script src="../src/Core/Utils.service.js"></script>
+    <script src="../src/Core/BaseComponent.service.js"></script>
+    <script src="../src/Core/Config.service.js"></script>
+    <script src="../src/Core/PUNDITDEFAULTCONF.constant.js"></script>
 
-    <script src="../src/AnnomaticModule/AnnomaticModule.js"></script>
-    <script src="../src/AnnomaticModule/annomatic-panel.dir.js"></script>
-    <script src="../src/AnnomaticModule/annomatic-panel.ctrl.js"></script>
-    <script src="../src/AnnomaticModule/annotate.service.js"></script>
-    <script src="../src/AnnomaticModule/datatxt-resource.factory.js"></script>
-    <script src="../src/AnnomaticModule/annotation-popover.ctrl.js"></script>
-    <script src="../src/AnnomaticModule/automatic-annotation.ctrl.js"></script>
+    <script src="../src/Annomatic/Annomatic.js"></script>
+    <script src="../src/Annomatic/AnnomaticPanel.dir.js"></script>
+    <script src="../src/Annomatic/AnnomaticPanel.ctrl.js"></script>
+    <script src="../src/Annomatic/Annotate.service.js"></script>
+    <script src="../src/Annomatic/DataTXTResource.factory.js"></script>
+    <script src="../src/Annomatic/AnnotationPopover.ctrl.js"></script>
+    <script src="../src/Annomatic/AutomaticAnnotation.ctrl.js"></script>
     <!-- endbuild -->

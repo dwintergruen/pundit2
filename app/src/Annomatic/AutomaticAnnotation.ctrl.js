@@ -13,7 +13,7 @@ angular.module('Pundit2.Annomatic')
             angular.element('.ann-'+$scope.num),
             {
                 content: ""+$scope.num,
-                template: 'src/AnnomaticModule/annotation-popover.tmpl.html',
+                template: 'src/Annomatic/AnnotationPopover.tmpl.html',
                 trigger: 'manual'
             }
         );

@@ -1,18 +1,43 @@
 <!-- buildexamples:section header --><!-- /buildexamples -->
 
 <script>
-var ConfigDemoCtrl = function($scope, Config) {
-    $scope.Config = Config;
+
+var punditConfig = {
+    debugAllModules: false,
+    annotationServerBaseURL: 'http://test.config.url',
+    vocabularies: [
+        'http://something/somewhere',
+        'http://vocab.test.url/?someparameter=somevalue',
+    ]
+};
+
+var ConfigDemoCtrl = function($scope, Config, PUNDITDEFAULTCONF) {
+    $scope.config = Config;
+    $scope.defaults = PUNDITDEFAULTCONF;
 }
 </script>
 
 <div data-ng-app="Pundit2">
 
-        <div ng-controller="ConfigDemoCtrl">
-            Annotation server base url: {{Config.annotationServerBaseURL}}<br />
-            Vocabolaries: {{Config.vocabularies.length}} ({{Config.vocabularies.join(', ')}})<br />
-            Use basic relations: {{Config.useBasicRelations}}<br />
-        </div>
+    <div ng-controller="ConfigDemoCtrl">
+        Annotation server base url: <code>{{config.annotationServerBaseURL}}</code> 
+        (default <code>{{defaults.annotationServerBaseURL}}</code>)
+        <br />
+        
+        Vocabolaries: <code>{{config.vocabularies.length}} ({{config.vocabularies.join(', ')}})</code>
+        (default <code>{{defaults.vocabularies.length}} ({{defaults.vocabularies.join(', ')}})</code>)
+        <br />
+        
+        Use basic relations: <code>{{config.useBasicRelations}}</code>
+        (default <code>{{defaults.useBasicRelations}}</code>)
+        <br />
+        
+        isActive(pundit.AnalyticsHelper): <code>{{config.isModuleActive('pundit.AnalyticsHelper')}}</code>
+        <br />
+        
+        isActive(pundit.SomethingElse): <code>{{config.isModuleActive('pundit.SomethingElse')}}</code>
+        <br />
+    </div>
 
 </div>
 

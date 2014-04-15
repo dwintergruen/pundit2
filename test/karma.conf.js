@@ -13,7 +13,8 @@ module.exports = function(config) {
             // Load the module declaration before the module utilization, or karma
             // will screw up :|
             'app/src/pundit2.js',
-            'app/src/CoreModule/CoreModule.js',
+            'app/src/Core/Core.js',
+            'app/src/Annomatic/Annomatic.js',
             'app/src/**/*.js',
             'test/unit/**/*.js'
         ],

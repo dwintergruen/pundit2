@@ -1,6 +1,7 @@
 angular.module('Pundit2.Core')
-.constant('CONFIGDEFAULTS', {
+.constant('PUNDITDEFAULTCONF', {
     annotationServerBaseURL: 'http://demo-cloud.as.thepund.it:8080/annotationserver/',
+    debugAllModules: true,
     vocabularies: [],
     useBasicRelations: true,
     modules: {
@@ -13,7 +14,7 @@ angular.module('Pundit2.Core')
             }
         },
         
-        'AnalyticsHelper': {
+        'pundit.AnalyticsHelper': {
             active: true
         },
         'pundit.XpointersHelper': {
@@ -31,11 +32,4 @@ angular.module('Pundit2.Core')
         }
     }
     
-})
-.factory('Config', function($rootScope, $timeout, CONFIGDEFAULTS) {
-    var config = {};
-    
-    config = angular.extend(config, CONFIGDEFAULTS);
-    
-    return config;
 });
