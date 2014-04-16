@@ -13,6 +13,7 @@
     <script src="../src/Core/Core.js"></script>
     <script src="../src/Core/Utils.service.js"></script>
     <script src="../src/Core/BaseComponent.service.js"></script>
+    <script src="../src/Core/NameSpace.service.js"></script>
     <script src="../src/Core/Config.service.js"></script>
     <script src="../src/Core/PUNDITDEFAULTCONF.constant.js"></script>
 

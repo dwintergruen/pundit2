@@ -17,13 +17,16 @@
     <link rel="stylesheet" href="src/pundit-examples.css">
     <!-- endbuild -->
 
-    <!-- build:css css/pundit.css -->
+<!-- DEBUG: original bootstrap, in case ..
     <link rel="stylesheet" href="../../bower_components/bootstrap/dist/css/bootstrap.css">
+-->
+
+    <!-- build:css css/pundit.css -->
     <link rel="stylesheet" href="../css/pundit2.css">
     <!-- endbuild -->
     
 </head>
-<body>
+<body class="pnd-wrp">
     <header class="examples">
         <h2>Pundit 2 examples</h2>
     </header>
