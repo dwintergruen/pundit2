@@ -8,35 +8,45 @@ var punditConfig = {
     vocabularies: [
         'http://something/somewhere',
         'http://vocab.test.url/?someparameter=somevalue',
-    ]
+    ],
+    modules: {
+        "NameSpace": {
+            debug: false
+        }
+    }
 };
 
-var ConfigDemoCtrl = function($scope, Config, PUNDITDEFAULTCONF) {
+var ConfigDemoCtrl = function($scope, Config, PUNDITDEFAULTCONF, NameSpace) {
     $scope.config = Config;
     $scope.defaults = PUNDITDEFAULTCONF;
+    $scope.ns = NameSpace;
 }
 </script>
 
 <div data-ng-app="Pundit2">
 
     <div ng-controller="ConfigDemoCtrl">
+
+        <h3>Config</h3>
         Annotation server base url: <code>{{config.annotationServerBaseURL}}</code> 
-        (default <code>{{defaults.annotationServerBaseURL}}</code>)
-        <br />
+        (default <code>{{defaults.annotationServerBaseURL}}</code>)<br>
         
         Vocabolaries: <code>{{config.vocabularies.length}} ({{config.vocabularies.join(', ')}})</code>
-        (default <code>{{defaults.vocabularies.length}} ({{defaults.vocabularies.join(', ')}})</code>)
-        <br />
+        (default <code>{{defaults.vocabularies.length}} ({{defaults.vocabularies.join(', ')}})</code>)<br>
         
         Use basic relations: <code>{{config.useBasicRelations}}</code>
-        (default <code>{{defaults.useBasicRelations}}</code>)
-        <br />
+        (default <code>{{defaults.useBasicRelations}}</code>)<br>
         
-        isActive(pundit.AnalyticsHelper): <code>{{config.isModuleActive('pundit.AnalyticsHelper')}}</code>
-        <br />
+        isModuleActive(pundit.AnalyticsHelper): <code>{{config.isModuleActive('pundit.AnalyticsHelper')}}</code><br>
+        isModuleActive(pundit.SomethingElse): <code>{{config.isModuleActive('pundit.SomethingElse')}}</code><br>
         
-        isActive(pundit.SomethingElse): <code>{{config.isModuleActive('pundit.SomethingElse')}}</code>
-        <br />
+        <hr>
+        
+        <h3>NameSpace</h3>
+        ns.as: <code>{{ns.as}}</code><br>
+        ns.asUsersCurrent: <code>{{ns.asUsersCurrent}}</code><br>
+        ns.asOpenNBMeta (id="test123456"): <code>{{ns.get("asOpenNBMeta", {id: 'test123456'})}}
+
     </div>
 
 </div>

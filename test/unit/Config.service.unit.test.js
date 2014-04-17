@@ -66,12 +66,13 @@ describe('Config service with a punditConfig', function() {
     });
 
     it("should deep extend objects inside the conf", function() {
-        var selectors = 0, 
-            defaultSelectors = 0;
-        for (var i in Config.modules.selectors) {
+        var selectors = 0,
+            defaultSelectors = 0,
+            i;
+        for (i in Config.modules.selectors) {
             selectors++;
         }
-        for (var i in PUNDITDEFAULTCONF.selectors) {
+        for (i in PUNDITDEFAULTCONF.selectors) {
             defaultSelectors++;
         }
         expect(selectors).not.toBe(defaultSelectors);

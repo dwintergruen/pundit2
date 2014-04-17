@@ -23,7 +23,7 @@ describe('Config service without a punditConfig', function() {
         it("should not define PUNDIT on window", function() {
             expect(typeof($window.PUNDIT)).toBe("undefined");
         });
-    });        
+    });
 
     describe("after loading Config", function() {
         beforeEach(function() {

@@ -2,7 +2,7 @@ angular.module('Pundit2.Core')
 .constant("BASECOMPONENTDEFAULTS", {
     debug: false
 })
-.service('BaseComponent', function($log, Utils, BASECOMPONENTDEFAULTS) {
+.service('BaseComponent', function($log, Utils, BASECOMPONENTDEFAULTS, $window) {
 
     var BaseComponent = function(name, options) {
         this.name = name;
@@ -15,18 +15,26 @@ angular.module('Pundit2.Core')
 
         // The first one extending BaseComponent will create the
         // global PUNDIT object
-        if (typeof(PUNDIT) === 'undefined') {
-            PUNDIT = {};
+        if (typeof($window.PUNDIT) === 'undefined') {
+            $window.PUNDIT = {};
+            this.log('Created PUNDIT global object');
         }
 
         // If there is a PUNDIT.config, try to see if there's a provided
         // configuration for this module, and use it to extend our options
-        if (typeof(PUNDIT) !== 'undefined' && typeof(PUNDIT.config) !== 'undefined' &&
-            typeof(PUNDIT.config.modules[this.name]) !== 'undefined') {
-            Utils.deepExtend(this.options, PUNDIT.config.modules[this.name]);
+        if (typeof($window.PUNDIT) !== 'undefined' && typeof($window.PUNDIT.config) !== 'undefined' &&
+            typeof($window.PUNDIT.config.modules[this.name]) !== 'undefined') {
+            Utils.deepExtend(this.options, $window.PUNDIT.config.modules[this.name]);
             this.log('BaseComponent extending with PUNDIT.config.modules conf');
         }
 
+    };
+
+    // TODO: doc
+    BaseComponent.prototype.err = function() {
+        var args = Array.prototype.slice.call(arguments);
+        args.unshift("#PUNDIT " + this.name + "#");
+        $log.error.apply(null, args);
     };
     
     // TODO: doc
@@ -34,8 +42,8 @@ angular.module('Pundit2.Core')
         
         // If there's the debugAllModules in the config or this module debug is
         // true, then log something
-        if (typeof(PUNDIT) !== "undefined" && 'config' in PUNDIT &&
-            PUNDIT.config.debugAllModules === true || this.options.debug === true) {
+        if (typeof($window.PUNDIT) !== "undefined" && 'config' in $window.PUNDIT &&
+            $window.PUNDIT.config.debugAllModules === true || this.options.debug === true) {
             var args = Array.prototype.slice.call(arguments);
             args.unshift("#" + this.name + "#");
             $log.log.apply(null, args);

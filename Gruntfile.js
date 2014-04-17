@@ -386,7 +386,6 @@ module.exports = function(grunt) {
                 "eqeqeq": true,
                 "multistr": true,
                 "globals": {
-                    punditConfig: true,
                     angular: true
                 }
             },
@@ -407,7 +406,6 @@ module.exports = function(grunt) {
                         protractor: true,
                         jasmine: true,
                         angular: true,
-                        punditConfig: true
                     }
                 },
                 files: {

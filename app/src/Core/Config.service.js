@@ -18,6 +18,6 @@ angular.module('Pundit2.Core')
         return angular.isObject(Config.modules[moduleName]) && Config.modules[moduleName].active === true;
     };
     
-    PUNDIT.config = Config;
+    $window.PUNDIT.config = Config;
     return Config;
 });

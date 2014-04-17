@@ -27,3 +27,7 @@ footer.examples a {
 footer.examples a:hover {
     color: #fc0;
 }
+
+body {
+    margin: 0;
+}
