@@ -1,0 +1,80 @@
+// Path where to find bootstrap's .less sources
+@bspath: "../../bower_components/bootstrap/less/";
+
+// Wrap every bs rule under one of our nodes
+.pnd-wrp {
+
+    @import "@{bspath}normalize.less";
+    @import "@{bspath}print.less";
+
+    @import "@{bspath}scaffolding.less";
+    @import "@{bspath}type.less";
+    @import "@{bspath}code.less";
+    @import "@{bspath}grid.less";
+    @import "@{bspath}tables.less";
+    @import "@{bspath}forms.less";
+    @import "@{bspath}buttons.less";
+
+    @import "@{bspath}component-animations.less";
+    @import "@{bspath}glyphicons.less";
+    @import "@{bspath}dropdowns.less";
+    @import "@{bspath}button-groups.less";
+    @import "@{bspath}input-groups.less";
+    @import "@{bspath}navs.less";
+    @import "@{bspath}navbar.less";
+    @import "@{bspath}breadcrumbs.less";
+    @import "@{bspath}pagination.less";
+    @import "@{bspath}pager.less";
+    @import "@{bspath}labels.less";
+    @import "@{bspath}badges.less";
+    @import "@{bspath}jumbotron.less";
+    @import "@{bspath}thumbnails.less";
+    @import "@{bspath}alerts.less";
+    @import "@{bspath}progress-bars.less";
+    @import "@{bspath}media.less";
+    @import "@{bspath}list-group.less";
+    @import "@{bspath}panels.less";
+    @import "@{bspath}wells.less";
+    @import "@{bspath}close.less";
+
+    @import "@{bspath}modals.less";
+    @import "@{bspath}tooltip.less";
+    @import "@{bspath}popovers.less";
+    @import "@{bspath}carousel.less";
+
+    @import "@{bspath}utilities.less";
+    @import "@{bspath}responsive-utilities.less";
+}
+
+
+// Core variables and mixins, imported again to being able to use them
+// outside of the .pnd-wrp import
+@import "@{bspath}variables.less";
+@import "@{bspath}mixins.less";
+
+
+
+//////////////////////////////////////////////////////////////////////////
+// Rewrite every rule which was applied to body, html or any other rule //
+// which gets messed up by the wrapped import. Please take note of the  //
+// original file and line, so to being able to update it when new BS    //
+// versions get out.                                                    //
+//////////////////////////////////////////////////////////////////////////
+
+
+// scaffolding.less, line 27. 
+
+// Was html
+.pnd-wrp {
+  font-size: 62.5%;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+// Was body
+.pnd-wrp {
+    font-family: @font-family-base;
+    font-size: @font-size-base;
+    line-height: @line-height-base;
+    color: @text-color;
+    background-color: @body-bg;
+}

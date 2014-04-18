@@ -227,17 +227,13 @@ module.exports = function(grunt) {
                     expand: true,
                     cwd: '.tmp/images',
                     dest: '<%= conf.build %>/css/img',
-                    src: [
-                        'generated/*'
-                    ]
+                    src: 'generated/*'
                 },
                 {
                     expand: true,
                     cwd: 'bower_components/bootstrap/dist',
                     dest: '<%= conf.build %>',
-                    src: [
-                        'fonts/*'
-                    ]
+                    src: 'fonts/*'
                 }]
             },
             bookmarklet: {
@@ -261,7 +257,14 @@ module.exports = function(grunt) {
                 cwd: '<%= conf.app %>/css',
                 dest: '.tmp/css/',
                 src: '{,*/}*.css'
+            },
+            fonts: {
+                expand: true,
+                cwd: 'bower_components/bootstrap/dist',
+                dest: '<%= conf.app %>',
+                src: 'fonts/*'
             }
+            
         },
 
         // Bypassing your cache for fun and profit
@@ -286,6 +289,8 @@ module.exports = function(grunt) {
         less: {
             dev: {
                 options: {
+                    sourceMapAsFile: true,
+                    sourceMap: true,
                     paths: ["<%= conf.app %>/css"]
                 },
                 files: {
@@ -328,7 +333,7 @@ module.exports = function(grunt) {
         watch: {
             less: {
                 files: ['<%= conf.app %>/styles/*.less'],
-                tasks: ['less:dev']
+                tasks: ['less:dev', 'copy:fonts']
             },
             unit: {
                 files: [
@@ -540,7 +545,7 @@ module.exports = function(grunt) {
             'rev', 'usemin', 'htmlmin:final', 'copy:bookmarklet']);
 
     grunt.registerTask('dev', 'Live dev workflow: watches app files and reloads the browser automatically',
-        ['less:dist', 'html2js', 'examples', 'connect:livereload', 'open:server', 'watch']);
+        ['less:dev', 'copy:fonts', 'html2js', 'examples', 'connect:livereload', 'open:server', 'watch']);
     grunt.registerTask('dev:unit', 'Live dev UNIT tests workflow: watches for test files and runs unit tests automatically',
         ['test:unit', 'watch:unit']);
 
