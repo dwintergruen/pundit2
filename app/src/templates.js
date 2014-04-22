@@ -56,7 +56,21 @@ angular.module("src/Annomatic/AnnotationPopover.tmpl.html", []).run(["$templateC
 
 angular.module("src/Dashboard/Dashboard.dir.tmpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("src/Dashboard/Dashboard.dir.tmpl.html",
-    "Dashboard Template!!!");
+    "<div class=\"pnd-dashboard-container\" ng-controller=\"DashboardCtrl\">\n" +
+    "\n" +
+    "    <div class=\"pnd-dashboard-panel pnd-dashboard-panel-lists\"></div>\n" +
+    "\n" +
+    "    <div class=\"pnd-dashboard-separator\"></div>\n" +
+    "\n" +
+    "    <div class=\"pnd-dashboard-panel pnd-dashboard-panel-tools\"></div>\n" +
+    "\n" +
+    "    <div class=\"pnd-dashboard-separator\"></div>\n" +
+    "\n" +
+    "    <div class=\"pnd-dashboard-panel pnd-dashboard-panel-details\"></div>\n" +
+    "\n" +
+    "    <div class=\"pnd-dashboard-footer\"></div>\n" +
+    "\n" +
+    "</div>");
 }]);
 
 angular.module("src/Toolbar/Toolbar.dir.tmpl.html", []).run(["$templateCache", function($templateCache) {
