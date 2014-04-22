@@ -37,13 +37,27 @@ angular.module('Pundit2.Core')
         $log.error.apply(null, args);
     };
     
+    // We log if one of the two:
+    // - debugAllModules is true
+    // - this.options.debug is true
+    var haveToLog = function(self) {
+        if ('PUNDIT' in $window && 
+            'config' in $window.PUNDIT &&
+            'debugAllModules' in $window.PUNDIT.config &&
+            $window.PUNDIT.config.debugAllModules === true) {
+            return true;
+        }
+        
+        if (self.options.debug === true) {
+            return true;
+        }
+        
+        return false;
+    };
+    
     // TODO: doc
     BaseComponent.prototype.log = function() {
-        
-        // If there's the debugAllModules in the config or this module debug is
-        // true, then log something
-        if (typeof($window.PUNDIT) !== "undefined" && 'config' in $window.PUNDIT &&
-            $window.PUNDIT.config.debugAllModules === true || this.options.debug === true) {
+        if (haveToLog(this)) {
             var args = Array.prototype.slice.call(arguments);
             args.unshift("#" + this.name + "#");
             $log.log.apply(null, args);
