@@ -27,4 +27,7 @@
 
     <script src="../src/Dashboard/Dashboard.js"></script>
     <script src="../src/Dashboard/Dashboard.dir.js"></script>
+    
+    <script src="../src/Toolbar/Toolbar.js"></script>
+    <script src="../src/Toolbar/Toolbar.dir.js"></script>
     <!-- endbuild -->
