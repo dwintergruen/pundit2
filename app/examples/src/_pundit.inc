@@ -8,7 +8,7 @@
     <!-- build:js scripts/pundit2.js -->
     <script src="../src/templates.js"></script>
 
-    <script src="../src/Pundit2.js"></script>
+    <script src="../src/pundit2.js"></script>
 
     <script src="../src/Core/Core.js"></script>
     <script src="../src/Core/Utils.service.js"></script>
@@ -24,4 +24,7 @@
     <script src="../src/Annomatic/DataTXTResource.factory.js"></script>
     <script src="../src/Annomatic/AnnotationPopover.ctrl.js"></script>
     <script src="../src/Annomatic/AutomaticAnnotation.ctrl.js"></script>
+
+    <script src="../src/Dashboard/Dashboard.js"></script>
+    <script src="../src/Dashboard/Dashboard.dir.js"></script>
     <!-- endbuild -->

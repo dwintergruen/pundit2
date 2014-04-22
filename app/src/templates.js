@@ -1,4 +1,4 @@
-angular.module('templates-main', ['src/Annomatic/AnnomaticPanel.dir.tmpl.html', 'src/Annomatic/AnnotationPopover.tmpl.html']);
+angular.module('templates-main', ['src/Annomatic/AnnomaticPanel.dir.tmpl.html', 'src/Annomatic/AnnotationPopover.tmpl.html', 'src/Dashboard/Dashboard.dir.tmpl.html']);
 
 angular.module("src/Annomatic/AnnomaticPanel.dir.tmpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("src/Annomatic/AnnomaticPanel.dir.tmpl.html",
@@ -52,4 +52,9 @@ angular.module("src/Annomatic/AnnotationPopover.tmpl.html", []).run(["$templateC
     "\n" +
     "    </div>\n" +
     "</div>");
+}]);
+
+angular.module("src/Dashboard/Dashboard.dir.tmpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("src/Dashboard/Dashboard.dir.tmpl.html",
+    "Dashboard Template!!!");
 }]);
