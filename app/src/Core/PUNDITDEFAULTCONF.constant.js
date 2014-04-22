@@ -1,7 +1,7 @@
 angular.module('Pundit2.Core')
 .constant('PUNDITDEFAULTCONF', {
     annotationServerBaseURL: 'http://demo-cloud.as.thepund.it:8080/annotationserver/',
-    debugAllModules: true,
+    debugAllModules: false,
     vocabularies: [],
     useBasicRelations: true,
     modules: {
