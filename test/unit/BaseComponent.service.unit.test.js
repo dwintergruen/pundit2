@@ -27,6 +27,15 @@ describe('BaseComponent service', function() {
         expect(custom.name).toBe(testName);
         expect(custom.options.debug).toBe(BASECOMPONENTDEFAULTS.debug);
         expect(typeof custom.log).toBe("function");
+        custom.log('Test log');
+    });
+    
+    it('should provide a base component with defaults and an err() method', function() {
+        var testName = 'testName',
+            custom = new BaseComponent(testName);
+            
+        expect(typeof custom.err).toBe("function");
+        custom.err('Test error log');
     });
 
     it('should provide a base component overriding the defaults', function() {
