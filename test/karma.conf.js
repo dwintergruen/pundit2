@@ -15,6 +15,8 @@ module.exports = function(config) {
             'app/src/pundit2.js',
             'app/src/Core/Core.js',
             'app/src/Annomatic/Annomatic.js',
+            'app/src/Dashboard/Dashboard.js',
+            'app/src/Toolbar/Toolbar.js',
             'app/src/**/*.js',
             'test/unit/**/*.js'
         ],
