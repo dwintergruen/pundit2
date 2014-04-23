@@ -58,15 +58,27 @@ angular.module("src/Dashboard/Dashboard.dir.tmpl.html", []).run(["$templateCache
   $templateCache.put("src/Dashboard/Dashboard.dir.tmpl.html",
     "<div class=\"pnd-dashboard-container\" ng-controller=\"DashboardCtrl\">\n" +
     "\n" +
-    "    <div class=\"pnd-dashboard-panel pnd-dashboard-panel-lists\"></div>\n" +
+    "    <!-- panel list -->\n" +
+    "    <div class=\"pnd-dashboard-panel pnd-dashboard-panel-lists\">\n" +
+    "        <div class=\"pnd-dashboard-panel-cards\"></div>\n" +
+    "        <div class=\"pnd-dashboard-panel-content\"></div>\n" +
+    "    </div>\n" +
     "\n" +
+    "    <!-- panel tools -->\n" +
+    "    <div class=\"pnd-dashboard-panel pnd-dashboard-panel-tools\">\n" +
+    "        <div class=\"pnd-dashboard-panel-cards\"></div>\n" +
+    "        <div class=\"pnd-dashboard-panel-content\"></div>\n" +
+    "    </div>\n" +
+    "\n" +
+    "    <!-- panel details -->\n" +
+    "    <div class=\"pnd-dashboard-panel pnd-dashboard-panel-details\">\n" +
+    "        <div class=\"pnd-dashboard-panel-cards\"></div>\n" +
+    "        <div class=\"pnd-dashboard-panel-content\"></div>\n" +
+    "    </div>\n" +
+    "\n" +
+    "    <!--separator-->\n" +
     "    <div class=\"pnd-dashboard-separator\"></div>\n" +
-    "\n" +
-    "    <div class=\"pnd-dashboard-panel pnd-dashboard-panel-tools\"></div>\n" +
-    "\n" +
     "    <div class=\"pnd-dashboard-separator\"></div>\n" +
-    "\n" +
-    "    <div class=\"pnd-dashboard-panel pnd-dashboard-panel-details\"></div>\n" +
     "\n" +
     "    <div class=\"pnd-dashboard-footer\"></div>\n" +
     "\n" +
