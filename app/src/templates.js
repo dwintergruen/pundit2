@@ -71,8 +71,6 @@ angular.module("src/Dashboard/Dashboard.dir.tmpl.html", []).run(["$templateCache
     "    <div class=\"pnd-dashboard-footer\"></div>\n" +
     "\n" +
     "</div>");
-<<<<<<< HEAD
-=======
 }]);
 
 angular.module("src/Toolbar/Toolbar.dir.tmpl.html", []).run(["$templateCache", function($templateCache) {
@@ -149,5 +147,4 @@ angular.module("src/Toolbar/Toolbar.dir.tmpl.html", []).run(["$templateCache", f
     "\n" +
     "              \n" +
     "");
->>>>>>> fa94406cea4da6bcfd7f3336bb7887e30be57239
 }]);
