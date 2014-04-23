@@ -87,40 +87,15 @@ angular.module("src/Dashboard/Dashboard.dir.tmpl.html", []).run(["$templateCache
 
 angular.module("src/Toolbar/Toolbar.dir.tmpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("src/Toolbar/Toolbar.dir.tmpl.html",
-    "<nav class=\"navbar navbar-inverse pnd-toolbar-navbar\" role=\"navigation\">\n" +
-    "    <div class=\"container-fluid pnd-toolbar-navbar-container\">\n" +
+    "<nav class=\"navbar navbar-inverse navbar-fixed-top pnd-toolbar-navbar\" role=\"navigation\" ng-controller=\"ToolbarCtrl\">\n" +
+    "    <div class=\"container-fluid pnd-toolbar-navbar-container\" >\n" +
     "    \n" +
     "        <div class=\"collapse navbar-collapse\">\n" +
     "            <ul class=\"nav navbar-nav\">\n" +
-    "                <li class=\"dropdown\">\n" +
-    "                    <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">\n" +
-    "                        <span class=\"glyphicon glyphicon-exclamation-sign\"></span>\n" +
-    "                    </a>\n" +
-    "                    <ul class=\"dropdown-menu\">\n" +
-    "                        <li>Please sign in to use Pundit</li>\n" +
-    "                        <li><a href=\"#\">Sign in</a></li>\n" +
-    "                    </ul>\n" +
-    "                </li> <!-- end dropdown-->\n" +
-    "                <li class=\"dropdown\">\n" +
-    "                    <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">\n" +
-    "                        <span class=\"glyphicon glyphicon-ok\"></span>\n" +
-    "                    </a>\n" +
-    "                    <ul class=\"dropdown-menu\">\n" +
-    "                        <li>You are signed in as MyName</li>\n" +
-    "                        <li><a href=\"#\">Sign Out</a></li>\n" +
-    "                    </ul>\n" +
-    "                </li> <!-- end dropdown-->\n" +
-    "                <li class=\"dropdown\">\n" +
-    "                    <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">\n" +
-    "                        <span class=\"glyphicon glyphicon-cog\"></span>\n" +
-    "                    </a>\n" +
-    "                    <ul class=\"dropdown-menu\">\n" +
-    "                        <li><a href=\"#\">My Config Menu 1</a></li>\n" +
-    "                        <li><a href=\"#\">My Config Menu 2</a></li>\n" +
-    "                        <li><a href=\"#\">My Config Menu 3</a></li>\n" +
-    "                    </ul>\n" +
-    "                </li> <!-- end dropdown-->\n" +
-    "\n" +
+    "                \n" +
+    "                <li><a href=\"#\" bs-dropdown=\"errorMessageDropdown\"><span class=\"glyphicon glyphicon-exclamation-sign\"></span></a></li>\n" +
+    "                <li><a href=\"#\" bs-dropdown=\"userNotLoggedDropdown\"><span>Login</span></a></li>\n" +
+    "                <li><a href=\"#\" bs-dropdown=\"userLoggedInDropdown\"><span>My name</span></a></li>\n" +
     "                <li><a href=\"#\">Ask the Pundit</a></li>\n" +
     "                <li><a href=\"#\">Dashboard</a></li>\n" +
     "\n" +
@@ -156,6 +131,8 @@ angular.module("src/Toolbar/Toolbar.dir.tmpl.html", []).run(["$templateCache", f
     "        </div><!-- /.navbar-collapse -->\n" +
     "    </div><!-- /.container-fluid -->\n" +
     "</nav>\n" +
+    "\n" +
+    "\n" +
     "\n" +
     "              \n" +
     "");

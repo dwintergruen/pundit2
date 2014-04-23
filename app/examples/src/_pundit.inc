@@ -32,4 +32,6 @@
 
     <script src="../src/Toolbar/Toolbar.js"></script>
     <script src="../src/Toolbar/Toolbar.dir.js"></script>
+    <script src="../src/Toolbar/Toolbar.ctrl.js"></script>
+    <script src="../src/Toolbar/Toolbar.service.js"></script>
     <!-- endbuild -->

@@ -1,11 +1,33 @@
 <!-- buildexamples:section header --><!-- /buildexamples -->
+
 <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+<script>
 
+var ToolbarDemoCtrl = function($scope) {
+    
+    $scope.userStatus = {
+        loggedIn: false
+    };
+    
+    $scope.setLogin = function(status){
+        $scope.userStatus.loggedIn = status;
+    };
+    
+    $scope.getStatus = function(){
+        return $scope.userStatus;
+    };
+}
+
+</script>
 <div data-ng-app="Pundit2">
-    <div class="container">
-
+    <div class="container pnd-wrp">
         <toolbar></toolbar>
+        
+        <div ng-controller="ToolbarDemoCtrl">
+            <button type="button" class="btn btn-success" ng-click="setLogin(true)" ng-show="!getStatus().loggedIn">Log in</button>
+            <button type="button" class="btn btn-warning" ng-click="setLogin(false)" ng-show="getStatus().loggedIn">Log out</button>
+        </div>
     </div>
 
 </div>
