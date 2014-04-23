@@ -41,7 +41,7 @@ angular.module('Pundit2.Core')
     // - debugAllModules is true
     // - this.options.debug is true
     var haveToLog = function(self) {
-        if ('PUNDIT' in $window && 
+        if ('PUNDIT' in $window &&
             'config' in $window.PUNDIT &&
             'debugAllModules' in $window.PUNDIT.config &&
             $window.PUNDIT.config.debugAllModules === true) {

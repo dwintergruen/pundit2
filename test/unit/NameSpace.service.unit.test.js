@@ -69,14 +69,14 @@ describe('NameSpace service', function() {
     it('should log an error and return undefined using get() with an incorrect number of variables', function() {
         $log.reset();
         var foo = NameSpace.get('asOpenNBMeta');
-        expect(typeof foo).toBe("undefined")
+        expect(typeof foo).toBe("undefined");
         expect($log.error.logs.length).toEqual(1);
     });
     
     it('should log an error and return undefined using get() with an unknown property', function() {
         $log.reset();
         var foo = NameSpace.get("asdfghjkl");
-        expect(typeof foo).toBe("undefined")
+        expect(typeof foo).toBe("undefined");
         expect($log.error.logs.length).toEqual(1);
     });
 
@@ -85,12 +85,12 @@ describe('NameSpace service', function() {
         
         $log.reset();
         foo = NameSpace.get([1, 2, 3]);
-        expect(typeof foo).toBe("undefined")
+        expect(typeof foo).toBe("undefined");
         expect($log.error.logs.length).toEqual(1);
         
         $log.reset();
         foo = NameSpace.get({a: 'a', b: 'b'});
-        expect(typeof foo).toBe("undefined")
+        expect(typeof foo).toBe("undefined");
         expect($log.error.logs.length).toEqual(1);
     });
 
