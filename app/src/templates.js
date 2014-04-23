@@ -61,19 +61,25 @@ angular.module("src/Dashboard/Dashboard.dir.tmpl.html", []).run(["$templateCache
     "    <!-- panel list -->\n" +
     "    <div class=\"pnd-dashboard-panel pnd-dashboard-panel-lists\">\n" +
     "        <div class=\"pnd-dashboard-panel-cards\"></div>\n" +
-    "        <div class=\"pnd-dashboard-panel-content\"></div>\n" +
+    "        <div class=\"pnd-dashboard-panel-content\">\n" +
+    "            <!-- the content comes from outside-->\n" +
+    "        </div>\n" +
     "    </div>\n" +
     "\n" +
     "    <!-- panel tools -->\n" +
     "    <div class=\"pnd-dashboard-panel pnd-dashboard-panel-tools\">\n" +
     "        <div class=\"pnd-dashboard-panel-cards\"></div>\n" +
-    "        <div class=\"pnd-dashboard-panel-content\"></div>\n" +
+    "        <div class=\"pnd-dashboard-panel-content\">\n" +
+    "            <!-- the content comes from outside-->\n" +
+    "        </div>\n" +
     "    </div>\n" +
     "\n" +
     "    <!-- panel details -->\n" +
     "    <div class=\"pnd-dashboard-panel pnd-dashboard-panel-details\">\n" +
     "        <div class=\"pnd-dashboard-panel-cards\"></div>\n" +
-    "        <div class=\"pnd-dashboard-panel-content\"></div>\n" +
+    "        <div class=\"pnd-dashboard-panel-content\">\n" +
+    "            <!-- the content comes from outside-->\n" +
+    "        </div>\n" +
     "    </div>\n" +
     "\n" +
     "    <!--separator-->\n" +

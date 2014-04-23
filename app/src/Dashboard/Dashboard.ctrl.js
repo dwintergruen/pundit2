@@ -1,49 +1,68 @@
 angular.module('Pundit2.Dashboard')
-.controller('DashboardCtrl', function(Dashboard) {
+.controller('DashboardCtrl', function($document, $window, Dashboard) {
 
-    console.log('dashboard controller constructor invoked');
+    var jqElement = {
 
-    // initialize the panels
+        // dashboard container
+        container : angular.element('.pnd-dashboard-container'),
+
+        // dashboard footer
+        footer : angular.element('.pnd-dashboard-footer'),
+
+        //dashboard separtors (two elements)
+        separators : angular.element('.pnd-dashboard-separator'),
+
+        // panels
+        panelLists : angular.element('.pnd-dashboard-panel-lists'),
+        panelTools : angular.element('.pnd-dashboard-panel-tools'),
+        panelDetails : angular.element('.pnd-dashboard-panel-details')
+
+    };
+
+    // initialize dashboard dimensions
     var init = function(){
 
         var totalWidth = 0,
             width = 0,
-            containerWidth = $(window).width() - (Dashboard.widths.separator*2),
-            containerHeight = $(window).height() * Dashboard.defaultContainerHeight,
+            containerWidth = angular.element($window).width(),
+            containerHeight = Dashboard.height.container,
             panelHeight = containerHeight - Dashboard.height.footer;
 
-        if ( !Dashboard.visible ) {
-            $('.pnd-dashboard-container').hide();
+        if ( containerWidth < 960 ) {
+            containerWidth = 960;
         }
+        var containerUtilsWidth = containerWidth - (2 * Dashboard.widths.separator);
 
         // container
-        $('.pnd-dashboard-container').css({
+        jqElement.container.css({
             'height' : containerHeight,
-            'width' : $(window).width()
+            'width' : containerWidth
         });
 
-        // panel lists and separator
-        width = containerWidth * Dashboard.widths.lists
-        $('.pnd-dashboard-panel-lists').css({
+        // panel lists
+        width = containerUtilsWidth * Dashboard.widths.lists
+        jqElement.panelLists.css({
             'left' : 0,
             'width' : width,
             'height' : panelHeight
         });
-        $('.pnd-dashboard-separator').eq(0).css({
+        // first separator
+        jqElement.separators.eq(0).css({
             'width' : Dashboard.widths.separator,
             'left' : width,
             'height' : panelHeight
         });
         totalWidth = totalWidth + width + Dashboard.widths.separator;
 
-        // panel tools and separator
-        width = containerWidth * Dashboard.widths.tools;
-        $('.pnd-dashboard-panel-tools').css({
+        // panel tools
+        width = containerUtilsWidth * Dashboard.widths.tools;
+        jqElement.panelTools.css({
             'left' : totalWidth,
             'width' : width,
             'height' : panelHeight
         });
-        $('.pnd-dashboard-separator').eq(1).css({
+        // second separator
+        jqElement.separators.eq(1).css({
             'width' : Dashboard.widths.separator,
             'left' : totalWidth + width,
             'height' : panelHeight
@@ -51,20 +70,46 @@ angular.module('Pundit2.Dashboard')
         totalWidth = totalWidth + width + Dashboard.widths.separator;
 
         // panel details
-        width = containerWidth * Dashboard.widths.details;
-        $('.pnd-dashboard-panel-details').css({
+        width = containerUtilsWidth * Dashboard.widths.details;
+        jqElement.panelDetails.css({
             'left' : totalWidth,
             'width' : width,
             'height' : panelHeight
         });
 
         // footer
-        $('.pnd-dashboard-footer').css({
+        jqElement.footer.css({
             'height' : Dashboard.height.footer,
             'top' : panelHeight
         });
 
+        Dashboard.log('Dashboard init');
     };
     init();
+
+    var update = function(event){
+        init();
+    };
+    //attach event listeners
+    angular.element($window).resize(update);
+
+
+    var resizeHeight = function(event){
+        Dashboard.height.container =  event.pageY - jqElement.container.offset().top;
+        init();
+    };
+
+    var mouseUpHandler = function(){
+        // remove mousemove handler
+        $document.off('mousemove', resizeHeight);
+        $document.off('mouseup', mouseUpHandler);
+    };
+
+    jqElement.footer.mousedown(function(event){
+        event.preventDefault();        
+        $document.on('mouseup', mouseUpHandler);
+        $document.on('mousemove', resizeHeight);
+    });
+    
 
 });

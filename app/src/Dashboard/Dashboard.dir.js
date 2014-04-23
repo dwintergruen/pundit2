@@ -6,7 +6,6 @@ angular.module('Pundit2.Dashboard')
         templateUrl: "src/Dashboard/Dashboard.dir.tmpl.html",
         link: function(/* scope, el, attrs, ctrl */) {
             // Stuff to do on link? read some conf?
-            console.log('dashboard directive link function invoked');
         }
     };
 });

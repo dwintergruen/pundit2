@@ -1,9 +1,7 @@
 angular.module('Pundit2.Dashboard')
-.service('Dashboard', function() {
+.service('Dashboard', function(BaseComponent) {
 
-    console.log('dashboard utils service invoked');
-
-    var Dashboard = {};
+    var Dashboard = new BaseComponent('Dashboard', {debug:true});
     
     Dashboard.widths = {
         // percentage of window.width
@@ -12,16 +10,14 @@ angular.module('Pundit2.Dashboard')
         details : 0.25,
 
         // tipically is a constant
-        separator : 20
+        separator : 10
     };
 
     Dashboard.height = {
+        container : 250,
         // tipically is a constant
-        footer : 20
+        footer : 10
     };
-
-    // Dashboard total height
-    Dashboard.defaultContainerHeight = 0.4;
 
     // Dashboard visibility flag
     Dashboard.visible = true;
@@ -34,6 +30,8 @@ angular.module('Pundit2.Dashboard')
             $('.pnd-dashboard-container').hide();
         }
     }
+
+    Dashboard.log('Dashboard servie run');
     
     return Dashboard;
 });
