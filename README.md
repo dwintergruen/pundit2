@@ -67,3 +67,15 @@ Plus the documentation in /Docs.
     - unit test: "$name.$what.unit.test.js" (eg: Example.service.unit.test.js)
     - e2e test: "$name.e2e.test.js" (eg: Example.e2e.test.js)
 * Directories: name of the module / component
+* Css classnames:
+    - words are separated by hyphens "-"    
+    - they *all* start with "pnd-" (eg: pnd-dashboard-container)
+    - they are all lowercase
+    
+# Used in this project
+
+* Js framework: Angular js https://docs.angularjs.org/api
+* Css/html framework: Bootstrap http://getbootstrap.com/css/
+* js+css/html: Angular strap http://mgcrea.github.io/angular-strap/
+* Unit tests: http://jasmine.github.io/1.3/introduction.html
+* E2E tests: https://github.com/angular/protractor/blob/master/docs/api.md
