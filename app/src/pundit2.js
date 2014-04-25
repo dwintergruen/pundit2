@@ -6,4 +6,5 @@
 **/
 angular.module('Pundit2',
     ['ngResource', 'ngSanitize', 'ngAnimate', 'mgcrea.ngStrap', 'templates-main',
-    'Pundit2.Core', 'Pundit2.Annomatic', 'Pundit2.Dashboard', 'Pundit2.Toolbar']);
+    'Pundit2.Core', 'Pundit2.Annomatic', 'Pundit2.Dashboard', 'Pundit2.Toolbar',
+    'Pundit2.Communication']);

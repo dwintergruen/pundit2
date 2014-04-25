@@ -17,6 +17,10 @@
     <script src="../src/Core/Config.service.js"></script>
     <script src="../src/Core/PUNDITDEFAULTCONF.constant.js"></script>
 
+    <script src="../src/Communication/Communication.js"></script>
+    <script src="../src/Communication/Notebook.factory.js"></script>
+    <script src="../src/Communication/Annotation.factory.js"></script>
+
     <script src="../src/Annomatic/Annomatic.js"></script>
     <script src="../src/Annomatic/AnnomaticPanel.dir.js"></script>
     <script src="../src/Annomatic/AnnomaticPanel.ctrl.js"></script>

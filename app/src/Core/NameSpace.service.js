@@ -1,6 +1,6 @@
-angular.module('Pundit2.Core')
-.service('NameSpace', function(BaseComponent, Config, $interpolate, $window) {
-    var ns = new BaseComponent('NameSpace'),
+angular.module("Pundit2.Core")
+.service("NameSpace", function(BaseComponent, Config, $interpolate, $window) {
+    var ns = new BaseComponent("NameSpace"),
         _rdf  = "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
         _rdfs = "http://www.w3.org/2000/01/rdf-schema#",
         _dce  = "http://purl.org/dc/elements/1.1/",
@@ -141,15 +141,26 @@ angular.module('Pundit2.Core')
         **/
         type: ns.rdf.type
     };
+
+    // TODO: doc
+    ns.annotation = {
+        creatorName: _dce + "creator",
+        created: _dct + "created",
+        creator: _dct + "creator",
+        modified: _dct + "modified",
+        hasPageContext: _pnd + "hasPageContext",
+        isIncludedIn: _pnd + "isIncludedIn",
+    };
     
     // Annotation server API
     ns.as              = Config.annotationServerBaseURL;
-    ns.asUsers         = ns.as + "users/";
-    ns.asUsersCurrent  = ns.as + "users/current";
-    ns.asUsersLogout   = ns.as + "users/logout";
-    ns.asOpenNBMeta    = ns.as + "open/notebooks/{{id}}/metadata";
-    ns.asOpenNBAnnMeta = ns.as + "open/notebooks/{{id}}/annotations/metadata";
+    ns.asUsers         = ns.as + "api/users/";
+    ns.asUsersCurrent  = ns.as + "api/users/current";
+    ns.asUsersLogout   = ns.as + "api/users/logout";
+    ns.asOpenNBMeta    = ns.as + "api/open/notebooks/{{id}}/metadata";
+    ns.asOpenNBAnnMeta = ns.as + "api/open/notebooks/{{id}}/annotations/metadata";
     
+    ns.asOpenAnn       = ns.as + "api/open/annotations/{{id}}";
 
     // Gets a key of the namespace, interpolating variables if needed
     ns.get = function(key, context) {
@@ -157,7 +168,7 @@ angular.module('Pundit2.Core')
         // If it's not a string, it's nothing we can return (this
         // blocks the user from asking options or other weird stuff)
         if (typeof(ns[key]) !== "string") {
-            ns.err('get() cant find key '+key);
+            ns.err("get() cant find key "+key);
             return;
         }
 
@@ -175,7 +186,7 @@ angular.module('Pundit2.Core')
             var contextVariables = 0;
             for (foo in context) { contextVariables++; }
             if (variables.length > contextVariables) {
-                ns.err('Context variables mismatch! Expecting ' + variables.join(', ') + " instead got " + JSON.stringify(context));
+                ns.err("Context variables mismatch! Expecting " + variables.join(", ") + " instead got " + JSON.stringify(context));
                 return;
             }
         }
@@ -183,6 +194,6 @@ angular.module('Pundit2.Core')
         return $interpolate(str)(context);
     };
     
-    ns.log('NameSpace up and running');
+    ns.log("NameSpace up and running");
     return ns;
 });
