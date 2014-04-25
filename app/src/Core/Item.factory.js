@@ -3,14 +3,16 @@ angular.module('Pundit2.Core')
     var itemComponent = new BaseComponent("ItemFactory", {debug: true});
 
     function ItemFactory() {
-
+        // Default values for the mandatory properties, in case
+        // they dont get supplied elsewhere
+        this.label = '';
     };
 
     ItemFactory.prototype.fromRdf = function(itemRDF) {
 
         var ns = NameSpace.item;
 
-        // Those properties are a single value inside an array, read them
+        // Treat properties as single values inside an array, read them
         // one by one by using the correct URI taken from the NameSpace,
         // doing some sanity checks
         for (var property in ns) {
@@ -20,8 +22,7 @@ angular.module('Pundit2.Core')
                 this[property] = itemRDF[propertyURI][0].value;
             }
         }
-        itemComponent.log('', itemRDF);
-
+        itemComponent.log("Created new item: "+ this.label);
     };
 
     ItemFactory.prototype.toRdf = function(rdf) {

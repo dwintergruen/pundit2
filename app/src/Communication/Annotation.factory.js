@@ -57,8 +57,6 @@ angular.module('Pundit2.Communication')
         ann.items = {};
         ann.graph = angular.copy(data.graph);
 
-        console.log('Annot data ', data);
-
         // For some weird reason, the first level of the object is
         // is the annotation's URI
         for (var i in data.metadata) {
@@ -114,7 +112,6 @@ angular.module('Pundit2.Communication')
         // ns = NameSpace.items;
         for (var k in ann.items) {
             var foo = new Item();
-            console.log('sticazzi nuovo item', k, data.items[k]);
             foo.fromRdf(data.items[k]);
             ann.items[k] = foo;
         }
