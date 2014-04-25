@@ -1,6 +1,6 @@
 angular.module('Pundit2.Communication')
-.factory('Annotation', function(BaseComponent, NameSpace, $http, $q) {
-    var nc = new BaseComponent("Annotation", {debug: true});
+.factory('Annotation', function(BaseComponent, NameSpace, Item, $http, $q) {
+    var annotationComponent = new BaseComponent("AnnotationFactory", {debug: true});
 
     // Creates a new Annotation instance. If an id is passed in
     // then the annotation is loaded, otherwise a new annotation
@@ -18,7 +18,7 @@ angular.module('Pundit2.Communication')
     };
 
     Annotation.prototype.create = function() {
-        nc.log('Creating a new Annotation on the server');
+        annotationComponent.log('Creating a new Annotation on the server');
         this._q.resolve('New annotation created: TODO, after LOGIN');
     };
     
@@ -29,7 +29,7 @@ angular.module('Pundit2.Communication')
             useCache = true;
         }
         
-        nc.log("Loading annotation "+self.id+" with cache "+useCache);
+        annotationComponent.log("Loading annotation "+self.id+" with cache "+useCache);
         
         var httpPromise = $http({
             headers: { 'Accept': 'application/json' },
@@ -41,18 +41,18 @@ angular.module('Pundit2.Communication')
 
             readAnnotationData(self, data);
             self._q.resolve(self);
-            nc.log("Retrieved annotation "+self.id+" metadata");
+            annotationComponent.log("Retrieved annotation "+self.id+" metadata");
             
         }).error(function(data, statusCode) {
 
             // TODO: 404 not found, nothing to do about it, but 403 forbidden might be
             //       recoverable by loggin in
             self._q.reject("Error from server while retrieving annotation "+self.id+": "+ statusCode);
-            nc.err("Error getting annotation "+self.id+". Server answered with status code "+statusCode);
+            annotationComponent.err("Error getting annotation "+self.id+". Server answered with status code "+statusCode);
         });
         
     };
-    
+
     var readAnnotationData = function(ann, data) {
         ann.items = {};
         ann.graph = angular.copy(data.graph);
@@ -68,14 +68,13 @@ angular.module('Pundit2.Communication')
         var ns = NameSpace.annotation,
             annData = data.metadata[ann.uri],
             properties = ['creator', 'creatorName', 'created', 'modified', 'hasPageContext', 'isIncludedIn'];
-        
+
         // Those properties are a single value inside an array, read them
         // one by one by using the correct URI taken from the NameSpace,
         // doing some sanity checks
-        for (var j in properties) {
-            var property = properties[j],
-                propertyURI = ns[property];
-                
+        for (var property in ns) {
+            var propertyURI = ns[property];
+
             if (propertyURI in annData) {
                 ann[property] = annData[propertyURI][0].value;
             } else {
@@ -89,23 +88,49 @@ angular.module('Pundit2.Communication')
         if (isIncludedIn !== null) {
             ann.isIncludedIn = isIncludedIn[0];
         }
-        
-        // TODO: read out items
-        // TODO: read out graph or just copy it over? :|
-        
-        
+
+        // Extract all of the entities and items involved in this annotation
+        ann.entities = [];
+        for (var s in data.graph) {
+
+            if (ann.entities.indexOf(s) === -1) {
+                ann.entities.push(s);
+                ann.items[s] = {};
+            }
+
+            for (var p in data.graph[s]) {
+
+                for (var o in data.graph[s][p]) {
+                    var object = data.graph[s][p][o];
+                    if (object.type === "uri" && ann.entities.indexOf(object.value) === -1) {
+                        ann.entities.push(object.value);
+                        ann.items[object.value] = {};
+                    }
+                }
+            }
+        }
+
+        // Augment the items with all of the properties
+        // ns = NameSpace.items;
+        for (var k in ann.items) {
+            var foo = new Item();
+            console.log('sticazzi nuovo item', k, data.items[k]);
+            foo.fromRdf(data.items[k]);
+            ann.items[k] = foo;
+        }
+
     }; // readAnnotationData()
 
     // Returns a promise associated with an annotation. The user will
     // get the annotation using .then(success, error). The annotation
-    // will load its content as soon as possible and resolve the 
+    // will load its content as soon as possible and resolve the
     // promise.
     function AnnotationFactory(id) {
         var nb = new Annotation(id);
         return nb._q.promise;
     };
 
-    nc.log('Component up and running');
+    annotationComponent.log('Component up and running');
 
     return AnnotationFactory;
 });

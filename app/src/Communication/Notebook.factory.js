@@ -1,6 +1,6 @@
 angular.module('Pundit2.Communication')
 .factory('Notebook', function(BaseComponent, NameSpace, $http, $q) {
-    var nc = new BaseComponent("Notebook", {debug: true});
+    var notebookComponent = new BaseComponent("Notebook", {debug: true});
 
     // Creates a new Notebook instance. If an id is passed in
     // then the notebook metadata are loaded, otherwise a new
@@ -18,13 +18,13 @@ angular.module('Pundit2.Communication')
     };
     
     Notebook.prototype.create = function() {
-        nc.log('Creating a new Notebook on the server');
+        notebookComponent.log('Creating a new Notebook on the server');
         this._q.resolve('New notebook created: TODO, after LOGIN');
     };
     
     Notebook.prototype.setPublic = function() {
         var self = this;
-        nc.log('Setting notebook public '+useCache);
+        notebookComponent.log('Setting notebook public '+useCache);
     };
     
     Notebook.prototype.load = function(useCache) {
@@ -34,7 +34,7 @@ angular.module('Pundit2.Communication')
             useCache = true;
         }
         
-        nc.log("Loading notebook "+self.id+" metadata with cache "+useCache);
+        notebookComponent.log("Loading notebook "+self.id+" metadata with cache "+useCache);
         
         var httpPromise = $http({
             headers: { 'Accept': 'application/json' },
@@ -46,14 +46,14 @@ angular.module('Pundit2.Communication')
 
             readData(self, data);
             self._q.resolve(self);
-            nc.log("Retrieved notebook "+self.id+" metadata");
+            notebookComponent.log("Retrieved notebook "+self.id+" metadata");
             
         }).error(function(data, statusCode) {
 
             // TODO: 404 not found, nothing to do about it, but 403 forbidden might be
             //       recoverable by loggin in
             self._q.reject("Error from server while retrieving notebook "+self.id+": "+ statusCode);
-            nc.err("Error getting notebook "+self.id+" metadata. Server answered with status code "+statusCode);
+            notebookComponent.err("Error getting notebook "+self.id+" metadata. Server answered with status code "+statusCode);
         });
         
     };
@@ -61,20 +61,18 @@ angular.module('Pundit2.Communication')
     var readData = function(nb, data) {
         // For some weird reason, the first level of the object is
         // is the notebook's URI
-        for (var i in data) {
-            nb.uri = i;
+        for (var nbUri in data) {
+            nb.uri = nbUri;
         }
         
         var ns = NameSpace.notebook,
-            nbData = data[nb.uri],
-            properties = ['visibility', 'creator', 'creatorName', 'created', 'id', 'type', 'label'];
-        
-        // Those properties are a single value inside an array, read them
+            nbData = data[nb.uri];
+
+        // Treat properties as single values inside an array, read them
         // one by one by using the correct URI taken from the NameSpace,
         // doing some sanity checks
-        for (var j in properties) {
-            var property = properties[j],
-                propertyURI = ns[property];
+        for (var property in ns) {
+            var propertyURI = ns[property];
                 
             if (propertyURI in nbData) {
                 nb[property] = nbData[propertyURI][0].value;
@@ -105,7 +103,7 @@ angular.module('Pundit2.Communication')
         return nb._q.promise;
     };
 
-    nc.log('Component up and running');
+    notebookComponent.log('Component up and running');
 
     return NotebookFactory;
 });
