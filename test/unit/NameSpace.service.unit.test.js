@@ -63,7 +63,7 @@ describe('NameSpace service', function() {
         expect(foo.indexOf("/open/notebooks/" + testID + "/metadata")).not.toBe(-1);
 
         // - is the URL of the open notebooks meta API for the given ID
-        expect(foo).toBe(Config.annotationServerBaseURL + "open/notebooks/" + testID + "/metadata");
+        expect(foo).toBe(Config.annotationServerBaseURL + "api/open/notebooks/" + testID + "/metadata");
     });
 
     it('should log an error and return undefined using get() with an incorrect number of variables', function() {
