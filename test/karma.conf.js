@@ -17,6 +17,7 @@ module.exports = function(config) {
             'app/src/Annomatic/Annomatic.js',
             'app/src/Dashboard/Dashboard.js',
             'app/src/Toolbar/Toolbar.js',
+            'app/src/Communication/Communication.js',
             'app/src/**/*.js',
             'test/unit/**/*.js'
         ],
