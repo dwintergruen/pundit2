@@ -34,15 +34,9 @@ angular.module("Pundit2.Core")
         **/
         label: ns.rdfs.label,
 
-        /** 
-            Preferred label
-            @const items.prefLabel 
-        **/
-        prefLabel: _skos + "prefLabel",
-
-        /** 
+        /**
             Alternative labels
-            @const items.altLabel 
+            @const items.altLabel
         **/
         altLabel: _skos + "altLabel",
 
