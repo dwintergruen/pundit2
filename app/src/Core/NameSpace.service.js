@@ -141,7 +141,8 @@ angular.module("Pundit2.Core")
         created: _dct + "created",
         creator: _dct + "creator",
         modified: _dct + "modified",
-        hasPageContext: _pnd + "hasPageContext",
+        pageContext: _pnd + "hasPageContext",
+        target: "http://www.openannotation.org/ns/hasTarget",
         isIncludedIn: _pnd + "isIncludedIn",
     };
 

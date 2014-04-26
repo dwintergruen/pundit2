@@ -64,8 +64,7 @@ angular.module('Pundit2.Communication')
         }
 
         var ns = NameSpace.annotation,
-            annData = data.metadata[ann.uri],
-            properties = ['creator', 'creatorName', 'created', 'modified', 'hasPageContext', 'isIncludedIn'];
+            annData = data.metadata[ann.uri];
 
         // Those properties are a single value inside an array, read them
         // one by one by using the correct URI taken from the NameSpace,
@@ -80,11 +79,19 @@ angular.module('Pundit2.Communication')
             }
         }
 
-        // isIncludedIn is an URI, get out the id too
+        // .isIncludedIn is an URI, get out the id too
         ann.isIncludedInUri = annData[ns.isIncludedIn][0].value;
         var isIncludedIn = ann.isIncludedInUri.match(/[a-z0-9]*$/);
         if (isIncludedIn !== null) {
             ann.isIncludedIn = isIncludedIn[0];
+        }
+
+        // .target is always an array
+        ann.target = [ann.target];
+        if (annData[ns.target].length > 1) {
+            for (var t=1; t<annData[ns.target].length; t++) {
+                ann.target.push(annData[ns.target][t].value);
+            }
         }
 
         // Extract all of the entities and items involved in this annotation:
