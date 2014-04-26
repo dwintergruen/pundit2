@@ -1,5 +1,5 @@
 angular.module('Pundit2.Communication')
-.factory('Annotation', function(BaseComponent, NameSpace, Item, $http, $q) {
+.factory('Annotation', function(BaseComponent, NameSpace, Item, TypesHelper, $http, $q) {
     var annotationComponent = new BaseComponent("AnnotationFactory", {debug: true});
 
     // Creates a new Annotation instance. If an id is passed in
@@ -46,7 +46,7 @@ angular.module('Pundit2.Communication')
         }).error(function(data, statusCode) {
 
             // TODO: 404 not found, nothing to do about it, but 403 forbidden might be
-            //       recoverable by loggin in
+            // recoverable by loggin in??
             self._q.reject("Error from server while retrieving annotation "+self.id+": "+ statusCode);
             annotationComponent.err("Error getting annotation "+self.id+". Server answered with status code "+statusCode);
         });
@@ -87,7 +87,8 @@ angular.module('Pundit2.Communication')
             ann.isIncludedIn = isIncludedIn[0];
         }
 
-        // Extract all of the entities and items involved in this annotation
+        // Extract all of the entities and items involved in this annotation:
+        // subjects and objects which are NOT literals
         ann.entities = [];
         for (var s in data.graph) {
 
@@ -108,12 +109,18 @@ angular.module('Pundit2.Communication')
             }
         }
 
-        // Augment the items with all of the properties
-        // ns = NameSpace.items;
+        // Create a real Item for each previously identified item
         for (var k in ann.items) {
-            var foo = new Item();
-            foo.fromRdf(data.items[k]);
-            ann.items[k] = foo;
+            var item = new Item(k);
+
+            item.fromAnnotationRdf(data.items);
+
+            for (var t in item.type) {
+                TypesHelper.addFromAnnotationRdf(item.type[t], data.items);
+            }
+
+            ann.items[k] = item;
+
         }
 
     }; // readAnnotationData()

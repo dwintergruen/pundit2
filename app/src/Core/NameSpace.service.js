@@ -83,8 +83,7 @@ angular.module("Pundit2.Core")
         **/
         parentItemXP: _pnd + "parentItemXP"
     };
-    
-    
+
     // Notebook properties
     ns.notebook = {
         /** 
@@ -145,7 +144,22 @@ angular.module("Pundit2.Core")
         hasPageContext: _pnd + "hasPageContext",
         isIncludedIn: _pnd + "isIncludedIn",
     };
-    
+
+    // TODO: doc
+    ns.fragments = {
+        baseURI: "http://purl.org/pundit/fragment/",
+        imageType: "http://purl.org/pundit/ont/ao#fragment-image",
+        textType: "http://purl.org/pundit/ont/ao#fragment-text",
+        namedType: "http://purl.org/pundit/ont/ao#named-content"
+    };
+
+    ns.selectors = {
+        baseURI: "http://purl.org/pundit/selector/",
+        polygonType: "http://purl.org/pundit/ont/ao#selector-polygon",
+        rectangleType: "http://purl.org/pundit/ont/ao#selector-rectangle"
+    };
+
+
     // Annotation server API
     ns.as              = Config.annotationServerBaseURL;
     ns.asUsers         = ns.as + "api/users/";
