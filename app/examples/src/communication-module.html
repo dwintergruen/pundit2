@@ -3,7 +3,13 @@
 <script>
 
 var punditConfig = {
-    debugAllModules: false
+    debugAllModules: false,
+    modules: {
+        "Annotation": { debug: true },
+        "Notebook": { debug: true },
+        "Item": { debug: true }
+    }
+
 };
 
 var CommunicationDemoCtrl = function($scope, Notebook, Annotation) {

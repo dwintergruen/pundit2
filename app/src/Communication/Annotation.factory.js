@@ -1,6 +1,6 @@
 angular.module('Pundit2.Communication')
 .factory('Annotation', function(BaseComponent, NameSpace, Item, TypesHelper, $http, $q) {
-    var annotationComponent = new BaseComponent("AnnotationFactory", {debug: true});
+    var annotationComponent = new BaseComponent("Annotation");
 
     // Creates a new Annotation instance. If an id is passed in
     // then the annotation is loaded, otherwise a new annotation

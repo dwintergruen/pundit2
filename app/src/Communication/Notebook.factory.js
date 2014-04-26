@@ -1,6 +1,6 @@
 angular.module('Pundit2.Communication')
 .factory('Notebook', function(BaseComponent, NameSpace, $http, $q) {
-    var notebookComponent = new BaseComponent("Notebook", {debug: true});
+    var notebookComponent = new BaseComponent("Notebook");
 
     // Creates a new Notebook instance. If an id is passed in
     // then the notebook metadata are loaded, otherwise a new

@@ -1,6 +1,6 @@
 angular.module('Pundit2.Core')
 .service('TypesHelper', function(BaseComponent, NameSpace) {
-    var typesHelper = new BaseComponent("TypesHelper", {debug: true}),
+    var typesHelper = new BaseComponent("TypesHelper"),
         types = {};
 
     var getLabelFromType = function(uri) {

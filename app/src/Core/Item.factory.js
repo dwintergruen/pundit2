@@ -1,6 +1,6 @@
 angular.module('Pundit2.Core')
 .factory('Item', function(BaseComponent, NameSpace) {
-    var itemComponent = new BaseComponent("ItemFactory", {debug: true});
+    var itemComponent = new BaseComponent("Item");
 
     function ItemFactory(value) {
 
