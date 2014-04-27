@@ -19,6 +19,7 @@
 
     <script src="../src/Core/Item.factory.js"></script>
     <script src="../src/Core/TypesHelper.service.js"></script>
+    <script src="../src/Core/Consolidation.service.js"></script>
 
     <script src="../src/Communication/Communication.js"></script>
     <script src="../src/Communication/Notebook.factory.js"></script>

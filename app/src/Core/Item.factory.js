@@ -12,7 +12,7 @@ angular.module('Pundit2.Core')
         }
         this.uri = value;
         this.label = '';
-    };
+    }
 
     ItemFactory.prototype.fromAnnotationRdf = function(annotationRDF) {
 
@@ -30,15 +30,13 @@ angular.module('Pundit2.Core')
             }
         }
 
-        // Extract types
+        // Extract types as an array of URI, someone else will
+        // take care of adding them to TypesHelper
         var types = itemRDF[NameSpace.rdf.type];
         if (angular.isArray(types) && types.length > 0) {
             this.type = [];
             for (var t in types) {
                 this.type.push(types[t].value);
-                if (types[t].value in itemRDF) {
-                    TypesHelper.add(types[t].value, 'somelabel');
-                }
             }
         }
 
@@ -78,12 +76,12 @@ angular.module('Pundit2.Core')
         itemComponent.log("Created new item: "+ this.label);
     };
 
-    ItemFactory.prototype.toRdf = function(rdf) {
+    ItemFactory.prototype.toRdf = function() {
         // TODO
     };
 
 
-    ItemFactory.prototype.toJsonLD = function(rdf) {
+    ItemFactory.prototype.toJsonLD = function() {
         // TODO .. why not? needed? :)
     };
 

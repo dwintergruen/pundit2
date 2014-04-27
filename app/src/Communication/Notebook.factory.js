@@ -15,16 +15,17 @@ angular.module('Pundit2.Communication')
             this.create();
         }
 
-    };
-    
+    }
+
+    // TODO: after login
     Notebook.prototype.create = function() {
         notebookComponent.log('Creating a new Notebook on the server');
         this._q.resolve('New notebook created: TODO, after LOGIN');
     };
-    
+
+    // TODO: after login
     Notebook.prototype.setPublic = function() {
-        var self = this;
-        notebookComponent.log('Setting notebook public '+useCache);
+        notebookComponent.log('Setting notebook public');
     };
     
     Notebook.prototype.load = function(useCache) {
@@ -36,7 +37,8 @@ angular.module('Pundit2.Communication')
         
         notebookComponent.log("Loading notebook "+self.id+" metadata with cache "+useCache);
         
-        var httpPromise = $http({
+        var httpPromise;
+        httpPromise = $http({
             headers: { 'Accept': 'application/json' },
             method: 'GET',
             cache: useCache,
@@ -101,7 +103,7 @@ angular.module('Pundit2.Communication')
     function NotebookFactory(id) {
         var nb = new Notebook(id);
         return nb._q.promise;
-    };
+    }
 
     notebookComponent.log('Component up and running');
 

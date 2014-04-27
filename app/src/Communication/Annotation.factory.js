@@ -15,7 +15,7 @@ angular.module('Pundit2.Communication')
             this.create();
         }
 
-    };
+    }
 
     Annotation.prototype.create = function() {
         annotationComponent.log('Creating a new Annotation on the server');
@@ -31,7 +31,8 @@ angular.module('Pundit2.Communication')
         
         annotationComponent.log("Loading annotation "+self.id+" with cache "+useCache);
         
-        var httpPromise = $http({
+        var httpPromise;
+        httpPromise = $http({
             headers: { 'Accept': 'application/json' },
             method: 'GET',
             cache: useCache,
@@ -89,8 +90,8 @@ angular.module('Pundit2.Communication')
         // .target is always an array
         ann.target = [ann.target];
         if (annData[ns.target].length > 1) {
-            for (var t=1; t<annData[ns.target].length; t++) {
-                ann.target.push(annData[ns.target][t].value);
+            for (var target=1; t<annData[ns.target].length; t++) {
+                ann.target.push(annData[ns.target][target].value);
             }
         }
 
@@ -139,7 +140,7 @@ angular.module('Pundit2.Communication')
     function AnnotationFactory(id) {
         var nb = new Annotation(id);
         return nb._q.promise;
-    };
+    }
 
     annotationComponent.log('Component up and running');
 
