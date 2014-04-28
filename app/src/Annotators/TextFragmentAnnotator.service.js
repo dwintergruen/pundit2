@@ -1,5 +1,5 @@
 angular.module('Pundit2.Annotators')
-.service('TextFragmentAnnotator', function(NameSpace, BaseComponent, AnnotatorsOrchestrator) {
+.service('TextFragmentAnnotator', function(NameSpace, BaseComponent, AnnotatorsOrchestrator, XpointersHelper) {
 
     // Create the component and declare what we deal with: text
     var tfa = new BaseComponent('TextFragmentAnnotator');
@@ -15,22 +15,24 @@ angular.module('Pundit2.Annotators')
         } else if (item.type.length === 0) {
             tfa.log("Item not valid: types len 0");
             return false;
+        } else if (item.type.indexOf(tfa.type) === -1) {
+            tfa.log("Item not valid: not a "+ tfa.type);
+            return false;
+        } else if (!XpointersHelper.isValidXpointerURI(item.uri)) {
+            tfa.log("Item not valid: not a valid xpointer uri"+ item.uri);
+            return false;
         }
-        
+
         // TODO: it's a valid text fragment if:
         // - one of its types is the fragment-text type
         // - has a part of
         // - has a page context
         // - .uri is an xpointer
-        if (item.type.indexOf(tfa.type) !== -1) {
-            tfa.log("Item is a fragment! "+ tfa.label);
-            return true;
-        }
-        
+
         // TODO: check if it is consolidable ON THIS PAGE
 
         tfa.log("Item not valid: not recognized as a consolidable "+ tfa.label);
-        return false;
+        return true;
     };
 
     tfa.log("Component up and running");

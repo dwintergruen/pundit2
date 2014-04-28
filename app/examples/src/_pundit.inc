@@ -22,6 +22,7 @@
     <script src="../src/Core/Consolidation.service.js"></script>
 
     <script src="../src/Annotators/Annotators.js"></script>
+    <script src="../src/Annotators/XpointersHelper.service.js"></script>
     <script src="../src/Annotators/AnnotatorsOrchestrator.service.js"></script>
     <script src="../src/Annotators/TextFragmentAnnotator.service.js"></script>
     <script src="../src/Annotators/ImageFragmentAnnotator.service.js"></script>

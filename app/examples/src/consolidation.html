@@ -15,7 +15,7 @@ var punditConfig = {
 };
 
 var ConsolidationDemoCtrl = function($scope, Consolidation, Annotation, AnnotatorsOrchestrator, 
-    TextFragmentAnnotator, ImageFragmentAnnotator) {
+    TextFragmentAnnotator, ImageFragmentAnnotator, XpointersHelper) {
 
     // 1 target
     var ann0 = new Annotation("8fd05a49");
@@ -24,7 +24,7 @@ var ConsolidationDemoCtrl = function($scope, Consolidation, Annotation, Annotato
         $scope.items0 = JSON.stringify(ann.items, null, "  ");
         for (var uri in ann.items) {
             Consolidation.addItems(ann.items[uri]);
-        };
+        }
         
     }, function(message) {
         $scope.items1.textType = "Failed to load annotation: "+message;
@@ -38,7 +38,7 @@ var ConsolidationDemoCtrl = function($scope, Consolidation, Annotation, Annotato
         $scope.items1 = JSON.stringify(ann.items, null, "  ");
         for (var uri in ann.items) {
             Consolidation.addItems(ann.items[uri]);
-        };
+        }
     }, function(message) {
         $scope.items1.textType = "Failed to load annotation: "+message;
     });
@@ -46,7 +46,8 @@ var ConsolidationDemoCtrl = function($scope, Consolidation, Annotation, Annotato
     $scope.$watch(function() {
         return Consolidation.getItems();
     }, function(newItems, oldItems) {
-        $scope.allItems = JSON.stringify(newItems, null, "  ");;
+        $scope.allItems = JSON.stringify(newItems, null, "  ");
+        Consolidation.consolidate();
     }, true)
 
 }

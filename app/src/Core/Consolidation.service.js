@@ -3,7 +3,7 @@ angular.module('Pundit2.Core')
         icon: '',
         colorClass: 'pnd-cons-yellow'
     })
-    .service('Consolidation', function(CONSOLIDATIONDEFAULTS, BaseComponent, NameSpace, AnnotatorsOrchestrator) {
+    .service('Consolidation', function(CONSOLIDATIONDEFAULTS, BaseComponent, NameSpace, AnnotatorsOrchestrator, XpointersHelper) {
         var cc = new BaseComponent('Consolidation', CONSOLIDATIONDEFAULTS);
 
         var itemListByType = {},
@@ -52,6 +52,22 @@ angular.module('Pundit2.Core')
         
         cc.isConsolidated = function(item) {
             
+        };
+
+        cc.consolidate = function() {
+            console.log(itemListByType);
+            var xpointers = [];
+            for (var uri in itemListByType['text']) {
+                xpointers.push(uri);
+            }
+
+            var xpaths = XpointersHelper.getXPathsFromXPointers(xpointers);
+            console.log('Xpaths: ', xpaths);
+            var spli = XpointersHelper.splitAndSortXPaths(xpaths.xpaths);
+            console.log('xplissttts', spli);
+
+
+
         };
         
         // TODO: DOMConsolidator ? (xpointers: text fragments, named content, full page?)
