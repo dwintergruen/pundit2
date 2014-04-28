@@ -41,7 +41,7 @@ angular.module('Pundit2.Core')
         }
 
         // Special item type: image fragment
-        if (this.type.indexOf(NameSpace.fragments.imageType) !== -1) {
+        if (this.type.indexOf(NameSpace.fragments.image) !== -1) {
 
             this.selector = [];
 
@@ -69,7 +69,7 @@ angular.module('Pundit2.Core')
             if (typeof(this.selector) !== "undefined" && this.selector in annotationRDF) {
                 this.selector = annotationRDF[this.selector][NameSpace.rdf.value][0].value;
             }
-        } // if type: fragments.imageType
+        } // if type: fragments.image
 
         // TODO: more special cases, named content, webpage, video fragment, other selectors?
 

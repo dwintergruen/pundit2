@@ -5,28 +5,49 @@
 var punditConfig = {
     debugAllModules: false,
     modules: {
-        "Annotation": { debug: true },
-        "Consolidation": { debug: true }
+        "Annotation": { debug: false },
+        "Consolidation": { debug: true },
+        "AnnotatorsOrchestrator": { debug: true },
+        "TextFragmentAnnotator": { debug: true },
+        "ImageFragmentAnnotator": { debug: true }
     }
 
 };
 
-var ConsolidationDemoCtrl = function($scope, Consolidation, Annotation) {
+var ConsolidationDemoCtrl = function($scope, Consolidation, Annotation, AnnotatorsOrchestrator, 
+    TextFragmentAnnotator, ImageFragmentAnnotator) {
 
     // 1 target
-    // var ann1 = new Annotation("765d226d");
+    var ann0 = new Annotation("8fd05a49");
+
+    ann0.then(function(ann) {
+        $scope.items0 = JSON.stringify(ann.items, null, "  ");
+        for (var uri in ann.items) {
+            Consolidation.addItems(ann.items[uri]);
+        };
+        
+    }, function(message) {
+        $scope.items1.textType = "Failed to load annotation: "+message;
+    });
+
 
     // 2 targets
     var ann1 = new Annotation("385c1647");
 
     ann1.then(function(ann) {
-        $scope.ann1 = JSON.stringify(ann, null, "  ");
-
+        $scope.items1 = JSON.stringify(ann.items, null, "  ");
+        for (var uri in ann.items) {
+            Consolidation.addItems(ann.items[uri]);
+        };
     }, function(message) {
-        $scope.ann1 = "Failed to load annotation: "+message;
+        $scope.items1.textType = "Failed to load annotation: "+message;
     });
-
-    Consolidation.addAnnotations(ann1);
+    
+    $scope.$watch(function() {
+        return Consolidation.getItems();
+    }, function(newItems, oldItems) {
+        $scope.allItems = JSON.stringify(newItems, null, "  ");;
+    }, true)
 
 }
 </script>
@@ -52,7 +73,10 @@ var ConsolidationDemoCtrl = function($scope, Consolidation, Annotation) {
             </div>
 
             <div class="col-sm-6">
-                A public annotation: <pre>{{ann1}}</pre>
+                Items from a public annotation: 
+                    <pre>{{allItems}}</pre>
+                    <pre>{{items0}}</pre>
+                    <pre>{{items1}}</pre>
             </div>
 
         </div>

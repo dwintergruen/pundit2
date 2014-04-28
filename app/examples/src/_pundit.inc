@@ -21,6 +21,11 @@
     <script src="../src/Core/TypesHelper.service.js"></script>
     <script src="../src/Core/Consolidation.service.js"></script>
 
+    <script src="../src/Annotators/Annotators.js"></script>
+    <script src="../src/Annotators/AnnotatorsOrchestrator.service.js"></script>
+    <script src="../src/Annotators/TextFragmentAnnotator.service.js"></script>
+    <script src="../src/Annotators/ImageFragmentAnnotator.service.js"></script>
+
     <script src="../src/Communication/Communication.js"></script>
     <script src="../src/Communication/Notebook.factory.js"></script>
     <script src="../src/Communication/Annotation.factory.js"></script>

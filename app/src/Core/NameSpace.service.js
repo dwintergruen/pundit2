@@ -147,11 +147,12 @@ angular.module("Pundit2.Core")
     };
 
     // TODO: doc
+    // TODO: move to Consolidation.options ??
+    // Consolidation use this to know what is consolidable
     ns.fragments = {
-        baseURI: "http://purl.org/pundit/fragment/",
-        imageType: "http://purl.org/pundit/ont/ao#fragment-image",
-        textType: "http://purl.org/pundit/ont/ao#fragment-text",
-        namedType: "http://purl.org/pundit/ont/ao#named-content"
+        image: _pnd + "fragment-image",
+        text: _pnd + "fragment-text",
+        named: _pnd + "named-content"
     };
 
     ns.selectors = {
