@@ -1,5 +1,5 @@
 angular.module('Pundit2.Dashboard')
-.controller('DashboardCtrl', function($document, $window, Dashboard) {
+.controller('DashboardCtrl', function($document, $window, $scope, Dashboard) {
 
     var jqElement = {
 
@@ -9,8 +9,9 @@ angular.module('Pundit2.Dashboard')
         // dashboard footer
         footer : angular.element('.pnd-dashboard-footer'),
 
-        //dashboard separtors (two elements)
-        separators : angular.element('.pnd-dashboard-separator'),
+        //dashboard separtors
+        firstSeparator : angular.element('.pnd-dashboard-separator-1'),
+        secondSeparator : angular.element('.pnd-dashboard-separator-2'),
 
         // panels
         panelLists : angular.element('.pnd-dashboard-panel-lists'),
@@ -19,97 +20,159 @@ angular.module('Pundit2.Dashboard')
 
     };
 
-    // initialize dashboard dimensions
-    var init = function(){
-
-        var totalWidth = 0,
-            width = 0,
-            containerWidth = angular.element($window).width(),
-            containerHeight = Dashboard.height.container,
-            panelHeight = containerHeight - Dashboard.height.footer;
-
-        if ( containerWidth < 960 ) {
-            containerWidth = 960;
-        }
-        var containerUtilsWidth = containerWidth - (2 * Dashboard.widths.separator);
-
-        // container
-        jqElement.container.css({
-            'height' : containerHeight,
-            'width' : containerWidth
-        });
-
-        // panel lists
-        width = containerUtilsWidth * Dashboard.widths.lists
-        jqElement.panelLists.css({
-            'left' : 0,
-            'width' : width,
-            'height' : panelHeight
-        });
-        // first separator
-        jqElement.separators.eq(0).css({
-            'width' : Dashboard.widths.separator,
-            'left' : width,
-            'height' : panelHeight
-        });
-        totalWidth = totalWidth + width + Dashboard.widths.separator;
-
-        // panel tools
-        width = containerUtilsWidth * Dashboard.widths.tools;
-        jqElement.panelTools.css({
-            'left' : totalWidth,
-            'width' : width,
-            'height' : panelHeight
-        });
-        // second separator
-        jqElement.separators.eq(1).css({
-            'width' : Dashboard.widths.separator,
-            'left' : totalWidth + width,
-            'height' : panelHeight
-        });
-        totalWidth = totalWidth + width + Dashboard.widths.separator;
-
-        // panel details
-        width = containerUtilsWidth * Dashboard.widths.details;
-        jqElement.panelDetails.css({
-            'left' : totalWidth,
-            'width' : width,
-            'height' : panelHeight
-        });
-
-        // footer
-        jqElement.footer.css({
-            'height' : Dashboard.height.footer,
-            'top' : panelHeight
-        });
-
-        Dashboard.log('Dashboard init');
-    };
-    init();
-
-    var update = function(event){
-        init();
-    };
-    //attach event listeners
-    angular.element($window).resize(update);
-
-
-    var resizeHeight = function(event){
-        Dashboard.height.container =  event.pageY - jqElement.container.offset().top;
-        init();
-    };
-
-    var mouseUpHandler = function(){
-        // remove mousemove handler
-        $document.off('mousemove', resizeHeight);
-        $document.off('mouseup', mouseUpHandler);
-    };
-
-    jqElement.footer.mousedown(function(event){
-        event.preventDefault();        
-        $document.on('mouseup', mouseUpHandler);
-        $document.on('mousemove', resizeHeight);
+    angular.element($window).resize(function(){
+        Dashboard.setContainerWidth(angular.element($window).width());
     });
-    
+
+    var footerMouseUpHandler = function() {
+        // remove handlers
+        $document.off('mousemove', footerMouseMoveHandler);
+        $document.off('mouseup', footerMouseUpHandler);
+
+        Dashboard.log('Footer mouseup: removing handlers');
+    }
+
+    var footerMouseMoveHandler = function(event) {
+        var h = event.pageY - jqElement.container.offset().top;
+        Dashboard.setContainerHeight(h);
+    }
+
+    $scope.footerMouseDownHandler = function(event) {
+        if ( event.which === 1 ) {
+            event.preventDefault();        
+            $document.on('mouseup', footerMouseUpHandler);
+            $document.on('mousemove', footerMouseMoveHandler);
+
+            Dashboard.log('Footer mousedown: adding drag/drop handlers');
+        }
+    };
+
+    $scope.$watch(function() {
+        return Dashboard.getContainerHeight();
+    }, function(newHeight, oldHeight) {
+        jqElement.container.css({
+            'height' : newHeight
+        });
+        jqElement.firstSeparator.css({
+            'height' : newHeight - Dashboard.getFooterHeight()
+        });
+        jqElement.secondSeparator.css({
+            'height' : newHeight - Dashboard.getFooterHeight()
+        });
+    });
+
+    $scope.$watch(function() {
+        return Dashboard.getContainerWidth();
+    }, function(newWidth, oldWidth) {
+        jqElement.container.css({
+            'width' : parseInt(newWidth, 10)
+        });
+    });
+
+    $scope.$watch(function() {
+        return Dashboard.getListsPanelWidth();
+    }, function(newWidth, oldWidth) {
+        jqElement.panelLists.css({
+            'width' : newWidth
+        });
+        jqElement.firstSeparator.css({
+            'left' : newWidth
+        });
+    });
+
+    $scope.$watch(function() {
+        return Dashboard.getToolsPanelWidth();
+    }, function(newWidth, oldWidth) {
+        jqElement.panelTools.css({
+            'width' : newWidth,
+            'left' : Dashboard.getListsPanelWidth() + Dashboard.getSeparatorWidth()
+        });
+    });
+
+    $scope.$watch(function() {
+        return Dashboard.getDetailsPanelWidth();
+    }, function(newWidth, oldWidth) {
+        var left = Dashboard.getListsPanelWidth() + Dashboard.getToolsPanelWidth() + (Dashboard.getSeparatorWidth()*2);
+        jqElement.panelDetails.css({
+            'width' : newWidth,
+            'left' : left
+        });
+        jqElement.secondSeparator.css({
+            'left' : left - Dashboard.getSeparatorWidth()
+        });
+    });
+
+    $scope.$watch(function() {
+        return Dashboard.isDashboardVisible();
+    }, function(newVis, oldVis) {
+        if ( newVis ){
+            angular.element('.pnd-dashboard-container').show();
+        } else {
+            angular.element('.pnd-dashboard-container').hide();
+        }
+    });
+
+
+    var firstSeparatorMouseUpHandler = function(){
+        $document.off('mousemove', firstSeparatorMouseMoveHandler);
+        $document.off('mouseup', firstSeparatorMouseUpHandler);
+
+        Dashboard.log('mouseup first separator');
+    };
+
+    var initX, listsInitWidth, toolsInitWidth;
+    var firstSeparatorMouseMoveHandler = function(){
+        var d = (initX - event.pageX),
+            lw = listsInitWidth - d,
+            tw = toolsInitWidth + d;
+        
+        Dashboard.setListPanelWidth(lw);
+        Dashboard.setToolsPanelWidth(tw);
+    };
+
+    $scope.firstSeparatorMouseDownHandler = function(event){
+        if ( event.which === 1 ) {
+            event.preventDefault();        
+            $document.on('mouseup', firstSeparatorMouseUpHandler);
+            $document.on('mousemove', firstSeparatorMouseMoveHandler);
+
+            initX = event.pageX;
+            listsInitWidth = Dashboard.getListsPanelWidth();
+            toolsInitWidth = Dashboard.getToolsPanelWidth();
+
+            Dashboard.log('First Separator mousedown: adding drag/drop handlers');
+        }
+    };
+
+    var secondSeparatorMouseUpHandler = function(){
+        $document.off('mousemove', secondSeparatorMouseMoveHandler);
+        $document.off('mouseup', secondSeparatorMouseUpHandler);
+
+        Dashboard.log('mouseup second separator');
+    };
+
+    var initX, toolsInitWidth, detailsInitWidth;
+    var secondSeparatorMouseMoveHandler = function(){
+        var d = (initX - event.pageX),
+            dw = detailsInitWidth + d,
+            tw = toolsInitWidth - d;
+        
+        Dashboard.setToolsPanelWidth(tw);
+        Dashboard.setDetailsPanelWidth(dw);
+    };
+
+    $scope.secondSeparatorMouseDownHandler = function(event){
+        if ( event.which === 1 ) {
+            event.preventDefault();        
+            $document.on('mouseup', secondSeparatorMouseUpHandler);
+            $document.on('mousemove', secondSeparatorMouseMoveHandler);
+
+            initX = event.pageX;
+            detailsInitWidth = Dashboard.getDetailsPanelWidth();
+            toolsInitWidth = Dashboard.getToolsPanelWidth();
+
+            Dashboard.log('Second Separator mousedown: adding drag/drop handlers');
+        }
+    };
 
 });

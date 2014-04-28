@@ -6,6 +6,7 @@
         <div class="pnd-dashboard-panel-content">
             <!-- the content comes from outside-->
         </div>
+        <button type="button" class="btn btn-default pnd-dashboard-panel-collapse-button">X</button>
     </div>
 
     <!-- panel tools -->
@@ -14,6 +15,7 @@
         <div class="pnd-dashboard-panel-content">
             <!-- the content comes from outside-->
         </div>
+        <button type="button" class="btn btn-default pnd-dashboard-panel-collapse-button">X</button>
     </div>
 
     <!-- panel details -->
@@ -22,12 +24,13 @@
         <div class="pnd-dashboard-panel-content">
             <!-- the content comes from outside-->
         </div>
+        <button type="button" class="btn btn-default pnd-dashboard-panel-collapse-button">X</button>
     </div>
 
     <!--separator-->
-    <div class="pnd-dashboard-separator"></div>
-    <div class="pnd-dashboard-separator"></div>
+    <div class="pnd-dashboard-separator pnd-dashboard-separator-1" ng-mousedown="firstSeparatorMouseDownHandler($event)"></div>
+    <div class="pnd-dashboard-separator pnd-dashboard-separator-2" ng-mousedown="secondSeparatorMouseDownHandler($event)"></div>
 
-    <div class="pnd-dashboard-footer"></div>
+    <div class="pnd-dashboard-footer" ng-mousedown="footerMouseDownHandler($event)"></div>
 
 </div>

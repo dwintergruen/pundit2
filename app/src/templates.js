@@ -64,6 +64,7 @@ angular.module("src/Dashboard/Dashboard.dir.tmpl.html", []).run(["$templateCache
     "        <div class=\"pnd-dashboard-panel-content\">\n" +
     "            <!-- the content comes from outside-->\n" +
     "        </div>\n" +
+    "        <button type=\"button\" class=\"btn btn-default pnd-dashboard-panel-collapse-button\">X</button>\n" +
     "    </div>\n" +
     "\n" +
     "    <!-- panel tools -->\n" +
@@ -72,6 +73,7 @@ angular.module("src/Dashboard/Dashboard.dir.tmpl.html", []).run(["$templateCache
     "        <div class=\"pnd-dashboard-panel-content\">\n" +
     "            <!-- the content comes from outside-->\n" +
     "        </div>\n" +
+    "        <button type=\"button\" class=\"btn btn-default pnd-dashboard-panel-collapse-button\">X</button>\n" +
     "    </div>\n" +
     "\n" +
     "    <!-- panel details -->\n" +
@@ -80,13 +82,14 @@ angular.module("src/Dashboard/Dashboard.dir.tmpl.html", []).run(["$templateCache
     "        <div class=\"pnd-dashboard-panel-content\">\n" +
     "            <!-- the content comes from outside-->\n" +
     "        </div>\n" +
+    "        <button type=\"button\" class=\"btn btn-default pnd-dashboard-panel-collapse-button\">X</button>\n" +
     "    </div>\n" +
     "\n" +
     "    <!--separator-->\n" +
-    "    <div class=\"pnd-dashboard-separator\"></div>\n" +
-    "    <div class=\"pnd-dashboard-separator\"></div>\n" +
+    "    <div class=\"pnd-dashboard-separator pnd-dashboard-separator-1\" ng-mousedown=\"firstSeparatorMouseDownHandler($event)\"></div>\n" +
+    "    <div class=\"pnd-dashboard-separator pnd-dashboard-separator-2\" ng-mousedown=\"secondSeparatorMouseDownHandler($event)\"></div>\n" +
     "\n" +
-    "    <div class=\"pnd-dashboard-footer\"></div>\n" +
+    "    <div class=\"pnd-dashboard-footer\" ng-mousedown=\"footerMouseDownHandler($event)\"></div>\n" +
     "\n" +
     "</div>");
 }]);
