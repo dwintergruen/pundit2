@@ -20,6 +20,20 @@ angular.module('Pundit2.Dashboard')
 
     };
 
+    // set separators width
+    angular.element('.pnd-dashboard-separator').css({
+        'width' : Dashboard.options.separatorsWidth
+    });
+    // set footer height
+    jqElement.footer.css({
+        'height' : Dashboard.options.footerHeight
+    });
+    // set panels bottom
+    angular.element('.pnd-dashboard-panel').css({
+        'bottom' : Dashboard.options.footerHeight
+    });
+
+
     angular.element($window).resize(function(){
         Dashboard.setContainerWidth(angular.element($window).width());
     });
@@ -65,7 +79,7 @@ angular.module('Pundit2.Dashboard')
         return Dashboard.getContainerWidth();
     }, function(newWidth, oldWidth) {
         jqElement.container.css({
-            'width' : parseInt(newWidth, 10)
+            'width' : newWidth
         });
     });
 
@@ -85,14 +99,14 @@ angular.module('Pundit2.Dashboard')
     }, function(newWidth, oldWidth) {
         jqElement.panelTools.css({
             'width' : newWidth,
-            'left' : Dashboard.getListsPanelWidth() + Dashboard.getSeparatorWidth()
+            'left' : Dashboard.getToolsPanelLeft()
         });
     });
 
     $scope.$watch(function() {
         return Dashboard.getDetailsPanelWidth();
     }, function(newWidth, oldWidth) {
-        var left = Dashboard.getListsPanelWidth() + Dashboard.getToolsPanelWidth() + (Dashboard.getSeparatorWidth()*2);
+        var left = Dashboard.getDetailsPanelLeft();
         jqElement.panelDetails.css({
             'width' : newWidth,
             'left' : left
@@ -126,8 +140,7 @@ angular.module('Pundit2.Dashboard')
             lw = listsInitWidth - d,
             tw = toolsInitWidth + d;
         
-        Dashboard.setListPanelWidth(lw);
-        Dashboard.setToolsPanelWidth(tw);
+        Dashboard.moveLeftSeparator(lw, tw);
     };
 
     $scope.firstSeparatorMouseDownHandler = function(event){
@@ -157,8 +170,7 @@ angular.module('Pundit2.Dashboard')
             dw = detailsInitWidth + d,
             tw = toolsInitWidth - d;
         
-        Dashboard.setToolsPanelWidth(tw);
-        Dashboard.setDetailsPanelWidth(dw);
+        Dashboard.moveRightSeparator(tw, dw);
     };
 
     $scope.secondSeparatorMouseDownHandler = function(event){
