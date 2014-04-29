@@ -81,6 +81,19 @@ angular.module('Pundit2.Dashboard')
         jqElement.container.css({
             'width' : newWidth
         });
+        // set the left of the elements
+        jqElement.firstSeparator.css({
+            'left' : Dashboard.getListsPanelWidth()
+        });
+        jqElement.panelTools.css({
+            'left' : Dashboard.getToolsPanelLeft()
+        });
+        jqElement.panelDetails.css({
+            'left' : Dashboard.getDetailsPanelLeft()
+        });
+        jqElement.secondSeparator.css({
+            'left' : Dashboard.getDetailsPanelLeft() - Dashboard.getSeparatorWidth()
+        });
     });
 
     $scope.$watch(function() {
