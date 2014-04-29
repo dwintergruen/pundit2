@@ -54,7 +54,8 @@ angular.module('Pundit2.Core')
         httpCall = $http({
             headers: { 'Accept': 'application/json' },
             method: 'GET',
-            url: NameSpace.get('asUsersCurrent')
+            url: NameSpace.get('asUsersCurrent'),
+            withCredentials: true
             
         }).success(function(data) {
             console.log("getCalled", data);
