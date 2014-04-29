@@ -72,7 +72,7 @@ describe('Toolbar service', function() {
         
         //add 2 errors
         var errorId1 = Toolbar.addError(messageError1, myCallback1);
-        var errorId2 = Toolbar.addError(messageError2, myCallback2);
+        Toolbar.addError(messageError2, myCallback2);
         
         // errors array should contain 2 elements
         expect(Toolbar.getError().length).toBe(2);

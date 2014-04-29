@@ -35,6 +35,7 @@ angular.module('Pundit2.Toolbar')
     toolbar.addError = function(message, callback){
         var errID = errorID;
         
+        // remove error from array and get call callback() function
         var removeErrorAndGetCallback = function() {
             toolbar.removeError(errID);
             callback();
@@ -45,6 +46,7 @@ angular.module('Pundit2.Toolbar')
         errorMessageDropdown.push(error);
         isErrorShown = true;
         
+        // trigger toolbar error dropdown
         if(angular.element('.pnd-toolbar-error-button ul').length === 0){
             var button = angular.element('.pnd-toolbar-error-button a');
             button.trigger('click');
@@ -84,9 +86,10 @@ angular.module('Pundit2.Toolbar')
     toolbar.getAskLink = function(){
         if(isUserLogged){
             return toolbar.options.askLinkUser;
-        } else 
+        } else {
             return toolbar.options.askLinkDefault;
-    }
+        }
+    };
     
     return toolbar;
 

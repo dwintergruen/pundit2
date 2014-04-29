@@ -16,6 +16,7 @@
     <script src="../src/Core/NameSpace.service.js"></script>
     <script src="../src/Core/Config.service.js"></script>
     <script src="../src/Core/PUNDITDEFAULTCONF.constant.js"></script>
+    <script src="../src/Core/MyPundit.service.js"></script>
 
     <script src="../src/Core/Item.factory.js"></script>
     <script src="../src/Core/TypesHelper.service.js"></script>
@@ -48,4 +49,6 @@
     <script src="../src/Toolbar/Toolbar.dir.js"></script>
     <script src="../src/Toolbar/Toolbar.ctrl.js"></script>
     <script src="../src/Toolbar/Toolbar.service.js"></script>
+    
+    <script src="../src/Core/modal.login.ctrl.js"></script>
     <!-- endbuild -->
