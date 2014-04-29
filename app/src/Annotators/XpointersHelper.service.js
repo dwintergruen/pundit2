@@ -1,7 +1,11 @@
 angular.module('Pundit2.Annotators')
-.service('XpointersHelper', function(NameSpace, BaseComponent, $document) {
+.constant('XPOINTERSHELPERDEFAULTS', {
+   wrapNodeClass: 'pnd-cons',
+   wrapNodeName: 'span'
+})
+.service('XpointersHelper', function(XPOINTERSHELPERDEFAULTS, NameSpace, BaseComponent, $document) {
 
-    var xp = new BaseComponent('XpointersHelper');
+    var xp = new BaseComponent('XpointersHelper', XPOINTERSHELPERDEFAULTS);
 
     xp.getXPathsFromXPointers = function(xpArray) {
         var xpointers = [],
@@ -234,7 +238,6 @@ angular.module('Pundit2.Annotators')
     // Wraps all of the calculated xpaths with some htmltag and the computed
     // classes
     xp.updateDOM = function(sortedXpaths, htmlClasses) {
-        var self = this;
 
         // Highlight all of the xpaths
         for (var i=sortedXpaths.length-1; i>0; i--) {
@@ -242,15 +245,136 @@ angular.module('Pundit2.Annotators')
                 end = sortedXpaths[i];
                 
             if (htmlClasses[i].length) {
-                self.log("## Updating DOM, xpath "+i+": "+htmlClasses[i].join(" "));
-                self.wrapXPaths(start, end, self.opts.wrapNodeName, htmlClasses[i].join(" ")+" "+self.opts.wrapNodeClass);
+                xp.log("## Updating DOM, xpath "+i+": "+htmlClasses[i].join(" "));
+                xp.wrapXPaths(start, end, xp.options.wrapNodeName, htmlClasses[i].join(" ")+" "+xp.options.wrapNodeClass);
             }
         }
-        self.log("Dom succesfully updated!")
+        xp.log("Dom succesfully updated!")
     }; // updateDOM()
 
 
+    // Wrap the range from startXp to endXp (two xpaths custom objects) with
+    // the given tag _tag and html class _class. Will build a range for those
+    // 2 xpaths, and starting from the range's commonAncestorContainer, will
+    // wrap all of the contained elements
+    xp.wrapXPaths = function(startXp, endXp, _tag, _class) {
+        var htmlTag = _tag || "span",
+            htmlClass = _class || "highlight",
+            range = document.createRange(),
+            startNode = xp.getNodeFromXpath(startXp.xpath),
+            endNode = xp.getNodeFromXpath(endXp.xpath);
 
-    xp.log("Component up and running");
+        // If start and end xpaths dont have a node number [N], we
+        // are wrapping the Mth=offset child of the given node
+        if (!startXp.xpath.match(/\[[0-9]+\]$/) && !endXp.xpath.match(/\[[0-9]+\]$/)) {
+            range.selectNode(startNode.childNodes[startXp.offset]);
+        } else {
+
+            // TODO: not sure... do we need to select a different node
+            // if the xpath is missing a [N]??
+            // if (!startXp.xpath.match(/\[[0-9]+\]$/))
+            // range.setStart();
+
+            // If it's not a textnode, set the start (or end) before (or after) it
+            if (!xp.isElementNode(startNode))
+                range.setStart(startNode, startXp.offset);
+            else
+                range.setStart(startNode, startXp.offset);
+
+            if (!xp.isElementNode(endNode))
+                range.setEnd(endNode, endXp.offset);
+            else
+                range.setEndAfter(endNode);
+        }
+
+        // Wrap the nearest element which contains the entire range
+        xp.wrapElement(range.commonAncestorContainer, range, htmlTag, htmlClass);
+
+    }; // wrapXPath
+
+    // Wraps childNodes of element, only those which stay inside
+    // the given range
+    xp.wrapElement = function(element, range, htmlTag, htmlClass) {
+        // If there's childNodes, wrap them all
+        if (element.childNodes && element.childNodes.length > 0) {
+            for (var i = (element.childNodes.length - 1); i >= 0 && element.childNodes[i]; i--)
+                xp.wrapElement(element.childNodes[i], range, htmlTag, htmlClass);
+
+            // Else it's a leaf: if it's a valid text node, wrap it!
+        } else if (xp.isTextNodeInsideRange(element, range)) {
+            xp.wrapNode(element, range, htmlTag, htmlClass);
+            // MORE Else: it's an image node.. wrap it up
+        } else if (self.isImageNodeInsideRange(element, range)) {
+            xp.wrapNode(element, range, htmlTag, htmlClass);
+        }
+
+    }; // wrapElement()
+
+    xp.isElementNode = function(node) { return node.nodeType === Node.ELEMENT_NODE; };
+        // Triple node check: will pass if it's a text node, if it's not
+        // empty and if it is inside the given range
+    xp.isTextNodeInsideRange = function(node, range) {
+        var content;
+
+        // Check: it must be a text node
+        if (node.nodeType !== Node.TEXT_NODE)
+            return false;
+
+        // Check: the content must not be empty
+        content = node.textContent.replace(/ /g, "").replace(/\n/, "");
+        if (!node.data || content === "" || content === " ")
+            return false;
+
+        // Finally check if it's in the range
+        return xp.isNodeInsideRange(node, range)
+    };
+
+    // Will check if the given node interesecates the given range somehow
+    xp.isNodeInsideRange = function(node, range) {
+        var nodeRange = document.createRange();
+        try {
+            nodeRange.selectNode(node);
+        } catch (e) {
+            nodeRange.selectNodeContents(node);
+        }
+        if (range.compareBoundaryPoints(Range.END_TO_START || 3, nodeRange) != -1 ||
+            range.compareBoundaryPoints(Range.START_TO_END || 1, nodeRange) != 1) {
+            return false;
+        }
+        return true
+    };
+
+    // Will wrap a node (or part of it) with the given htmlTag. Just part of it when it's
+    // on the edge of the given range and the range starts (or ends) somewhere inside it
+    xp.wrapNode = function(element, range, htmlTag, htmlClass) {
+        var r2 = document.createRange();
+
+        // Select correct sub-range: if the element is the start or end container of the range
+        // set the boundaries accordingly: if it's startContainer use it's start offset and set
+        // the end offset to element length. If it's endContainer set the start offset to 0
+        // and the endOffset from the range.
+        if (element === range.startContainer || element === range.endContainer) {
+            r2.setStart(element, (element === range.startContainer) ? range.startOffset : 0);
+            r2.setEnd(element, (element === range.endContainer) ? range.endOffset : element.length);
+
+            // Otherwise just select the entire node, and wrap it up
+        } else
+            r2.selectNode(element);
+
+        // Finally surround the range contents with an ad-hoc crafted html element
+        r2.surroundContents(xp.createWrapNode(htmlTag, htmlClass));
+    }; // wrapNode()
+
+    // Creates an HTML element to be used to wrap (usually a span?) adding the given
+    // classes to it
+    xp.createWrapNode = function(htmlTag, htmlClass) {
+        var element = document.createElement(htmlTag);
+        angular.element(element).addClass(htmlClass);
+        return element;
+    };
+
+
+
+        xp.log("Component up and running");
     return xp;
 });

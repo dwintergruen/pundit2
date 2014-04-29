@@ -74,8 +74,7 @@ angular.module('Pundit2.Core')
             var htmlClasses = XpointersHelper.getClassesForXpaths(xpointers, sorted, xpaths, xpointerClasses);
             console.log('Html classes', htmlClasses);
 
-            
-            
+            XpointersHelper.updateDOM(sorted, htmlClasses);
 
         };
         
