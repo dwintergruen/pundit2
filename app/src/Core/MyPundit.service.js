@@ -3,7 +3,7 @@ angular.module('Pundit2.Core')
     debug: true,
     loginTimerMS: 1000
 })
-.service('MyPundit', function(BaseComponent, MYPUNDITDEFAULTS, NameSpace, $http, $q, $timeout, $modal) {
+.service('MyPundit', function(BaseComponent, MYPUNDITDEFAULTS, NameSpace, $http, $q, $timeout, $modal, $window) {
     
     var myPundit = new BaseComponent('MyPundit', MYPUNDITDEFAULTS);
     
@@ -49,17 +49,17 @@ angular.module('Pundit2.Core')
         
         var promise = $q.defer();
         var httpCall;
-
+        
+        
         httpCall = $http({
             headers: { 'Accept': 'application/json' },
             method: 'GET',
             url: NameSpace.get('asUsersCurrent')
             
         }).success(function(data) {
-            
+            console.log("getCalled", data);
             // user is not logged in
             if(data.loginStatus === 0){
-                
                 myPundit.setUserLogged(false);
                 myPundit.setLoginServer(data.loginServer);
                 myPundit.setLoginStatus("loggedOff");
@@ -68,6 +68,7 @@ angular.module('Pundit2.Core')
             }
             // user is logged in
             else {
+                
                 myPundit.setUserLogged(true);
                 myPundit.setLoginStatus("loggedIn");
                 promise.resolve(true);
@@ -82,11 +83,29 @@ angular.module('Pundit2.Core')
     };
     
     
+    myPundit.login = function(){
+        myPundit.setLoginStatus('waitingForLogIn');
+        var url = myPundit.getLoginServer();
+        
+        $window.open(url, 'loginpopup', 'left=260,top=120,width=480,height=360');
+        
+        var check = function() {
+                myPundit.checkLoggedIn();
+                $timeout(check, myPundit.options.loginTimerMS);
+            };
+    
+            $timeout(check, myPundit.options.loginTimerMS);
+        
+        
+
+        
+    };
     
     myPundit.openLoginModal = function(){
         
           // Pre-fetch an external template populated with a custom scope
-          var myOtherModal = $modal( {template: '../src/Core/modal.login.tmpl.html'});
+          var modalLogin = $modal( {template: '../src/Core/modal.login.tmpl.html'});
+          modalLogin.$promise.then(modalLogin.show);
           // Show when some event occurs (use $promise property to ensure the template has been loaded)
 
     };

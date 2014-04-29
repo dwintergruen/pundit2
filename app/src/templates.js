@@ -66,7 +66,7 @@ angular.module("src/Core/modal.login.tmpl.html", []).run(["$templateCache", func
     "      <div class=\"modal-body\">\n" +
     "          {{notifyMessage}}\n" +
     "          <button type=\"button\" class=\"btn btn-default\" ng-click=\"$hide()\">Close</button>\n" +
-    "          <button type=\"button\" class=\"btn btn-default\" ng-click=\"\">Login</button>\n" +
+    "          <button type=\"button\" class=\"btn btn-default\" ng-click=\"login()\">Login</button>\n" +
     "      </div>\n" +
     "      <div class=\"modal-footer\">\n" +
     "        \n" +
