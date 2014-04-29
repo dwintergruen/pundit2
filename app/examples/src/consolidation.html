@@ -24,7 +24,9 @@ var ConsolidationDemoCtrl = function($scope, Consolidation, Annotation, Annotato
     TextFragmentAnnotator, ImageFragmentAnnotator, XpointersHelper) {
 
     // 1 target
-    var ann0 = new Annotation("8fd05a49");
+    // var ann0 = new Annotation("8fd05a49");
+    var ann0 = new Annotation("65286186");
+
 
     ann0.then(function(ann) {
         $scope.items0 = JSON.stringify(ann.items, null, "  ");
@@ -53,8 +55,12 @@ var ConsolidationDemoCtrl = function($scope, Consolidation, Annotation, Annotato
         return Consolidation.getItems();
     }, function(newItems, oldItems) {
         $scope.allItems = JSON.stringify(newItems, null, "  ");
-        Consolidation.consolidate();
     }, true)
+
+    $scope.go = function() {
+        Consolidation.consolidate();
+    }
+
 
 }
 </script>
@@ -64,6 +70,8 @@ var ConsolidationDemoCtrl = function($scope, Consolidation, Annotation, Annotato
     <div ng-controller="ConsolidationDemoCtrl" class="container-fluid">
 
         <h3>Consolidation</h3>
+
+        <button class="btn btn-info" ng-click="go()">go</button>
 
         <div class="row">
 

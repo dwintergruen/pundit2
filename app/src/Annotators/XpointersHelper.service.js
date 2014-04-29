@@ -304,7 +304,7 @@ angular.module('Pundit2.Annotators')
         } else if (xp.isTextNodeInsideRange(element, range)) {
             xp.wrapNode(element, range, htmlTag, htmlClass);
             // MORE Else: it's an image node.. wrap it up
-        } else if (self.isImageNodeInsideRange(element, range)) {
+        } else if (xp.isImageNodeInsideRange(element, range)) {
             xp.wrapNode(element, range, htmlTag, htmlClass);
         }
 
@@ -326,6 +326,17 @@ angular.module('Pundit2.Annotators')
             return false;
 
         // Finally check if it's in the range
+        return xp.isNodeInsideRange(node, range)
+    };
+    xp.isImageNodeInsideRange = function(node, range) {
+        // Check: it must be an element node
+        if (node.nodeType !== Node.ELEMENT_NODE)
+            return false;
+
+        // Check: it must be an img
+        if (node.tagName.toLowerCase() !== 'img')
+            return false;
+
         return xp.isNodeInsideRange(node, range)
     };
 
