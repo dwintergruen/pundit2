@@ -3,7 +3,7 @@ angular.module('Pundit2.Annotators')
 
     // Create the component and declare what we deal with: text
     var tfa = new BaseComponent('TextFragmentAnnotator');
-    tfa.label = "text",
+    tfa.label = "text";
     tfa.type = NameSpace.fragments[tfa.label];
 
     AnnotatorsOrchestrator.addAnnotator(tfa);
@@ -33,6 +33,29 @@ angular.module('Pundit2.Annotators')
 
         tfa.log("Item not valid: not recognized as a consolidable "+ tfa.label);
         return true;
+    };
+
+    tfa.consolidate = function(items) {
+
+        tfa.log('Consolidating!');
+
+        var xpointers = [],
+            xpointerClasses = {},
+            i = 0;
+
+        for (var uri in items) {
+            xpointers.push(uri);
+            xpointerClasses[uri] = ["pnd-cons-"+i];
+            i++;
+        }
+
+        var xpaths = XpointersHelper.getXPathsFromXPointers(xpointers),
+            sorted = XpointersHelper.splitAndSortXPaths(xpaths),
+            htmlClasses = XpointersHelper.getClassesForXpaths(xpointers, sorted, xpaths, xpointerClasses);
+        XpointersHelper.updateDOM(sorted, htmlClasses);
+
+        tfa.log(tfa.label +' consolidation: done!');
+
     };
 
     tfa.log("Component up and running");

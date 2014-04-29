@@ -244,7 +244,7 @@ angular.module('Pundit2.Annotators')
             var start = sortedXpaths[i-1],
                 end = sortedXpaths[i];
                 
-            if (htmlClasses[i].length) {
+            if (htmlClasses[i].length > 0) {
                 xp.log("## Updating DOM, xpath "+i+": "+htmlClasses[i].join(" "));
                 xp.wrapXPaths(start, end, xp.options.wrapNodeName, htmlClasses[i].join(" ")+" "+xp.options.wrapNodeClass);
             }
@@ -269,11 +269,6 @@ angular.module('Pundit2.Annotators')
         if (!startXp.xpath.match(/\[[0-9]+\]$/) && !endXp.xpath.match(/\[[0-9]+\]$/)) {
             range.selectNode(startNode.childNodes[startXp.offset]);
         } else {
-
-            // TODO: not sure... do we need to select a different node
-            // if the xpath is missing a [N]??
-            // if (!startXp.xpath.match(/\[[0-9]+\]$/))
-            // range.setStart();
 
             // If it's not a textnode, set the start (or end) before (or after) it
             if (!xp.isElementNode(startNode))
@@ -383,8 +378,6 @@ angular.module('Pundit2.Annotators')
         angular.element(element).addClass(htmlClass);
         return element;
     };
-
-
 
         xp.log("Component up and running");
     return xp;

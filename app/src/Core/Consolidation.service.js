@@ -3,7 +3,7 @@ angular.module('Pundit2.Core')
         icon: '',
         colorClass: 'pnd-cons-yellow'
     })
-    .service('Consolidation', function(CONSOLIDATIONDEFAULTS, BaseComponent, NameSpace, AnnotatorsOrchestrator, XpointersHelper) {
+    .service('Consolidation', function(CONSOLIDATIONDEFAULTS, BaseComponent, NameSpace, AnnotatorsOrchestrator, TextFragmentAnnotator, XpointersHelper) {
         var cc = new BaseComponent('Consolidation', CONSOLIDATIONDEFAULTS);
 
         var itemListByType = {},
@@ -30,6 +30,7 @@ angular.module('Pundit2.Core')
                     return;
                 }
 
+                // Add or create a new element for the indexes
                 if (fragmentType in itemListByType) {
                     itemListByType[fragmentType][items.uri] = items;
                     typeUriMap[fragmentType].push(items.uri);
@@ -55,32 +56,13 @@ angular.module('Pundit2.Core')
         };
 
         cc.consolidate = function() {
-
-            var xpointers = [],
-                xpointerClasses = {},
-                i = 0;
-            
-            // Produce a list of xpointers and an unique class name
-            // for each one of them
-            for (var uri in itemListByType['text']) {
-                xpointers.push(uri);
-                xpointerClasses[uri] = ["pnd-cons-"+i];
-                i++;
-            }
-
-            var xpaths = XpointersHelper.getXPathsFromXPointers(xpointers);
-            var sorted = XpointersHelper.splitAndSortXPaths(xpaths);
-            console.log('xplissttts', xpaths, sorted);
-            var htmlClasses = XpointersHelper.getClassesForXpaths(xpointers, sorted, xpaths, xpointerClasses);
-            console.log('Html classes', htmlClasses);
-
-            XpointersHelper.updateDOM(sorted, htmlClasses);
-
+            TextFragmentAnnotator.consolidate(itemListByType['text']);
+            // TODO: cycle over orchestrator something? or directly call him?
+            // TODO: DOMConsolidator ? (xpointers: text fragments, named content, full page?)
+            // TODO: ImageConsolidator ? (polygons, areas, whatever: on images?)
+            // TODO: More consolidator types? Video? Maps? ..
         };
         
-        // TODO: DOMConsolidator ? (xpointers: text fragments, named content, full page?)
-        // TODO: ImageConsolidator ? (polygons, areas, whatever: on images?)
-        // TODO: More consolidator types? Video? Maps? .. 
 
         return cc;
     });
