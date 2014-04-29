@@ -45,7 +45,7 @@ angular.module('Pundit2.Toolbar')
     
     // set status button visibility
     $scope.showStatusButtonOk = function(){
-        return $scope.isUserLogged === true;
+        return $scope.isErrorOccured === false;
     };
     
     // set error button visibility
