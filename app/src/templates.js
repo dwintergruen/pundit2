@@ -99,46 +99,71 @@ angular.module("src/Toolbar/Toolbar.dir.tmpl.html", []).run(["$templateCache", f
     "<nav class=\"navbar navbar-inverse navbar-fixed-top pnd-toolbar-navbar\" role=\"navigation\" ng-controller=\"ToolbarCtrl\">\n" +
     "    <div class=\"container-fluid pnd-toolbar-navbar-container\" >\n" +
     "    \n" +
-    "        <div class=\"collapse navbar-collapse\">\n" +
-    "            <ul class=\"nav navbar-nav\">\n" +
+    "        <div class=\"pnd-toolbar-navbar-collapse\">\n" +
+    "            <ul class=\"nav navbar-nav pnd-toolbar-navbar-left\">\n" +
     "                \n" +
-    "                <li><a href=\"#\" bs-dropdown=\"errorMessageDropdown\"><span class=\"glyphicon glyphicon-exclamation-sign\"></span></a></li>\n" +
-    "                <li><a href=\"#\" bs-dropdown=\"userNotLoggedDropdown\"><span>Login</span></a></li>\n" +
-    "                <li><a href=\"#\" bs-dropdown=\"userLoggedInDropdown\"><span>My name</span></a></li>\n" +
-    "                <li><a href=\"#\">Ask the Pundit</a></li>\n" +
-    "                <li><a href=\"#\">Dashboard</a></li>\n" +
+    "                <!-- Error button -->\n" +
+    "                <li ng-show=\"showStatusButtonError()\" class=\"pnd-toolbar-error-button\">\n" +
+    "                    <a href=\"javascript:void(0)\" bs-dropdown=\"errorMessageDropdown\"><span class=\"glyphicon glyphicon-exclamation-sign pnd-toolbar-error-icon\"></span></a>\n" +
+    "                </li>\n" +
+    "                \n" +
+    "                <!-- OK button -->\n" +
+    "                <li ng-show=\"showStatusButtonOk()\" class=\"pnd-toolbar-status-button-ok\">\n" +
+    "                    <a href=\"javascript:void(0)\"><span class=\"glyphicon glyphicon-ok pnd-toolbar-status-ok-icon\"></span></a>\n" +
+    "                </li>\n" +
+    "                \n" +
+    "                <!-- Login button -->\n" +
+    "                <li ng-show=\"showLogin()\" class=\"pnd-toolbar-login-button\">\n" +
+    "                    <a href=\"javascript:void(0)\" bs-dropdown=\"userNotLoggedDropdown\"><span>Login</span></a>\n" +
+    "                </li>\n" +
+    "                \n" +
+    "                <!-- User button -->\n" +
+    "                <li ng-show=\"showUserButton()\" class=\"pnd-toolbar-user-button\">\n" +
+    "                    <a href=\"javascript:void(0)\" bs-dropdown=\"userLoggedInDropdown\"><span>My name</span></a>\n" +
+    "                </li>\n" +
+    "                \n" +
+    "                <!-- Ask the Pundit button-->\n" +
+    "                <li ng-class=\"{true: 'pnd-toolbar-ask-button-active', false: 'pnd-toolbar-ask-button-not-active'}[isAskActive()]\" class=\"pnd-toolbar-ask-button\">\n" +
+    "                    <a href=\"{{getAskLink()}}\">Ask the Pundit</a>\n" +
+    "                </li>\n" +
+    "                \n" +
+    "                <!-- Dashboard button -->\n" +
+    "                <li class=\"pnd-toolbar-dashboard-button\">\n" +
+    "                    <a href=\"javascript:void(0)\">\n" +
+    "                        <span ng-class=\"{true: 'pnd-toolbar-active-element', false: 'pnd-toolbar-not-active-element'}[isDashboardActive()] \">Dashboard</span>\n" +
+    "                    </a>\n" +
+    "                </li>\n" +
     "\n" +
-    "            </ul> <!-- nav navbar-nav -->\n" +
+    "            </ul> <!-- pnd-navbar-left -->\n" +
     "\n" +
-    "            <ul class=\"nav navbar-nav navbar-right\">\n" +
+    "            <ul class=\"nav navbar-nav navbar-right pnd-toolbar-navbar-right\">\n" +
+    "                \n" +
+    "                <!-- Template mode button -->\n" +
+    "                <li class=\"pnd-toolbar-template-mode-button\">\n" +
+    "                    <a href=\"javascript:void(0)\">\n" +
+    "                        <span ng-class=\"{true: 'pnd-toolbar-active-element', false: 'pnd-toolbar-not-active-element disabled'}[isTemplateModeActive()]\" class=\"glyphicon glyphicon-pencil\"></span>\n" +
+    "                    </a>\n" +
+    "                </li>\n" +
+    "                \n" +
+    "                <!-- Template menu -->\n" +
+    "                <li class=\"pnd-toolbar-template-menu-button\">\n" +
+    "                    <a ng-show=\"isTemplateMenuActive()\" href=\"javascript:void(0)\" bs-dropdown=\"userTemplateDropdown\"><span class=\"pnd-toolbar-active-element\">Current template</span></a>\n" +
+    "                    <a ng-show=\"!isTemplateMenuActive()\" href=\"javascript:void(0)\" bs-dropdown=\"userNotLoggedDropdown\"><span class=\"pnd-toolbar-not-active-element\">Current template</span></a>\n" +
+    "                </li>\n" +
+    "                \n" +
+    "                <!-- Notebooks menu -->\n" +
+    "                <li class=\"pnd-toolbar-notebook-menu-button\">\n" +
+    "                    <a ng-show=\"isNotebookMenuActive()\" href=\"javascript:void(0)\" bs-dropdown=\"userNotebooksDropdown\"><span class=\"pnd-toolbar-active-element\">My Notebooks</span></a>\n" +
+    "                    <a ng-show=\"!isNotebookMenuActive()\" href=\"javascript:void(0)\" bs-dropdown=\"userNotLoggedDropdown\"><span class=\"pnd-toolbar-not-active-element\">My Notebooks</span></a>\n" +
+    "                </li>\n" +
+    "                \n" +
+    "                <!-- Annotations menu -->\n" +
+    "                <li class=\"pnd-toolbar-annotations-button\"><a href=\"javascript:void(0)\"><span class=\"pnd-toolbar-active-element\">Annotations</span></a></li>\n" +
     "\n" +
-    "                <li><a href=\"#\"><span class=\"glyphicon glyphicon-pencil\"></span></a></li>\n" +
-    "\n" +
-    "                <li class=\"dropdown\">\n" +
-    "                    <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">Current template</a>\n" +
-    "                    <ul class=\"dropdown-menu\">\n" +
-    "                        <li><a href=\"#\">My Template 1</a></li>\n" +
-    "                        <li><a href=\"#\">My Template 2</a></li>\n" +
-    "                        <li><a href=\"#\">My Template 3</a></li>\n" +
-    "                    </ul>\n" +
-    "                </li> <!-- end dropdown-->\n" +
-    "\n" +
-    "                <li class=\"dropdown\">\n" +
-    "                    <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">My Notebooks</a>\n" +
-    "                    <ul class=\"dropdown-menu\">\n" +
-    "                        <li><a href=\"#\">Current Notebooks 1</a></li>\n" +
-    "                        <li><a href=\"#\">My Notebooks 1</a></li>\n" +
-    "                        <li><a href=\"#\">My Notebooks 2</a></li>\n" +
-    "                        <li><a href=\"#\">My Notebooks 3</a></li>\n" +
-    "                    </ul>\n" +
-    "                </li> <!-- end dropdown-->\n" +
-    "\n" +
-    "                <li><a href=\"#\">Annotations</a></li>\n" +
-    "\n" +
-    "            </ul> <!-- nav navbar-right -->\n" +
+    "            </ul> <!-- pnd-toolbar-navbar-right -->\n" +
     "    \n" +
-    "        </div><!-- /.navbar-collapse -->\n" +
-    "    </div><!-- /.container-fluid -->\n" +
+    "        </div><!-- pnd-toolbar-navbar-collapse -->\n" +
+    "    </div><!-- pnd-toolbar-navbar-container -->\n" +
     "</nav>\n" +
     "\n" +
     "\n" +

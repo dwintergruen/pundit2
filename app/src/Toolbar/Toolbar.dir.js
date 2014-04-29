@@ -1,4 +1,11 @@
 angular.module('Pundit2.Toolbar')
+.config(function($dropdownProvider) {
+  angular.extend($dropdownProvider.defaults, {
+    trigger: 'click',
+    html: true
+  });
+})
+
 .directive('toolbar', function() {
     return {
         restrict: 'E',
@@ -6,7 +13,7 @@ angular.module('Pundit2.Toolbar')
         templateUrl: "src/Toolbar/Toolbar.dir.tmpl.html",
         link: function(/* scope, el, attrs, ctrl */) {
             // Stuff to do on link? read some conf?
-            console.log('toolbar link function invoked');
+
         }
     };
 });
