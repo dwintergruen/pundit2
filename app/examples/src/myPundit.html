@@ -1,0 +1,31 @@
+<!-- buildexamples:section header --><!-- /buildexamples -->
+
+<script>
+
+
+var MyPunditDemoCtrl = function($scope, MyPundit) {
+    $scope.checkLoggedIn = function(){
+       var promise = MyPundit.checkLoggedIn();
+       promise.then(
+           function(value){
+               if(value === false){
+                    MyPundit.openLoginModal();
+               }
+               
+           }
+       );
+    }
+}
+</script>
+
+<div data-ng-app="Pundit2">
+
+    <div ng-controller="MyPunditDemoCtrl">
+
+        <button type="button" class="btn btn-success" ng-click="checkLoggedIn()">Log in</button>
+
+    </div>
+
+</div>
+
+<!-- buildexamples:section footer --><!-- /buildexamples -->

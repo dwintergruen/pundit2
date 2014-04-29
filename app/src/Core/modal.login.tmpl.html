@@ -1,0 +1,18 @@
+<div class="modal" tabindex="-1" role="dialog" ng-controller="ModalLoginCtrl">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header" ng-show="title">
+        <button type="button" class="close" ng-click="$hide()">&times;</button>
+        <h4 class="modal-title"></h4>
+      </div>
+      <div class="modal-body">
+          {{notifyMessage}}
+          <button type="button" class="btn btn-default" ng-click="$hide()">Close</button>
+          <button type="button" class="btn btn-default" ng-click="">Login</button>
+      </div>
+      <div class="modal-footer">
+        
+      </div>
+    </div>
+  </div>
+</div>
