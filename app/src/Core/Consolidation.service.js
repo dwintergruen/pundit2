@@ -55,18 +55,27 @@ angular.module('Pundit2.Core')
         };
 
         cc.consolidate = function() {
-            console.log(itemListByType);
-            var xpointers = [];
+
+            var xpointers = [],
+                xpointerClasses = {},
+                i = 0;
+            
+            // Produce a list of xpointers and an unique class name
+            // for each one of them
             for (var uri in itemListByType['text']) {
                 xpointers.push(uri);
+                xpointerClasses[uri] = ["pnd-cons-"+i];
+                i++;
             }
 
             var xpaths = XpointersHelper.getXPathsFromXPointers(xpointers);
-            console.log('Xpaths: ', xpaths);
-            var spli = XpointersHelper.splitAndSortXPaths(xpaths.xpaths);
-            console.log('xplissttts', spli);
+            var sorted = XpointersHelper.splitAndSortXPaths(xpaths);
+            console.log('xplissttts', xpaths, sorted);
+            var htmlClasses = XpointersHelper.getClassesForXpaths(xpointers, sorted, xpaths, xpointerClasses);
+            console.log('Html classes', htmlClasses);
 
-
+            
+            
 
         };
         
