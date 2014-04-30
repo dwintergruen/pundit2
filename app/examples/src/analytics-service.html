@@ -1,0 +1,14 @@
+<!-- buildexamples:section header --><!-- /buildexamples -->
+
+<script type="text/javascript">
+	function demoCtrl(Analytics) {
+		console.log('demo control instantiated 1');
+		Analytics.track('gui-x', 'load', 'test load analytics', '4');
+	}
+</script>
+
+<div data-ng-app="Pundit2">
+    <div ng-controller="demoCtrl"></div>
+</div>
+
+<!-- buildexamples:section footer --><!-- /buildexamples -->

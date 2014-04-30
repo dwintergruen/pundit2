@@ -17,6 +17,7 @@
     <script src="../src/Core/Config.service.js"></script>
     <script src="../src/Core/PUNDITDEFAULTCONF.constant.js"></script>
     <script src="../src/Core/MyPundit.service.js"></script>
+    <script src="../src/Core/Analytics.service.js"></script>
 
     <script src="../src/Core/Item.factory.js"></script>
     <script src="../src/Core/TypesHelper.service.js"></script>
