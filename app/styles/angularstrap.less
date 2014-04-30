@@ -1,0 +1,31 @@
+.modal-backdrop.am-fade {
+    opacity: .5;
+    transition: opacity 1.25s linear;
+    &.ng-enter {
+        opacity: 0;
+        &.ng-enter-active {
+            opacity: .5;
+        }
+    }
+    &.ng-leave {
+        opacity: .5;
+        &.ng-leave-active {
+            opacity: 0;
+        }
+    }
+}
+
+// Modal backdrop cant be injected into a .pnd-wrp :(
+// Modal background
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: @zindex-modal-background;
+    background-color: @modal-backdrop-bg;
+    // Fade for backdrop
+    &.fade { .opacity(0); }
+    &.in { .opacity(@modal-backdrop-opacity); }
+}
