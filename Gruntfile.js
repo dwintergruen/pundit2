@@ -259,12 +259,21 @@ module.exports = function(grunt) {
                 src: '{,*/}*.css'
             },
             fonts: {
-                expand: true,
-                cwd: 'bower_components/bootstrap/dist',
-                dest: '<%= conf.app %>',
-                src: 'fonts/*'
+                files: [
+                    {
+                        expand: true,
+                        cwd: '<%= conf.app %>/styles/pundit-font/',
+                        dest: '<%= conf.app %>/css/',
+                        src: 'fonts/*'
+                    }, 
+                    {
+                        expand: true,
+                        cwd: '<%= conf.app %>/styles/pundit-font/',
+                        dest: '<%= conf.app %>/css/',
+                        src: 'style.css'
+                    }
+                ]
             }
-            
         },
 
         // Bypassing your cache for fun and profit

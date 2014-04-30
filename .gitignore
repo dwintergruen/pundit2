@@ -1,11 +1,15 @@
 /node_modules
 /bower_components
+
 .tmp
 /build/
 .DS_Store
 /coverage/
+
 /app/examples/*.html
-/app/fonts
+
 .idea
-/app/css/pundit2.css
 /app/src/templates.js
+/app/css/pundit2.css
+/app/css/style.css
+/app/css/fonts
