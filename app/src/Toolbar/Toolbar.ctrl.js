@@ -1,5 +1,17 @@
 angular.module('Pundit2.Toolbar')
-.controller('ToolbarCtrl', function($scope, Toolbar) {
+.controller('ToolbarCtrl', function($scope, Toolbar, MyPundit) {
+    
+    var login = function(){
+       MyPundit.login().then(function(value) {
+           Toolbar.setUserStatus(value);
+       })
+    };
+    
+    var logout = function(){
+        MyPundit.logout().then(function(value){
+            Toolbar.setUserStatus(false);
+        });
+    };
     
     // default Ask The Pundit link
     // TODO: spostare in Toolbar.service come default
@@ -8,13 +20,13 @@ angular.module('Pundit2.Toolbar')
     $scope.errorMessageDropdown = Toolbar.getError();
     
     $scope.userNotLoggedDropdown = [
-        {text: 'Please sign in to use Pundit', href:'#'},
+        {text: 'Please sign in to use Pundit', href:"#"},
         { "divider": true },
-        {text: 'Sign in', href:'#'}
+        {text: 'Sign in', click: login}
     ];
     
     $scope.userLoggedInDropdown = [
-        {text: 'Log out', href:'#'}
+        {text: 'Log out', click: logout}
     ];
     
     $scope.userTemplateDropdown = [
@@ -31,10 +43,13 @@ angular.module('Pundit2.Toolbar')
         {text: 'My notebook 3', href:'#'}
     ];
     
+    $scope.userData = {};
+    
     // listener for user status
     // when user is logged in, set flag isUserLogged to true
     $scope.$watch(function(){ return Toolbar.getUserStatus(); }, function(newStatus){
         $scope.isUserLogged = newStatus;
+        $scope.userData = MyPundit.getUserData();
     });
     
     // listener for error status
@@ -93,6 +108,5 @@ angular.module('Pundit2.Toolbar')
     $scope.getAskLink = function(){
         return Toolbar.getAskLink();
     };
-    
 
 });
