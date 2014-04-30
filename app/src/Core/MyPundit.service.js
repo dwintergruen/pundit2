@@ -58,12 +58,11 @@ angular.module('Pundit2.Core')
             withCredentials: true
             
         }).success(function(data) {
-            console.log("getCalled", data);
+            console.log(data);
             // user is not logged in
             if(data.loginStatus === 0){
                 myPundit.setUserLogged(false);
                 myPundit.setLoginServer(data.loginServer);
-                myPundit.setLoginStatus("loggedOff");
                 promise.resolve(false);
 
             }
@@ -83,6 +82,7 @@ angular.module('Pundit2.Core')
         return promise.promise;
     };
     
+    var timer;
     
     myPundit.login = function(){
         myPundit.setLoginStatus('waitingForLogIn');
@@ -91,24 +91,32 @@ angular.module('Pundit2.Core')
         $window.open(url, 'loginpopup', 'left=260,top=120,width=480,height=360');
         
         var check = function() {
-                myPundit.checkLoggedIn();
-                $timeout(check, myPundit.options.loginTimerMS);
-            };
-    
-            $timeout(check, myPundit.options.loginTimerMS);
+            var promise = myPundit.checkLoggedIn();
+            promise.then(function(value){
+                if(value){
+                    $timeout.cancel(timer);
+                    return;
+                } else {
+                    console.log('checkLoggedIn');
+                }
+            });
+            timer = $timeout(check, myPundit.options.loginTimerMS);
+        };
         
+        check();
         
 
-        
     };
     
+    var modalLogin = $modal( {template: '../src/Core/modal.login.tmpl.html', show:false});
+    
     myPundit.openLoginModal = function(){
-        
-          // Pre-fetch an external template populated with a custom scope
-          var modalLogin = $modal( {template: '../src/Core/modal.login.tmpl.html'});
-          modalLogin.$promise.then(modalLogin.show);
-          // Show when some event occurs (use $promise property to ensure the template has been loaded)
-
+        modalLogin.$promise.then(modalLogin.show);
+    };
+    
+    myPundit.closeLoginModal = function(){
+        modalLogin.hide();
+        $timeout.cancel(timer);
     };
 
     

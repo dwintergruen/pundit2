@@ -9,6 +9,7 @@ var MyPunditDemoCtrl = function($scope, MyPundit) {
        promise.then(
            function(value){
                if(value === false){
+                    MyPundit.setLoginStatus("loggedOff");
                     MyPundit.openLoginModal();
                }
                
