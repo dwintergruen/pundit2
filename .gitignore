@@ -7,5 +7,5 @@
 /app/examples/*.html
 /app/fonts
 .idea
-/app/pundit2.css
+/app/css/pundit2.css
 /app/src/templates.js
