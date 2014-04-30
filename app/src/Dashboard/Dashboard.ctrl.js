@@ -33,7 +33,7 @@ angular.module('Pundit2.Dashboard')
         'bottom' : Dashboard.options.footerHeight
     });
 
-
+    // TODO: discard resize height event
     angular.element($window).resize(function(){
         Dashboard.setContainerWidth(angular.element($window).width());
     });
