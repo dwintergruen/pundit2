@@ -43,8 +43,8 @@ To get a list of grunt targets:
 
 Will build a production ready pundit2 distribution in /build/:
 
-* fonts/*
 * css/*ver*.pundit.css
+* css/fonts/*
 * scripts/*ver*.libs.js
 * scripts/*ver*.pundit2.js
 

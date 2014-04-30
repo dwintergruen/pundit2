@@ -228,20 +228,14 @@ module.exports = function(grunt) {
                     cwd: '.tmp/images',
                     dest: '<%= conf.build %>/css/img',
                     src: 'generated/*'
-                },
-                {
-                    expand: true,
-                    cwd: 'bower_components/bootstrap/dist',
-                    dest: '<%= conf.build %>',
-                    src: 'fonts/*'
                 }]
             },
             bookmarklet: {
                 files: [
                     {
                         expand: true,
-                        cwd: 'bower_components/bootstrap/dist',
-                        dest: '<%= conf.build %>/bm',
+                        cwd: '<%= conf.app %>/styles/pundit-font/',
+                        dest: '<%= conf.build %>/bm/css/',
                         src: 'fonts/*'
                     },
                     {
@@ -288,8 +282,7 @@ module.exports = function(grunt) {
                         '<%= conf.build %>/scripts/libs.js',
                         '<%= conf.build %>/scripts/pundit2.js',
                         '<%= conf.build %>/css/pundit.css',
-                        '<%= conf.build %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
-                        '<%= conf.build %>/css/fonts/*'
+                        '<%= conf.build %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
                     ]
                 }
             }
@@ -526,12 +519,13 @@ module.exports = function(grunt) {
         
         for (var i in examples) {
             var idx = examples[i].lastIndexOf('/'),
-                name = examples[i].substr(idx+1);
-            examplesLinks[i] = " <a href='"+name+"'>"+name+"</a>";
+                name = examples[i].substr(idx+1),
+                label = name.substr(0, name.length-5);
+            examplesLinks[i] = "<a href='"+name+"'>"+label+"</a>";
         }
         
         conf.examples = examples;
-        conf.examplesLinks = examplesLinks;
+        conf.examplesLinks = examplesLinks.join(" | ");
     });
     
     grunt.registerTask('dgeni', 'Generate docs via Dgeni.', function() {
