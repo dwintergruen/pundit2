@@ -7,21 +7,52 @@
 }
 
 .pnd-toolbar-ask-button-active {
-    background-color: green;
+    background-color: @brand-success;
 }
 
 .pnd-toolbar-ask-button-not-active {
-    background-color: gray;
+    background-color: @gray;
 }
+
+
+.pnd-toolbar-status-button-ok {
+    background-color: @brand-success;  
+    &:hover,
+    &:focus  {
+	background-color: darken(@brand-success, 12%);
+    } 
+}
+
+.pnd-toolbar-button-active {
+    background-color: @brand-success;
+    
+    &:hover,
+    &:focus  {
+	background-color: darken(@brand-success, 12%);
+    } 
+}
+
+
+.pnd-toolbar-button-not-active {
+    background-color: @gray;
+}
+
 
 .pnd-toolbar-status-ok-icon {
     color: green;
 }
 
-.pnd-toolbar-error-icon {
-    color: orange;
+.pnd-toolbar-error-button {
+    color: #ffffff;
+    background-color: @brand-warning;
 }
 
 .pnd-toolbar-navbar{
     min-width: 960px;
+    
+    .pnd-icon {
+    font-size: 12px;
+    line-height: inherit;
+    }    
+    
 }

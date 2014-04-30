@@ -44,16 +44,19 @@
 
     @import "@{bspath}utilities.less";
     @import "@{bspath}responsive-utilities.less";
-}
 
+}
 
 // Core variables and mixins, imported again to being able to use them
 // outside of the .pnd-wrp import
 @import "@{bspath}variables.less";
 @import "@{bspath}mixins.less";
 @import "variables.less";
+
+.pnd-wrp {
 @import "theme.less";
 
+}
 
 //////////////////////////////////////////////////////////////////////////
 // Rewrite every rule which was applied to body, html or any other rule //
