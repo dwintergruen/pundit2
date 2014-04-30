@@ -51,5 +51,5 @@
     <script src="../src/Toolbar/Toolbar.ctrl.js"></script>
     <script src="../src/Toolbar/Toolbar.service.js"></script>
     
-    <script src="../src/Core/modal.login.ctrl.js"></script>
+    <script src="../src/Core/login.modal.ctrl.js"></script>
     <!-- endbuild -->
