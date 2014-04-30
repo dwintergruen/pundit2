@@ -38,29 +38,6 @@ angular.module('Pundit2.Dashboard')
         Dashboard.setContainerWidth(angular.element($window).width());
     });
 
-    var footerMouseUpHandler = function() {
-        // remove handlers
-        $document.off('mousemove', footerMouseMoveHandler);
-        $document.off('mouseup', footerMouseUpHandler);
-
-        Dashboard.log('Footer mouseup: removing handlers');
-    }
-
-    var footerMouseMoveHandler = function(event) {
-        var h = event.pageY - jqElement.container.offset().top;
-        Dashboard.setContainerHeight(h);
-    }
-
-    $scope.footerMouseDownHandler = function(event) {
-        if ( event.which === 1 ) {
-            event.preventDefault();        
-            $document.on('mouseup', footerMouseUpHandler);
-            $document.on('mousemove', footerMouseMoveHandler);
-
-            Dashboard.log('Footer mousedown: adding drag/drop handlers');
-        }
-    };
-
     $scope.$watch(function() {
         return Dashboard.getContainerHeight();
     }, function(newHeight, oldHeight) {
@@ -139,6 +116,32 @@ angular.module('Pundit2.Dashboard')
         }
     });
 
+    /**** FOOTER ****/
+
+    var footerMouseUpHandler = function() {
+        // remove handlers
+        $document.off('mousemove', footerMouseMoveHandler);
+        $document.off('mouseup', footerMouseUpHandler);
+
+        Dashboard.log('Footer mouseup: removing handlers');
+    }
+
+    var footerMouseMoveHandler = function(event) {
+        var h = event.pageY - jqElement.container.offset().top;
+        Dashboard.setContainerHeight(h);
+    }
+
+    $scope.footerMouseDownHandler = function(event) {
+        if ( event.which === 1 ) {
+            event.preventDefault();        
+            $document.on('mouseup', footerMouseUpHandler);
+            $document.on('mousemove', footerMouseMoveHandler);
+
+            Dashboard.log('Footer mousedown: adding drag/drop handlers');
+        }
+    };
+
+    /**** SEPARATORS ****/
 
     var firstSeparatorMouseUpHandler = function(){
         $document.off('mousemove', firstSeparatorMouseMoveHandler);
@@ -198,6 +201,19 @@ angular.module('Pundit2.Dashboard')
 
             Dashboard.log('Second Separator mousedown: adding drag/drop handlers');
         }
+    };
+
+    /**** COLLAPSE ****/
+    $scope.collapseListsPanel = function(){
+
+    };
+
+    $scope.collapseToolsPanel = function(){
+
+    };
+    
+    $scope.collapseDetailsPanel = function(){
+
     };
 
 });

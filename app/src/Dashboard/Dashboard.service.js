@@ -115,6 +115,7 @@ angular.module('Pundit2.Dashboard')
         return state.containerWidth;
     };
 
+    // set dashboard width then resize panels and mantain ratios and min-widths
     dashboard.setContainerWidth = function(width) {
         
         if (width <= containerMinWidth) {
