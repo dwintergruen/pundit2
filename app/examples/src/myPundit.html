@@ -1,21 +1,26 @@
 <!-- buildexamples:section header --><!-- /buildexamples -->
 
 <script>
-
-
 var MyPunditDemoCtrl = function($scope, MyPundit) {
-    $scope.checkLoggedIn = function(){
-       var promise = MyPundit.checkLoggedIn();
-       promise.then(
-           function(value){
-               if(value === false){
-                    MyPundit.setLoginStatus("loggedOff");
-                    MyPundit.openLoginModal();
-               }
-               
-           }
-       );
-    }
+    
+    $scope.login = function(){
+       MyPundit.login().then(function(value) {
+           $scope.message = "Is logged in is "+value;
+           $scope.message += ""+ JSON.stringify(MyPundit.getUserData(), null, "  ");
+       }, function() {
+           $scope.message = "Error: "+value;
+       })
+    };
+    
+    $scope.userLogged = function(){
+        return MyPundit.getUserLogged();
+    };
+    
+    $scope.logout = function(){
+        MyPundit.logout().then(function(value){
+            $scope.message = "Logout call "+value;
+        });
+    };
 }
 </script>
 
@@ -23,7 +28,10 @@ var MyPunditDemoCtrl = function($scope, MyPundit) {
 
     <div ng-controller="MyPunditDemoCtrl">
 
-        <button type="button" class="btn btn-success" ng-click="checkLoggedIn()">Log in</button>
+        <button type="button" class="btn btn-success" ng-show="!userLogged()" ng-click="login()">Log in</button>
+        <button type="button" class="btn btn-success" ng-show="userLogged()" ng-click="logout()">Log out</button>
+
+        <span>Login message: {{message}}</span>
 
     </div>
 
