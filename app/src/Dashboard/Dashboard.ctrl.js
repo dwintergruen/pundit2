@@ -32,11 +32,24 @@ angular.module('Pundit2.Dashboard')
     angular.element('.pnd-dashboard-panel').css({
         'bottom' : Dashboard.options.footerHeight
     });
-
-    // TODO: discard resize height event
-    angular.element($window).resize(function(){
-        Dashboard.setContainerWidth(angular.element($window).width());
+    // set panel width when collapsed
+    angular.element('.pnd-dashboard-panel-collapsed').css({
+        'width' : Dashboard.options.panelCollapseWidth
     });
+
+    var windowLastWidth = 0, windowCurrentWidth;
+    angular.element($window).resize(function(event){
+
+        windowCurrentWidth = angular.element($window).width();
+        if ( windowCurrentWidth !== windowLastWidth ) {
+            windowLastWidth = windowCurrentWidth;
+            Dashboard.setContainerWidth(windowCurrentWidth);
+        }
+    });
+
+    $scope.listsCollapsed = false;
+    $scope.toolsCollapsed = false;
+    $scope.detailsCollapsed = false;
 
     $scope.$watch(function() {
         return Dashboard.getContainerHeight();
@@ -73,6 +86,8 @@ angular.module('Pundit2.Dashboard')
         });
     });
 
+    /**** WIDTH WATCHER ****/
+
     $scope.$watch(function() {
         return Dashboard.getListsPanelWidth();
     }, function(newWidth, oldWidth) {
@@ -88,8 +103,7 @@ angular.module('Pundit2.Dashboard')
         return Dashboard.getToolsPanelWidth();
     }, function(newWidth, oldWidth) {
         jqElement.panelTools.css({
-            'width' : newWidth,
-            'left' : Dashboard.getToolsPanelLeft()
+            'width' : newWidth
         });
     });
 
@@ -98,8 +112,7 @@ angular.module('Pundit2.Dashboard')
     }, function(newWidth, oldWidth) {
         var left = Dashboard.getDetailsPanelLeft();
         jqElement.panelDetails.css({
-            'width' : newWidth,
-            'left' : left
+            'width' : newWidth
         });
         jqElement.secondSeparator.css({
             'left' : left - Dashboard.getSeparatorWidth()
@@ -114,6 +127,24 @@ angular.module('Pundit2.Dashboard')
         } else {
             angular.element('.pnd-dashboard-container').hide();
         }
+    });
+
+    /**** LEFT WATCHER ****/
+
+    $scope.$watch(function() {
+        return Dashboard.getToolsPanelLeft();
+    }, function(newLeft, oldLeft) {
+        jqElement.panelTools.css({
+            'left' : newLeft
+        });
+    });
+
+    $scope.$watch(function() {
+        return Dashboard.getDetailsPanelLeft();
+    }, function(newLeft, oldLeft) {
+        jqElement.panelDetails.css({
+            'left' : newLeft
+        });
     });
 
     /**** FOOTER ****/
@@ -204,16 +235,16 @@ angular.module('Pundit2.Dashboard')
     };
 
     /**** COLLAPSE ****/
-    $scope.collapseListsPanel = function(){
-
+    $scope.toggleListsPanel = function(){
+        $scope.listsCollapsed = Dashboard.toggleListsPanel();
     };
 
     $scope.collapseToolsPanel = function(){
-
+        $scope.toolsCollapsed = Dashboard.toggleToolsPanel();
     };
     
     $scope.collapseDetailsPanel = function(){
-
+        $scope.detailsCollapsed = Dashboard.toggleDetailsPanel();
     };
 
 });

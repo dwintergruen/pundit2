@@ -23,6 +23,9 @@ angular.module('Pundit2.Dashboard')
     detailsRatio: 0.25,
     detailsMinWidth: 235,
 
+    // panel collapsed width
+    panelCollapseWidth: 40,
+
     // separator
     separatorsWidth: 10,
 
@@ -39,6 +42,10 @@ angular.module('Pundit2.Dashboard')
     
     var containerAvailableWidth = Math.max(angular.element($window).width(), containerMinWidth) - (2 * dashboard.options.separatorsWidth);
     
+    var listsCollapsed = false,
+        toolsCollapsed = false,
+        detailsCollapsed = false;
+
     var state = {
 
         isDashboardVisible : dashboard.options.isDashboardVisible,
@@ -50,10 +57,13 @@ angular.module('Pundit2.Dashboard')
         toolsRatio: dashboard.options.toolsRatio,
 
         detailsWidth: dashboard.options.detailsRatio * containerAvailableWidth,
-        detailsRatio: dashboard.options.detailsRatio, 
+        detailsRatio: dashboard.options.detailsRatio,
 
         containerWidth: containerAvailableWidth + (2 * dashboard.options.separatorsWidth),
-        containerHeight: dashboard.options.containerHeight
+        containerHeight: dashboard.options.containerHeight,
+
+        // number of panels collapsed
+        panelsCollapsed: 0
 
     };
 
@@ -90,6 +100,79 @@ angular.module('Pundit2.Dashboard')
         state.detailsRatio = state.detailsWidth / containerAvailableWidth;
     };
 
+    // get dx and set new dimensions of tools and details panels
+    // Use ratio and check minimum
+    var resizeToolsDetails = function(dx){
+        var perc = state.toolsRatio + state.detailsRatio;
+        // update widths
+        sumOffsetToToolsWidth(dx * (state.toolsRatio/perc));
+        sumOffsetToDetailsWidth(dx * (state.detailsRatio/perc));
+        // check if one of two panel is now under minimum
+        if ( state.toolsWidth < dashboard.options.toolsMinWidth ) {
+            var dx = state.toolsWidth - dashboard.options.toolsMinWidth;
+            resetToolsWidth();
+            sumOffsetToDetailsWidth(dx);
+            return;
+        } else if ( state.detailsWidth < dashboard.options.detailsMinWidth) {
+            var dx = state.detailsWidth - dashboard.options.detailsMinWidth;
+            resetDetailsWidth();
+            sumOffsetToToolsWidth(dx);
+            return;
+        } else {
+            // zero panels is under minimum width
+            dashboard.log('resize not produce panel under minimum');
+            return;
+        }
+    };
+
+    // get dx and set new dimensions of lists and tools panels
+    // Use ratio and check minimum
+    var resizeListsTools = function(dx){
+        var perc = state.listsRatio + state.toolsRatio;
+        // update widths to fix expansion
+        sumOffsetToListsWidth(dx * (state.listsRatio/perc));
+        sumOffsetToToolsWidth(dx * (state.toolsRatio/perc));
+        // check if one of two panel is now under minimum
+        if ( state.listsWidth < dashboard.options.listsMinWidth ) {
+            var dx = state.listsWidth - dashboard.options.listsMinWidth;
+            resetListsWidth();
+            sumOffsetToToolsWidth(dx);
+            return;
+        } else if ( state.toolsWidth < dashboard.options.toolsMinWidth) {
+            var dx = state.toolsWidth - dashboard.options.toolsMinWidth;
+            resetToolsWidth();
+            sumOffsetToListsWidth(dx);
+            return;
+        } else {
+            // zero panels is under minimum width
+            dashboard.log('resize not produce panel under minimum');
+            return;
+        }
+    };
+
+    var resizeListsDetails = function(dx){
+        var perc = state.listsRatio + state.detailsRatio;
+        // update widths
+        sumOffsetToListsWidth(dx * (state.listsRatio/perc));
+        sumOffsetToDetailsWidth(dx * (state.detailsRatio/perc));
+        // check if one of two panel is now under minimum
+        if ( state.listsWidth < dashboard.options.listsMinWidth ) {
+            var dx = state.listsWidth - dashboard.options.listsMinWidth;
+            resetListsWidth();
+            sumOffsetToDetailsWidth(dx);
+            return;
+        } else if ( state.detailsWidth < dashboard.options.detailsMinWidth) {
+            var dx = state.detailsWidth - dashboard.options.detailsMinWidth;
+            resetDetailsWidth();
+            sumOffsetToListsWidth(dx);
+            return;
+        } else {
+            // zero panels is under minimum width
+            dashboard.log('resize not produce panel under minimum');
+            return;
+        }
+    };
+
     /**** DASHBOARD ****/
     dashboard.toogle = function(bool){
         state.isDashboardVisible = bool;
@@ -97,6 +180,115 @@ angular.module('Pundit2.Dashboard')
 
     dashboard.isDashboardVisible = function(){
         return state.isDashboardVisible;
+    };
+
+    var lastExpandedListsWidth = -1;
+    dashboard.toggleListsPanel = function(){
+
+        if ( !listsCollapsed && state.panelsCollapsed >= 2 ) {
+            return listsCollapsed;
+        }
+
+        var dx;
+        if ( listsCollapsed ) {
+            // expand
+            listsCollapsed = false;
+            state.listsWidth = lastExpandedListsWidth;
+            state.panelsCollapsed = state.panelsCollapsed - 1;
+            dx = dashboard.options.panelCollapseWidth - lastExpandedListsWidth;
+        }
+        else {
+            // collapse
+            listsCollapsed = true;
+            lastExpandedListsWidth = state.listsWidth;
+            state.listsWidth = dashboard.options.panelCollapseWidth;
+            state.panelsCollapsed = state.panelsCollapsed + 1;
+            dx = lastExpandedListsWidth - dashboard.options.panelCollapseWidth;
+        }
+        state.listsRatio = state.listsWidth / containerAvailableWidth;
+
+        if ( !toolsCollapsed && !detailsCollapsed ) {
+            resizeToolsDetails(dx);
+        } else if ( toolsCollapsed ) {
+            sumOffsetToDetailsWidth(dx);
+        } else if ( detailsCollapsed ) {
+            sumOffsetToToolsWidth(dx);
+        }
+
+        return listsCollapsed;
+    };
+
+    var lastExpandedToolsWidth = -1;
+    dashboard.toggleToolsPanel = function(){
+
+        if ( !toolsCollapsed && state.panelsCollapsed >= 2 ) {
+            return toolsCollapsed;
+        }
+
+        var dx;
+        if ( toolsCollapsed ) {
+            // expand
+            toolsCollapsed = false;
+            state.toolsWidth = lastExpandedToolsWidth;
+            state.panelsCollapsed = state.panelsCollapsed - 1;
+            dx = dashboard.options.panelCollapseWidth - lastExpandedToolsWidth;
+        }
+        else {
+            // collapse
+            toolsCollapsed = true;
+            lastExpandedToolsWidth = state.toolsWidth;
+            state.toolsWidth = dashboard.options.panelCollapseWidth;
+            state.panelsCollapsed = state.panelsCollapsed + 1;
+            dx = lastExpandedToolsWidth - dashboard.options.panelCollapseWidth;
+        }
+        state.toolsRatio = state.toolsWidth / containerAvailableWidth;
+
+        if ( !listsCollapsed && !detailsCollapsed ) {
+            resizeListsDetails(dx);
+        } else if ( listsCollapsed ) {
+            sumOffsetToDetailsWidth(dx);
+        } else if ( detailsCollapsed ) {
+            sumOffsetToListsWidth(dx);
+        }
+        
+
+        return toolsCollapsed;
+    };
+
+    var lastExpandedDetailsWidth = -1;
+    dashboard.toggleDetailsPanel = function(){
+
+        if ( !detailsCollapsed && state.panelsCollapsed >= 2 ) {
+            return detailsCollapsed;
+        }
+
+        var dx;
+        if ( detailsCollapsed ) {
+            // expand
+            detailsCollapsed = false;
+            state.panelsCollapsed = state.panelsCollapsed - 1;
+            state.detailsWidth = lastExpandedDetailsWidth;
+            dx = dashboard.options.panelCollapseWidth - lastExpandedDetailsWidth;
+        }
+        else {
+            // collapse
+            detailsCollapsed = true;
+            state.panelsCollapsed = state.panelsCollapsed + 1;
+            lastExpandedDetailsWidth = state.detailsWidth;
+            state.detailsWidth = dashboard.options.panelCollapseWidth;
+            dx = lastExpandedDetailsWidth - dashboard.options.panelCollapseWidth;
+        }
+        state.detailsRatio = state.detailsWidth / containerAvailableWidth;
+
+        if ( !listsCollapsed && !toolsCollapsed ) {
+            resizeListsTools(dx);
+        } else if ( listsCollapsed ) {
+            sumOffsetToToolsWidth(dx);
+        } else if ( toolsCollapsed ) {
+            sumOffsetToListsWidth(dx);
+        }
+
+        return detailsCollapsed;
     };
 
     /**** CONTAINER ****/
@@ -116,6 +308,7 @@ angular.module('Pundit2.Dashboard')
     };
 
     // set dashboard width then resize panels and mantain ratios and min-widths
+    // TODO : fix window resize to support collapsing
     dashboard.setContainerWidth = function(width) {
         
         if (width <= containerMinWidth) {
@@ -200,94 +393,22 @@ angular.module('Pundit2.Dashboard')
             switch (smaller[0]) {
                 // lists
                 case 0:
-                    var perc = state.toolsRatio + state.detailsRatio;
-                    // update widths to fix expansion
-                    sumOffsetToToolsWidth(smallerDelta[0] * (state.toolsRatio/perc));
-                    sumOffsetToDetailsWidth(smallerDelta[0] * (state.detailsRatio/perc));
-
-                    // check if one of two panel is now under minimum
-                    if ( state.toolsWidth < dashboard.options.toolsMinWidth ) {
-                        var dx = state.toolsWidth - dashboard.options.toolsMinWidth;
-                        resetToolsWidth();
-                        sumOffsetToDetailsWidth(dx);
-                        dashboard.log('Lists update produce tools under minimum');
-                        $rootScope.$apply();
-                        return;
-                    } else if ( state.detailsWidth < dashboard.options.detailsMinWidth) {
-                        var dx = state.detailsWidth - dashboard.options.detailsMinWidth;
-                        resetDetailsWidth();
-                        sumOffsetToToolsWidth(dx);
-                        dashboard.log('Lists update produce details under minimum');
-                        $rootScope.$apply();
-                        return;
-                    } else {
-                        // zero panels is under minimum width
-                        dashboard.log('Lists update not produce panels under minimun');
-                        $rootScope.$apply();
-                        return;
-                    }
+                    resizeToolsDetails(smallerDelta[0]);
+                    $rootScope.$apply();
                     break;
 
                 // tools
                 case 1:
-                    var perc = state.listsRatio + state.detailsRatio;
-                    // update widths to fix expansion
-                    sumOffsetToListsWidth(smallerDelta[0] * (state.listsRatio/perc));
-                    sumOffsetToDetailsWidth(smallerDelta[0] * (state.detailsRatio/perc));
-                    // check if one of two panel is now under minimum
-                    if ( state.listsWidth < dashboard.options.listsMinWidth ) {
-                        var dx = state.listsWidth - dashboard.options.listsMinWidth;
-                        resetListsWidth();
-                        sumOffsetToDetailsWidth(dx);
-                        dashboard.log('Tools update produce lists under minimun');
-                        $rootScope.$apply();
-                        return;
-                    } else if ( state.detailsWidth < dashboard.options.detailsMinWidth) {
-                        var dx = state.detailsWidth - dashboard.options.detailsMinWidth;
-                        resetDetailsWidth();
-                        sumOffsetToListsWidth(dx);
-                        dashboard.log('Tools update produce details under minimun');
-                        $rootScope.$apply();
-                        return;
-                    } else {
-                        // zero panels is under minimum width
-                        dashboard.log('Tools update not produce panels under minimun');
-                        $rootScope.$apply();
-                        return;
-                    }
+                    resizeListsDetails(smallerDelta[0]);
+                    $rootScope.$apply();
                     break;
 
                 // details
                 case 2:
-                    var perc = state.listsRatio + state.toolsRatio;
-                    // update widths to fix expansion
-                    sumOffsetToListsWidth(smallerDelta[0] * (state.listsRatio/perc));
-                    sumOffsetToToolsWidth(smallerDelta[0] * (state.toolsRatio/perc));
-                    // check if one of two panel is now under minimum
-                    if ( state.listsWidth < dashboard.options.listsMinWidth ) {
-                        var dx = state.listsWidth - dashboard.options.listsMinWidth;
-                        resetListsWidth();
-                        sumOffsetToToolsWidth(dx);
-                        dashboard.log('Details update produce lists under minimun');
-                        $rootScope.$apply();
-                        return;
-                    } else if ( state.toolsWidth < dashboard.options.toolsMinWidth) {
-                        var dx = state.toolsWidth - dashboard.options.toolsMinWidth;
-                        resetToolsWidth();
-                        sumOffsetToListsWidth(dx);
-                        dashboard.log('Details update produce tools under minimun');
-                        $rootScope.$apply();
-                        return;
-                    } else {
-                        // zero panels is under minimum width
-                        dashboard.log('Details update not produce panels under minimun');
-                        $rootScope.$apply();
-                        return;
-                    }
+                    resizeListsTools(smallerDelta[0]);
+                    $rootScope.$apply();
                     break;
-
             }
-
             $rootScope.$apply();
             return;
         }
@@ -313,7 +434,6 @@ angular.module('Pundit2.Dashboard')
                     state.detailsRatio = state.detailsWidth / containerAvailableWidth;
                     break;
             }
-
             $rootScope.$apply();
             return;
         }
@@ -383,6 +503,10 @@ angular.module('Pundit2.Dashboard')
     // update the widths of lists and tools panels (stopped at minimun values)
     dashboard.moveLeftSeparator = function(listsWidth, toolsWidth){
 
+        if ( listsCollapsed || toolsCollapsed ) {
+            return;
+        }
+
         if ( listsWidth <= dashboard.options.listsMinWidth ) {
             var dx = dashboard.options.listsMinWidth - listsWidth;
             dashboard.setListsPanelWidth(dashboard.options.listsMinWidth);
@@ -400,6 +524,10 @@ angular.module('Pundit2.Dashboard')
     };
     // update the widths of tools and details panels (stopped at minimun values)
     dashboard.moveRightSeparator = function(toolsWidth, detailsWidth){
+
+        if ( detailsCollapsed || toolsCollapsed ) {
+            return;
+        }
 
         if ( detailsWidth <= dashboard.options.detailsMinWidth ) {
             var dx = dashboard.options.detailsMinWidth - detailsWidth;
