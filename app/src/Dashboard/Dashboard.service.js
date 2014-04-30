@@ -39,6 +39,16 @@ angular.module('Pundit2.Dashboard')
     
     var containerAvailableWidth = Math.max(angular.element($window).width(), containerMinWidth) - (2 * dashboard.options.separatorsWidth);
     
+    var listsCollapsed = false,
+        toolsCollapsed = false,
+        detailsCollapsed = false;
+
+    var panelsMinWidths = [
+        dashboard.options.listsMinWidth,
+        dashboard.options.toolsMinWidth,
+        dashboard.options.detailsMinWidth
+    ];
+
     var state = {
 
         isDashboardVisible : dashboard.options.isDashboardVisible,
@@ -56,6 +66,87 @@ angular.module('Pundit2.Dashboard')
         containerHeight: dashboard.options.containerHeight
 
     };
+
+    // ratios [listsRatio, toolsRatio, detailsRatio]
+    // minWidths [listsMinWidth, toolsMinWidth, detailsMinWidth]
+    // availableWidth (new container width)
+    // @return widths [listsWidth, toolsWidth, detailsWidth]
+    var resizePanelsWidths = function(ratios, minWidths, availableWidth){
+
+        var delta = 0,
+            widths = [];
+
+        var i, newWidth;
+        // update widths
+        for ( i=0; i<ratios.length; i++ ) {
+            newWidth = ratios[i] * availableWidth;
+            // check minimum         
+            if ( newWidth < minWidths[i] ) {
+                widths.push(minWidths[i]);
+                delta = delta + (newWidth - minWidths[i]);
+            } else {
+                widths.push(newWidth);
+            }
+        }
+
+        // any panels under minimum width
+        if ( delta === 0){
+            return widths;
+        }
+
+        // at least one panel under minimum widths
+        var reducibleIndex, hundred;
+        while ( delta < 0 ) {
+            // this widths can be reduced
+            reducibleIndex = [];
+            hundred = 0;
+            for (i=0; i<widths.length; i++) {
+                if ( widths[i] > minWidths[i] ) {
+                    reducibleIndex.push(i);
+                    hundred = hundred + ratios[i];
+                }
+            }
+            // compute new ratios and dispense delta
+            var index;
+            for (i=0; i<reducibleIndex.length; i++) {
+                index = reducibleIndex[i];
+                ratios[index] = ratios[index] / hundred;
+                widths[index] = widths[index] + (ratios[index]* delta);
+            }
+            // check if after dispense delta others panels are under minimum
+            delta = 0;
+            for (i=0; i<reducibleIndex.length; i++) {
+                index = reducibleIndex[i];
+                if ( widths[index] < minWidths[index]) {
+                    delta = delta + (widths[index] - minWidths[index]);
+                    widths[index] = minWidths[index];
+                }
+            }
+
+        }// end while
+
+        return widths;
+
+    };
+
+    // widths [listsWidth, toolsWidth, detailsWidth]
+    var updateRatios = function(widths, availableWidth){
+        state.listsRatio = widths[0] / availableWidth;
+        state.toolsRatio = widths[1] / availableWidth;
+        state.detailsRatio = widths[2] / availableWidth;
+    };
+
+    // widths [listsWidth, toolsWidth, detailsWidth]
+    var setPanelsWidth = function(widths){
+        state.listsWidth = widths[0];
+        state.toolsWidth = widths[1];
+        state.detailsWidth = widths[2];
+    };
+
+    // return new copy of ratios array [listsRatio, toolsRatio, detailsRatio]
+    var makeRatiosArray = function(){
+        return [state.listsRatio, state.toolsRatio, state.detailsRatio];
+    }
 
     // reset lists width to default and update ratio
     var resetListsWidth = function(){
@@ -137,189 +228,14 @@ angular.module('Pundit2.Dashboard')
         state.containerWidth = width;
         containerAvailableWidth = state.containerWidth - (2 * dashboard.options.separatorsWidth);
 
-        // index of the smaller than minimum panels (from left to right 0,1,2) (lists, tools, details)
-        var smaller = [];
-        // delta (negative) of the smaller panels: candidate width - minwidth
-        var smallerDelta = [];
-        // index of the bigger than minimum panels (from left to right 0,1,2) (lists, tools, details)
-        var bigger = [];
-        
-        // TODO : use two parallel array to store widths and ratios
-        // widths of the panels (from left to right 0,1,2) (lists, tools, details)
-        // var panelsWidth = [];
-        // ratios of the panels (from left to right 0,1,2) (lists, tools, details)
-        // var panelsRatio = [];
+        // resize panels respecting minimum widths
+        var newWidths = resizePanelsWidths(makeRatiosArray(), panelsMinWidths, containerAvailableWidth);
+        // update state widths
+        setPanelsWidth(newWidths);
+        // update state ratios
+        updateRatios(newWidths, containerAvailableWidth);
 
-
-        // resize lists panel
-        state.listsWidth = state.listsRatio * containerAvailableWidth;
-        state.listsRatio = state.listsWidth / containerAvailableWidth;        
-        // check lists min-width
-        if ( state.listsWidth < dashboard.options.listsMinWidth ) {
-            smaller.push(0);
-            smallerDelta.push(state.listsWidth - dashboard.options.listsMinWidth);
-            resetListsWidth();
-        } else {
-            bigger.push(0);
-        }
-
-        // resize tools panel
-        state.toolsWidth = state.toolsRatio * containerAvailableWidth;
-        state.toolsRatio = state.toolsWidth / containerAvailableWidth;
-        // check tools min-width
-        if ( state.toolsWidth < dashboard.options.toolsMinWidth ) {
-            smaller.push(1);
-            smallerDelta.push(state.toolsWidth - dashboard.options.toolsMinWidth);
-            resetToolsWidth();
-        } else {
-            bigger.push(1);
-        }
-
-        // resize details panel
-        state.detailsWidth = state.detailsRatio * containerAvailableWidth;
-        state.detailsRatio = state.detailsWidth / containerAvailableWidth;
-        // check details min-width
-        if ( state.detailsWidth < dashboard.options.detailsMinWidth ) {
-            smaller.push(2);
-            smallerDelta.push(state.detailsWidth - dashboard.options.detailsMinWidth);
-            resetDetailsWidth();
-        } else {
-            bigger.push(2);
-        }
-
-        // zero panels are smaller than minimum
-        if ( smaller.length === 0 ) {
-            dashboard.log('Zero panels are smaller than minimum');
-            $rootScope.$apply();
-            return;
-        }
-
-        // one panel is smaller than min-width
-        if ( smaller.length === 1 ) {
-            dashboard.log('One panel is smaller than minimum', smaller);
-            switch (smaller[0]) {
-                // lists
-                case 0:
-                    var perc = state.toolsRatio + state.detailsRatio;
-                    // update widths to fix expansion
-                    sumOffsetToToolsWidth(smallerDelta[0] * (state.toolsRatio/perc));
-                    sumOffsetToDetailsWidth(smallerDelta[0] * (state.detailsRatio/perc));
-
-                    // check if one of two panel is now under minimum
-                    if ( state.toolsWidth < dashboard.options.toolsMinWidth ) {
-                        var dx = state.toolsWidth - dashboard.options.toolsMinWidth;
-                        resetToolsWidth();
-                        sumOffsetToDetailsWidth(dx);
-                        dashboard.log('Lists update produce tools under minimum');
-                        $rootScope.$apply();
-                        return;
-                    } else if ( state.detailsWidth < dashboard.options.detailsMinWidth) {
-                        var dx = state.detailsWidth - dashboard.options.detailsMinWidth;
-                        resetDetailsWidth();
-                        sumOffsetToToolsWidth(dx);
-                        dashboard.log('Lists update produce details under minimum');
-                        $rootScope.$apply();
-                        return;
-                    } else {
-                        // zero panels is under minimum width
-                        dashboard.log('Lists update not produce panels under minimun');
-                        $rootScope.$apply();
-                        return;
-                    }
-                    break;
-
-                // tools
-                case 1:
-                    var perc = state.listsRatio + state.detailsRatio;
-                    // update widths to fix expansion
-                    sumOffsetToListsWidth(smallerDelta[0] * (state.listsRatio/perc));
-                    sumOffsetToDetailsWidth(smallerDelta[0] * (state.detailsRatio/perc));
-                    // check if one of two panel is now under minimum
-                    if ( state.listsWidth < dashboard.options.listsMinWidth ) {
-                        var dx = state.listsWidth - dashboard.options.listsMinWidth;
-                        resetListsWidth();
-                        sumOffsetToDetailsWidth(dx);
-                        dashboard.log('Tools update produce lists under minimun');
-                        $rootScope.$apply();
-                        return;
-                    } else if ( state.detailsWidth < dashboard.options.detailsMinWidth) {
-                        var dx = state.detailsWidth - dashboard.options.detailsMinWidth;
-                        resetDetailsWidth();
-                        sumOffsetToListsWidth(dx);
-                        dashboard.log('Tools update produce details under minimun');
-                        $rootScope.$apply();
-                        return;
-                    } else {
-                        // zero panels is under minimum width
-                        dashboard.log('Tools update not produce panels under minimun');
-                        $rootScope.$apply();
-                        return;
-                    }
-                    break;
-
-                // details
-                case 2:
-                    var perc = state.listsRatio + state.toolsRatio;
-                    // update widths to fix expansion
-                    sumOffsetToListsWidth(smallerDelta[0] * (state.listsRatio/perc));
-                    sumOffsetToToolsWidth(smallerDelta[0] * (state.toolsRatio/perc));
-                    // check if one of two panel is now under minimum
-                    if ( state.listsWidth < dashboard.options.listsMinWidth ) {
-                        var dx = state.listsWidth - dashboard.options.listsMinWidth;
-                        resetListsWidth();
-                        sumOffsetToToolsWidth(dx);
-                        dashboard.log('Details update produce lists under minimun');
-                        $rootScope.$apply();
-                        return;
-                    } else if ( state.toolsWidth < dashboard.options.toolsMinWidth) {
-                        var dx = state.toolsWidth - dashboard.options.toolsMinWidth;
-                        resetToolsWidth();
-                        sumOffsetToListsWidth(dx);
-                        dashboard.log('Details update produce tools under minimun');
-                        $rootScope.$apply();
-                        return;
-                    } else {
-                        // zero panels is under minimum width
-                        dashboard.log('Details update not produce panels under minimun');
-                        $rootScope.$apply();
-                        return;
-                    }
-                    break;
-
-            }
-
-            $rootScope.$apply();
-            return;
-        }
-
-        // two panels are smaller than min-width
-        if ( smaller.length === 2 ) {
-            dashboard.log('Two panels are smaller than minimum', smaller);
-            var totalDx = smallerDelta[0] + smallerDelta[1];
-
-            switch (bigger[0]) {
-                case 0:
-                    state.listsWidth = state.listsWidth + totalDx;
-                    state.listsRatio = state.listsWidth / containerAvailableWidth;
-                    break;
-
-                case 1:
-                    state.toolsWidth = state.toolsWidth + totalDx;
-                    state.toolsRatio = state.toolsWidth / containerAvailableWidth;
-                    break;
-
-                case 2:
-                    state.detailsWidth = state.detailsWidth + totalDx;
-                    state.detailsRatio = state.detailsWidth / containerAvailableWidth;
-                    break;
-            }
-
-            $rootScope.$apply();
-            return;
-        }
-
-        // error
-        dashboard.log('Resize width error, probably the panels are not correctly resized');
+        $rootScope.$apply();
         return;
     };
 
