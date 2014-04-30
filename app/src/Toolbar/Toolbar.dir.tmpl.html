@@ -6,12 +6,12 @@
                 
                 <!-- Error button -->
                 <li ng-show="showStatusButtonError()" class="pnd-toolbar-error-button">
-                    <a href="javascript:void(0)" bs-dropdown="errorMessageDropdown"><span class="glyphicon glyphicon-exclamation-sign pnd-toolbar-error-icon"></span></a>
+                    <a href="javascript:void(0)" bs-dropdown="errorMessageDropdown"><span class="pnd-icon pnd-icon-exclamation-circle"></span></a>
                 </li>
                 
                 <!-- OK button -->
                 <li ng-show="showStatusButtonOk()" class="pnd-toolbar-status-button-ok">
-                    <a href="javascript:void(0)"><span class="glyphicon glyphicon-ok pnd-toolbar-status-ok-icon"></span></a>
+                    <a href="javascript:void(0)"><span class="pnd-icon pnd-icon-check"></span></a>
                 </li>
                 
                 <!-- Login button -->
@@ -43,7 +43,7 @@
                 <!-- Template mode button -->
                 <li class="pnd-toolbar-template-mode-button">
                     <a href="javascript:void(0)">
-                        <span ng-class="{true: 'pnd-toolbar-active-element', false: 'pnd-toolbar-not-active-element disabled'}[isTemplateModeActive()]" class="glyphicon glyphicon-pencil"></span>
+                        <span ng-class="{true: 'pnd-toolbar-active-element', false: 'pnd-toolbar-not-active-element disabled'}[isTemplateModeActive()]" class="pnd-icon pnd-icon-pencil"></span>
                     </a>
                 </li>
                 
