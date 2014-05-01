@@ -1,13 +1,13 @@
 angular.module('Pundit2.Core')
-.constant('ANALITYCSDEFAULTS', {
+.constant('ANALYTICSDEFAULTS', {
     account: 'UA-50437894-1',
     globalTracker: '__gaPndtTracker',
     doTracking: true,
     debug: true
 })
-.service('Analytics', function(BaseComponent, $window, $document, ANALITYCSDEFAULTS) {
+.service('Analytics', function(BaseComponent, $window, $document, ANALYTICSDEFAULTS) {
     
-    var analytics = new BaseComponent('Analytics', ANALITYCSDEFAULTS);
+    var analytics = new BaseComponent('Analytics', ANALYTICSDEFAULTS);
 
     (function(i, s, o, g, r, a, m) {
         i.GoogleAnalyticsObject = r;
@@ -22,21 +22,23 @@ angular.module('Pundit2.Core')
         m.parentNode.insertBefore(a, m);
     })($window, $document[0], 'script', 'http://www.google-analytics.com/analytics.js', analytics.options.globalTracker);
 
-    $window[analytics.options.globalTracker]('create', analytics.options.account, {
+    var ga = $window[analytics.options.globalTracker];
+
+    ga('create', analytics.options.account, {
         'storage': 'none', // no cookies
         'cookieDomain': 'none' // no domain
         // 'clientId' : getClientID() // custom id
     });
 
-    $window[analytics.options.globalTracker]('set', 'checkProtocolTask', function() {}); //HACK
+    ga('set', 'checkProtocolTask', function() {}); //HACK
 
     analytics.track = function(category, action, label, value) {
-        if(analytics.options.doTracking){
-            $window[analytics.options.globalTracker]('send', 'event', category, action, label, value);
-            analytics.log('Usa track');
+        if (analytics.options.doTracking){
+            ga('send', 'event', category, action, label, value);
+            analytics.log('Tracked event '+category+' ('+ action +': '+ label +')');
         }
     };
 
-    analytics.log('Analytics run');
+    analytics.log('Component running');
     return analytics;
 });
