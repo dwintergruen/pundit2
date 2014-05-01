@@ -108,6 +108,10 @@ angular.module('Pundit2.Communication')
         return nb._q.promise;
     }
 
+    NotebookFactory.prototype.getMe = function() {
+        console.log('something');
+    };
+
     notebookComponent.log('Component up and running');
 
     return NotebookFactory;

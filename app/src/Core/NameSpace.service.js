@@ -164,15 +164,20 @@ angular.module("Pundit2.Core")
 
     // Annotation server API
     ns.as              = Config.annotationServerBaseURL;
+
     ns.asUsers         = ns.as + "api/users/";
     ns.asUsersCurrent  = ns.as + "api/users/current";
     ns.asUsersLogout   = ns.as + "api/users/logout";
+
+    ns.NBOwned         = ns.as + "api/notebooks/owned";
     ns.asOpenNBMeta    = ns.as + "api/open/notebooks/{{id}}/metadata";
     ns.asOpenNBAnnMeta = ns.as + "api/open/notebooks/{{id}}/annotations/metadata";
     
     ns.asOpenAnn       = ns.as + "api/open/annotations/{{id}}";
 
-    // Gets a key of the namespace, interpolating variables if needed
+
+
+        // Gets a key of the namespace, interpolating variables if needed
     ns.get = function(key, context) {
         
         // If it's not a string, it's nothing we can return (this

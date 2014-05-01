@@ -9,13 +9,12 @@ var punditConfig = {
         "Notebook": { debug: true },
         "Item": { debug: true }
     }
-
 };
 
-var CommunicationDemoCtrl = function($scope, Notebook, Annotation) {
+var CommunicationDemoCtrl = function($scope, Notebook, Annotation, MyPundit, NotebookStore) {
     var nb1 = new Notebook("3a1777cb"),
         nb2 = new Notebook("very-wrong-id");
-        
+
     nb1.then(function(nb) {
         $scope.nb1 = JSON.stringify(nb, null, "  ");
     }, function(message) {
@@ -44,7 +43,15 @@ var CommunicationDemoCtrl = function($scope, Notebook, Annotation) {
     }, function(message) {
         $scope.ann2 = "Failed to load annotation: "+message;
     });
-    
+
+
+    $scope.loadMyNotebooks = function() {
+
+        NotebookStore.getMyNotebooks().then(function(notebooksIds) {
+            $scope.myNotebooks = JSON.stringify(notebooksIds, null, "  ");
+            console.log('My notebooks resolved', $scope.myNotebooks);
+        });
+    }
 }
 </script>
 
@@ -53,6 +60,11 @@ var CommunicationDemoCtrl = function($scope, Notebook, Annotation) {
     <div ng-controller="CommunicationDemoCtrl">
 
         <h3>Communications with the Pundit Server</h3>
+
+        <div class="container">
+            <button class="btn btn-primary" ng-click="loadMyNotebooks()">My notebooks</button>
+            <pre>{{myNotebooks}}</pre>
+        </div>
 
         <div class="container">
             A public annotation: <pre>{{ann1}}</pre>

@@ -78,6 +78,10 @@ angular.module('Pundit2.Core')
                 if(isUserLoggedIn === false){
                     loginStatus = "loggedOff";
                     openLoginModal();
+                } else {
+                    // TODO DEBUG: if the user is logged  in.. might as well resolve the promise
+                    // and set everything accordingly ... ! :)
+                    loginPromise.resolve(true);
                 }
             }
         );
