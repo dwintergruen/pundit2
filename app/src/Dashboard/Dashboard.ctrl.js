@@ -216,4 +216,9 @@ angular.module('Pundit2.Dashboard')
 
     };
 
+    $scope.useFluid = true;
+    $scope.$watch('useFluid', function(value) {
+        Dashboard.options.fluidResize = value;
+    });
+
 });

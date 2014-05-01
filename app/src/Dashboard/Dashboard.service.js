@@ -29,6 +29,7 @@ angular.module('Pundit2.Dashboard')
     // footer height
     footerHeight: 20,
 
+    fluidResize: true,
     debug: true
 })
 .service('Dashboard', function(BaseComponent, DASHBOARDDEFAULTS, $window, $rootScope) {
@@ -332,6 +333,188 @@ angular.module('Pundit2.Dashboard')
             dashboard.setToolsPanelWidth(toolsWidth);
         }
     };
+
+
+
+    var panels = [];
+    dashboard.addPanel = function(panelScope) {
+        dashboard.log("Adding panel", panelScope.title);
+        var len = panels.length;
+
+        // Rather than using isLast, create a "isDraggable"
+        // and update them after an add + collapse/expand
+        // (if a panel has only collapsed panels at his right
+        // is it draggable?)
+        if (len > 0) {
+            panels[len - 1].isLast = false;
+        }
+        panelScope.isLast = true;
+
+        panelScope.index = len;
+        panels.push(panelScope);
+
+        /*
+        // TODO: init reading title, and setting stuff accordingly
+        if (panelScope.title === "tools") {
+            panelScope.minWidth = dashboard.options.toolsMinWidth;
+        }
+        */
+
+        dashboard.resetWidths();
+        dashboard.resizeAll();
+
+    };
+
+    // Evens out the widths of all panels, expanding them if needed
+    dashboard.resetWidths = function() {
+        var avail = angular.element($window).innerWidth();
+
+        for (var p in panels) {
+            if (panels[p].isCollapsed) {
+                panels[p].isCollapsed = false;
+            }
+
+            // TODO: check if min w, cycle again etc
+            panels[p].width = avail / panels.length;
+        }
+    };
+
+
+    dashboard.resizeAll = function(skip) {
+        var avail = angular.element($window).innerWidth(),
+            w, l, i,
+            skipLength = 0;
+
+        if (!angular.isObject(skip)) {
+            skip = {};
+        }
+
+        // Take out skip widths from the available width
+        for (i in skip) {
+            skipLength++;
+            avail = avail - skip[i];
+        }
+
+        var collapsed = panels.filter(function(p){
+                return p.isCollapsed;
+            }),
+            expanded = panels.filter(function(p){
+                return !p.isCollapsed;
+            });
+
+        // Take out collapsed widths from the available width
+        avail = avail - collapsed.length * 50;
+
+
+        if (expanded.length > 0) {
+            // TODO check if all at min width
+        }
+
+        // Cycle over all panels which will be interested in a change
+        // of width and get their total sum, to calculate ratios
+        var currentTotal = expanded.reduce(function(total, panel, index){
+
+            // TODO: Getting back from a collapse, set to min width?
+            if (panel.width < panel.minWidth)
+                panel.width = panel.minWidth;
+
+            if (panel.index in skip) {
+                return total;
+            }
+
+            return total+panel.width;
+        }, 0);
+
+        // Ratios: panel current width / panels total widths
+        for (l=expanded.length; l--;) {
+            expanded[l].ratio = expanded[l].width/currentTotal;
+        }
+
+        // Go over the panels from left to right, accumulating the
+        // current left coordinate, to position them properly
+        var currentLeft = 0;
+        for (l=panels.length, i=0; i<l; i++) {
+
+            if (i in skip) {
+                panels[i].width = skip[i];
+            } else if (panels[i].isCollapsed) {
+                panels[i].width = 50;
+            } else {
+                panels[i].width = Math.max(panels[i].minWidth, panels[i].ratio * avail);
+            }
+
+            panels[i].left = currentLeft;
+            currentLeft += panels[i].width;
+        }
+
+        $rootScope.$$phase || $rootScope.$digest();
+    };
+
+    dashboard.tryToResizeFluid = function(index, delta) {
+        var panel = panels[index],
+            skip = {};
+
+        // If it is shrinking
+        if (delta < 0) {
+            panel.width = Math.max(panel.minWidth, panel.width + delta);
+            skip[index] = panel.width;
+
+        // If it's growing
+        } else {
+            panel.width = panel.width + delta;
+            skip[index] = panel.width;
+        }
+
+        dashboard.resizeAll(skip);
+    };
+
+    dashboard.tryToResizeCouples = function(index, delta) {
+        dashboard.log('Resizing '+index+' of '+delta);
+        var panel = panels[index],
+            skip = {};
+
+        // TODO: next is not index+1 but we need to look for it
+        // checking for a not collapsed one at its right:
+        // there SHOULD be one, if we add the isResizable check
+        // or something in place of the isLast to inhibit drag
+
+        // If it is shrinking
+        if (delta < 0) {
+
+            var realDelta = panel.width - Math.max(panel.minWidth, panel.width + delta);
+            panel.width = Math.max(panel.minWidth, panel.width + delta);
+
+            skip[index] = panel.width;
+
+            var next;
+            if (realDelta > 0) {
+                next = panels[index+1],
+                next.width = next.width + realDelta;
+                skip[index+1] = next.width;
+            }
+
+            dashboard.resizeAll(skip);
+
+            // If it's growing, check if there's space to grow
+        } else if (panels.length > index+1) {
+            var next = panels[index+1],
+                realDelta = next.width - Math.max(next.minWidth, next.width - delta);
+
+            next.width = Math.max(next.minWidth, next.width - delta);
+
+            panel.width = panel.width + realDelta;
+            skip[index] = panel.width;
+            skip[index+1] = next.width;
+            dashboard.resizeAll(skip);
+        }
+    };
+
+
+    angular.element($window).resize(function(event){
+        dashboard.resizeAll();
+    });
+
+
 
     dashboard.log('Service run');
     

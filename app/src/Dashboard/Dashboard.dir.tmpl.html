@@ -1,43 +1,62 @@
-<div class="pnd-dashboard-container" ng-controller="DashboardCtrl">
+<div>
 
-    <!-- panel list -->
-    <div class="pnd-dashboard-panel pnd-dashboard-panel-lists">
-        <div class="pnd-dashboard-panel-cards"></div>
-        <div class="pnd-dashboard-panel-content">
-            <!-- the content comes from outside-->
+    <div class="pnd-dashboard-container">
+
+        <!-- panel list -->
+        <div class="pnd-dashboard-panel pnd-dashboard-panel-lists">
+            <div class="pnd-dashboard-panel-cards"></div>
+            <div class="pnd-dashboard-panel-content">
+                <!-- the content comes from outside-->
+            </div>
+            <button type="button" class="btn btn-default pnd-dashboard-panel-collapse-button"
+                    ng-click="collapseListsPanel()">X</button>
         </div>
-        <button type="button" class="btn btn-default pnd-dashboard-panel-collapse-button"
-                ng-click="collapseListsPanel()">X</button>
+
+        <!-- panel tools -->
+        <div class="pnd-dashboard-panel pnd-dashboard-panel-tools">
+            <div class="pnd-dashboard-panel-cards"></div>
+            <div class="pnd-dashboard-panel-content">
+                <!-- the content comes from outside-->
+            </div>
+            <button type="button" class="btn btn-default pnd-dashboard-panel-collapse-button"
+                    ng-click="collapseToolsPanel()">X</button>
+        </div>
+
+        <!-- panel details -->
+        <div class="pnd-dashboard-panel pnd-dashboard-panel-details">
+            <div class="pnd-dashboard-panel-cards"></div>
+            <div class="pnd-dashboard-panel-content">
+                <!-- the content comes from outside-->
+            </div>
+            <button type="button" class="btn btn-default pnd-dashboard-panel-collapse-button"
+                    ng-click="collapseDetailsPanel()">X</button>
+        </div>
+
+        <!--separator-->
+        <div class="pnd-dashboard-separator pnd-dashboard-separator-1" ng-mousedown="firstSeparatorMouseDownHandler($event)"></div>
+        <div class="pnd-dashboard-separator pnd-dashboard-separator-2" ng-mousedown="secondSeparatorMouseDownHandler($event)"></div>
+
+        <!--footer-->
+        <div class="pnd-dashboard-footer" ng-mousedown="footerMouseDownHandler($event)"></div>
+
     </div>
 
-    <!-- panel tools -->
-    <div class="pnd-dashboard-panel pnd-dashboard-panel-tools">
-        <div class="pnd-dashboard-panel-cards"></div>
-        <div class="pnd-dashboard-panel-content">
-            <!-- the content comes from outside-->
-        </div>
-        <button type="button" class="btn btn-default pnd-dashboard-panel-collapse-button"
-                ng-click="collapseToolsPanel()">X</button>
+    <br><hr><br>
+
+    <div class="btn-group" ng-model="useFluid" bs-radio-group>
+        <label class="btn btn-default"><input type="radio" class="btn btn-default" value="true">
+            Fluid resize </label>
+        <label class="btn btn-default"><input type="radio" class="btn btn-default" value="false">
+            Couples resize</label>
     </div>
+    <br><br>
 
-    <!-- panel details -->
-    <div class="pnd-dashboard-panel pnd-dashboard-panel-details">
-        <div class="pnd-dashboard-panel-cards"></div>
-        <div class="pnd-dashboard-panel-content">
-            <!-- the content comes from outside-->
-        </div>
-        <button type="button" class="btn btn-default pnd-dashboard-panel-collapse-button"
-                ng-click="collapseDetailsPanel()">X</button>
+    <div class="pnd-dashboard-container">
+        <dashboard-panel title="lists"></dashboard-panel>
+        <dashboard-panel title="tools"></dashboard-panel>
+        <dashboard-panel title="details"></dashboard-panel>
+        <dashboard-panel title="extra"></dashboard-panel>
+        <dashboard-panel title="extra 2 :)"></dashboard-panel>
     </div>
-
-    <!--separator-->
-    <div class="pnd-dashboard-separator pnd-dashboard-separator-1" ng-mousedown="firstSeparatorMouseDownHandler($event)"></div>
-    <div class="pnd-dashboard-separator pnd-dashboard-separator-2" ng-mousedown="secondSeparatorMouseDownHandler($event)"></div>
-
-    <!--footer-->
-    <div class="pnd-dashboard-footer" ng-mousedown="footerMouseDownHandler($event)"></div>
-
-    <!--panel collapsed-->
-    <div class="pnd-dashboard-panel pnd-dashboard-panel-collapsed"></div>
 
 </div>
