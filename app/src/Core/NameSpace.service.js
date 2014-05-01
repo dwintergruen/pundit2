@@ -169,6 +169,7 @@ angular.module("Pundit2.Core")
     ns.asUsersCurrent  = ns.as + "api/users/current";
     ns.asUsersLogout   = ns.as + "api/users/logout";
 
+    ns.NB              = ns.as + "api/notebooks";
     ns.NBOwned         = ns.as + "api/notebooks/owned";
     ns.asOpenNBMeta    = ns.as + "api/open/notebooks/{{id}}/metadata";
     ns.asOpenNBAnnMeta = ns.as + "api/open/notebooks/{{id}}/annotations/metadata";
