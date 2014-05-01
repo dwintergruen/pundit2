@@ -1,5 +1,5 @@
 angular.module('Pundit2.Communication')
-.factory('Annotation', function(BaseComponent, NameSpace, Item, TypesHelper, $http, $q) {
+.factory('Annotation', function(BaseComponent, NameSpace, Item, TypesHelper, Analytics, $http, $q) {
     var annotationComponent = new BaseComponent("Annotation");
 
     // Creates a new Annotation instance. If an id is passed in
@@ -43,13 +43,16 @@ angular.module('Pundit2.Communication')
             readAnnotationData(self, data);
             self._q.resolve(self);
             annotationComponent.log("Retrieved annotation "+self.id+" metadata");
-            
+            Analytics.track('api', 'get', 'annotation');
+
         }).error(function(data, statusCode) {
 
             // TODO: 404 not found, nothing to do about it, but 403 forbidden might be
             // recoverable by loggin in??
             self._q.reject("Error from server while retrieving annotation "+self.id+": "+ statusCode);
             annotationComponent.err("Error getting annotation "+self.id+". Server answered with status code "+statusCode);
+            Analytics.track('api', 'error', 'get annotation', statusCode);
+
         });
         
     };

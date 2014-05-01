@@ -1,5 +1,5 @@
 angular.module('Pundit2.Communication')
-.factory('Notebook', function(BaseComponent, NameSpace, $http, $q) {
+.factory('Notebook', function(BaseComponent, NameSpace, Analytics, $http, $q) {
     var notebookComponent = new BaseComponent("Notebook");
 
     // Creates a new Notebook instance. If an id is passed in
@@ -49,13 +49,16 @@ angular.module('Pundit2.Communication')
             readData(self, data);
             self._q.resolve(self);
             notebookComponent.log("Retrieved notebook "+self.id+" metadata");
-            
+            Analytics.track('api', 'get', 'notebook meta');
+
         }).error(function(data, statusCode) {
 
             // TODO: 404 not found, nothing to do about it, but 403 forbidden might be
             //       recoverable by loggin in
             self._q.reject("Error from server while retrieving notebook "+self.id+": "+ statusCode);
             notebookComponent.err("Error getting notebook "+self.id+" metadata. Server answered with status code "+statusCode);
+            Analytics.track('api', 'error', 'get notebook meta', statusCode);
+
         });
         
     };
