@@ -1,5 +1,5 @@
 angular.module('Pundit2.Communication')
-.factory('Notebook', function(BaseComponent, NameSpace, Analytics, $http, $q) {
+.factory('Notebook', function(BaseComponent, NameSpace, MyPundit, Analytics, $http, $q) {
     var notebookComponent = new BaseComponent("Notebook");
 
     // Creates a new Notebook instance. If an id is passed in
@@ -12,6 +12,8 @@ angular.module('Pundit2.Communication')
             this.id = id;
             this.load();
         } else {
+            // TODO: move create here? add a save? to edit the stuff .. ?
+            // Isnt current a notebook attribute?
             this.create();
         }
 
@@ -36,28 +38,28 @@ angular.module('Pundit2.Communication')
         }
         
         notebookComponent.log("Loading notebook "+self.id+" metadata with cache "+useCache);
-        
-        var httpPromise;
+
+        var httpPromise,
+            nsKey = MyPundit.getUserLogged() ? 'asNBMeta' : 'asOpenNBMeta';
+
         httpPromise = $http({
             headers: { 'Accept': 'application/json' },
             method: 'GET',
             cache: useCache,
-            url: NameSpace.get('asOpenNBMeta', {id: self.id})
-
+            url: NameSpace.get(nsKey, {id: self.id}),
+            withCredentials: true
         }).success(function(data) {
-
             readData(self, data);
             self._q.resolve(self);
-            notebookComponent.log("Retrieved notebook "+self.id+" metadata");
             Analytics.track('api', 'get', 'notebook meta');
+            notebookComponent.log("Retrieved notebook "+self.id+" metadata");
 
         }).error(function(data, statusCode) {
-
             // TODO: 404 not found, nothing to do about it, but 403 forbidden might be
             //       recoverable by loggin in
             self._q.reject("Error from server while retrieving notebook "+self.id+": "+ statusCode);
-            notebookComponent.err("Error getting notebook "+self.id+" metadata. Server answered with status code "+statusCode);
             Analytics.track('api', 'error', 'get notebook meta', statusCode);
+            notebookComponent.err("Error getting notebook "+self.id+" metadata. Server answered with status code "+statusCode);
 
         });
         

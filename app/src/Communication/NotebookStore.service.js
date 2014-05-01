@@ -1,5 +1,5 @@
 angular.module('Pundit2.Communication')
-    .service('NotebookStore', function(BaseComponent, NameSpace, MyPundit, Analytics, $http, $q) {
+    .service('NotebookStore', function(BaseComponent, NameSpace, Notebook, MyPundit, Analytics, $http, $q) {
 
         // TODO: inherit from a Store()? Annotations, items, ...
         var notebookStore = new BaseComponent("NotebookStore");
@@ -24,11 +24,23 @@ angular.module('Pundit2.Communication')
                     withCredentials: true
 
                 }).success(function(data) {
+                    Analytics.track('api', 'get', 'notebook owned');
 
                     if ('NotebookIDs' in data) {
-                        promise.resolve(data.NotebookIDs);
-                        notebookStore.log("Retrieved list of my notebooks");
-                        Analytics.track('api', 'get', 'notebook owned');
+
+                        var nbs = [];
+                        for (var l=data.NotebookIDs.length; l--;) {
+                            nbs[l] = new Notebook(data.NotebookIDs[l]);
+                        }
+
+                        $q.all(nbs).then(function(notebooks) {
+                            promise.resolve(notebooks);
+                            notebookStore.log("Retrieved all of my notebooks");
+                        }, function() {
+                            console.log('My notebooks all error?! :(');
+                            promise.reject('some other error?');
+                        });
+
                     } else {
                         promise.reject('some sort of error?');
                         notebookStore.log("Error retrieving list of my notebooks -- TODO");
@@ -44,7 +56,6 @@ angular.module('Pundit2.Communication')
 
             return promise.promise;
         };
-
 
 
         notebookStore.createNotebook = function(name) {

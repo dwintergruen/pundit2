@@ -46,20 +46,16 @@ var CommunicationDemoCtrl = function($scope, Notebook, Annotation, MyPundit, Not
 
 
     $scope.loadMyNotebooks = function() {
-
         NotebookStore.getMyNotebooks().then(function(notebooksIds) {
             $scope.myNotebooks = JSON.stringify(notebooksIds, null, "  ");
-            console.log('My notebooks resolved', $scope.myNotebooks);
         });
     }
 
 
     $scope.newNotebookName  = "Clever notebook name";
-    $scope.create = function() {
-
+    $scope.createNotebook = function() {
         NotebookStore.createNotebook($scope.newNotebookName).then(function(data) {
-            $scope.create = JSON.stringify(data, null, "  ");
-            console.log('Create notebook resolved', $scope.create);
+            $scope.createString = JSON.stringify(data, null, "  ");
         });
     }
 
@@ -75,8 +71,8 @@ var CommunicationDemoCtrl = function($scope, Notebook, Annotation, MyPundit, Not
 
         <div class="container">
             <input type="text" value="Clever notebook name" ng-model="newNotebookName">
-            <button class="btn btn-primary" ng-click="create()">Create a notebook</button>
-            <pre>{{create}}</pre>
+            <button class="btn btn-primary" ng-click="createNotebook()">Create a notebook</button>
+            <pre>{{createString}}</pre>
 
             <button class="btn btn-primary" ng-click="loadMyNotebooks()">My notebooks</button>
             <pre>{{myNotebooks}}</pre>
