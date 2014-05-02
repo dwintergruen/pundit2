@@ -11,7 +11,7 @@ var punditConfig = {
     }
 };
 
-var CommunicationDemoCtrl = function($scope, Notebook, Annotation, MyPundit, NotebookStore) {
+var CommunicationDemoCtrl = function($scope, Notebook, Annotation, MyPundit, NotebookExchange) {
     var nb1 = new Notebook("3a1777cb"),
         nb2 = new Notebook("very-wrong-id");
 
@@ -46,7 +46,7 @@ var CommunicationDemoCtrl = function($scope, Notebook, Annotation, MyPundit, Not
 
 
     $scope.loadMyNotebooks = function() {
-        NotebookStore.getMyNotebooks().then(function(notebooksIds) {
+        NotebookExchange.getMyNotebooks().then(function(notebooksIds) {
             $scope.myNotebooks = JSON.stringify(notebooksIds, null, "  ");
         });
     }
@@ -54,7 +54,7 @@ var CommunicationDemoCtrl = function($scope, Notebook, Annotation, MyPundit, Not
 
     $scope.newNotebookName  = "Clever notebook name";
     $scope.createNotebook = function() {
-        NotebookStore.createNotebook($scope.newNotebookName).then(function(data) {
+        NotebookExchange.createNotebook($scope.newNotebookName).then(function(data) {
             $scope.createString = JSON.stringify(data, null, "  ");
         });
     }

@@ -31,7 +31,7 @@
 
     <script src="../src/Communication/Communication.js"></script>
     <script src="../src/Communication/Notebook.factory.js"></script>
-    <script src="../src/Communication/NotebookStore.service.js"></script>
+    <script src="../src/Communication/NotebookExchange.service.js"></script>
     <script src="../src/Communication/Annotation.factory.js"></script>
 
     <script src="../src/Annomatic/Annomatic.js"></script>
