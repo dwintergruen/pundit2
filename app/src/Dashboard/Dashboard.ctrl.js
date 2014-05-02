@@ -20,9 +20,11 @@ angular.module('Pundit2.Dashboard')
 
     };
 
+    var separatorsWidth = Dashboard.options.separatorsWidth;
     // set separators width
     angular.element('.pnd-dashboard-separator').css({
-        'width' : Dashboard.options.separatorsWidth
+        'width' : separatorsWidth,
+        'bottom' : Dashboard.options.footerHeight
     });
     // set footer height
     jqElement.footer.css({
@@ -32,23 +34,38 @@ angular.module('Pundit2.Dashboard')
     angular.element('.pnd-dashboard-panel').css({
         'bottom' : Dashboard.options.footerHeight
     });
-
-    // TODO: discard resize height event
-    angular.element($window).resize(function(){
-        Dashboard.setContainerWidth(angular.element($window).width());
+    // set panel width when collapsed
+    angular.element('.pnd-dashboard-panel-collapsed').css({
+        'width' : Dashboard.options.panelCollapseWidth
     });
+
+    $scope.isDashboardVisible = Dashboard.isDashboardVisible();
+    // TODO read default from dashboard.options
+    $scope.listsCollapsed = false;
+    $scope.toolsCollapsed = false;
+    $scope.detailsCollapsed = false;
+
+    var windowLastWidth = 0, windowCurrentWidth;
+    angular.element($window).resize(function(){
+        windowCurrentWidth = angular.element($window).width();
+        if ( windowCurrentWidth !== windowLastWidth ) {
+            windowLastWidth = windowCurrentWidth;
+            Dashboard.setContainerWidth(windowCurrentWidth);
+        }
+    });
+
+    $scope.useFluid = true;
+    $scope.$watch('useFluid', function(value) {
+        Dashboard.options.fluidResize = value;
+    });
+
+    /**** CONTAINER WATCHER ****/
 
     $scope.$watch(function() {
         return Dashboard.getContainerHeight();
     }, function(newHeight, oldHeight) {
         jqElement.container.css({
             'height' : newHeight
-        });
-        jqElement.firstSeparator.css({
-            'height' : newHeight - Dashboard.getFooterHeight()
-        });
-        jqElement.secondSeparator.css({
-            'height' : newHeight - Dashboard.getFooterHeight()
         });
     });
 
@@ -69,9 +86,11 @@ angular.module('Pundit2.Dashboard')
             'left' : Dashboard.getDetailsPanelLeft()
         });
         jqElement.secondSeparator.css({
-            'left' : Dashboard.getDetailsPanelLeft() - Dashboard.getSeparatorWidth()
+            'left' : Dashboard.getDetailsPanelLeft() - separatorsWidth
         });
     });
+
+    /**** PANELS WIDTH WATCHER ****/
 
     $scope.$watch(function() {
         return Dashboard.getListsPanelWidth();
@@ -88,8 +107,7 @@ angular.module('Pundit2.Dashboard')
         return Dashboard.getToolsPanelWidth();
     }, function(newWidth, oldWidth) {
         jqElement.panelTools.css({
-            'width' : newWidth,
-            'left' : Dashboard.getToolsPanelLeft()
+            'width' : newWidth
         });
     });
 
@@ -98,22 +116,37 @@ angular.module('Pundit2.Dashboard')
     }, function(newWidth, oldWidth) {
         var left = Dashboard.getDetailsPanelLeft();
         jqElement.panelDetails.css({
-            'width' : newWidth,
-            'left' : left
+            'width' : newWidth
         });
         jqElement.secondSeparator.css({
-            'left' : left - Dashboard.getSeparatorWidth()
+            'left' : left - separatorsWidth
         });
     });
+
+    /**** TOGGLE WATCHER ****/
 
     $scope.$watch(function() {
         return Dashboard.isDashboardVisible();
     }, function(newVis, oldVis) {
-        if ( newVis ){
-            angular.element('.pnd-dashboard-container').show();
-        } else {
-            angular.element('.pnd-dashboard-container').hide();
-        }
+        $scope.isDashboardVisible = newVis;
+    });
+
+    /**** PANEL LEFT WATCHER ****/
+
+    $scope.$watch(function() {
+        return Dashboard.getToolsPanelLeft();
+    }, function(newLeft, oldLeft) {
+        jqElement.panelTools.css({
+            'left' : newLeft
+        });
+    });
+ 
+    $scope.$watch(function() {
+        return Dashboard.getDetailsPanelLeft();
+    }, function(newLeft, oldLeft) {
+        jqElement.panelDetails.css({
+            'left' : newLeft
+        });
     });
 
     /**** FOOTER ****/
@@ -203,16 +236,16 @@ angular.module('Pundit2.Dashboard')
         }
     };
 
-    /**** COLLAPSE ****/
-    $scope.collapseListsPanel = function(){
+    /**** TOGGLE ****/
+    $scope.toggleListsPanel = function(){
 
     };
 
-    $scope.collapseToolsPanel = function(){
+    $scope.toggleToolsPanel = function(){
 
     };
     
-    $scope.collapseDetailsPanel = function(){
+    $scope.toggleDetailsPanel = function(){
 
     };
 

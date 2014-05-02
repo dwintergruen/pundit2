@@ -1,35 +1,54 @@
 <div>
 
-    <div class="pnd-dashboard-container">
+    <div class="pnd-dashboard-container" ng-show="isDashboardVisible">
 
         <!-- panel list -->
         <div class="pnd-dashboard-panel pnd-dashboard-panel-lists">
-            <div class="pnd-dashboard-panel-cards"></div>
-            <div class="pnd-dashboard-panel-content">
-                <!-- the content comes from outside-->
+            <div class="pnd-dashboard-panel-expanded" ng-hide="listsCollapsed">
+                <div class="pnd-dashboard-panel-nav"></div>
+                <div class="pnd-dashboard-panel-content">
+                    <!-- the content comes from outside-->
+                </div>
+                <!--collapse button-->
+                <button type="button" class="btn btn-default"
+                        ng-click="toggleListsPanel()">X</button>
             </div>
-            <button type="button" class="btn btn-default pnd-dashboard-panel-collapse-button"
-                    ng-click="collapseListsPanel()">X</button>
+            <!--panel collapsed-->
+            <div class="pnd-dashboard-panel-collapsed" ng-show="listsCollapsed">
+                <button type="button" class="btn btn-default" ng-click="toggleListsPanel()">E</button>
+            </div>
         </div>
 
         <!-- panel tools -->
         <div class="pnd-dashboard-panel pnd-dashboard-panel-tools">
-            <div class="pnd-dashboard-panel-cards"></div>
-            <div class="pnd-dashboard-panel-content">
-                <!-- the content comes from outside-->
+            <div class="pnd-dashboard-panel-expanded" ng-hide="toolsCollapsed">
+                <div class="pnd-dashboard-panel-nav"></div>
+                <div class="pnd-dashboard-panel-content">
+                    <!-- the content comes from outside-->
+                </div>
+                <button type="button" class="btn btn-default"
+                        ng-click="toggleToolsPanel()">X</button>
             </div>
-            <button type="button" class="btn btn-default pnd-dashboard-panel-collapse-button"
-                    ng-click="collapseToolsPanel()">X</button>
+            <!--panel collapsed-->
+            <div class="pnd-dashboard-panel-collapsed" ng-show="toolsCollapsed">
+                <button type="button" class="btn btn-default" ng-click="toggleToolsPanel()">E</button>
+            </div>
         </div>
 
         <!-- panel details -->
         <div class="pnd-dashboard-panel pnd-dashboard-panel-details">
-            <div class="pnd-dashboard-panel-cards"></div>
-            <div class="pnd-dashboard-panel-content">
-                <!-- the content comes from outside-->
+            <div class="pnd-dashboard-panel-expanded" ng-hide="detailsCollapsed">
+                <div class="pnd-dashboard-panel-nav"></div>
+                <div class="pnd-dashboard-panel-content">
+                    <!-- the content comes from outside-->
+                </div>
+                <button type="button" class="btn btn-default"
+                        ng-click="toggleDetailsPanel()">X</button>
             </div>
-            <button type="button" class="btn btn-default pnd-dashboard-panel-collapse-button"
-                    ng-click="collapseDetailsPanel()">X</button>
+            <!--panel collapsed-->
+            <div class="pnd-dashboard-panel-collapsed" ng-show="detailsCollapsed">
+                <button type="button" class="btn btn-default" ng-click="toggleDetailsPanel()">E</button>
+            </div>
         </div>
 
         <!--separator-->
@@ -44,10 +63,8 @@
     <br><hr><br>
 
     <div class="btn-group" ng-model="useFluid" bs-radio-group>
-        <label class="btn btn-default"><input type="radio" class="btn btn-default" value="true">
-            Fluid resize </label>
-        <label class="btn btn-default"><input type="radio" class="btn btn-default" value="false">
-            Couples resize</label>
+        <label class="btn btn-default"><input type="radio" class="btn btn-default" value="true">Fluid resize</label>
+        <label class="btn btn-default"><input type="radio" class="btn btn-default" value="false">Couples resize</label>
     </div>
     <br><br>
 

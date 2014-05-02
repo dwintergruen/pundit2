@@ -1,7 +1,23 @@
 <!-- buildexamples:section header --><!-- /buildexamples -->
 
+<script>
+
+var DashboardDemoCtrl = function($scope, Dashboard) {
+    
+    $scope.toogle = function(){
+        Dashboard.toggle();
+    };
+    
+}
+
+</script>
+
 <div data-ng-app="Pundit2" class="pnd-wrp">
     <dashboard></dashboard>
+
+    <div ng-controller="DashboardDemoCtrl">
+        <button type="button" class="btn btn-default" style="margin-top:50px" ng-click="toogle()">Toggle</button>
+    </div>
 </div>
 
 <br><br><br>
