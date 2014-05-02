@@ -58,6 +58,14 @@ angular.module('Pundit2.Communication')
         };
 
 
+        notebookExchange.getCurrent = function() {
+            // TODO
+        };
+
+        notebookExchange.setCurrent = function() {
+            // TODO
+        };
+
         notebookExchange.createNotebook = function(name) {
             var promise = $q.defer();
             notebookExchange.log('Creating a new notebook');

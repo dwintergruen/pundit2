@@ -14,6 +14,7 @@ angular.module('Pundit2.Communication')
         } else {
             // TODO: move create here? add a save? to edit the stuff .. ?
             // Isnt current a notebook attribute?
+            // TODO: use NotebookExchange.createNotebook ?
             this.create();
         }
 
@@ -25,11 +26,10 @@ angular.module('Pundit2.Communication')
         this._q.resolve('New notebook created: TODO, after LOGIN');
     };
 
-    // TODO: after login
-    Notebook.prototype.setPublic = function() {
-        notebookComponent.log('Setting notebook public');
+    Notebook.prototype.save = function() {
+        // TODO: modify some property (name, ispublic, etc) then save
     };
-    
+
     Notebook.prototype.load = function(useCache) {
         var self = this;
 
@@ -63,7 +63,7 @@ angular.module('Pundit2.Communication')
 
         });
         
-    };
+    }; // Notebook.load()
     
     var readData = function(nb, data) {
         // For some weird reason, the first level of the object is
