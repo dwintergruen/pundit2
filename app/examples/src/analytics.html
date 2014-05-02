@@ -2,13 +2,31 @@
 
 <script type="text/javascript">
     function demoCtrl(Analytics) {
-        console.log('demo control instantiated 1');
-        Analytics.track('gui-x', 'load', 'test load analytics', '4');
+    	var i=0;
+    	for (i=0; i<30; i++){
+        	console.log('demo control instantiated 1');
+        	Analytics.track('gui-x', 'load', 'test load analytics', i);
+    	}
+        //setInterval(function(){console.log('blaaaa')},3000);
+    }
+    function demoCtrl2(Analytics, $scope) {
+    	var i=0;
+    	for (i=0; i<20; i++){
+        	console.log('demo control instantiated 1');
+        	Analytics.track('gui-y', 'click', 'test load2 analytics', i);
+    	}
+
+    	$scope.eClick = function(){
+    		Analytics.track('gui-z', 'clickkone', 'test clicks analytics', '4');
+    	}
     }
 </script>
 
 <div data-ng-app="Pundit2">
     <div ng-controller="demoCtrl"></div>
+    <div ng-controller="demoCtrl2">
+    	<a href="#" ng-click="eClick()">click</a><br />
+    </div>
 </div>
 
 <!-- buildexamples:section footer --><!-- /buildexamples -->
