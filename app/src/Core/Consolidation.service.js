@@ -3,11 +3,11 @@ angular.module('Pundit2.Core')
         icon: '',
         colorClass: 'pnd-cons-yellow'
     })
-    .service('Consolidation', function(CONSOLIDATIONDEFAULTS, BaseComponent, NameSpace, AnnotatorsOrchestrator, TextFragmentAnnotator, XpointersHelper) {
+    .service('Consolidation', function(CONSOLIDATIONDEFAULTS, BaseComponent, NameSpace, AnnotatorsOrchestrator, TextFragmentAnnotator) {
         var cc = new BaseComponent('Consolidation', CONSOLIDATIONDEFAULTS);
 
         var itemListByType = {},
-            typeUriMap = {}
+            typeUriMap = {},
             uriTypeMap = {},
             itemListByURI = {};
 

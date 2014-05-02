@@ -1,5 +1,5 @@
 angular.module('Pundit2.Annotators')
-.service('TextFragmentAnnotator', function(NameSpace, BaseComponent, AnnotatorsOrchestrator, XpointersHelper) {
+.service('TextFragmentAnnotator', function(NameSpace, BaseComponent, AnnotatorsOrchestrator, XpointersHelper, $compile, $rootScope) {
 
     // Create the component and declare what we deal with: text
     var tfa = new BaseComponent('TextFragmentAnnotator');
@@ -35,29 +35,102 @@ angular.module('Pundit2.Annotators')
         return true;
     };
 
+    // Each fragment will be split into bits, each bit will carry a relation
+    // to the parent fragment through this id
+    var fragmentIds = {},
+        // Map to get back from id to fragment uri
+        fragmentById = {};
+
     tfa.consolidate = function(items) {
 
         tfa.log('Consolidating!');
 
         var xpointers = [],
-            xpointerClasses = {},
             i = 0;
+
+        // Reset them, each consolidate has its own unique list
+        // TODO: better wipe up? other stuff to reset?
+        fragmentIds = {};
+        fragmentById = {};
 
         for (var uri in items) {
             xpointers.push(uri);
-            xpointerClasses[uri] = ["pnd-cons-"+i];
+            fragmentIds[uri] = ["fr-"+i];
+            fragmentById["fr-"+i] = {
+                uri: uri,
+                bits: []
+            };
             i++;
         }
 
         var xpaths = XpointersHelper.getXPathsFromXPointers(xpointers),
             sorted = XpointersHelper.splitAndSortXPaths(xpaths),
-            htmlClasses = XpointersHelper.getClassesForXpaths(xpointers, sorted, xpaths, xpointerClasses);
-        XpointersHelper.updateDOM(sorted, htmlClasses);
+            // Instead of using classes, these ids will be saved in a node attribute. After
+            // splitting and sorting each bit has a list of fragment ids it belongs to
+            xpathsFragmentIds = XpointersHelper.getClassesForXpaths(xpointers, sorted, xpaths, fragmentIds);
 
-        tfa.log(tfa.label +' consolidation: done!');
+        XpointersHelper.updateDOM(sorted, 'pnd-cons', xpathsFragmentIds);
+
+        var consolidated = angular.element('.pnd-cons');
+        $compile(consolidated)($rootScope);
+        $rootScope.$$phase || $rootScope.$digest();
+
+        tfa.log(tfa.label +' consolidation: done!', consolidated);
 
     };
 
-    tfa.log("Component up and running");
+    var fragmentsByXpointer = [];
+    tfa.addFragmentBit = function(bit) {
+
+        tfa.log('Adding fragment bit ', bit);
+        var fragments = bit.fragments;
+
+        // Fragment ids are split by a comma, gather them back in a array
+        if (fragments.match(/,/)) {
+            fragments = fragments.split(',');
+        } else {
+            fragments = [fragments];
+        }
+
+        for (var l=fragments.length; l--;) {
+            var current = fragmentById[fragments[l]];
+            current.bits.push(bit);
+
+        }
+        console.log('Adding cons fragment', fragments);
+
+    };
+
+    tfa.high = function(uri) {
+
+        var id = fragmentIds[uri];
+        if (typeof(id) === "undefined") {
+            return;
+        }
+
+        tfa.log('Highlighting uri ', id, fragmentById[id].bits);
+        for (var l=fragmentById[id].bits.length; l--;) {
+            fragmentById[id].bits[l].high();
+        }
+
+    };
+
+    tfa.reset = function(uri) {
+
+        var id = fragmentIds[uri];
+        var id = fragmentIds[uri];
+        if (typeof(id) === "undefined") {
+            return;
+        }
+
+        tfa.log('Highlighting uri ', id, fragmentById[id].bits);
+        for (var l=fragmentById[id].bits.length; l--;) {
+            fragmentById[id].bits[l].reset();
+        }
+
+    };
+
+
+        tfa.log("Component up and running");
     return tfa;
 });

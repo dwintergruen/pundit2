@@ -56,12 +56,19 @@ var ConsolidationDemoCtrl = function($scope, Consolidation, Annotation, Annotato
         return Consolidation.getItems();
     }, function(newItems, oldItems) {
         $scope.allItems = JSON.stringify(newItems, null, "  ");
-    }, true)
+    }, true);
 
     $scope.go = function() {
         Consolidation.consolidate();
     }
 
+    $scope.high = function() {
+        TextFragmentAnnotator.high("http://fake-url.it/release_bot/build/examples/dante-1.html#xpointer(start-point(string-range(//DIV[@about='http://fake-url.it/release_bot/build/examples/dante-1.html']/DIV[1]/P[2]/text()[9],'',20))/range-to(string-range(//DIV[@about='http://fake-url.it/release_bot/build/examples/dante-1.html']/DIV[1]/P[2]/text()[9],'',28)))");
+    }
+
+    $scope.reset = function() {
+        TextFragmentAnnotator.reset("http://fake-url.it/release_bot/build/examples/dante-1.html#xpointer(start-point(string-range(//DIV[@about='http://fake-url.it/release_bot/build/examples/dante-1.html']/DIV[1]/P[2]/text()[9],'',20))/range-to(string-range(//DIV[@about='http://fake-url.it/release_bot/build/examples/dante-1.html']/DIV[1]/P[2]/text()[9],'',28)))");
+    }
 
 }
 </script>
@@ -73,6 +80,8 @@ var ConsolidationDemoCtrl = function($scope, Consolidation, Annotation, Annotato
         <h3>Consolidation</h3>
 
         <button class="btn btn-info" ng-click="go()">go</button>
+        <button class="btn btn-warning" ng-mouseover="high()" ng-mouseout="reset()">Highlight
+         something?</button>
 
         <div class="row">
 

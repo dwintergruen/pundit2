@@ -176,19 +176,19 @@ angular.module('Pundit2.Annotators')
             
             var start = sortedXpaths[i],
                 end = sortedXpaths[i+1],
-                addxps = xp.getStartingXPs(xpointers, xpaths, start.xpath, start.offset),
-                remxps = xp.getEndingXPs(xpointers, xpaths, start.xpath, start.offset);
+                addXps = xp.getStartingXPs(xpointers, xpaths, start.xpath, start.offset),
+                remXps = xp.getEndingXPs(xpointers, xpaths, start.xpath, start.offset);
                 
-            realXps = addToArray(realXps, addxps);
-            realXps = removeFromArray(realXps, remxps);
+            realXps = addToArray(realXps, addXps);
+            realXps = removeFromArray(realXps, remXps);
 
             var classes = [];
             for (var j=realXps.length - 1; j>=0; j--) {
                 var x = realXps[j];
                 for (var k = xpointersClasses[x].length - 1; k >= 0; k--){
                     classes.push(xpointersClasses[x][k]);
-                };
-            };
+                }
+            }
             htmlClasses[i+1] = classes;
 
         } // for i
@@ -237,19 +237,18 @@ angular.module('Pundit2.Annotators')
 
     // Wraps all of the calculated xpaths with some htmltag and the computed
     // classes
-    xp.updateDOM = function(sortedXpaths, htmlClasses) {
+    xp.updateDOM = function(sortedXpaths, htmlClass, xpathsFragmentIds) {
 
-        // Highlight all of the xpaths
         for (var i=sortedXpaths.length-1; i>0; i--) {
             var start = sortedXpaths[i-1],
                 end = sortedXpaths[i];
                 
-            if (htmlClasses[i].length > 0) {
-                xp.log("## Updating DOM, xpath "+i+": "+htmlClasses[i].join(" "));
-                xp.wrapXPaths(start, end, xp.options.wrapNodeName, htmlClasses[i].join(" ")+" "+xp.options.wrapNodeClass);
+            if (xpathsFragmentIds[i].length > 0) {
+                xp.log("## Updating DOM, xpath "+i+": "+xpathsFragmentIds[i].join(" "));
+                xp.wrapXPaths(start, end, xp.options.wrapNodeName, htmlClass, xpathsFragmentIds[i]);
             }
         }
-        xp.log("Dom succesfully updated!")
+        xp.log("Dom successfully updated!");
     }; // updateDOM()
 
 
@@ -257,10 +256,11 @@ angular.module('Pundit2.Annotators')
     // the given tag _tag and html class _class. Will build a range for those
     // 2 xpaths, and starting from the range's commonAncestorContainer, will
     // wrap all of the contained elements
-    xp.wrapXPaths = function(startXp, endXp, _tag, _class) {
+    xp.wrapXPaths = function(startXp, endXp, _tag, _class, _parents) {
         var htmlTag = _tag || "span",
             htmlClass = _class || "highlight",
-            range = document.createRange(),
+            parents = _parents || [],
+            range = $document[0].createRange(),
             startNode = xp.getNodeFromXpath(startXp.xpath),
             endNode = xp.getNodeFromXpath(endXp.xpath);
 
@@ -283,24 +283,24 @@ angular.module('Pundit2.Annotators')
         }
 
         // Wrap the nearest element which contains the entire range
-        xp.wrapElement(range.commonAncestorContainer, range, htmlTag, htmlClass);
+        xp.wrapElement(range.commonAncestorContainer, range, htmlTag, htmlClass, parents);
 
     }; // wrapXPath
 
     // Wraps childNodes of element, only those which stay inside
     // the given range
-    xp.wrapElement = function(element, range, htmlTag, htmlClass) {
+    xp.wrapElement = function(element, range, htmlTag, htmlClass, parents) {
         // If there's childNodes, wrap them all
         if (element.childNodes && element.childNodes.length > 0) {
             for (var i = (element.childNodes.length - 1); i >= 0 && element.childNodes[i]; i--)
-                xp.wrapElement(element.childNodes[i], range, htmlTag, htmlClass);
+                xp.wrapElement(element.childNodes[i], range, htmlTag, htmlClass, parents);
 
             // Else it's a leaf: if it's a valid text node, wrap it!
         } else if (xp.isTextNodeInsideRange(element, range)) {
-            xp.wrapNode(element, range, htmlTag, htmlClass);
+            xp.wrapNode(element, range, htmlTag, htmlClass, parents);
             // MORE Else: it's an image node.. wrap it up
         } else if (xp.isImageNodeInsideRange(element, range)) {
-            xp.wrapNode(element, range, htmlTag, htmlClass);
+            xp.wrapNode(element, range, htmlTag, htmlClass, parents);
         }
 
     }; // wrapElement()
@@ -337,7 +337,7 @@ angular.module('Pundit2.Annotators')
 
     // Will check if the given node interesecates the given range somehow
     xp.isNodeInsideRange = function(node, range) {
-        var nodeRange = document.createRange();
+        var nodeRange = $document[0].createRange();
         try {
             nodeRange.selectNode(node);
         } catch (e) {
@@ -347,13 +347,13 @@ angular.module('Pundit2.Annotators')
             range.compareBoundaryPoints(Range.START_TO_END || 1, nodeRange) != 1) {
             return false;
         }
-        return true
+        return true;
     };
 
     // Will wrap a node (or part of it) with the given htmlTag. Just part of it when it's
     // on the edge of the given range and the range starts (or ends) somewhere inside it
-    xp.wrapNode = function(element, range, htmlTag, htmlClass) {
-        var r2 = document.createRange();
+    xp.wrapNode = function(element, range, htmlTag, htmlClass, parents) {
+        var r2 = $document[0].createRange();
 
         // Select correct sub-range: if the element is the start or end container of the range
         // set the boundaries accordingly: if it's startContainer use it's start offset and set
@@ -368,14 +368,18 @@ angular.module('Pundit2.Annotators')
             r2.selectNode(element);
 
         // Finally surround the range contents with an ad-hoc crafted html element
-        r2.surroundContents(xp.createWrapNode(htmlTag, htmlClass));
+        r2.surroundContents(xp.createWrapNode(htmlTag, htmlClass, parents));
     }; // wrapNode()
 
     // Creates an HTML element to be used to wrap (usually a span?) adding the given
     // classes to it
-    xp.createWrapNode = function(htmlTag, htmlClass) {
-        var element = document.createElement(htmlTag);
+    xp.createWrapNode = function(htmlTag, htmlClass, parents) {
+        var element = $document[0].createElement(htmlTag);
         angular.element(element).addClass(htmlClass);
+
+        // make it a directive
+        angular.element(element).attr('fragment-bit', '');
+        angular.element(element).attr('fragments', parents.join(','));
         return element;
     };
 
