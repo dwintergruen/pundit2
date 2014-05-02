@@ -55,19 +55,21 @@ var ConsolidationDemoCtrl = function($scope, Consolidation, Annotation, Annotato
     $scope.$watch(function() {
         return Consolidation.getItems();
     }, function(newItems, oldItems) {
-        $scope.allItems = JSON.stringify(newItems, null, "  ");
+        $scope.allItems = newItems.text;
+        $scope.allItemsJSON = JSON.stringify(newItems.text, null, "  ");
+        console.log('all itemszzzzzz', newItems.text);
     }, true);
 
     $scope.go = function() {
         Consolidation.consolidate();
-    }
+    };
 
-    $scope.high = function() {
-        TextFragmentAnnotator.high("http://fake-url.it/release_bot/build/examples/dante-1.html#xpointer(start-point(string-range(//DIV[@about='http://fake-url.it/release_bot/build/examples/dante-1.html']/DIV[1]/P[2]/text()[9],'',20))/range-to(string-range(//DIV[@about='http://fake-url.it/release_bot/build/examples/dante-1.html']/DIV[1]/P[2]/text()[9],'',28)))");
-    }
+    $scope.high = function(uri) {
+        TextFragmentAnnotator.high(uri);
+    };
 
-    $scope.reset = function() {
-        TextFragmentAnnotator.reset("http://fake-url.it/release_bot/build/examples/dante-1.html#xpointer(start-point(string-range(//DIV[@about='http://fake-url.it/release_bot/build/examples/dante-1.html']/DIV[1]/P[2]/text()[9],'',20))/range-to(string-range(//DIV[@about='http://fake-url.it/release_bot/build/examples/dante-1.html']/DIV[1]/P[2]/text()[9],'',28)))");
+    $scope.reset = function(uri) {
+        TextFragmentAnnotator.reset(uri);
     }
 
 }
@@ -95,11 +97,18 @@ var ConsolidationDemoCtrl = function($scope, Consolidation, Annotation, Annotato
                 </br></br></br>
 
                 </div>
+
+                <span ng-repeat="item in allItems">
+                    <button class="btn btn-warning"
+                        ng-mouseout="reset(item.uri)"
+                        ng-mouseover="high(item.uri)">{{item.label}}</button>
+                </span>
+
             </div>
 
             <div class="col-sm-6">
                 Items from a public annotation: 
-                    <pre>{{allItems}}</pre>
+                    <pre>{{allItemsJSON}}</pre>
                     <pre>{{items0}}</pre>
                     <pre>{{items1}}</pre>
             </div>

@@ -11,11 +11,11 @@ angular.module('Pundit2.Annotators')
             scope.isHigh = false;
             scope.high = function() {
                 scope.isHigh = true;
-                element.css('outline', '2px solid red');
+                element.css('background', '#ff931e');
             };
             scope.reset = function() {
                 scope.isHigh = false;
-                element.css('outline', '0');
+                element.css('background', '');
             };
 
         }

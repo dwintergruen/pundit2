@@ -103,12 +103,15 @@ angular.module('Pundit2.Annotators')
 
     tfa.high = function(uri) {
 
-        var id = fragmentIds[uri];
-        if (typeof(id) === "undefined") {
+        var id;
+        if (uri in fragmentIds) {
+            id = fragmentIds[uri][0];
+        } else {
+            tfa.log('Not highlighting, fragment id not found');
             return;
         }
 
-        tfa.log('Highlighting uri ', id, fragmentById[id].bits);
+        tfa.log('Highlighting fragment ', id, fragmentById[id].bits.length);
         for (var l=fragmentById[id].bits.length; l--;) {
             fragmentById[id].bits[l].high();
         }
@@ -123,7 +126,7 @@ angular.module('Pundit2.Annotators')
             return;
         }
 
-        tfa.log('Highlighting uri ', id, fragmentById[id].bits);
+        tfa.log('Reset fragment ', id, fragmentById[id].bits.length);
         for (var l=fragmentById[id].bits.length; l--;) {
             fragmentById[id].bits[l].reset();
         }
