@@ -14,14 +14,21 @@ angular.module('Pundit2.Core')
             return itemList;
         };
 
-        itemsExchange.addItems = function(item) {
+        itemsExchange.addItems = function(items) {
+            // TODO: sanity checks
+            for (var l=items.length; l--;) {
+                itemsExchange.addItem(items[l]);
+            }
+        };
+
+        itemsExchange.addItem = function(item) {
 
             // An item to be good must have an array of types and at least a uri
             if (typeof(item.uri) === "undefined" || !angular.isArray(item.type)) {
-                cc.err("Ouch, cannot add this item ... ", item);
+                itemsExchange.err("Ouch, cannot add this item ... ", item);
                 return;
             } else if (item.uri in itemListByURI) {
-                cc.log("Item already present: "+ item.label);
+                itemsExchange.log("Item already present: "+ item.label);
                 return;
             }
 

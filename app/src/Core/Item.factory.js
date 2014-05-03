@@ -1,17 +1,18 @@
 angular.module('Pundit2.Core')
-.factory('Item', function(BaseComponent, NameSpace) {
+.factory('Item', function(BaseComponent, NameSpace, ItemsExchange) {
     var itemComponent = new BaseComponent("Item");
 
-    function ItemFactory(value) {
-
-        // Default values for the mandatory properties, in case
-        // they dont get supplied elsewhere
-        if (typeof(value) === "undefined") {
+    function ItemFactory(uri) {
+        // To create a new Item at least a URI is needed
+        if (typeof(uri) === "undefined") {
             itemComponent.err("Can't create an item without an URI");
             return;
         }
-        this.uri = value;
+        this.uri = uri;
+        this.type = [];
         this.label = '';
+        // Add it to the exchange, ready to be .. whatever will be.
+        ItemsExchange.addItem(this);
     }
 
     ItemFactory.prototype.fromAnnotationRdf = function(annotationRDF) {

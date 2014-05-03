@@ -3,7 +3,7 @@ angular.module('Pundit2.Core')
         icon: '',
         colorClass: 'pnd-cons-yellow'
     })
-    .service('Consolidation', function(CONSOLIDATIONDEFAULTS, BaseComponent, NameSpace, AnnotatorsOrchestrator, TextFragmentAnnotator) {
+    .service('Consolidation', function(CONSOLIDATIONDEFAULTS, BaseComponent, NameSpace, AnnotatorsOrchestrator, TextFragmentAnnotator, Item) {
         var cc = new BaseComponent('Consolidation', CONSOLIDATIONDEFAULTS);
 
         var itemListByType = {},
@@ -64,7 +64,10 @@ angular.module('Pundit2.Core')
         };
         
         cc.isConsolidated = function(item) {
-            
+            if (item instanceof Item)
+                return item.uri in itemListByURI;
+            else
+                return false;
         };
 
         cc.consolidate = function(items) {
@@ -74,6 +77,9 @@ angular.module('Pundit2.Core')
             // TODO: initial reset, do wipe something up!
 
             TextFragmentAnnotator.consolidate(itemListByType.text);
+
+            // TODO: Extract if everything was ok? It should be .. ?
+
             // TODO: cycle over orchestrator something? or directly call him?
             // TODO: DOMConsolidator ? (xpointers: text fragments, named content, full page?)
             // TODO: ImageConsolidator ? (polygons, areas, whatever: on images?)

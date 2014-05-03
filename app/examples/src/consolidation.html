@@ -33,22 +33,12 @@ var ConsolidationDemoCtrl = function($scope, $q, Consolidation, Annotation, Anno
         proms[l] = new Annotation(toLoad[l]);
     }
 
-    $q.all(proms).then(function(annotations) {
-        for (var l=annotations.length; l--;) {
-            var ann = annotations[l];
-            for (var uri in ann.items) {
-                ItemsExchange.addItems(ann.items[uri]);
-            }
-        }
-    });
-
 
     $scope.$watch(function() {
         return ItemsExchange.getItems();
     }, function(newItems, oldItems) {
         $scope.allItems = newItems;
         $scope.allItemsJSON = JSON.stringify(newItems, null, "  ");
-        // console.log('all itemszzzzzz', newItems);
     }, true);
 
 
@@ -63,7 +53,11 @@ var ConsolidationDemoCtrl = function($scope, $q, Consolidation, Annotation, Anno
 
     $scope.reset = function(uri) {
         TextFragmentAnnotator.reset(uri);
-    }
+    };
+
+    $scope.isConsolidated = function(item) {
+        return Consolidation.isConsolidated(item);
+    };
 
 }
 </script>
@@ -92,7 +86,8 @@ var ConsolidationDemoCtrl = function($scope, $q, Consolidation, Annotation, Anno
                 </div>
 
                 <span ng-repeat="item in allItems">
-                    <button class="btn btn-warning"
+                    <button class="btn"
+                        ng-class="{'btn-warning': isConsolidated(item)}"
                         ng-mouseout="reset(item.uri)"
                         ng-mouseover="high(item.uri)">{{item.label}}</button>
                 </span>
@@ -102,8 +97,6 @@ var ConsolidationDemoCtrl = function($scope, $q, Consolidation, Annotation, Anno
             <div class="col-sm-6">
                 Items from a public annotation: 
                     <pre>{{allItemsJSON}}</pre>
-                    <pre>{{items0}}</pre>
-                    <pre>{{items1}}</pre>
             </div>
 
         </div>
