@@ -1,12 +1,17 @@
 angular.module('Pundit2.Toolbar')
 .controller('ToolbarCtrl', function($scope, Toolbar) {
-    
+
+    // TODO SIMO: se non serve togliamo sto ASKLINK
+
     // default Ask The Pundit link
     // TODO: spostare in Toolbar.service come default
     $scope.ASKLINK = "http://ask.thepund.it/";
     
     $scope.errorMessageDropdown = Toolbar.getError();
-    
+
+
+    // TODO SIMO: perche' divider ha le virgolette e uno spazio e gli altri no?
+    // copia incolla?
     $scope.userNotLoggedDropdown = [
         {text: 'Please sign in to use Pundit', href:'#'},
         { "divider": true },
@@ -42,7 +47,12 @@ angular.module('Pundit2.Toolbar')
     $scope.$watch(function(){ return Toolbar.getErrorShown(); }, function(newStatus){
         $scope.isErrorOccured = newStatus;
     });
-    
+
+
+    // TODO SIMO: questi metodi settano la visibilita'? A me pare restituiscano true/false
+    // se sono o non sono visibili -- correggiamo i commenti?
+
+
     // set status button visibility
     $scope.showStatusButtonOk = function(){
         return $scope.isErrorOccured === false;
@@ -87,12 +97,11 @@ angular.module('Pundit2.Toolbar')
     $scope.isNotebookMenuActive = function(){
         return $scope.isUserLogged === true;
     };
-    
+
     // set Ask the Pundit link
     // TODO: if user is logged in, link must be get in configuration
     $scope.getAskLink = function(){
         return Toolbar.getAskLink();
     };
-    
 
 });
