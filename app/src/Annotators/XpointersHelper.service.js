@@ -1,7 +1,9 @@
 angular.module('Pundit2.Annotators')
 .constant('XPOINTERSHELPERDEFAULTS', {
-   wrapNodeClass: 'pnd-cons',
-   wrapNodeName: 'span'
+    // if no other option is given, the helper will use these node name and node classes to
+    // wrap the consolidated DOM fragments
+    wrapNodeName: 'span',
+    wrapNodeClass: 'pnd-cons'
 })
 .service('XpointersHelper', function(XPOINTERSHELPERDEFAULTS, NameSpace, BaseComponent, $document) {
 
@@ -257,8 +259,8 @@ angular.module('Pundit2.Annotators')
     // 2 xpaths, and starting from the range's commonAncestorContainer, will
     // wrap all of the contained elements
     xp.wrapXPaths = function(startXp, endXp, _tag, _class, _parents) {
-        var htmlTag = _tag || "span",
-            htmlClass = _class || "highlight",
+        var htmlTag = _tag || xp.options.wrapNodeName,
+            htmlClass = _class || xp.options.wrapNodeClass,
             parents = _parents || [],
             range = $document[0].createRange(),
             startNode = xp.getNodeFromXpath(startXp.xpath),

@@ -1,8 +1,12 @@
 angular.module('Pundit2.Annotators')
-.service('TextFragmentAnnotator', function(NameSpace, BaseComponent, AnnotatorsOrchestrator, XpointersHelper, $compile, $rootScope) {
+.constant('TEXTFRAGMENTANNOTATORDEFAULTS', {
+    // Class added to all of the consolidated text fragments
+    wrapNodeClass: 'pnd-cons'
+})
+.service('TextFragmentAnnotator', function(TEXTFRAGMENTANNOTATORDEFAULTS, NameSpace, BaseComponent, AnnotatorsOrchestrator, XpointersHelper, $compile, $rootScope) {
 
     // Create the component and declare what we deal with: text
-    var tfa = new BaseComponent('TextFragmentAnnotator');
+    var tfa = new BaseComponent('TextFragmentAnnotator', TEXTFRAGMENTANNOTATORDEFAULTS);
     tfa.label = "text";
     tfa.type = NameSpace.fragments[tfa.label];
 
@@ -48,8 +52,8 @@ angular.module('Pundit2.Annotators')
         var xpointers = [],
             i = 0;
 
-        // Reset them, each consolidate has its own unique list
         // TODO: better wipe up? other stuff to reset?
+        // Reset them, each consolidate has its own unique list
         fragmentIds = {};
         fragmentById = {};
 
@@ -65,19 +69,29 @@ angular.module('Pundit2.Annotators')
 
         var xpaths = XpointersHelper.getXPathsFromXPointers(xpointers),
             sorted = XpointersHelper.splitAndSortXPaths(xpaths),
-            // Instead of using classes, these ids will be saved in a node attribute. After
-            // splitting and sorting each bit has a list of fragment ids it belongs to
+            // After splitting and sorting each bit has a list of fragment ids it belongs to.
+            // Instead of using classes, these ids will be saved in a node attribute.
             xpathsFragmentIds = XpointersHelper.getClassesForXpaths(xpointers, sorted, xpaths, fragmentIds);
 
-        XpointersHelper.updateDOM(sorted, 'pnd-cons', xpathsFragmentIds);
+        XpointersHelper.updateDOM(sorted, tfa.options.wrapNodeClass, xpathsFragmentIds);
+
+        activateDirectives();
+
+        tfa.log(tfa.label +' consolidation: done!');
+    };
+
+
+    // TODO: better name? :P
+    var activateDirectives = function() {
 
         var consolidated = angular.element('.pnd-cons');
         $compile(consolidated)($rootScope);
         $rootScope.$$phase || $rootScope.$digest();
 
-        tfa.log(tfa.label +' consolidation: done!', consolidated);
+        // place icon? do something?
 
     };
+
 
     var fragmentsByXpointer = [];
     tfa.addFragmentBit = function(bit) {
