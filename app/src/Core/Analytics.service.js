@@ -31,9 +31,16 @@ angular.module('Pundit2.Core')
         m = s.getElementsByTagName(o)[0];
         a.async = 1;
         a.src = g;
+        a.onload = function() {
+            analytics.log('GA async script loaded');
+            ga = $window[analytics.options.globalTracker];
+        }
         m.parentNode.insertBefore(a, m);
     })($window, $document[0], 'script', 'http://www.google-analytics.com/analytics.js', analytics.options.globalTracker);
 
+    // TODO: non si puo' salvarsi una reference alla funzione qui, perche' lo script non e' stato
+    // ancora caricato. Appena lo e', questa ga sara' un puntatore ad una funzione che e' stata
+    // sovrascritta. C'e' un onload() di ga?
     var ga = $window[analytics.options.globalTracker];
     ga('create', analytics.options.account, {
         'storage': 'none', // no cookies
