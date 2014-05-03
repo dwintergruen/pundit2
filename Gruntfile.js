@@ -259,7 +259,7 @@ module.exports = function(grunt) {
                         cwd: '<%= conf.app %>/styles/pundit-font/',
                         dest: '<%= conf.app %>/css/',
                         src: 'fonts/*'
-                    }, 
+                    },
                     {
                         expand: true,
                         cwd: '<%= conf.app %>/styles/pundit-font/',
