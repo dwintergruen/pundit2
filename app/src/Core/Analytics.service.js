@@ -2,7 +2,8 @@ angular.module('Pundit2.Core')
 .constant('ANALYTICSDEFAULTS', {
     account: 'UA-50437894-1',
     globalTracker: '__gaPndtTracker',
-    bufferDelay: 1000,
+    hits: 20, //Each web property starts with 20 hits that are replenished at a rate of 2 hit per second.
+    bufferDelay: 500,
     doTracking: true,
     debug: true
 })
@@ -10,16 +11,13 @@ angular.module('Pundit2.Core')
     
     var analytics = new BaseComponent('Analytics', ANALYTICSDEFAULTS);
 
-    // TODO RAF: a che ti serve sto oggetto utils??! Non si puo' fare a meno?
-    var utils = {};
-
-    utils.cache = {
+    var cache = {
         events: []
     };
-    utils.check = true;
-
-    // TODO RAF: spostiamo questo numerino magico tra i parametri di conf
-    utils.hits = 30;
+    var numSent = 0;
+    var isSendRunning = false;
+    var update = undefined;
+    var currentHits = analytics.options.hits;
 
     (function(i, s, o, g, r, a, m) {
         i.GoogleAnalyticsObject = r;
@@ -38,9 +36,6 @@ angular.module('Pundit2.Core')
         m.parentNode.insertBefore(a, m);
     })($window, $document[0], 'script', 'http://www.google-analytics.com/analytics.js', analytics.options.globalTracker);
 
-    // TODO: non si puo' salvarsi una reference alla funzione qui, perche' lo script non e' stato
-    // ancora caricato. Appena lo e', questa ga sara' un puntatore ad una funzione che e' stata
-    // sovrascritta. C'e' un onload() di ga?
     var ga = $window[analytics.options.globalTracker];
     ga('create', analytics.options.account, {
         'storage': 'none', // no cookies
@@ -50,16 +45,14 @@ angular.module('Pundit2.Core')
     ga('set', 'checkProtocolTask', function() {}); //HACK
 
     // TODO RAF: updateHits con la h maiuscola? ;)
-    // Pure tutti gli altri!! :P
-    utils.updatehits = function() {
-
-        // TODO RAF: spostiamo questo numerino magico tra i parametri di conf
-        if (utils.hits < 30){
-            utils.hits++;
-            analytics.log('hits: '+utils.hits);
+    // REPLY: stavo già dormendo quando ho rinominato queste funzioni ^^
+    var updateHits = function() {
+        if (currentHits < analytics.options.hits){
+            currentHits++;
+            analytics.log('Hits: '+currentHits);
         } else {
-            utils.updatehitsStop();
-            analytics.log('Stop! hits: '+utils.hits);
+            updateHitsStop();
+            analytics.log('Stop! Hits: '+currentHits);
         }
     };
 
@@ -71,41 +64,41 @@ angular.module('Pundit2.Core')
     // - se ci sono el in coda e/o hits < max, richiama se stesso (e rifara' una send e/o
     //   aggiornera' hits)
 
-    utils.updatehitsStart = function() {
-        if (!angular.isDefined(utils.update)) {
-            utils.update = $interval(function() {
-                utils.updatehits();
+    var updateHitsStart = function() {
+        if (!angular.isDefined(update)) {
+            update = $interval(function() {
+                updateHits();
             }, analytics.options.bufferDelay);
         }
     };
-    utils.updatehitsStop = function() {
-        if (angular.isDefined(utils.update)) {
-            $interval.cancel(utils.update);
-            utils.update = undefined;
+    var updateHitsStop = function() {
+        if (angular.isDefined(update)) {
+            $interval.cancel(update);
+            update = undefined;
         }
     };
 
-    // TODO RAF: giusto per vedere quanti ne manda prima di far entrare il meccanismo
-    // della coda
-    var numSent = 0;
-    utils.send = function() {
+    var send = function() {
 
         // TODO RAF: invece di avere un (o piu') if lungo come tutto il metodo, ribaltalo e
         // copri tutti i casi di errore in cima, con dei return:
         // if (!analytics.options... ) { return; }
+        // REPLY: devo adattarmi a questo stile
 
         if (analytics.options.doTracking){
-            if (utils.cache.events.length === 0){
-                utils.check = true;
+            if (cache.events.length === 0){
+                isSendRunning = false;
                 return;
             }
 
             numSent++;
 
-            var currentEvent = utils.cache.events.shift();
-            if (utils.hits > 0){
+            var currentEvent = cache.events.shift();
+            if (currentHits > 0){
 
                 // TODO RAF: perche' un timer di 10ms qui??
+                // REPLY: la chiamata ricorsiva send() non funziona all'esterno
+                // di $timeout, non so perche' 
 
                 $timeout(function() {
                     ga('send', {
@@ -116,13 +109,11 @@ angular.module('Pundit2.Core')
                         'eventValue': currentEvent.eventValue
                     });
                     analytics.log('Tracked ('+numSent+') event '+currentEvent.eventCategory+' ('+ currentEvent.eventAction +': '+ currentEvent.eventLabel +')');
-                    utils.hits--;
-                    utils.send();
-                }, 10);
+                    currentHits--;
+                    updateHitsStart();
+                    send();
+                }, 0);
             } else {
-
-                // TODO RAF: perche' non diminuisci hits qui?
-
                 $timeout(function() {
                     ga('send', {
                         'hitType': 'event',
@@ -132,43 +123,45 @@ angular.module('Pundit2.Core')
                         'eventValue': currentEvent.eventValue
                     });
                     analytics.log('Tracked delayed ('+numSent+') event '+currentEvent.eventCategory+' ('+ currentEvent.eventAction +': '+ currentEvent.eventLabel +')');
-                    utils.send();
+                    currentHits--;
+                    updateHitsStart();
+                    send();
                 }, analytics.options.bufferDelay);
             }
-
-            // TODO RAF: non che serva a molto questo return? :D
-            return;
         }
     };
 
     analytics.track = function(category, action, label, value) {
 
-        // TODO RAF: parametri obbligatori? almeno category/action?
-        // se non vengono passati: analytics.err()
+        // TODO: Puo' essere utile conoscere il file che genera l'errore?
 
+        function getErrorObject(){
+            try { throw Error('') } catch(err) { return err; }
+        }
+        var err = getErrorObject();
+        var caller_line = err.stack.split("\n")[4];
+        var index = caller_line.indexOf("at ");
+        var clean = caller_line.slice(index+2, caller_line.length);
 
-        // TODO RAF: invece di avere un (o piu') if lungo come tutto il metodo, ribaltalo e
-        // copri tutti i casi di errore in cima, con dei return:
-        // if (!analytics.options... ) { return; }
+        if (!analytics.options.doTracking){
+            analytics.err("Tracking off"); //TODO: Da notificare: si o no?
+            return;
+        }
+        if (!angular.isDefined(category) || !angular.isDefined(action)){
+            analytics.err("Category and Action are required " + caller_line);
+            return;
+        }
 
-        if (analytics.options.doTracking){
+        cache.events.push({
+          'eventCategory': category,
+          'eventAction': action,
+          'eventLabel': label,
+          'eventValue': value
+        });
 
-            utils.cache.events.push({
-              'eventCategory': category,
-              'eventAction': action,
-              'eventLabel': label,
-              'eventValue': value
-            });
-
-            // TODO RAF: se .check serve a sapere se il timer sta andando o meno, troviamogli un
-            // nome un pelo piu' significativo, isTimerRunning, isCheckActive.. quello che ti pare
-            if (utils.check){
-                utils.send();
-                // TODO RAF: forse update hits va chiamato dopo averli consumati gli hit e non
-                // prima?
-                utils.updatehitsStart();
-                utils.check = false;
-            }
+        if (!isSendRunning){
+            send();
+            isSendRunning = true;
         }
     };
 
