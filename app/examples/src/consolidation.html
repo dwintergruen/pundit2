@@ -16,52 +16,45 @@ var punditConfig = {
         "AnnotatorsOrchestrator": { debug: true },
         "TextFragmentAnnotator": { debug: true },
         "ImageFragmentAnnotator": { debug: true },
-        "XpointersHelper": { debug: true }
+        "XpointersHelper": { debug: true },
+        "ItemsExchange": { debug: true}
     }
 
 };
 
-var ConsolidationDemoCtrl = function($scope, Consolidation, Annotation, AnnotatorsOrchestrator, 
-    TextFragmentAnnotator, ImageFragmentAnnotator, XpointersHelper) {
-
-    // 1 target
-    // var ann0 = new Annotation("8fd05a49");
-    var ann0 = new Annotation("65286186");
+var ConsolidationDemoCtrl = function($scope, $q, Consolidation, Annotation, AnnotatorsOrchestrator,
+    TextFragmentAnnotator, ItemsExchange) {
 
 
-    ann0.then(function(ann) {
-        $scope.items0 = JSON.stringify(ann.items, null, "  ");
-        for (var uri in ann.items) {
-            Consolidation.addItems(ann.items[uri]);
+    var toLoad = ["8fd05a49", "65286186", "385c1647"],
+        proms = [];
+
+    for (var l=toLoad.length; l--;) {
+        proms[l] = new Annotation(toLoad[l]);
+    }
+
+    $q.all(proms).then(function(annotations) {
+        for (var l=annotations.length; l--;) {
+            var ann = annotations[l];
+            for (var uri in ann.items) {
+                ItemsExchange.addItems(ann.items[uri]);
+            }
         }
-        
-    }, function(message) {
-        $scope.items1.textType = "Failed to load annotation: "+message;
     });
 
 
-    // 2 targets
-    var ann1 = new Annotation("385c1647");
-
-    ann1.then(function(ann) {
-        $scope.items1 = JSON.stringify(ann.items, null, "  ");
-        for (var uri in ann.items) {
-            Consolidation.addItems(ann.items[uri]);
-        }
-    }, function(message) {
-        $scope.items1.textType = "Failed to load annotation: "+message;
-    });
-    
     $scope.$watch(function() {
-        return Consolidation.getItems();
+        return ItemsExchange.getItems();
     }, function(newItems, oldItems) {
-        $scope.allItems = newItems.text;
-        $scope.allItemsJSON = JSON.stringify(newItems.text, null, "  ");
-        console.log('all itemszzzzzz', newItems.text);
+        $scope.allItems = newItems;
+        $scope.allItemsJSON = JSON.stringify(newItems, null, "  ");
+        // console.log('all itemszzzzzz', newItems);
     }, true);
 
+
     $scope.go = function() {
-        Consolidation.consolidate();
+        console.log('## Will pass items to consolidate: '+ ItemsExchange.getItems().length);
+        Consolidation.consolidate(ItemsExchange.getItems());
     };
 
     $scope.high = function(uri) {

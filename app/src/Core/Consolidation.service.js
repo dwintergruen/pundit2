@@ -11,39 +11,51 @@ angular.module('Pundit2.Core')
             uriTypeMap = {},
             itemListByURI = {};
 
-        cc.getItems = function() {
-            return itemListByType;
+        cc.wipe = function() {
+            itemListByType = {};
+            typeUriMap = {};
+            uriTypeMap = {};
+            itemListByURI = {};
         };
 
-        cc.addItems = function(items, icon, colorClass) {
 
-            if (angular.isArray(items)) {
-                // TODO: cycle over, do something
+        cc.getItems = function() {
+            return itemListByURI;
+        };
+
+        var addItem = function(item) {
+            var fragmentType = cc.isConsolidable(item);
+            if (fragmentType === false) {
+                cc.log("Not adding, item is not consolidable: "+ item.label);
+                return;
+            } else if (item.uri in itemListByURI) {
+                cc.log("Item already present: "+ item.label);
+                return;
+            }
+
+            // Add or create a new element for the indexes
+            if (fragmentType in itemListByType) {
+                itemListByType[fragmentType][item.uri] = item;
+                typeUriMap[fragmentType].push(item.uri);
             } else {
-                
-                var fragmentType = cc.isConsolidable(items);
-                if (fragmentType === false) {
-                    cc.log("Not adding, item is not consolidable: "+ items.label);
-                    return;
-                } else if (items.uri in itemListByURI) {
-                    cc.log("Item already present: "+ items.label);
-                    return;
-                }
+                typeUriMap[fragmentType] = [];
+                itemListByType[fragmentType] = {};
+                itemListByType[fragmentType][item.uri] = item;
+            }
 
-                // Add or create a new element for the indexes
-                if (fragmentType in itemListByType) {
-                    itemListByType[fragmentType][items.uri] = items;
-                    typeUriMap[fragmentType].push(items.uri);
-                } else {
-                    typeUriMap[fragmentType] = [];
-                    itemListByType[fragmentType] = {};
-                    itemListByType[fragmentType][items.uri] = items;
-                }
+            itemListByURI[item.uri] = item;
+            uriTypeMap[item.uri] = fragmentType;
 
-                itemListByURI[items.uri] = items;
-                uriTypeMap[items.uri] = fragmentType;
+            cc.log("Added item: " +item.label+" ("+ fragmentType +")");
+        };
 
-                cc.log("Added item: " +items.label+" ("+ fragmentType +")");
+        addItems = function(items) {
+            if (!angular.isArray(items)) {
+                items = [items]
+            }
+
+            for (var l=items.length; l--;) {
+                addItem(items[l]);
             }
         };
        
@@ -55,8 +67,13 @@ angular.module('Pundit2.Core')
             
         };
 
-        cc.consolidate = function() {
-            TextFragmentAnnotator.consolidate(itemListByType['text']);
+        cc.consolidate = function(items) {
+
+            cc.wipe();
+            addItems(items);
+            // TODO: initial reset, do wipe something up!
+
+            TextFragmentAnnotator.consolidate(itemListByType.text);
             // TODO: cycle over orchestrator something? or directly call him?
             // TODO: DOMConsolidator ? (xpointers: text fragments, named content, full page?)
             // TODO: ImageConsolidator ? (polygons, areas, whatever: on images?)

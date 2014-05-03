@@ -29,10 +29,11 @@
     <script src="../src/Annotators/TextFragmentAnnotator.service.js"></script>
     <script src="../src/Annotators/ImageFragmentAnnotator.service.js"></script>
     <script src="../src/Annotators/FragmentBit.dir.js"></script>
+    <script src="../src/Annotators/ItemsExchange.service.js"></script>
 
     <script src="../src/Communication/Communication.js"></script>
     <script src="../src/Communication/Notebook.factory.js"></script>
-    <script src="../src/Communication/NotebookExchange.service.js"></script>
+    <script src="../src/Communication/NotebooksExchange.service.js"></script>
     <script src="../src/Communication/Annotation.factory.js"></script>
 
     <script src="../src/Annomatic/Annomatic.js"></script>
