@@ -11,7 +11,7 @@
     }
     function demoCtrl2(Analytics, $scope) {
     	var i=0;
-    	for (i=0; i<20; i++){
+    	for (i=0; i<30; i++){
         	console.log('demo control instantiated 1');
         	Analytics.track('gui-y', 'click', 'test load2 analytics', i);
     	}
@@ -20,6 +20,16 @@
     		Analytics.track('gui-z', 'clickkone', 'test clicks analytics', '4');
     	}
     }
+
+    // TODO RAF: configura l'editor per usare 4 spazi invece di un tab PLEASE! ;)
+
+    // TODO RAF: c'e' qualcosa di strano, la console logga come se avesse mandato 30 eventi
+    // senza delay e poi inizia il meccanismo di ritardo.. ma il pannello network (ed i log di GA)
+    // mi mostrano solo 4-5 eventi spediti e non 30. Volevo far triggerare l'errore di exceeded
+    // rate ma non ci sono riuscito.
+    // Inoltre.. il meccanismo di ritardo mi pare faccia partire 2 eventi per volta, non uno solo
+
+
 </script>
 
 <div data-ng-app="Pundit2">
