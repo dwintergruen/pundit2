@@ -2,7 +2,7 @@
 
 angular.module('Pundit2.Core')
 .constant('ANALYTICSDEFAULTS', {
-    account: 'UA-50437894-1',
+    trackingCode: 'UA-50437894-1',
     globalTracker: '__gaPndtTracker',
     hits: 20, //Each web property starts with 20 hits that are replenished at a rate of 2 hit per second.
     bufferDelay: 500,
@@ -18,6 +18,7 @@ angular.module('Pundit2.Core')
     };
     var numSent = 0;
     var isSendRunning = false;
+    var isTimeRunning = false;
     var updateHitsTimer;
     var currentHits = analytics.options.hits;
 
@@ -39,7 +40,7 @@ angular.module('Pundit2.Core')
     })($window, $document[0], 'script', 'http://www.google-analytics.com/analytics.js', analytics.options.globalTracker);
 
     var ga = $window[analytics.options.globalTracker];
-    ga('create', analytics.options.account, {
+    ga('create', analytics.options.trackingCode, {
         'storage': 'none', // no cookies
         'cookieDomain': 'none' // no domain
         // 'clientId' : getClientID() // custom id
@@ -48,30 +49,17 @@ angular.module('Pundit2.Core')
 
     var updateHits = function() {
         if (currentHits >= analytics.options.hits){
-            if (angular.isDefined(updateHitsTimer)){
-                $timeout.cancel( updateHitsTimer );
-
-                // TODO RAF: meglio non assegnare direttamente undefined, possiamo usare un flag
-                // invece? Magari lo stesso di sotto?
-                // updateHitsTimer = undefined;
-            }
+            isTimeRunning = false;
             analytics.log('Stop! Hits: '+currentHits);
             return;
         }
 
-        /*
-        currentHits++;
-        analytics.log('Hits: '+currentHits);
-        updateHitsTimer = $timeout(updateHits, analytics.options.bufferDelay);
-        */
         updateHitsTimer = $timeout(function() {
             currentHits++;
             analytics.log('Hits: '+currentHits);
             updateHits();
             sendHits();
         }, analytics.options.bufferDelay);
-
-
     };
 
     var sendHits = function() {
@@ -83,14 +71,9 @@ angular.module('Pundit2.Core')
             return;
         }
 
-        var sendNext = function(info) {
-
-            // Spostati dentro a sendNext()
+        if (currentHits > 0){
             numSent++;
             var currentEvent = cache.events.shift();
-
-            var logInfo = (info === 'delay' ? 'Tracked delayed' : 'Tracked');
-            analytics.log(logInfo+' ('+numSent+'/'+currentHits+') event '+currentEvent.eventCategory+' ('+ currentEvent.eventAction +': '+ currentEvent.eventLabel +')');
 
             ga('send', {
                 'hitType': 'event',
@@ -100,34 +83,14 @@ angular.module('Pundit2.Core')
                 'eventValue': currentEvent.eventValue
             });
             currentHits--;
-            if (!angular.isDefined(updateHitsTimer)){
+            
+            if (!isTimeRunning){
+                isTimeRunning = true;
                 updateHits();
             }
+            analytics.log('Tracked ('+numSent+'/'+currentHits+') event '+currentEvent.eventCategory+' ('+ currentEvent.eventAction +': '+ currentEvent.eventLabel +')');
+            
             sendHits();
-        };
-
-        if (currentHits > 0){
-            sendNext();
-        } else {
-
-            // TODO RAF: si puo' usare un timer solo: appena mandiamo una hit (sincrona) facciamo
-            // partire il timer (~2s). Al termine del timer: aggiungi 1 a currentHits e vedi se
-            // c'e' qualcosa in coda da mandare. In questi 2 secondi possono essere successe 2 cose:
-            // - nulla :D
-            // - son stati consumati tutti i currentHit -> appena ne ricarichiamo uno, spediamo
-            //   qualcosa dalla coda
-            // - non sono stati consumati tutti: non c'e' roba in coda
-
-            // PS: sendNext e sendHits, ne basta una sola delle due?
-
-            // Inoltre possiamo usare un solo flag per sapere se il timer per spedire e' attivo o meno?
-            // isSendRunning ci dice la stessa cosa di updateHitsTimer?
-
-            /*
-            $timeout(function() {
-                sendNext('delay');
-            }, analytics.options.bufferDelay);
-            */
         }
     };
 
