@@ -50,15 +50,28 @@ angular.module('Pundit2.Core')
         if (currentHits >= analytics.options.hits){
             if (angular.isDefined(updateHitsTimer)){
                 $timeout.cancel( updateHitsTimer );
-                updateHitsTimer = undefined;    
+
+                // TODO RAF: meglio non assegnare direttamente undefined, possiamo usare un flag
+                // invece? Magari lo stesso di sotto?
+                // updateHitsTimer = undefined;
             }
             analytics.log('Stop! Hits: '+currentHits);
             return;
         }
-        
+
+        /*
         currentHits++;
         analytics.log('Hits: '+currentHits);
         updateHitsTimer = $timeout(updateHits, analytics.options.bufferDelay);
+        */
+        updateHitsTimer = $timeout(function() {
+            currentHits++;
+            analytics.log('Hits: '+currentHits);
+            updateHits();
+            sendHits();
+        }, analytics.options.bufferDelay);
+
+
     };
 
     var sendHits = function() {
@@ -70,13 +83,15 @@ angular.module('Pundit2.Core')
             return;
         }
 
-        numSent++;
-
-        var currentEvent = cache.events.shift();
         var sendNext = function(info) {
+
+            // Spostati dentro a sendNext()
+            numSent++;
+            var currentEvent = cache.events.shift();
+
             var logInfo = (info === 'delay' ? 'Tracked delayed' : 'Tracked');
-            analytics.log(logInfo+' ('+numSent+') event '+currentEvent.eventCategory+' ('+ currentEvent.eventAction +': '+ currentEvent.eventLabel +')');
-            
+            analytics.log(logInfo+' ('+numSent+'/'+currentHits+') event '+currentEvent.eventCategory+' ('+ currentEvent.eventAction +': '+ currentEvent.eventLabel +')');
+
             ga('send', {
                 'hitType': 'event',
                 'eventCategory': currentEvent.eventCategory,
@@ -94,9 +109,25 @@ angular.module('Pundit2.Core')
         if (currentHits > 0){
             sendNext();
         } else {
+
+            // TODO RAF: si puo' usare un timer solo: appena mandiamo una hit (sincrona) facciamo
+            // partire il timer (~2s). Al termine del timer: aggiungi 1 a currentHits e vedi se
+            // c'e' qualcosa in coda da mandare. In questi 2 secondi possono essere successe 2 cose:
+            // - nulla :D
+            // - son stati consumati tutti i currentHit -> appena ne ricarichiamo uno, spediamo
+            //   qualcosa dalla coda
+            // - non sono stati consumati tutti: non c'e' roba in coda
+
+            // PS: sendNext e sendHits, ne basta una sola delle due?
+
+            // Inoltre possiamo usare un solo flag per sapere se il timer per spedire e' attivo o meno?
+            // isSendRunning ci dice la stessa cosa di updateHitsTimer?
+
+            /*
             $timeout(function() {
                 sendNext('delay');
             }, analytics.options.bufferDelay);
+            */
         }
     };
 
