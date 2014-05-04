@@ -12,12 +12,40 @@ angular.module('Pundit2.Core')
         itemsExchange.getItems = function() {
             return itemList;
         };
+        itemsExchange.getItemsHash = function() {
+            return itemListByURI;
+        };
 
         itemsExchange.getAll = function() {
             return {
+                itemListByURI: itemListByURI,
                 itemListByContainer: itemListByContainer,
                 itemContainers: itemContainers
             };
+        };
+
+        itemsExchange.getItemsBy = function(filter) {
+            if (typeof(filter) !== "function") {
+                return;
+            }
+
+            var ret = [];
+            for (var uri in itemListByURI) {
+                var item = itemListByURI[uri];
+                if (filter(item)) {
+                    ret.push(item);
+                }
+            }
+            return ret;
+        };
+
+        itemsExchange.getItemsByContainer = function(container) {
+            if (typeof(itemListByContainer[container]) !== "undefined") {
+                return itemListByContainer[container];
+            } else {
+                // TODO: name not found, signal error? .log? .err?
+                return [];
+            }
         };
 
         itemsExchange.addItems = function(items) {

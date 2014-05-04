@@ -49,7 +49,7 @@ var CommunicationDemoCtrl = function($scope, Notebook, Annotation, MyPundit, Not
         NotebookExchange.getMyNotebooks().then(function(notebooksIds) {
             $scope.myNotebooks = JSON.stringify(notebooksIds, null, "  ");
         });
-    }
+    };
 
 
     $scope.newNotebookName  = "Clever notebook name";
@@ -57,7 +57,7 @@ var CommunicationDemoCtrl = function($scope, Notebook, Annotation, MyPundit, Not
         NotebookExchange.createNotebook($scope.newNotebookName).then(function(data) {
             $scope.createString = JSON.stringify(data, null, "  ");
         });
-    }
+    };
 
 
 }

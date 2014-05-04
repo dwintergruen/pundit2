@@ -1,0 +1,177 @@
+<!-- buildexamples:section header --><!-- /buildexamples -->
+
+<style>
+    .pnd-cons {
+        background: #fc0;
+    }
+    .ex-ann {
+        border: 2px solid green;
+    }
+    .ex-ann div {
+        margin-left: 20px;
+        border: 1px solid #ffffff;
+    }
+</style>
+
+<script>
+
+var punditConfig = {
+    debugAllModules: false,
+    modules: {
+        "Annotation": { debug: false },
+        "Consolidation": { debug: false },
+        "AnnotatorsOrchestrator": { debug: false },
+        "TextFragmentAnnotator": { debug: true },
+        "ImageFragmentAnnotator": { debug: false },
+        "XpointersHelper": { debug: true },
+        "ItemsExchange": { debug: true }
+    }
+
+};
+
+var AnnotationDemoCtrl = function($scope, $q, Consolidation, Annotation, AnnotatorsOrchestrator,
+    TextFragmentAnnotator, ItemsExchange) {
+
+    pippo = ItemsExchange;
+    var toLoad = ["8fd05a49", "65286186", "385c1647"],
+        proms = [];
+
+    for (var l=toLoad.length; l--;) {
+        proms[l] = new Annotation(toLoad[l]);
+    }
+
+    $scope.annotations = [];
+    $q.all(proms).then(function(annos) {
+        $scope.annotations = annos;
+        console.log('Annotations: ', annos);
+        $scope.items = ItemsExchange.getItemsHash();
+    });
+
+
+    $scope.$watch(function() {
+        return ItemsExchange.getItemsBy(function(item) {
+            return !item.isProperty();
+        });
+    }, function(newItems, oldItems) {
+        $scope.allItems = newItems;
+        $scope.allItemsJSON = JSON.stringify(newItems, null, "  ");
+    }, true);
+
+    $scope.$watch(function() {
+        return ItemsExchange.getItemsByContainer('property');
+    }, function(newItems, oldItems) {
+        console.log('### Predicates ', newItems);
+        $scope.predicates = newItems;
+    }, true);
+
+
+    $scope.go = function() {
+        console.log('## Will pass items to consolidate: '+ ItemsExchange.getItems().length);
+        Consolidation.consolidate(ItemsExchange.getItems());
+    };
+
+    $scope.high = function(uri) {
+        TextFragmentAnnotator.high(uri);
+    };
+
+    $scope.reset = function(uri) {
+        TextFragmentAnnotator.reset(uri);
+    };
+
+    $scope.isConsolidated = function(item) {
+        return Consolidation.isConsolidated(item);
+    };
+
+}
+</script>
+
+<div data-ng-app="Pundit2" class="pnd-wrp">
+
+    <div ng-controller="AnnotationDemoCtrl" class="container clearfix">
+
+        <h3>Annotation</h3>
+
+        <button class="btn btn-info" ng-click="go()">go</button>
+
+        <div class="row">
+            All items:
+            <span ng-repeat="item in allItems">
+                <button class="btn"
+                    ng-class="{'btn-warning': isConsolidated(item), 'btn-success': item.isProperty()}"
+                    ng-mouseout="reset(item.uri)"
+                    ng-mouseover="high(item.uri)">{{item.label}}</button>
+            </span>
+        </div>
+
+        <div class="row">
+            predicates:
+            <span ng-repeat="item in predicates">
+                <button class="btn"
+                        ng-class="{'btn-warning': isConsolidated(item), 'btn-success': item.isProperty()}"
+                        ng-mouseout="reset(item.uri)"
+                        ng-mouseover="high(item.uri)">{{item.label}}</button>
+            </span>
+        </div>
+
+        <div class="row">
+
+            <div class="col-sm-6">
+                <div class="pundit-content" about="http://fake-url.it/release_bot/build/examples/dante-1.html">
+                <h1>Dante Alighieri</h1>
+                <div>
+                    <p><img src="http://upload.wikimedia.org/wikipedia/commons/a/a4/Dante-alighieri.jpg" height="150" class="pull-left" /><p><b>Durante degli Alighieri</b> (<small>US:&nbsp;</small><span title="Pronunciation in IPA" class="IPA"><a title="Wikipedia:IPA for English">/ˈdɑːnteɪ/</a></span>; <small>UK:&nbsp;</small><span title="Pronunciation in IPA"><a title="Wikipedia:IPA for English">/ˈdænti/</a></span>; 1265–1321), commonly known as <b>Dante</b>, was a major Italian poet of the <a title="Middle Ages">Middle Ages</a>. His <i><a title="Divine Comedy">Divine Comedy</a></i>, originally called <i><span>Commedia</span></i> and later called <i><span lang="it" xml:lang="it">Divina</span></i> by <a title="Boccaccio">Boccaccio</a>, is considered the greatest literary work composed in the <a title="Italian language">Italian language</a> and a masterpiece of world <a title="Literature">literature</a>.<sup><a><span>[</span>1<span>]</span></a></sup></p>
+                    <p>&nbsp;</p>
+                </div>
+                </br></br></br>
+
+                </div>
+
+            </div>
+
+            <div class="col-sm-6">
+
+                Loaded annotations:
+                <div ng-repeat="ann in annotations" class="ex-ann">
+
+                    <h4>{{ann.id}}</h4>
+
+                    <div ng-repeat="(sub, predicate) in ann.graph">
+
+                        <button class="btn"
+                            ng-class="{'btn-warning': isConsolidated(items[sub])}"
+                            ng-mouseout="reset(items[sub].uri)"
+                            ng-mouseover="high(items[sub].uri)">{{items[sub].label}}</button>
+
+                        <div ng-repeat="(pred, object) in predicate">
+
+                            <button class="btn" ng-class="{'btn-success': items[pred].isProperty()}">
+                                {{items[pred].label}}
+                            </button>
+
+                            <div ng-repeat="(i, ob) in object">
+
+                                <span ng-if="ob.type === 'uri' ">
+
+                                    <button class="btn"
+                                        ng-class="{'btn-warning': isConsolidated(items[ob.value])}"
+                                        ng-mouseout="reset(items[ob.value].uri)"
+                                        ng-mouseover="high(items[ob.value].uri)">{{items[ob.value].label}}</button>
+
+                                </span>
+                                <span ng-if="ob.type === 'literal' ">{{ob.value}}</span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- buildexamples:section footer --><!-- /buildexamples -->

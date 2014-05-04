@@ -15,7 +15,6 @@ angular.module('Pundit2.Core')
         if (angular.isObject(values)) {
             itemComponent.log('Extending new Item with values ', values);
             Utils.deepExtend(this, values);
-            console.log('#### Ed infatti, dopo: ', this);
         }
 
         // Add it to the exchange, ready to be .. whatever will be.

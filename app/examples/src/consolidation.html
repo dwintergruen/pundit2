@@ -25,7 +25,7 @@ var punditConfig = {
 var ConsolidationDemoCtrl = function($scope, $q, Consolidation, Annotation, AnnotatorsOrchestrator,
     TextFragmentAnnotator, ItemsExchange) {
 
-
+    pippo = ItemsExchange;
     var toLoad = ["8fd05a49", "65286186", "385c1647"],
         proms = [];
 
@@ -86,7 +86,7 @@ var ConsolidationDemoCtrl = function($scope, $q, Consolidation, Annotation, Anno
 
                 <span ng-repeat="item in allItems">
                     <button class="btn"
-                        ng-class="{'btn-warning': isConsolidated(item)}"
+                        ng-class="{'btn-warning': isConsolidated(item), 'btn-success': item.isProperty()}"
                         ng-mouseout="reset(item.uri)"
                         ng-mouseover="high(item.uri)">{{item.label}}</button>
                 </span>
