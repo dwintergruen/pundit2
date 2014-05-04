@@ -1,5 +1,5 @@
 angular.module('Pundit2.Communication')
-.factory('Annotation', function(BaseComponent, NameSpace, Item, TypesHelper, Analytics, $http, $q) {
+.factory('Annotation', function(BaseComponent, NameSpace, Utils, Item, TypesHelper, Analytics, $http, $q) {
     var annotationComponent = new BaseComponent("Annotation");
 
     // Creates a new Annotation instance. If an id is passed in
@@ -110,6 +110,15 @@ angular.module('Pundit2.Communication')
 
             for (var p in data.graph[s]) {
 
+                if (ann.entities.indexOf(p) === -1) {
+                    // Some annotations dont have a proper item for the predicate, supply
+                    // at least a type so we dont get confused ..
+                    ann.items[p] = {
+                        type: [NameSpace.rdf.property],
+                        label: Utils.getLabelFromURI(p)
+                    };
+                }
+
                 for (var o in data.graph[s][p]) {
                     var object = data.graph[s][p][o];
                     if (object.type === "uri" && ann.entities.indexOf(object.value) === -1) {
@@ -122,10 +131,11 @@ angular.module('Pundit2.Communication')
 
         // Create a real Item for each previously identified item
         for (var k in ann.items) {
-            var item = new Item(k);
+            var item = new Item(k, ann.items[k]);
 
             item.fromAnnotationRdf(data.items);
 
+            // Help out by givin the types to the helper, UI will say thanks
             for (var t in item.type) {
                 TypesHelper.addFromAnnotationRdf(item.type[t], data.items);
             }

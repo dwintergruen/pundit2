@@ -1,8 +1,8 @@
 angular.module('Pundit2.Core')
-.factory('Item', function(BaseComponent, NameSpace, ItemsExchange) {
+.factory('Item', function(BaseComponent, NameSpace, Utils, ItemsExchange) {
     var itemComponent = new BaseComponent("Item");
 
-    function ItemFactory(uri) {
+    function ItemFactory(uri, values) {
         // To create a new Item at least a URI is needed
         if (typeof(uri) === "undefined") {
             itemComponent.err("Can't create an item without an URI");
@@ -11,6 +11,13 @@ angular.module('Pundit2.Core')
         this.uri = uri;
         this.type = [];
         this.label = '';
+
+        if (angular.isObject(values)) {
+            itemComponent.log('Extending new Item with values ', values);
+            Utils.deepExtend(this, values);
+            console.log('#### Ed infatti, dopo: ', this);
+        }
+
         // Add it to the exchange, ready to be .. whatever will be.
         ItemsExchange.addItem(this);
     }
@@ -19,6 +26,12 @@ angular.module('Pundit2.Core')
 
         var ns = NameSpace.item,
             itemRDF = annotationRDF[this.uri];
+
+        // Cant find any rdf for this item?? Where is it?!1?
+        if (typeof(itemRDF) === "undefined") {
+            console.log('Error? No RDF for this item? ', this.uri);
+            return;
+        }
 
         // Treat properties as single values inside an array, read them
         // one by one by using the correct URI taken from the NameSpace,
