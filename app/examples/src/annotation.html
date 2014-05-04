@@ -82,6 +82,25 @@ var AnnotationDemoCtrl = function($scope, $q, Consolidation, Annotation, Annotat
         return Consolidation.isConsolidated(item);
     };
 
+    $scope.resetNew = function() {
+        $scope.newSubject = null;
+        $scope.newPredicate = null;
+        $scope.newObject = null;
+    };
+    $scope.resetNew();
+
+    $scope.addToNew = function(item) {
+        if (item.isProperty()) {
+            $scope.newPredicate = item;
+        } else if ($scope.newSubject) {
+            $scope.newObject = item;
+        } else {
+            $scope.newSubject = item;
+        }
+    }
+
+
+
 }
 </script>
 
@@ -97,7 +116,8 @@ var AnnotationDemoCtrl = function($scope, $q, Consolidation, Annotation, Annotat
             All items:
             <span ng-repeat="item in allItems">
                 <button class="btn"
-                    ng-class="{'btn-warning': isConsolidated(item), 'btn-success': item.isProperty()}"
+                    ng-click="addToNew(item)"
+                    ng-class="{'btn-warning': isConsolidated(item)}"
                     ng-mouseout="reset(item.uri)"
                     ng-mouseover="high(item.uri)">{{item.label}}</button>
             </span>
@@ -107,15 +127,45 @@ var AnnotationDemoCtrl = function($scope, $q, Consolidation, Annotation, Annotat
             predicates:
             <span ng-repeat="item in predicates">
                 <button class="btn"
-                        ng-class="{'btn-warning': isConsolidated(item), 'btn-success': item.isProperty()}"
-                        ng-mouseout="reset(item.uri)"
-                        ng-mouseover="high(item.uri)">{{item.label}}</button>
+                    ng-class="{'btn-success': item.isProperty()}"
+                    ng-click="addToNew(item)">
+                    {{item.label}}</button>
             </span>
         </div>
 
         <div class="row">
 
             <div class="col-sm-6">
+
+                <div>
+                    <h3>New Annotation: </h3>
+
+                    <div>
+                        Subject:
+                        <button ng-if="newSubject" class="btn"
+                            ng-class="{'btn-warning': isConsolidated(newSubject)}"
+                            ng-mouseout="reset(newSubject.uri)"
+                            ng-mouseover="high(newSubject.uri)">{{newSubject.label}}</button>
+
+                    </div>
+                    <div>
+                        Predicate:
+                        <button ng-if="newPredicate" class="btn"
+                            ng-class="{'btn-success': newPredicate.isProperty()}"
+                            ng-mouseout="reset(newPredicate.uri)"
+                            ng-mouseover="high(newPredicate.uri)">{{newPredicate.label}}</button>
+                    </div>
+                    <div>
+                        Object:
+                        <button ng-if="newObject" class="btn"
+                                ng-class="{'btn-warning': isConsolidated(newObject)}"
+                                ng-mouseout="reset(newObject.uri)"
+                                ng-mouseover="high(newObject.uri)">{{newObject.label}}</button>
+                    </div>
+                    <button class="btn btn-info">Save</button>
+                    <button class="btn btn-info" ng-click="resetNew()">Reset</button>
+                </div>
+
                 <div class="pundit-content" about="http://fake-url.it/release_bot/build/examples/dante-1.html">
                 <h1>Dante Alighieri</h1>
                 <div>
