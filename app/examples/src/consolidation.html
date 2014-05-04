@@ -33,7 +33,6 @@ var ConsolidationDemoCtrl = function($scope, $q, Consolidation, Annotation, Anno
         proms[l] = new Annotation(toLoad[l]);
     }
 
-
     $scope.$watch(function() {
         return ItemsExchange.getItems();
     }, function(newItems, oldItems) {
