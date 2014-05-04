@@ -2,7 +2,7 @@ angular.module('Pundit2.Core')
 .factory('Item', function(BaseComponent, NameSpace, Utils, ItemsExchange) {
     var itemComponent = new BaseComponent("Item");
 
-    function ItemFactory(uri, values) {
+    var ItemFactory = function(uri, values) {
         // To create a new Item at least a URI is needed
         if (typeof(uri) === "undefined") {
             itemComponent.err("Can't create an item without an URI");
@@ -20,7 +20,11 @@ angular.module('Pundit2.Core')
 
         // Add it to the exchange, ready to be .. whatever will be.
         ItemsExchange.addItem(this);
-    }
+    };
+
+    ItemFactory.prototype.isProperty = function() {
+        return this.type.indexOf(NameSpace.rdf.property) !== -1;
+    };
 
     ItemFactory.prototype.fromAnnotationRdf = function(annotationRDF) {
 

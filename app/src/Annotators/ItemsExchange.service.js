@@ -67,9 +67,11 @@ angular.module('Pundit2.Core')
                 itemsExchange.err("Ouch, cannot add this item ... ", item);
                 return;
             } else if (item.uri in itemListByURI) {
-
                 itemsExchange.log("Item already present: "+ item.label);
                 return;
+            } else if (item.isProperty()) {
+                // TODO: magic string, get it somewhere else, options, defaults, other component..
+                container = "property";
             }
 
             itemListByURI[item.uri] = item;
