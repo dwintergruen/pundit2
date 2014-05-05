@@ -289,44 +289,99 @@ angular.module('Pundit2.Dashboard')
 
     dashboard.tryToResizeCouples = function(index, delta) {
         dashboard.log('Resizing '+index+' of '+delta);
-        var panel = panels[index];
+        var panel = panels[index], i;
 
         // TODO: next is not index+1 but we need to look for it
         // checking for a not collapsed one at its right:
         // there SHOULD be one, if we add the isResizable check
         // or something in place of the isLast to inhibit drag
 
+        if ( panel.isCollapsed ) {
+            return false;
+        }
+        var allCollapsed = true;
+        if ( index < panels.length-1 ) {
+            // all panel after me is collapsed
+            for ( i=index+1; i<panels.length; i++ ) {
+                if( !panels[i].isCollapsed ){
+                    allCollapsed = false;
+                    break;
+                }
+            }
+            if ( allCollapsed ){
+                return false;
+            }
+        }
+
         // If it is shrinking
         if (delta < 0) {
+            console.log('resize')
 
             var realDelta = panel.width - Math.max(panel.minWidth, panel.width + delta);
             panel.width = Math.max(panel.minWidth, panel.width + delta);
 
-            var next;
             if (realDelta > 0) {
-                next = panels[index+1],
-                next.width = next.width + realDelta;
-                next.left = panel.left + panel.width;
+
+                var currentLeft = panel.left;
+                for ( i=index+1; i<panels.length; i++ ) {
+                    if ( !panels[i].isCollapsed ) {
+                        panels[i].width = panels[i].width + realDelta;
+                        panels[i].left =  panels[i-1].left + panels[i-1].width;
+                        break;
+                    } else {
+                        panels[i].left = currentLeft + panels[i-1].width;
+                    }
+                    
+                }
+
+                $rootScope.$$phase || $rootScope.$digest();                
+                return true;
+
+            } else {
+                $rootScope.$$phase || $rootScope.$digest();
+                return false;
             }
 
             // If it's growing, check if there's space to grow
         } else if (panels.length > index+1) {
-            var next = panels[index+1],
-                realDelta = next.width - Math.max(next.minWidth, next.width - delta);
+            console.log('expand')
 
+            var nextIndex;
+            for (i=index+1; i<panels.length; i++) {
+                if ( !panels[i].isCollapsed ) {
+                    nextIndex = i;
+                    break;
+                }
+            }
+
+            var next = panels[nextIndex];
+
+            var realDelta = next.width - Math.max(next.minWidth, next.width - delta);
             next.width = Math.max(next.minWidth, next.width - delta);
 
-            panel.width = panel.width + realDelta;
-            next.left = panel.left + panel.width;
+            if ( realDelta > 0 ) {
+                panel.width = panel.width + realDelta;
+
+                var currentLeft = panel.left + panel.width;
+                console.log(currentLeft)
+                for (i=index+1; i<nextIndex; i++) {
+                    panels[i].left = currentLeft;
+                    currentLeft = currentLeft + panels[i].width;
+                }
+                next.left = currentLeft;
+                
+
+                $rootScope.$$phase || $rootScope.$digest();
+                return true;
+
+            } else {
+
+                $rootScope.$$phase || $rootScope.$digest();
+                return false;
+            }
+
         }
 
-        $rootScope.$$phase || $rootScope.$digest();
-
-        if ( typeof(next) === 'undefined' || next.width === next.minWidth || panel.width === panel.minWidth) {
-            return false;
-        } else {
-            return true;
-        }
     };
 
     dashboard.log('Service run');
