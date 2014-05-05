@@ -1,9 +1,9 @@
 angular.module('Pundit2.Toolbar')
 .config(function($dropdownProvider) {
-  angular.extend($dropdownProvider.defaults, {
-    trigger: 'click',
-    html: true
-  });
+    angular.extend($dropdownProvider.defaults, {
+        trigger: 'click',
+        html: true
+    });
 })
 
 .directive('toolbar', function() {

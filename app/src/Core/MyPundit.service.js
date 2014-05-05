@@ -45,7 +45,6 @@ angular.module('Pundit2.Core')
             withCredentials: true
             
         }).success(function(data) {
-            
             // user is not logged in
             if (data.loginStatus === 0) {
                 isUserLogged = false;
@@ -78,8 +77,6 @@ angular.module('Pundit2.Core')
                     loginStatus = "loggedOff";
                     openLoginModal();
                 } else {
-                    // TODO DEBUG: if the user is logged  in.. might as well resolve the promise
-                    // and set everything accordingly ... ! :)
                     loginPromise.resolve(true);
                 }
             }
@@ -156,7 +153,7 @@ angular.module('Pundit2.Core')
     
     var loginModal = $modal({
         container: ".pnd-wrp[data-ng-app='Pundit2']",
-        template: '../src/Core/login.modal.tmpl.html',
+        template: 'src/Core/login.modal.tmpl.html',
         show: false,
         backdrop: 'static'
     });

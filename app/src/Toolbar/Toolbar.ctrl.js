@@ -2,15 +2,11 @@ angular.module('Pundit2.Toolbar')
 .controller('ToolbarCtrl', function($scope, Toolbar, MyPundit) {
     
     var login = function() {
-        MyPundit.login().then(function(userStatus) {
-            Toolbar.setUserLogged(userStatus);
-        });
+        MyPundit.login();
     };
     
     var logout = function() {
-        MyPundit.logout().then(function() {
-            Toolbar.setUserLogged(false);
-        });
+        MyPundit.logout();
     };
     
     $scope.errorMessageDropdown = Toolbar.getErrorMessageDropdown();
@@ -43,7 +39,7 @@ angular.module('Pundit2.Toolbar')
     
     // listener for user status
     // when user is logged in, set flag isUserLogged to true
-    $scope.$watch(function() { return Toolbar.getUserLogged(); }, function(newStatus) {
+    $scope.$watch(function() { return MyPundit.getUserLogged(); }, function(newStatus) {
         $scope.isUserLogged = newStatus;
         $scope.userData = MyPundit.getUserData();
     });

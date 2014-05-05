@@ -3,7 +3,7 @@ angular.module('Pundit2.Toolbar')
     askLinkDefault: "http://ask.thepund.it/",
     askLinkUser: "http://ask.thepund.it/#/myAsk/"
 })
-.service('Toolbar', function(BaseComponent, TOOLBARDEFAULTS) {
+.service('Toolbar', function(BaseComponent, TOOLBARDEFAULTS, MyPundit) {
 
     var toolbar = new BaseComponent('Toolbar', TOOLBARDEFAULTS);
     
@@ -13,14 +13,6 @@ angular.module('Pundit2.Toolbar')
     var isErrorShown = false;
     var errorMessageDropdown = [];
 
-    toolbar.setUserLogged = function(status) {
-        isUserLogged = status;
-    };
-    
-    toolbar.getUserLogged = function() {
-        return isUserLogged;
-    };
-    
     toolbar.setErrorShown = function(status) {
         isErrorShown = status;
     };

@@ -7,19 +7,15 @@ var ToolbarDemoCtrl = function($scope, Toolbar, MyPundit) {
     var numberErrors = 0;
     
     $scope.login = function() {
-        MyPundit.login().then(function(value) {
-            Toolbar.setUserLogged(value);
-        });
+        MyPundit.login();
     };
     
     $scope.logout = function() {
-        MyPundit.logout().then(function() {
-            Toolbar.setUserLogged(false);
-        });
+        MyPundit.logout();
     };
     
     $scope.getStatus = function(){
-        return Toolbar.getUserLogged();
+        return MyPundit.getUserLogged();
     };
     
     $scope.addError = function(){

@@ -43,16 +43,15 @@
             <ul class="nav navbar-nav navbar-right pnd-toolbar-navbar-right">
                 
                 <!-- Template mode button -->
-                <li class="pnd-toolbar-template-mode-button">
+                <li class="pnd-toolbar-template-mode-button" ng-show="isTemplateModeActive()">
                     <a href="javascript:void(0)">
-                        <span ng-class="{true: 'pnd-toolbar-active-element', false: 'pnd-toolbar-not-active-element disabled'}[isTemplateModeActive()]" class="pnd-icon pnd-icon-pencil"></span>
+                        <span class="pnd-toolbar-active-element pnd-icon pnd-icon-pencil"><span>
                     </a>
                 </li>
                 
                 <!-- Template menu -->
-                <li class="pnd-toolbar-template-menu-button">
-                    <a ng-show="isTemplateMenuActive()" href="javascript:void(0)" bs-dropdown="userTemplateDropdown"><span class="pnd-toolbar-active-element">Current template</span></a>
-                    <a ng-show="!isTemplateMenuActive()" href="javascript:void(0)" bs-dropdown="userNotLoggedDropdown"><span class="pnd-toolbar-not-active-element">Current template</span></a>
+                <li class="pnd-toolbar-template-menu-button" ng-show="isTemplateMenuActive()" >
+                    <a href="javascript:void(0)" bs-dropdown="userTemplateDropdown"><span class="pnd-toolbar-active-element">Current template</span></a>
                 </li>
                 
                 <!-- Notebooks menu -->
