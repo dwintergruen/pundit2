@@ -5,9 +5,9 @@ angular.module('Pundit2.Core')
     trackingCode: 'UA-50437894-1',
     globalTracker: '__gaPndtTracker',
     hits: 20, //Each web property starts with 20 hits that are replenished at a rate of 2 hit per second.
-    bufferDelay: 500,
+    bufferDelay: 1000,
     doTracking: true,
-    debug: true
+    debug: false
 })
 .service('Analytics', function(BaseComponent, $window, $document, $interval, $timeout, ANALYTICSDEFAULTS) {
     
@@ -37,7 +37,7 @@ angular.module('Pundit2.Core')
             ga = $window[analytics.options.globalTracker];
         };
         m.parentNode.insertBefore(a, m);
-    })($window, $document[0], 'script', 'http://www.google-analytics.com/analytics.js', analytics.options.globalTracker);
+    })($window, $document[0], 'script', 'http://www.google-analytics.com/analytics.js', analytics.options.globalTracker); //TODO: rimuovere http: per versione finale
 
     var ga = $window[analytics.options.globalTracker];
     ga('create', analytics.options.trackingCode, {
@@ -55,7 +55,7 @@ angular.module('Pundit2.Core')
         }
 
         updateHitsTimer = $timeout(function() {
-            currentHits++;
+            currentHits = (currentHits < 19 ? currentHits+2 : currentHits+1);
             analytics.log('Hits: '+currentHits);
             updateHits();
             sendHits();
@@ -63,9 +63,6 @@ angular.module('Pundit2.Core')
     };
 
     var sendHits = function() {
-        if (!analytics.options.doTracking){
-            return;
-        }
         if (cache.events.length === 0){
             isSendRunning = false;
             return;
@@ -94,22 +91,16 @@ angular.module('Pundit2.Core')
         }
     };
 
+    analytics.getHits = function() {
+        return currentHits;
+    };
+
     analytics.track = function(category, action, label, value) {
         if (!analytics.options.doTracking){
-            analytics.err('Tracking off'); //TODO: Da notificare: si o no?
             return;
         }
         if (!angular.isDefined(category) || !angular.isDefined(action)){
-
-            // TODO: Puo' essere utile conoscere il file che genera l'errore?
-            // E nel caso, sarebbe il caso di trovare una posizione generica?
-            var err = function() {
-                try { throw Error(''); } catch(err) { return err; }
-            };
-            var currentErr = err();
-            var callerLine = currentErr.stack.split('\n')[4];
-
-            analytics.err('Category and Action are required ' + callerLine);
+            analytics.err('Category and Action are required');
             return;
         }
 
