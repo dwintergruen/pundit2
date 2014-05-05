@@ -34,12 +34,7 @@ angular.module('Pundit2.Dashboard')
         var resized,
             deltaX = evt.pageX - lastPageX;
         if (deltaX === 0) { return; }
-        
-        if (Dashboard.options.fluidResize)
-            resized = Dashboard.tryToResizeFluid($scope.index, deltaX);
-        else
-            resized = Dashboard.tryToResizeCouples($scope.index, deltaX);
-        
+        resized = Dashboard.tryToResizeCouples($scope.index, deltaX);        
         if (resized) {
             lastPageX = evt.pageX;
         }

@@ -1,7 +1,7 @@
 angular.module('Pundit2.Dashboard')
 .constant('DASHBOARDDEFAULTS', {
 
-    isDashboardVisible: false,
+    isDashboardVisible: true,
 
     // dashboard container
     containerMinHeight: 200,
@@ -26,7 +26,6 @@ angular.module('Pundit2.Dashboard')
     // footer height
     footerHeight: 20,
 
-    fluidResize: false,
     debug: true
 })
 .service('Dashboard', function(BaseComponent, DASHBOARDDEFAULTS, $window, $rootScope) {
@@ -257,7 +256,16 @@ angular.module('Pundit2.Dashboard')
         var panel = panels[index], i;
 
         if ( panel.isCollapsed ) {
-            return false;
+            for (i=index-1; i>=0; i--) {
+                if ( !panels[i].isCollapsed ) {
+                    panel = panels[i];
+                    index = i;
+                    break;
+                }
+            }
+            if ( i < 0 ) {
+                return false;
+            }
         }
         var allCollapsed = true;
         if ( index < panels.length-1 ) {

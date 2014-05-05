@@ -26,11 +26,6 @@ angular.module('Pundit2.Dashboard')
         }
     });
 
-    $scope.useFluid = false;
-    $scope.$watch('useFluid', function(value) {
-        Dashboard.options.fluidResize = value;
-    });
-
     /**** CONTAINER WATCHER ****/
 
     $scope.$watch(function() {
