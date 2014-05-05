@@ -33,8 +33,15 @@ angular.module('Pundit2.Core')
 
     // TODO: doc
     BaseComponent.prototype.err = function() {
+        var fileErr = function() {
+            try { throw Error(''); } catch(err) { return err; }
+        };
+        var currentErr = fileErr();
+        var callerLine = currentErr.stack.split('\n')[5];
+
         var args = Array.prototype.slice.call(arguments);
         args.unshift("#PUNDIT " + this.name + "#");
+        args.push(callerLine);
         $log.error.apply(null, args);
     };
 
