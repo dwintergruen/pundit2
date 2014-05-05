@@ -55,7 +55,7 @@ angular.module('Pundit2.Core')
         }
 
         updateHitsTimer = $timeout(function() {
-            currentHits = (currentHits < 19 ? currentHits+2 : currentHits+1);
+            currentHits = Math.min(currentHits+2, analytics.options.hits);
             analytics.log('Hits: '+currentHits);
             updateHits();
             sendHits();
