@@ -24,7 +24,7 @@ angular.module('Pundit2.Dashboard')
     detailsMinWidth: 235,
 
     // panel collapsed width
-    panelCollapseWidth: 40,
+    panelCollapseWidth: 70,
 
     // separator
     separatorsWidth: 10,
@@ -32,7 +32,7 @@ angular.module('Pundit2.Dashboard')
     // footer height
     footerHeight: 20,
 
-    fluidResize: true,
+    fluidResize: false,
     debug: true
 })
 .service('Dashboard', function(BaseComponent, DASHBOARDDEFAULTS, $window, $rootScope) {
@@ -42,17 +42,6 @@ angular.module('Pundit2.Dashboard')
     var containerMinWidth = dashboard.options.listsMinWidth + dashboard.options.toolsMinWidth + dashboard.options.detailsMinWidth + (2 * dashboard.options.separatorsWidth);
     
     var containerAvailableWidth = Math.max(angular.element($window).innerWidth(), containerMinWidth) - (2 * dashboard.options.separatorsWidth);
-    
-    // TODO add to default
-    var listsCollapsed = false,
-        toolsCollapsed = false,
-        detailsCollapsed = false;
-
-    var panelsMinWidths = [
-        dashboard.options.listsMinWidth,
-        dashboard.options.toolsMinWidth,
-        dashboard.options.detailsMinWidth
-    ];
 
     var state = {
 
@@ -62,149 +51,6 @@ angular.module('Pundit2.Dashboard')
         containerHeight: dashboard.options.containerHeight
 
     };
-
-    // ratios [listsRatio, toolsRatio, detailsRatio]
-    // minWidths [listsMinWidth, toolsMinWidth, detailsMinWidth]
-    // availableWidth (new container width)
-    // @return widths [listsWidth, toolsWidth, detailsWidth]
-    var resizePanelsWidths = function(ratios, minWidths, availableWidth){
-
-        var delta = 0,
-            widths = [];
-
-        var i, newWidth;
-        // update widths
-        for ( i=0; i<ratios.length; i++ ) {
-            newWidth = ratios[i] * availableWidth;
-            // check minimum         
-            if ( newWidth < minWidths[i] ) {
-                widths.push(minWidths[i]);
-                delta = delta + (newWidth - minWidths[i]);
-            } else {
-                widths.push(newWidth);
-            }
-        }
-
-        // any panels under minimum width
-        if ( delta === 0){
-            return widths;
-        }
-
-        // at least one panel under minimum widths
-        var reducibleIndex, hundred;
-        while ( delta < 0 ) {
-            // this widths can be reduced
-            reducibleIndex = [];
-            hundred = 0;
-            for (i=0; i<widths.length; i++) {
-                if ( widths[i] > minWidths[i] ) {
-                    reducibleIndex.push(i);
-                    hundred = hundred + ratios[i];
-                }
-            }
-            // compute new ratios and dispense delta
-            var index;
-            for (i=0; i<reducibleIndex.length; i++) {
-                index = reducibleIndex[i];
-                ratios[index] = ratios[index] / hundred;
-                widths[index] = widths[index] + (ratios[index]* delta);
-            }
-            // check if after dispense delta others panels are under minimum
-            delta = 0;
-            for (i=0; i<reducibleIndex.length; i++) {
-                index = reducibleIndex[i];
-                if ( widths[index] < minWidths[index]) {
-                    delta = delta + (widths[index] - minWidths[index]);
-                    widths[index] = minWidths[index];
-                }
-            }
-
-        }// end while
-
-        return widths;
-
-    };
-
-    // ratios [listsRatio, toolsRatio, detailsRatio]
-    // minWidths [listsMinWidth, toolsMinWidth, detailsMinWidth]
-    // availableWidth (new container width)
-    // @return widths [listsWidth, toolsWidth, detailsWidth]
-    var resizePanelsWidthsOptimaized = function(ratios, minWidths, availableWidth){
-
-        var delta = 0,
-            widths = [],
-            smaller = [],
-            bigger = [],
-            hundredRatio = 0;
-
-        var i, newWidth;
-        // update widths
-        for ( i=0; i<ratios.length; i++ ) {
-            newWidth = ratios[i] * availableWidth;
-            // check minimum         
-            if ( newWidth < minWidths[i] ) {
-                widths.push(minWidths[i]);
-                delta = delta + (newWidth - minWidths[i]);
-            } else {
-                widths.push(newWidth);
-                bigger.push(i);
-                hundredRatio = hundredRatio + ratios[i];
-            }
-        }
-        // any panels under minimum width
-        if ( delta === 0){
-            return widths;
-        }
-
-        // at least one panel under minimum widths
-        
-        // dispense delta
-        var index, newDelta, newHundredRatio;
-        while(delta < 0) {
-            newDelta = 0;
-            newHundredRatio = 0;
-            // if bigger.length reaches to 0 the while end
-            // and the sum of widths exceeds the availableWidths
-            for (i=0; i<bigger.length; i++) {
-                index = bigger[i];
-                ratios[index] = ratios[index] / hundredRatio;
-                newWidth = widths[index] + (ratios[index] * delta);
-                // check minimum         
-                if ( newWidth < minWidths[index] ) {
-                    widths[index] = minWidths[index];
-                    newDelta = newDelta + (newWidth - minWidths[index]);
-                    bigger.splice(i, 1);
-                } else {
-                    widths[index] = newWidth;
-                    newHundredRatio = newHundredRatio + ratios[index];
-                }
-            }
-            delta = newDelta;
-            hundredRatio = newHundredRatio;
-        }
-
-        return widths;
-
-    };
-
-    // widths [listsWidth, toolsWidth, detailsWidth]
-    var updateRatios = function(widths, availableWidth){
-        state.listsRatio = widths[0] / availableWidth;
-        state.toolsRatio = widths[1] / availableWidth;
-        state.detailsRatio = widths[2] / availableWidth;
-    };
-
-    // widths [listsWidth, toolsWidth, detailsWidth]
-    var setPanelsWidth = function(widths){
-        state.listsWidth = widths[0];
-        state.toolsWidth = widths[1];
-        state.detailsWidth = widths[2];
-    };
-
-    // return new copy of ratios array [listsRatio, toolsRatio, detailsRatio]
-    var makeRatiosArray = function(){
-        return [state.listsRatio, state.toolsRatio, state.detailsRatio];
-    }
 
     /**** DASHBOARD ****/
     dashboard.toggle = function(){
@@ -248,7 +94,6 @@ angular.module('Pundit2.Dashboard')
             for (var p in panels) {
                 panels[p].width = panels[p].minWidth;
                 panels[p].left = left;
-                //panels[p].ratio = panels[p].width / containerMinWidth; 
                 left = left + panels[p].width;
             }
 
@@ -294,21 +139,9 @@ angular.module('Pundit2.Dashboard')
             panelScope.ratio = dashboard.options.detailsRatio;
         }
 
-        //dashboard.resetWidths();
-        //dashboard.resizeAll();
-        dashboard.setWidths();
+        dashboard.resetWidths();
+        dashboard.resizeAll();
         $rootScope.$$phase || $rootScope.$digest();
-    };
-
-    dashboard.setWidths = function(){
-        var avail = angular.element($window).innerWidth(),
-            left = 0;
-
-        for (var p in panels) {
-            panels[p].width = avail * panels[p].ratio;
-            panels[p].left = left;
-            left = left + panels[p].width;
-        }
     };
 
     // Evens out the widths of all panels, expanding them if needed
@@ -348,11 +181,7 @@ angular.module('Pundit2.Dashboard')
             });
 
         // Take out collapsed widths from the available width
-        avail = avail - collapsed.length * 40;
-
-        /*if (expanded.length > 0) {
-            // TODO check if all at min width
-        }*/
+        avail = avail - collapsed.length * dashboard.options.panelCollapseWidth;
 
         // Cycle over all panels which will be interested in a change
         // of width and get their total sum, to calculate ratios
@@ -384,7 +213,7 @@ angular.module('Pundit2.Dashboard')
             if (i in skip) {
                 panels[i].width = skip[i];
             } else if (panels[i].isCollapsed) {
-                panels[i].width = 50;
+                panels[i].width = dashboard.options.panelCollapseWidth;
             } else {
                 var newWidth = panels[i].ratio * avail;
                 // check if after dispense delta the panel go under to min-width
@@ -402,6 +231,7 @@ angular.module('Pundit2.Dashboard')
         }
 
         // if any panel go at min-width the loop is skipped
+        // if all panel go at min-width the loop is executed only one time
         var newDelta, newCurrentTotal;
         while ( delta < 0 ) {
 

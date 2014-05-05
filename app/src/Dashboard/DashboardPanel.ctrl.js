@@ -2,11 +2,12 @@ angular.module('Pundit2.Dashboard')
 .controller('DashboardPanelCtrl', function($document, $window, $scope, Dashboard) {
 
     $scope.isCollapsed = false;
+    $scope.collapsedWidth = Dashboard.options.panelCollapseWidth;
     $scope.minWidth = 100;
     $scope.left = 0;
     $scope.width = 200;
     $scope.ratio = 1;
-    $scope.bottom = 20;
+    $scope.bottom = Dashboard.options.footerHeight;
 
     $scope.toggleCollapse = function() {
         $scope.isCollapsed = !$scope.isCollapsed;
@@ -40,10 +41,11 @@ angular.module('Pundit2.Dashboard')
     };
 
     $scope.mouseDownHandler = function(e) {
-        lastPageX = e.pageX;
         e.preventDefault();
+        lastPageX = e.pageX;
         $document.on('mousemove', moveHandler);
-        $document.on('mouseup', upHandler);
+        $document.on('mouseup', upHandler);  
+        
     };
 
     Dashboard.addPanel($scope);

@@ -8,7 +8,7 @@ var DashboardDemoCtrl = function($scope, Dashboard) {
         Dashboard.toggle();
     };
 
-    $scope.useFluid = true;
+    $scope.useFluid = false;
     $scope.$watch('useFluid', function(value) {
         Dashboard.options.fluidResize = value;
     });
