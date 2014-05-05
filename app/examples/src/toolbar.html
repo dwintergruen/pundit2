@@ -7,11 +7,11 @@ var ToolbarDemoCtrl = function($scope, Toolbar) {
     var numberErrors = 0;
     
     $scope.setLogin = function(status){
-        Toolbar.setUserStatus(status);
+        Toolbar.setUserLogged(status);
     };
     
     $scope.getStatus = function(){
-        return Toolbar.getUserStatus();
+        return Toolbar.getUserLogged();
     };
     
     $scope.addError = function(){

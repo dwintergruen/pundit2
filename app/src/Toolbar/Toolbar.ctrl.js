@@ -1,20 +1,11 @@
 angular.module('Pundit2.Toolbar')
 .controller('ToolbarCtrl', function($scope, Toolbar) {
-
-    // TODO SIMO: se non serve togliamo sto ASKLINK
-
-    // default Ask The Pundit link
-    // TODO: spostare in Toolbar.service come default
-    $scope.ASKLINK = "http://ask.thepund.it/";
     
-    $scope.errorMessageDropdown = Toolbar.getError();
+    $scope.errorMessageDropdown = Toolbar.getErrorMessageDropdown();
 
-
-    // TODO SIMO: perche' divider ha le virgolette e uno spazio e gli altri no?
-    // copia incolla?
     $scope.userNotLoggedDropdown = [
         {text: 'Please sign in to use Pundit', href:'#'},
-        { "divider": true },
+        {divider: true },
         {text: 'Sign in', href:'#'}
     ];
     
@@ -38,7 +29,7 @@ angular.module('Pundit2.Toolbar')
     
     // listener for user status
     // when user is logged in, set flag isUserLogged to true
-    $scope.$watch(function(){ return Toolbar.getUserStatus(); }, function(newStatus){
+    $scope.$watch(function(){ return Toolbar.getUserLogged(); }, function(newStatus){
         $scope.isUserLogged = newStatus;
     });
     
@@ -48,58 +39,53 @@ angular.module('Pundit2.Toolbar')
         $scope.isErrorOccured = newStatus;
     });
 
-
-    // TODO SIMO: questi metodi settano la visibilita'? A me pare restituiscano true/false
-    // se sono o non sono visibili -- correggiamo i commenti?
-
-
-    // set status button visibility
+    // return true if no errors are occured --> status button ok must be visible
     $scope.showStatusButtonOk = function(){
         return $scope.isErrorOccured === false;
     };
     
-    // set error button visibility
+    // return true if an error is occured --> status button error must be visible
     $scope.showStatusButtonError = function(){
         return $scope.isErrorOccured === true;
     };
     
-    // set login button visibility
+    // return true if user is not logged in --> login button must be visible
     $scope.showLogin = function(){
         return $scope.isUserLogged === false;
     };
     
-    // set user button visibility
+    // return true if user is logged in --> user button must be visible
     $scope.showUserButton = function(){
         return $scope.isUserLogged === true;
     };
     
-    // set dashboard visibility
+    // return true if user is logged in --> dashboard button is active
     $scope.isDashboardActive = function(){
         return $scope.isUserLogged === true;
     };
     
-    // set Ask the Pundit button visibility
+    // return true if user is logged in --> get user ask link
+    // return false if user is not logged in --> get default ask link
     $scope.isAskActive = function(){
         return $scope.isUserLogged === true;
     };
     
-    // set Template Mode button visibility
+    // return true if user is logged in --> template button is active
     $scope.isTemplateModeActive = function(){
         return $scope.isUserLogged === true;
     };
     
-    // set template menu visibility
+    // return true if user is logged in --> template menu is active
     $scope.isTemplateMenuActive = function(){
         return $scope.isUserLogged === true;
     };
     
-    // set notebook menu visibility
+    // return true if user is logged in --> notebook menu is active
     $scope.isNotebookMenuActive = function(){
         return $scope.isUserLogged === true;
     };
 
-    // set Ask the Pundit link
-    // TODO: if user is logged in, link must be get in configuration
+    // get Ask the Pundit link
     $scope.getAskLink = function(){
         return Toolbar.getAskLink();
     };

@@ -24,12 +24,11 @@ angular.module('Pundit2.Toolbar')
     var isErrorShown = false;
     var errorMessageDropdown = [];
 
-    // TODO SIMO: rinominiamo in setUserLogged e getUserLogged?
-    toolbar.setUserStatus = function(status) {
+    toolbar.setUserLogged = function(status) {
         isUserLogged = status;
     };
     
-    toolbar.getUserStatus = function() {
+    toolbar.getUserLogged = function() {
         return isUserLogged;
     };
     
@@ -47,14 +46,12 @@ angular.module('Pundit2.Toolbar')
     toolbar.addError = function(message, callback) {
         var errID = errorID;
 
-        // TODO SIMO: get callback? ma che vuol dire? ExecuteCallback ? RunCallback ?
-
-        // TODO: verifichiamo che callback sia una funzione prima di invocarla
-
-        // remove error from array and get call callback() function
+        // remove error from array and execute callback function
         var removeErrorAndGetCallback = function() {
             toolbar.removeError(errID);
-            callback();
+            if( typeof(callback) === 'function' && callback !== ''){
+                callback();
+            }
         };
         
         var error = {text: message, click: removeErrorAndGetCallback, id: errID};
@@ -86,11 +83,8 @@ angular.module('Pundit2.Toolbar')
         }
     };
 
-    // TODO SIMO: getError? A che serve? A chi serve? se restituisce la error message dropdown
-    // chiamiamola getErrorMessageDropdown
-
     // get error messages and callbacks
-    toolbar.getError = function() {
+    toolbar.getErrorMessageDropdown = function() {
         return errorMessageDropdown;
     };
     

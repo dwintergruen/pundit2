@@ -17,26 +17,26 @@ describe('Toolbar service', function() {
 
     it("should be isUserLogged = false as default", function() {
         
-        // as default, getUserStatus() must be return false
-        expect(Toolbar.getUserStatus()).toBe(false);
+        // as default, getUserLogged() must be return false
+        expect(Toolbar.getUserLogged()).toBe(false);
     });
     
     it("should set userLogged to status given as parameter ", function() {
         
-        // at this time, getUserStatus() must return false
-        expect(Toolbar.getUserStatus()).toBe(false);
+        // at this time, getUserLogged() must return false
+        expect(Toolbar.getUserLogged()).toBe(false);
         
         // set user as logged in
-        Toolbar.setUserStatus(true);
+        Toolbar.setUserLogged(true);
         
-        // at this time, getUserStatus() must return false
-        expect(Toolbar.getUserStatus()).toBe(true);
+        // at this time, getUserLogged() must return false
+        expect(Toolbar.getUserLogged()).toBe(true);
         
         // set user as logged out
-        Toolbar.setUserStatus(false);
+        Toolbar.setUserLogged(false);
         
-        // at this time, getUserStatus() must return false
-        expect(Toolbar.getUserStatus()).toBe(false);
+        // at this time, getUserLogged() must return false
+        expect(Toolbar.getUserLogged()).toBe(false);
         
     });
     
@@ -45,20 +45,20 @@ describe('Toolbar service', function() {
     });
     
     it("should be errorMessageDropdown empty as default", function(){
-        expect(Toolbar.getError().length).toBe(0);
+        expect(Toolbar.getErrorMessageDropdown().length).toBe(0);
     });
     
     it("should add an error correctly", function(){
         
         //at beginning error array must be empty
-        expect(Toolbar.getError().length).toBe(0);
+        expect(Toolbar.getErrorMessageDropdown().length).toBe(0);
         
         //add 2 error2
         Toolbar.addError(messageError1, myCallback1);
         Toolbar.addError(messageError2, myCallback2);
         
         //at this time error array should contain 2 element
-        var errors = Toolbar.getError();
+        var errors = Toolbar.getErrorMessageDropdown();
         expect(errors.length).toBe(2);
         
         //check if errors added contain a message and a function
@@ -75,13 +75,13 @@ describe('Toolbar service', function() {
         Toolbar.addError(messageError2, myCallback2);
         
         // errors array should contain 2 elements
-        expect(Toolbar.getError().length).toBe(2);
+        expect(Toolbar.getErrorMessageDropdown().length).toBe(2);
         
         // remove first error
         Toolbar.removeError(errorId1);
         
         // errors array should contain only 1 element
-        var errors = Toolbar.getError();
+        var errors = Toolbar.getErrorMessageDropdown();
         expect(errors.length).toBe(1);
         
         // errors array should contain only second error added before
