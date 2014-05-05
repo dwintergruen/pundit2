@@ -49,12 +49,12 @@ angular.module('Pundit2.Toolbar')
         // remove error from array and execute callback function
         var removeErrorAndGetCallback = function() {
             toolbar.removeError(errID);
-            if( typeof(callback) === 'function' && callback !== ''){
+            if (typeof(callback) === 'function' && callback !== '') {
                 callback();
             }
         };
         
-        var error = {text: message, click: removeErrorAndGetCallback, id: errID};
+        var error = { text: message, click: removeErrorAndGetCallback, id: errID };
         errorID++;
         errorMessageDropdown.push(error);
         isErrorShown = true;
@@ -70,7 +70,6 @@ angular.module('Pundit2.Toolbar')
     
     // Remove error from toolbar
     toolbar.removeError = function(errorID) {
-
         for (var i=0; i<errorMessageDropdown.length; i++) {
             if (errorMessageDropdown[i].id === errorID) {
                errorMessageDropdown.splice(i, 1);

@@ -40,15 +40,15 @@ describe('Toolbar service', function() {
         
     });
     
-    it("should be isErrorShown false as default", function(){
+    it("should be isErrorShown false as default", function() {
         expect(Toolbar.getErrorShown()).toBe(false);
     });
     
-    it("should be errorMessageDropdown empty as default", function(){
+    it("should be errorMessageDropdown empty as default", function() {
         expect(Toolbar.getErrorMessageDropdown().length).toBe(0);
     });
     
-    it("should add an error correctly", function(){
+    it("should add an error correctly", function() {
         
         //at beginning error array must be empty
         expect(Toolbar.getErrorMessageDropdown().length).toBe(0);
@@ -68,7 +68,7 @@ describe('Toolbar service', function() {
         }
     });
     
-    it("should remove an error", function(){
+    it("should remove an error", function() {
         
         //add 2 errors
         var errorId1 = Toolbar.addError(messageError1, myCallback1);
@@ -89,7 +89,7 @@ describe('Toolbar service', function() {
         expect(errors[0].click).toEqual(jasmine.any(Function));
     });
     
-    it("should set isErrorShown to true when an error is added", function(){
+    it("should set isErrorShown to true when an error is added", function() {
         
         // at beginning getErrorShown() should return false
         expect(Toolbar.getErrorShown()).toBe(false);
@@ -102,7 +102,7 @@ describe('Toolbar service', function() {
 
     });
     
-    it("should set isErrorShown to false when all errors are deleted", function(){
+    it("should set isErrorShown to false when all errors are deleted", function() {
         
         //add 2 errors
         var errorId1 = Toolbar.addError(messageError1, myCallback1);
