@@ -9,25 +9,19 @@ angular.module('Pundit2.Dashboard')
     containerHeight: 250,
 
     // dashboard lists panels (left)
-    listsWidth: 235,
-    listsRatio: 0.25,
-    listsMinWidth: 235,
+    initialListsRatio: 0.25,
+    listsMinWidth: 245,
 
     // dashboard tools panels (center)
-    toolsWidth: 470,
-    toolsRatio: 0.50,
-    toolsMinWidth: 470,
+    initialToolsRatio: 0.50,
+    toolsMinWidth: 480,
 
     // dashboard details panels (right)
-    detailsWidth: 235,
-    detailsRatio: 0.25,
+    initialDetailsRatio: 0.25,
     detailsMinWidth: 235,
 
     // panel collapsed width
     panelCollapseWidth: 70,
-
-    // separator
-    separatorsWidth: 10,
 
     // footer height
     footerHeight: 20,
@@ -39,31 +33,26 @@ angular.module('Pundit2.Dashboard')
 
     var dashboard = new BaseComponent('Dashboard', DASHBOARDDEFAULTS);
 
-    var containerMinWidth = dashboard.options.listsMinWidth + dashboard.options.toolsMinWidth + dashboard.options.detailsMinWidth + (2 * dashboard.options.separatorsWidth);
+    var containerMinWidth = dashboard.options.listsMinWidth + dashboard.options.toolsMinWidth + dashboard.options.detailsMinWidth;
     
-    var containerAvailableWidth = Math.max(angular.element($window).innerWidth(), containerMinWidth) - (2 * dashboard.options.separatorsWidth);
-
     var state = {
 
         isDashboardVisible: dashboard.options.isDashboardVisible,
 
-        containerWidth: containerAvailableWidth + (2 * dashboard.options.separatorsWidth),
-        containerHeight: dashboard.options.containerHeight,
-
-        panelCollapsedNumber: 0
+        containerWidth: Math.max(angular.element($window).innerWidth(), containerMinWidth),
+        containerHeight: dashboard.options.containerHeight
 
     };
 
-    dashboard.panelToggleCollapse = function(collapse){
-        if ( collapse ){
-            state.panelCollapsedNumber++;  
+    dashboard.canCollapsePanel = function(){
+        var collapsedNum = panels.filter(function(p){
+                return p.isCollapsed;
+            }).length;
+        if ( collapsedNum < 2 ){
+            return true;
         } else {
-            state.panelCollapsedNumber--;
+            return false;
         }
-    };
-
-    dashboard.getCollapsedNumber = function(){
-        return state.panelCollapsedNumber;
     };
 
     /**** DASHBOARD ****/
@@ -139,37 +128,22 @@ angular.module('Pundit2.Dashboard')
         panels.push(panelScope);
 
         if (panelScope.title === "lists") {
-            panelScope.minWidth = dashboard.options.listsMinWidth + dashboard.options.separatorsWidth;
-            panelScope.ratio = dashboard.options.listsRatio;
+            panelScope.minWidth = dashboard.options.listsMinWidth;
         } else if (panelScope.title === "tools") {
-            panelScope.minWidth = dashboard.options.toolsMinWidth + dashboard.options.separatorsWidth;
-            panelScope.ratio = dashboard.options.toolsRatio;
+            panelScope.minWidth = dashboard.options.toolsMinWidth;
         } else if (panelScope.title === "details") {
             panelScope.minWidth = dashboard.options.detailsMinWidth;
-            panelScope.ratio = dashboard.options.detailsRatio;
         }
 
-        dashboard.resetWidths();
-        dashboard.resizeAll();
+        if ( panels.length === 3 ) {
+            dashboard.resizeAll();    
+        }
+        
         $rootScope.$$phase || $rootScope.$digest();
     };
 
-    // Evens out the widths of all panels, expanding them if needed
-    dashboard.resetWidths = function() {
-        var avail = angular.element($window).innerWidth();
-
-        for (var p in panels) {
-            if (panels[p].isCollapsed) {
-                panels[p].isCollapsed = false;
-            }
-
-            // TODO: check if min w, cycle again etc
-            panels[p].width = avail / panels.length;
-        }
-    };
-
     dashboard.resizeAll = function(skip) {
-        var avail = angular.element($window).innerWidth(),
+        var avail = dashboard.getContainerWidth(),
             w, l, i,
             skipLength = 0;
 
@@ -237,6 +211,7 @@ angular.module('Pundit2.Dashboard')
             }
 
             panels[i].left = currentLeft;
+            console.log('resizeAll set left to ',panels[i].left);
             currentLeft += panels[i].width;
         }
 
@@ -276,25 +251,6 @@ angular.module('Pundit2.Dashboard')
 
 
         $rootScope.$$phase || $rootScope.$digest();
-    };
-
-    dashboard.tryToResizeFluid = function(index, delta) {
-        var panel = panels[index],
-            skip = {};
-
-        // If it is shrinking
-        if (delta < 0) {
-            panel.width = Math.max(panel.minWidth, panel.width + delta);
-            skip[index] = panel.width;
-
-        // If it's growing
-        } else {
-            panel.width = panel.width + delta;
-            skip[index] = panel.width;
-        }
-
-        dashboard.resizeAll(skip);
-        return true;
     };
 
     dashboard.tryToResizeCouples = function(index, delta) {

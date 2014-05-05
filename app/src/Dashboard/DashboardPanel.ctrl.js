@@ -1,37 +1,32 @@
 angular.module('Pundit2.Dashboard')
 .controller('DashboardPanelCtrl', function($document, $window, $scope, Dashboard) {
 
-    $scope.isCollapsed = false;
+    // readed from default (not change)
     $scope.collapsedWidth = Dashboard.options.panelCollapseWidth;
+    $scope.bottom = Dashboard.options.footerHeight;
+
+    // overrided in Dashbpoard.addPanel()
     $scope.minWidth = 100;
+    $scope.ratio = 1;
+    
+    $scope.isCollapsed = false;
+
+    // set by Dashboard.resizeAll()
     $scope.left = 0;
     $scope.width = 200;
-    $scope.ratio = 1;
-    $scope.bottom = Dashboard.options.footerHeight;
 
     $scope.toggleCollapse = function() {
 
         if( $scope.isCollapsed ) {
             $scope.isCollapsed = !$scope.isCollapsed;
-            Dashboard.panelToggleCollapse(false);
             var foo = {};
             foo[$scope.index] = $scope.minWidth;
             Dashboard.resizeAll(foo);
             
-        } else if ( Dashboard.getCollapsedNumber() < 2 ) {
+        } else if ( Dashboard.canCollapsePanel() ) {
             $scope.isCollapsed = !$scope.isCollapsed;
-            Dashboard.panelToggleCollapse(true);
             Dashboard.resizeAll();
-        }   
-
-        /*$scope.isCollapsed = !$scope.isCollapsed;
-        if (!$scope.isCollapsed) {
-            var foo = {};
-            foo[$scope.index] = $scope.minWidth;
-            Dashboard.resizeAll(foo);
-        } else {
-            Dashboard.resizeAll();
-        }*/
+        }
     };
 
     var lastPageX;
@@ -64,6 +59,6 @@ angular.module('Pundit2.Dashboard')
 
     Dashboard.addPanel($scope);
 
-    Dashboard.log('run panel ctrl');
+    Dashboard.log('Run panel ctrl');
 
 });
