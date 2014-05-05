@@ -1,6 +1,6 @@
 describe('Toolbar service', function() {
     
-    var Toolbar;
+    var Toolbar, MyPundit;
     
     var messageError1 = "Error 1";
     var messageError2 = "Error 2";
@@ -12,32 +12,14 @@ describe('Toolbar service', function() {
     beforeEach(function() {
         inject(function($injector) {
             Toolbar = $injector.get('Toolbar');
+            MyPundit = $injector.get('MyPundit');
         });
     });
 
     it("should be isUserLogged = false as default", function() {
         
         // as default, getUserLogged() must be return false
-        expect(Toolbar.getUserLogged()).toBe(false);
-    });
-    
-    it("should set userLogged to status given as parameter ", function() {
-        
-        // at this time, getUserLogged() must return false
-        expect(Toolbar.getUserLogged()).toBe(false);
-        
-        // set user as logged in
-        Toolbar.setUserLogged(true);
-        
-        // at this time, getUserLogged() must return false
-        expect(Toolbar.getUserLogged()).toBe(true);
-        
-        // set user as logged out
-        Toolbar.setUserLogged(false);
-        
-        // at this time, getUserLogged() must return false
-        expect(Toolbar.getUserLogged()).toBe(false);
-        
+        expect(MyPundit.getUserLogged()).toBe(false);
     });
     
     it("should be isErrorShown false as default", function() {
