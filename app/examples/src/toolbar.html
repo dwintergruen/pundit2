@@ -2,12 +2,20 @@
 
 <script>
 
-var ToolbarDemoCtrl = function($scope, Toolbar) {
+var ToolbarDemoCtrl = function($scope, Toolbar, MyPundit) {
     
     var numberErrors = 0;
     
-    $scope.setLogin = function(status){
-        Toolbar.setUserLogged(status);
+    $scope.login = function() {
+        MyPundit.login().then(function(value) {
+            Toolbar.setUserLogged(value);
+        });
+    };
+    
+    $scope.logout = function() {
+        MyPundit.logout().then(function() {
+            Toolbar.setUserLogged(false);
+        });
     };
     
     $scope.getStatus = function(){
@@ -16,10 +24,8 @@ var ToolbarDemoCtrl = function($scope, Toolbar) {
     
     $scope.addError = function(){
         var n = numberErrors;
-        var a = Toolbar.addError("Error #"+n, function(){console.log("clicked on error #", n)});
+        var a = Toolbar.addError("Error #"+n, function() { console.log("clicked on error #", n) });
         numberErrors++;
-        //var button = angular.element('.pnd-toolbar-error-button a');
-        //button.trigger('click');
     };
     
 }
@@ -30,8 +36,8 @@ var ToolbarDemoCtrl = function($scope, Toolbar) {
         <toolbar></toolbar>
         
         <div ng-controller="ToolbarDemoCtrl">
-            <button type="button" class="btn btn-success" ng-click="setLogin(true)" ng-show="!getStatus()">Log in</button>
-            <button type="button" class="btn btn-warning" ng-click="setLogin(false)" ng-show="getStatus()">Log out</button>
+            <button type="button" class="btn btn-success" ng-show="!getStatus()" ng-click="login()">Log in</button>
+            <button type="button" class="btn btn-warning" ng-show="getStatus()" ng-click="logout()">Log out</button>
             <button type="button" class="btn btn-danger" ng-click="addError()" >Add Error</button>
         </div>
     </div>

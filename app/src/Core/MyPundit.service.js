@@ -14,18 +14,18 @@ angular.module('Pundit2.Core')
         userData = { };
     
     // return the current login status
-    myPundit.getLoginStatus = function(){
+    myPundit.getLoginStatus = function() {
         return loginStatus;
     };
     
     // get if user is logged or not 
-    myPundit.getUserLogged = function(){
+    myPundit.getUserLogged = function() {
         return isUserLogged;
     };
     
     // get if user is logged or not 
     myPundit.getUserData = function(){
-        if(userData !== '' && typeof(userData) !== 'undefined'){
+        if(userData !== '' && typeof(userData) !== 'undefined') {
             return userData;
         }
     };
@@ -33,7 +33,7 @@ angular.module('Pundit2.Core')
     // check if the user is logged in or not 
     // return a promise, resolved as true if user is logged in
     // false otherwise
-    myPundit.checkLoggedIn = function(){
+    myPundit.checkLoggedIn = function() {
         
         var promise = $q.defer(),
             httpCall;
@@ -47,13 +47,12 @@ angular.module('Pundit2.Core')
         }).success(function(data) {
             
             // user is not logged in
-            if (data.loginStatus === 0){
+            if (data.loginStatus === 0) {
                 isUserLogged = false;
                 loginServer = data.loginServer;
                 promise.resolve(false);
-            }
-            // user is logged in
-            else {
+            } else {
+                // user is logged in
                 isUserLogged = true;
                 loginStatus = "loggedIn";
                 userData = data;
@@ -69,12 +68,12 @@ angular.module('Pundit2.Core')
     
     // check if user is not logged in, then open login modal
     var loginPromise;
-    myPundit.login = function(){
+    myPundit.login = function() {
 
         loginPromise = $q.defer();
 
         myPundit.checkLoggedIn().then(
-            function(isUserLoggedIn){
+            function(isUserLoggedIn) {
                 if(isUserLoggedIn === false){
                     loginStatus = "loggedOff";
                     openLoginModal();

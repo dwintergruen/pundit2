@@ -5,17 +5,6 @@ angular.module('Pundit2.Toolbar')
 })
 .service('Toolbar', function(BaseComponent, TOOLBARDEFAULTS) {
 
-
-    // TODO SIMO: in generale devi fare ancora molta attenzione alla pulizia del codice
-    // - ogni tanto e' indentato con meno di 4 spazi o cmq male
-    // - gli spazi da mettere sempre:
-    //    dopo le () e prima di { ---> function() {
-    //    dopo i : nelle dichiarazioni di oggetti ---> { prop: valore }
-    //    dopo if e prima di {} ---> if ()
-    //    attorno agli else ---> } else {
-    // .... insomma, un po' piu' di precisione!
-
-
     var toolbar = new BaseComponent('Toolbar', TOOLBARDEFAULTS);
     
     var errorID = 0;

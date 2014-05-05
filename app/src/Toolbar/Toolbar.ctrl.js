@@ -1,36 +1,51 @@
 angular.module('Pundit2.Toolbar')
-.controller('ToolbarCtrl', function($scope, Toolbar) {
+.controller('ToolbarCtrl', function($scope, Toolbar, MyPundit) {
+    
+    var login = function() {
+        MyPundit.login().then(function(userStatus) {
+            Toolbar.setUserLogged(userStatus);
+        });
+    };
+    
+    var logout = function() {
+        MyPundit.logout().then(function() {
+            Toolbar.setUserLogged(false);
+        });
+    };
     
     $scope.errorMessageDropdown = Toolbar.getErrorMessageDropdown();
 
     $scope.userNotLoggedDropdown = [
-        { text: 'Please sign in to use Pundit', href:'#' },
+        { text: 'Please sign in to use Pundit', href: '#' },
         { divider: true },
-        { text: 'Sign in', href:'#' }
+        { text: 'Sign in', click: login }
     ];
     
     $scope.userLoggedInDropdown = [
-        { text: 'Log out', href:'#' }
+        { text: 'Log out', click: logout }
     ];
     
     $scope.userTemplateDropdown = [
-        { text: 'My template 1', href:'#' },
-        { text: 'My template 2', href:'#' },
-        { text: 'My template 3', href:'#' }
+        { text: 'My template 1', href: '#' },
+        { text: 'My template 2', href: '#' },
+        { text: 'My template 3', href: '#' }
     ];
     
     $scope.userNotebooksDropdown = [
-        { text: 'Current notebook', href:'#' },
-        { "divider": true },
-        { text: 'My notebook 1', href:'#' },
-        { text: 'My notebook 2', href:'#' },
-        { text: 'My notebook 3', href:'#' }
+        { text: 'Current notebook', href: '#' },
+        { divider: true },
+        { text: 'My notebook 1', href: '#' },
+        { text: 'My notebook 2', href: '#' },
+        { text: 'My notebook 3', href: '#' }
     ];
+    
+    $scope.userData = {};
     
     // listener for user status
     // when user is logged in, set flag isUserLogged to true
     $scope.$watch(function() { return Toolbar.getUserLogged(); }, function(newStatus) {
         $scope.isUserLogged = newStatus;
+        $scope.userData = MyPundit.getUserData();
     });
     
     // listener for error status
