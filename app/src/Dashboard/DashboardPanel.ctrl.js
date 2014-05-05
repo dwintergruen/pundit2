@@ -10,14 +10,28 @@ angular.module('Pundit2.Dashboard')
     $scope.bottom = Dashboard.options.footerHeight;
 
     $scope.toggleCollapse = function() {
-        $scope.isCollapsed = !$scope.isCollapsed;
+
+        if( $scope.isCollapsed ) {
+            $scope.isCollapsed = !$scope.isCollapsed;
+            Dashboard.panelToggleCollapse(false);
+            var foo = {};
+            foo[$scope.index] = $scope.minWidth;
+            Dashboard.resizeAll(foo);
+            
+        } else if ( Dashboard.getCollapsedNumber() < 2 ) {
+            $scope.isCollapsed = !$scope.isCollapsed;
+            Dashboard.panelToggleCollapse(true);
+            Dashboard.resizeAll();
+        }   
+
+        /*$scope.isCollapsed = !$scope.isCollapsed;
         if (!$scope.isCollapsed) {
             var foo = {};
             foo[$scope.index] = $scope.minWidth;
             Dashboard.resizeAll(foo);
         } else {
             Dashboard.resizeAll();
-        }
+        }*/
     };
 
     var lastPageX;

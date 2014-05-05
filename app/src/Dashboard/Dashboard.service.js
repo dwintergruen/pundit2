@@ -45,11 +45,25 @@ angular.module('Pundit2.Dashboard')
 
     var state = {
 
-        isDashboardVisible : dashboard.options.isDashboardVisible,
+        isDashboardVisible: dashboard.options.isDashboardVisible,
 
         containerWidth: containerAvailableWidth + (2 * dashboard.options.separatorsWidth),
-        containerHeight: dashboard.options.containerHeight
+        containerHeight: dashboard.options.containerHeight,
 
+        panelCollapsedNumber: 0
+
+    };
+
+    dashboard.panelToggleCollapse = function(collapse){
+        if ( collapse ){
+            state.panelCollapsedNumber++;  
+        } else {
+            state.panelCollapsedNumber--;
+        }
+    };
+
+    dashboard.getCollapsedNumber = function(){
+        return state.panelCollapsedNumber;
     };
 
     /**** DASHBOARD ****/
@@ -116,10 +130,6 @@ angular.module('Pundit2.Dashboard')
         dashboard.log("Adding panel", panelScope.title);
         var len = panels.length;
 
-        // Rather than using isLast, create a "isDraggable"
-        // and update them after an add + collapse/expand
-        // (if a panel has only collapsed panels at his right
-        // is it draggable?)
         if (len > 0) {
             panels[len - 1].isLast = false;
         }
@@ -288,13 +298,8 @@ angular.module('Pundit2.Dashboard')
     };
 
     dashboard.tryToResizeCouples = function(index, delta) {
-        dashboard.log('Resizing '+index+' of '+delta);
+        
         var panel = panels[index], i;
-
-        // TODO: next is not index+1 but we need to look for it
-        // checking for a not collapsed one at its right:
-        // there SHOULD be one, if we add the isResizable check
-        // or something in place of the isLast to inhibit drag
 
         if ( panel.isCollapsed ) {
             return false;
@@ -315,8 +320,7 @@ angular.module('Pundit2.Dashboard')
 
         // If it is shrinking
         if (delta < 0) {
-            console.log('resize')
-
+            
             var realDelta = panel.width - Math.max(panel.minWidth, panel.width + delta);
             panel.width = Math.max(panel.minWidth, panel.width + delta);
 
@@ -344,8 +348,7 @@ angular.module('Pundit2.Dashboard')
 
             // If it's growing, check if there's space to grow
         } else if (panels.length > index+1) {
-            console.log('expand')
-
+            
             var nextIndex;
             for (i=index+1; i<panels.length; i++) {
                 if ( !panels[i].isCollapsed ) {
@@ -363,7 +366,6 @@ angular.module('Pundit2.Dashboard')
                 panel.width = panel.width + realDelta;
 
                 var currentLeft = panel.left + panel.width;
-                console.log(currentLeft)
                 for (i=index+1; i<nextIndex; i++) {
                     panels[i].left = currentLeft;
                     currentLeft = currentLeft + panels[i].width;
