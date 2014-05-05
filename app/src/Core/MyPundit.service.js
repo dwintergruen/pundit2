@@ -11,7 +11,7 @@ angular.module('Pundit2.Core')
     var isUserLogged = false;
     var loginServer,
         loginStatus,
-        userData = { };
+        userData = {};
     
     // return the current login status
     myPundit.getLoginStatus = function() {
@@ -70,7 +70,7 @@ angular.module('Pundit2.Core')
     myPundit.login = function() {
 
         loginPromise = $q.defer();
-
+        
         myPundit.checkLoggedIn().then(
             function(isUserLoggedIn) {
                 if(isUserLoggedIn === false){

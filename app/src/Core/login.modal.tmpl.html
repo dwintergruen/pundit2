@@ -1,16 +1,16 @@
-<div class="modal" tabindex="-1" role="dialog" ng-controller="LoginModalCtrl">
+<div class="modal pnd-login-modal-container" tabindex="-1" role="dialog" ng-controller="LoginModalCtrl">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title"> Login </h4>
             </div>
-            <div class="modal-body">
+            <div class="modal-body pnd-login-modal-body">
                 {{notifyMessage}}
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" ng-show="isUserLogged()" ng-click="closeModal()">Close</button>
-                <button type="button" class="btn btn-default" ng-show="!isUserLogged()" ng-click="cancelModal()">Cancel</button>
-                <button type="button" class="btn btn-default" ng-show="!isUserLogged()" ng-click="loginPopUp()">Open the login window</button>
+            <div class="modal-footer pnd-login-modal-footer">
+                <button type="button" class="btn btn-default pnd-login-modal-close" ng-show="isUserLogged()" ng-click="closeModal()">Close</button>
+                <button type="button" class="btn btn-default pnd-login-modal-cancel" ng-show="!isUserLogged()" ng-click="cancelModal()">Cancel</button>
+                <button type="button" class="btn btn-default pnd-login-modal-openPopUp" ng-show="!isUserLogged()" ng-click="loginPopUp()">Open the login window</button>
             </div>
         </div>
     </div>
