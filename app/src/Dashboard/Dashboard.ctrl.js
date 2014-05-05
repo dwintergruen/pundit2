@@ -70,7 +70,7 @@ angular.module('Pundit2.Dashboard')
     var lastPageY;
     var footerMouseMoveHandler = function(event) {
         var dy = event.pageY - lastPageY;
-        if ( Dashboard.tryToSetContainerHeight(dy) ) {
+        if ( Dashboard.increeseContainerHeight(dy) ) {
             lastPageY = event.pageY;
         }
     }

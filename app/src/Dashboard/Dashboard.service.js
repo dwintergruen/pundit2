@@ -1,7 +1,7 @@
 angular.module('Pundit2.Dashboard')
 .constant('DASHBOARDDEFAULTS', {
 
-    isDashboardVisible: true,
+    isDashboardVisible: false,
 
     // dashboard container
     containerMinHeight: 200,
@@ -69,7 +69,7 @@ angular.module('Pundit2.Dashboard')
         return state.containerHeight;
     }
 
-    dashboard.tryToSetContainerHeight = function(dy) {
+    dashboard.increeseContainerHeight = function(dy) {
         var newHeight = state.containerHeight + dy;
         if (newHeight >= dashboard.options.containerMinHeight && newHeight <= dashboard.options.containerMaxHeight) {
             state.containerHeight = newHeight;
@@ -211,7 +211,6 @@ angular.module('Pundit2.Dashboard')
             }
 
             panels[i].left = currentLeft;
-            console.log('resizeAll set left to ',panels[i].left);
             currentLeft += panels[i].width;
         }
 
