@@ -9,10 +9,12 @@ module.exports = function(config) {
             'bower_components/angular-sanitize/angular-sanitize.js',
             'bower_components/angular-animate/angular-animate.js',
             'bower_components/angular-strap/dist/angular-strap.min.js',
+            'bower_components/angular-strap/dist/angular-strap.tpl.min.js',
 
             // Load the module declaration before the module utilization, or karma
             // will screw up :|
             'app/src/pundit2.js',
+            'app/src/templates.js',
             'app/src/Core/Core.js',
             'app/src/Annomatic/Annomatic.js',
             'app/src/Dashboard/Dashboard.js',
