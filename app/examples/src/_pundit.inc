@@ -49,6 +49,7 @@
     <script src="../src/Dashboard/Dashboard.ctrl.js"></script>
     <script src="../src/Dashboard/Dashboard.service.js"></script>
     <script src="../src/Dashboard/DashboardPanel.dir.js"></script>
+    <script src="../src/Dashboard/DashboardPanel.ctrl.js"></script>
 
     <script src="../src/Toolbar/Toolbar.js"></script>
     <script src="../src/Toolbar/Toolbar.dir.js"></script>

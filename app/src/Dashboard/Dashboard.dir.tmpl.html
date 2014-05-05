@@ -2,78 +2,13 @@
 
     <div class="pnd-dashboard-container" ng-show="isDashboardVisible">
 
-        <!-- panel list -->
-        <div class="pnd-dashboard-panel pnd-dashboard-panel-lists">
-            <div class="pnd-dashboard-panel-expanded" ng-hide="listsCollapsed">
-                <div class="pnd-dashboard-panel-nav"></div>
-                <div class="pnd-dashboard-panel-content">
-                    <!-- the content comes from outside-->
-                </div>
-                <!--collapse button-->
-                <button type="button" class="btn btn-default"
-                        ng-click="toggleListsPanel()">X</button>
-            </div>
-            <!--panel collapsed-->
-            <div class="pnd-dashboard-panel-collapsed" ng-show="listsCollapsed">
-                <button type="button" class="btn btn-default" ng-click="toggleListsPanel()">E</button>
-            </div>
-        </div>
-
-        <!-- panel tools -->
-        <div class="pnd-dashboard-panel pnd-dashboard-panel-tools">
-            <div class="pnd-dashboard-panel-expanded" ng-hide="toolsCollapsed">
-                <div class="pnd-dashboard-panel-nav"></div>
-                <div class="pnd-dashboard-panel-content">
-                    <!-- the content comes from outside-->
-                </div>
-                <button type="button" class="btn btn-default"
-                        ng-click="toggleToolsPanel()">X</button>
-            </div>
-            <!--panel collapsed-->
-            <div class="pnd-dashboard-panel-collapsed" ng-show="toolsCollapsed">
-                <button type="button" class="btn btn-default" ng-click="toggleToolsPanel()">E</button>
-            </div>
-        </div>
-
-        <!-- panel details -->
-        <div class="pnd-dashboard-panel pnd-dashboard-panel-details">
-            <div class="pnd-dashboard-panel-expanded" ng-hide="detailsCollapsed">
-                <div class="pnd-dashboard-panel-nav"></div>
-                <div class="pnd-dashboard-panel-content">
-                    <!-- the content comes from outside-->
-                </div>
-                <button type="button" class="btn btn-default"
-                        ng-click="toggleDetailsPanel()">X</button>
-            </div>
-            <!--panel collapsed-->
-            <div class="pnd-dashboard-panel-collapsed" ng-show="detailsCollapsed">
-                <button type="button" class="btn btn-default" ng-click="toggleDetailsPanel()">E</button>
-            </div>
-        </div>
-
-        <!--separator-->
-        <div class="pnd-dashboard-separator pnd-dashboard-separator-1" ng-mousedown="firstSeparatorMouseDownHandler($event)"></div>
-        <div class="pnd-dashboard-separator pnd-dashboard-separator-2" ng-mousedown="secondSeparatorMouseDownHandler($event)"></div>
+        <dashboard-panel title="lists"></dashboard-panel>
+        <dashboard-panel title="tools"></dashboard-panel>
+        <dashboard-panel title="details"></dashboard-panel>
 
         <!--footer-->
         <div class="pnd-dashboard-footer" ng-mousedown="footerMouseDownHandler($event)"></div>
 
-    </div>
-
-    <br><hr><br>
-
-    <div class="btn-group" ng-model="useFluid" bs-radio-group>
-        <label class="btn btn-default"><input type="radio" class="btn btn-default" value="true">Fluid resize</label>
-        <label class="btn btn-default"><input type="radio" class="btn btn-default" value="false">Couples resize</label>
-    </div>
-    <br><br>
-
-    <div class="pnd-dashboard-container">
-        <dashboard-panel title="lists"></dashboard-panel>
-        <dashboard-panel title="tools"></dashboard-panel>
-        <dashboard-panel title="details"></dashboard-panel>
-        <dashboard-panel title="extra"></dashboard-panel>
-        <dashboard-panel title="extra 2 :)"></dashboard-panel>
     </div>
 
 </div>

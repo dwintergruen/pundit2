@@ -7,6 +7,11 @@ var DashboardDemoCtrl = function($scope, Dashboard) {
     $scope.toogle = function(){
         Dashboard.toggle();
     };
+
+    $scope.useFluid = true;
+    $scope.$watch('useFluid', function(value) {
+        Dashboard.options.fluidResize = value;
+    });
     
 }
 
@@ -15,11 +20,16 @@ var DashboardDemoCtrl = function($scope, Dashboard) {
 <div data-ng-app="Pundit2" class="pnd-wrp">
     <dashboard></dashboard>
 
+    <br><br><br>
+
     <div ng-controller="DashboardDemoCtrl">
-        <button type="button" class="btn btn-default" style="margin-top:50px" ng-click="toogle()">Toggle</button>
+        <button type="button" class="btn btn-default" ng-click="toogle()">Toggle</button>
+    
+        <div class="btn-group" ng-model="useFluid" bs-radio-group>
+            <label class="btn btn-default"><input type="radio" class="btn btn-default" value="true">Fluid resize</label>
+            <label class="btn btn-default"><input type="radio" class="btn btn-default" value="false">Couples resize</label>
+        </div>
     </div>
 </div>
-
-<br><br><br>
 
 <!-- buildexamples:section footer --><!-- /buildexamples -->

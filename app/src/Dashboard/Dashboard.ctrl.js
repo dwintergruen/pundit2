@@ -47,7 +47,7 @@ angular.module('Pundit2.Dashboard')
 
     var windowLastWidth = 0, windowCurrentWidth;
     angular.element($window).resize(function(){
-        windowCurrentWidth = angular.element($window).width();
+        windowCurrentWidth = angular.element($window).innerWidth();
         if ( windowCurrentWidth !== windowLastWidth ) {
             windowLastWidth = windowCurrentWidth;
             Dashboard.setContainerWidth(windowCurrentWidth);
@@ -75,22 +75,9 @@ angular.module('Pundit2.Dashboard')
         jqElement.container.css({
             'width' : newWidth
         });
-        // set the left of the elements
-        jqElement.firstSeparator.css({
-            'left' : Dashboard.getListsPanelWidth()
-        });
-        jqElement.panelTools.css({
-            'left' : Dashboard.getToolsPanelLeft()
-        });
-        jqElement.panelDetails.css({
-            'left' : Dashboard.getDetailsPanelLeft()
-        });
-        jqElement.secondSeparator.css({
-            'left' : Dashboard.getDetailsPanelLeft() - separatorsWidth
-        });
     });
 
-    /**** PANELS WIDTH WATCHER ****/
+    /**** PANELS WIDTH WATCHER 
 
     $scope.$watch(function() {
         return Dashboard.getListsPanelWidth();
@@ -121,7 +108,7 @@ angular.module('Pundit2.Dashboard')
         jqElement.secondSeparator.css({
             'left' : left - separatorsWidth
         });
-    });
+    }); ****/
 
     /**** TOGGLE WATCHER ****/
 
@@ -131,7 +118,7 @@ angular.module('Pundit2.Dashboard')
         $scope.isDashboardVisible = newVis;
     });
 
-    /**** PANEL LEFT WATCHER ****/
+    /**** PANEL LEFT WATCHER 
 
     $scope.$watch(function() {
         return Dashboard.getToolsPanelLeft();
@@ -147,7 +134,7 @@ angular.module('Pundit2.Dashboard')
         jqElement.panelDetails.css({
             'left' : newLeft
         });
-    });
+    });****/
 
     /**** FOOTER ****/
 
@@ -159,9 +146,12 @@ angular.module('Pundit2.Dashboard')
         Dashboard.log('Footer mouseup: removing handlers');
     }
 
+    var lastPageY;
     var footerMouseMoveHandler = function(event) {
-        var h = event.pageY - jqElement.container.offset().top;
-        Dashboard.setContainerHeight(h);
+        var dy = event.pageY - lastPageY;
+        if ( Dashboard.tryToSetContainerHeight(dy) ) {
+            lastPageY = event.pageY;
+        }
     }
 
     $scope.footerMouseDownHandler = function(event) {
@@ -170,88 +160,10 @@ angular.module('Pundit2.Dashboard')
             $document.on('mouseup', footerMouseUpHandler);
             $document.on('mousemove', footerMouseMoveHandler);
 
-            Dashboard.log('Footer mousedown: adding drag/drop handlers');
+            lastPageY = event.pageY;
         }
     };
 
-    /**** SEPARATORS ****/
-
-    var firstSeparatorMouseUpHandler = function(){
-        $document.off('mousemove', firstSeparatorMouseMoveHandler);
-        $document.off('mouseup', firstSeparatorMouseUpHandler);
-
-        Dashboard.log('mouseup first separator');
-    };
-
-    var initX, listsInitWidth, toolsInitWidth;
-    var firstSeparatorMouseMoveHandler = function(){
-        var d = (initX - event.pageX),
-            lw = listsInitWidth - d,
-            tw = toolsInitWidth + d;
-        
-        Dashboard.moveLeftSeparator(lw, tw);
-    };
-
-    $scope.firstSeparatorMouseDownHandler = function(event){
-        if ( event.which === 1 ) {
-            event.preventDefault();        
-            $document.on('mouseup', firstSeparatorMouseUpHandler);
-            $document.on('mousemove', firstSeparatorMouseMoveHandler);
-
-            initX = event.pageX;
-            listsInitWidth = Dashboard.getListsPanelWidth();
-            toolsInitWidth = Dashboard.getToolsPanelWidth();
-
-            Dashboard.log('First Separator mousedown: adding drag/drop handlers');
-        }
-    };
-
-    var secondSeparatorMouseUpHandler = function(){
-        $document.off('mousemove', secondSeparatorMouseMoveHandler);
-        $document.off('mouseup', secondSeparatorMouseUpHandler);
-
-        Dashboard.log('mouseup second separator');
-    };
-
-    var initX, toolsInitWidth, detailsInitWidth;
-    var secondSeparatorMouseMoveHandler = function(){
-        var d = (initX - event.pageX),
-            dw = detailsInitWidth + d,
-            tw = toolsInitWidth - d;
-        
-        Dashboard.moveRightSeparator(tw, dw);
-    };
-
-    $scope.secondSeparatorMouseDownHandler = function(event){
-        if ( event.which === 1 ) {
-            event.preventDefault();        
-            $document.on('mouseup', secondSeparatorMouseUpHandler);
-            $document.on('mousemove', secondSeparatorMouseMoveHandler);
-
-            initX = event.pageX;
-            detailsInitWidth = Dashboard.getDetailsPanelWidth();
-            toolsInitWidth = Dashboard.getToolsPanelWidth();
-
-            Dashboard.log('Second Separator mousedown: adding drag/drop handlers');
-        }
-    };
-
-    /**** TOGGLE ****/
-    $scope.toggleListsPanel = function(){
-
-    };
-
-    $scope.toggleToolsPanel = function(){
-
-    };
-    
-    $scope.toggleDetailsPanel = function(){
-
-    };
-
-    $scope.useFluid = true;
-    $scope.$watch('useFluid', function(value) {
-        Dashboard.options.fluidResize = value;
-    });
+    Dashboard.log('Controller Run');
 
 });
