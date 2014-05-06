@@ -1,58 +1,93 @@
-.pnd-toolbar-active-element {
-    color: white;
-}
-
-.pnd-toolbar-not-active-element {
-    color: gray;
-}
-
-.pnd-toolbar-ask-button-active {
-    background-color: @brand-success;
-}
-
-.pnd-toolbar-ask-button-not-active {
-    background-color: @gray;
-}
+.navbar-inverse .navbar-nav li {
 
 
-.pnd-toolbar-status-button-ok {
-    background-color: @brand-success;  
-    &:hover,
-    &:focus  {
-	background-color: darken(@brand-success, 12%);
-    } 
-}
-
-.pnd-toolbar-button-active {
-    background-color: @brand-success;
-    
-    &:hover,
-    &:focus  {
-	background-color: darken(@brand-success, 12%);
-    } 
-}
-
-
-.pnd-toolbar-button-not-active {
-    background-color: @gray;
-}
-
-
-.pnd-toolbar-status-ok-icon {
-    color: green;
-}
-
-.pnd-toolbar-error-button {
-    color: #ffffff;
-    background-color: @brand-warning;
-}
-
-.pnd-toolbar-navbar{
-    min-width: 960px;
-    
-    .pnd-icon {
-    font-size: 12px;
-    line-height: inherit;
-    }    
-    
+		.pnd-toolbar-active-element {
+		    color: white;
+		}
+		
+		.pnd-toolbar-not-active-element {
+		    color: gray;
+		}
+		
+		&.pnd-toolbar-ask-button-active {
+		    background-color: @brand-success;
+		    border-right: 0px;
+		    
+		    a  {
+			background-color: @brand-success;
+			border: 0px;
+			
+				&:hover,
+			    &:focus  {
+				background-color: darken(@brand-success, 12%);
+			    }
+		    } 
+		    
+		}
+		
+		&.pnd-toolbar-ask-button-not-active {
+		    background-color: @gray;
+		}
+		
+		
+		
+		&.pnd-toolbar-status-button-ok {
+		    background-color: @brand-success;
+		    border-right: 1px lighten(@brand-success, 30%) solid ;
+		    
+		    a  {
+			background-color: @brand-success;
+			border: 0px;
+			
+				&:hover,
+			    &:focus  {
+				background-color: darken(@brand-success, 12%);
+			    }
+		    } 
+		}
+		
+		
+		&.pnd-toolbar-button-active {
+		    background-color: @brand-success;
+		    border-right: 1px lighten(@brand-success, 30%) solid ;
+		    
+		    a  {
+			background-color: @brand-success;
+			border: 0px;
+			
+				&:hover,
+			    &:focus  {
+				background-color: darken(@brand-success, 12%);
+			    }
+		    } 
+		}
+		
+		
+		.pnd-toolbar-button-not-active {
+		    background-color: @gray;
+		}
+		
+		.pnd-toolbar-status-ok-icon {
+		    color: green;
+		}
+		
+		.pnd-toolbar-error-button {
+		    color: #ffffff;
+		    background-color: @brand-warning;
+		}
+		
+		
+		
+		.pnd-toolbar-navbar{
+		    min-width: 960px;
+		    
+		    
+		    .pnd-icon {
+			    font-size: 12px;
+			    line-height: inherit;
+			}    
+		    
+		}
+		
+ 
 }
