@@ -1,6 +1,6 @@
 describe('MyPundit service', function() {
     
-    var MyPundit, $rootScope, $httpBackend, NameSpace, $timeout, $q, $modal;
+    var MyPundit, $rootScope, $httpBackend, NameSpace, $timeout, $q, $modal, $document;
     
     var userNotLogged = {
         loginStatus: 0,
@@ -25,7 +25,7 @@ describe('MyPundit service', function() {
     
     beforeEach(module('Pundit2'));
 
-    beforeEach(inject(function($injector, _$rootScope_, _$httpBackend_, _$timeout_, _$q_, _$modal_){
+    beforeEach(inject(function($injector, _$rootScope_, _$httpBackend_, _$timeout_, _$q_, _$modal_, _$document_){
         MyPundit = $injector.get('MyPundit');
         NameSpace = $injector.get('NameSpace');
         $rootScope = _$rootScope_;
@@ -33,6 +33,7 @@ describe('MyPundit service', function() {
         $timeout = _$timeout_;
         $q = _$q_;
         $modal = _$modal_;
+        $document = _$document_;
     }));
 
     
@@ -121,8 +122,10 @@ describe('MyPundit service', function() {
 
     });
 
-    xit("should set loginStatus = loggedOff and open the modal if user is not logged in and login() is executed", function() {
+    it("should set loginStatus = loggedOff and open the modal if user is not logged in and login() is executed", function() {
 
+        angular.element($document[0].body).append('<div data-ng-app="Pundit2" class="pnd-wrp"></div>');
+        $rootScope.$digest();
         $httpBackend.whenGET(NameSpace.get('asUsersCurrent')).respond(userNotLogged);
 
         MyPundit.login();
@@ -132,16 +135,53 @@ describe('MyPundit service', function() {
         
         // login status should be loggedOff
         expect(MyPundit.getLoginStatus()).toBe("loggedOff");
-
-        console.log(MyPundit.getLoginStatus());
         
         // modal should be open
         var modalContainer = angular.element.find('div.pnd-login-modal-container');
         expect(modalContainer.length).toBe(1);
-        console.log(modalContainer.length);
+        
+        // modal should contain cancel button and should be shown
+        var cancelButton = angular.element.find('.pnd-login-modal-cancel');
+        expect(cancelButton.length).toBe(1);
+        expect(angular.element(cancelButton).hasClass('ng-hide')).toBe(false);
+        
+        // modal should contain open login popup button and should be shown
+        var openPopUpButton = angular.element.find('.pnd-login-modal-openPopUp');
+        expect(openPopUpButton.length).toBe(1);
+        expect(angular.element(openPopUpButton).hasClass('ng-hide')).toBe(false);
+
+        // close button should be hide
+        var closeButton = angular.element.find('.pnd-login-modal-close');
+        expect(closeButton.length).toBe(1);
+        expect(angular.element(closeButton).hasClass('ng-hide')).toBe(true);
         
     });
-
-
+    
+    it("should correctly get logout when user is logged in", function() {
+        
+        var logoutOk = { logout: 1 };
+        
+        $httpBackend.whenGET(NameSpace.get('asUsersCurrent')).respond(userLoggedIn);
+        $httpBackend.whenGET(NameSpace.get('asUsersLogout')).respond(logoutOk);
+        
+        // check if user is logged in or not
+        MyPundit.checkLoggedIn();
+        
+        $rootScope.$digest();
+        $httpBackend.flush();
+        
+        // at this time user should be logged in
+        expect(MyPundit.getUserLogged()).toBe(true);
+        
+        // get logout
+        MyPundit.logout();
+        
+        $rootScope.$digest();
+        $httpBackend.flush();
+        
+        // after logout user shoud be not logged in anymore
+        expect(MyPundit.getUserLogged()).toBe(false);
+        
+    });
 
 });
