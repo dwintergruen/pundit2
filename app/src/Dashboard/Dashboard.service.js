@@ -75,6 +75,7 @@ angular.module('Pundit2.Dashboard')
             $rootScope.$apply();
             return true;
         } else {
+            // TODO go to max occhio al return
             return false;
         }
     };
@@ -256,14 +257,21 @@ angular.module('Pundit2.Dashboard')
         var panel = panels[index], i;
 
         if ( panel.isCollapsed ) {
-            for (i=index-1; i>=0; i--) {
-                if ( !panels[i].isCollapsed ) {
-                    panel = panels[i];
-                    index = i;
-                    break;
+            // check if the next panel exist and is not collapsed
+            if( index+1 < panels.length && !panels[index+1].isCollapsed ) {
+                // find the first left not collapsed panel
+                for (i=index-1; i>=0; i--) {
+                    if ( !panels[i].isCollapsed ) {
+                        panel = panels[i];
+                        index = i;
+                        break;
+                    }
                 }
-            }
-            if ( i < 0 ) {
+                // if all collapsed
+                if ( i < 0 ) {
+                    return false;
+                }                
+            } else {
                 return false;
             }
         }

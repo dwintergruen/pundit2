@@ -1,4 +1,4 @@
-describe('Dashboard service', function() {
+ddescribe('Dashboard service', function() {
     
     var Dashboard,
         $window,
@@ -6,11 +6,23 @@ describe('Dashboard service', function() {
     
     beforeEach(module('Pundit2'));
 
-    beforeEach(inject(function(_$window_, _$compile_, _Dashboard_){
+    beforeEach(module(
+        'src/Dashboard/Dashboard.dir.tmpl.html',
+        'src/Dashboard/DashboardPanel.dir.tmpl.html'
+    ));
+
+    beforeEach(inject(function(_$window_, _$rootScope_, _$compile_, _Dashboard_){
         $window = _$window_;
+        $rootScope = _$rootScope_;
         $compile = _$compile_;
         Dashboard = _Dashboard_;
     }));
+
+    var compileDirective = function(){
+        var elem = $compile('<dashboard></dashboard>')($rootScope);
+        $rootScope.$digest();
+        return elem;
+    };
 
     it("should read default visible and toggle", function() {
         var vis = Dashboard.isDashboardVisible();
@@ -52,6 +64,10 @@ describe('Dashboard service', function() {
         Dashboard.setContainerWidth(minWidth-43);
         expect(Dashboard.getContainerWidth()).not.toBe(minWidth-43);
         expect(Dashboard.getContainerWidth()).toBe(minWidth);
+    });
+
+    it("should be compile directive", function(){
+        console.log(compileDirective().scope());
     });
 
     // TODO compile directive and check panel width
