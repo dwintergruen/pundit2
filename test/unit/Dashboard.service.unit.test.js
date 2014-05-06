@@ -67,11 +67,63 @@ describe('Dashboard service', function() {
         expect(Dashboard.getContainerWidth()).toBe(minWidth);
     });
 
-    it("should be compile directive", function(){
+    it("should initialize total panels width to containerWidth", function(){
         var el = compileDirective();
+        var panels = angular.element(el).find('dashboard-panel').toArray();
+        
+        var totalWidth = 0;
+        for ( var i in panels ) {
+            totalWidth = totalWidth + angular.element(panels[i]).isolateScope().width;   
+        }
+
+        expect(totalWidth).toBe(Dashboard.getContainerWidth());        
     });
 
-    // TODO compile directive and check panel width
-    // TODO compile directive and check panel left
+    it("should initialize total panels width to containerWidth when container is at minWidth", function(){
+        var el = compileDirective();
+        var panels = angular.element(el).find('dashboard-panel').toArray();
+
+        var minWidth = DASHBOARDDEFAULTS.listsMinWidth + DASHBOARDDEFAULTS.toolsMinWidth + DASHBOARDDEFAULTS.detailsMinWidth;
+        Dashboard.setContainerWidth(minWidth);
+        
+        var totalWidth = 0;
+        for ( var i in panels ) {
+            totalWidth = totalWidth + angular.element(panels[i]).isolateScope().width;   
+        }
+
+        expect(totalWidth).toBe(minWidth);        
+    });
+
+    it("should update total panels width to containerWidth when resize", function(){
+        var el = compileDirective();
+        var panels = angular.element(el).find('dashboard-panel').toArray();
+
+        var newWidth = Dashboard.getContainerWidth() - 15;
+        Dashboard.setContainerWidth(newWidth);
+        
+        var totalWidth = 0;
+        for ( var i in panels ) {
+            totalWidth = totalWidth + angular.element(panels[i]).isolateScope().width;   
+        }
+
+        expect(Dashboard.getContainerWidth()).toBe(newWidth);
+        expect(totalWidth).toBe(newWidth);
+    });
+
+    it("should update total panels width to containerWidth when expand", function(){
+        var el = compileDirective();
+        var panels = angular.element(el).find('dashboard-panel').toArray();
+
+        var newWidth = Dashboard.getContainerWidth() + 16;
+        Dashboard.setContainerWidth(newWidth);
+        
+        var totalWidth = 0;
+        for ( var i in panels ) {
+            totalWidth = totalWidth + angular.element(panels[i]).isolateScope().width;   
+        }
+
+        expect(Dashboard.getContainerWidth()).toBe(newWidth);
+        expect(totalWidth).toBe(newWidth);
+    });
 
 });

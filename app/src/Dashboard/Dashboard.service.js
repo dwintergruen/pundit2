@@ -68,6 +68,7 @@ angular.module('Pundit2.Dashboard')
         return state.containerHeight;
     }
 
+    // TODO errore grammaticale (aridaglie)
     dashboard.increeseContainerHeight = function(dy) {
         var newHeight = state.containerHeight + dy;
         if (newHeight >= dashboard.options.containerMinHeight && newHeight <= dashboard.options.containerMaxHeight) {
@@ -75,7 +76,7 @@ angular.module('Pundit2.Dashboard')
             $rootScope.$apply();
             return true;
         } else {
-            // TODO go to max occhio al return
+            // TODO go to max (occhio al return)
             return false;
         }
     };
