@@ -81,6 +81,9 @@ module.exports = function(grunt) {
                     src: [
                         '.tmp',
                         'coverage/*',
+                        '<%= conf.app %>/css/*css',
+                        '<%= conf.app %>/css/fonts',
+                        '<%= conf.app %>/fonts',
                         '<%= conf.build %>/*',
                         '!<%= conf.build %>/.git*'
                     ]
@@ -543,8 +546,8 @@ module.exports = function(grunt) {
         ['bower', 'shell:protractorInstall']);
 
     grunt.registerTask('build', 'Builds a production-ready version of the application',
-        ['clean:dist', 'html2js', 'examples', 'useminPrepare', 'less:dist', 'copy:css', 'imagemin',
-            'htmlmin', 'concat', 'copy:dist', 'ngmin', 'cssmin', 'uglify',
+        ['clean:dist', 'copy:fonts', 'html2js', 'examples', 'useminPrepare', 'less:dist', 'copy:css', 'imagemin',
+            'htmlmin', 'concat',  'copy:dist', 'ngmin', 'cssmin', 'uglify',
             'rev', 'usemin', 'htmlmin:final', 'copy:bookmarklet']);
 
     grunt.registerTask('dev', 'Live dev workflow: watches app files and reloads the browser automatically',
