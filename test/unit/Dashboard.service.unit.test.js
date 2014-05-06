@@ -1,4 +1,4 @@
-ddescribe('Dashboard service', function() {
+describe('Dashboard service', function() {
     
     var Dashboard,
         $window,
@@ -11,11 +11,12 @@ ddescribe('Dashboard service', function() {
         'src/Dashboard/DashboardPanel.dir.tmpl.html'
     ));
 
-    beforeEach(inject(function(_$window_, _$rootScope_, _$compile_, _Dashboard_){
+    beforeEach(inject(function(_$window_, _$rootScope_, _$compile_, _DASHBOARDDEFAULTS_,  _Dashboard_){
         $window = _$window_;
         $rootScope = _$rootScope_;
         $compile = _$compile_;
         Dashboard = _Dashboard_;
+        DASHBOARDDEFAULTS = _DASHBOARDDEFAULTS_;
     }));
 
     var compileDirective = function(){
@@ -26,13 +27,13 @@ ddescribe('Dashboard service', function() {
 
     it("should read default visible and toggle", function() {
         var vis = Dashboard.isDashboardVisible();
-        expect(vis).toBe(Dashboard.options.isDashboardVisible);
+        expect(vis).toBe(DASHBOARDDEFAULTS.isDashboardVisible);
         Dashboard.toggle();
         expect(vis).toBe(!Dashboard.isDashboardVisible());
     });
 
     it("should read default container height", function() {
-        expect(Dashboard.getContainerHeight()).toBe(Dashboard.options.containerHeight);
+        expect(Dashboard.getContainerHeight()).toBe(DASHBOARDDEFAULTS.containerHeight);
     });
 
     it("should set container height", function() {
@@ -48,26 +49,26 @@ ddescribe('Dashboard service', function() {
     });
 
     it("should read containerWidth as window innerWidth or minimum width", function() {
-        var minWidth = Dashboard.options.listsMinWidth + Dashboard.options.toolsMinWidth + Dashboard.options.detailsMinWidth;
+        var minWidth = DASHBOARDDEFAULTS.listsMinWidth + DASHBOARDDEFAULTS.toolsMinWidth + DASHBOARDDEFAULTS.detailsMinWidth;
         var bw = Math.max(angular.element($window).innerWidth(), minWidth);
         expect(Dashboard.getContainerWidth()).toBe(bw);
     });
 
     it("should set containerWidth", function() {
-        var minWidth = Dashboard.options.listsMinWidth + Dashboard.options.toolsMinWidth + Dashboard.options.detailsMinWidth;
+        var minWidth = DASHBOARDDEFAULTS.listsMinWidth + DASHBOARDDEFAULTS.toolsMinWidth + DASHBOARDDEFAULTS.detailsMinWidth;
         Dashboard.setContainerWidth(minWidth+43);
         expect(Dashboard.getContainerWidth()).toBe(minWidth+43);
     });
 
     it("should not set containerWidth under minWidth", function() {
-        var minWidth = Dashboard.options.listsMinWidth + Dashboard.options.toolsMinWidth + Dashboard.options.detailsMinWidth;
+        var minWidth = DASHBOARDDEFAULTS.listsMinWidth + DASHBOARDDEFAULTS.toolsMinWidth + DASHBOARDDEFAULTS.detailsMinWidth;
         Dashboard.setContainerWidth(minWidth-43);
         expect(Dashboard.getContainerWidth()).not.toBe(minWidth-43);
         expect(Dashboard.getContainerWidth()).toBe(minWidth);
     });
 
     it("should be compile directive", function(){
-        console.log(compileDirective().scope());
+        var el = compileDirective();
     });
 
     // TODO compile directive and check panel width
