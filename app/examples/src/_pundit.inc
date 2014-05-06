@@ -51,6 +51,9 @@
     <script src="../src/Dashboard/DashboardPanel.dir.js"></script>
     <script src="../src/Dashboard/DashboardPanel.ctrl.js"></script>
 
+    <script src="../src/ContextualMenu/ContextualMenu.js"></script>
+    <script src="../src/ContextualMenu/ContextualMenu.service.js"></script>
+
     <script src="../src/Toolbar/Toolbar.js"></script>
     <script src="../src/Toolbar/Toolbar.dir.js"></script>
     <script src="../src/Toolbar/Toolbar.ctrl.js"></script>
