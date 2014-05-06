@@ -80,28 +80,34 @@ describe('Analytics service', function() {
         expect(Analytics.getHits()).toBe(Analytics.options.hits);
     });
 
-    /* work-in-progress
-    iit('should be crazy', function() {
-        var hitsSent = Analytics.options.hits;
+    /* work-in-progress */
+    iit('should timer replenish at a rate of 2 hit per second', function() {
         $log.reset();
         expect($log.log.logs.length).toEqual(0);
 
         expect(Analytics.getHits()).toBe(Analytics.options.hits);
-        for(var i=0; i<=hitsSent+1; i++){
+        for(var i=1; i<=Analytics.options.hits; i++){
             Analytics.track(eventCategory, eventAction);            
         }
-        //expect($log.log.logs.length).toEqual(hitsSent);
+        expect($log.log.logs.length).toEqual(Analytics.options.hits);
         expect(Analytics.getHits()).toBe(0);
-        
+
         Analytics.track(eventCategory, eventAction);
+        Analytics.track(eventCategory, eventAction);
+        expect($log.log.logs.length).toEqual(Analytics.options.hits);
         expect(Analytics.getHits()).toBe(0);
-        expect($log.log.logs.length).toEqual(hitsSent);
-        
-        //$timeout.flush(Analytics.options.bufferDelay);
-        // $timeout.flush(Analytics.options.bufferDelay - epsilon);
-        // expect(Analytics.getHits()).toBe(Analytics.options.hits - 2);
-        // $timeout.flush(2 * epsilon);
-        // expect(Analytics.getHits()).toBe(Analytics.options.hits);
-    });*/
+
+        $timeout.flush(Analytics.options.bufferDelay - epsilon);
+        expect(Analytics.getHits()).toBe(0);
+        $timeout.flush(2 * epsilon);
+        expect($log.log.logs.length).toEqual(Analytics.options.hits+2+1);
+        expect(Analytics.getHits()).toBe(0);
+
+        $timeout.flush(Analytics.options.bufferDelay);
+        expect(Analytics.getHits()).toBe(2);
+            
+        //TODO: Da dividere in sotto-problemi per controlli piu' selettivi?
+        //TODO: Come distinguere log del sendHits() da quello del updateHits()?
+    });
 
 });
