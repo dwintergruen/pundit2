@@ -3,6 +3,20 @@
 
 
 
+
+.pnd-toolbar-navbar{
+		   min-width: 960px;     
+		}
+		
+// ---------- ICONS
+
+		.pnd-icon {
+			font-size: 12px;
+			line-height: inherit;
+		}  
+
+// ---------- ELEMENTS
+
 		.pnd-toolbar-active-element {
 		    color: white;
 		}
@@ -14,7 +28,7 @@
 		
 // ---------- ASK BUTTON	
 
-&.pnd-toolbar-ask-button-not-active {
+		&.pnd-toolbar-ask-button-not-active {
 			border-right: 0px;
 		     
 		    a  {
@@ -53,7 +67,7 @@
 		}
 		
 		
-&.pnd-toolbar-ask-button-active {
+		&.pnd-toolbar-ask-button-active {
 		    border-right: 0px;
 		     
 		    a  {
@@ -92,6 +106,9 @@
 		}
 		
 
+
+// ---------- DASHBOARD BUTTON
+
 		&.pnd-toolbar-dashboard-button {
 		    
 		    .pnd-toolbar-active-element,.pnd-toolbar-not-active-element {
@@ -99,7 +116,8 @@
 		    	}
 		}
 		
-		
+
+// ---------- STATUS BUTTON		
 		
 		&.pnd-toolbar-status-button-ok {
 		    background-color: @brand-success;
@@ -116,6 +134,7 @@
 		    } 
 		}
 		
+// ---------- BUTTON
 		
 		&.pnd-toolbar-button-active {
 		    background-color: @brand-success;
@@ -138,26 +157,33 @@
 		}
 		
 		.pnd-toolbar-status-ok-icon {
-		    color: green;
+		    //color: green;
 		}
+		
+// ---------- ERROR BUTTON
 		
 		&.pnd-toolbar-error-button {
 		    color: #ffffff;
 		    background-color: @brand-warning;
 		}
 		
-		
-		
-		.pnd-toolbar-navbar{
-		    min-width: 960px;
+
+// ---------- DROPDOWN MENU	
+
+
+		.dropdown-menu {
 		    
-		    
-		    .pnd-icon {
-			    font-size: 12px;
-			    line-height: inherit;
-			}    
-		    
-		}
+		     a	{
+			     background-color: transparent;
+			     
+			     &:hover {
+			     background-color:  @gray-lighter;
+			     }
+			     
+			     }
+
+		 }
+
 		
  
 }
