@@ -4,7 +4,7 @@ angular.module('Pundit2.Core')
 .constant('ANALYTICSDEFAULTS', {
     trackingCode: 'UA-50437894-1',
     globalTracker: '__gaPndtTracker',
-    hits: 20, //Each web property starts with 20 hits that are replenished at a rate of 2 hit per second.
+    maxHits: 20, //Each web property starts with 20 hits that are replenished at a rate of 2 hit per second.
     bufferDelay: 1000,
     doTracking: true,
     debug: false
@@ -20,7 +20,7 @@ angular.module('Pundit2.Core')
     var isSendRunning = false;
     var isTimeRunning = false;
     var updateHitsTimer;
-    var currentHits = analytics.options.hits;
+    var currentHits = analytics.options.maxHits;
 
     (function(i, s, o, g, r, a, m) {
         i.GoogleAnalyticsObject = r;
@@ -48,15 +48,15 @@ angular.module('Pundit2.Core')
     ga('set', 'checkProtocolTask', function() {}); //HACK
 
     var updateHits = function() {
-        if (currentHits >= analytics.options.hits){
+        if (currentHits >= analytics.options.maxHits){
             isTimeRunning = false;
-            analytics.log('Stop! Hits: '+currentHits);
+            analytics.log(analytics.options.maxHits+' hits available again');
             return;
         }
 
         updateHitsTimer = $timeout(function() {
-            currentHits = Math.min(currentHits+2, analytics.options.hits);
-            analytics.log('Hits: '+currentHits);
+            currentHits = Math.min(currentHits+2, analytics.options.maxHits);
+            //analytics.log('Hits: '+currentHits);
             updateHits();
             sendHits();
         }, analytics.options.bufferDelay);
@@ -85,7 +85,7 @@ angular.module('Pundit2.Core')
                 isTimeRunning = true;
                 updateHits();
             }
-            analytics.log('Tracked ('+numSent+'/'+currentHits+') event '+currentEvent.eventCategory+' ('+ currentEvent.eventAction +': '+ currentEvent.eventLabel +')');
+            analytics.log('Tracked ('+numSent+' sent / '+currentHits+' available) event '+currentEvent.eventCategory+' ('+ currentEvent.eventAction +': '+ currentEvent.eventLabel +')');
             
             sendHits();
         }

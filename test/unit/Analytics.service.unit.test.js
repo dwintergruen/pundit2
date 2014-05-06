@@ -4,8 +4,7 @@ describe('Analytics service', function() {
         $window,
         $log,
         $timeout,
-        // TODO: commento per cosa usi epsilon
-        epsilon = 1,
+        epsilon = 1, //ms to introduce a gap in $timeout.flush()
         eventCategory = 'testCategory',
         eventAction = 'testAction';
 
@@ -53,75 +52,112 @@ describe('Analytics service', function() {
         expect($log.error.logs.length).toEqual(1);
     });
 
+    it('should not send hits without hits available', function() {
+        var currentLog,
+            hitsSent;
+        $log.reset();
+        expect($log.log.logs.length).toEqual(0);
+        expect(Analytics.getHits()).toEqual(Analytics.options.maxHits);
+        
+        // fill the queue to check that doesn't make calls without hits available
+        for(var i=1; i<=Analytics.options.maxHits; i++){
+            Analytics.track(eventCategory, eventAction);
+        }
+
+        // attempting to send
+        Analytics.track(eventCategory, eventAction);
+        Analytics.track(eventCategory, eventAction);
+
+        currentLog = $log.log.logs[$log.log.logs.length-1].toString();
+        hitsSent = parseInt(currentLog.match(/\d+(?=\ssent)/), 10);
+        
+        // check the number of sends
+        expect(hitsSent).toEqual(Analytics.options.maxHits);
+        expect(Analytics.getHits()).toEqual(0);
+    });
+
     it('should decrease hits after calling track()', function() {
-        expect(Analytics.getHits()).toBe(Analytics.options.hits);
+        expect(Analytics.getHits()).toEqual(Analytics.options.maxHits);
         Analytics.track(eventCategory, eventAction);
         Analytics.track(eventCategory, eventAction);
-        expect(Analytics.getHits()).toBe(Analytics.options.hits - 2);
+        expect(Analytics.getHits()).toEqual(Analytics.options.maxHits - 2);
     });
 
     it('should increase one hit with after bufferDelay ms', function() {
-        expect(Analytics.getHits()).toBe(Analytics.options.hits);
+        expect(Analytics.getHits()).toEqual(Analytics.options.maxHits);
         Analytics.track(eventCategory, eventAction);
-        expect(Analytics.getHits()).toBe(Analytics.options.hits - 1);
+        expect(Analytics.getHits()).toEqual(Analytics.options.maxHits - 1);
 
-        // TODO: commento sul come stai testando (subito prima vs subito dopo)
         $timeout.flush(Analytics.options.bufferDelay - epsilon);
-        expect(Analytics.getHits()).toBe(Analytics.options.hits - 1);
+        // check that there isn't any increase
+        expect(Analytics.getHits()).toEqual(Analytics.options.maxHits - 1);
         $timeout.flush(2 * epsilon);
-        expect(Analytics.getHits()).toBe(Analytics.options.hits);
+        //check that there is an increase
+        expect(Analytics.getHits()).toEqual(Analytics.options.maxHits);
     });
 
     it('should increase two hits after bufferDelay ms', function() {
-        expect(Analytics.getHits()).toBe(Analytics.options.hits);
+        expect(Analytics.getHits()).toEqual(Analytics.options.maxHits);
         Analytics.track(eventCategory, eventAction);
         Analytics.track(eventCategory, eventAction);
-        // TODO: commento, come sopra
-        expect(Analytics.getHits()).toBe(Analytics.options.hits - 2);
+        expect(Analytics.getHits()).toEqual(Analytics.options.maxHits - 2);
         $timeout.flush(Analytics.options.bufferDelay - epsilon);
-        expect(Analytics.getHits()).toBe(Analytics.options.hits - 2);
+        // check that there isn't any increase
+        expect(Analytics.getHits()).toEqual(Analytics.options.maxHits - 2);
+        // check that there is an increase
         $timeout.flush(2 * epsilon);
-        expect(Analytics.getHits()).toBe(Analytics.options.hits);
+        expect(Analytics.getHits()).toEqual(Analytics.options.maxHits);
+    });
+
+    it('should available hits do not exceed maxHits', function() {
+        expect(Analytics.getHits()).toEqual(Analytics.options.maxHits);
+        for(var i=1; i<=5; i++){
+            Analytics.track(eventCategory, eventAction);
+        }
+        expect(Analytics.getHits()).toEqual(Analytics.options.maxHits - 5);
+
+        for(var j=1; j<=Analytics.options.maxHits; j++){
+            $timeout.flush(Analytics.options.bufferDelay);
+        }
+        expect(Analytics.getHits()).toEqual(Analytics.options.maxHits);
+    });
+
+   it('should buffer be empty', function() {
+        $log.reset();
+        expect($log.log.logs.length).toEqual(0);
+        expect(Analytics.getHits()).toEqual(Analytics.options.maxHits);
+
+        for(var i=1; i<=Analytics.options.maxHits; i++){
+            Analytics.track(eventCategory, eventAction);
+        }
+
+        expect(Analytics.getHits()).toEqual(0);
     });
 
     it('should replenish available hits at a rate of 2 per second', function() {
         $log.reset();
         expect($log.log.logs.length).toEqual(0);
+        expect(Analytics.getHits()).toEqual(Analytics.options.maxHits);
 
-        expect(Analytics.getHits()).toBe(Analytics.options.hits);
-        // TODO: commento, riempio la coda per verificare che non spedisca hits se non ce
-        // n'e' di disponibili: facciamo un test solo per questo?
-        for(var i=1; i<=Analytics.options.hits; i++){
+        for(var i=1; i<=Analytics.options.maxHits; i++){
             Analytics.track(eventCategory, eventAction);
         }
-        expect($log.log.logs.length).toEqual(Analytics.options.hits);
-        expect(Analytics.getHits()).toBe(0);
-
-        Analytics.track(eventCategory, eventAction);
-        Analytics.track(eventCategory, eventAction);
-        expect($log.log.logs.length).toEqual(Analytics.options.hits);
-        expect(Analytics.getHits()).toBe(0);
+        
+        expect(Analytics.getHits()).toEqual(0);
 
         $timeout.flush(Analytics.options.bufferDelay - epsilon);
-        // TODO: commento su cosa stai testando (dopo bufferDelay devo avere di nuovo 2 hits
-        // disponibili che vengono usate subito)
-        expect(Analytics.getHits()).toBe(0);
+        // is checked the life of the timer
+        expect(Analytics.getHits()).toEqual(0);
         $timeout.flush(2 * epsilon);
-        expect($log.log.logs.length).toEqual(Analytics.options.hits+2+1);
-        expect(Analytics.getHits()).toBe(0);
 
-        for(var j=1; j<=Analytics.options.hits; j++){
+        // after bufferDelay, getHits() should return 2 hits
+        expect(Analytics.getHits()).toEqual(2);
+
+        for(var j=1; j<=Analytics.options.maxHits; j++){
             $timeout.flush(Analytics.options.bufferDelay);
         }
 
-        expect(Analytics.getHits()).toBe(Analytics.options.hits);
-            
-        //TODO: Da dividere in sotto-problemi per controlli piu' selettivi?
-        //      Es. verificare che il numero di hits sia sempre <= 20
-        //TODO: Come distinguere log del sendHits() da quello del updateHits()?
-        //      --- forse ci basta il log per quando invia, non per ogni step della ricarica
-        //      --- mettiamone giusto 2: coda vuota, coda piena e testiamoli
-        //      --- cmq, in $log.log.logs non ci trovi i messaggi di log?
+        expect(Analytics.getHits()).toEqual(Analytics.options.maxHits);
     });
 
 });
