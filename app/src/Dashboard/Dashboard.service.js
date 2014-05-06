@@ -5,7 +5,7 @@ angular.module('Pundit2.Dashboard')
 
     // dashboard container
     containerMinHeight: 200,
-    containerMaxHeight: 500,
+    containerMaxHeight: 400,
     containerHeight: 250,
 
     // dashboard lists panels (left)
@@ -26,7 +26,7 @@ angular.module('Pundit2.Dashboard')
     // footer height
     footerHeight: 20,
 
-    debug: true
+    debug: false
 })
 .service('Dashboard', function(BaseComponent, DASHBOARDDEFAULTS, $window, $rootScope) {
 
@@ -68,17 +68,25 @@ angular.module('Pundit2.Dashboard')
         return state.containerHeight;
     }
 
-    // TODO errore grammaticale (aridaglie)
-    dashboard.increeseContainerHeight = function(dy) {
-        var newHeight = state.containerHeight + dy;
-        if (newHeight >= dashboard.options.containerMinHeight && newHeight <= dashboard.options.containerMaxHeight) {
-            state.containerHeight = newHeight;
-            $rootScope.$apply();
-            return true;
-        } else {
-            // TODO go to max (occhio al return)
+    dashboard.increaseContainerHeight = function(dy) {
+
+        if ( state.containerHeight === dashboard.options.containerMaxHeight && dy>0){
             return false;
         }
+        if ( state.containerHeight === dashboard.options.containerMinHeight && dy<0){
+            return false;
+        }
+
+        var newHeight = state.containerHeight + dy;
+        if ( newHeight < dashboard.options.containerMinHeight ){
+            state.containerHeight = dashboard.options.containerMinHeight;
+        } else if ( newHeight > dashboard.options.containerMaxHeight ) {
+            state.containerHeight = dashboard.options.containerMaxHeight;
+        } else {
+            state.containerHeight = newHeight;
+        }
+        $rootScope.$apply();
+        return true;
     };
 
     dashboard.getContainerWidth = function() {

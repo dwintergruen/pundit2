@@ -140,6 +140,8 @@ describe("Dashboard interaction", function() {
     it('should drag (increase width) of first dashboard panel', function() {
         var panelNum = 3;
 
+        p.driver.manage().window().setSize(1200, 960);
+
         p.get('/app/examples/dashboard.html');
 
         // find separator element contained in dashboard-panel tag with attribute title=
@@ -172,7 +174,21 @@ describe("Dashboard interaction", function() {
 
         });
 
-        // TODO check left attr               
+        rightPanel.getCssValue('left').then(function(left){
+            left = parseInt(left.substring(0, left.length-2));
+
+            // drag left
+            var offset = 33;
+            p.actions().dragAndDrop(sep, {x:-offset, y:0}).perform();
+
+            // check left 
+            rightPanel.getCssValue('left').then(function(newLeft){
+                newLeft = parseInt(newLeft.substring(0, newLeft.length-2));
+                expect(newLeft).toBeLessThan(left);
+                expect(newLeft).toBe(left - offset);
+            });
+
+        });                       
         
     });
 

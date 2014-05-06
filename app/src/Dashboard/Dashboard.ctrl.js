@@ -62,14 +62,12 @@ angular.module('Pundit2.Dashboard')
         // remove handlers
         $document.off('mousemove', footerMouseMoveHandler);
         $document.off('mouseup', footerMouseUpHandler);
-
-        Dashboard.log('Footer mouseup: removing handlers');
     }
 
     var lastPageY;
     var footerMouseMoveHandler = function(event) {
         var dy = event.pageY - lastPageY;
-        if ( Dashboard.increeseContainerHeight(dy) ) {
+        if ( Dashboard.increaseContainerHeight(dy) ) {
             lastPageY = event.pageY;
         }
     }
@@ -84,6 +82,6 @@ angular.module('Pundit2.Dashboard')
         }
     };
 
-    Dashboard.log('Dashboard Controller Run');
+    Dashboard.log('Controller Run');
 
 });

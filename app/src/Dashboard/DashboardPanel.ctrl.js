@@ -74,6 +74,6 @@ angular.module('Pundit2.Dashboard')
 
     Dashboard.addPanel($scope);
 
-    Dashboard.log('Run panel ctrl');
+    Dashboard.log('Panel Controller Run');
 
 });

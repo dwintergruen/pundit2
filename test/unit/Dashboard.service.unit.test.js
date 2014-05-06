@@ -38,14 +38,14 @@ describe('Dashboard service', function() {
 
     it("should set container height", function() {
         var before = Dashboard.getContainerHeight();
-        expect(Dashboard.increeseContainerHeight(1)).toBe(true);
+        expect(Dashboard.increaseContainerHeight(1)).toBe(true);
         expect(Dashboard.getContainerHeight()).toBe(before+1);
     });
 
     it("should not set container height", function() {
         var before = Dashboard.getContainerHeight();
-        expect(Dashboard.increeseContainerHeight(999)).toBe(false);
-        expect(Dashboard.getContainerHeight()).toBe(before);
+        expect(Dashboard.increaseContainerHeight(999)).toBe(true);
+        expect(Dashboard.getContainerHeight()).toBe(DASHBOARDDEFAULTS.containerMaxHeight);
     });
 
     it("should read containerWidth as window innerWidth or minimum width", function() {
@@ -65,6 +65,24 @@ describe('Dashboard service', function() {
         Dashboard.setContainerWidth(minWidth-43);
         expect(Dashboard.getContainerWidth()).not.toBe(minWidth-43);
         expect(Dashboard.getContainerWidth()).toBe(minWidth);
+    });
+
+    it("should correctly initialize panels scope", function(){
+        var el = compileDirective();
+        var panels = angular.element(el).find('dashboard-panel').toArray();
+        
+        var scope;
+        for ( var i in panels ) {
+            scope = angular.element(panels[i]).isolateScope();
+
+            expect(scope.index).toBeDefined();
+            expect(scope.width).toBeDefined();
+            expect(scope.left).toBeDefined();
+            expect(scope.minWidth).toBeDefined();
+            expect(scope.isCollapsed).toBeDefined();
+
+        }
+
     });
 
     it("should initialize total panels width to containerWidth", function(){
@@ -98,7 +116,10 @@ describe('Dashboard service', function() {
         var el = compileDirective();
         var panels = angular.element(el).find('dashboard-panel').toArray();
 
-        //TODO : test panels width before and after resize check if is not equal
+        var preTotalWidth = 0;
+        for ( var i in panels ) {
+            preTotalWidth = preTotalWidth + angular.element(panels[i]).isolateScope().width;   
+        }
 
         var newWidth = Dashboard.getContainerWidth() - 15;
         Dashboard.setContainerWidth(newWidth);
@@ -110,6 +131,7 @@ describe('Dashboard service', function() {
 
         expect(Dashboard.getContainerWidth()).toBe(newWidth);
         expect(totalWidth).toBe(newWidth);
+        expect(preTotalWidth).not.toBe(totalWidth);
     });
 
     it("should update total panels width to containerWidth when expand", function(){
@@ -127,7 +149,5 @@ describe('Dashboard service', function() {
         expect(Dashboard.getContainerWidth()).toBe(newWidth);
         expect(totalWidth).toBe(newWidth);
     });
-
-    // TODO test panels collapse ?
 
 });
