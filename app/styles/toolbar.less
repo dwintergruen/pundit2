@@ -2,6 +2,7 @@
 .navbar-inverse .navbar-nav li {
 
 
+
 		.pnd-toolbar-active-element {
 		    color: white;
 		}
@@ -10,14 +11,17 @@
 		    color: gray;
 		}
 		
-&.pnd-toolbar-ask-button-active {
-		    background-color: @brand-success;
-		    border-right: 0px;
-		    margin-right: 10px;
+		
+// ---------- ASK BUTTON	
+
+&.pnd-toolbar-ask-button-not-active {
+			border-right: 0px;
 		     
 		    a  {
+		    background-color: @gray;
 			border: 0px;
 			position: relative;
+			padding-left: 10px;
 			
 				&:after { // ARROW
 					left: 100%;
@@ -28,10 +32,50 @@
 					width: 0;
 					position: absolute;
 					pointer-events: none;
-					border-color: rgba(81, 156, 213, 0);
+					border-color: rgba(0, 0, 0, 0);
+					border-left-color: @gray;
+					border-width: 15px;
+					margin-top: -15px;
+					z-index: 100; 
+				}
+			
+				&:hover,
+			    &:focus  {
+					background-color: @gray-darker;
+				
+					&:after { // ARROW hover
+						border-left-color:  @gray-darker;
+					}
+				}
+				
+		    } 
+
+		}
+		
+		
+&.pnd-toolbar-ask-button-active {
+		    border-right: 0px;
+		     
+		    a  {
+		    background-color: @brand-success;
+			border: 0px;
+			position: relative;
+			padding-left: 10px;
+			
+				&:after { // ARROW
+					left: 100%;
+					top: 50%;
+					border: solid transparent;
+					content: " ";
+					height: 0;
+					width: 0;
+					position: absolute;
+					pointer-events: none;
+					border-color: rgba(0, 0, 0, 0);
 					border-left-color: @brand-success;
 					border-width: 15px;
 					margin-top: -15px;
+					z-index: 100; 
 				}
 			
 				&:hover,
@@ -47,9 +91,12 @@
 		    
 		}
 		
-		
-		&.pnd-toolbar-ask-button-not-active {
-		    background-color: @gray;
+
+		&.pnd-toolbar-dashboard-button {
+		    
+		    .pnd-toolbar-active-element,.pnd-toolbar-not-active-element {
+		    	padding-left: 10px; // padding Arrow
+		    	}
 		}
 		
 		
