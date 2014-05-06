@@ -83,12 +83,14 @@ angular.module('Pundit2.Toolbar')
     
     // return true if user is logged in --> template button is active
     $scope.isTemplateModeActive = function() {
-        return $scope.isUserLogged === true;
+        //return $scope.isUserLogged === true;
+        return false;
     };
     
     // return true if user is logged in --> template menu is active
     $scope.isTemplateMenuActive = function() {
-        return $scope.isUserLogged === true;
+        //return $scope.isUserLogged === true;
+        return false;
     };
     
     // return true if user is logged in --> notebook menu is active
