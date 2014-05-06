@@ -98,6 +98,8 @@ describe('Dashboard service', function() {
         var el = compileDirective();
         var panels = angular.element(el).find('dashboard-panel').toArray();
 
+        //TODO : test panels width before and after resize check if is not equal
+
         var newWidth = Dashboard.getContainerWidth() - 15;
         Dashboard.setContainerWidth(newWidth);
         
@@ -125,5 +127,7 @@ describe('Dashboard service', function() {
         expect(Dashboard.getContainerWidth()).toBe(newWidth);
         expect(totalWidth).toBe(newWidth);
     });
+
+    // TODO test panels collapse ?
 
 });

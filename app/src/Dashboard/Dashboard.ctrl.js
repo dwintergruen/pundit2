@@ -14,6 +14,10 @@ angular.module('Pundit2.Dashboard')
     jqElement.footer.css({
         'height' : Dashboard.options.footerHeight
     });
+    // set container height
+    jqElement.container.css({
+        'height' : Dashboard.getContainerHeight()
+    });
 
     $scope.isDashboardVisible = Dashboard.isDashboardVisible();
 
