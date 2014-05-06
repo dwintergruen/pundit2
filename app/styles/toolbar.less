@@ -1,5 +1,4 @@
 
-
 .navbar-inverse .navbar-nav li {
 
 
@@ -11,41 +10,43 @@
 		    color: gray;
 		}
 		
-		&.pnd-toolbar-ask-button-active {
+&.pnd-toolbar-ask-button-active {
 		    background-color: @brand-success;
 		    border-right: 0px;
 		    margin-right: 10px;
-		    
-	
-		    
+		     
 		    a  {
 			border: 0px;
 			position: relative;
 			
-			&:after {
-				left: 100%;
-				top: 50%;
-				border: solid transparent;
-				content: " ";
-				height: 0;
-				width: 0;
-				position: absolute;
-				pointer-events: none;
-				border-color: rgba(81, 156, 213, 0);
-				border-left-color: @brand-success;
-				border-width: 15px;
-				margin-top: -15px;
-			}
-
+				&:after { // ARROW
+					left: 100%;
+					top: 50%;
+					border: solid transparent;
+					content: " ";
+					height: 0;
+					width: 0;
+					position: absolute;
+					pointer-events: none;
+					border-color: rgba(81, 156, 213, 0);
+					border-left-color: @brand-success;
+					border-width: 15px;
+					margin-top: -15px;
+				}
 			
 				&:hover,
 			    &:focus  {
-				background-color: darken(@brand-success, 12%);
+					background-color: darken(@brand-success, 12%);
 				
-			    }
+					&:after { // ARROW hover
+						border-left-color:  darken(@brand-success, 12%)!important;
+					}
+				}
+				
 		    } 
 		    
 		}
+		
 		
 		&.pnd-toolbar-ask-button-not-active {
 		    background-color: @gray;
@@ -93,7 +94,7 @@
 		    color: green;
 		}
 		
-		.pnd-toolbar-error-button {
+		&.pnd-toolbar-error-button {
 		    color: #ffffff;
 		    background-color: @brand-warning;
 		}
