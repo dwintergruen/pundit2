@@ -4,6 +4,7 @@ describe('Analytics service', function() {
         $window,
         $log,
         $timeout,
+        // TODO: commento per cosa usi epsilon
         epsilon = 1,
         eventCategory = 'testCategory',
         eventAction = 'testAction';
@@ -30,7 +31,7 @@ describe('Analytics service', function() {
         expect(typeof $window[Analytics.options.globalTracker]).toBe('function');
     });
 
-    it('should not call track() when doTracking false', function() {
+    it('should not call track() when doTracking is false', function() {
         Analytics.options.doTracking = false;
 
         $log.reset();
@@ -52,27 +53,30 @@ describe('Analytics service', function() {
         expect($log.error.logs.length).toEqual(1);
     });
 
-    it('should decrease hits after track', function() {
+    it('should decrease hits after calling track()', function() {
         expect(Analytics.getHits()).toBe(Analytics.options.hits);
         Analytics.track(eventCategory, eventAction);
         Analytics.track(eventCategory, eventAction);
         expect(Analytics.getHits()).toBe(Analytics.options.hits - 2);
     });
 
-    it('should increase one hit with timeout', function() {
+    it('should increase one hit with after bufferDelay ms', function() {
         expect(Analytics.getHits()).toBe(Analytics.options.hits);
         Analytics.track(eventCategory, eventAction);
         expect(Analytics.getHits()).toBe(Analytics.options.hits - 1);
+
+        // TODO: commento sul come stai testando (subito prima vs subito dopo)
         $timeout.flush(Analytics.options.bufferDelay - epsilon);
         expect(Analytics.getHits()).toBe(Analytics.options.hits - 1);
         $timeout.flush(2 * epsilon);
         expect(Analytics.getHits()).toBe(Analytics.options.hits);
     });
 
-    it('should increase two hits with timeout', function() {
+    it('should increase two hits after bufferDelay ms', function() {
         expect(Analytics.getHits()).toBe(Analytics.options.hits);
         Analytics.track(eventCategory, eventAction);
         Analytics.track(eventCategory, eventAction);
+        // TODO: commento, come sopra
         expect(Analytics.getHits()).toBe(Analytics.options.hits - 2);
         $timeout.flush(Analytics.options.bufferDelay - epsilon);
         expect(Analytics.getHits()).toBe(Analytics.options.hits - 2);
@@ -80,11 +84,13 @@ describe('Analytics service', function() {
         expect(Analytics.getHits()).toBe(Analytics.options.hits);
     });
 
-    it('should timer replenish at a rate of 2 hit per second', function() {
+    it('should replenish available hits at a rate of 2 per second', function() {
         $log.reset();
         expect($log.log.logs.length).toEqual(0);
 
         expect(Analytics.getHits()).toBe(Analytics.options.hits);
+        // TODO: commento, riempio la coda per verificare che non spedisca hits se non ce
+        // n'e' di disponibili: facciamo un test solo per questo?
         for(var i=1; i<=Analytics.options.hits; i++){
             Analytics.track(eventCategory, eventAction);
         }
@@ -97,6 +103,8 @@ describe('Analytics service', function() {
         expect(Analytics.getHits()).toBe(0);
 
         $timeout.flush(Analytics.options.bufferDelay - epsilon);
+        // TODO: commento su cosa stai testando (dopo bufferDelay devo avere di nuovo 2 hits
+        // disponibili che vengono usate subito)
         expect(Analytics.getHits()).toBe(0);
         $timeout.flush(2 * epsilon);
         expect($log.log.logs.length).toEqual(Analytics.options.hits+2+1);
@@ -111,6 +119,9 @@ describe('Analytics service', function() {
         //TODO: Da dividere in sotto-problemi per controlli piu' selettivi?
         //      Es. verificare che il numero di hits sia sempre <= 20
         //TODO: Come distinguere log del sendHits() da quello del updateHits()?
+        //      --- forse ci basta il log per quando invia, non per ogni step della ricarica
+        //      --- mettiamone giusto 2: coda vuota, coda piena e testiamoli
+        //      --- cmq, in $log.log.logs non ci trovi i messaggi di log?
     });
 
 });
