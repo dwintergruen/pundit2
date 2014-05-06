@@ -1,4 +1,4 @@
-ddescribe("Dashboard interaction", function() {
+describe("Dashboard interaction", function() {
     var p = protractor.getInstance();
 
     it('should load template and compile directive', function() {
