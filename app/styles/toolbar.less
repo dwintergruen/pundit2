@@ -1,30 +1,40 @@
 .pnd-toolbar-navbar{
     min-width: 960px;
+    
     .container-fluid {
         padding-left: 0px;
     }
 }
+
 .pnd-toolbar-navbar .navbar-nav li {
+
     // ---------- ICONS
+    
     .pnd-icon {
         font-size: 12px;
         line-height: inherit;
     }
+    
     // ---------- ELEMENTS
+    
     .pnd-toolbar-active-element {
         color: white;
     }
     .pnd-toolbar-not-active-element {
         color: gray;
     }
+    
     // ---------- ASK BUTTON
+    
     &.pnd-toolbar-ask-button-not-active {
         border-right: 0px;
+        
         a {
             background-color: @gray;
             border: 0px;
             position: relative;
             padding-left: 10px;
+            
             &:after { // ARROW
                 left: 100%;
                 top: 50%;
@@ -40,6 +50,7 @@
                 margin-top: -15px;
                 z-index: 100;
             }
+            
             &:hover,
             &:focus {
                 background-color: @gray-darker;
@@ -49,13 +60,16 @@
             }
         }
     }
+    
     &.pnd-toolbar-ask-button-active {
         border-right: 0px;
+        
         a {
             background-color: @brand-success;
             border: 0px;
             position: relative;
             padding-left: 10px;
+            
             &:after { // ARROW
                 left: 100%;
                 top: 50%;
@@ -71,38 +85,48 @@
                 margin-top: -15px;
                 z-index: 100;
             }
+            
             &:hover,
             &:focus {
                 background-color: darken(@brand-success, 12%);
+                
                 &:after { // ARROW hover
                     border-left-color: darken(@brand-success, 12%)!important;
                 }
             }
         }
     }
+    
     // ---------- DASHBOARD BUTTON
+    
     &.pnd-toolbar-dashboard-button {
+    
         .pnd-toolbar-active-element,.pnd-toolbar-not-active-element {
             padding-left: 10px; // padding Arrow
         }
     }
     // ---------- STATUS BUTTON
+    
     &.pnd-toolbar-status-button-ok {
         background-color: @brand-success;
         border-right: 1px lighten(@brand-success, 30%) solid ;
+        
         a {
             background-color: @brand-success;
             border: 0px;
+            
             &:hover,
             &:focus {
                 background-color: darken(@brand-success, 12%);
             }
         }
     }
+    
     // ---------- BUTTON
+    
     &.pnd-toolbar-button-active {
-        //background-color: @brand-success;
         border-right: 1px lighten(@brand-success, 30%) solid ;
+        
         a {
             background-color: @brand-success;
             border: 0px;
@@ -112,28 +136,71 @@
             }
         }
     }
+    
     .pnd-toolbar-button-not-active {
         background-color: @gray;
     }
+    
     .pnd-toolbar-status-ok-icon {
-        //color: green;
     }
+    
     // ---------- ERROR BUTTON
+    
     &.pnd-toolbar-error-button {
         color: #ffffff;
+        
         a {
             background-color: @brand-warning;
             border: 0px;
+            
             &:hover,
             &:focus {
                 background-color: darken(@brand-warning, 12%);
             }
         }
     }
+    
     // ---------- DROPDOWN MENU
+    
+    
+    &.pnd-toolbar-login-button .dropdown-menu {
+    	padding: 0px;
+    	border: 1px solid @brand-success;
+     
+        a {
+            background-color: @brand-success;
+            color: #fff;
+            padding: 3px 10px;
+            
+            &:hover {
+                background-color: @brand-success;
+            }
+        }
+    }
+    
+    &.pnd-toolbar-error-button .dropdown-menu {
+    	padding: 0px;
+    	border: 1px solid @brand-warning;
+     
+        a {
+            background-color: @brand-warning;
+            color: #fff;
+            padding: 3px 10px;
+            
+            &:hover {
+                background-color: @brand-warning;
+            }
+        }
+    }
+
+    
     .dropdown-menu {
+    	padding: 0px;
+     
         a {
             background-color: transparent;
+            padding: 3px 10px;
+            
             &:hover {
                 background-color: @gray-lighter;
             }
