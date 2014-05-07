@@ -40,7 +40,12 @@ angular.module('Pundit2.Communication')
 
         }).success(function(data) {
 
-            readAnnotationData(self, data);
+            var ret = readAnnotationData(self, data);
+
+            // TODO: if ret, resolve() .. otherwise reject()?
+            // TODO: the annotation might be corrupted (no items? no something..)
+            // TODO: set an error flag and let the user try load() again?
+
             self._q.resolve(self);
             annotationComponent.log("Retrieved annotation "+self.id+" metadata");
             Analytics.track('api', 'get', 'annotation');
@@ -57,7 +62,17 @@ angular.module('Pundit2.Communication')
         
     };
 
+    // Returns true if the annotation has been parsed correctly and entirely
     var readAnnotationData = function(ann, data) {
+
+        // Data _must_ contain .graph, .metadata and .items
+        if (typeof(data.graph) === "undefined" ||
+            typeof(data.metadata) === "undefined" ||
+            typeof(data.items) === "undefined") {
+            annotationComponent.err('Malformed annotation '+ann.id+': ', data);
+            return false;
+        }
+
         ann.items = {};
         ann.graph = angular.copy(data.graph);
 
@@ -65,6 +80,12 @@ angular.module('Pundit2.Communication')
         // is the annotation's URI
         for (var i in data.metadata) {
             ann.uri = i;
+        }
+
+        // if there wasnt that first level ... not good news.
+        if (typeof(ann.uri) === "undefined") {
+            annotationComponent.err('Malformed annotation '+ann.id+', wrong metadata: ', data);
+            return false;
         }
 
         var ns = NameSpace.annotation,
@@ -84,17 +105,21 @@ angular.module('Pundit2.Communication')
         }
 
         // .isIncludedIn is an URI, get out the id too
-        ann.isIncludedInUri = annData[ns.isIncludedIn][0].value;
-        var isIncludedIn = ann.isIncludedInUri.match(/[a-z0-9]*$/);
-        if (isIncludedIn !== null) {
-            ann.isIncludedIn = isIncludedIn[0];
+        if (ns.isIncludedIn in annData) {
+            ann.isIncludedInUri = annData[ns.isIncludedIn][0].value;
+            var isIncludedIn = ann.isIncludedInUri.match(/[a-z0-9]*$/);
+            if (isIncludedIn !== null) {
+                ann.isIncludedIn = isIncludedIn[0];
+            }
         }
 
         // .target is always an array
-        ann.target = [ann.target];
-        if (annData[ns.target].length > 1) {
-            for (var target=1; t<annData[ns.target].length; t++) {
-                ann.target.push(annData[ns.target][target].value);
+        if (ns.target in annData) {
+            ann.target = [ann.target];
+            if (annData[ns.target].length > 1) {
+                for (var target = 1; t < annData[ns.target].length; t++) {
+                    ann.target.push(annData[ns.target][target].value);
+                }
             }
         }
 
@@ -141,7 +166,6 @@ angular.module('Pundit2.Communication')
             }
 
             ann.items[k] = item;
-
         }
 
     }; // readAnnotationData()
