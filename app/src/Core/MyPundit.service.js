@@ -152,7 +152,7 @@ angular.module('Pundit2.Core')
     // MODAL HANDLER
     
     var loginModal = $modal({
-        container: ".pnd-wrp[data-ng-app='Pundit2']",
+        container: "[data-ng-app='Pundit2']",
         template: 'src/Core/login.modal.tmpl.html',
         show: false,
         backdrop: 'static'

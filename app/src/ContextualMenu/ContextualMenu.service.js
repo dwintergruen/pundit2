@@ -45,8 +45,8 @@ angular.module('Pundit2.ContextualMenu')
         options.scope.content = buildContent();
         options.placement = ( typeof(position)!== 'undefined' ) ? position : contextualMenu.options.position;
 
-        // TODO need to cache?
-        //options.template = 'dropdown.tmpl.html';
+        // TODO need to cache? --- Need to give it a path
+        options.template = 'src/Toolbar/dropdown.tmpl.html';
 
         // build menu
         menu = $dropdown(element, options);
@@ -55,8 +55,8 @@ angular.module('Pundit2.ContextualMenu')
     // initialize the menu and show when it is ready
     contextualMenu.show = function(position, x, y){
 
-        // TODO where position the <div> element ?
-        angular.element('.contexMenu-example-div')
+        // TODO where position the <div> element ? -- this should do the trick
+        angular.element("[data-ng-app='Pundit2']")
             .prepend("<div class='pnd-dropdown' style='position: absolute; left: " + x + "px; top: " + y + "px;'><div>");
 
         init(angular.element('.pnd-dropdown'), position);       
