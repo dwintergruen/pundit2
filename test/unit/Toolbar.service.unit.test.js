@@ -16,9 +16,8 @@ describe('Toolbar service', function() {
         });
     });
 
+    // as default, getUserLogged() must return false
     it("should be isUserLogged = false as default", function() {
-        
-        // as default, getUserLogged() must be return false
         expect(MyPundit.getUserLogged()).toBe(false);
     });
     
@@ -35,7 +34,7 @@ describe('Toolbar service', function() {
         //at beginning error array must be empty
         expect(Toolbar.getErrorMessageDropdown().length).toBe(0);
         
-        //add 2 error2
+        //add 2 error2 -- TODO: WHAT?
         Toolbar.addError(messageError1, myCallback1);
         Toolbar.addError(messageError2, myCallback2);
         
@@ -44,7 +43,7 @@ describe('Toolbar service', function() {
         expect(errors.length).toBe(2);
         
         //check if errors added contain a message and a function
-        for (var i =0; i < errors.length; i++){
+        for (var i=0; i<errors.length; i++){
             expect(typeof(errors[i].text)).toBe('string');
             expect(typeof(errors[i].click)).toBe('function');
         }
@@ -66,7 +65,7 @@ describe('Toolbar service', function() {
         var errors = Toolbar.getErrorMessageDropdown();
         expect(errors.length).toBe(1);
         
-        // errors array should contain only second error added before
+        // errors array should contain only the second error added before
         expect(errors[0].text).toBe(messageError2);
         expect(errors[0].click).toEqual(jasmine.any(Function));
     });
