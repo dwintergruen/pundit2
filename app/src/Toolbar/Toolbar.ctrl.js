@@ -1,6 +1,8 @@
 angular.module('Pundit2.Toolbar')
 .controller('ToolbarCtrl', function($scope, Toolbar, MyPundit) {
     
+    $scope.dropdownTemplate = "src/Toolbar/dropdown.tmpl.html";
+    
     var login = function() {
         MyPundit.login();
     };
@@ -12,7 +14,7 @@ angular.module('Pundit2.Toolbar')
     $scope.errorMessageDropdown = Toolbar.getErrorMessageDropdown();
 
     $scope.userNotLoggedDropdown = [
-        { text: 'Please sign in to use Pundit', href: '#' },
+        { text: 'Please sign in to use Pundit', header: true },
         { divider: true },
         { text: 'Sign in', click: login }
     ];
