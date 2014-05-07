@@ -48,6 +48,11 @@ angular.module('Pundit2.ContextualMenu')
         // TODO need to cache? --- Need to give it a path
         options.template = 'src/Toolbar/dropdown.tmpl.html';
 
+        options.scope.$on('tooltip.hide', function(){
+            console.log('evento di hide beccato');
+            contextualMenu.hide();
+        });
+
         // build menu
         menu = $dropdown(element, options);
     };
@@ -60,7 +65,10 @@ angular.module('Pundit2.ContextualMenu')
             .prepend("<div class='pnd-dropdown' style='position: absolute; left: " + x + "px; top: " + y + "px;'><div>");
 
         init(angular.element('.pnd-dropdown'), position);       
-        menu.$promise.then(menu.show);
+        menu.$promise.then(function(){
+            console.log(menu);
+            menu.show();
+        });
     };
 
     // hide and destroy the showed menu
