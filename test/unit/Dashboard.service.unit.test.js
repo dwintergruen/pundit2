@@ -3,6 +3,8 @@ describe('Dashboard service', function() {
     var Dashboard,
         $window,
         $compile;
+
+    var maxError = 1;
     
     beforeEach(module('Pundit2'));
 
@@ -97,7 +99,7 @@ describe('Dashboard service', function() {
             totalWidth = totalWidth + angular.element(panels[i]).isolateScope().width;   
         }
 
-        expect(totalWidth).toBe(width);        
+        expect(width - totalWidth).toBeLessThan(maxError);        
     });
 
     it("should initialize total panels width to containerWidth when container is at minWidth", function(){
@@ -112,7 +114,7 @@ describe('Dashboard service', function() {
             totalWidth = totalWidth + angular.element(panels[i]).isolateScope().width;   
         }
 
-        expect(totalWidth).toBe(minWidth);        
+        expect(totalWidth - minWidth).toBeLessThan(maxError);
     });
 
     it("should update total panels width to containerWidth when resizing", function(){
@@ -126,7 +128,7 @@ describe('Dashboard service', function() {
         for ( var i in panels ) {
             preTotalWidth = preTotalWidth + angular.element(panels[i]).isolateScope().width;   
         }
-        expect(preTotalWidth).toBe(width);
+        expect(preTotalWidth - width).toBeLessThan(maxError);
 
         var newWidth = width - 15;
         Dashboard.setContainerWidth(newWidth);
@@ -135,7 +137,7 @@ describe('Dashboard service', function() {
         for ( var i in panels ) {
             totalWidth = totalWidth + angular.element(panels[i]).isolateScope().width;   
         }
-        expect(totalWidth).toBe(newWidth);
+        expect(totalWidth - newWidth).toBeLessThan(maxError);
 
         expect(preTotalWidth).not.toBe(totalWidth);
     });
@@ -151,9 +153,9 @@ describe('Dashboard service', function() {
         for ( var i in panels ) {
             totalWidth = totalWidth + angular.element(panels[i]).isolateScope().width;   
         }
+        expect(totalWidth - newWidth).toBeLessThan(maxError);
 
         expect(Dashboard.getContainerWidth()).toBe(newWidth);
-        expect(totalWidth).toBe(newWidth);
     });
 
 });
