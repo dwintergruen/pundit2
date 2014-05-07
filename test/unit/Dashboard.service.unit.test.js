@@ -88,13 +88,16 @@ describe('Dashboard service', function() {
     it("should initialize total panels width to containerWidth", function(){
         var el = compileDirective();
         var panels = angular.element(el).find('dashboard-panel').toArray();
+        var width = 1200;
+
+        Dashboard.setContainerWidth(width);
         
         var totalWidth = 0;
         for ( var i in panels ) {
             totalWidth = totalWidth + angular.element(panels[i]).isolateScope().width;   
         }
 
-        expect(totalWidth).toBe(Dashboard.getContainerWidth());        
+        expect(totalWidth).toBe(width);        
     });
 
     it("should initialize total panels width to containerWidth when container is at minWidth", function(){
@@ -115,22 +118,25 @@ describe('Dashboard service', function() {
     it("should update total panels width to containerWidth when resizing", function(){
         var el = compileDirective();
         var panels = angular.element(el).find('dashboard-panel').toArray();
+        var width = 1200;
+
+        Dashboard.setContainerWidth(width);
 
         var preTotalWidth = 0;
         for ( var i in panels ) {
             preTotalWidth = preTotalWidth + angular.element(panels[i]).isolateScope().width;   
         }
+        expect(preTotalWidth).toBe(width);
 
-        var newWidth = Dashboard.getContainerWidth() - 15;
+        var newWidth = width - 15;
         Dashboard.setContainerWidth(newWidth);
         
         var totalWidth = 0;
         for ( var i in panels ) {
             totalWidth = totalWidth + angular.element(panels[i]).isolateScope().width;   
         }
-
-        expect(Dashboard.getContainerWidth()).toBe(newWidth);
         expect(totalWidth).toBe(newWidth);
+
         expect(preTotalWidth).not.toBe(totalWidth);
     });
 
