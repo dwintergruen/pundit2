@@ -1,6 +1,6 @@
 describe('Annotate service', function() {
 
-    var Annotate, $httpBackend, $compile, $rootScope,
+    var Annotate, $httpBackend, $compile, $rootScope, $document,
         testAnnotationsEmpty = {
             time: 0,
             annotations: []
@@ -67,17 +67,36 @@ describe('Annotate service', function() {
                 },
             ]
         };
-        
+
     beforeEach(module('Pundit2'));
     beforeEach(function() {
-        inject(function($injector, _$httpBackend_, _$compile_, _$rootScope_) {
+        inject(function($injector, _$httpBackend_, _$compile_, _$rootScope_, _$document_) {
             Annotate = $injector.get('Annotate');
             $httpBackend = _$httpBackend_;
             $compile = _$compile_;
             $rootScope = _$rootScope_;
+            $document = _$document_;
         });
     });
-    
+
+    afterEach(function() {
+        angular.element('div.test-content').remove();
+    });
+
+    var annotateTestContent = function() {
+        $httpBackend
+            .when('POST', "https://api.dandelion.eu/datatxt/nex/v1?include_abstract=true&include_categories=true&include_image=true&include_lod=true&include_types=true&lang=it&min_confidence=0.3&min_length=3")
+            .respond(testAnnotations);
+
+        var elem = $compile("<div class='test-content'><p>Pisa è un comune italiano di 86.591 abitanti</p></div>")($rootScope);
+        angular.element('body').append(elem);
+
+        Annotate.getDataTXTAnnotations(elem);
+        $httpBackend.flush();
+
+        return elem;
+    };
+
     it('should start with no annotation', function() {
         expect(Annotate.annotationNumber).toBe(0);
         expect(Annotate.ann.byNum.length).toBe(0);
@@ -96,27 +115,15 @@ describe('Annotate service', function() {
     });
     
     it('should analyze the response of DataTXT service', function() {
-        $httpBackend
-            .when('POST', "https://api.dandelion.eu/datatxt/nex/v1?include_abstract=true&include_categories=true&include_image=true&include_lod=true&include_types=true&lang=it&min_confidence=0.3&min_length=3")
-            .respond(testAnnotations);
-        
-        var elem = $compile("<div><p>Pisa è un comune italiano di 86.591 abitanti</p></div>")($rootScope);
-        Annotate.getDataTXTAnnotations(elem);
+        annotateTestContent();
 
-        $httpBackend.flush();
         expect(Annotate.annotationNumber).toBe(testAnnotations.annotations.length);
         expect(Annotate.ann.byNum.length).toBe(testAnnotations.annotations.length);
     });
 
     it('should create new scopes around annotations', function() {
-        $httpBackend
-            .when('POST', "https://api.dandelion.eu/datatxt/nex/v1?include_abstract=true&include_categories=true&include_image=true&include_lod=true&include_types=true&lang=it&min_confidence=0.3&min_length=3")
-            .respond(testAnnotations);
-        
-        var elem = $compile("<div><p>Pisa è un comune italiano di 86.591 abitanti</p></div>")($rootScope);
-        Annotate.getDataTXTAnnotations(elem);
+        var elem = annotateTestContent();
 
-        $httpBackend.flush();
         expect(Annotate.ann.autoAnnScopes.length).toBe(testAnnotations.annotations.length);
         
         var scope0 = angular.element(elem).find('.ann-auto.ann-0').scope();
