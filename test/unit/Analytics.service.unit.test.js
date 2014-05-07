@@ -4,7 +4,7 @@ describe('Analytics service', function() {
         $window,
         $log,
         $timeout,
-        epsilon = 1, //ms to introduce a gap in $timeout.flush()
+        epsilon = 1, // ms to introduce a gap in $timeout.flush()
         eventCategory = 'testCategory',
         eventAction = 'testAction';
 
@@ -88,11 +88,12 @@ describe('Analytics service', function() {
         Analytics.track(eventCategory, eventAction);
         expect(Analytics.getHits()).toEqual(Analytics.options.maxHits - 1);
 
+        // check that there isn't any increase, right before bufferDelay ms
         $timeout.flush(Analytics.options.bufferDelay - epsilon);
-        // check that there isn't any increase
         expect(Analytics.getHits()).toEqual(Analytics.options.maxHits - 1);
+
+        // check that there is an increase, right after bufferDelay ms
         $timeout.flush(2 * epsilon);
-        //check that there is an increase
         expect(Analytics.getHits()).toEqual(Analytics.options.maxHits);
     });
 
@@ -101,27 +102,36 @@ describe('Analytics service', function() {
         Analytics.track(eventCategory, eventAction);
         Analytics.track(eventCategory, eventAction);
         expect(Analytics.getHits()).toEqual(Analytics.options.maxHits - 2);
+
+        // check that there isn't any increase, right before bufferDelay ms
         $timeout.flush(Analytics.options.bufferDelay - epsilon);
-        // check that there isn't any increase
         expect(Analytics.getHits()).toEqual(Analytics.options.maxHits - 2);
-        // check that there is an increase
+
+        // check that there is an increase, right after bufferDelay ms
         $timeout.flush(2 * epsilon);
         expect(Analytics.getHits()).toEqual(Analytics.options.maxHits);
     });
 
-    it('should available hits do not exceed maxHits', function() {
+    it('should never have more available hits than maxHits', function() {
         expect(Analytics.getHits()).toEqual(Analytics.options.maxHits);
+
+        // Put 5 items in the queue
         for(var i=1; i<=5; i++){
             Analytics.track(eventCategory, eventAction);
         }
         expect(Analytics.getHits()).toEqual(Analytics.options.maxHits - 5);
 
+        // Wait more bufferDelay ms than needed, and check the hits
         for(var j=1; j<=Analytics.options.maxHits; j++){
             $timeout.flush(Analytics.options.bufferDelay);
         }
         expect(Analytics.getHits()).toEqual(Analytics.options.maxHits);
     });
 
+
+    // TODO RAF: occhio che manca uno spazio in cima a sto test
+    // TODO RAF 2: cosa testa sto test? Volevi testare che quando la coda e' vuota
+    // non viene spedita subito una hit?
    it('should buffer be empty', function() {
         $log.reset();
         expect($log.log.logs.length).toEqual(0);
@@ -139,18 +149,19 @@ describe('Analytics service', function() {
         expect($log.log.logs.length).toEqual(0);
         expect(Analytics.getHits()).toEqual(Analytics.options.maxHits);
 
+        // Fill the queue with maxHits items, we have 0 available hits after
         for(var i=1; i<=Analytics.options.maxHits; i++){
             Analytics.track(eventCategory, eventAction);
         }
-        
         expect(Analytics.getHits()).toEqual(0);
 
+
+        // Right before bufferDelay ms, there's still 0 hits available
         $timeout.flush(Analytics.options.bufferDelay - epsilon);
-        // is checked the life of the timer
         expect(Analytics.getHits()).toEqual(0);
-        $timeout.flush(2 * epsilon);
 
-        // after bufferDelay, getHits() should return 2 hits
+        // Right after bufferDelay ms, getHits() should return 2 hits
+        $timeout.flush(2 * epsilon);
         expect(Analytics.getHits()).toEqual(2);
 
         for(var j=1; j<=Analytics.options.maxHits; j++){
