@@ -65,11 +65,12 @@ angular.module('Pundit2.Communication')
     // Returns true if the annotation has been parsed correctly and entirely
     var readAnnotationData = function(ann, data) {
 
-        // Data _must_ contain .graph, .metadata and .items
-        if (typeof(data.graph) === "undefined" ||
+        // Data _must_ contain .graph, .metadata and .items .. and be defined.
+        if (typeof(data) === "undefined" ||
+            typeof(data.graph) === "undefined" ||
             typeof(data.metadata) === "undefined" ||
             typeof(data.items) === "undefined") {
-            annotationComponent.err('Malformed annotation '+ann.id+': ', data);
+            annotationComponent.err('Malformed annotation id='+ann.id+': ', data);
             return false;
         }
 
@@ -84,7 +85,7 @@ angular.module('Pundit2.Communication')
 
         // if there wasnt that first level ... not good news.
         if (typeof(ann.uri) === "undefined") {
-            annotationComponent.err('Malformed annotation '+ann.id+', wrong metadata: ', data);
+            annotationComponent.err('Malformed annotation id='+ann.id+', wrong metadata: ', data);
             return false;
         }
 
