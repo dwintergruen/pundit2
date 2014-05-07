@@ -112,7 +112,7 @@ describe('Dashboard service', function() {
         expect(totalWidth).toBe(minWidth);        
     });
 
-    it("should update total panels width to containerWidth when resize", function(){
+    it("should update total panels width to containerWidth when resizing", function(){
         var el = compileDirective();
         var panels = angular.element(el).find('dashboard-panel').toArray();
 
