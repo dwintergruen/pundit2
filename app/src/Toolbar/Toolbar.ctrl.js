@@ -15,7 +15,6 @@ angular.module('Pundit2.Toolbar')
 
     $scope.userNotLoggedDropdown = [
         { text: 'Please sign in to use Pundit', header: true },
-        { divider: true },
         { text: 'Sign in', click: login }
     ];
     
@@ -31,7 +30,6 @@ angular.module('Pundit2.Toolbar')
     
     $scope.userNotebooksDropdown = [
         { text: 'Current notebook', href: '#' },
-        { divider: true },
         { text: 'My notebook 1', href: '#' },
         { text: 'My notebook 2', href: '#' },
         { text: 'My notebook 3', href: '#' }
