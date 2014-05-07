@@ -34,7 +34,7 @@ describe('Toolbar service', function() {
         //at beginning error array must be empty
         expect(Toolbar.getErrorMessageDropdown().length).toBe(0);
         
-        //add 2 error2 -- TODO: WHAT?
+        //add 2 errors -- TODO: WHAT?
         Toolbar.addError(messageError1, myCallback1);
         Toolbar.addError(messageError2, myCallback2);
         
