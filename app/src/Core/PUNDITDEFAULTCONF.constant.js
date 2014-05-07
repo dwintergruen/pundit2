@@ -1,3 +1,4 @@
+// TODO: docs!
 angular.module('Pundit2.Core')
 .constant('PUNDITDEFAULTCONF', {
     annotationServerBaseURL: 'http://demo-cloud.as.thepund.it:8080/annotationserver/',
@@ -5,6 +6,13 @@ angular.module('Pundit2.Core')
     vocabularies: [],
     useBasicRelations: true,
     modules: {
+        Dashboard: {
+            active: true
+        },
+        Toolbar: {
+            active: true
+        },
+
         selectors: {
             'Freebase': {
                 label: 'Freebase', active: true
