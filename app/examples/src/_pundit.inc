@@ -44,6 +44,11 @@
     <script src="../src/Annomatic/AnnotationPopover.ctrl.js"></script>
     <script src="../src/Annomatic/AutomaticAnnotation.ctrl.js"></script>
 
+    <script src="../src/AnnotationSidebar/AnnotationSidebar.js"></script>
+    <script src="../src/AnnotationSidebar/AnnotationSidebar.dir.js"></script>
+    <script src="../src/AnnotationSidebar/AnnotationSidebar.ctrl.js"></script>
+    <script src="../src/AnnotationSidebar/AnnotationSidebar.service.js"></script>
+
     <script src="../src/Dashboard/Dashboard.js"></script>
     <script src="../src/Dashboard/Dashboard.dir.js"></script>
     <script src="../src/Dashboard/Dashboard.ctrl.js"></script>
