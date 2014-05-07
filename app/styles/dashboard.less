@@ -1,12 +1,12 @@
 .pnd-dashboard-container {
     position : relative;
+    overflow: hidden;
 }
 
 .pnd-dashboard-panel {
     top: 0px;
-    position : absolute;
+    position : absolute;    
     
-
 }
 
 .pnd-dashboard-panel-expanded {
@@ -29,6 +29,8 @@
     
     &.btn-xs  {
     	border: 0px;
+    	padding-top: 2px;
+    	text-shadow: 0 1px 0 #fff;
     	
     	&:hover {
 	       background-color: #fff;
@@ -40,8 +42,7 @@
 	       line-height: normal;
 	       padding: 0px;
 	   }
-    }
-   
+    }  
 }
 
 .pnd-dashboard-panel-nav {
@@ -56,6 +57,7 @@
 .pnd-dashboard-panel-collapsed-content {
     width: 100%;
     height: 100%;
+    background-color: #fff;
 }
 
 .pnd-dashboard-panel-separator {
