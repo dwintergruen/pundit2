@@ -218,38 +218,37 @@ describe("OpenID Login", function() {
                 p.findElement(protractor.By.id('Passwd')).sendKeys(myPassword);
                 
                 // submit form
-                p.findElement(protractor.By.id('signIn')).click();
-                
-                // get handle to main window
-                handle = browser.switchTo().window(mainWindow);
-                handle = browser.getWindowHandle();
-                expect(handle).toEqual(mainWindow);
-                browser.driver.executeScript('window.focus();');
-                
-                /*p.findElement(protractor.By.css('.pnd-login-modal-body')).then(function(message) {
-                    //p.sleep(2000);
-                    p.waitForAngular();
-                    expect(message.getText()).toBe("You are logged in as: Mario Bros");
-                    
-                });*/
-                    
-                // at this time user should be logged in
-                // user button should be visible and should show user full name
-                p.findElements(protractor.By.css('.pnd-toolbar-user-button')).then(function(userButton) {
-                    //TODO: TROVARE UNA SOLUZIONE PER QUESTO SLEEP. SENZA NON VIENE AGGIORNATA LA PAGINA
-                    p.sleep(2000);
-                    expect(userButton.length).toBe(1);
-                    expect(userButton[0].getText()).toBe(username);
+                p.findElement(protractor.By.id('signIn')).click().then(function() {
 
-                });
-   
-                
-            });
+                    // get handle to main window
+                    handle = browser.switchTo().window(mainWindow);
+                    handle = browser.getWindowHandle();
+                    expect(handle).toEqual(mainWindow);
+                    browser.driver.executeScript('window.focus();');
+
+                    /*p.findElement(protractor.By.css('.pnd-login-modal-body')).then(function(message) {
+                     //p.sleep(2000);
+                     p.waitForAngular();
+                     expect(message.getText()).toBe("You are logged in as: Mario Bros");
+
+                     });*/
+
+                    // at this time user should be logged in
+                    // user button should be visible and should show user full name
+                    p.findElements(protractor.By.css('.pnd-toolbar-user-button')).then(function(userButton) {
+                        //TODO: TROVARE UNA SOLUZIONE PER QUESTO SLEEP. SENZA NON VIENE AGGIORNATA LA PAGINA
+                        p.sleep(1000);
+                        expect(userButton.length).toBe(1);
+                        expect(userButton[0].getText()).toBe(username);
+
+                    }); // end find .pnd-toolbar-user-button
+
+                }); //  end fine signIn
+
+            }); // end find .google.openid_large_btn
  
-        });
-        
-
+        }); // end getAllWindowHandles
             
-    });
+    }); // end test
 
 });
