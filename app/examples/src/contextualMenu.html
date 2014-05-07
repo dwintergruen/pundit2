@@ -4,9 +4,9 @@
 
 var ContextualMenuDemoCtrl = function($scope, ContextualMenu) {
 
-    $scope.show = function(){
-        //ContextualMenu.show(angular.element('.button-to-append').get(0));
-        ContextualMenu.show(angular.element('.text-to-append').get(0));
+    $scope.show = function(position){
+        //ContextualMenu.show(angular.element('.button-to-append').get(0), position);
+        ContextualMenu.show(angular.element('.text-to-append').get(0), position);
     };
 
     $scope.hide = function(){
@@ -18,7 +18,7 @@ var ContextualMenuDemoCtrl = function($scope, ContextualMenu) {
     };
 
     $scope.addAction = function(){
-        ContextualMenu.addAction('exampleAction', function(){return true}, exampleAction);
+        ContextualMenu.addAction('exampleAction', 'Example Action', 'type1', function(){return true}, exampleAction);
     }
 
 }
@@ -28,15 +28,20 @@ var ContextualMenuDemoCtrl = function($scope, ContextualMenu) {
 <div data-ng-app="Pundit2" class="pnd-wrp">
 
     <br><br><br>
+    <br><br><br>
+    <br><br><br>
 
     <div ng-controller="ContextualMenuDemoCtrl">
         <button type="button" class="pnd-contexMenu-show-btn btn btn-default" ng-click="show()">Show Menu</button>
-        <button type="button" class="pnd-contexMenu-show-btn btn btn-default" ng-click="hide()">Hide Menu</button>
+        <button type="button" class="pnd-contexMenu-show-btn btn btn-default" ng-click="show('top-left')">Show Menu on TopLeft</button>
+        <button type="button" class="pnd-contexMenu-show-btn btn btn-default" ng-click="hide()">Hide and Remove Menu</button>
         <button type="button" class="pnd-contexMenu-show-btn btn btn-default" ng-click="addAction()">Add Action</button>
         <button type="button" class="button-to-append btn btn-default">Element</button>
         <a class="text-to-append">Text Element</a>
     </div>
 
+    <br><br><br>
+    <br><br><br>
     <br><br><br>
 
 </div>

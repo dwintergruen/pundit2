@@ -1,6 +1,8 @@
 angular.module('Pundit2.ContextualMenu')
 .constant('CONTEXTUALMENUDEFAULT', {
 
+    position: 'bottom-left',
+
     debug: true
 })
 .service('ContextualMenu', function($rootScope, BaseComponent, CONTEXTUALMENUDEFAULT, $dropdown) {
@@ -14,27 +16,36 @@ angular.module('Pundit2.ContextualMenu')
         }}
     ];
 
-    var menuContent = defaultContent;
+    var menuActions = [];
 
     var menu;
 
-    var addNewContent = function(label, action){
-        menuContent.push({
-            "text": label,
-            "click": action
-        });
+    var buildContent = function(){
+        var content = angular.copy(defaultContent);
+
+        for ( var i in menuActions ) {
+            if ( menuActions[i].showIf() ) {
+                content.push({
+                    "text": menuActions[i].label,
+                    "click": menuActions[i].action
+                });
+            }
+        }
+
+        return content;
     };
 
-    var init = function(element){
-        // build scope
+    var init = function(element, position){
+        // build scope and options
         var options = {scope: $rootScope.$new()};
-        options.scope.content = menuContent;
+        options.scope.content = buildContent();
+        options.placement = ( typeof(position)!== 'undefined' ) ? position : contextualMenu.options.position;
         // build menu
         menu = $dropdown(angular.element(element), options);
     };
 
-    contextualMenu.show = function(element){
-        init(element);       
+    contextualMenu.show = function(element, position){
+        init(element, position);       
         menu.$promise.then(menu.show);
     };
 
@@ -43,10 +54,14 @@ angular.module('Pundit2.ContextualMenu')
         menu.destroy();
     };
 
-    contextualMenu.addAction = function(label, showIf, action){
-        if( showIf() ) {
-            addNewContent(label, action);            
-        }
+    contextualMenu.addAction = function(name, label, type, showIf, action){
+        menuActions.push({
+            name: name,
+            label: label,
+            type: type,
+            showIf: showIf,
+            action: action
+        });
     };
 
     contextualMenu.log('service run');
