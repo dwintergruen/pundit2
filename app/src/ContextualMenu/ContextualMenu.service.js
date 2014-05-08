@@ -9,8 +9,8 @@ angular.module('Pundit2.ContextualMenu')
 
     var contextualMenu = new BaseComponent('ContextualMenu', CONTEXTUALMENUDEFAULT);
 
-    // all action that menu can display
-    var menuActions = [];
+    // all element that menu can display (defualt is action) (el.submenu | bool) (el.divider | bool)
+    var menuElements = [];
     // actual menu resource
     var menuResource;
 
@@ -22,10 +22,18 @@ angular.module('Pundit2.ContextualMenu')
         var content = [];
 
         // filter by type
-        var filterAction = menuActions.filter(function(el, index, array){
+        var filterAction = menuElements.filter(function(menuElement, menuIndex, menuArray){
 
-            return type.some(function(typeEl, typeIndex, typeArray){
-                return angular.equals(typeEl, el.type);
+            // foreach passed type
+            return type.some(function(typeElement, typeIndex, typeArray){
+
+                // foreach element type
+                return menuElement.type.some(function(menuElementType, menuElementIndex, menuElementArray){
+
+                    return angular.equals(typeElement, menuElementType);
+
+                }); 
+
             });
             
         });
@@ -48,6 +56,10 @@ angular.module('Pundit2.ContextualMenu')
                         leave: filterAction[i].leave
                     });
 
+                } else if ( filterAction[i].divider ){
+                    content.push({
+                        divider: true
+                    });
                 } else {
                     // standard content
                     content.push({
@@ -86,7 +98,7 @@ angular.module('Pundit2.ContextualMenu')
     contextualMenu.show = function(x, y, resource, type){
 
         // show only one menu
-        if ( menu !== null || menuActions.length === 0 ) {
+        if ( menu !== null || menuElements.length === 0 ) {
             return;
         }
 
@@ -112,12 +124,12 @@ angular.module('Pundit2.ContextualMenu')
     // add passed action (use name as key to not produce duplicates) 
     contextualMenu.addAction = function(actionObj){
 
-        var find = menuActions.some(function(el, index, array){
+        var find = menuElements.some(function(el, index, array){
             return angular.equals(actionObj.name, el.name);
         });
 
         if ( !find ) {
-            menuActions.push(angular.copy(actionObj));        
+            menuElements.push(angular.copy(actionObj));        
         } else {
             contextualMenu.err('Try to add duplicated action');
         }
@@ -127,18 +139,28 @@ angular.module('Pundit2.ContextualMenu')
     // add submenu element to menu
     contextualMenu.addSubMenu = function(subMenuObj){
 
-        var find = menuActions.some(function(el, index, array){
+        var find = menuElements.some(function(el, index, array){
             return angular.equals(subMenuObj.name, el.name);
         });
 
         if ( !find ) {
             var e = angular.copy(subMenuObj);
             e.submenu = true;
-            menuActions.push(e);          
+            menuElements.push(e);          
         } else {
             contextualMenu.err('Try to add duplicated submenu element');
         }
 
+    };
+
+    // add divider in a specified position
+    contextualMenu.addDivider = function(dividerObj){
+        var e = angular.copy(dividerObj);
+        e.divider = true;
+        e.showIf = function(){
+            return true;
+        }
+        menuElements.push(e);
     };
 
     contextualMenu.log('service run');
