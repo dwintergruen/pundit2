@@ -1,19 +1,30 @@
 /**
  * @ngdoc module
  * @name Pundit2
- * @module Pundit2
+ * @module Pundit2.Client
  * @description Something ..
 **/
-angular.module('Pundit2.init', [])
-    .run(function(Config, $window) {
-
-        var root = angular.element("[data-ng-app='Pundit2']");
-        if (!root.hasClass('pnd-wrp')) {
-            root.addClass('pnd-wrp');
+angular.module('Pundit2.Client')
+    .run(function(Config, Client) {
+        if (Config.isModuleActive('Client')) {
+            Client.boot();
         }
+    })
+    .service('Client', function(BaseComponent, Config) {
 
-        // TODO: Move this to its own module? An Init module?
-        if (Config.autoInit === true) {
+        var client = new BaseComponent('Client'),
+            root;
+
+        client.fixRootNode = function() {
+            root = angular.element("[data-ng-app='Pundit2']");
+            if (!root.hasClass('pnd-wrp')) {
+                root.addClass('pnd-wrp');
+            }
+        };
+
+        client.boot = function() {
+
+            client.fixRootNode();
 
             // TODO: how to short up this? [].forEach? From conf?
             // From BaseComponent registered names?? Modules can subscribe themselves
@@ -43,7 +54,8 @@ angular.module('Pundit2.init', [])
             //         Tool: comment tag, triple composer
             //
 
-        } else {
-            // console.log('NOT .. starting up!');
-        }
+        };
+
+        client.log("Component up and running");
+        return client;
     });

@@ -2,7 +2,12 @@
 
 <script>
     var punditConfig = {
-        autoInit: true
+        modules: {
+            'Client': {
+                debug: true,
+                active: true
+            }
+        }
     }
 </script>
 <div data-ng-app="Pundit2" class="pnd-wrp"></div>
