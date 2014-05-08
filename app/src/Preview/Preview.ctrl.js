@@ -1,8 +1,8 @@
 angular.module('Pundit2.Preview')
     .controller('PreviewCtrl', function($scope, Preview, TypesHelper, Utils) {
-
-        $scope.itemDashboardPreview = {};
-        //$scope.hasImage = false;
+        // TODO: add comment and code review
+        $scope.itemDashboardPreview = "";
+        $scope.welcomeMessage = "Welcome in Pundit 2...enjoy it!"
 
         $scope.$watch(function() { return Preview.getDashboardPreview() }, function(newItem) {
             $scope.itemDashboardPreview = newItem;
@@ -10,6 +10,10 @@ angular.module('Pundit2.Preview')
             $scope.itemIsAnImage = checkIfItemIsImage(newItem);
 
         });
+
+        $scope.isItemEmpty = function() {
+            return $scope.itemDashboardPreview === "";
+        }
 
         var checkIfItemIsImage = function(item) {
             if(typeof(item) !== 'undefined' && typeof(item.type) !== 'undefined' ){

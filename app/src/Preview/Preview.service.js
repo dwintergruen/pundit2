@@ -1,6 +1,6 @@
 angular.module('Pundit2.Preview')
 .service('Preview', function(BaseComponent) {
-
+// TODO: add comment and code review
         var preview = new BaseComponent('Preview');
 
         var itemDashboardPreview = "";

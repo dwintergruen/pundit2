@@ -1,29 +1,40 @@
 <!-- buildexamples:section header --><!-- /buildexamples -->
 
 <script>
+    // TODO: add comment and code review
     var previewDemoCtrl = function($scope, MyPundit, Annotation, ItemsExchange, Preview) {
 
         var p = new Annotation("8fd05a49");
         p.then(function() {
             $scope.items = ItemsExchange.getItemsHash();
-            console.log(typeof($scope.items));
-            console.log($scope.items);
         });
 
     $scope.getPreview = function(item){
         Preview.setDashboardPreview(item);
+
+        $scope.isStickyItem(item);
     };
 
-    $scope.hidePreview = function(){
+    $scope.hidePreview = function() {
         Preview.hideDashboardPreview();
     };
 
-    $scope.setSticky = function(item){
+    $scope.setSticky = function(item) {
         Preview.setItemDashboardSticky(item);
     };
 
-    $scope.clearSticky = function(){
+    $scope.clearSticky = function() {
         Preview.clearItemDashboardSticky();
+    };
+
+    $scope.isStickyItem = function(item) {
+        var stickyItem = Preview.getItemDashboardSticky();
+        if( typeof(stickyItem) === 'undefined' || typeof(item) === 'undefined'){
+            return false;
+        } else {
+            return stickyItem.uri === item.uri;
+        }
+
     };
 
 
@@ -36,18 +47,16 @@
 
         <div class="row">
             <div class="col-lg-6">
-                <h2>Items</h2>
+                <h2>Items</h2> <button class="btn btn-success" ng-click="clearSticky()">Clear Sticky</button>
                 <ul class="list-group">
-                    <li class="list-group-item" ng-class="" ng-repeat="item in items" ng-mouseover="getPreview(item)" ng-mouseleave="hidePreview()">
-                        <span>{{item.label}}</span> <button class="btn btn-success btn-xs" ng-click="setSticky(item)">Set Sticky</button>
+                    <li class="list-group-item" ng-repeat="item in items" ng-mouseover="getPreview(item)" ng-mouseleave="hidePreview()">
+                        <span>{{item.label}}</span> <button class="btn btn-success btn-xs" ng-click="setSticky(item)" ng-show="!isStickyItem(item)">Set Sticky</button>
                     </li>
                 </ul>
             </div>
 
 
             <preview></preview>
-
-            <button class="btn btn-success" ng-click="clearSticky()">Clear Sticky</button>
         </div>
 
     </div>

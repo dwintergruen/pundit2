@@ -1,34 +1,47 @@
+<!-- TODO: code review, add pnd-css classes, add comment -->
+
 <div ng-controller = "PreviewCtrl">
     <div class="col-lg-6">
         <div class="panel panel-default pnd-dashboard-preview">
             <div class="panel-heading">Preview</div>
             <div class="panel-body">
                 <!-- Label -->
-                <div>
-                    <h4>Label:</h4>
-                    <p>{{itemDashboardPreview.label}}</p>
-                </div>
-                <div ng-if="itemIsAnImage">
-                    <img ng-src="{{itemDashboardPreview.image}}" width="100%"/>
-                </div>
-                <div ng-if="hasImage">
-                    <h4>Image:</h4>
-                    <img ng-src="{{itemDashboardPreview.image}}" />
+                <div class="pnd-item-preview-container" ng-if="!isItemEmpty()">
+                    <div >
+                        <h4>Label:</h4>
+                        <p>{{itemDashboardPreview.label}}</p>
+                    </div>
+                    <div ng-if="itemIsAnImage">
+                        <img ng-src="{{itemDashboardPreview.image}}" width="100%"/>
+                    </div>
+                    <div ng-if="hasImage">
+                        <h4>Image:</h4>
+                        <img ng-src="{{itemDashboardPreview.image}}" />
+                    </div>
+
+                    <div>
+                        <h4>Description:</h4>
+                        <p>{{itemDashboardPreview.description}}</p>
+                    </div>
+
+                    <div>
+                        <h4>Type:</h4>
+                        <ul>
+                            <li ng-repeat="type in itemDashboardPreview.type">{{getLabelType(type)}}</li>
+                        </ul>
+                    </div>
                 </div>
 
-                <div>
-                    <h4>Description:</h4>
-                    <p>{{itemDashboardPreview.description}}</p>
+                <div class="pnd-item-preview-container" ng-if="isItemEmpty()">
+                    <span>{{welcomeMessage}}</span>
                 </div>
 
-                <div>
-                    <h4>Type:</h4>
-                    <ul>
-                        <li ng-repeat="type in itemDashboardPreview.type">{{getLabelType(type)}}</li>
-                    </ul>
-                </div>
             </div>
         </div>
+        <div ng-if="!isItemEmpty()">
+            <a class="btn btn-success" ng-href="{{itemDashboardPreview.uri}}" target="_blank" >More info</a> <button class="btn btn-success">Copy to clipboard</button>
+        </div>
+
     </div>
 
 </div>
