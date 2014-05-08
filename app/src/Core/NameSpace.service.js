@@ -148,10 +148,17 @@ angular.module("Pundit2.Core")
 
     // TODO: doc
     // TODO: move to Consolidation.options ??
-    // Consolidation use this to know what is consolidable
+    // Consolidation use this to know what items are consolidable
     ns.fragments = {
-        image: _pnd + "fragment-image",
+        imagePart: _pnd + "fragment-image",
         text: _pnd + "fragment-text",
+    };
+
+    // Notable item types: page, full image, named content
+    // TODO: do we need more? Other components might want to add&read stuff here?
+    ns.types = {
+        page: "http://schema.org/WebPage",
+        image: "http://xmlns.com/foaf/0.1/Image",
         named: _pnd + "named-content"
     };
 
