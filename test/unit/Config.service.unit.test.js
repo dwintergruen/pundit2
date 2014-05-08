@@ -28,22 +28,33 @@ describe('Config service with a punditConfig', function() {
         label: 'FOO FOO FOO', active: false
     };
 
-
     beforeEach(module('Pundit2'));
     beforeEach(function() {
+
+        // DEBUG: Pundit2's run() blocks will get executed BEFORE the inject() inside the
+        // beforeEach(), so we need to fix the punditConfig on the window object, the real
+        // window one
+        window.punditConfig = testPunditConfig;
+        module('Pundit2');
+
         inject(function(_$window_, $injector) {
-            $window = _$window_;
+            window.punditConfig = testPunditConfig;
             PUNDITDEFAULTCONF = $injector.get('PUNDITDEFAULTCONF');
+            $window = _$window_;
             $window.punditConfig = testPunditConfig;
             Config = $injector.get('Config');
         });
     });
 
     afterEach(function() {
+        // DEBUG: for some reason the beforeEach block does NOT initialize $window.punditConfig
+        // again correctly after the first test: for this describe() we keep the same punditConfig
+        // and use it across it()
         delete $window.punditConfig;
         delete $window.PUNDIT;
+        delete window.PUNDIT;
+        delete window.punditConfig;
     });
-
 
     it("should override and extend the PUNDITDEFAULTCONF defaults", function() {
         expect(typeof($window.PUNDIT)).toBe("object");

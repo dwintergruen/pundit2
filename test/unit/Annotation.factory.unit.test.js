@@ -46,7 +46,6 @@ describe('Annotation', function() {
         runs(function() {
             expect(ann.id).toBe(testId);
             expect($log.error.logs.length).toBe(1);
-            console.log('ara che ann 111 ', ann.id, $log.error.logs);
         });
     });
 

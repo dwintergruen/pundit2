@@ -21,8 +21,12 @@ describe('BaseComponent service with global conf', function() {
     // to inject BaseComponent _AFTER_ the punditConfig is in
     // place, or its initialization will occur without it
 
-    beforeEach(module('Pundit2'));
     beforeEach(function() {
+
+        // Pundit2.run() will execute before the inject: make sure we have a pundit
+        // config on the window scope before Config boots up
+        window.punditConfig = testPunditConfig;
+        module('Pundit2');
         inject(function($injector, _$window_, _$log_) {
             $window = _$window_;
             $window.punditConfig = testPunditConfig;
@@ -40,7 +44,7 @@ describe('BaseComponent service with global conf', function() {
 
     it('should provide a base component with defaults taken from the global module conf', function() {
         var testOptions = {
-                someParameter: 'this is a secret',
+                someParameter: 'this is a secret'
             },
             custom = new BaseComponent(testName, testOptions);
 

@@ -13,7 +13,7 @@ angular.module('Pundit2.Annotators')
     };
 
     // Calls every annotator and ask them if the given item is a
-    // valid fragment
+    // valid fragment. If it is, returns the fragment type
     orch.isConsolidable = function(item) {
         for (var a in annotators) {
             if (annotators[a].isConsolidable(item)) {

@@ -9,6 +9,7 @@
     <script src="../src/templates.js"></script>
 
     <script src="../src/pundit2.js"></script>
+    <script src="../src/init.js"></script>
 
     <script src="../src/Core/Core.js"></script>
     <script src="../src/Core/Utils.service.js"></script>

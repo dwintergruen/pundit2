@@ -33,8 +33,6 @@ angular.module('Pundit2.Annotators')
         // - has a page context
         // - .uri is an xpointer
 
-        // TODO: check if it is consolidable ON THIS PAGE
-
         tfa.log("Item not valid: not recognized as a consolidable "+ tfa.label);
         return true;
     };
@@ -135,7 +133,6 @@ angular.module('Pundit2.Annotators')
     tfa.reset = function(uri) {
 
         var id = fragmentIds[uri];
-        var id = fragmentIds[uri];
         if (typeof(id) === "undefined") {
             return;
         }
@@ -147,7 +144,6 @@ angular.module('Pundit2.Annotators')
 
     };
 
-
-        tfa.log("Component up and running");
+    tfa.log("Component up and running");
     return tfa;
 });
