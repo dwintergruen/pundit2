@@ -10,7 +10,7 @@ angular.module('Pundit2.Client')
             Client.boot();
         }
     })
-    .service('Client', function(BaseComponent, Config) {
+    .service('Client', function(BaseComponent, Config, MyPundit) {
 
         var client = new BaseComponent('Client'),
             root;
@@ -26,6 +26,12 @@ angular.module('Pundit2.Client')
 
             client.fixRootNode();
 
+            // Check if we're logged in, other components should $watch MyPundit
+            // and get notified automatically when logged in
+            MyPundit.checkLoggedIn().then(function(value) {
+                // TODO: check if we're logged in and set it up?
+            });
+
             // TODO: how to short up this? [].forEach? From conf?
             // From BaseComponent registered names?? Modules can subscribe themselves
             // an init function? Or just need to know IF and markup?
@@ -38,6 +44,18 @@ angular.module('Pundit2.Client')
             if (Config.isModuleActive('Toolbar')) {
                 root.append("<toolbar></toolbar>");
             }
+
+
+            // TODO: some if, some option?
+
+            // TODO: get content uris
+            //       search for annotations
+            //       get annotations
+            //       consolidate
+            //       update sidebar (automatic?)
+            //       update items (automatic?)
+            //
+
 
             // TODO:
             // * annotation sidebar
