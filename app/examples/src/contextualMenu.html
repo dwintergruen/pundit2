@@ -15,6 +15,7 @@ var ContextualMenuDemoCtrl = function($scope, $rootScope, $dropdown, $timeout, C
                 name: 'consoleLog',
                 type: 'type1',
                 label: "Click to exe console.log",
+                priority: 3,
                 showIf: function(){
                     return true;
                 },
@@ -26,6 +27,7 @@ var ContextualMenuDemoCtrl = function($scope, $rootScope, $dropdown, $timeout, C
                 label: "This open a submenu",
                 name: "subMenuKey",
                 type: 'type2',
+                priority: 1,
                 showIf: function(){
                     return true;
                 },
@@ -57,6 +59,30 @@ var ContextualMenuDemoCtrl = function($scope, $rootScope, $dropdown, $timeout, C
                     }, 100);
                     
                 }               
+            },
+            {
+                name: 'Action3',
+                type: 'type1',
+                label: "Action3",
+                priority: 5,
+                showIf: function(){
+                    return true;
+                },
+                action: function(resource){
+                    console.log('exe action 3 with resource ', resource);
+                }
+            },
+            {
+                name: 'ActionNotDisplayed',
+                type: 'type3',
+                label: "ActionNotDisplayed",
+                priority: 10,
+                showIf: function(){
+                    return true;
+                },
+                action: function(resource){
+                    console.log('exe action 3 with resource ', resource);
+                }
             }
         ];
 
@@ -78,10 +104,10 @@ var ContextualMenuDemoCtrl = function($scope, $rootScope, $dropdown, $timeout, C
     var l = 0;
     $scope.addAction = function($event){
 
-        if ( l === 0) {
-            ContextualMenu.addAction(menuActions[l]);
-        } else {
+        if ( l === 1) {
             ContextualMenu.addSubMenu(menuActions[l]);
+        } else {
+            ContextualMenu.addAction(menuActions[l]);
         }
         l = (l+1) % menuActions.length;
         
@@ -103,14 +129,14 @@ var ContextualMenuDemoCtrl = function($scope, $rootScope, $dropdown, $timeout, C
         <br><br><br>
         <br><br><br>
         <br><br><br>
-        Click addAction button to add custom action (submenu and generic function).<br>
+        Click addAction button to add custom action (repeat to add others action).<br>
         Now show menu with custom actions.<br>
         Hide (click again or click hide button).<br>
         <br><br><br>
 
         <button type="button" class="pnd-contexMenu-show-btn btn btn-default" ng-click="show($event)">Show Menu</button>
         <button type="button" class="pnd-contexMenu-show-btn btn btn-default" ng-click="hide($event)">Hide and Remove Menu</button>
-        <button type="button" class="pnd-contexMenu-show-btn btn btn-default" ng-click="addAction($event)">Add Action</button>
+        <button type="button" class="pnd-contexMenu-show-btn btn btn-default" ng-click="addAction($event)">Add One Action</button>
 
     </div>
 

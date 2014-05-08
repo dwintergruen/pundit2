@@ -21,29 +21,40 @@ angular.module('Pundit2.ContextualMenu')
     var buildContent = function(type){
         var content = [];
 
-        for ( var i in menuActions ) {
-            // display only if showIf return true and if th type match
-            var typeMatch = type.some(function(el, index, array){
-                return angular.equals(menuActions[i].type, el);
-            });
-            if ( typeMatch && menuActions[i].showIf(menuResource) ) {
+        // filter by type
+        var filterAction = menuActions.filter(function(el, index, array){
 
-                if ( menuActions[i].submenu ) {
+            return type.some(function(typeEl, typeIndex, typeArray){
+                return angular.equals(typeEl, el.type);
+            });
+            
+        });
+
+        // ordering (before the greatest)
+        filterAction.sort(function(a, b){
+            return b.priority - a.priority;
+        });
+
+        for ( var i in filterAction ) {
+            // display only if showIf return true            
+            if ( filterAction[i].showIf(menuResource) ) {
+
+                if ( filterAction[i].submenu ) {
                     // submenu content
                     content.push({
-                        text: menuActions[i].label,
+                        text: filterAction[i].label,
                         submenu: true,
-                        hover: menuActions[i].hover,
-                        leave: menuActions[i].leave
+                        hover: filterAction[i].hover,
+                        leave: filterAction[i].leave
                     });
 
                 } else {
                     // standard content
                     content.push({
-                        text: menuActions[i].label,
+                        text: filterAction[i].label,
                         click: function(i){
                             return function(){
-                                menuActions[i].action(menuResource);                                
+                                filterAction[i].action(menuResource);                                
                             }
                         }(i)
                     });
