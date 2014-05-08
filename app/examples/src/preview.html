@@ -1,0 +1,46 @@
+<!-- buildexamples:section header --><!-- /buildexamples -->
+
+<script>
+    var previewDemoCtrl = function($scope, MyPundit, Annotation, ItemsExchange, ItemPreview) {
+
+        var p = new Annotation("8fd05a49");
+        p.then(function() {
+            $scope.items = ItemsExchange.getItemsHash();
+            console.log(typeof($scope.items));
+            console.log($scope.items);
+        });
+
+    $scope.getPreview = function(item){
+        //console.log(item);
+        ItemPreview.setDashboardPreview(item);
+    };
+
+
+    }
+</script>
+
+<div data-ng-app="Pundit2" class="pnd-wrp">
+
+    <div ng-controller="previewDemoCtrl" class="container clearfix">
+
+        <div class="row">
+            <div class="col-lg-6">
+                <h2>Items</h2>
+                <ul>
+                    <li ng-repeat="item in items" >
+                        <span ng-mouseover="getPreview(item)">{{item.label}}</span>
+                    </li>
+                </ul>
+            </div>
+
+
+                <item-preview></item-preview>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+<!-- buildexamples:section footer --><!-- /buildexamples -->
