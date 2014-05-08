@@ -181,12 +181,12 @@ angular.module("Pundit2.Core")
     ns.asNBMeta        = ns.as + "api/notebooks/{{id}}/metadata";
     ns.asOpenNBMeta    = ns.as + "api/open/notebooks/{{id}}/metadata";
     ns.asOpenNBAnnMeta = ns.as + "api/open/notebooks/{{id}}/annotations/metadata";
-    
-    ns.asOpenAnn       = ns.as + "api/open/annotations/{{id}}";
+
+    ns.asOpenAnnMetaSearch = ns.as + "api/annotations/metadata/search";
+    ns.asOpenAnn           = ns.as + "api/open/annotations/{{id}}";
 
 
-
-        // Gets a key of the namespace, interpolating variables if needed
+    // Gets a key of the namespace, interpolating variables if needed
     ns.get = function(key, context) {
         
         // If it's not a string, it's nothing we can return (this

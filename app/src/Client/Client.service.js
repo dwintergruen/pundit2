@@ -10,7 +10,9 @@ angular.module('Pundit2.Client')
             Client.boot();
         }
     })
-    .service('Client', function(BaseComponent, Config, MyPundit) {
+    .service('Client', function(BaseComponent, Config, MyPundit, AnnotatorsOrchestrator,
+                                TextFragmentAnnotator, AnnotationsExchange, Consolidation,
+                                ItemsExchange) {
 
         var client = new BaseComponent('Client'),
             root;
@@ -32,7 +34,7 @@ angular.module('Pundit2.Client')
                 // TODO: check if we're logged in and set it up?
             });
 
-            // TODO: how to short up this? [].forEach? From conf?
+            // TODO: how to short down this? [].forEach? From conf?
             // From BaseComponent registered names?? Modules can subscribe themselves
             // an init function? Or just need to know IF and markup?
 
@@ -45,17 +47,25 @@ angular.module('Pundit2.Client')
                 root.append("<toolbar></toolbar>");
             }
 
-
             // TODO: some if, some option?
+            var uris = AnnotatorsOrchestrator.getAvailableTargets();
+            client.log('Available targets', uris);
 
-            // TODO: get content uris
-            //       search for annotations
+            var annPromise = AnnotationsExchange.searchByUri(uris);
+            annPromise.then(function(resp) {
+                client.log('Found '+resp.length+' annotations on the current page.');
+                Consolidation.consolidate(ItemsExchange.getItems());
+
+            }, function() {
+                // TODO: cant search for annotations? OUCH
+            });
+
+
+            // TODO:
             //       get annotations
             //       consolidate
             //       update sidebar (automatic?)
             //       update items (automatic?)
-            //
-
 
             // TODO:
             // * annotation sidebar

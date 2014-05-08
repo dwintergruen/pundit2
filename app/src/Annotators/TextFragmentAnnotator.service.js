@@ -1,9 +1,12 @@
 angular.module('Pundit2.Annotators')
 .constant('TEXTFRAGMENTANNOTATORDEFAULTS', {
     // Class added to all of the consolidated text fragments
-    wrapNodeClass: 'pnd-cons'
+    wrapNodeClass: 'pnd-cons',
+    contentClasses: ['pundit-content']
 })
-.service('TextFragmentAnnotator', function(TEXTFRAGMENTANNOTATORDEFAULTS, NameSpace, BaseComponent, AnnotatorsOrchestrator, XpointersHelper, $compile, $rootScope) {
+.service('TextFragmentAnnotator',
+    function(TEXTFRAGMENTANNOTATORDEFAULTS, NameSpace, BaseComponent, AnnotatorsOrchestrator,
+             XpointersHelper, $compile, $rootScope, $location) {
 
     // Create the component and declare what we deal with: text
     var tfa = new BaseComponent('TextFragmentAnnotator', TEXTFRAGMENTANNOTATORDEFAULTS);
@@ -35,6 +38,32 @@ angular.module('Pundit2.Annotators')
 
         tfa.log("Item not valid: not recognized as a consolidable "+ tfa.label);
         return true;
+    };
+
+    tfa.getAvailableTargets = function() {
+        var ret = [];
+
+        // The page URL is for xpointers out of named contents
+        ret.push($location.absUrl());
+
+        // Look for named content: an element with a class listed in .contentClasses
+        // then get its about attribute
+        for (var l=tfa.options.contentClasses.length; l--;) {
+            var className = tfa.options.contentClasses[l],
+                nodes = angular.element('.'+className);
+
+            for (var n=nodes.length; n--;) {
+                // If it doesnt have the attribute, dont add it
+                var uri = angular.element(nodes[n]).attr('about');
+                // TODO: better checks of what we find inside about attributes? A lil regexp
+                // or we let do this at the server?
+                if (uri) {
+                    ret.push(uri);
+                }
+            }
+        }
+
+        return ret;
     };
 
     // Each fragment will be split into bits, each bit will carry a relation

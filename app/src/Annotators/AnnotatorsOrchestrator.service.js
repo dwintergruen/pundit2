@@ -13,7 +13,8 @@ angular.module('Pundit2.Annotators')
     };
 
     // Calls every annotator and ask them if the given item is a
-    // valid fragment. If it is, returns the fragment type
+    // valid fragment. If it is, returns the fragment type.
+    // This method must be implemented by every Annotator
     orch.isConsolidable = function(item) {
         for (var a in annotators) {
             if (annotators[a].isConsolidable(item)) {
@@ -21,6 +22,17 @@ angular.module('Pundit2.Annotators')
             }
         }
         return false;
+    };
+
+    // Gets the available targets or resources on the current page. They will most likely
+    // be passed to the server looking for annotations.
+    // This method must be implemented by every Annotator
+    orch.getAvailableTargets = function() {
+        var ret = [];
+        for (var a in annotators) {
+            ret = ret.concat(annotators[a].getAvailableTargets());
+        }
+        return ret;
     };
 
     orch.log("Component up and running");

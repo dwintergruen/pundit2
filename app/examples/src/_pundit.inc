@@ -38,6 +38,7 @@
     <script src="../src/Communication/Notebook.factory.js"></script>
     <script src="../src/Communication/NotebooksExchange.service.js"></script>
     <script src="../src/Communication/Annotation.factory.js"></script>
+    <script src="../src/Communication/AnnotationsExchange.service.js"></script>
 
     <script src="../src/Annomatic/Annomatic.js"></script>
     <script src="../src/Annomatic/AnnomaticPanel.dir.js"></script>
