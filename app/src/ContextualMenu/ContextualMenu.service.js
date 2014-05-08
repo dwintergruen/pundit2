@@ -102,6 +102,18 @@ angular.module('Pundit2.ContextualMenu')
             return;
         }
 
+        // need resource
+        if ( typeof(resource) === 'undefined' ) {
+            contextualMenu.err('Try to show menu without resource');
+            return;
+        }
+
+        // need type array
+        if ( type instanceof Array ) {
+            contextualMenu.err('Try to show menu with not legal type');
+            return;
+        }
+
         menuResource = resource;
 
         angular.element("[data-ng-app='Pundit2']")
