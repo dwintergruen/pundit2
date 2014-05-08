@@ -15,11 +15,11 @@ angular.module('Pundit2.Core')
         types[uri] = {};
         if (uri in annotationRdf) {
             if (NameSpace.item.label in annotationRdf[uri]) {
-                types[uri].label = annotationRdf[uri][NameSpace.item.label];
+                types[uri].label = annotationRdf[uri][NameSpace.item.label][0].value;
             }
 
             if (NameSpace.item.description in annotationRdf[uri]) {
-                types[uri].description = annotationRdf[uri][NameSpace.item.description];
+                types[uri].description = annotationRdf[uri][NameSpace.item.description][0].value;
             }
         } else {
             // Type not found in annotation rdf .. let's invent at least label!
