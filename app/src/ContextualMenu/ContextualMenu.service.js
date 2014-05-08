@@ -5,38 +5,13 @@ angular.module('Pundit2.ContextualMenu')
 
     debug: true
 })
-.service('ContextualMenu', function($rootScope, BaseComponent, CONTEXTUALMENUDEFAULT, $dropdown) {
+.service('ContextualMenu', function($rootScope, BaseComponent, CONTEXTUALMENUDEFAULT, $dropdown, $timeout) {
 
     contextualMenu = new BaseComponent('ContextualMenu', CONTEXTUALMENUDEFAULT);
 
-    // TODO only to example (need to remove)
-    var submenu;
     // TODO put in CONTEXTUALMENUDEFAULT
     var defaultContent = [
-        { "text": "Action1", "href": "dashboard.html"},
-        { "text": "Action2", "click": function(){
-            console.log('exe action 2');
-        }},
-        { "text": "This is submenu", 
-            submenu: true, 
-            "hover": function(){
-                console.log('exe hover');
-                var options = {scope: $rootScope.$new()};
-                options.scope.content = buildContent();
-                options.placement = 'bottom-left';
-                options.template = 'src/Toolbar/dropdown.tmpl.html';
-                // build menu
-                submenu = $dropdown(angular.element('.dropdown-submenu'), options);
-                submenu.$promise.then(submenu.show);
-            },
-            "leave": function(){
-                console.log('exe leave');
-                if ( submenu ) {
-                    submenu.hide();
-                    submenu.destroy();
-                }
-            }
-        }
+        { "text": "Default Action", "href": "#"}
     ];
 
     var menuActions = [];
@@ -51,10 +26,22 @@ angular.module('Pundit2.ContextualMenu')
         for ( var i in menuActions ) {
             // display only if showIf return true
             if ( menuActions[i].showIf() ) {
-                content.push({
-                    "text": menuActions[i].label,
-                    "click": menuActions[i].action
-                });
+
+                if ( menuActions[i].type === 'submenu' ) {
+                    content.push({
+                        "text": menuActions[i].label,
+                        submenu: true,
+                        "hover": menuActions[i].action.hover,
+                        "leave": menuActions[i].action.leave
+                    });
+
+                } else {
+                    content.push({
+                        "text": menuActions[i].label,
+                        "click": menuActions[i].action
+                    });
+                }
+
             }
         }
 
@@ -116,7 +103,7 @@ angular.module('Pundit2.ContextualMenu')
                 type: type,
                 showIf: showIf,
                 action: action
-            });            
+            });          
         }
 
     };
