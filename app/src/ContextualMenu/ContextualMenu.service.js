@@ -14,7 +14,12 @@ angular.module('Pundit2.ContextualMenu')
         { "text": "Action1", "href": "dashboard.html"},
         { "text": "Action2", "click": function(){
             console.log('exe action 2');
-        }}
+        }},
+        { "text": "This is submenu", 
+            submenu: true, 
+            "hover": function(){console.log('exe hover')},
+            "leave": function(){console.log('exe leave')}
+        }
     ];
 
     var menuActions = [];
@@ -45,11 +50,9 @@ angular.module('Pundit2.ContextualMenu')
         options.scope.content = buildContent();
         options.placement = ( typeof(position)!== 'undefined' ) ? position : contextualMenu.options.position;
 
-        // TODO need to cache? --- Need to give it a path
         options.template = 'src/Toolbar/dropdown.tmpl.html';
 
         options.scope.$on('tooltip.hide', function(){
-            console.log('evento di hide beccato');
             contextualMenu.hide();
         });
 
@@ -60,15 +63,16 @@ angular.module('Pundit2.ContextualMenu')
     // initialize the menu and show when it is ready
     contextualMenu.show = function(position, x, y){
 
-        // TODO where position the <div> element ? -- this should do the trick
+        // show only one menu
+        if ( menu !== null ) {
+            return;
+        }
+
         angular.element("[data-ng-app='Pundit2']")
             .prepend("<div class='pnd-dropdown' style='position: absolute; left: " + x + "px; top: " + y + "px;'><div>");
 
         init(angular.element('.pnd-dropdown'), position);       
-        menu.$promise.then(function(){
-            console.log(menu);
-            menu.show();
-        });
+        menu.$promise.then(menu.show);
     };
 
     // hide and destroy the showed menu
