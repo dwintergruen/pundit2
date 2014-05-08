@@ -9,6 +9,8 @@ angular.module('Pundit2.ContextualMenu')
 
     contextualMenu = new BaseComponent('ContextualMenu', CONTEXTUALMENUDEFAULT);
 
+    // TODO only to example (need to remove)
+    var submenu;
     // TODO put in CONTEXTUALMENUDEFAULT
     var defaultContent = [
         { "text": "Action1", "href": "dashboard.html"},
@@ -17,8 +19,23 @@ angular.module('Pundit2.ContextualMenu')
         }},
         { "text": "This is submenu", 
             submenu: true, 
-            "hover": function(){console.log('exe hover')},
-            "leave": function(){console.log('exe leave')}
+            "hover": function(){
+                console.log('exe hover');
+                var options = {scope: $rootScope.$new()};
+                options.scope.content = buildContent();
+                options.placement = 'bottom-left';
+                options.template = 'src/Toolbar/dropdown.tmpl.html';
+                // build menu
+                submenu = $dropdown(angular.element('.dropdown-submenu'), options);
+                submenu.$promise.then(submenu.show);
+            },
+            "leave": function(){
+                console.log('exe leave');
+                if ( submenu ) {
+                    submenu.hide();
+                    submenu.destroy();
+                }
+            }
         }
     ];
 

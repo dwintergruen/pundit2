@@ -14,7 +14,7 @@ var ContextualMenuDemoCtrl = function($scope, ContextualMenu) {
 
     $scope.hide = function(){
         ContextualMenu.hide();
-    }
+    };
 
     var exampleAction = function(){
         console.log('example action execute');
@@ -22,7 +22,11 @@ var ContextualMenuDemoCtrl = function($scope, ContextualMenu) {
 
     $scope.addAction = function(){
         ContextualMenu.addAction('exampleAction', 'Example Action', 'type1', function(){return true}, exampleAction);
-    }
+    };
+
+    $scope.displayMenu = function($event){
+        ContextualMenu.show('bottom-left', $event.clientX, $event.clientY);
+    };
 
 }
 
@@ -30,13 +34,14 @@ var ContextualMenuDemoCtrl = function($scope, ContextualMenu) {
 
 <div data-ng-app="Pundit2" class="pnd-wrp">
 
-    <div class="contexMenu-example-div" ng-controller="ContextualMenuDemoCtrl">
+    <div class="contexMenu-example-div" ng-controller="ContextualMenuDemoCtrl" ng-click="displayMenu($event)">
         <br><br><br>
         <br><br><br>
         <br><br><br>
+        Left click at any position to show menu.
+        <br>
 
         <button type="button" class="pnd-contexMenu-show-btn btn btn-default" ng-click="show()">Show Menu</button>
-        <button type="button" class="pnd-contexMenu-show-btn btn btn-default" ng-click="show('top-right')">Show Menu on TopLeft</button>
         <button type="button" class="pnd-contexMenu-show-btn btn btn-default" ng-click="hide()">Hide and Remove Menu</button>
         <button type="button" class="pnd-contexMenu-show-btn btn btn-default" ng-click="addAction()">Add Action</button>
 
