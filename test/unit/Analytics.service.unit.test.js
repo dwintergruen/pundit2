@@ -128,11 +128,7 @@ describe('Analytics service', function() {
         expect(Analytics.getHits()).toEqual(Analytics.options.maxHits);
     });
 
-
-    // TODO RAF: occhio che manca uno spazio in cima a sto test
-    // TODO RAF 2: cosa testa sto test? Volevi testare che quando la coda e' vuota
-    // non viene spedita subito una hit?
-   it('should buffer be empty', function() {
+    it('should currentHits be empty after maxHits number of sends', function() {
         $log.reset();
         expect($log.log.logs.length).toEqual(0);
         expect(Analytics.getHits()).toEqual(Analytics.options.maxHits);

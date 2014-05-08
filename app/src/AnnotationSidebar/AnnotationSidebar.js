@@ -5,3 +5,9 @@
  * @description Something ..
 **/
 angular.module('Pundit2.AnnotationSidebar', []);
+// .config(function($asideProvider) {
+//     angular.extend($asideProvider.defaults, {
+//         container: 'body',
+//         html: true
+//     });
+// });

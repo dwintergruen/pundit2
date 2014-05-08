@@ -7,10 +7,21 @@
             }
 
         };
+
+    var AnnotationSidebarDemoCtrl = function($scope, AnnotationSidebar) {
+    
+        $scope.toogle = function(){
+            AnnotationSidebar.toggle();
+        };
+    }
 </script>
 
 <div data-ng-app="Pundit2" class="pnd-wrp">
     <annotation-sidebar></annotation-sidebar>
+
+    <div ng-controller="AnnotationSidebarDemoCtrl">
+        <button type="button" class="btn btn-default" ng-click="toogle()">Annotations</button>
+    </div>
 </div>
 
 <!-- buildexamples:section footer --><!-- /buildexamples -->
