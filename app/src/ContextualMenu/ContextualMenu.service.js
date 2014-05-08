@@ -84,15 +84,29 @@ angular.module('Pundit2.ContextualMenu')
         contextualMenu.hide();
     });
 
+    // check and fix position
+    options.scope.$on('tooltip.show', function(){
+        console.log(angular.element('.pnd-context-menu').get(0));
+    });
+
     var init = function(element, type){
         // build options
         options.scope.content = buildContent(type);
         options.placement = contextualMenu.options.position;
         options.template = 'src/Toolbar/dropdown.tmpl.html';
+        options.scope.contextMenu = true;
 
         // build menu
         menu = $dropdown(element, options);
+
+        return menu;
     };
+
+
+    var position = function(element){
+        
+    };
+
 
     // initialize the menu and show when it is ready
     contextualMenu.show = function(x, y, resource, type){
@@ -109,7 +123,7 @@ angular.module('Pundit2.ContextualMenu')
         }
 
         // need type array
-        if ( type instanceof Array ) {
+        if ( !(type instanceof Array) ) {
             contextualMenu.err('Try to show menu with not legal type');
             return;
         }
@@ -117,9 +131,9 @@ angular.module('Pundit2.ContextualMenu')
         menuResource = resource;
 
         angular.element("[data-ng-app='Pundit2']")
-            .prepend("<div class='pnd-dropdown-contextual-menu' style='position: absolute; left: " + x + "px; top: " + y + "px;'><div>");
+            .prepend("<div class='pnd-dropdown-contextual-menu-anchor' style='position: absolute; left: " + x + "px; top: " + y + "px;'><div>");
 
-        init(angular.element('.pnd-dropdown-contextual-menu'), type);       
+        init(angular.element('.pnd-dropdown-contextual-menu-anchor'), type);       
         menu.$promise.then(menu.show);
     };
 
@@ -128,7 +142,7 @@ angular.module('Pundit2.ContextualMenu')
         if ( menu !== null ) {
             menu.hide();
             menu.destroy();
-            angular.element('.pnd-dropdown-contextual-menu').remove();
+            angular.element('.pnd-dropdown-contextual-menu-anchor').remove();
             menu = null;
         }
     };
