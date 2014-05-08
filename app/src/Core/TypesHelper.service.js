@@ -28,6 +28,9 @@ angular.module('Pundit2.Core')
     };
 
     typesHelper.getLabel = function(uri) {
+
+        // TODO: Other special cases for example for pundit ontology types?
+
         if (typeof(types[uri]) === "undefined") {
             types[uri] = {
                 label: Utils.getLabelFromURI(uri)
