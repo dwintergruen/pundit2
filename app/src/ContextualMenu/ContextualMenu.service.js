@@ -11,8 +11,6 @@ angular.module('Pundit2.ContextualMenu')
 
     // all action that menu can display
     var menuActions = [];
-    // actual showed actions
-    var menuType;
     // actual menu resource
     var menuResource;
 
@@ -20,25 +18,30 @@ angular.module('Pundit2.ContextualMenu')
     var menu = null;
 
     // build content to put inside menu
-    var buildContent = function(){
+    var buildContent = function(type){
         var content = [];
 
         for ( var i in menuActions ) {
-            // display only if showIf return true
-            if ( menuActions[i].showIf() ) {
+            // display only if showIf return true and if th type match
+            var typeMatch = type.some(function(el, index, array){
+                return angular.equals(menuActions[i].type, el);
+            });
+            if ( typeMatch && menuActions[i].showIf(menuResource) ) {
 
                 if ( menuActions[i].submenu ) {
+                    // submenu content
                     content.push({
-                        "text": menuActions[i].label,
+                        text: menuActions[i].label,
                         submenu: true,
-                        "hover": menuActions[i].hover,
-                        "leave": menuActions[i].leave
+                        hover: menuActions[i].hover,
+                        leave: menuActions[i].leave
                     });
 
                 } else {
+                    // standard content
                     content.push({
-                        "text": menuActions[i].label,
-                        "click": function(i){
+                        text: menuActions[i].label,
+                        click: function(i){
                             return function(){
                                 menuActions[i].action(menuResource);                                
                             }
@@ -58,9 +61,9 @@ angular.module('Pundit2.ContextualMenu')
         contextualMenu.hide();
     });
 
-    var init = function(element){
+    var init = function(element, type){
         // build options
-        options.scope.content = buildContent();
+        options.scope.content = buildContent(type);
         options.placement = contextualMenu.options.position;
         options.template = 'src/Toolbar/dropdown.tmpl.html';
 
@@ -81,7 +84,7 @@ angular.module('Pundit2.ContextualMenu')
         angular.element("[data-ng-app='Pundit2']")
             .prepend("<div class='pnd-dropdown-contextual-menu' style='position: absolute; left: " + x + "px; top: " + y + "px;'><div>");
 
-        init(angular.element('.pnd-dropdown-contextual-menu'));       
+        init(angular.element('.pnd-dropdown-contextual-menu'), type);       
         menu.$promise.then(menu.show);
     };
 

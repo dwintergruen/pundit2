@@ -5,8 +5,8 @@
 var ContextualMenuDemoCtrl = function($scope, $rootScope, $dropdown, $timeout, ContextualMenu) {
 
         var submenuContent = [
-            { "text": "Submenu Action1", "href": "#"},
-            { "text": "Submenu Action2", "href": "#"}
+            { text: "Submenu Action1", "href": "#"},
+            { text: "Submenu Action2", "href": "#"}
         ];
 
         var submenuOver;
@@ -25,7 +25,7 @@ var ContextualMenuDemoCtrl = function($scope, $rootScope, $dropdown, $timeout, C
             {
                 label: "This open a submenu",
                 name: "subMenuKey",
-                type: 'type1',
+                type: 'type2',
                 showIf: function(){
                     return true;
                 },
@@ -60,8 +60,10 @@ var ContextualMenuDemoCtrl = function($scope, $rootScope, $dropdown, $timeout, C
             }
         ];
 
-    $scope.show = function(){
-        ContextualMenu.show(250, 100);
+    $scope.show = function($event){
+        var resource = {name:'pincopallino'};
+        ContextualMenu.show(250, 100, resource, ['type1']);
+        $event.stopPropagation();
     };
 
     $scope.hide = function($event){
@@ -88,7 +90,7 @@ var ContextualMenuDemoCtrl = function($scope, $rootScope, $dropdown, $timeout, C
 
     $scope.displayMenu = function($event){
         var resource = {name:'pincopallino'};
-        ContextualMenu.show($event.pageX, $event.pageY, resource);
+        ContextualMenu.show($event.pageX, $event.pageY, resource, ['type1', 'type2']);
     };
 
 }
@@ -106,7 +108,7 @@ var ContextualMenuDemoCtrl = function($scope, $rootScope, $dropdown, $timeout, C
         Hide (click again or click hide button).<br>
         <br><br><br>
 
-        <button type="button" class="pnd-contexMenu-show-btn btn btn-default" ng-click="show()">Show Menu</button>
+        <button type="button" class="pnd-contexMenu-show-btn btn btn-default" ng-click="show($event)">Show Menu</button>
         <button type="button" class="pnd-contexMenu-show-btn btn btn-default" ng-click="hide($event)">Hide and Remove Menu</button>
         <button type="button" class="pnd-contexMenu-show-btn btn btn-default" ng-click="addAction($event)">Add Action</button>
 
