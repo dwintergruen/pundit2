@@ -1,28 +1,30 @@
-<div ng-controller = "ItemPreviewCtrl">
+<div ng-controller = "PreviewCtrl">
     <div class="col-lg-6">
-        <div class="panel panel-default">
+        <div class="panel panel-default pnd-dashboard-preview">
             <div class="panel-heading">Preview</div>
             <div class="panel-body">
                 <!-- Label -->
                 <div>
                     <h4>Label:</h4>
-                    <p>{{itemToPreview.label}}</p>
+                    <p>{{itemDashboardPreview.label}}</p>
                 </div>
-
+                <div ng-if="itemIsAnImage">
+                    <img ng-src="{{itemDashboardPreview.image}}" width="100%"/>
+                </div>
                 <div ng-if="hasImage">
                     <h4>Image:</h4>
-                    <img ng-src="{{itemToPreview.image}}" />
+                    <img ng-src="{{itemDashboardPreview.image}}" />
                 </div>
 
                 <div>
                     <h4>Description:</h4>
-                    <p>{{itemToPreview.description}}</p>
+                    <p>{{itemDashboardPreview.description}}</p>
                 </div>
 
                 <div>
                     <h4>Type:</h4>
                     <ul>
-                        <li ng-repeat="type in itemToPreview.type">{{getLabelType(type)}}</li>
+                        <li ng-repeat="type in itemDashboardPreview.type">{{getLabelType(type)}}</li>
                     </ul>
                 </div>
             </div>

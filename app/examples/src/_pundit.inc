@@ -66,8 +66,8 @@
     
     <script src="../src/Core/login.modal.ctrl.js"></script>
 
-    <script src="../src/ItemPreview/ItemPreview.js"></script>
-    <script src="../src/ItemPreview/ItemPreview.dir.js"></script>
-    <script src="../src/ItemPreview/ItemPreview.ctrl.js"></script>
-    <script src="../src/ItemPreview/ItemPreview.service.js"></script>
+    <script src="../src/Preview/Preview.js"></script>
+    <script src="../src/Preview/Preview.dir.js"></script>
+    <script src="../src/Preview/Preview.ctrl.js"></script>
+    <script src="../src/Preview/Preview.service.js"></script>
     <!-- endbuild -->

@@ -1,7 +1,7 @@
 <!-- buildexamples:section header --><!-- /buildexamples -->
 
 <script>
-    var previewDemoCtrl = function($scope, MyPundit, Annotation, ItemsExchange, ItemPreview) {
+    var previewDemoCtrl = function($scope, MyPundit, Annotation, ItemsExchange, Preview) {
 
         var p = new Annotation("8fd05a49");
         p.then(function() {
@@ -11,8 +11,19 @@
         });
 
     $scope.getPreview = function(item){
-        //console.log(item);
-        ItemPreview.setDashboardPreview(item);
+        Preview.setDashboardPreview(item);
+    };
+
+    $scope.hidePreview = function(){
+        Preview.hideDashboardPreview();
+    };
+
+    $scope.setSticky = function(item){
+        Preview.setItemDashboardSticky(item);
+    };
+
+    $scope.clearSticky = function(){
+        Preview.clearItemDashboardSticky();
     };
 
 
@@ -26,16 +37,17 @@
         <div class="row">
             <div class="col-lg-6">
                 <h2>Items</h2>
-                <ul>
-                    <li ng-repeat="item in items" >
-                        <span ng-mouseover="getPreview(item)">{{item.label}}</span>
+                <ul class="list-group">
+                    <li class="list-group-item" ng-class="" ng-repeat="item in items" ng-mouseover="getPreview(item)" ng-mouseleave="hidePreview()">
+                        <span>{{item.label}}</span> <button class="btn btn-success btn-xs" ng-click="setSticky(item)">Set Sticky</button>
                     </li>
                 </ul>
             </div>
 
 
-                <item-preview></item-preview>
+            <preview></preview>
 
+            <button class="btn btn-success" ng-click="clearSticky()">Clear Sticky</button>
         </div>
 
     </div>
