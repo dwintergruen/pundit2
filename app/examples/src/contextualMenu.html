@@ -9,6 +9,7 @@ var ContextualMenuDemoCtrl = function($scope, $rootScope, $dropdown, $timeout, C
             { "text": "Submenu Action2", "href": "#"}
         ];
 
+        var submenuOver;
         var menuActions = [
             {
                 name: 'consoleLog',
@@ -17,56 +18,50 @@ var ContextualMenuDemoCtrl = function($scope, $rootScope, $dropdown, $timeout, C
                 showIf: function(){
                     return true;
                 },
-                action: function(){
-                    console.log('exe action 2');
+                action: function(resource){
+                    console.log('exe action 2 with resource ', resource);
                 }
             },
             {
                 label: "This open a submenu",
-                name: "submenuName",
-                type: 'submenu',
+                name: "subMenuKey",
+                type: 'type1',
                 showIf: function(){
                     return true;
                 },
-                action : {
-                    hover: function(){
-                        var options = {scope: $rootScope.$new()};
-                        options.scope.content = submenuContent;
-                        // remove submenu inside submenu
-                        options.placement = 'right';
-                        options.template = 'src/Toolbar/dropdown.tmpl.html';
-                        // build menu
-                        submenu = $dropdown(angular.element('.dropdown-submenu'), options);
-                        submenu.$promise.then(function(){
-                            submenu.show();
-                            submenu.$element.hover(function(){
-                                submenuOver = true;
-                            }, function(){
-                                submenuOver = false;
-                                submenu.hide();
-                                submenu.destroy();
-                            });
+                hover: function(){
+                    var options = {scope: $rootScope.$new()};
+                    options.scope.content = submenuContent;
+                    // remove submenu inside submenu
+                    options.placement = 'right';
+                    options.template = 'src/Toolbar/dropdown.tmpl.html';
+                    // build menu
+                    submenu = $dropdown(angular.element('.dropdown-submenu'), options);
+                    submenu.$promise.then(function(){
+                        submenu.show();
+                        submenu.$element.hover(function(){
+                            submenuOver = true;
+                        }, function(){
+                            submenuOver = false;
+                            submenu.hide();
+                            submenu.destroy();
                         });
-                    },
-                    leave: function(){
-                        $timeout(function() {
-                            if ( submenu && !submenuOver) {
-                                submenu.hide();
-                                submenu.destroy();
-                            }
-                        }, 100);
-                        
-                    }
-                }                
+                    });
+                },
+                leave: function(){
+                    $timeout(function() {
+                        if ( submenu && !submenuOver) {
+                            submenu.hide();
+                            submenu.destroy();
+                        }
+                    }, 100);
+                    
+                }               
             }
         ];
 
-    $scope.show = function(position){
-        ContextualMenu.show(position, 250, 100);
-    };
-
-    $scope.show2 = function(position){
-        ContextualMenu.show(position);
+    $scope.show = function(){
+        ContextualMenu.show(250, 100);
     };
 
     $scope.hide = function($event){
@@ -78,18 +73,22 @@ var ContextualMenuDemoCtrl = function($scope, $rootScope, $dropdown, $timeout, C
         console.log('example action execute');
     };
 
-    var l = menuActions.length-1;
+    var l = 0;
     $scope.addAction = function($event){
-        if(l>=0){
-            var e = menuActions[l];
-            ContextualMenu.addAction(e.name, e.label, e.type, e.showIf, e.action);
-            l--;
+
+        if ( l === 0) {
+            ContextualMenu.addAction(menuActions[l]);
+        } else {
+            ContextualMenu.addSubMenu(menuActions[l]);
         }
+        l = (l+1) % menuActions.length;
+        
         $event.stopPropagation();
     };
 
     $scope.displayMenu = function($event){
-        ContextualMenu.show('bottom-left', $event.clientX, $event.clientY);
+        var resource = {name:'pincopallino'};
+        ContextualMenu.show($event.pageX, $event.pageY, resource);
     };
 
 }
@@ -102,11 +101,9 @@ var ContextualMenuDemoCtrl = function($scope, $rootScope, $dropdown, $timeout, C
         <br><br><br>
         <br><br><br>
         <br><br><br>
-        Click on Show button or click at any position to show menu.<br>
-        Menu show with default action.<br>
-        Hide (click again or click hide button).<br>
         Click addAction button to add custom action (submenu and generic function).<br>
-        Now show menu again with custom actions.<br>
+        Now show menu with custom actions.<br>
+        Hide (click again or click hide button).<br>
         <br><br><br>
 
         <button type="button" class="pnd-contexMenu-show-btn btn btn-default" ng-click="show()">Show Menu</button>
