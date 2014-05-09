@@ -2,6 +2,7 @@ angular.module('Pundit2.Annotators')
 .constant('TEXTFRAGMENTANNOTATORDEFAULTS', {
     // Class added to all of the consolidated text fragments
     wrapNodeClass: 'pnd-cons',
+    // Classes to assign to named content to have them recognized by Pundit
     contentClasses: ['pundit-content']
 })
 .service('TextFragmentAnnotator',
@@ -72,6 +73,9 @@ angular.module('Pundit2.Annotators')
         // Map to get back from id to fragment uri
         fragmentById = {};
 
+    // All of the items passed should be consolidable (checked by isConsolidable), in the
+    // consolidation service, gathering all annotators
+    // TODO: better check twice? :|
     tfa.consolidate = function(items) {
 
         tfa.log('Consolidating!');
@@ -117,16 +121,30 @@ angular.module('Pundit2.Annotators')
 
         // place icon? do something?
 
+        for (var c in fragmentIds) {
+            var lastBit = angular.element('[fragments*="'+ fragmentIds[c] +'"]').last();
+
+            // TODO: use a directive
+            // - mouseover (highlight)
+            // - mouseoout (reset highlight)
+            // - click (cmenu)
+            // - right click (cmenu)
+            lastBit.after('<span class="pnd-icon-tag"></span>');
+        }
+
     };
 
 
-    var fragmentsByXpointer = [];
+    // Called by FragmentBit directives: they will wrap every bit of annotated content
+    // for every xpointer we save an array of those bits. Each bit can belong to more
+    // than one xpointer (overlaps!)
     tfa.addFragmentBit = function(bit) {
 
         tfa.log('Adding fragment bit ', bit);
         var fragments = bit.fragments;
 
-        // Fragment ids are split by a comma, gather them back in a array
+        // Fragment ids are split by a comma, gather them back in a array. Otherwise
+        // they are a string
         if (fragments.match(/,/)) {
             fragments = fragments.split(',');
         } else {
@@ -138,10 +156,11 @@ angular.module('Pundit2.Annotators')
             current.bits.push(bit);
 
         }
-        console.log('Adding cons fragment', fragments);
+        tfa.log('Adding consolidated fragment bit', fragments);
 
     };
 
+    // TODO: find a better name
     tfa.high = function(uri) {
 
         var id;
@@ -159,6 +178,7 @@ angular.module('Pundit2.Annotators')
 
     };
 
+    // TODO: find a better name
     tfa.reset = function(uri) {
 
         var id = fragmentIds[uri];
