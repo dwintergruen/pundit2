@@ -1,32 +1,41 @@
 angular.module('Pundit2.Preview')
 .service('Preview', function(BaseComponent) {
-// TODO: add comment and code review
-        var preview = new BaseComponent('Preview');
+
+		var preview = new BaseComponent('Preview');
 
         var itemDashboardPreview = "";
         var itemDashboardSticky = "";
 
-        preview.setDashboardPreview = function(item){
+        // show item preview in dashboard panel
+        preview.showDashboardPreview = function(item) {
             itemDashboardPreview = item;
         };
 
-        preview.getDashboardPreview = function(){
+        // get current item shown in preview
+        preview.getItemDashboardPreview = function() {
             return itemDashboardPreview;
         };
 
-        preview.setItemDashboardSticky = function(item){
+        // set an item as sticky
+        preview.setItemDashboardSticky = function(item) {
             itemDashboardSticky = item;
         };
 
-        preview.getItemDashboardSticky = function(item){
+        // return current sticky item
+        preview.getItemDashboardSticky = function() {
             return itemDashboardSticky;
         };
 
-        preview.clearItemDashboardSticky = function(item){
+        // reset dashboard preview
+        // clear both item dashoboard and sticky item
+        // in this way preview panel will be empty and will be shown welcome message
+        preview.clearItemDashboardSticky = function() {
             itemDashboardSticky = "";
             itemDashboardPreview = "";
         };
 
+        // if no item is sticky, show empty preview
+        // otherwise show the sticky item
         preview.hideDashboardPreview = function(){
 
             if(itemDashboardSticky === '' && typeof(itemDashboardSticky) === 'undefined') {
@@ -34,7 +43,6 @@ angular.module('Pundit2.Preview')
             } else {
                 itemDashboardPreview = itemDashboardSticky;
             }
-
         };
 
         return preview;

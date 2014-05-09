@@ -1,7 +1,7 @@
 /**
  * @ngdoc module
- * @name Pundit2.ItemPreview
- * @module Pundit2.ItemPreview
- * @description Pundit2 ItemPreview
+ * @name Pundit2.Preview
+ * @module Pundit2.Preview
+ * @description Pundit2 Preview
  **/
 angular.module('Pundit2.Preview', []);

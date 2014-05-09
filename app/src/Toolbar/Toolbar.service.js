@@ -8,8 +8,7 @@ angular.module('Pundit2.Toolbar')
     var toolbar = new BaseComponent('Toolbar', TOOLBARDEFAULTS);
     
     var errorID = 0;
-    
-    var isUserLogged = false;
+
     var isErrorShown = false;
     var errorMessageDropdown = [];
 
