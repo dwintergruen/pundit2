@@ -35,7 +35,7 @@ var ContextualMenuDemoCtrl = function($scope, $rootScope, $dropdown, $timeout, C
                     var options = {scope: $rootScope.$new()};
                     options.scope.content = submenuContent;
                     // remove submenu inside submenu
-                    options.placement = 'right';
+                    options.placement = ContextualMenu.getSubMenuPlacement();
                     options.template = 'src/Toolbar/dropdown.tmpl.html';
                     // build menu
                     submenu = $dropdown(angular.element('.dropdown-submenu'), options);
@@ -154,10 +154,6 @@ var ContextualMenuDemoCtrl = function($scope, $rootScope, $dropdown, $timeout, C
         <button type="button" class="pnd-contexMenu-show-btn btn btn-default" ng-click="showOnlySubmenu($event)">Show Menu With type submenu</button>
 
     </div>
-
-    <br><br><br>
-    <br><br><br>
-    <br><br><br>
 
 </div>
 

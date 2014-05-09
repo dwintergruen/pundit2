@@ -5,7 +5,7 @@ angular.module('Pundit2.ContextualMenu')
 
     debug: true
 })
-.service('ContextualMenu', function($rootScope, BaseComponent, CONTEXTUALMENUDEFAULT, $dropdown, $timeout) {
+.service('ContextualMenu', function($rootScope, BaseComponent, CONTEXTUALMENUDEFAULT, $dropdown, $window) {
 
     var contextualMenu = new BaseComponent('ContextualMenu', CONTEXTUALMENUDEFAULT);
 
@@ -13,9 +13,61 @@ angular.module('Pundit2.ContextualMenu')
     var menuElements = [];
     // actual menu resource
     var menuResource;
+    // actual menu anchor position
+    var lastX, lastY;
+    // actual menu anchor element
+    var anchor = null;
 
     // angular strap menu reference
     var menu = null;
+
+
+    // build menu options and scope
+    var realOptions = {scope: $rootScope.$new()};
+    realOptions.scope.$on('tooltip.hide', function(){
+        contextualMenu.hide();
+    });
+
+    // build mock options (used to positioning)
+    var mockOptions = {scope: $rootScope.$new()};
+    mockOptions.scope.$on('tooltip.show', function(){
+
+        var placement = position(angular.element('.pnd-context-menu'), lastX, lastY);
+
+        // move anchor to correctly position
+        anchor.css({
+            left: lastX,
+            top: lastY
+        });
+
+        // remove mock menu
+        angular.element('.pnd-context-menu').remove();
+
+        // create real menu
+        menu = init(anchor, realOptions, undefined, mockOptions.scope.content, placement);       
+        menu.$promise.then(menu.show);
+
+    });
+
+    var init = function(element, options, type, content, placement){
+
+        if ( typeof(content) !== 'undefined' ) {
+            // TODO need a copy?
+            options.scope.content = content;
+        } else {
+            options.scope.content = buildContent(type);
+        }
+        if ( typeof(placement) !== 'undefined' ) {
+            options.placement = placement;
+        } else {
+            options.placement = contextualMenu.options.position;
+        }        
+        options.template = 'src/Toolbar/dropdown.tmpl.html';
+        // add css class in teamplate
+        options.scope.contextMenu = true;
+
+        return $dropdown(element, options);
+    };
 
     // build content to put inside menu
     var buildContent = function(type){
@@ -78,32 +130,24 @@ angular.module('Pundit2.ContextualMenu')
         return content;
     };
 
-    // build options and scope
-    var options = {scope: $rootScope.$new()};
-    options.scope.$on('tooltip.hide', function(){
-        contextualMenu.hide();
-    });
+    var position = function(element, x, y){
 
-    // check and fix position
-    options.scope.$on('tooltip.show', function(){
-        console.log(angular.element('.pnd-context-menu').get(0));
-    });
+        var width = element.outerWidth(),
+            height = element.outerHeight();
 
-    var init = function(element, type){
-        // build options
-        options.scope.content = buildContent(type);
-        options.placement = contextualMenu.options.position;
-        options.template = 'src/Toolbar/dropdown.tmpl.html';
-        options.scope.contextMenu = true;
+        var placement;
+        if ( y + height > angular.element($window).innerHeight() /* && y - height > 0 */) {
+            placement = 'top';
+        } else {
+            placement = 'bottom';
+        }
+        if ( x + width > angular.element($window).innerWidth() /* && x - width > 0 */) {
+            placement += '-right';
+        } else {
+            placement +='-left';
+        }
 
-        // build menu
-        menu = $dropdown(element, options);
-
-        return menu;
-    };
-
-
-    var position = function(element){
+        return placement;
         
     };
 
@@ -128,13 +172,20 @@ angular.module('Pundit2.ContextualMenu')
             return;
         }
 
+        // state var
         menuResource = resource;
+        lastX = x;
+        lastY = y;
 
+        // create div anchor
         angular.element("[data-ng-app='Pundit2']")
-            .prepend("<div class='pnd-dropdown-contextual-menu-anchor' style='position: absolute; left: " + x + "px; top: " + y + "px;'><div>");
+            .prepend("<div class='pnd-dropdown-contextual-menu-anchor' style='position: absolute; left: -500px; top: -500px;'><div>");
 
-        init(angular.element('.pnd-dropdown-contextual-menu-anchor'), type);       
-        menu.$promise.then(menu.show);
+        // store anchor
+        anchor = angular.element('.pnd-dropdown-contextual-menu-anchor')
+
+        mockMenu = init(anchor, mockOptions, type);       
+        mockMenu.$promise.then(mockMenu.show);
     };
 
     // hide and destroy the showed menu
@@ -142,7 +193,8 @@ angular.module('Pundit2.ContextualMenu')
         if ( menu !== null ) {
             menu.hide();
             menu.destroy();
-            angular.element('.pnd-dropdown-contextual-menu-anchor').remove();
+            anchor.remove();
+            anchor = null;
             menu = null;
         }
     };
@@ -187,6 +239,17 @@ angular.module('Pundit2.ContextualMenu')
             return true;
         }
         menuElements.push(e);
+    };
+
+    contextualMenu.getSubMenuPlacement = function(){
+        var i = realOptions.placement.indexOf('-'),
+            place = realOptions.placement.substring(i+1);
+
+        if ( place === 'right') {
+            return 'left';
+        } else {
+            return 'right';
+        }
     };
 
     contextualMenu.log('service run');
