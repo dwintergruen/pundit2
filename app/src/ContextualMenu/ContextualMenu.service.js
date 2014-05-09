@@ -1,13 +1,13 @@
 angular.module('Pundit2.ContextualMenu')
-.constant('CONTEXTUALMENUDEFAULT', {
+.constant('CONTEXTUALMENUDEFAULTS', {
 
     position: 'bottom-left',
 
     debug: true
 })
-.service('ContextualMenu', function($rootScope, BaseComponent, CONTEXTUALMENUDEFAULT, $dropdown, $window) {
+.service('ContextualMenu', function($rootScope, BaseComponent, CONTEXTUALMENUDEFAULTS, $dropdown, $window) {
 
-    var contextualMenu = new BaseComponent('ContextualMenu', CONTEXTUALMENUDEFAULT);
+    var contextualMenu = new BaseComponent('ContextualMenu', CONTEXTUALMENUDEFAULTS);
 
     // all element that menu can display (default is action) (el.submenu | bool) (el.divider | bool)
     var menuElements = [];
@@ -55,7 +55,7 @@ angular.module('Pundit2.ContextualMenu')
             // TODO need a copy?
             options.scope.content = content;
         } else {
-            options.scope.content = buildContent(type);
+            options.scope.content = contextualMenu.buildContent(type);
         }
         if ( typeof(placement) !== 'undefined' ) {
             options.placement = placement;
@@ -70,7 +70,7 @@ angular.module('Pundit2.ContextualMenu')
     };
 
     // build content to put inside menu
-    var buildContent = function(type){
+    contextualMenu.buildContent = function(type){
         var content = [];
 
         // filter by type
@@ -182,7 +182,7 @@ angular.module('Pundit2.ContextualMenu')
             .prepend("<div class='pnd-dropdown-contextual-menu-anchor' style='position: absolute; left: -500px; top: -500px;'><div>");
 
         // store anchor
-        anchor = angular.element('.pnd-dropdown-contextual-menu-anchor')
+        anchor = angular.element('.pnd-dropdown-contextual-menu-anchor');
 
         mockMenu = init(anchor, mockOptions, type);       
         mockMenu.$promise.then(mockMenu.show);
@@ -207,9 +207,11 @@ angular.module('Pundit2.ContextualMenu')
         });
 
         if ( !find ) {
-            menuElements.push(angular.copy(actionObj));        
+            menuElements.push(angular.copy(actionObj));
+            return true;      
         } else {
             contextualMenu.err('Try to add duplicated action');
+            return false;
         }
 
     };
@@ -224,9 +226,11 @@ angular.module('Pundit2.ContextualMenu')
         if ( !find ) {
             var e = angular.copy(subMenuObj);
             e.submenu = true;
-            menuElements.push(e);          
+            menuElements.push(e);
+            return true;     
         } else {
             contextualMenu.err('Try to add duplicated submenu element');
+            return false;
         }
 
     };

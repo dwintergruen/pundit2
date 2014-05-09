@@ -26,6 +26,7 @@ var ContextualMenuDemoCtrl = function($scope, $rootScope, $dropdown, $timeout, C
             {
                 label: "This open a submenu",
                 name: "subMenuKey",
+                submenu: true,
                 type: ['type2', 'typeSubmenu'],
                 priority: 1,
                 showIf: function(){
@@ -113,16 +114,16 @@ var ContextualMenuDemoCtrl = function($scope, $rootScope, $dropdown, $timeout, C
         console.log('example action execute');
     };
 
-    var l = 0;
     $scope.addAction = function($event){
 
-        if ( l === 1) {
-            ContextualMenu.addSubMenu(menuActions[l]);
-            ContextualMenu.addDivider( { priority:2, type:['type2'] } );
-        } else {
-            ContextualMenu.addAction(menuActions[l]);
+        for ( l in menuActions ) {
+            if ( l === 1) {
+                ContextualMenu.addSubMenu(menuActions[l]);
+                ContextualMenu.addDivider( { priority:2, type:['type2'] } );
+            } else {
+                ContextualMenu.addAction(menuActions[l]);
+            }
         }
-        l = (l+1) % menuActions.length;
         
         $event.stopPropagation();
     };
