@@ -9,7 +9,7 @@ angular.module('Pundit2.ContextualMenu')
 
     var contextualMenu = new BaseComponent('ContextualMenu', CONTEXTUALMENUDEFAULT);
 
-    // all element that menu can display (defualt is action) (el.submenu | bool) (el.divider | bool)
+    // all element that menu can display (default is action) (el.submenu | bool) (el.divider | bool)
     var menuElements = [];
     // actual menu resource
     var menuResource;

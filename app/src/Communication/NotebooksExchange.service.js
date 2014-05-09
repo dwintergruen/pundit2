@@ -20,7 +20,7 @@ angular.module('Pundit2.Communication')
                 httpPromise = $http({
                     headers: { 'Accept': 'application/json' },
                     method: 'GET',
-                    url: NameSpace.get('NBOwned'),
+                    url: NameSpace.get('asNBOwned'),
                     withCredentials: true
 
                 }).success(function(data) {
@@ -85,7 +85,7 @@ angular.module('Pundit2.Communication')
                         "Content-Type": "application/json;charset=UTF-8;"
                     },
                     method: 'POST',
-                    url: NameSpace.get('NB'),
+                    url: NameSpace.get('asNB'),
                     withCredentials: true,
                     data: {
                         NotebookName: name

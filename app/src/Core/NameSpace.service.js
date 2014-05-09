@@ -170,19 +170,19 @@ angular.module("Pundit2.Core")
 
 
     // Annotation server API
-    ns.as              = Config.annotationServerBaseURL;
+    ns.as                  = Config.annotationServerBaseURL;
 
-    ns.asUsers         = ns.as + "api/users/";
-    ns.asUsersCurrent  = ns.as + "api/users/current";
-    ns.asUsersLogout   = ns.as + "api/users/logout";
+    ns.asUsers             = ns.as + "api/users/";
+    ns.asUsersCurrent      = ns.as + "api/users/current";
+    ns.asUsersLogout       = ns.as + "api/users/logout";
 
-    ns.NB              = ns.as + "api/notebooks";
-    ns.NBOwned         = ns.as + "api/notebooks/owned";
-    ns.asNBMeta        = ns.as + "api/notebooks/{{id}}/metadata";
-    ns.asOpenNBMeta    = ns.as + "api/open/notebooks/{{id}}/metadata";
-    ns.asOpenNBAnnMeta = ns.as + "api/open/notebooks/{{id}}/annotations/metadata";
+    ns.asNB                = ns.as + "api/notebooks";
+    ns.asNBOwned           = ns.as + "api/notebooks/owned";
+    ns.asNBMeta            = ns.as + "api/notebooks/{{id}}/metadata";
+    ns.asOpenNBMeta        = ns.as + "api/open/notebooks/{{id}}/metadata";
+    ns.asOpenNBAnnMeta     = ns.as + "api/open/notebooks/{{id}}/annotations/metadata";
 
-    ns.asOpenAnnMetaSearch = ns.as + "api/annotations/metadata/search";
+    ns.asOpenAnnMetaSearch = ns.as + "api/open/metadata/search";
     ns.asOpenAnn           = ns.as + "api/open/annotations/{{id}}";
 
 
