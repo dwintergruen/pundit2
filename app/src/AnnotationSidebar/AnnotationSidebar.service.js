@@ -2,9 +2,9 @@
 
 angular.module('Pundit2.AnnotationSidebar')
 .constant('ANNOTATIONSIDEBARDEFAULTS', {
-    isAnnotationSidebarCollapsed: true,
+    isAnnotationSidebarExpanded: false,
     sidebarCollWidth: 30,
-    sidebarExpWidth: 100,
+    sidebarExpWidth: 300,
     debug: false
 })
 .service('AnnotationSidebar', function(BaseComponent, ANNOTATIONSIDEBARDEFAULTS) {
@@ -12,20 +12,20 @@ angular.module('Pundit2.AnnotationSidebar')
     var annotationSidebar = new BaseComponent('AnnotationSidebar', ANNOTATIONSIDEBARDEFAULTS);
 
     var state = {
-        isCollapsed: annotationSidebar.options.isAnnotationSidebarCollapsed,
+        isExpanded: annotationSidebar.options.isAnnotationSidebarExpanded,
         sidebarWidth: annotationSidebar.options.sidebarCollWidth
     };
 
     annotationSidebar.toggle = function(){
-        if (state.isCollapsed){
-            state.sidebarWidth = annotationSidebar.options.sidebarExpWidth;
-        } else {
+        if (state.isExpanded){
             state.sidebarWidth = annotationSidebar.options.sidebarCollWidth;
+        } else {
+            state.sidebarWidth = annotationSidebar.options.sidebarExpWidth;
         }
-        state.isCollapsed = !state.isCollapsed;
+        state.isExpanded = !state.isExpanded;
     };
-    annotationSidebar.isAnnotationSidebarCollapsed = function(){
-        return state.isCollapsed;
+    annotationSidebar.isAnnotationSidebarExpanded = function(){
+        return state.isExpanded;
     };
     annotationSidebar.getWidth = function(){
         return state.sidebarWidth;
