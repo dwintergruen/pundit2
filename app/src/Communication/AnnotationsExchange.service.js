@@ -1,9 +1,15 @@
 angular.module('Pundit2.Communication')
-    .service('AnnotationsExchange', function(BaseComponent, NameSpace, Annotation, MyPundit, Analytics, $http, $q) {
+    .service('AnnotationsExchange', function(BaseComponent, NameSpace, MyPundit, Analytics, $http, $q) {
 
         // TODO: inherit from a Store()? Annotations, items, ...
         var annotationExchange = new BaseComponent("AnnotationsExchange");
 
+        var annList = [],
+            annListById = {};
+
+        // Returns a promise which gets resolved by all of the annotations
+        // returned by the search API
+        // TODO: what if an annotation gets resolved and another rejected?
         annotationExchange.searchByUri = function(uris) {
 
             if (!angular.isArray(uris)) {
@@ -41,20 +47,7 @@ angular.module('Pundit2.Communication')
                     }
                 }
 
-                var annPromises = [];
-                for (var i=0; i<ids.length; i++) {
-                    var a = new Annotation(ids[i]);
-                    a.then(function(aaa) {
-                        annotationExchange.log('Got an annotation', aaa);
-                    });
-                    annPromises.push(a);
-                }
-                $q.all(annPromises).then(function(ret) {
-                    annotationExchange.log("Retrieved annotations details searching by URIs");
-                    promise.resolve(ids);
-
-                });
-
+                promise.resolve(ids);
                 annotationExchange.log("Retrieved annotations IDs searching by URIs");
 
             }).error(function(data, statusCode) {
@@ -66,7 +59,15 @@ angular.module('Pundit2.Communication')
             return promise.promise;
         };
 
-
+        annotationExchange.addAnnotation = function(ann) {
+            // TODO: sanity checks?
+            if (ann.id in annListById) {
+                annotationExchange.log('Not adding annotation '+ann.id+': already present.');
+            } else {
+                annListById[ann.id] = ann;
+                annList.push(ann);
+            }
+        };
 
         annotationExchange.log('Component up and running');
 

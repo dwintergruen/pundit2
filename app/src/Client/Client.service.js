@@ -12,7 +12,7 @@ angular.module('Pundit2.Client')
     })
     .service('Client', function(BaseComponent, Config, MyPundit, AnnotatorsOrchestrator,
                                 TextFragmentAnnotator, AnnotationsExchange, Consolidation,
-                                ItemsExchange) {
+                                ItemsExchange, Annotation, $q) {
 
         var client = new BaseComponent('Client'),
             root;
@@ -52,9 +52,22 @@ angular.module('Pundit2.Client')
             client.log('Available targets', uris);
 
             var annPromise = AnnotationsExchange.searchByUri(uris);
-            annPromise.then(function(resp) {
-                client.log('Found '+resp.length+' annotations on the current page.');
-                Consolidation.consolidate(ItemsExchange.getItems());
+            annPromise.then(function(ids) {
+                client.log('Found '+ids.length+' annotations on the current page.');
+
+                var annPromises = [];
+                for (var i=0; i<ids.length; i++) {
+
+                    var a = new Annotation(ids[i]);
+                    a.then(function(aaa) {
+                        client.log('Got an annotation', aaa);
+                    });
+                    annPromises.push(a);
+                }
+                $q.all(annPromises).then(function(ret) {
+                    client.log("Retrieved annotations details searching by URIs");
+                    Consolidation.consolidate(ItemsExchange.getItems());
+                });
 
             }, function() {
                 // TODO: cant search for annotations? OUCH

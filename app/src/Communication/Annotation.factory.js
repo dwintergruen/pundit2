@@ -1,5 +1,7 @@
 angular.module('Pundit2.Communication')
-.factory('Annotation', function(BaseComponent, NameSpace, Utils, Item, TypesHelper, Analytics, $http, $q) {
+.factory('Annotation', function(BaseComponent, NameSpace, Utils, Item, TypesHelper, Analytics,
+                                AnnotationsExchange, $http, $q) {
+
     var annotationComponent = new BaseComponent("Annotation");
 
     // Creates a new Annotation instance. If an id is passed in
@@ -15,6 +17,8 @@ angular.module('Pundit2.Communication')
             this.create();
         }
 
+        // Add it to the exchange, ready to be .. whatever will be.
+        AnnotationsExchange.addAnnotation(this);
     }
 
     Annotation.prototype.create = function() {
