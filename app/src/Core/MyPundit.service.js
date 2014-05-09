@@ -33,7 +33,7 @@ angular.module('Pundit2.Core')
     // return a promise, resolved as true if user is logged in
     // false otherwise
     myPundit.checkLoggedIn = function() {
-        
+
         var promise = $q.defer(),
             httpCall;
         
@@ -58,6 +58,7 @@ angular.module('Pundit2.Core')
             }
         
         }).error(function() {
+	        myPundit.err("Serv");
             promise.reject('check logged in promise error');
         });
         
