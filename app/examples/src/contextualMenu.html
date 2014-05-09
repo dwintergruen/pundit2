@@ -20,23 +20,35 @@ var ContextualMenuDemoCtrl = function($scope, $rootScope, $dropdown, $timeout, C
         var submenuOver;
         var menuActions = [
             {
-                name: 'consoleLog',
-                type: ['type1', 'type2'],
-                label: "Click to exe console.log",
-                priority: 3,
+                name: 'action0',
+                type: ['type1'],
+                label: "Action0 (type1)",
+                priority: 0,
                 showIf: function(){
                     return true;
                 },
                 action: function(resource){
-                    console.log('exe action 2 with resource ', resource);
+                    console.log('exe Action0 with resource ', resource);
                 }
             },
             {
-                label: "This open a submenu",
+                name: 'action5',
+                type: ['type2'],
+                label: "Action5 (type2)",
+                priority: 5,
+                showIf: function(){
+                    return true;
+                },
+                action: function(resource){
+                    console.log('exe Action5 with resource ', resource);
+                }
+            },
+            {
+                label: "Sub Menu (type2)",
                 name: "subMenuKey",
                 submenu: true,
-                type: ['type2', 'typeSubmenu'],
-                priority: 1,
+                type: ['type2'],
+                priority: -10,
                 showIf: function(){
                     return true;
                 },
@@ -70,46 +82,40 @@ var ContextualMenuDemoCtrl = function($scope, $rootScope, $dropdown, $timeout, C
                 }               
             },
             {
-                name: 'Action3',
-                type: ['type1', 'type99', 'type133'],
-                label: "Action3",
-                priority: 5,
+                name: 'Action2',
+                type: ['type1'],
+                label: "Action2 (type1)",
+                priority: 2,
                 showIf: function(){
                     return true;
                 },
                 action: function(resource){
-                    console.log('exe action 3 with resource ', resource);
+                    console.log('exe Action2 with resource ', resource);
                 }
             },
             {
                 name: 'ActionNotDisplayed',
                 type: ['type99'],
-                label: "ActionNotDisplayed",
+                label: "ActionNotDisplayed (type99)",
                 priority: 10,
                 showIf: function(){
                     return true;
                 },
                 action: function(resource){
-                    console.log('exe action 3 with resource ', resource);
+                    console.log('exe ActionNotDisplayed with resource ', resource);
                 }
             }
         ];
 
-    $scope.show = function($event){
+    $scope.showTypeOne = function($event){
         var resource = {name:'pincopallino'};
-        ContextualMenu.show(250, 100, resource, ['type1']);
+        ContextualMenu.show(450, 100, resource, ['type1']);
         $event.stopPropagation();
     };
 
-    $scope.showType = function($event){
+    $scope.showTypeTwo = function($event){
         var resource = {name:'pincopallino'};
-        ContextualMenu.show(450, 100, resource, ['type47']);
-        $event.stopPropagation();
-    };
-
-    $scope.showOnlySubmenu = function($event){
-        var resource = {name:'pincopallino'};
-        ContextualMenu.show(550, 100, resource, ['typeSubmenu']);
+        ContextualMenu.show(450, 100, resource, ['type2']);
         $event.stopPropagation();
     };
 
@@ -122,12 +128,11 @@ var ContextualMenuDemoCtrl = function($scope, $rootScope, $dropdown, $timeout, C
         console.log('example action execute');
     };
 
-    $scope.addAction = function($event){
+    $scope.addAllAction = function($event){
 
         for ( l in menuActions ) {
-            if ( l === 1) {
+            if ( l === 2) {
                 ContextualMenu.addSubMenu(menuActions[l]);
-                ContextualMenu.addDivider( { priority:2, type:['type2'] } );
             } else {
                 ContextualMenu.addAction(menuActions[l]);
             }
@@ -156,11 +161,11 @@ var ContextualMenuDemoCtrl = function($scope, $rootScope, $dropdown, $timeout, C
         Hide (click again or click hide button).<br>
         <br><br><br>
 
-        <button type="button" class="pnd-contexMenu-show-btn btn btn-default" ng-click="show($event)">Show Menu</button>
+        <button type="button" class="pnd-contexMenu-show-btn btn btn-default" ng-click="addAllAction($event)">Add All Action</button>
+        <button type="button" class="pnd-contexMenu-show-btn btn btn-default" ng-click="showTypeOne($event)">Show Menu with type1 Actions</button>
+        <button type="button" class="pnd-contexMenu-show-btn btn btn-default" ng-click="showTypeTwo($event)">Show Menu with type2 Actions</button>
         <button type="button" class="pnd-contexMenu-show-btn btn btn-default" ng-click="hide($event)">Hide and Remove Menu</button>
-        <button type="button" class="pnd-contexMenu-show-btn btn btn-default" ng-click="addAction($event)">Add One Action</button>
         <button type="button" class="pnd-contexMenu-show-btn btn btn-default" ng-click="showType($event)">Show Menu With not existing type argument</button>
-        <button type="button" class="pnd-contexMenu-show-btn btn btn-default" ng-click="showOnlySubmenu($event)">Show Menu With type submenu</button>
 
     </div>
 

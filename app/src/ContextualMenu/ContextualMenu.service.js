@@ -48,8 +48,13 @@ angular.module('Pundit2.ContextualMenu')
         angular.element('.pnd-context-menu').remove();
 
         // create real menu
-        menu = init(anchor, realOptions, undefined, mockOptions.scope.content, placement);       
-        menu.$promise.then(menu.show);
+        menu = init(anchor, realOptions, undefined, mockOptions.scope.content, placement);
+        if ( menu !== null ) {
+            menu.$promise.then(menu.show);
+        } else {
+            anchor.remove();
+            anchor = null;
+        }
 
     });
 
@@ -71,7 +76,12 @@ angular.module('Pundit2.ContextualMenu')
         // add css class in template
         options.scope.contextMenu = true;
 
-        return $dropdown(element, options);
+        if ( options.scope.content.length > 0 ) {
+            return $dropdown(element, options);
+        } else {
+            return null;
+        }
+        
     };
 
     // build content to put inside menu
@@ -218,9 +228,13 @@ angular.module('Pundit2.ContextualMenu')
         // store anchor
         anchor = angular.element('.pnd-dropdown-contextual-menu-anchor');
 
-        mockMenu = init(anchor, mockOptions, type);       
-        mockMenu.$promise.then(mockMenu.show);
-
+        mockMenu = init(anchor, mockOptions, type);
+        if ( mockMenu !== null) {
+            mockMenu.$promise.then(mockMenu.show);            
+        } else {
+            anchor.remove();
+            anchor = null;
+        }
         // TODO: il workflow continua con la on(hide) di riga 35? La spostiamo qua sotto cosi' da
         // rendere chiaro come funziona?
     };
