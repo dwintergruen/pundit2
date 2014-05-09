@@ -13,6 +13,7 @@ angular.module('Pundit2.ContextualMenu')
     // all elements that menu can display (default is action) (el.submenu | bool) (el.divider | bool)
     var menuElements = [];
     // actual menu resource
+    // TODO move as buildContent() function params
     var menuResource;
     // actual menu anchor position
     var lastX, lastY;

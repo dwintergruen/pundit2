@@ -10,112 +10,114 @@ var punditConfig = {
 };
 
 
-var ContextualMenuDemoCtrl = function($scope, $rootScope, $dropdown, $timeout, ContextualMenu) {
+var ContextualMenuDemoCtrl = function($scope, $rootScope, $window, $dropdown, $timeout, ContextualMenu) {
 
-        var submenuContent = [
-            { text: "Submenu Action1", "href": "#"},
-            { text: "Submenu Action2", "href": "#"}
-        ];
+    $scope.exampleHeight = $window.innerHeight;      
 
-        var submenuOver;
-        var menuActions = [
-            {
-                name: 'action0',
-                type: ['type1'],
-                label: "Action0 (type1)",
-                priority: 0,
-                showIf: function(){
-                    return true;
-                },
-                action: function(resource){
-                    console.log('exe Action0 with resource ', resource);
-                }
+    var submenuContent = [
+        { text: "Submenu Action1", "href": "#"},
+        { text: "Submenu Action2", "href": "#"}
+    ];
+
+    var submenuOver;
+    var menuActions = [
+        {
+            name: 'action0',
+            type: ['type1'],
+            label: "Action0 (type1)",
+            priority: 0,
+            showIf: function(){
+                return true;
             },
-            {
-                name: 'action5',
-                type: ['type2'],
-                label: "Action5 (type2)",
-                priority: 5,
-                showIf: function(){
-                    return true;
-                },
-                action: function(resource){
-                    console.log('exe Action5 with resource ', resource);
-                }
-            },
-            {
-                label: "Sub Menu (type2)",
-                name: "subMenuKey",
-                submenu: true,
-                type: ['type2'],
-                priority: -10,
-                showIf: function(){
-                    return true;
-                },
-                hover: function(){
-                    var options = {scope: $rootScope.$new()};
-                    options.scope.content = submenuContent;
-                    // remove submenu inside submenu
-                    options.placement = ContextualMenu.getSubMenuPlacement();
-                    options.template = 'src/Toolbar/dropdown.tmpl.html';
-                    // build menu
-                    submenu = $dropdown(angular.element('.dropdown-submenu'), options);
-                    submenu.$promise.then(function(){
-                        submenu.show();
-                        submenu.$element.hover(function(){
-                            submenuOver = true;
-                        }, function(){
-                            submenuOver = false;
-                            submenu.hide();
-                            submenu.destroy();
-                        });
-                    });
-                },
-                leave: function(){
-                    $timeout(function() {
-                        if ( submenu && !submenuOver) {
-                            submenu.hide();
-                            submenu.destroy();
-                        }
-                    }, 100);
-                    
-                }               
-            },
-            {
-                name: 'Action2',
-                type: ['type1'],
-                label: "Action2 (type1)",
-                priority: 2,
-                showIf: function(){
-                    return true;
-                },
-                action: function(resource){
-                    console.log('exe Action2 with resource ', resource);
-                }
-            },
-            {
-                name: 'ActionNotDisplayed',
-                type: ['type99'],
-                label: "ActionNotDisplayed (type99)",
-                priority: 10,
-                showIf: function(){
-                    return true;
-                },
-                action: function(resource){
-                    console.log('exe ActionNotDisplayed with resource ', resource);
-                }
+            action: function(resource){
+                angular.element('.pnd-contexMenu-output').append('exe action0 '+resource.name);
             }
-        ];
+        },
+        {
+            name: 'action5',
+            type: ['type2'],
+            label: "Action5 (type2)",
+            priority: 5,
+            showIf: function(){
+                return true;
+            },
+            action: function(resource){
+                angular.element('.pnd-contexMenu-output').append('exe action5 '+resource.name);
+            }
+        },
+        {
+            label: "Sub Menu (type2)",
+            name: "subMenuKey",
+            submenu: true,
+            type: ['type2'],
+            priority: -10,
+            showIf: function(){
+                return true;
+            },
+            hover: function(){
+                var options = {scope: $rootScope.$new()};
+                options.scope.content = submenuContent;
+                // remove submenu inside submenu
+                options.placement = ContextualMenu.getSubMenuPlacement();
+                options.template = 'src/Toolbar/dropdown.tmpl.html';
+                // build menu
+                submenu = $dropdown(angular.element('.dropdown-submenu'), options);
+                submenu.$promise.then(function(){
+                    submenu.show();
+                    submenu.$element.hover(function(){
+                        submenuOver = true;
+                    }, function(){
+                        submenuOver = false;
+                        submenu.hide();
+                        submenu.destroy();
+                    });
+                });
+            },
+            leave: function(){
+                $timeout(function() {
+                    if ( submenu && !submenuOver) {
+                        submenu.hide();
+                        submenu.destroy();
+                    }
+                }, 100);
+                
+            }               
+        },
+        {
+            name: 'Action2',
+            type: ['type1'],
+            label: "Action2 (type1)",
+            priority: 2,
+            showIf: function(){
+                return true;
+            },
+            action: function(resource){
+                angular.element('.pnd-contexMenu-output').append('exe action2 '+resource.name);
+            }
+        },
+        {
+            name: 'ActionNotDisplayed',
+            type: ['type99'],
+            label: "ActionNotDisplayed (type99)",
+            priority: 10,
+            showIf: function(){
+                return true;
+            },
+            action: function(resource){
+                console.log('exe ActionNotDisplayed with resource ', resource);
+            }
+        }
+    ];
 
     $scope.showTypeOne = function($event){
-        var resource = {name:'pincopallino'};
+        var resource = {name:'resourceName'};
         ContextualMenu.show(450, 100, resource, ['type1']);
         $event.stopPropagation();
     };
 
     $scope.showTypeTwo = function($event){
-        var resource = {name:'pincopallino'};
-        ContextualMenu.show(450, 100, resource, ['type2']);
+        var resource = {name:'resourceName'};
+        ContextualMenu.show(400, 200, resource, ['type2']);
         $event.stopPropagation();
     };
 
@@ -142,7 +144,7 @@ var ContextualMenuDemoCtrl = function($scope, $rootScope, $dropdown, $timeout, C
     };
 
     $scope.displayMenu = function($event){
-        var resource = {name:'pincopallino'};
+        var resource = {name:'resourceName'};
         ContextualMenu.show($event.pageX, $event.pageY, resource, ['type1', 'type2']);
     };
 
@@ -152,20 +154,22 @@ var ContextualMenuDemoCtrl = function($scope, $rootScope, $dropdown, $timeout, C
 
 <div data-ng-app="Pundit2" class="pnd-wrp">
 
-    <div class="contexMenu-example-div" ng-controller="ContextualMenuDemoCtrl" ng-click="displayMenu($event)">
+    <div class="contexMenu-example-div" ng-controller="ContextualMenuDemoCtrl" ng-click="displayMenu($event)" style="height: {{exampleHeight}}px">
         <br><br><br>
         <br><br><br>
         <br><br><br>
         Click addAction button to add custom action (repeat to add others action).<br>
         Now show menu with custom actions.<br>
         Hide (click again or click hide button).<br>
+
+        <br><br><br>
+        <div class="pnd-contexMenu-output"></div>
         <br><br><br>
 
-        <button type="button" class="pnd-contexMenu-show-btn btn btn-default" ng-click="addAllAction($event)">Add All Action</button>
-        <button type="button" class="pnd-contexMenu-show-btn btn btn-default" ng-click="showTypeOne($event)">Show Menu with type1 Actions</button>
-        <button type="button" class="pnd-contexMenu-show-btn btn btn-default" ng-click="showTypeTwo($event)">Show Menu with type2 Actions</button>
-        <button type="button" class="pnd-contexMenu-show-btn btn btn-default" ng-click="hide($event)">Hide and Remove Menu</button>
-        <button type="button" class="pnd-contexMenu-show-btn btn btn-default" ng-click="showType($event)">Show Menu With not existing type argument</button>
+        <button type="button" class="pnd-contexMenu-addAll-btn btn btn-default" ng-click="addAllAction($event)">Add All Action</button>
+        <button type="button" class="pnd-contexMenu-show1-btn btn btn-default" ng-click="showTypeOne($event)">Show Menu with type1 Actions</button>
+        <button type="button" class="pnd-contexMenu-show2-btn btn btn-default" ng-click="showTypeTwo($event)">Show Menu with type2 Actions</button>
+        <button type="button" class="pnd-contexMenu-hide-btn btn btn-default" ng-click="hide($event)">Hide and Remove Menu</button>
 
     </div>
 
