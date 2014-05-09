@@ -1,6 +1,5 @@
 angular.module('Pundit2.Core')
 .constant('MYPUNDITDEFAULTS', {
-    debug: true,
     loginPollTimerMS: 1000,
     loginModalCloseTimer: 1000
 })

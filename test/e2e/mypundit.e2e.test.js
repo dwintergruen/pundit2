@@ -9,7 +9,7 @@ describe("OpenID Login", function() {
 		var myEmail = "netsevenopenid@gmail.com";
 		var username = "Mario Bros";
 
-		p.get('/app/examples/toolbar.html');
+		p.get('/app/examples/mypundit.testPage.html');
 
 		// open login modal
 		p.findElement(protractor.By.css('.btn-example-login')).click();
@@ -53,13 +53,6 @@ describe("OpenID Login", function() {
 					handle = browser.getWindowHandle();
 					expect(handle).toEqual(mainWindow);
 					browser.driver.executeScript('window.focus();');
-
-					/*p.findElement(protractor.By.css('.pnd-login-modal-body')).then(function(message) {
-					 //p.sleep(2000);
-					 p.waitForAngular();
-					 expect(message.getText()).toBe("You are logged in as: Mario Bros");
-
-					 });*/
 
 					// at this time user should be logged in
 					// user button should be visible and should show user full name
