@@ -1,16 +1,19 @@
 angular.module('Pundit2.Toolbar')
 .constant('TOOLBARDEFAULTS', {
     askLinkDefault: "http://ask.thepund.it/",
-    askLinkUser: "http://ask.thepund.it/#/myAsk/"
+    askLinkUser: "http://ask.thepund.it/#/myAsk/",
+
+    // Class added to the body element as soon as the directive is rendered. It will
+    // push down body with some css magic
+    bodyClass: "pnd-toolbar-active"
 })
 .service('Toolbar', function(BaseComponent, TOOLBARDEFAULTS, MyPundit) {
 
     var toolbar = new BaseComponent('Toolbar', TOOLBARDEFAULTS);
     
-    var errorID = 0;
-
-    var isErrorShown = false;
-    var errorMessageDropdown = [];
+    var errorID = 0,
+        isErrorShown = false,
+        errorMessageDropdown = [];
 
     toolbar.setErrorShown = function(status) {
         isErrorShown = status;

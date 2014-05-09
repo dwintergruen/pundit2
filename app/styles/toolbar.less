@@ -1,3 +1,12 @@
+@toolbar-height: 30px;
+
+// This class gets added to the body element as soon as the toolbar is
+// rendered. It needs to push down any existing content making space for us.
+body.pnd-toolbar-active {
+    margin-top: @toolbar-height;
+    background-position-y: @toolbar-height;
+}
+
 .pnd-toolbar-navbar{
     min-width: 960px;
     
