@@ -1,7 +1,7 @@
 angular.module('Pundit2.Dashboard')
 .constant('DASHBOARDDEFAULTS', {
 
-    isDashboardVisible: true,
+    isDashboardVisible: false,
 
     // dashboard container
     containerMinHeight: 200,
