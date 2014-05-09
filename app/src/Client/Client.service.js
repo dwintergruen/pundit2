@@ -44,6 +44,8 @@ angular.module('Pundit2.Client')
             // From BaseComponent registered names?? Modules can subscribe themselves
             // an init function? Or just need to know IF and markup?
 
+            console.log('#### INIT CHECK MOD ACT', Config);
+
             if (Config.isModuleActive('Dashboard')) {
                 root.append("<dashboard></dashboard>");
                 // TODO: more dashboard init? panels

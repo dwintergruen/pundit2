@@ -2,22 +2,23 @@ angular.module('Pundit2.Dashboard')
 .controller('DashboardCtrl', function($document, $window, $scope, Dashboard) {
 
     var jqElement = {
-
-        // dashboard container
         container : angular.element('.pnd-dashboard-container'),
-
-        // dashboard footer
-        footer : angular.element('.pnd-dashboard-footer')
+        footer : angular.element('.pnd-dashboard-footer'),
+        body : angular.element('body')
     };
 
     // set footer height
     jqElement.footer.css({
         'height' : Dashboard.options.footerHeight
     });
+
+    /*
+    // TODO: this is done already by $watch
     // set container height
     jqElement.container.css({
         'height' : Dashboard.getContainerHeight()
     });
+    */
 
     $scope.isDashboardVisible = Dashboard.isDashboardVisible();
 
@@ -38,6 +39,12 @@ angular.module('Pundit2.Dashboard')
         jqElement.container.css({
             'height' : newHeight
         });
+
+        // Push the body element down too
+        var top = parseInt(jqElement.container.css('top'));
+        jqElement.body.css({
+            'marginTop': top + newHeight
+        });
     });
 
     $scope.$watch(function() {
@@ -54,6 +61,16 @@ angular.module('Pundit2.Dashboard')
         return Dashboard.isDashboardVisible();
     }, function(newVis, oldVis) {
         $scope.isDashboardVisible = newVis;
+
+        // If we are really toggling, set the new top: toolbar height if we
+        // are collapsed, else add our height too
+        if (typeof(newVis) !== "undefined" && typeof(oldVis) !== "undefined") {
+            var currentTop = parseInt(jqElement.container.css('top')),
+                newTop = newVis ? currentTop + Dashboard.getContainerHeight() : currentTop;
+            jqElement.body.css({
+                'marginTop': newTop
+            });
+        }
     });
 
     /**** FOOTER ****/
@@ -62,7 +79,7 @@ angular.module('Pundit2.Dashboard')
         // remove handlers
         $document.off('mousemove', footerMouseMoveHandler);
         $document.off('mouseup', footerMouseUpHandler);
-    }
+    };
 
     var lastPageY;
     var footerMouseMoveHandler = function(event) {
@@ -70,7 +87,7 @@ angular.module('Pundit2.Dashboard')
         if ( Dashboard.increaseContainerHeight(dy) ) {
             lastPageY = event.pageY;
         }
-    }
+    };
 
     $scope.footerMouseDownHandler = function(event) {
         if ( event.which === 1 ) {

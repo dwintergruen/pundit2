@@ -6,6 +6,8 @@ angular.module('Pundit2.Core')
     vocabularies: [],
     useBasicRelations: true,
     modules: {
+
+        // Modules active by default are activated here with active=true
         Dashboard: {
             active: true
         },
