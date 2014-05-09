@@ -40,7 +40,6 @@ angular.module('Pundit2.Communication')
 
                 var ids = [];
                 for (var annURI in data) {
-
                     var id = annURI.match(/[a-z0-9]*$/);
                     if (id !== null) {
                         ids.push(id[0]);
@@ -69,7 +68,15 @@ angular.module('Pundit2.Communication')
             }
         };
 
-        annotationExchange.log('Component up and running');
+        annotationExchange.getAnnotations = function() {
+            return annList;
+        };
 
+        annotationExchange.getAnnotationsHash = function() {
+            return annListById;
+        };
+
+
+        annotationExchange.log('Component up and running');
         return annotationExchange;
     });
