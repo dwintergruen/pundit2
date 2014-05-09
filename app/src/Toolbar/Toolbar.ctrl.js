@@ -1,5 +1,5 @@
 angular.module('Pundit2.Toolbar')
-.controller('ToolbarCtrl', function($scope, Toolbar, MyPundit) {
+.controller('ToolbarCtrl', function($scope, Toolbar, MyPundit, Dashboard) {
     
     $scope.dropdownTemplate = "src/Toolbar/dropdown.tmpl.html";
     
@@ -101,6 +101,10 @@ angular.module('Pundit2.Toolbar')
     // get Ask the Pundit link
     $scope.getAskLink = function() {
         return Toolbar.getAskLink();
+    };
+
+    $scope.dashboardClickHandler = function() {
+        Dashboard.toggle();
     };
 
 });
