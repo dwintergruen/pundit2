@@ -15,8 +15,12 @@ angular.module('Pundit2.Client')
                                 ItemsExchange, Annotation, $q) {
 
         var client = new BaseComponent('Client'),
+            // Node which will contain every other component
             root;
 
+        // Verifies that the root node has the wrap class
+        // TODO: if there is no node.. add it? Is Pundit2 bootstrapped if there's
+        // no node? :P
         client.fixRootNode = function() {
             root = angular.element("[data-ng-app='Pundit2']");
             if (!root.hasClass('pnd-wrp')) {
@@ -24,6 +28,8 @@ angular.module('Pundit2.Client')
             }
         };
 
+        // Reads the conf and initializes the active components, bootstrap what needs to be
+        // boostrapped (gets annotations, check if the user is logged in, etc)
         client.boot = function() {
 
             client.fixRootNode();
@@ -31,7 +37,7 @@ angular.module('Pundit2.Client')
             // Check if we're logged in, other components should $watch MyPundit
             // and get notified automatically when logged in
             MyPundit.checkLoggedIn().then(function(value) {
-                // TODO: check if we're logged in and set it up?
+                // TODO: check if we're logged in and set something up?
             });
 
             // TODO: how to short down this? [].forEach? From conf?
@@ -55,28 +61,36 @@ angular.module('Pundit2.Client')
             annPromise.then(function(ids) {
                 client.log('Found '+ids.length+' annotations on the current page.');
 
-                var annPromises = [];
+                ids.push('wrong-id');
+
+                var annPromises = [],
+                    settled = 0;
                 for (var i=0; i<ids.length; i++) {
 
                     var a = new Annotation(ids[i]);
-                    a.then(function(aaa) {
-                        client.log('Got an annotation', aaa);
+                    a.then(function(){
+                        // The annotation got loaded, it is already available
+                        // in the AnnotationsExchange
+                    }, function(error) {
+                        client.log("Could not retrieve annotation: "+ error);
+                        // TODO: can we try again? Let the user try again with an error on
+                        // the toolbar?
+                    }).finally().then(function() {
+                        settled++;
+                        client.log('Received annotation '+settled+'/'+annPromises.length);
+                        if (settled === annPromises.length) {
+                            client.log('All promises settled, consolidating');
+                            Consolidation.consolidate(ItemsExchange.getItems());
+                        }
                     });
                     annPromises.push(a);
                 }
-                $q.all(annPromises).then(function(ret) {
-                    client.log("Retrieved annotations details searching by URIs");
-                    Consolidation.consolidate(ItemsExchange.getItems());
-                });
 
             }, function() {
                 // TODO: cant search for annotations? OUCH
             });
 
-
             // TODO:
-            //       get annotations
-            //       consolidate
             //       update sidebar (automatic?)
             //       update items (automatic?)
 
