@@ -58,7 +58,7 @@ angular.module('Pundit2.Core')
             }
         
         }).error(function() {
-	        myPundit.err("Serv");
+	        myPundit.err("Server error");
             promise.reject('check logged in promise error');
         });
         
