@@ -1,5 +1,11 @@
 <!-- buildexamples:section header --><!-- /buildexamples -->
 
+<style>
+    .pnd-cons {
+        background: #fc0;
+    }
+</style>
+
 <script type="text/javascript">
     var punditConfig = {
             modules: {
@@ -8,7 +14,9 @@
 
         };
 
-    var AnnotationSidebarDemoCtrl = function($scope, AnnotationSidebar, AnnotatorsOrchestrator, AnnotationsExchange, Consolidation, ItemsExchange) {
+    var AnnotationSidebarDemoCtrl = function($scope, $q, AnnotationSidebar, AnnotatorsOrchestrator,
+                                             AnnotationsExchange, Consolidation, ItemsExchange,
+                                             Annotation) {
     
         $scope.toogle = function(){
             AnnotationSidebar.toggle();
@@ -20,9 +28,20 @@
         console.log('Available targets', uris);
 
         var annPromise = AnnotationsExchange.searchByUri(uris);
-        annPromise.then(function(resp) {
-            console.log('Found '+resp.length+' annotations on the current page.');
-            Consolidation.consolidate(ItemsExchange.getItems());
+        annPromise.then(function(ids) {
+            console.log('Found '+ids.length+' annotations on the current page.', ids);
+
+            var annPromises = [];
+            for (var i=0; i<ids.length; i++) {
+                var a = new Annotation(ids[i]);
+                annPromises.push(a);
+            }
+            $q.all(annPromises).then(function(ret) {
+                console.log("Retrieved annotations details searching by URIs", ret);
+                Consolidation.consolidate(ItemsExchange.getItems());
+                $scope.annotations = JSON.stringify(ret);
+            });
+
         }, function() {
         // TODO: cant search for annotations? OUCH
         });
@@ -32,10 +51,10 @@
     }
 </script>
 
-<div data-ng-app="Pundit2" class="pnd-wrp">
+<div data-ng-app="Pundit2" class="pnd-wrp" ng-controller="AnnotationSidebarDemoCtrl">
     <annotation-sidebar></annotation-sidebar>
 
-    <div ng-controller="AnnotationSidebarDemoCtrl">
+    <div>
         <button type="button" class="btn btn-default" ng-click="toogle()">Annotations</button>
     </div>
 
@@ -57,6 +76,7 @@
 
         </div>
         <div class="col-sm-6">
+            Annotations: {{annotations}}
         </div>
 
     </div>
