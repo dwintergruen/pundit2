@@ -1,3 +1,10 @@
+.pnd-as-transition {
+    -webkit-transition-duration: 1s, 1s, 1s;
+    -moz-transition-duration: 1s, 1s, 1s;
+    -o-transition-duration: 1s, 1s, 1s;
+    transition-duration: 1s, 1s, 1s;
+}
+
 .pnd-annotation-sidebar-container {
     background: @gray-light;
 
@@ -6,13 +13,23 @@
     top: 0px;
     height: 100%;
     z-index: 999999;
-    padding: 20px;
+    // padding: 20px;
     display: block;
     border-left: 1px solid #000;
     opacity: 0.75;  
-    -webkit-transition-duration: 1s, 1s, 1s;
-    -moz-transition-duration: 1s, 1s, 1s;
-    -o-transition-duration: 1s, 1s, 1s;
-    transition-duration: 1s, 1s, 1s;
+}
+
+.pnd-body-with-sidebar-expanded {
+    margin-right: 300px;
+}
+.pnd-body-with-sidebar-collapsed {
+    margin-right: 30px;
+}
+
+.pnd-annotation-sidebar-collapsed {
+    width: 30px;
+}
+.pnd-annotation-sidebar-expanded {
+    width: 300px;
 }
 
