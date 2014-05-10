@@ -7,6 +7,8 @@ angular.module('Pundit2.AnnotationSidebar')
         scope: {},
         templateUrl: 'src/AnnotationSidebar/AnnotationSidebar.dir.tmpl.html',
         controller: 'AnnotationSidebarCtrl',
-        link: function(/*scope, element, attrs*/) {}
+        link: function(/*scope, element, attrs*/) {
+            angular.element('body').addClass(AnnotationSidebar.options.bodyClass);
+        }
     };
 });
