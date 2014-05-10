@@ -106,22 +106,18 @@ angular.module('Pundit2.Annotators')
 
         XpointersHelper.updateDOM(sorted, tfa.options.wrapNodeClass, xpathsFragmentIds);
 
-        activateDirectives();
+        activateFragments();
 
         tfa.log(tfa.label +' consolidation: done!');
     };
 
+    // TODO: Move this to XpointersHelper .something() ?
+    var activateFragments = function() {
 
-    // TODO: better name? :P
-    var activateDirectives = function() {
-
-        var consolidated = angular.element('.pnd-cons');
-        $compile(consolidated)($rootScope);
-        $rootScope.$$phase || $rootScope.$digest();
-
-        // place icon? do something?
-
+        var foo = true;
         for (var c in fragmentIds) {
+
+            // TODO: Better way to find out the last bit following DOM's order?
             var lastBit = angular.element('[fragments*="'+ fragmentIds[c] +'"]').last();
 
             // TODO: use a directive
@@ -129,11 +125,23 @@ angular.module('Pundit2.Annotators')
             // - mouseoout (reset highlight)
             // - click (cmenu)
             // - right click (cmenu)
-            lastBit.after('<span class="pnd-icon-tag"></span>');
+
+            // TODO: place the right icon, how to check? What icons do we accept? How to
+            // decide which one to use? Item type?
+            var icon = "pnd-icon-tag";
+            if (foo) {
+                icon = "pnd-icon-thumb-tack";
+                foo =  false;
+            }
+
+            lastBit.after('<span style="color: red; margin: 0px 1px;" class="'+icon+'"></span>');
         }
 
-    };
+        var consolidated = angular.element('.pnd-cons');
+        $compile(consolidated)($rootScope);
+        $rootScope.$$phase || $rootScope.$digest();
 
+    };
 
     // Called by FragmentBit directives: they will wrap every bit of annotated content
     // for every xpointer we save an array of those bits. Each bit can belong to more
