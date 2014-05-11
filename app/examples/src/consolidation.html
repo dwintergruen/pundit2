@@ -46,11 +46,11 @@ var ConsolidationDemoCtrl = function($scope, $q, Consolidation, Annotation, Anno
     };
 
     $scope.high = function(uri) {
-        TextFragmentAnnotator.high(uri);
+        TextFragmentAnnotator.highlightByUri(uri);
     };
 
     $scope.reset = function(uri) {
-        TextFragmentAnnotator.reset(uri);
+        TextFragmentAnnotator.clearHighlightByUri(uri);
     };
 
     $scope.isConsolidated = function(item) {

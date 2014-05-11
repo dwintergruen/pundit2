@@ -1,21 +1,64 @@
 angular.module('Pundit2.Annotators')
+
 .constant('TEXTFRAGMENTANNOTATORDEFAULTS', {
     // Class added to all of the consolidated text fragments
     wrapNodeClass: 'pnd-cons',
     // Classes to assign to named content to have them recognized by Pundit
-    contentClasses: ['pundit-content']
+    contentClasses: ['pundit-content'],
+    // Type of the contextual menu we want for text fragments. Will be used by icons/bits etc
+    contextualMenuType: 'annotatedTextFragment',
+    // Add elements to the contextual menu?
+    initContextualMenu: true
 })
+
 .service('TextFragmentAnnotator',
     function(TEXTFRAGMENTANNOTATORDEFAULTS, NameSpace, BaseComponent, AnnotatorsOrchestrator,
-             XpointersHelper, $compile, $rootScope, $location) {
+             XpointersHelper, ContextualMenu, $compile, $rootScope, $location) {
 
     // Create the component and declare what we deal with: text
     var tfa = new BaseComponent('TextFragmentAnnotator', TEXTFRAGMENTANNOTATORDEFAULTS);
     tfa.label = "text";
     tfa.type = NameSpace.fragments[tfa.label];
 
+    // The orchestrator will be called by the consolidation service as single point of
+    // interaction when it comes to deal with fragments. Let's subscribe the text type.
     AnnotatorsOrchestrator.addAnnotator(tfa);
-    
+
+
+    // Contextual Menu actions for text fragments
+    var initContextualMenu = function() {
+        ContextualMenu.addAction({
+            type: [tfa.options.contextualMenuType],
+            name: 'showAllAnnotations',
+            label: 'Show all annotations for this fragment',
+            showIf: function() {
+                return true;
+            },
+            priority: 1,
+            action: function(uri) {
+                console.log('Consolidated icon click action', uri);
+            }
+        });
+
+        ContextualMenu.addAction({
+            type: [tfa.options.contextualMenuType],
+            name: 'hideAllAnnotations',
+            label: 'Hide all annotations for this fragment',
+            showIf: function() {
+                // TODO: show just if there is some ann open
+                return true;
+            },
+            priority: 2,
+            action: function(uri) {
+                console.log('Consolidated icon click action', uri);
+            }
+        });
+    };
+
+    if (tfa.options.initContextualMenu) {
+        initContextualMenu();
+    }
+
     tfa.isConsolidable = function(item) {
         if (!angular.isArray(item.type)) {
             tfa.log("Item not valid: malformed");
@@ -70,7 +113,10 @@ angular.module('Pundit2.Annotators')
     // Each fragment will be split into bits, each bit will carry a relation
     // to the parent fragment through this id
     var fragmentIds = {},
-        // Map to get back from id to fragment uri
+        // For the given id it will contain an object with:
+        // .uri : uri of the original item
+        // .bits: array of scopes of the bit directives for this fragment
+        // .icon: scope of the icon directive for this fragment
         fragmentById = {};
 
     // All of the items passed should be consolidable (checked by isConsolidable), in the
@@ -106,49 +152,55 @@ angular.module('Pundit2.Annotators')
 
         XpointersHelper.updateDOM(sorted, tfa.options.wrapNodeClass, xpathsFragmentIds);
 
+        // TODO: better name? Elsewhere?
         activateFragments();
 
         tfa.log(tfa.label +' consolidation: done!');
     };
 
+    // For each fragment ID it will place an icon after the last BIT belonging
+    // to the given fragment
+    var placeIcons = function() {
+
+        for (var c in fragmentIds) {
+            var id = fragmentIds[c],
+                lastBit = angular.element('[fragments*="'+ id +'"]').last();
+
+            lastBit.after('<text-fragment-icon fragment="'+id+'"></text-fragment-icon>');
+        }
+    };
+
     // TODO: Move this to XpointersHelper .something() ?
     var activateFragments = function() {
 
-        var foo = true;
-        for (var c in fragmentIds) {
-
-            // TODO: Better way to find out the last bit following DOM's order?
-            var lastBit = angular.element('[fragments*="'+ fragmentIds[c] +'"]').last();
-
-            // TODO: use a directive
-            // - mouseover (highlight)
-            // - mouseoout (reset highlight)
-            // - click (cmenu)
-            // - right click (cmenu)
-
-            // TODO: place the right icon, how to check? What icons do we accept? How to
-            // decide which one to use? Item type?
-            var icon = "pnd-icon-tag";
-            if (foo) {
-                icon = "pnd-icon-thumb-tack";
-                foo =  false;
-            }
-
-            lastBit.after('<span style="color: red; margin: 0px 1px;" class="'+icon+'"></span>');
-        }
+        // TODO: do we want this to be configurable? Or icons are here to stay?
+        placeIcons();
 
         var consolidated = angular.element('.pnd-cons');
         $compile(consolidated)($rootScope);
+
+        var icons = angular.element('text-fragment-icon');
+        $compile(icons)($rootScope);
+
         $rootScope.$$phase || $rootScope.$digest();
 
     };
 
-    // Called by FragmentBit directives: they will wrap every bit of annotated content
+    // Called by TextFragmentIcon directives: they will be placed after each consolidated
+    // fragment.
+    tfa.addFragmentIcon = function(icon) {
+        fragmentById[icon.fragment].icon = icon;
+        icon.fragmentUri = fragmentById[icon.fragment];
+
+        // TODO: which icon to use? How do we know?
+
+        tfa.log('Adding text fragment icon for fragment id='+ icon.fragment);
+    };
+
+    // Called by TextFragmentBit directives: they will wrap every bit of annotated content
     // for every xpointer we save an array of those bits. Each bit can belong to more
     // than one xpointer (overlaps!)
     tfa.addFragmentBit = function(bit) {
-
-        tfa.log('Adding fragment bit ', bit);
         var fragments = bit.fragments;
 
         // Fragment ids are split by a comma, gather them back in a array. Otherwise
@@ -162,43 +214,41 @@ angular.module('Pundit2.Annotators')
         for (var l=fragments.length; l--;) {
             var current = fragmentById[fragments[l]];
             current.bits.push(bit);
-
         }
         tfa.log('Adding consolidated fragment bit', fragments);
-
     };
 
-    // TODO: find a better name
-    tfa.high = function(uri) {
-
-        var id;
-        if (uri in fragmentIds) {
-            id = fragmentIds[uri][0];
-        } else {
-            tfa.log('Not highlighting, fragment id not found');
+    tfa.highlightByUri = function(uri) {
+        if (typeof(fragmentIds[uri]) === "undefined") {
+            tfa.log('Not highlighting given URI: fragment id not found');
             return;
         }
 
-        tfa.log('Highlighting fragment ', id, fragmentById[id].bits.length);
+        tfa.highlightById(fragmentIds[uri][0]);
+    };
+
+    tfa.highlightById = function(id) {
         for (var l=fragmentById[id].bits.length; l--;) {
             fragmentById[id].bits[l].high();
         }
-
+        tfa.log('Highlighting fragment id='+ id +', # bits: '+ fragmentById[id].bits.length);
     };
 
-    // TODO: find a better name
-    tfa.reset = function(uri) {
 
-        var id = fragmentIds[uri];
-        if (typeof(id) === "undefined") {
+    tfa.clearHighlightByUri  = function(uri) {
+        if (typeof(fragmentIds[uri]) === "undefined") {
+            tfa.log('Not clearing highlight on given URI: fragment id not found');
             return;
         }
 
-        tfa.log('Reset fragment ', id, fragmentById[id].bits.length);
+        tfa.clearHighlightById(fragmentIds[uri]);
+    };
+
+    tfa.clearHighlightById  = function(id) {
         for (var l=fragmentById[id].bits.length; l--;) {
             fragmentById[id].bits[l].reset();
         }
-
+        tfa.log('Clear highlight on fragment id='+ id +', # bits: '+ fragmentById[id].bits.length);
     };
 
     tfa.log("Component up and running");

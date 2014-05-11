@@ -76,7 +76,8 @@ angular.module('Pundit2.ContextualMenu')
 
     // build content to put inside menu
     // TODO: Che vuol dire? spiega meglio, tipo .. filters by type, checks showIf() ... etc etc
-    // TODO: menuResource? lo spostiamo tra i parametri?
+    // TODO: menuResource? lo spostiamo tra i parametri? typeElement? menuElementType?
+    // Tutto globale!! :(
     contextualMenu.buildContent = function(type){
         var content = [];
 
@@ -141,6 +142,7 @@ angular.module('Pundit2.ContextualMenu')
             }
         }
 
+        contextualMenu.log('buildContent built '+content.length+' elements for type='+type);
         return content;
     };
 
@@ -170,7 +172,14 @@ angular.module('Pundit2.ContextualMenu')
     contextualMenu.show = function(x, y, resource, type){
 
         // show only one menu
-        if ( menu !== null || menuElements.length === 0 ) {
+        if ( menu !== null ) {
+            // TODO: sta roba viene chiamata quando viene nascosto .. perche'? :|
+            contextualMenu.err('Contextual menu already shown?!');
+            return;
+        }
+
+        if ( menuElements.length === 0 ) {
+            contextualMenu.err('Cannot show a contextual menu without any element!!');
             return;
         }
 
@@ -182,10 +191,17 @@ angular.module('Pundit2.ContextualMenu')
 
         // need type array
         // TODO: angular.isArray()
-        if ( !(type instanceof Array) ) {
-            contextualMenu.err('Try to show menu with illegal type');
-            return;
-        }
+        // if ( !(type instanceof Array) ) {
+        //    contextualMenu.err('Try to show menu with illegal type');
+        //    return;
+        //}
+
+        // TODO: workaround per farlo anda' ..
+        if (!angular.isArray(type))
+            type = [type];
+
+
+        contextualMenu.log('Showing menu for type='+type+' at '+x+','+y);
 
         // state var
         menuResource = resource;
@@ -225,19 +241,20 @@ angular.module('Pundit2.ContextualMenu')
     // add passed action (use name as key to avoid duplicates)
     contextualMenu.addAction = function(actionObj){
 
-        var find = menuElements.some(function(el, index, array){
+        var found = menuElements.some(function(el, index, array){
             // TODO index, array ? ... jshint lo guardi mai? :P
+            // TODO: equals? non sono stringhe?
             return angular.equals(actionObj.name, el.name);
         });
 
-        if ( !find ) {
-            menuElements.push(angular.copy(actionObj));
-            return true;      
-        } else {
-            contextualMenu.err('Try to add duplicated action');
+        if ( found ) {
+            contextualMenu.err('Not adding duplicated action '+actionObj.name);
             return false;
         }
 
+        menuElements.push(angular.copy(actionObj));
+        contextualMenu.log('Added action '+actionObj.name+' for types '+actionObj.type);
+        return true;
     };
 
     // add submenu element to menu

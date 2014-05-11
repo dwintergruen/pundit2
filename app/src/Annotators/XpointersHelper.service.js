@@ -380,7 +380,7 @@ angular.module('Pundit2.Annotators')
         angular.element(element).addClass(htmlClass);
 
         // make it a directive
-        angular.element(element).attr('fragment-bit', '');
+        angular.element(element).attr('text-fragment-bit', '');
         angular.element(element).attr('fragments', parents.join(','));
         return element;
     };
