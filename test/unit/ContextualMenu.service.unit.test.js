@@ -151,4 +151,9 @@ describe('ContextualMenu service', function() {
 
     });
 
+    // TODO: addDivider? position()? show()? hide()? Hai testato che il sort funzioni a modo?
+    // i tuoi oggetti type*Actions sono gia' ordinati :P
+    // + il click su una voce di menu deve chiamare la action registrata
+    // Altro?
+
 });

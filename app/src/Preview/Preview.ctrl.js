@@ -1,6 +1,8 @@
 angular.module('Pundit2.Preview')
     .controller('PreviewCtrl', function($scope, Preview, TypesHelper, Utils, NameSpace) {
 
+        // TODO: configura l'editor per mettere 4 spazi e non tab
+
         $scope.itemDashboardPreview = "";
 
 		// check where a new item is selected to get a preview
@@ -39,21 +41,26 @@ angular.module('Pundit2.Preview')
 			Preview.clearItemDashboardSticky();
 		};
 
+        // TODO: mettiamo sta cosa nel service e non nel controller: quando si fa una show()
+        // la chiami e setti un flaggettino che poi leggi dal controller tramite get()
 		// check if item is an image or not
 		// return true if is an image, false otherwise
         var checkIfItemIsImage = function(item) {
-            if(typeof(item) !== 'undefined' && typeof(item.type) !== 'undefined' ) {
+            // Ribalta l'if e metti un return false
+            if (typeof(item) !== 'undefined' && typeof(item.type) !== 'undefined' ) {
 
-				// for each type, check if is an image-type
-                for(var i = 0; i < item.type.length; i++){
+				// for each type, check if it is an image-type
+                for (var i = 0; i < item.type.length; i++){
 
-                    if(TypesHelper.getLabel(item.type[i]) === NameSpace.types.image || TypesHelper.getLabel(item.type[i]) === NameSpace.fragments.imagePart) {
+                    // TODO: TypesHelper.getLabel ti restituisce una .... label :)
+                    // devi controllare il TIPO
+                    if (TypesHelper.getLabel(item.type[i]) === NameSpace.types.image || TypesHelper.getLabel(item.type[i]) === NameSpace.fragments.imagePart) {
                         return true;
                     }
                 }
                 return false;
             }
-
+            // TODO: qui non ritorna niente? se typeof ecc .. ?
         };
 
 		// get label of a type from his uri

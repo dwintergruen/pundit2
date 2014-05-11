@@ -9,7 +9,8 @@ angular.module('Pundit2.ContextualMenu')
 
     var contextualMenu = new BaseComponent('ContextualMenu', CONTEXTUALMENUDEFAULTS);
 
-    // all element that menu can display (default is action) (el.submenu | bool) (el.divider | bool)
+    // TODO: che vuol dire sto commento? default is action, ma de che?
+    // all elements that menu can display (default is action) (el.submenu | bool) (el.divider | bool)
     var menuElements = [];
     // actual menu resource
     var menuResource;
@@ -18,7 +19,7 @@ angular.module('Pundit2.ContextualMenu')
     // actual menu anchor element
     var anchor = null;
 
-    // angular strap menu reference
+    // angular strap menu reference - TODO: will be null if the menu is not shown? .. scriviamolo
     var menu = null;
 
 
@@ -29,12 +30,15 @@ angular.module('Pundit2.ContextualMenu')
     });
 
     // build mock options (used to positioning)
+    // TODO: used to positioning WHAT, HOW, WHEN, spiega del fake menu ecc ecc
     var mockOptions = {scope: $rootScope.$new()};
     mockOptions.scope.$on('tooltip.show', function(){
 
         var placement = position(angular.element('.pnd-context-menu'), lastX, lastY);
 
-        // move anchor to correctly position
+        // move anchor to correct position
+        // TODO: non e' piu' facile avere due anchor? Uno sempre fuori dalle balle, uno
+        // sempre a portata? Non semplifica anche il css?
         anchor.css({
             left: lastX,
             top: lastY
@@ -49,6 +53,7 @@ angular.module('Pundit2.ContextualMenu')
 
     });
 
+    // TODO: what's this for? Who's using this?
     var init = function(element, options, type, content, placement){
 
         if ( typeof(content) !== 'undefined' ) {
@@ -63,16 +68,22 @@ angular.module('Pundit2.ContextualMenu')
             options.placement = contextualMenu.options.position;
         }        
         options.template = 'src/Toolbar/dropdown.tmpl.html';
-        // add css class in teamplate
+        // add css class in template
         options.scope.contextMenu = true;
 
         return $dropdown(element, options);
     };
 
     // build content to put inside menu
+    // TODO: Che vuol dire? spiega meglio, tipo .. filters by type, checks showIf() ... etc etc
+    // TODO: menuResource? lo spostiamo tra i parametri?
     contextualMenu.buildContent = function(type){
         var content = [];
 
+        // TODO: perche' passi piu' di un tipo come parametro? La show accetta piu' di un tipo?
+        // Ha senso chiedere di mostrare un menu contestuale per piu' di un tipo? Non credo .. vedi pundit1
+
+        // TODO: ti garba .some eh?! Ma almeno elimina i parametri che non usi, jshint FTW
         // filter by type
         var filterAction = menuElements.filter(function(menuElement, menuIndex, menuArray){
 
@@ -90,17 +101,19 @@ angular.module('Pundit2.ContextualMenu')
             
         });
 
-        // ordering (before the greatest)
+        // ordering by action priority descending (big > small)
         filterAction.sort(function(a, b){
             return b.priority - a.priority;
         });
 
         for ( var i in filterAction ) {
-            // display only if showIf return true            
+            // display only if showIf return true
+            // TODO: fai viceversa, !showIf() continue, IMHO e' piu' chiaro ed in fondo
+            // non ti ritrovi una foresta di } } } } } } } } } } }
             if ( filterAction[i].showIf(menuResource) ) {
 
+                // submenu content
                 if ( filterAction[i].submenu ) {
-                    // submenu content
                     content.push({
                         text: filterAction[i].label,
                         submenu: true,
@@ -112,6 +125,7 @@ angular.module('Pundit2.ContextualMenu')
                     content.push({
                         divider: true
                     });
+
                 } else {
                     // standard content
                     content.push({
@@ -167,8 +181,9 @@ angular.module('Pundit2.ContextualMenu')
         }
 
         // need type array
+        // TODO: angular.isArray()
         if ( !(type instanceof Array) ) {
-            contextualMenu.err('Try to show menu with not legal type');
+            contextualMenu.err('Try to show menu with illegal type');
             return;
         }
 
@@ -178,6 +193,9 @@ angular.module('Pundit2.ContextualMenu')
         lastY = y;
 
         // create div anchor
+        // TODO: mockMenu e' quello che usi per posizionare? Perche' non facciamo una classe
+        // e definiamo il css nel .less?
+        // Perche' prepend()? Elimini anche l'anchor quando fai hide? Perche' rimuovi l'anchor?
         angular.element("[data-ng-app='Pundit2']")
             .prepend("<div class='pnd-dropdown-contextual-menu-anchor' style='position: absolute; left: -500px; top: -500px;'><div>");
 
@@ -186,23 +204,29 @@ angular.module('Pundit2.ContextualMenu')
 
         mockMenu = init(anchor, mockOptions, type);       
         mockMenu.$promise.then(mockMenu.show);
+
+        // TODO: il workflow continua con la on(hide) di riga 35? La spostiamo qua sotto cosi' da
+        // rendere chiaro come funziona?
     };
 
-    // hide and destroy the showed menu
+    // hides and destroys the shown menu
     contextualMenu.hide = function(){
-        if ( menu !== null ) {
-            menu.hide();
-            menu.destroy();
-            anchor.remove();
-            anchor = null;
-            menu = null;
+        if ( menu === null ) {
+            return;
         }
+
+        menu.hide();
+        menu.destroy();
+        anchor.remove();
+        anchor = null;
+        menu = null;
     };
 
-    // add passed action (use name as key to not produce duplicates) 
+    // add passed action (use name as key to avoid duplicates)
     contextualMenu.addAction = function(actionObj){
 
         var find = menuElements.some(function(el, index, array){
+            // TODO index, array ? ... jshint lo guardi mai? :P
             return angular.equals(actionObj.name, el.name);
         });
 
@@ -217,6 +241,7 @@ angular.module('Pundit2.ContextualMenu')
     };
 
     // add submenu element to menu
+    // TODO: where's the priority?
     contextualMenu.addSubMenu = function(subMenuObj){
 
         var find = menuElements.some(function(el, index, array){
@@ -236,15 +261,17 @@ angular.module('Pundit2.ContextualMenu')
     };
 
     // add divider in a specified position
+    // TODO: where's the priority?
     contextualMenu.addDivider = function(dividerObj){
         var e = angular.copy(dividerObj);
         e.divider = true;
         e.showIf = function(){
             return true;
-        }
+        };
         menuElements.push(e);
     };
 
+    // TODO: what's this for? Who's using this?
     contextualMenu.getSubMenuPlacement = function(){
         var i = realOptions.placement.indexOf('-'),
             place = realOptions.placement.substring(i+1);

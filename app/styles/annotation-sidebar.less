@@ -4,6 +4,7 @@ body {
     background-position-x: -@annotation-sidebar-coll-width;
 }
 
+// TODO: quali 3 proprieta' transisci in 1s? .. parliamone :D
 body.pnd-annotation-sidebar-active, .pnd-as-transition {
     -webkit-transition-duration: 1s, 1s, 1s;
     -moz-transition-duration: 1s, 1s, 1s;
@@ -21,7 +22,11 @@ body.pnd-annotation-sidebar-active, .pnd-as-transition {
     position: absolute;
     right: 0px;
     top: 0px;
+
+    // TODO: non e' sufficiente, vedi che succede all'esempio ora che l'esempio e' costretto
+    // a scrollare in basso
     height: 100%;
+
     z-index: 999999;
     // padding: 20px;
     display: block;

@@ -20,6 +20,8 @@ angular.module('Pundit2.AnnotationSidebar')
     annotationSidebar.isAnnotationSidebarExpanded = function(){
         return state.isExpanded;
     };
+
+    // TODO: a che/chi serve getWidth?
     annotationSidebar.getWidth = function(){
         return state.sidebarWidth;
     };

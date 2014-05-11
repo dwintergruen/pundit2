@@ -1,8 +1,12 @@
 angular.module('Pundit2.Preview')
-.service('Preview', function(BaseComponent) {
+    .service('Preview', function(BaseComponent) {
 
-		var preview = new BaseComponent('Preview');
+        // TODO: defaults col welcome message
 
+        var preview = new BaseComponent('Preview');
+
+
+        // TODO: invece di usare "" usa null che e' fatto apposta ;)
         var itemDashboardPreview = "";
         var itemDashboardSticky = "";
 
