@@ -111,13 +111,13 @@ var ContextualMenuDemoCtrl = function($scope, $rootScope, $window, $dropdown, $t
 
     $scope.showTypeOne = function($event){
         var resource = {name:'resourceName'};
-        ContextualMenu.show(450, 100, resource, ['type1']);
+        ContextualMenu.show(450, 100, resource, 'type1');
         $event.stopPropagation();
     };
 
     $scope.showTypeTwo = function($event){
         var resource = {name:'resourceName'};
-        ContextualMenu.show(400, 200, resource, ['type2']);
+        ContextualMenu.show(400, 200, resource, 'type2');
         $event.stopPropagation();
     };
 
@@ -145,7 +145,7 @@ var ContextualMenuDemoCtrl = function($scope, $rootScope, $window, $dropdown, $t
 
     $scope.displayMenu = function($event){
         var resource = {name:'im a resource'};
-        ContextualMenu.show($event.pageX, $event.pageY, resource, ['type1', 'type2']);
+        ContextualMenu.show($event.pageX, $event.pageY, resource, 'type1');
     };
 
 }
