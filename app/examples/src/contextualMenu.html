@@ -145,7 +145,8 @@ var ContextualMenuDemoCtrl = function($scope, $rootScope, $window, $dropdown, $t
 
     $scope.displayMenu = function($event){
         var resource = {name:'im a resource'};
-        ContextualMenu.show($event.pageX, $event.pageY, resource, 'type1');
+        ContextualMenu.show($event.pageX, $event.pageY, resource, 'type2');
+        $event.stopPropagation();
     };
 
 }

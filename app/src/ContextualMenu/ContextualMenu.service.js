@@ -10,67 +10,38 @@ angular.module('Pundit2.ContextualMenu')
     var contextualMenu = new BaseComponent('ContextualMenu', CONTEXTUALMENUDEFAULTS);
 
     var state = {
-        // all elements that menu can display
+        // angular strap menu reference
+        menu: null,
+        // all elements that menu can display (added by addActio, addSubmenu and addDiveder)
         menuElements: [],
-        // menu resource
+        // showed menu resource
         menuResource: null,
-        // menu type
+        // showed menu type
         menuType: null,
         // actual menu anchor position
         lastX: 0, lastY: 0,
-        // store anchor
+        // element bound to $dropdown menu instance
         anchor: null,
-        // menu content
-        content: null
+        // menu content (object in angular strap format)
+        content: null,
+        // mock Menu is showed outside screen to calculate the menu dimensions 
+        // and to define the real menu placement to prevent window scrool
+        mockMenu: null
     };
-    
-
-    // angular strap menu reference - TODO: will be null if the menu is not shown? .. scriviamolo
-    var menu = null;
 
 
-    // create div anchor
-    // TODO: mockMenu e' quello che usi per posizionare? Perche' non facciamo una classe
-    // e definiamo il css nel .less?
+    // create div anchor (the element bound with angular strap menu reference)
     angular.element("[data-ng-app='Pundit2']")
         .prepend("<div class='pnd-dropdown-contextual-menu-anchor' style='position: absolute; left: -500px; top: -500px;'><div>");
 
-    // store anchor
     state.anchor = angular.element('.pnd-dropdown-contextual-menu-anchor');
 
 
     // build menu options and scope
     var realOptions = {scope: $rootScope.$new()};
-    /*realOptions.scope.$on('tooltip.hide', function(){
-        contextualMenu.hide();
-    });*/
 
-    // build mock options (used to positioning)
-    // showed outside screen to calculate the menu placement 
-    // for the show x, y
+    // build mock menu options (used only to positioning)
     var mockOptions = {scope: $rootScope.$new()};
-    mockOptions.scope.$on('tooltip.show', function(){
-
-        var place = position(angular.element('.pnd-context-menu'), state.lastX, state.lastY);
-
-        // move anchor to correct position
-        // TODO: non e' piu' facile avere due anchor? Uno sempre fuori dalle balle, uno
-        // sempre a portata? Non semplifica anche il css?
-        state.anchor.css({
-            left: state.lastX,
-            top: state.lastY
-        });
-
-        // remove mock menu
-        angular.element('.pnd-context-menu').remove();
-
-        // create real menu
-        menu = init(realOptions, place);
-        if ( menu !== null ) {
-            menu.$promise.then(menu.show);
-        }
-
-    });
 
     var init = function(options, placement){
 
@@ -82,21 +53,22 @@ angular.module('Pundit2.ContextualMenu')
         }        
         options.template = 'src/Toolbar/dropdown.tmpl.html';
         // add css class in teamplate
+        // TODO duplicate template ?
         options.scope.contextMenu = true;
 
-        return $dropdown(state.anchor, options);        
+        return $dropdown(state.anchor, options);
+        
     };
 
-    // build content to put inside menu
-    // TODO: Che vuol dire? spiega meglio, tipo .. filters by type, checks showIf() ... etc etc
-    // TODO: menuResource? lo spostiamo tra i parametri? typeElement? menuElementType?
-    // Tutto globale!! :(
-    contextualMenu.buildContent = function(type, resource){
+    // build content (action/divider/submenu) to put inside menu in angular strap object format
+    // filter element by showIf function
+    // and order (from big to less) by element.priority property
+    contextualMenu.buildContent = function(){
         var content = [];
 
         // filter by type
         var filteredActions = state.menuElements.filter(function(element){
-            return element.type.indexOf(type) > -1; 
+            return element.type.indexOf(state.menuType) > -1; 
         });
 
         // ordering by action priority descending (big > small)
@@ -107,7 +79,7 @@ angular.module('Pundit2.ContextualMenu')
         for ( var i in filteredActions ) {
             
             // display only if showIf return true            
-            if ( !filteredActions[i].showIf(resource) ) {
+            if ( !filteredActions[i].showIf(state.menuResource) ) {
                 continue;
             }
 
@@ -129,21 +101,21 @@ angular.module('Pundit2.ContextualMenu')
                 // standard content
                 content.push({
                     text: filteredActions[i].label,
-                    // TODO need to close resource?
-                    click: function(_i, _resource){
+                    click: function(_i){
                         return function(){
-                            filteredActions[_i].action(_resource);
+                            filteredActions[_i].action(state.menuResource);
                         };
-                    }(i, resource)
+                    }(i)
                 });
             }
             
         }
 
-        contextualMenu.log('buildContent built '+content.length+' elements for type='+type);
+        contextualMenu.log('buildContent built '+content.length+' elements for type='+state.menuType);
         return content;
     };
 
+    // determine the angular strap menu placement (right is left and left is right)
     var position = function(element, x, y){
 
         var width = element.outerWidth(),
@@ -165,16 +137,14 @@ angular.module('Pundit2.ContextualMenu')
         
     };
 
-
     // initialize the menu and show when it is ready
     contextualMenu.show = function(x, y, resource, type){
 
         // show only one menu
-        if ( menu !== null ) {
-            menu.hide();
-            menu.destroy();
-            contextualMenu.err('Contextual menu already shown?!');
-            //return;
+        if ( state.menu !== null ) {
+            state.menu.hide();
+            state.menu.destroy();
+            state.menu = null;
         }
 
         if ( state.menuElements.length === 0 ) {
@@ -189,51 +159,62 @@ angular.module('Pundit2.ContextualMenu')
         }
 
         // build content and store
-        state.content = contextualMenu.buildContent(type, resource);
+        state.menuResource = resource;
+        state.menuType = type;
+        state.content = contextualMenu.buildContent();
 
         if ( state.content.length === 0 ) {
             contextualMenu.err('Try to show menu without any content (buildContent fail)');
             return;
         }
 
-        // TODO: workaround per farlo anda' ..
-        if (!angular.isArray(type))
-            type = [type];
-
         contextualMenu.log('Showing menu for type='+type+' at '+x+','+y);
 
         // state var
         state.lastX = x;
         state.lastY = y;
-        state.menuResource = resource;
-        state.menuType = type;
 
+        state.mockMenu = init(mockOptions);
+        state.mockMenu.$promise.then(state.mockMenu.show);
 
-        mockMenu = init(mockOptions);
-        if ( mockMenu !== null) {
-            mockMenu.$promise.then(mockMenu.show);            
-        }
-        // TODO: il workflow continua con la on(show) di riga 52
-        // La spostiamo qua sotto cosi' da rendere chiaro come funziona?
     };
+
+    // when mock menu show the dimensions can be readed
+    // and can calculate the proper placement for the real menu
+    mockOptions.scope.$on('tooltip.show', function(){
+
+        var place = position(angular.element('.pnd-context-menu'), state.lastX, state.lastY);
+
+        // move anchor to correct position
+        state.anchor.css({
+            left: state.lastX,
+            top: state.lastY
+        });
+
+        state.mockMenu.destroy();
+
+        // create real menu
+        state.menu = init(realOptions, place);
+        state.menu.$promise.then(state.menu.show);
+
+    });
 
     // hides and destroys the shown menu
     contextualMenu.hide = function(){
-        if ( menu === null ) {
+        if ( state.menu === null ) {
             return;
         }
 
-        menu.hide();
-        menu.destroy();
-        menu = null;
+        state.menu.hide();
+        state.menu.destroy();
+        state.menu = null;
     };
 
     // add passed action (use name as key to avoid duplicates)
     contextualMenu.addAction = function(actionObj){
 
         var found = state.menuElements.some(function(el){
-            // TODO: equals? non sono stringhe?
-            return angular.equals(actionObj.name, el.name);
+            return actionObj.name === el.name;
         });
 
         if ( found ) {
@@ -276,7 +257,7 @@ angular.module('Pundit2.ContextualMenu')
         state.menuElements.push(e);
     };
 
-    // TODO: what's this for? Who's using this?
+    // used in example (define where show the submenu)
     contextualMenu.getSubMenuPlacement = function(){
         var i = realOptions.placement.indexOf('-'),
             place = realOptions.placement.substring(i+1);
