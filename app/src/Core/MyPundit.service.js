@@ -94,36 +94,40 @@ angular.module('Pundit2.Core')
     // return promise, resolved as true when user is logged in
     myPundit.openLoginPopUp = function(){
 
-        //TODO verificare che la loginPromise è definita. Se non è definita return error
-        // login status is waiting for login
-        loginStatus = "waitingForLogIn";
-        
-        // open popup to get login
-        $window.open(loginServer, 'loginpopup', 'left=260,top=120,width=480,height=360');
-        
-        // polls for login happened
-        var check = function() {
-            
-            var promise = myPundit.checkLoggedIn();
-            promise.then(
-                // success
-                function(isUserLogged){
-                    if (isUserLogged){
-                        $timeout.cancel(loginPollTimer);
-                        loginPromise.resolve(true);
-                        $timeout(myPundit.closeLoginModal, myPundit.options.loginModalCloseTimer);
+        if(typeof(loginPromise) === 'undefined') {
+            MyPundit.err("Login promise not defined, you should call login() first");
+            return;
+        } else {
+            // login status is waiting for login
+            loginStatus = "waitingForLogIn";
+
+            // open popup to get login
+            $window.open(loginServer, 'loginpopup', 'left=260,top=120,width=480,height=360');
+
+            // polls for login happened
+            var check = function() {
+
+                var promise = myPundit.checkLoggedIn();
+                promise.then(
+                    // success
+                    function(isUserLogged){
+                        if (isUserLogged){
+                            $timeout.cancel(loginPollTimer);
+                            loginPromise.resolve(true);
+                            $timeout(myPundit.closeLoginModal, myPundit.options.loginModalCloseTimer);
+                        }
+                    },
+                    function(){
+                        loginPromise.reject('login error');
                     }
-                },
-                function(){
-                    loginPromise.reject('login error');
-                }
-            ); // end promise.then
-            
-            loginPollTimer = $timeout(check, myPundit.options.loginPollTimerMS);
-        };
-        
-        check();
-        
+                ); // end promise.then
+
+                loginPollTimer = $timeout(check, myPundit.options.loginPollTimerMS);
+            };
+
+            check();
+        }
+
     };
     
     // logout
