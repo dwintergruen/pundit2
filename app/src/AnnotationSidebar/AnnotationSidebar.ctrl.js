@@ -1,12 +1,14 @@
 /*jshint strict: false*/
 
 angular.module('Pundit2.AnnotationSidebar')
-.controller('AnnotationSidebarCtrl', function($scope, AnnotationSidebar) {
+.controller('AnnotationSidebarCtrl', function($scope, $rootScope, $window, AnnotationSidebar) {
     var bodyClasses = AnnotationSidebar.options.bodyExpandedClass + ' ' + AnnotationSidebar.options.bodyCollapsedClass;
     var sidebarClasses = AnnotationSidebar.options.sidebarExpandedClass + ' ' + AnnotationSidebar.options.sidebarCollapsedClass;
 
     var body = angular.element('body');
     var container = angular.element('.pnd-annotation-sidebar-container');
+
+    container.css('height', body.innerHeight() + 'px');
 
     // Start reading the default
     if (AnnotationSidebar.options.isAnnotationSidebarExpanded) {
@@ -25,6 +27,24 @@ angular.module('Pundit2.AnnotationSidebar')
         if (currentState !== oldState) {
             body.toggleClass(bodyClasses);
             container.toggleClass(sidebarClasses);
+        }
+    });
+
+    var bodyCurrentHeight;
+    var sidebarCurrentHeight;
+    angular.element($window).bind('resize', function() {
+        bodyCurrentHeight = body.innerHeight();
+        sidebarCurrentHeight = container.innerHeight();
+        if ( bodyCurrentHeight !== sidebarCurrentHeight ) {
+            container.css('height', bodyCurrentHeight + 'px');
+        }
+    });
+    // TODO: deprecato? valutare alternative
+    body.bind('DOMSubtreeModified', function() {
+        bodyCurrentHeight = body.innerHeight();
+        sidebarCurrentHeight = container.innerHeight();
+        if ( bodyCurrentHeight !== sidebarCurrentHeight ) {
+            container.css('height', bodyCurrentHeight + 'px');
         }
     });
 
