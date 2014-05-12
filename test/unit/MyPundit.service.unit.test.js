@@ -36,6 +36,13 @@ describe('MyPundit service', function() {
         $document = _$document_;
     }));
 
+    beforeEach(function() {
+        angular.element($document[0].body).append('<div data-ng-app="Pundit2" class="pnd-wrp"></div>');
+    });
+
+    afterEach(function() {
+        angular.element('div[data-ng-app="Pundit2"]').remove();
+    });
     
     it("should check if user is logged in", function() {
 
@@ -95,6 +102,29 @@ describe('MyPundit service', function() {
 		$httpBackend.flush();
 
 	});
+
+    it("should checkLoggedIn notify error when server return error", function() {
+
+        $httpBackend.whenGET(NameSpace.get('asUsersCurrent')).respond(505);
+
+        var serverError = false;
+
+        var promise = MyPundit.checkLoggedIn();
+
+        promise.then(function(value) {
+            //if everything is ok do nothing
+
+        }, function(){
+            // if error is occurred
+            serverError = true;
+        });
+
+        $rootScope.$digest();
+        $httpBackend.flush();
+
+        expect(serverError).toBe(true);
+
+    });
     
 	it("should get right user data if user is logged in", function() {
 
@@ -178,7 +208,7 @@ describe('MyPundit service', function() {
 
 		var promiseValue;
 
-		angular.element($document[0].body).append('<div data-ng-app="Pundit2" class="pnd-wrp"></div>');
+		//angular.element($document[0].body).append('<div data-ng-app="Pundit2" class="pnd-wrp"></div>');
 		$rootScope.$digest();
 		$httpBackend.whenGET(NameSpace.get('asUsersCurrent')).respond(userNotLogged);
 
@@ -287,6 +317,29 @@ describe('MyPundit service', function() {
 
 	});
 
+    it("should logout notify error when server return error", function() {
+
+        $httpBackend.whenGET(NameSpace.get('asUsersLogout')).respond(505);
+
+        var serverError = false;
+
+        var logoutPromise = MyPundit.logout();
+
+        logoutPromise.then(function(value) {
+            //if everything is ok do nothing
+
+        }, function(){
+            // if error is occurred
+            serverError = true;
+
+        });
+
+        $rootScope.$digest();
+        $httpBackend.flush();
+
+        expect(serverError).toBe(true);
+    });
+
 	it("should resolve loginPromise as true when user is logged in", function() {
 
 		var promiseValue;
@@ -311,5 +364,35 @@ describe('MyPundit service', function() {
 		$rootScope.$digest();
 		$httpBackend.flush();
 	});
+
+    //TODO: FINIRE IL TEST
+    it("should start login polling timer ", function() {
+
+        var promiseValue;
+
+
+        $rootScope.$digest();
+        $httpBackend.whenGET(NameSpace.get('asUsersCurrent')).respond(userNotLogged);
+
+        var promise = MyPundit.login();
+
+        $rootScope.$digest();
+        $httpBackend.flush();
+
+        // login status should be loggedOff
+        expect(MyPundit.getLoginStatus()).toBe("loggedOff");
+
+        // modal should be open
+        var modalContainer = angular.element.find('div.pnd-login-modal-container');
+        expect(modalContainer.length).toBe(1);
+
+        // click open login popup
+        var openPopUpButton = angular.element('.pnd-login-modal-openPopUp');
+        openPopUpButton.trigger('click');
+        $rootScope.$digest();
+
+        expect(MyPundit.getLoginStatus()).toBe("waitingForLogIn");
+
+    });
 
 });
