@@ -34,6 +34,30 @@ var ContextualMenuDemoCtrl = function($scope, $rootScope, $window, $dropdown, $t
             }
         },
         {
+            name: 'action11',
+            type: ['type1'],
+            label: "Action11 (type1)",
+            priority: 0,
+            showIf: function(){
+                return true;
+            },
+            action: function(resource){
+                angular.element('.pnd-contexMenu-output').append('exe action11 '+resource.name);
+            }
+        },
+        {
+            name: 'action13',
+            type: ['type1'],
+            label: "Action13 (type1)",
+            priority: 0,
+            showIf: function(){
+                return true;
+            },
+            action: function(resource){
+                angular.element('.pnd-contexMenu-output').append('exe action13 '+resource.name);
+            }
+        },
+        {
             name: 'action5',
             type: ['type2'],
             label: "Action5 (type2)",
@@ -145,7 +169,7 @@ var ContextualMenuDemoCtrl = function($scope, $rootScope, $window, $dropdown, $t
 
     $scope.displayMenu = function($event){
         var resource = {name:'im a resource'};
-        ContextualMenu.show($event.pageX, $event.pageY, resource, 'type2');
+        ContextualMenu.show($event.pageX, $event.pageY, resource, 'type1');
     };
 
 }

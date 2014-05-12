@@ -19,10 +19,10 @@ describe("The contextualMenu module", function() {
             expect(elements.length).toBe(4);
         });
 
-        p.actions().mouseMove({x:50, y:0}).click().perform();
+        p.actions().mouseMove({x:-50, y:0}).click().perform();
 
         p.findElements(protractor.By.css('.pnd-context-menu')).then(function(elements) {
-            expect(elements.length).toBe(0);
+            expect(elements.length).toBe(1);
         });
 
     });
@@ -55,7 +55,7 @@ describe("The contextualMenu module", function() {
         });
 
         p.findElements(protractor.By.css('.pnd-context-menu > li > a')).then(function(elements) {
-            expect(elements.length).toBe(2);
+            expect(elements.length).toBe(4);
             elements[0].getInnerHtml().then(function(innerHtml){
                 expect(innerHtml.indexOf('type1')).toBeGreaterThan(-1);
             });
@@ -136,6 +136,8 @@ describe("The contextualMenu module", function() {
     it('should correctly position menu and not exceeds window dimension', function() {
 
         p.get('app/examples/contextualMenu.html');
+
+        p.waitForAngular();
 
         p.findElement(protractor.By.css('.pnd-contexMenu-addAll-btn')).click();
 
