@@ -3,7 +3,11 @@
 angular.module('Pundit2.AnnotationSidebar')
 .constant('ANNOTATIONSIDEBARDEFAULTS', {
     isAnnotationSidebarExpanded: false,
-    bodyClass: "pnd-annotation-sidebar-coll-active",
+    bodyClass: "pnd-annotation-sidebar-active",
+    bodyExpandedClass: "pnd-annotation-sidebar-expanded",
+    bodyCollapsedClass: "pnd-annotation-sidebar-collapsed",
+    sidebarExpandedClass: "pnd-annotation-sidebar-expanded",
+    sidebarCollapsedClass: "pnd-annotation-sidebar-collapsed",
     debug: false
 })
 .service('AnnotationSidebar', function(BaseComponent, ANNOTATIONSIDEBARDEFAULTS) {
