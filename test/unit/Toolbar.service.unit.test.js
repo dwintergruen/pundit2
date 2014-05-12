@@ -24,7 +24,7 @@ describe('Toolbar service', function() {
         $compile = _$compile_;
     }));
 
-    var compileDirective = function(){
+    var compileToolbarDirective = function(){
         var elem = $compile('<toolbar></toolbar>')($rootScope);
         $rootScope.$digest();
         return elem;
@@ -134,7 +134,7 @@ describe('Toolbar service', function() {
         // at this time callback is not executed yet
         expect(callbackIsExecuted).toBe(false);
 
-        var elem = compileDirective();
+        var elem = compileToolbarDirective();
 
         // click error button to show errors
         var button = angular.element(elem).find('.pnd-toolbar-error-button a');

@@ -70,7 +70,7 @@ angular.module('Pundit2.Preview')
     // check if item is an image or not
     // return true if is an image, false otherwise
     var checkIfItemIsImage = function(item){
-
+        state.isItemDashboardAnImage = false;
         if(item === null || typeof(item.type) === 'undefined') {
             state.isItemDashboardAnImage = false;
         } else {
@@ -83,7 +83,7 @@ angular.module('Pundit2.Preview')
                 }
             }
             // item is not an image
-            state.isItemDashboardAnImage = false;
+            //state.isItemDashboardAnImage = false;
         }
     };
 
