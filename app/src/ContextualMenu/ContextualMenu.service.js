@@ -12,9 +12,6 @@ angular.module('Pundit2.ContextualMenu')
     // TODO: che vuol dire sto commento? default is action, ma de che?
     // all elements that menu can display (default is action) (el.submenu | bool) (el.divider | bool)
     var menuElements = [];
-    // actual menu resource
-    // TODO move as buildContent() function params
-    var menuResource;
     // actual menu anchor position
     var lastX, lastY;
     // actual menu anchor element
@@ -35,7 +32,7 @@ angular.module('Pundit2.ContextualMenu')
     var mockOptions = {scope: $rootScope.$new()};
     mockOptions.scope.$on('tooltip.show', function(){
 
-        var placement = position(angular.element('.pnd-context-menu'), lastX, lastY);
+        var place = position(angular.element('.pnd-context-menu'), lastX, lastY);
 
         // move anchor to correct position
         // TODO: non e' piu' facile avere due anchor? Uno sempre fuori dalle balle, uno
@@ -49,7 +46,7 @@ angular.module('Pundit2.ContextualMenu')
         angular.element('.pnd-context-menu').remove();
 
         // create real menu
-        menu = init(anchor, realOptions, undefined, mockOptions.scope.content, placement);
+        menu = modeInit({element: anchor, content: mockOptions.scope.content, placement:place}, realOptions);
         if ( menu !== null ) {
             menu.$promise.then(menu.show);
         } else {
@@ -85,11 +82,36 @@ angular.module('Pundit2.ContextualMenu')
         
     };
 
+    var modeInit = function(obj, options){
+
+        if ( typeof(obj.content) !== 'undefined' ) {
+            // TODO need a copy?
+            options.scope.content = obj.content;
+        } else {
+            options.scope.content = contextualMenu.buildContent(obj.type, obj.resource);
+        }
+        if ( typeof(obj.placement) !== 'undefined' ) {
+            options.placement = obj.placement;
+        } else {
+            options.placement = contextualMenu.options.position;
+        }        
+        options.template = 'src/Toolbar/dropdown.tmpl.html';
+        // add css class in teamplate
+        options.scope.contextMenu = true;
+
+        if ( options.scope.content.length > 0 ) {
+            return $dropdown(obj.element, options);
+        } else {
+            return null;
+        }
+        
+    };
+
     // build content to put inside menu
     // TODO: Che vuol dire? spiega meglio, tipo .. filters by type, checks showIf() ... etc etc
     // TODO: menuResource? lo spostiamo tra i parametri? typeElement? menuElementType?
     // Tutto globale!! :(
-    contextualMenu.buildContent = function(type){
+    contextualMenu.buildContent = function(type, resource){
         var content = [];
 
         // TODO: perche' passi piu' di un tipo come parametro? La show accetta piu' di un tipo?
@@ -119,10 +141,11 @@ angular.module('Pundit2.ContextualMenu')
         });
 
         for ( var i in filterAction ) {
-            // display only if showIf return true
+            
             // TODO: fai viceversa, !showIf() continue, IMHO e' piu' chiaro ed in fondo
             // non ti ritrovi una foresta di } } } } } } } } } } }
-            if ( filterAction[i].showIf(menuResource) ) {
+            // display only if showIf return true            
+            if ( filterAction[i].showIf(resource) ) {
 
                 // submenu content
                 if ( filterAction[i].submenu ) {
@@ -142,11 +165,12 @@ angular.module('Pundit2.ContextualMenu')
                     // standard content
                     content.push({
                         text: filterAction[i].label,
-                        click: function(i){
+                        // TODO need to close resource?
+                        click: function(i, res){
                             return function(){
-                                filterAction[i].action(menuResource);                                
+                                filterAction[i].action(res);                                
                             }
-                        }(i)
+                        }(i, resource)
                     });
                 }
 
@@ -163,12 +187,12 @@ angular.module('Pundit2.ContextualMenu')
             height = element.outerHeight();
 
         var placement;
-        if ( y + height > angular.element($window).innerHeight() /* && y - height > 0 */) {
+        if ( y + height > angular.element($window).innerHeight() /*&& y - height > 0*/ ) {
             placement = 'top';
         } else {
             placement = 'bottom';
         }
-        if ( x + width > angular.element($window).innerWidth() /* && x - width > 0 */) {
+        if ( x + width > angular.element($window).innerWidth() /*&& x - width > 0*/ ) {
             placement += '-right';
         } else {
             placement +='-left';
@@ -215,7 +239,6 @@ angular.module('Pundit2.ContextualMenu')
         contextualMenu.log('Showing menu for type='+type+' at '+x+','+y);
 
         // state var
-        menuResource = resource;
         lastX = x;
         lastY = y;
 
@@ -229,7 +252,8 @@ angular.module('Pundit2.ContextualMenu')
         // store anchor
         anchor = angular.element('.pnd-dropdown-contextual-menu-anchor');
 
-        mockMenu = init(anchor, mockOptions, type);
+        //mockMenu = init(anchor, mockOptions, type);
+        mockMenu = modeInit({element: anchor, type: type, resource: resource}, mockOptions);
         if ( mockMenu !== null) {
             mockMenu.$promise.then(mockMenu.show);            
         } else {
