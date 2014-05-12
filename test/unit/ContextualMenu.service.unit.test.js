@@ -1,10 +1,9 @@
 describe('ContextualMenu service', function() {
     
     var ContextualMenu,
-        $window;
+        $window,
+        CONTEXTUALMENUDEFAULTS;
 
-    var maxError = 1;
-    
     beforeEach(module('Pundit2'));
 
     beforeEach(module('src/Toolbar/dropdown.tmpl.html'));
@@ -24,7 +23,7 @@ describe('ContextualMenu service', function() {
             showIf: function(){
                 return true;
             },
-            action: function(resource){
+            action: function(){
                 
             }            
         },
@@ -36,7 +35,7 @@ describe('ContextualMenu service', function() {
             showIf: function(){
                 return true;
             },
-            action: function(resource){
+            action: function(){
                 
             }            
         },
@@ -45,10 +44,10 @@ describe('ContextualMenu service', function() {
             type: ['type1'],
             label: "Action2Label",
             priority: 100,
-            showIf: function(resource){
+            showIf: function(){
                 return false;
             },
-            action: function(resource){
+            action: function(){
                 
             }            
         }
@@ -63,7 +62,7 @@ describe('ContextualMenu service', function() {
             showIf: function(){
                 return true;
             },
-            action: function(resource){
+            action: function(){
                 
             }            
         },
@@ -125,29 +124,11 @@ describe('ContextualMenu service', function() {
         
     });
 
-    it('should build one type content as expected', function(){
+    it('should show', function(){
 
         addActions(true, true);
 
-        var content = ContextualMenu.buildContent(['type1']);
-
-        // discard if showIf is false
-        expect(content.length).toBe(typeOneActions.length-1);
-        // build ordered
-        expect(content[0].text).toBe(typeOneActions[1].label);
-        expect(content[1].text).toBe(typeOneActions[0].label);
-
-    });
-
-    it('should build two types content as expected', function(){
-
-        addActions(true, true);
-
-        var content = ContextualMenu.buildContent(['type1', 'type2']);
-
-        expect(content.length).toBe(typeOneActions.length-1+typeTwoActions.length);
-        
-        expect(content[0].submenu).toBe(true);
+        ContextualMenu.show(10, 10, {name:'pippo'}, 'type1');
 
     });
 

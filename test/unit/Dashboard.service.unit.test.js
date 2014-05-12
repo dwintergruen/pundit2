@@ -2,7 +2,9 @@ describe('Dashboard service', function() {
     
     var Dashboard,
         $window,
-        $compile;
+        $compile,
+        $rootScope,
+        DASHBOARDDEFAULTS;
 
     var maxError = 1;
     
@@ -44,10 +46,16 @@ describe('Dashboard service', function() {
         expect(Dashboard.getContainerHeight()).toBe(before+1);
     });
 
-    it("should not set container height", function() {
+    it("should not set container height over max", function() {
         var before = Dashboard.getContainerHeight();
         expect(Dashboard.increaseContainerHeight(999)).toBe(true);
         expect(Dashboard.getContainerHeight()).toBe(DASHBOARDDEFAULTS.containerMaxHeight);
+    });
+
+    it("should not set container height under min", function() {
+        var before = Dashboard.getContainerHeight();
+        expect(Dashboard.increaseContainerHeight(-999)).toBe(true);
+        expect(Dashboard.getContainerHeight()).toBe(DASHBOARDDEFAULTS.containerMinHeight);
     });
 
     it("should read containerWidth as window innerWidth or minimum width", function() {
@@ -142,6 +150,32 @@ describe('Dashboard service', function() {
         expect(preTotalWidth).not.toBe(totalWidth);
     });
 
+    // TODO select specific panel by css attribute selector
+    it("should update total panels width to containerWidth when resizing when one panel is at minwidth", function(){
+        var el = compileDirective();
+        var panels = angular.element(el).find('dashboard-panel').toArray();
+        var width = 1200;
+
+        Dashboard.setContainerWidth(width);
+
+        var scope = angular.element(panels[0]).isolateScope();
+        var diff = scope.width - DASHBOARDDEFAULTS.listsMinWidth;
+
+        scope.width -= diff;
+        angular.element(panels[1]).isolateScope().width += diff;
+
+        // resizeAll
+        width -= 23;
+        Dashboard.setContainerWidth(width);
+
+        var totalWidth = 0;
+        for ( var i in panels ) {
+            totalWidth = totalWidth + angular.element(panels[i]).isolateScope().width;   
+        }
+        expect(totalWidth - width).toBeLessThan(maxError);
+        
+    });
+
     it("should update total panels width to containerWidth when expand", function(){
         var el = compileDirective();
         var panels = angular.element(el).find('dashboard-panel').toArray();
@@ -156,6 +190,84 @@ describe('Dashboard service', function() {
         expect(totalWidth - newWidth).toBeLessThan(maxError);
 
         expect(Dashboard.getContainerWidth()).toBe(newWidth);
+    });
+
+    it("should correctly collapse and expand one panel", function(){
+        var el = compileDirective();
+        var panels = angular.element(el).find('dashboard-panel').toArray();
+
+        var scope = angular.element(panels[0]).isolateScope();
+        var width = Dashboard.getContainerWidth();
+
+        expect(scope.isCollapsed).toBe(false);
+        scope.toggleCollapse();        
+        expect(scope.isCollapsed).toBe(true);
+        expect(scope.width).toBe(DASHBOARDDEFAULTS.panelCollapseWidth);
+        // after collapse dashboard call resizeAll
+        var totalWidth = 0;
+        for ( var i in panels ) {
+            totalWidth = totalWidth + angular.element(panels[i]).isolateScope().width;   
+        }
+        expect(totalWidth - width).toBeLessThan(maxError);
+
+        scope.toggleCollapse();
+        expect(scope.isCollapsed).toBe(false);
+        expect(scope.width).not.toBe(DASHBOARDDEFAULTS.panelCollapseWidth);
+        // after collapse dashboard call resizeAll
+        totalWidth = 0;
+        for ( var i in panels ) {
+            totalWidth = totalWidth + angular.element(panels[i]).isolateScope().width;   
+        }
+        expect(totalWidth - width).toBeLessThan(maxError);
+        
+    });
+
+    it("should not collapse more then two panel", function(){
+        var el = compileDirective();
+        var panels = angular.element(el).find('dashboard-panel').toArray();
+
+        var scope = angular.element(panels[0]).isolateScope();
+
+        // collapse
+        expect(scope.isCollapsed).toBe(false);
+        scope.toggleCollapse();        
+        expect(scope.isCollapsed).toBe(true);
+        expect(scope.width).toBe(DASHBOARDDEFAULTS.panelCollapseWidth);
+
+        // collapse
+        scope = angular.element(panels[1]).isolateScope();
+        expect(scope.isCollapsed).toBe(false);
+        scope.toggleCollapse();        
+        expect(scope.isCollapsed).toBe(true);
+        expect(scope.width).toBe(DASHBOARDDEFAULTS.panelCollapseWidth);
+
+        // not collapse
+        scope = angular.element(panels[2]).isolateScope();
+        expect(scope.isCollapsed).toBe(false);
+        scope.toggleCollapse();        
+        expect(scope.isCollapsed).toBe(false);
+        expect(scope.width).not.toBe(DASHBOARDDEFAULTS.panelCollapseWidth);        
+        
+    });
+
+    it("should correctly resize first panel", function(){
+        var el = compileDirective();
+        var panels = angular.element(el).find('dashboard-panel').toArray();
+        
+        Dashboard.setContainerWidth(1200);
+
+        expect(Dashboard.tryToResizeCouples(0,-30)).toBe(true);
+
+    });
+
+    it("should correctly expand second panel", function(){
+        var el = compileDirective();
+        var panels = angular.element(el).find('dashboard-panel').toArray();
+        
+        Dashboard.setContainerWidth(1200);
+
+        expect(Dashboard.tryToResizeCouples(1,+30)).toBe(true);   
+        
     });
 
 });

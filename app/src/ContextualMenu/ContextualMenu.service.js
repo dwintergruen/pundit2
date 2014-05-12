@@ -139,7 +139,7 @@ angular.module('Pundit2.ContextualMenu')
 
     // initialize the menu and show when it is ready
     contextualMenu.show = function(x, y, resource, type){
-
+        
         // show only one menu
         if ( state.menu !== null ) {
             state.menu.hide();
@@ -182,7 +182,7 @@ angular.module('Pundit2.ContextualMenu')
     // when mock menu show the dimensions can be readed
     // and can calculate the proper placement for the real menu
     mockOptions.scope.$on('tooltip.show', function(){
-
+        
         var place = position(angular.element('.pnd-context-menu'), state.lastX, state.lastY);
 
         // move anchor to correct position
@@ -191,7 +191,8 @@ angular.module('Pundit2.ContextualMenu')
             top: state.lastY
         });
 
-        state.mockMenu.destroy();
+        //state.mockMenu.destroy();
+        angular.element('.pnd-context-menu').remove();
 
         // create real menu
         state.menu = init(realOptions, place);

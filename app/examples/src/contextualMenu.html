@@ -146,7 +146,6 @@ var ContextualMenuDemoCtrl = function($scope, $rootScope, $window, $dropdown, $t
     $scope.displayMenu = function($event){
         var resource = {name:'im a resource'};
         ContextualMenu.show($event.pageX, $event.pageY, resource, 'type2');
-        $event.stopPropagation();
     };
 
 }
@@ -159,9 +158,9 @@ var ContextualMenuDemoCtrl = function($scope, $rootScope, $window, $dropdown, $t
         <br><br><br>
         <br><br><br>
         <br><br><br>
-        Click addAction button to add custom actions.<br>
-        Now show menu with custom actions.<br>
-        Hide (click again or click hide button).<br>
+        Click Add All Action button to add custom actions.<br>
+        Now show menu by click everywhere.<br>
+        Click Hide and Remove Menu to Hide.<br>
 
         <br><br><br>
         <div class="pnd-contexMenu-output"></div>
