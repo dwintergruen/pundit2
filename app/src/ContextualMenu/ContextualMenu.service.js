@@ -1,7 +1,7 @@
 angular.module('Pundit2.ContextualMenu')
 .constant('CONTEXTUALMENUDEFAULTS', {
 
-    position: 'bottom-left',
+    position: 'bottom-right',
 
     debug: true
 })
@@ -45,7 +45,7 @@ angular.module('Pundit2.ContextualMenu')
         angular.element('.pnd-context-menu').remove();
 
         // create real menu
-        menu = modeInit({element: anchor, content: mockOptions.scope.content, placement:place}, realOptions);
+        menu = modeInit({element: anchor, content: mockOptions.scope.content, placement: place}, realOptions);
         if ( menu !== null ) {
             menu.$promise.then(menu.show);
         } else {
@@ -118,13 +118,14 @@ angular.module('Pundit2.ContextualMenu')
 
         // TODO: ti garba .some eh?! Ma almeno elimina i parametri che non usi, jshint FTW
         // filter by type
-        var filterAction = menuElements.filter(function(menuElement){
+        var filteredActions = menuElements.filter(function(element){
+
 
             // foreach passed type
             return type.some(function(typeElement){
 
                 // foreach element type
-                return menuElement.type.some(function(menuElementType){
+                return element.type.some(function(menuElementType){
 
                     return angular.equals(typeElement, menuElementType);
 
@@ -135,27 +136,27 @@ angular.module('Pundit2.ContextualMenu')
         });
 
         // ordering by action priority descending (big > small)
-        filterAction.sort(function(a, b){
+        filteredActions.sort(function(a, b){
             return b.priority - a.priority;
         });
 
-        for ( var i in filterAction ) {
+        for ( var i in filteredActions ) {
             
             // display only if showIf return true            
-            if ( !filterAction[i].showIf(resource) ) {
+            if ( !filteredActions[i].showIf(resource) ) {
                 return;
             }
 
             // submenu content
-            if ( filterAction[i].submenu ) {
+            if ( filteredActions[i].submenu ) {
                 content.push({
-                    text: filterAction[i].label,
+                    text: filteredActions[i].label,
                     submenu: true,
-                    hover: filterAction[i].hover,
-                    leave: filterAction[i].leave
+                    hover: filteredActions[i].hover,
+                    leave: filteredActions[i].leave
                 });
 
-            } else if ( filterAction[i].divider ){
+            } else if ( filteredActions[i].divider ){
                 content.push({
                     divider: true
                 });
@@ -163,12 +164,12 @@ angular.module('Pundit2.ContextualMenu')
             } else {
                 // standard content
                 content.push({
-                    text: filterAction[i].label,
+                    text: filteredActions[i].label,
                     // TODO need to close resource?
-                    click: function(i, res){
+                    click: function(_i, _resource){
                         return function(){
-                            filterAction[i].action(res);                                
-                        }
+                            filteredActions[_i].action(_resource);
+                        };
                     }(i, resource)
                 });
             }
@@ -297,11 +298,11 @@ angular.module('Pundit2.ContextualMenu')
     // TODO: where's the priority?
     contextualMenu.addSubMenu = function(subMenuObj){
 
-        var find = menuElements.some(function(el, index, array){
+        var found = menuElements.some(function(el, index, array){
             return angular.equals(subMenuObj.name, el.name);
         });
 
-        if ( !find ) {
+        if ( !found ) {
             var e = angular.copy(subMenuObj);
             e.submenu = true;
             menuElements.push(e);
@@ -314,7 +315,6 @@ angular.module('Pundit2.ContextualMenu')
     };
 
     // add divider in a specified position
-    // TODO: where's the priority?
     contextualMenu.addDivider = function(dividerObj){
         var e = angular.copy(dividerObj);
         e.divider = true;
