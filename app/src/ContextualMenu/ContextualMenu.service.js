@@ -36,7 +36,6 @@ angular.module('Pundit2.ContextualMenu')
 
     state.anchor = angular.element('.pnd-dropdown-contextual-menu-anchor');
 
-
     // build menu options and scope
     var realOptions = {scope: $rootScope.$new()};
 
@@ -58,6 +57,12 @@ angular.module('Pundit2.ContextualMenu')
 
         return $dropdown(state.anchor, options);
         
+    };
+
+    // return the state object
+    // used in unit test to verify side effect
+    contextualMenu.getState = function(){
+        return angular.copy(state);
     };
 
     // build content (action/divider/submenu) to put inside menu in angular strap object format
@@ -191,6 +196,7 @@ angular.module('Pundit2.ContextualMenu')
             top: state.lastY
         });
 
+        // TODO check memory leaks
         //state.mockMenu.destroy();
         angular.element('.pnd-context-menu').remove();
 

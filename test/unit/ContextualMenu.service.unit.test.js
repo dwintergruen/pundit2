@@ -1,4 +1,4 @@
-describe('ContextualMenu service', function() {
+ddescribe('ContextualMenu service', function() {
     
     var ContextualMenu,
         $window,
@@ -7,6 +7,13 @@ describe('ContextualMenu service', function() {
     beforeEach(module('Pundit2'));
 
     beforeEach(module('src/Toolbar/dropdown.tmpl.html'));
+
+    beforeEach(function(){
+        // used by service to append dropdown anchor
+        // if not exist the service cannot pass element to $drodown serive
+        // and cause "Cannot read property 'nodeName' of undefined"
+        angular.element("body").append("<div data-ng-app='Pundit2'></div>");
+    });    
 
     beforeEach(inject(function(_$window_, _CONTEXTUALMENUDEFAULTS_,  _ContextualMenu_){
         $window = _$window_;
@@ -19,9 +26,9 @@ describe('ContextualMenu service', function() {
             name: 'action1',
             type: ['type1'],
             label: "Action1Label",
-            priority: 1,
-            showIf: function(){
-                return true;
+            priority: 5,
+            showIf: function(resource){
+                return resource === 'pippo-resource';
             },
             action: function(){
                 
@@ -31,9 +38,9 @@ describe('ContextualMenu service', function() {
             name: 'action2',
             type: ['type1'],
             label: "Action2Label",
-            priority: 99,
-            showIf: function(){
-                return true;
+            priority: 3,
+            showIf: function(resource){
+                return resource === 'pippo-resource';
             },
             action: function(){
                 
@@ -42,10 +49,22 @@ describe('ContextualMenu service', function() {
         {
             name: 'action3',
             type: ['type1'],
-            label: "Action2Label",
-            priority: 100,
+            label: "Action3Label",
+            priority: 7,
             showIf: function(){
                 return false;
+            },
+            action: function(){
+                
+            }            
+        },
+        {
+            name: 'action4',
+            type: ['type1'],
+            label: "Action4Label",
+            priority: 9,
+            showIf: function(resource){
+                return resource !== 'pippo-resource';
             },
             action: function(){
                 
@@ -107,28 +126,42 @@ describe('ContextualMenu service', function() {
 
     });
 
-    it('should add Actions as expected', function(){
+    it('should add Action and not duplicate it', function(){
 
         expect(ContextualMenu.addAction(typeOneActions[0])).toBe(true);
-        expect(ContextualMenu.addAction(typeOneActions[1])).toBe(true);
-        // not duplicate action
         expect(ContextualMenu.addAction(typeOneActions[0])).toBe(false);
 
     });
 
-    it('should add subMenu as expected', function(){
+    it('should add Actions and not duplicate it', function(){
+
+        var state = ContextualMenu.getState();
+
+        expect(state.menuElements.length).toBe(0);
+        // add type1 actions
+        addActions(true, false);
+        expect(state.menuElements.length).toBe(typeOneActions.length);
+
+    });
+
+    it('should add subMenu and not duplicate it', function(){
 
         expect(ContextualMenu.addSubMenu(typeTwoActions[1])).toBe(true);
-        // not duplicate submenu
         expect(ContextualMenu.addSubMenu(typeTwoActions[1])).toBe(false);
         
     });
 
-    it('should show', function(){
+    it('should correctly build content', function(){
+
+        var state = ContextualMenu.getState();
 
         addActions(true, true);
 
-        ContextualMenu.show(10, 10, {name:'pippo'}, 'type1');
+        ContextualMenu.show(10, 10, 'pippo-resource', 'type1');
+        // show only 'pippo' action
+        expect(state.content.length).toBe(2);
+        expect(state.content[0].text).toEquals(typeOneActions[0].label);
+        expect(state.content[1].text).toEquals(typeOneActions[1].label);
 
     });
 
