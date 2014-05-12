@@ -13,11 +13,19 @@ angular.module('Pundit2.ContextualMenu')
     var menuElements = [];
     // actual menu anchor position
     var lastX, lastY;
-    // actual menu anchor element
-    var anchor = null;
 
     // angular strap menu reference - TODO: will be null if the menu is not shown? .. scriviamolo
     var menu = null;
+
+
+    // create div anchor
+    // TODO: mockMenu e' quello che usi per posizionare? Perche' non facciamo una classe
+    // e definiamo il css nel .less?
+    angular.element("[data-ng-app='Pundit2']")
+        .prepend("<div class='pnd-dropdown-contextual-menu-anchor' style='position: absolute; left: -500px; top: -500px;'><div>");
+
+    // store anchor
+    var anchor = angular.element('.pnd-dropdown-contextual-menu-anchor');
 
 
     // build menu options and scope
@@ -27,7 +35,8 @@ angular.module('Pundit2.ContextualMenu')
     });
 
     // build mock options (used to positioning)
-    // TODO: used to positioning WHAT, HOW, WHEN, spiega del fake menu ecc ecc
+    // showed outside screen to calculate the menu placement 
+    // for the show x, y
     var mockOptions = {scope: $rootScope.$new()};
     mockOptions.scope.$on('tooltip.show', function(){
 
@@ -48,9 +57,6 @@ angular.module('Pundit2.ContextualMenu')
         menu = modeInit({element: anchor, content: mockOptions.scope.content, placement: place}, realOptions);
         if ( menu !== null ) {
             menu.$promise.then(menu.show);
-        } else {
-            anchor.remove();
-            anchor = null;
         }
 
     });
@@ -230,9 +236,12 @@ angular.module('Pundit2.ContextualMenu')
         //    return;
         //}
 
+        contextualMenu.buildContent(type, resource);
+
         // TODO: workaround per farlo anda' ..
         if (!angular.isArray(type))
             type = [type];
+
 
 
         contextualMenu.log('Showing menu for type='+type+' at '+x+','+y);
@@ -241,23 +250,10 @@ angular.module('Pundit2.ContextualMenu')
         lastX = x;
         lastY = y;
 
-        // create div anchor
-        // TODO: mockMenu e' quello che usi per posizionare? Perche' non facciamo una classe
-        // e definiamo il css nel .less?
-        // Perche' prepend()? Elimini anche l'anchor quando fai hide? Perche' rimuovi l'anchor?
-        angular.element("[data-ng-app='Pundit2']")
-            .prepend("<div class='pnd-dropdown-contextual-menu-anchor' style='position: absolute; left: -500px; top: -500px;'><div>");
-
-        // store anchor
-        anchor = angular.element('.pnd-dropdown-contextual-menu-anchor');
-
         //mockMenu = init(anchor, mockOptions, type);
         mockMenu = modeInit({element: anchor, type: type, resource: resource}, mockOptions);
         if ( mockMenu !== null) {
             mockMenu.$promise.then(mockMenu.show);            
-        } else {
-            anchor.remove();
-            anchor = null;
         }
         // TODO: il workflow continua con la on(hide) di riga 35? La spostiamo qua sotto cosi' da
         // rendere chiaro come funziona?
@@ -271,8 +267,6 @@ angular.module('Pundit2.ContextualMenu')
 
         menu.hide();
         menu.destroy();
-        anchor.remove();
-        anchor = null;
         menu = null;
     };
 
