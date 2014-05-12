@@ -58,7 +58,7 @@ angular.module('Pundit2.Core')
             }
         
         }).error(function() {
-	        myPundit.err("Server error");
+            myPundit.err("Server error");
             promise.reject('check logged in promise error');
         });
         
@@ -94,6 +94,7 @@ angular.module('Pundit2.Core')
     // return promise, resolved as true when user is logged in
     myPundit.openLoginPopUp = function(){
 
+        //TODO verificare che la loginPromise è definita. Se non è definita return error
         // login status is waiting for login
         loginStatus = "waitingForLogIn";
         

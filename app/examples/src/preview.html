@@ -24,13 +24,7 @@
     };
 
     $scope.isStickyItem = function(item) {
-        var stickyItem = Preview.getItemDashboardSticky();
-        if( typeof(stickyItem) === 'undefined' || typeof(item) === 'undefined'){
-            return false;
-        } else {
-            return stickyItem.uri === item.uri;
-        }
-
+        return Preview.isStickyItem(item);
     };
 
     }

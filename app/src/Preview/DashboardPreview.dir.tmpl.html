@@ -11,7 +11,7 @@
 
             <!-- show welcome header when preview is empty -->
             <div class="panel-heading pnd-dashboard-preview-panel-heading" ng-if="isItemEmpty()">
-                Welcome in Pundit 2
+                <span>{{getWelcomeHeaderMessage()}}</span>
             </div>
 
             <!-- panel body -->
@@ -40,7 +40,7 @@
 
                 <!-- show welcome content when preview is empty -->
                 <div class="pnd-dashboard-preview-welcome" ng-if="isItemEmpty()">
-                    <span>Enjoy it!</span>
+                    <span>{{getWelcomeBodyMessage()}}</span>
                 </div>
 
             </div> <!-- end pnd-dashboard-preview-panel-body -->

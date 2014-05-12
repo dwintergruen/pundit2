@@ -31,11 +31,11 @@ describe('Preview service', function() {
 	}));
 
 	it("should get an empty Item Dashboard Preview as default", function() {
-		expect(Preview.getItemDashboardPreview()).toBe("");
+		expect(Preview.getItemDashboardPreview()).toBeNull();
 	});
 
 	it("should get an empty Sticky Item as default", function() {
-		expect(Preview.getItemDashboardSticky()).toBe("");
+		expect(Preview.getItemDashboardSticky()).toBeNull();
 	});
 
 	it("should set an item to preview", function() {
@@ -72,7 +72,7 @@ describe('Preview service', function() {
 
 		// at this time, item should be not empty
 		var item = Preview.getItemDashboardSticky();
-		expect(item).toNotBe("");
+		expect(item).not.toBeNull();
 		expect(item.uri).toBe(itemSticky.uri);
 
 		// clear the sticky item
@@ -81,16 +81,14 @@ describe('Preview service', function() {
 
 		// at this time, item should be empty
 		item = Preview.getItemDashboardSticky();
-		expect(item).toBe("");
-		expect(item.uri).toBeUndefined(true);
+		expect(item).toBeNull();
 	});
 
 	it("should show the sticky item if no item is in preview", function() {
 
 		// at the beginning, no item is shown in preview
 		var item = Preview.getItemDashboardPreview();
-		expect(item).toBe("");
-		expect(item.uri).toBeUndefined(true);
+		expect(item).toBeNull();
 
 		// set an item as sticky
 		Preview.setItemDashboardSticky(itemSticky);
