@@ -63,8 +63,10 @@ angular.module('Pundit2.Communication')
             if (ann.id in annListById) {
                 annotationExchange.log('Not adding annotation '+ann.id+': already present.');
             } else {
-                annListById[ann.id] = ann;
-                annList.push(ann);
+                ann._q.promise.then(function(a) {
+                    annListById[ann.id] = a;
+                    annList.push(a);
+                });
             }
         };
 
