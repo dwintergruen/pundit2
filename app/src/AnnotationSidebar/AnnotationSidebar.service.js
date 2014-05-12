@@ -3,11 +3,11 @@
 angular.module('Pundit2.AnnotationSidebar')
 .constant('ANNOTATIONSIDEBARDEFAULTS', {
     isAnnotationSidebarExpanded: false,
-    bodyClass: "pnd-annotation-sidebar-active",
-    bodyExpandedClass: "pnd-annotation-sidebar-expanded",
-    bodyCollapsedClass: "pnd-annotation-sidebar-collapsed",
-    sidebarExpandedClass: "pnd-annotation-sidebar-expanded",
-    sidebarCollapsedClass: "pnd-annotation-sidebar-collapsed",
+    bodyClass: 'pnd-annotation-sidebar-active',
+    bodyExpandedClass: 'pnd-annotation-sidebar-expanded',
+    bodyCollapsedClass: 'pnd-annotation-sidebar-collapsed',
+    sidebarExpandedClass: 'pnd-annotation-sidebar-expanded',
+    sidebarCollapsedClass: 'pnd-annotation-sidebar-collapsed',
     debug: false
 })
 .service('AnnotationSidebar', function(BaseComponent, ANNOTATIONSIDEBARDEFAULTS) {
@@ -24,12 +24,6 @@ angular.module('Pundit2.AnnotationSidebar')
     annotationSidebar.isAnnotationSidebarExpanded = function(){
         return state.isExpanded;
     };
-
-    // TODO: a che/chi serve getWidth?
-    annotationSidebar.getWidth = function(){
-        return state.sidebarWidth;
-    };
-    
 
     annotationSidebar.log('Component running');
     return annotationSidebar;

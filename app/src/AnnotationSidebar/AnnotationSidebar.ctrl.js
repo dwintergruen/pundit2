@@ -2,12 +2,19 @@
 
 angular.module('Pundit2.AnnotationSidebar')
 .controller('AnnotationSidebarCtrl', function($scope, AnnotationSidebar) {
+    var bodyClasses = AnnotationSidebar.options.bodyExpandedClass + ' ' + AnnotationSidebar.options.bodyCollapsedClass;
+    var sidebarClasses = AnnotationSidebar.options.sidebarExpandedClass + ' ' + AnnotationSidebar.options.sidebarCollapsedClass;
+
     var body = angular.element('body');
     var container = angular.element('.pnd-annotation-sidebar-container');
 
     // Start reading the default
     if (AnnotationSidebar.options.isAnnotationSidebarExpanded) {
-
+        body.addClass(AnnotationSidebar.options.bodyExpandedClass);
+        container.addClass(AnnotationSidebar.options.sidebarExpandedClass);
+    } else {
+        body.addClass(AnnotationSidebar.options.bodyCollapsedClass);
+        container.addClass(AnnotationSidebar.options.sidebarCollapsedClass);
     }
 
     $scope.$watch(function() {
@@ -16,34 +23,9 @@ angular.module('Pundit2.AnnotationSidebar')
         $scope.isAnnotationSidebarExpanded = currentState;
 
         if (currentState !== oldState) {
-            console.log('valori diversi');
-        } else {
-            console.log('stesso valore', currentState);
+            body.toggleClass(bodyClasses);
+            container.toggleClass(sidebarClasses);
         }
-
-        var bodyClasses = AnnotationSidebar.options.bodyExpandedClass + " " + AnnotationSidebar.options.bodyCollapsedClass;
-        container.toggleClass(bodyClasses);
-        body.toggleClass(bodyClasses);
-
-        /*
-        if (currentState) {
-
-            // TODO: perche' 2 classi?
-            // TODO: toggleClass() ? 
-            // --- non mi sembrava adeguato per questo caso, parliamone
-            container.removeClass( 'pnd-annotation-sidebar-collapsed' );
-            body.removeClass( 'pnd-annotation-sidebar-collapsed' );
-
-            container.addClass( 'pnd-annotation-sidebar-expanded' );
-            body.addClass( 'pnd-annotation-sidebar-expanded' );
-        } else {
-            container.removeClass( 'pnd-annotation-sidebar-expanded' );
-            body.removeClass( 'pnd-annotation-sidebar-exp-active' );
-
-            container.addClass( 'pnd-annotation-sidebar-collapsed' ); 
-            body.addClass( 'pnd-annotation-sidebar-coll-active' );
-        }
-        */
     });
 
     AnnotationSidebar.log('Controller Run');

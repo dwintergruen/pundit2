@@ -1,5 +1,3 @@
-/*jshint strict: false*/
-
 angular.module('Pundit2.Core')
 .constant('ANALYTICSDEFAULTS', {
     trackingCode: 'UA-50437894-1',
