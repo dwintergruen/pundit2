@@ -1,19 +1,16 @@
-// body.pnd-annotation-sidebar-active { TODO: valutare delay
-body {
+body.pnd-annotation-sidebar-coll-active {
     margin-right: @annotation-sidebar-coll-width;
     background-position-x: -@annotation-sidebar-coll-width;
 }
-
-// TODO: quali 3 proprieta' transisci in 1s? .. parliamone :D
-body.pnd-annotation-sidebar-active, .pnd-as-transition {
-    -webkit-transition-duration: 1s, 1s, 1s;
-    -moz-transition-duration: 1s, 1s, 1s;
-    -o-transition-duration: 1s, 1s, 1s;
-    transition-duration: 1s, 1s, 1s;
-}
-
-.pnd-body-with-sidebar-expanded {
+body.pnd-annotation-sidebar-exp-active {
     margin-right: @annotation-sidebar-exp-width;
+    background-position-x: -@annotation-sidebar-exp-width;
+}
+body.pnd-annotation-sidebar-exp-active, body.pnd-annotation-sidebar-coll-active, .pnd-as-transition {
+    -webkit-transition-duration: 1s;
+    -moz-transition-duration: 1s;
+    -o-transition-duration: 1s;
+    transition-duration: 1s;
 }
 
 .pnd-annotation-sidebar-container {
@@ -33,7 +30,6 @@ body.pnd-annotation-sidebar-active, .pnd-as-transition {
     border-left: 1px solid #000;
     opacity: 0.75;  
 }
-
 .pnd-annotation-sidebar-collapsed {
     width: @annotation-sidebar-coll-width;
 }

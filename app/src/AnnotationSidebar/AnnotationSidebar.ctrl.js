@@ -10,18 +10,22 @@ angular.module('Pundit2.AnnotationSidebar')
     }, function(currentState) {
         $scope.isAnnotationSidebarExpanded = currentState;
 
-        // TODO: Qui o nel service?  --- Qui IMHO e' ok
         if (currentState) {
 
             // TODO: perche' 2 classi?
-            // TODO: toggleClass() ?
-            body.addClass( 'pnd-body-with-sidebar-expanded' );
+            // TODO: toggleClass() ? 
+            // --- non mi sembrava adeguato per questo caso, parliamone
             container.removeClass( 'pnd-annotation-sidebar-collapsed' );
+            body.removeClass( 'pnd-annotation-sidebar-coll-active' );
+
             container.addClass( 'pnd-annotation-sidebar-expanded' );
+            body.addClass( 'pnd-annotation-sidebar-exp-active' );
         } else {
-            body.removeClass( 'pnd-body-with-sidebar-expanded' );
             container.removeClass( 'pnd-annotation-sidebar-expanded' );
+            body.removeClass( 'pnd-annotation-sidebar-exp-active' );
+
             container.addClass( 'pnd-annotation-sidebar-collapsed' ); 
+            body.addClass( 'pnd-annotation-sidebar-coll-active' );
         }
     });
 
