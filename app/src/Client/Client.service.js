@@ -53,6 +53,10 @@ angular.module('Pundit2.Client')
                 root.append("<toolbar></toolbar>");
             }
 
+            if (Config.isModuleActive('AnnotationSidebar')) {
+                root.append("<annotation-sidebar></annotation-sidebar>");
+            }
+
             // TODO: some if, some option?
             var uris = AnnotatorsOrchestrator.getAvailableTargets();
             client.log('Available targets', uris);

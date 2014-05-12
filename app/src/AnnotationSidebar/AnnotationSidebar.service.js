@@ -10,12 +10,13 @@ angular.module('Pundit2.AnnotationSidebar')
     sidebarCollapsedClass: 'pnd-annotation-sidebar-collapsed',
     debug: false
 })
-.service('AnnotationSidebar', function(BaseComponent, ANNOTATIONSIDEBARDEFAULTS) {
+.service('AnnotationSidebar', function($rootScope, $timeout, BaseComponent, AnnotationsExchange, ANNOTATIONSIDEBARDEFAULTS) {
     
     var annotationSidebar = new BaseComponent('AnnotationSidebar', ANNOTATIONSIDEBARDEFAULTS);
 
     var state = {
-        isExpanded: annotationSidebar.options.isAnnotationSidebarExpanded
+        isExpanded: annotationSidebar.options.isAnnotationSidebarExpanded,
+        allAnnotations: []
     };
 
     annotationSidebar.toggle = function(){
@@ -24,6 +25,31 @@ angular.module('Pundit2.AnnotationSidebar')
     annotationSidebar.isAnnotationSidebarExpanded = function(){
         return state.isExpanded;
     };
+
+    // temp test
+    annotationSidebar.qualcosaAnnotations = function(annotations){
+        angular.forEach(annotations, function(value, key){
+            console.log(key + ': ' + value.creatorName);
+        });    
+    };
+
+    var timeoutPromise;
+    $rootScope.$watch(function() {
+        return AnnotationsExchange.getAnnotations();
+    }, function(annotations) {
+        if (timeoutPromise) {
+            $timeout.cancel(timeoutPromise);
+        }
+        timeoutPromise = $timeout(function() {
+            state.allAnnotations = annotations;
+            console.log("--> ",annotations);
+            angular.forEach(annotations, function(value, key){
+                console.log(key + ': ' + value.creatorName);
+            });
+        }, 300);
+    }, true);
+
+
 
     annotationSidebar.log('Component running');
     return annotationSidebar;

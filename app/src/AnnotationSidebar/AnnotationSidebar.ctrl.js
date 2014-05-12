@@ -1,7 +1,7 @@
 /*jshint strict: false*/
 
 angular.module('Pundit2.AnnotationSidebar')
-.controller('AnnotationSidebarCtrl', function($scope, $rootScope, $window, AnnotationSidebar) {
+.controller('AnnotationSidebarCtrl', function($scope, $rootScope, $window, $document, AnnotationSidebar) {
     var bodyClasses = AnnotationSidebar.options.bodyExpandedClass + ' ' + AnnotationSidebar.options.bodyCollapsedClass;
     var sidebarClasses = AnnotationSidebar.options.sidebarExpandedClass + ' ' + AnnotationSidebar.options.sidebarCollapsedClass;
 
@@ -30,23 +30,30 @@ angular.module('Pundit2.AnnotationSidebar')
         }
     });
 
-    var bodyCurrentHeight;
-    var sidebarCurrentHeight;
-    angular.element($window).bind('resize', function() {
-        bodyCurrentHeight = body.innerHeight();
-        sidebarCurrentHeight = container.innerHeight();
-        if ( bodyCurrentHeight !== sidebarCurrentHeight ) {
-            container.css('height', bodyCurrentHeight + 'px');
-        }
+    // var bodyCurrentHeight;
+    // var sidebarCurrentHeight;
+    // angular.element($document).bind('resize', function() {
+    //     bodyCurrentHeight = body.innerHeight();
+    //     sidebarCurrentHeight = container.innerHeight();
+    //     if ( bodyCurrentHeight !== sidebarCurrentHeight ) {
+    //         container.css('height', bodyCurrentHeight + 'px');
+    //     }
+    // });
+
+    $scope.$watch(function() {
+        return body.innerHeight()
+    }, function(prova, vecchio) {
+        container.css('height', prova + 'px');
+        console.log(prova);
     });
     // TODO: deprecato? valutare alternative
-    body.bind('DOMSubtreeModified', function() {
-        bodyCurrentHeight = body.innerHeight();
-        sidebarCurrentHeight = container.innerHeight();
-        if ( bodyCurrentHeight !== sidebarCurrentHeight ) {
-            container.css('height', bodyCurrentHeight + 'px');
-        }
-    });
+    // body.bind('DOMSubtreeModified', function() {
+    //     bodyCurrentHeight = body.innerHeight();
+    //     sidebarCurrentHeight = container.innerHeight();
+    //     if ( bodyCurrentHeight !== sidebarCurrentHeight ) {
+    //         container.css('height', bodyCurrentHeight + 'px');
+    //     }
+    // });
 
     AnnotationSidebar.log('Controller Run');
 });
