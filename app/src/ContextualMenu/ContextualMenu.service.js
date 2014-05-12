@@ -9,8 +9,7 @@ angular.module('Pundit2.ContextualMenu')
 
     var contextualMenu = new BaseComponent('ContextualMenu', CONTEXTUALMENUDEFAULTS);
 
-    // TODO: che vuol dire sto commento? default is action, ma de che?
-    // all elements that menu can display (default is action) (el.submenu | bool) (el.divider | bool)
+    // all elements that menu can display
     var menuElements = [];
     // actual menu anchor position
     var lastX, lastY;
@@ -119,13 +118,13 @@ angular.module('Pundit2.ContextualMenu')
 
         // TODO: ti garba .some eh?! Ma almeno elimina i parametri che non usi, jshint FTW
         // filter by type
-        var filterAction = menuElements.filter(function(menuElement, menuIndex, menuArray){
+        var filterAction = menuElements.filter(function(menuElement){
 
             // foreach passed type
-            return type.some(function(typeElement, typeIndex, typeArray){
+            return type.some(function(typeElement){
 
                 // foreach element type
-                return menuElement.type.some(function(menuElementType, menuElementIndex, menuElementArray){
+                return menuElement.type.some(function(menuElementType){
 
                     return angular.equals(typeElement, menuElementType);
 
@@ -142,39 +141,38 @@ angular.module('Pundit2.ContextualMenu')
 
         for ( var i in filterAction ) {
             
-            // TODO: fai viceversa, !showIf() continue, IMHO e' piu' chiaro ed in fondo
-            // non ti ritrovi una foresta di } } } } } } } } } } }
             // display only if showIf return true            
-            if ( filterAction[i].showIf(resource) ) {
-
-                // submenu content
-                if ( filterAction[i].submenu ) {
-                    content.push({
-                        text: filterAction[i].label,
-                        submenu: true,
-                        hover: filterAction[i].hover,
-                        leave: filterAction[i].leave
-                    });
-
-                } else if ( filterAction[i].divider ){
-                    content.push({
-                        divider: true
-                    });
-
-                } else {
-                    // standard content
-                    content.push({
-                        text: filterAction[i].label,
-                        // TODO need to close resource?
-                        click: function(i, res){
-                            return function(){
-                                filterAction[i].action(res);                                
-                            }
-                        }(i, resource)
-                    });
-                }
-
+            if ( !filterAction[i].showIf(resource) ) {
+                return;
             }
+
+            // submenu content
+            if ( filterAction[i].submenu ) {
+                content.push({
+                    text: filterAction[i].label,
+                    submenu: true,
+                    hover: filterAction[i].hover,
+                    leave: filterAction[i].leave
+                });
+
+            } else if ( filterAction[i].divider ){
+                content.push({
+                    divider: true
+                });
+
+            } else {
+                // standard content
+                content.push({
+                    text: filterAction[i].label,
+                    // TODO need to close resource?
+                    click: function(i, res){
+                        return function(){
+                            filterAction[i].action(res);                                
+                        }
+                    }(i, resource)
+                });
+            }
+            
         }
 
         contextualMenu.log('buildContent built '+content.length+' elements for type='+type);
@@ -280,8 +278,7 @@ angular.module('Pundit2.ContextualMenu')
     // add passed action (use name as key to avoid duplicates)
     contextualMenu.addAction = function(actionObj){
 
-        var found = menuElements.some(function(el, index, array){
-            // TODO index, array ? ... jshint lo guardi mai? :P
+        var found = menuElements.some(function(el){
             // TODO: equals? non sono stringhe?
             return angular.equals(actionObj.name, el.name);
         });
