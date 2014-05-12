@@ -1,6 +1,9 @@
 describe('Toolbar service', function() {
     
-    var Toolbar, MyPundit;
+    var Toolbar,
+        MyPundit,
+        $rootScope,
+        $compile;
     
     var messageError1 = "Error 1";
     var messageError2 = "Error 2";
@@ -8,13 +11,24 @@ describe('Toolbar service', function() {
     var myCallback2 = function(){};
 
     beforeEach(module('Pundit2'));
-    
-    beforeEach(function() {
-        inject(function($injector) {
-            Toolbar = $injector.get('Toolbar');
-            MyPundit = $injector.get('MyPundit');
-        });
-    });
+
+    beforeEach(module(
+        'src/Toolbar/Toolbar.dir.tmpl.html',
+        'src/Toolbar/dropdown.tmpl.html'
+    ));
+
+    beforeEach(inject(function($injector, _$rootScope_, _$compile_){
+        Toolbar = $injector.get('Toolbar');
+        MyPundit = $injector.get('MyPundit');
+        $rootScope = _$rootScope_;
+        $compile = _$compile_;
+    }));
+
+    var compileDirective = function(){
+        var elem = $compile('<toolbar></toolbar>')($rootScope);
+        $rootScope.$digest();
+        return elem;
+    };
 
     // as default, getUserLogged() must return false
     it("should be isUserLogged = false as default", function() {
@@ -34,7 +48,7 @@ describe('Toolbar service', function() {
         //at beginning error array must be empty
         expect(Toolbar.getErrorMessageDropdown().length).toBe(0);
         
-        //add 2 errors -- TODO: WHAT?
+        //add 2 errors
         Toolbar.addError(messageError1, myCallback1);
         Toolbar.addError(messageError2, myCallback2);
         
@@ -50,7 +64,7 @@ describe('Toolbar service', function() {
     });
     
     it("should remove an error", function() {
-        
+
         //add 2 errors
         var errorId1 = Toolbar.addError(messageError1, myCallback1);
         Toolbar.addError(messageError2, myCallback2);
@@ -60,7 +74,7 @@ describe('Toolbar service', function() {
         
         // remove first error
         Toolbar.removeError(errorId1);
-        
+
         // errors array should contain only 1 element
         var errors = Toolbar.getErrorMessageDropdown();
         expect(errors.length).toBe(1);
@@ -104,6 +118,36 @@ describe('Toolbar service', function() {
         // at this time getErrorShown() should return false
         expect(Toolbar.getErrorShown()).toBe(false);
         
+    });
+
+    it("should execute callback when click on error", function() {
+
+        var callbackIsExecuted = false;
+
+        var callback = function() {
+            callbackIsExecuted = true;
+        };
+
+        //add error
+        Toolbar.addError(messageError1, callback);
+
+        // at this time callback is not executed yet
+        expect(callbackIsExecuted).toBe(false);
+
+        var elem = compileDirective();
+
+        // click error button to show errors
+        var button = angular.element(elem).find('.pnd-toolbar-error-button a');
+        angular.element(button).trigger('click');
+        $rootScope.$digest();
+
+        // click on error
+        var errorList = angular.element(elem).find('.pnd-toolbar-error-button ul.dropdown-menu li a');
+        angular.element(errorList[0]).trigger('click');
+        $rootScope.$digest();
+
+        // at this time callback should be executed
+        expect(callbackIsExecuted).toBe(true);
     });
 
 });

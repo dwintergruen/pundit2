@@ -15,10 +15,6 @@ angular.module('Pundit2.Toolbar')
         isErrorShown = false,
         errorMessageDropdown = [];
 
-    toolbar.setErrorShown = function(status) {
-        isErrorShown = status;
-    };
-    
     toolbar.getErrorShown = function() {
         return isErrorShown;
     };
@@ -41,7 +37,7 @@ angular.module('Pundit2.Toolbar')
         errorID++;
         errorMessageDropdown.push(error);
         isErrorShown = true;
-        
+
         // trigger toolbar error dropdown
         if (angular.element('.pnd-toolbar-error-button ul').length === 0) {
             var button = angular.element('.pnd-toolbar-error-button a');
