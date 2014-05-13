@@ -1,6 +1,15 @@
 describe('MyPundit service', function() {
     
-    var MyPundit, $rootScope, $httpBackend, NameSpace, $timeout, $q, $modal, $document;
+    var MyPundit,
+        $rootScope,
+        $httpBackend,
+        NameSpace,
+        $timeout,
+        $q,
+        $modal,
+        $document,
+        MYPUNDITDEFAULTS,
+        $httpBackend2;
     
     var userNotLogged = {
         loginStatus: 0,
@@ -25,7 +34,7 @@ describe('MyPundit service', function() {
     
     beforeEach(module('Pundit2'));
 
-    beforeEach(inject(function($injector, _$rootScope_, _$httpBackend_, _$timeout_, _$q_, _$modal_, _$document_){
+    beforeEach(inject(function($injector, _$rootScope_, _$httpBackend_, _$timeout_, _$q_, _$modal_, _$document_, _MYPUNDITDEFAULTS_){
         MyPundit = $injector.get('MyPundit');
         NameSpace = $injector.get('NameSpace');
         $rootScope = _$rootScope_;
@@ -34,6 +43,8 @@ describe('MyPundit service', function() {
         $q = _$q_;
         $modal = _$modal_;
         $document = _$document_;
+        MYPUNDITDEFAULTS = _MYPUNDITDEFAULTS_;
+        $httpBackend2 = _$httpBackend_;
     }));
 
     beforeEach(function() {
@@ -366,18 +377,14 @@ describe('MyPundit service', function() {
 	});
 
     //TODO: FINIRE IL TEST
-    it("should start login polling timer ", function() {
+    iit("should start login polling timer ", function() {
 
-        var promiseValue;
-
-
-        $rootScope.$digest();
         $httpBackend.whenGET(NameSpace.get('asUsersCurrent')).respond(userNotLogged);
-
-        var promise = MyPundit.login();
-
+        MyPundit.login();
         $rootScope.$digest();
         $httpBackend.flush();
+        $httpBackend.resetExpectations();
+
 
         // login status should be loggedOff
         expect(MyPundit.getLoginStatus()).toBe("loggedOff");
@@ -390,8 +397,24 @@ describe('MyPundit service', function() {
         var openPopUpButton = angular.element('.pnd-login-modal-openPopUp');
         openPopUpButton.trigger('click');
         $rootScope.$digest();
+        expect(MyPundit.getLoginStatus()).toBe("waitingForLogIn");
+
+        //start polling
+
+        $httpBackend.whenGET(NameSpace.get('asUsersCurrent')).respond(userNotLogged);
+        expect(function() {$timeout.verifyNoPendingTasks();}).toThrow();
+        $timeout.flush(MYPUNDITDEFAULTS.loginPollTimerMS);
+        $httpBackend.flush();
+        $httpBackend.resetExpectations();
 
         expect(MyPundit.getLoginStatus()).toBe("waitingForLogIn");
+        $httpBackend.whenGET(NameSpace.get('asUsersCurrent')).respond(userLoggedIn);
+        $timeout.flush(MYPUNDITDEFAULTS.loginPollTimerMS);
+        $httpBackend.flush();
+        $rootScope.$digest();
+        console.log(MyPundit.getLoginStatus());
+
+        //expect(function() {$timeout.verifyNoPendingTasks();}).not.toThrow();
 
     });
 

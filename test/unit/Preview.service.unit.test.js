@@ -243,5 +243,17 @@ describe('Preview service', function() {
         expect(Preview.isStickyItem()).toBe(true);
     });
 
+    it('should show empty preview if hideDashboardPreview is executed and no sticky item is set', function() {
+        // set item2 as sticky
+        Preview.showDashboardPreview(item2);
+
+        expect(Preview.getItemDashboardPreview()).not.toBe(null);
+        // show a preview of item1
+        Preview.hideDashboardPreview(item1);
+        expect(Preview.getItemDashboardPreview()).toBe(null);
+
+
+    });
+
 
 });
