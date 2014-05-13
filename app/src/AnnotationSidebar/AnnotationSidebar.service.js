@@ -8,6 +8,11 @@ angular.module('Pundit2.AnnotationSidebar')
     bodyCollapsedClass: 'pnd-annotation-sidebar-collapsed',
     sidebarExpandedClass: 'pnd-annotation-sidebar-expanded',
     sidebarCollapsedClass: 'pnd-annotation-sidebar-collapsed',
+
+    // The Client will append the content of this template to the DOM to bootstrap
+    // this component
+    clientDomTemplate: "src/AnnotationSidebar/ClientAnnotationSidebar.tmpl.html",
+
     debug: false
 })
 .service('AnnotationSidebar', function($rootScope, $timeout, BaseComponent, AnnotationsExchange, ANNOTATIONSIDEBARDEFAULTS) {

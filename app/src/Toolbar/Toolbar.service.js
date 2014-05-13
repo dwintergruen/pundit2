@@ -5,7 +5,13 @@ angular.module('Pundit2.Toolbar')
 
     // Class added to the body element as soon as the directive is rendered. It will
     // push down body with some css magic
-    bodyClass: "pnd-toolbar-active"
+    bodyClass: "pnd-toolbar-active",
+
+    // The Client will append the content of this template to the DOM to bootstrap
+    // this component
+    clientDomTemplate: "src/Toolbar/ClientToolbar.tmpl.html",
+
+    debug: false
 })
 .service('Toolbar', function(BaseComponent, TOOLBARDEFAULTS, MyPundit) {
 

@@ -7,11 +7,21 @@ angular.module('Pundit2.Core')
     useBasicRelations: true,
     modules: {
 
+        // Modules which requires to be bootstrapped (add stuff to Pundit2's root node or
+        // to some Dashboard panel) by the client are listed as .bootModules inside the
+        // modules.Client conf object. See CLIENTDEFAULTS
+        Client: {
+            active: true
+        },
+
         // Modules active by default are activated here with active=true
         Dashboard: {
             active: true
         },
         Toolbar: {
+            active: true
+        },
+        AnnotationSidebar: {
             active: true
         },
 

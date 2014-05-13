@@ -10,11 +10,16 @@ angular.module('Pundit2.Client')
             Client.boot();
         }
     })
+    .constant('CLIENTDEFAULTS', {
+        debug: false,
+        bootModules: ['Toolbar', 'Dashboard', 'AnnotationSidebar']
+    })
     .service('Client', function(BaseComponent, Config, MyPundit, AnnotatorsOrchestrator,
                                 TextFragmentAnnotator, AnnotationsExchange, Consolidation,
-                                ItemsExchange, Annotation, $q) {
+                                ItemsExchange, Annotation, CLIENTDEFAULTS,
+                                $injector, $templateCache) {
 
-        var client = new BaseComponent('Client'),
+        var client = new BaseComponent('Client', CLIENTDEFAULTS),
             // Node which will contain every other component
             root;
 
@@ -29,7 +34,7 @@ angular.module('Pundit2.Client')
         };
 
         // Reads the conf and initializes the active components, bootstrap what needs to be
-        // boostrapped (gets annotations, check if the user is logged in, etc)
+        // bootstrapped (gets annotations, check if the user is logged in, etc)
         client.boot = function() {
 
             client.fixRootNode();
@@ -40,22 +45,44 @@ angular.module('Pundit2.Client')
                 // TODO: check if we're logged in and set something up?
             });
 
-            // TODO: how to short down this? [].forEach? From conf?
-            // From BaseComponent registered names?? Modules can subscribe themselves
-            // an init function? Or just need to know IF and markup?
+            // Read the list of components which needs to be bootstrapped.. and bootstrap
+            // them as specified in their .options.
+            // .clientDomTemplate: path to a template which will get appended to Pundit2 root node
+            //                     (eg: Dashboard, Toolbar .. )
+            // .clientDashboardTemplate: path to a template which will get appended to a
+            //                           dashboard panel, specified in clientDashboardPanel
+            //                           (eg: Preview, MyItems, ...)
+            // .clientDashboardPanel: name of the panel the template will get appended to. See
+            //                        Dashboard configuration for the list of legal panel names
+            for (var l=client.options.bootModules.length; l--;) {
+                var name = client.options.bootModules[l];
 
-            if (Config.isModuleActive('Dashboard')) {
-                root.append("<dashboard></dashboard>");
-                // TODO: more dashboard init? panels
-            }
+                // If the module is not active, we do NOT bootstrap it
+                if (!Config.isModuleActive(name)) {
+                    client.log("Not bootstrapping "+name+": not active.");
+                    continue;
+                }
 
-            if (Config.isModuleActive('Toolbar')) {
-                root.append("<toolbar></toolbar>");
-            }
+                var mod = $injector.get(name);
+                if ("clientDomTemplate" in mod.options) {
+                    var tmpl = $templateCache.get(mod.options.clientDomTemplate);
 
-            if (Config.isModuleActive('AnnotationSidebar')) {
-                root.append("<annotation-sidebar></annotation-sidebar>");
-            }
+                    if (typeof(tmpl) === "undefined") {
+                        client.err('Can not bootstrap module '+mod.name+', template not found: '+mod.options.clientDomTemplate);
+                    } else {
+
+                        // DEBUG: Not compiling the templates, or stuff gets initialized twice
+                        root.append(tmpl);
+                        client.log('Appending to DOM ' + mod.name, tmpl);
+                    }
+
+                } else if (mod.options.clientDashboardTemplate) {
+                    client.log('Adding to Dashboard '+ mod.name);
+                } else {
+                    client.log('Not adding anywhere '+ mod.name);
+                }
+            } // for l=client.options.bootModules.length
+
 
             // TODO: some if, some option?
             var uris = AnnotatorsOrchestrator.getAvailableTargets();
@@ -99,19 +126,16 @@ angular.module('Pundit2.Client')
             //       update items (automatic?)
 
             // TODO:
-            // * annotation sidebar
             // * previewer
             // * Lists (My, page?, vocabs?, selectors?)
             // * TextFragmentHandler (TextAnnotator?)
             // * Selectors
             // * MyItems
             // ? Annotators
-            // ? cmenu?
             // LATERS: image annotator handler, named content handler, page handler
             //         entity editor helper
             //         Notebook Manager
             //         Tool: comment tag, triple composer
-            //
 
         };
 

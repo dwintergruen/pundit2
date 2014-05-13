@@ -26,6 +26,10 @@ angular.module('Pundit2.Dashboard')
     // footer height
     footerHeight: 20,
 
+    // The Client will append the content of this template to the DOM to bootstrap
+    // this component
+    clientDomTemplate: "src/Dashboard/ClientDashboard.tmpl.html",
+
     debug: false
 })
 .service('Dashboard', function(BaseComponent, DASHBOARDDEFAULTS, $window, $rootScope) {
