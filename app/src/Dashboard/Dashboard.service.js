@@ -370,6 +370,17 @@ angular.module('Pundit2.Dashboard')
 
     };
 
+    // add new panel content inside specified panel
+    // panelTitle can be lists, tools or details
+    dashboard.addContent = function(panelTitle, tabName, tabContent) {
+        for (var i in panels) {
+            if ( panels[i].title === panelTitle ) {
+                panels[i].addContent(tabName, tabContent);
+                return;
+            }
+        }
+    };
+
     dashboard.log('Service run');
     
     return dashboard;

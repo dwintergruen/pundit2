@@ -49,6 +49,13 @@ angular.module('Pundit2.Dashboard')
         }
     };
 
+    $scope.addContent = function(tabName, tabContent){
+        $scope.tabs.push({
+            title: tabName,
+            content: tabContent
+        });
+    };
+
     var lastPageX;
     var moveHandler = function(evt) {
         var resized,
