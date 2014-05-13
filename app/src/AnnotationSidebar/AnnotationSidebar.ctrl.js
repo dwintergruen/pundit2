@@ -1,12 +1,19 @@
 /*jshint strict: false*/
 
 angular.module('Pundit2.AnnotationSidebar')
-.controller('AnnotationSidebarCtrl', function($scope, $rootScope, $window, $document, AnnotationSidebar) {
+.controller('AnnotationSidebarCtrl', function($scope, $rootScope, $window, AnnotationSidebar, Dashboard) {
     var bodyClasses = AnnotationSidebar.options.bodyExpandedClass + ' ' + AnnotationSidebar.options.bodyCollapsedClass;
     var sidebarClasses = AnnotationSidebar.options.sidebarExpandedClass + ' ' + AnnotationSidebar.options.sidebarCollapsedClass;
 
     var body = angular.element('body');
     var container = angular.element('.pnd-annotation-sidebar-container');
+
+    // TODO: prelevare la dimensione reale
+    // TODO: sarebbe meglio avere un metodo direttamente di toolbar?
+
+    // var toolbarHeight = angular.element('toolbar nav').css('height');
+    var toolbarHeight = 30;
+    var newMarginTopSidebar;
 
     container.css('height', body.innerHeight() + 'px');
 
@@ -19,6 +26,7 @@ angular.module('Pundit2.AnnotationSidebar')
         container.addClass(AnnotationSidebar.options.sidebarCollapsedClass);
     }
 
+    // Watch annotation sidebar expanded or collapsed
     $scope.$watch(function() {
         return AnnotationSidebar.isAnnotationSidebarExpanded();
     }, function(currentState, oldState) {
@@ -30,30 +38,31 @@ angular.module('Pundit2.AnnotationSidebar')
         }
     });
 
-    // var bodyCurrentHeight;
-    // var sidebarCurrentHeight;
-    // angular.element($document).bind('resize', function() {
-    //     bodyCurrentHeight = body.innerHeight();
-    //     sidebarCurrentHeight = container.innerHeight();
-    //     if ( bodyCurrentHeight !== sidebarCurrentHeight ) {
-    //         container.css('height', bodyCurrentHeight + 'px');
-    //     }
-    // });
-
+    // Wacth dashobard height for top of sidebar
     $scope.$watch(function() {
-        return body.innerHeight()
-    }, function(prova, vecchio) {
-        container.css('height', prova + 'px');
-        console.log(prova);
-    });
-    // TODO: deprecato? valutare alternative
-    // body.bind('DOMSubtreeModified', function() {
-    //     bodyCurrentHeight = body.innerHeight();
-    //     sidebarCurrentHeight = container.innerHeight();
-    //     if ( bodyCurrentHeight !== sidebarCurrentHeight ) {
-    //         container.css('height', bodyCurrentHeight + 'px');
-    //     }
-    // });
+        return {
+            dashboardHeight: Dashboard.getContainerHeight(),
+            dashboardVisibility: Dashboard.isDashboardVisible()   
+        };
+    }, function(dashboardValue) {
+        if (dashboardValue.dashboardVisibility){
+            newMarginTopSidebar = toolbarHeight + dashboardValue.dashboardHeight;
+            container.css('top', newMarginTopSidebar + 'px');
+        } else {
+            container.css('top', toolbarHeight + 'px');
+        }
+    }, true);
 
+    // Watch height of body for height of sidebar
+    var sidebarCurrentHeight;
+    $scope.$watch(function() {
+        return body.innerHeight();
+    }, function(bodyHeight) {
+        sidebarCurrentHeight = container.innerHeight();
+        if ( bodyHeight !== sidebarCurrentHeight ) {
+            container.css('height', bodyHeight + 'px');
+        }
+    });
+  
     AnnotationSidebar.log('Controller Run');
 });

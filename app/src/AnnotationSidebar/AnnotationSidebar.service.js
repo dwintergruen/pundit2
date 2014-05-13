@@ -3,6 +3,7 @@
 angular.module('Pundit2.AnnotationSidebar')
 .constant('ANNOTATIONSIDEBARDEFAULTS', {
     isAnnotationSidebarExpanded: false,
+    annotationsRefresh: 300, //ms 
     bodyClass: 'pnd-annotation-sidebar-active',
     bodyExpandedClass: 'pnd-annotation-sidebar-expanded',
     bodyCollapsedClass: 'pnd-annotation-sidebar-collapsed',
@@ -38,22 +39,21 @@ angular.module('Pundit2.AnnotationSidebar')
         });    
     };
 
-    var timeoutPromise;
-    $rootScope.$watch(function() {
-        return AnnotationsExchange.getAnnotations();
-    }, function(annotations) {
-        if (timeoutPromise) {
-            $timeout.cancel(timeoutPromise);
-        }
-        timeoutPromise = $timeout(function() {
-            state.allAnnotations = annotations;
-            console.log("--> ",annotations);
-            angular.forEach(annotations, function(value, key){
-                console.log(key + ': ' + value.creatorName);
-            });
-        }, 300);
-    }, true);
-
+    // var timeoutPromise;
+    // $rootScope.$watch(function() {
+    //     return AnnotationsExchange.getAnnotations();
+    // }, function(annotations) {
+    //     if (timeoutPromise) {
+    //         $timeout.cancel(timeoutPromise);
+    //     }
+    //     timeoutPromise = $timeout(function() {
+    //         state.allAnnotations = annotations;
+    //         console.log("--> ",annotations);
+    //         angular.forEach(annotations, function(value, key){
+    //             console.log(key + ': ' + value.creatorName);
+    //         });
+    //     }, annotationSidebar.options.annotationsRefresh);
+    // }, true);
 
 
     annotationSidebar.log('Component running');
