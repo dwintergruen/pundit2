@@ -41,6 +41,13 @@ angular.module('Pundit2.AnnotationSidebar')
         }
     });
 
+    // Watch annotations
+    $scope.$watch(function() {
+        return AnnotationSidebar.getAllAnnotations();
+    }, function(currentAnnotations) {
+        $scope.annotations = currentAnnotations;
+    }, true);
+
     // Wacth dashobard height for top of sidebar
     $scope.$watch(function() {
         return {

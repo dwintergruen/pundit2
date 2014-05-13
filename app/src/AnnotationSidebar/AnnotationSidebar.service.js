@@ -28,32 +28,25 @@ angular.module('Pundit2.AnnotationSidebar')
     annotationSidebar.toggle = function(){
         state.isExpanded = !state.isExpanded;
     };
-    annotationSidebar.isAnnotationSidebarExpanded = function(){
+    annotationSidebar.isAnnotationSidebarExpanded = function() {
         return state.isExpanded;
     };
 
-    // temp test
-    annotationSidebar.qualcosaAnnotations = function(annotations){
-        angular.forEach(annotations, function(value, key){
-            console.log(key + ': ' + value.creatorName);
-        });    
-    };
+    annotationSidebar.getAllAnnotations = function() {
+        return state.allAnnotations;
+    }
 
-    // var timeoutPromise;
-    // $rootScope.$watch(function() {
-    //     return AnnotationsExchange.getAnnotations();
-    // }, function(annotations) {
-    //     if (timeoutPromise) {
-    //         $timeout.cancel(timeoutPromise);
-    //     }
-    //     timeoutPromise = $timeout(function() {
-    //         state.allAnnotations = annotations;
-    //         console.log("--> ",annotations);
-    //         angular.forEach(annotations, function(value, key){
-    //             console.log(key + ': ' + value.creatorName);
-    //         });
-    //     }, annotationSidebar.options.annotationsRefresh);
-    // }, true);
+    var timeoutPromise;
+    $rootScope.$watch(function() {
+        return AnnotationsExchange.getAnnotations();
+    }, function(annotations) {
+        if (timeoutPromise) {
+            $timeout.cancel(timeoutPromise);
+        }
+        timeoutPromise = $timeout(function() {
+            state.allAnnotations = annotations;
+        }, annotationSidebar.options.annotationsRefresh);
+    }, true);
 
 
     annotationSidebar.log('Component running');

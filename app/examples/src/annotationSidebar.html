@@ -11,7 +11,7 @@
 
     var punditConfig = {
             modules: {
-                "AnnotationSidebar": { debug: true }
+                "AnnotationSidebar": { isAnnotationSidebarExpanded: true, debug: true }
             }
 
         };
@@ -22,11 +22,6 @@
 
         $scope.toogle = function(){
             AnnotationSidebar.toggle();
-        };
-
-        $scope.test = function(){
-            var annotazioni = AnnotationsExchange.getAnnotations();
-            AnnotationSidebar.qualcosaAnnotations(AnnotationsExchange.getAnnotations());
         };
 
         // ---
@@ -46,7 +41,7 @@
             $q.all(annPromises).then(function(ret) {
                 console.log("Retrieved annotations details searching by URIs", ret);
                 Consolidation.consolidate(ItemsExchange.getItems());
-                $scope.annotations = JSON.stringify(ret);
+                $scope.tempannotations = JSON.stringify(ret, null, "  ");
             });
 
         }, function() {
@@ -63,7 +58,6 @@
 
     <div>
         <button type="button" class="btn btn-default" ng-click="toogle()">Annotations</button>
-        <button type="button" class="btn btn-default" ng-click="test()">Test</button>
     </div>
 
     <br />
@@ -84,7 +78,7 @@
 
         </div>
         <div class="col-sm-6">
-            Annotations: {{annotations}}
+            <pre>Annotations: {{tempannotations}}</pre>
         </div>
 
     </div>

@@ -1,6 +1,11 @@
-<div class="pnd-annotation-sidebar-container pnd-annotation-sidebar-collapsed">
+<div class="pnd-annotation-sidebar-container">
     <div class="pnd-annotation-sidebar-content" ng-show="isAnnotationSidebarExpanded">
         <button>Annotations</button>
         <button>Suggestions</button>
+        <br />
+        <p ng-repeat="ann in annotations">
+            <span>Created by: {{ann.creatorName}}</span> <br />
+            <span>On: {{ann.created}}</span> <br />
+        </p>
     </div>
 </div>
