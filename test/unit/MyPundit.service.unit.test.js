@@ -9,6 +9,7 @@ describe('MyPundit service', function() {
         $modal,
         $document,
         MYPUNDITDEFAULTS,
+        $log,
         $httpBackend2;
     
     var userNotLogged = {
@@ -34,7 +35,7 @@ describe('MyPundit service', function() {
     
     beforeEach(module('Pundit2'));
 
-    beforeEach(inject(function($injector, _$rootScope_, _$httpBackend_, _$timeout_, _$q_, _$modal_, _$document_, _MYPUNDITDEFAULTS_){
+    beforeEach(inject(function($injector, _$rootScope_, _$httpBackend_, _$timeout_, _$q_, _$modal_, _$document_, _MYPUNDITDEFAULTS_, _$log_){
         MyPundit = $injector.get('MyPundit');
         NameSpace = $injector.get('NameSpace');
         $rootScope = _$rootScope_;
@@ -44,6 +45,7 @@ describe('MyPundit service', function() {
         $modal = _$modal_;
         $document = _$document_;
         MYPUNDITDEFAULTS = _MYPUNDITDEFAULTS_;
+        $log = _$log_;
         $httpBackend2 = _$httpBackend_;
     }));
 
@@ -377,7 +379,7 @@ describe('MyPundit service', function() {
 	});
 
     //TODO: FINIRE IL TEST
-    iit("should start login polling timer ", function() {
+    it("should start login polling timer ", function() {
 
         $httpBackend.whenGET(NameSpace.get('asUsersCurrent')).respond(userNotLogged);
         MyPundit.login();
@@ -415,6 +417,22 @@ describe('MyPundit service', function() {
         console.log(MyPundit.getLoginStatus());
 
         //expect(function() {$timeout.verifyNoPendingTasks();}).not.toThrow();
+
+    });
+
+    it("should log error if openLoginPopUp is called and loginPromise is not defined ", function() {
+
+        $log.reset();
+
+        // at the beginning no error messages are shown
+        expect($log.error.logs.length).toBe(0);
+
+        // calling openLoginPopUp should log an error message because at this time loginPromise is not defined
+        MyPundit.openLoginPopUp();
+
+        // an error message is shown
+        expect($log.error.logs.length).toBe(1);
+
 
     });
 
