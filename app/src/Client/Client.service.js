@@ -12,12 +12,12 @@ angular.module('Pundit2.Client')
     })
     .constant('CLIENTDEFAULTS', {
         debug: false,
-        bootModules: ['Toolbar', 'Dashboard', 'AnnotationSidebar']
+        bootModules: ['Toolbar', 'Dashboard', 'AnnotationSidebar', 'Preview']
     })
     .service('Client', function(BaseComponent, Config, MyPundit, AnnotatorsOrchestrator,
                                 TextFragmentAnnotator, AnnotationsExchange, Consolidation,
                                 ItemsExchange, Annotation, CLIENTDEFAULTS,
-                                $injector, $templateCache) {
+                                $injector, $templateCache, $rootScope) {
 
         var client = new BaseComponent('Client', CLIENTDEFAULTS),
             // Node which will contain every other component
@@ -54,8 +54,9 @@ angular.module('Pundit2.Client')
             //                           (eg: Preview, MyItems, ...)
             // .clientDashboardPanel: name of the panel the template will get appended to. See
             //                        Dashboard configuration for the list of legal panel names
-            for (var l=client.options.bootModules.length; l--;) {
-                var name = client.options.bootModules[l];
+            // .clientDashboardTabTitle: title of the tab shown inside the panel
+            for (var i= 0, l=client.options.bootModules.length; i<l; i++) {
+                var name = client.options.bootModules[i];
 
                 // If the module is not active, we do NOT bootstrap it
                 if (!Config.isModuleActive(name)) {
@@ -63,24 +64,47 @@ angular.module('Pundit2.Client')
                     continue;
                 }
 
+                // A reference to the module we need to read .options from
                 var mod = $injector.get(name);
+
+                // First case: append to Pundit2's root node
                 if ("clientDomTemplate" in mod.options) {
                     var tmpl = $templateCache.get(mod.options.clientDomTemplate);
 
                     if (typeof(tmpl) === "undefined") {
                         client.err('Can not bootstrap module '+mod.name+', template not found: '+mod.options.clientDomTemplate);
                     } else {
-
                         // DEBUG: Not compiling the templates, or stuff gets initialized twice
                         root.append(tmpl);
                         client.log('Appending to DOM ' + mod.name, tmpl);
                     }
-
-                } else if (mod.options.clientDashboardTemplate) {
-                    client.log('Adding to Dashboard '+ mod.name);
-                } else {
-                    client.log('Not adding anywhere '+ mod.name);
+                    continue;
                 }
+
+                // Second case: add to some Dashboard panel
+                if ("clientDashboardTemplate" in mod.options &&
+                    "clientDashboardPanel" in mod.options &&
+                    "clientDashboardTabTitle" in mod.options &&
+                    Config.isModuleActive("Dashboard")) {
+
+                    var tmpl = $templateCache.get(mod.options.clientDashboardTemplate);
+
+                    if (typeof(tmpl) === "undefined") {
+                        client.err('Can not bootstrap module '+mod.name+', template not found: '+mod.options.clientDashboardTemplate);
+                    } else {
+                        // TODO: FIX MEEE .. dashboard is not ready yet :|
+                        $injector.get("Dashboard")
+                            .addContent(mod.options.clientDashboardPanel,
+                                        mod.options.clientDashboardTabTitle,
+                                        mod.options.clientDashboardTemplate);
+                        client.log('Adding to Dashboard '+ mod.name +' to panel '+mod.options.clientDashboardPanel);
+                    }
+                    continue;
+                }
+
+                // Third case: some option is missing somewhere! Throw an error ..
+                client.err("Did not bootstrap module "+name+": .options parameters missing.");
+
             } // for l=client.options.bootModules.length
 
 

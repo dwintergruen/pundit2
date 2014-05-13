@@ -5,16 +5,20 @@ angular.module('Pundit2.Core')
     debugAllModules: false,
     vocabularies: [],
     useBasicRelations: true,
+
+    // Modules active by default are activated here with active=true
     modules: {
 
         // Modules which requires to be bootstrapped (add stuff to Pundit2's root node or
         // to some Dashboard panel) by the client are listed as .bootModules inside the
         // modules.Client conf object. See CLIENTDEFAULTS
         Client: {
+            // Client by default MUST NOT BE ACTIVE, or components will not be usable
+            // individually: the client will bootstrap itself in its run() and screw
+            // things up .. :|
             active: false
         },
 
-        // Modules active by default are activated here with active=true
         Dashboard: {
             active: true
         },
@@ -22,6 +26,9 @@ angular.module('Pundit2.Core')
             active: true
         },
         AnnotationSidebar: {
+            active: true
+        },
+        Preview: {
             active: true
         },
 

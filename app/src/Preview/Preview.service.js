@@ -1,7 +1,10 @@
 angular.module('Pundit2.Preview')
 .constant('PREVIEWDEFAULTS', {
     welcomeHeaderMessage: "Welcome in Pundit 2",
-    welcomeBodyMessage: "Enjoy it"
+    welcomeBodyMessage: "Enjoy it",
+    clientDashboardTemplate: "src/Preview/ClientDashboardPreview.tmpl.html",
+    clientDashboardPanel: "details",
+    clientDashboardTabTitle: "Preview"
 })
 
 .service('Preview', function(BaseComponent, PREVIEWDEFAULTS, NameSpace) {
