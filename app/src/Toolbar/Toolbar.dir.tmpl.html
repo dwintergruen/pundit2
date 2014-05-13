@@ -20,7 +20,6 @@
                 </li>
                 
                 <!-- User button -->
-
                 <li ng-show="showUserButton()" class="pnd-toolbar-user-button  pnd-toolbar-button-active">
                     <a href="javascript:void(0)" template="{{dropdownTemplate}}" bs-dropdown="userLoggedInDropdown"><span>{{userData.fullName}}</span></a>
                 </li>
@@ -60,7 +59,11 @@
                 </li>
                 
                 <!-- Annotations menu -->
-                <li class="pnd-toolbar-annotations-button"><a href="javascript:void(0)"><span class="pnd-toolbar-active-element">Annotations</span></a></li>
+                <li class="pnd-toolbar-annotations-button">
+                    <a href="javascript:void(0)" ng-click="annotationsClickHandler()">
+                        <span class="pnd-toolbar-active-element">Annotations</span>
+                    </a>
+                </li>
 
             </ul> <!-- pnd-toolbar-navbar-right -->
     
