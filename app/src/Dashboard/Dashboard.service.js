@@ -21,7 +21,7 @@ angular.module('Pundit2.Dashboard')
     detailsMinWidth: 235,
 
     // panel collapsed width
-    panelCollapseWidth: 70,
+    panelCollapsedWidth: 28,
 
     // footer height
     footerHeight: 20,
@@ -134,8 +134,10 @@ angular.module('Pundit2.Dashboard')
 
         if (len > 0) {
             panels[len - 1].isLast = false;
+            panels[len - 1].collapsedWidth = dashboard.options.panelCollapsedWidth;
         }
         panelScope.isLast = true;
+        panelScope.collapsedWidth = dashboard.options.panelCollapsedWidth - 8;
 
         panelScope.index = len;
         panels.push(panelScope);
@@ -178,7 +180,10 @@ angular.module('Pundit2.Dashboard')
             });
 
         // Take out collapsed widths from the available width
-        avail = avail - collapsed.length * dashboard.options.panelCollapseWidth;
+        //avail = avail - collapsed.length * dashboard.options.panelCollapsedWidth;
+        avail = avail - collapsed.reduce(function(total, panel){
+            return total + panel.collapsedWidth;
+        }, 0);
 
         // Cycle over all panels which will be interested in a change
         // of width and get their total sum, to calculate ratios
@@ -210,7 +215,7 @@ angular.module('Pundit2.Dashboard')
             if (i in skip) {
                 panels[i].width = skip[i];
             } else if (panels[i].isCollapsed) {
-                panels[i].width = dashboard.options.panelCollapseWidth;
+                panels[i].width = panels[i].collapsedWidth;
             } else {
                 var newWidth = panels[i].ratio * avail;
                 // check if after dispense delta the panel go under to min-width
