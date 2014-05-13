@@ -1,7 +1,7 @@
 angular.module('Pundit2.ContextualMenu')
 .constant('CONTEXTUALMENUDEFAULTS', {
 
-    position: 'bottom-right',
+    position: 'bottom-left',
 
     debug: true
 })
@@ -22,7 +22,7 @@ angular.module('Pundit2.ContextualMenu')
         lastX: 0, lastY: 0,
         // element bound to $dropdown menu instance
         anchor: null,
-        // menu content (object in angular strap format)
+        // menu content array (object is in angular strap format)
         content: null,
         // mock Menu is showed outside screen to calculate the menu dimensions 
         // and to define the real menu placement to prevent window scrool
@@ -62,7 +62,7 @@ angular.module('Pundit2.ContextualMenu')
     // return the state object
     // used in unit test to verify side effect
     contextualMenu.getState = function(){
-        return angular.copy(state);
+        return state;
     };
 
     // build content (action/divider/submenu) to put inside menu in angular strap object format
@@ -121,7 +121,7 @@ angular.module('Pundit2.ContextualMenu')
     };
 
     // determine the angular strap menu placement (right is left and left is right)
-    var position = function(element, x, y){
+    contextualMenu.position = function(element, x, y){
 
         var width = element.outerWidth(),
             height = element.outerHeight();
@@ -188,7 +188,7 @@ angular.module('Pundit2.ContextualMenu')
     // and can calculate the proper placement for the real menu
     mockOptions.scope.$on('tooltip.show', function(){
         
-        var place = position(angular.element('.pnd-context-menu'), state.lastX, state.lastY);
+        var place = contextualMenu.position(angular.element('.pnd-context-menu'), state.lastX, state.lastY);
 
         // move anchor to correct position
         state.anchor.css({
@@ -235,7 +235,6 @@ angular.module('Pundit2.ContextualMenu')
     };
 
     // add submenu element to menu
-    // TODO: where's the priority?
     contextualMenu.addSubMenu = function(subMenuObj){
 
         var found = state.menuElements.some(function(el, index, array){

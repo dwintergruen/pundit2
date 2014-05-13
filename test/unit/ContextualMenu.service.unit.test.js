@@ -2,7 +2,10 @@ ddescribe('ContextualMenu service', function() {
     
     var ContextualMenu,
         $window,
-        CONTEXTUALMENUDEFAULTS;
+        $rootScope,
+        CONTEXTUALMENUDEFAULTS,
+        state,
+        $log;
 
     beforeEach(module('Pundit2'));
 
@@ -15,11 +18,19 @@ ddescribe('ContextualMenu service', function() {
         angular.element("body").append("<div data-ng-app='Pundit2'></div>");
     });    
 
-    beforeEach(inject(function(_$window_, _CONTEXTUALMENUDEFAULTS_,  _ContextualMenu_){
+    beforeEach(inject(function(_$rootScope_, _$window_, _CONTEXTUALMENUDEFAULTS_,  _ContextualMenu_, _$log_){
+        $rootScope = _$rootScope_;
         $window = _$window_;
+        $log = _$log_;
         ContextualMenu = _ContextualMenu_;
         CONTEXTUALMENUDEFAULTS = _CONTEXTUALMENUDEFAULTS_;
+        // reset state
+        state = ContextualMenu.getState();
+        state.menuElements = [];
+        state.content = null;
     }));
+
+    var clickTest = false;
 
     var typeOneActions = [
         {
@@ -42,8 +53,10 @@ ddescribe('ContextualMenu service', function() {
             showIf: function(resource){
                 return resource === 'pippo-resource';
             },
-            action: function(){
-                
+            action: function(resource){
+                if ( resource === 'pippo-resource' ) {
+                    clickTest = true;
+                }
             }            
         },
         {
@@ -74,7 +87,7 @@ ddescribe('ContextualMenu service', function() {
 
     var typeTwoActions = [
         {
-            name: 'action4',
+            name: 'action5',
             type: ['type2'],
             label: "Action4Label",
             priority: 2,
@@ -99,8 +112,7 @@ ddescribe('ContextualMenu service', function() {
             leave: function(){
 
             }               
-        }
-        
+        }        
     ];
 
     var addActions = function(one, two){
@@ -117,57 +129,119 @@ ddescribe('ContextualMenu service', function() {
     
 
     it('should expose expected API', function(){
-
         expect(ContextualMenu.show).toBeDefined();
         expect(ContextualMenu.hide).toBeDefined();
         expect(ContextualMenu.addAction).toBeDefined();
         expect(ContextualMenu.addSubMenu).toBeDefined();
         expect(ContextualMenu.addDivider).toBeDefined();
-
     });
 
     it('should add Action and not duplicate it', function(){
-
         expect(ContextualMenu.addAction(typeOneActions[0])).toBe(true);
         expect(ContextualMenu.addAction(typeOneActions[0])).toBe(false);
-
+        expect(state.menuElements.length).toBe(1);
     });
 
     it('should add Actions and not duplicate it', function(){
-
-        var state = ContextualMenu.getState();
-
-        expect(state.menuElements.length).toBe(0);
         // add type1 actions
         addActions(true, false);
         expect(state.menuElements.length).toBe(typeOneActions.length);
-
     });
 
     it('should add subMenu and not duplicate it', function(){
-
         expect(ContextualMenu.addSubMenu(typeTwoActions[1])).toBe(true);
         expect(ContextualMenu.addSubMenu(typeTwoActions[1])).toBe(false);
-        
+        expect(state.menuElements.length).toBe(1);
     });
 
-    it('should correctly build content', function(){
-
-        var state = ContextualMenu.getState();
+    it('should correctly build actions content filtered by showIf on passed resource', function(){
 
         addActions(true, true);
 
         ContextualMenu.show(10, 10, 'pippo-resource', 'type1');
         // show only 'pippo' action
         expect(state.content.length).toBe(2);
-        expect(state.content[0].text).toEquals(typeOneActions[0].label);
-        expect(state.content[1].text).toEquals(typeOneActions[1].label);
+        expect(state.content[0].text).toEqual(typeOneActions[0].label);
+        expect(state.content[0].click).toBeDefined();
+        expect(state.content[1].text).toEqual(typeOneActions[1].label);
+        expect(state.content[0].click).toBeDefined();      
+    });
+
+    it('should correctly build action and submenu content ordered', function(){
+
+        ContextualMenu.addAction(typeTwoActions[0]);
+        ContextualMenu.addSubMenu(typeTwoActions[1]);
+
+        ContextualMenu.show(10, 10, {}, 'type2');        
+
+        expect(state.content.length).toBe(2);
+        expect(state.content[0].text).toEqual(typeTwoActions[1].label);
+        expect(state.content[0].hover).toBeDefined();
+        expect(state.content[0].leave).toBeDefined();
+        expect(state.content[0].submenu).toBe(true);
+        expect(state.content[1].text).toEqual(typeTwoActions[0].label);
+        expect(state.content[1].click).toBeDefined();
+    });
+
+    it('should correctly build diver content', function(){
+
+        var divider = { priority: 5, type: ['type2'] };
+        ContextualMenu.addDivider(divider);
+
+        ContextualMenu.show(10, 10, {}, 'type2');
+        
+        expect(state.content.length).toBe(1);
+        expect(state.content[0].divider).toBe(true);
+    });
+
+    it('should correctly call action on passed resource', function(){
+
+        ContextualMenu.addAction(typeOneActions[1]);
+        ContextualMenu.show(10, 10, 'pippo-resource', 'type1');
+        
+        expect(state.content.length).toBe(1);
+        state.content[0].click();
+        expect(clickTest).toBe(true);
+    });
+
+    it('should not show without content', function(){
+
+        ContextualMenu.show(10, 10, {}, 'type99');
+        expect($log.error.logs.length).toBe(1);
+        $log.reset();
+    });
+
+    it('should not show without resource', function(){
+        ContextualMenu.addSubMenu(typeTwoActions[1]);
+        ContextualMenu.show(10, 10, undefined, 'type99');
+        expect($log.error.logs.length).toBe(1);
+        $log.reset();
+    });
+
+    it('should not show without content', function(){
+        ContextualMenu.addSubMenu(typeTwoActions[1]);
+        ContextualMenu.show(10, 10, {}, 'type99');
+        expect($log.error.logs.length).toBe(1);
+        $log.reset();
+    });
+
+    it('should correctly position to place menu inside window', function(){
+        var element = {
+            outerWidth: function(){
+                return 250;
+            },
+            outerHeight: function(){
+                return 340;
+            }
+        };
+
+        var w = angular.element($window);
+        expect(ContextualMenu.position(element, 55, 55)).toBe(CONTEXTUALMENUDEFAULTS.position);
+        expect( ContextualMenu.position(element, w.innerWidth()-10, 55) ).toBe('bottom-right');
+        expect(ContextualMenu.position(element, 55, w.innerHeight()-10)).toBe('top-left');
+        expect(ContextualMenu.position(element, w.innerWidth()-10, w.innerHeight()-10)).toBe('top-right');
 
     });
 
-    // TODO: addDivider? position()? show()? hide()? Hai testato che il sort funzioni a modo?
-    // i tuoi oggetti type*Actions sono gia' ordinati :P
-    // + il click su una voce di menu deve chiamare la action registrata
-    // Altro?
 
 });
