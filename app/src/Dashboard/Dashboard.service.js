@@ -8,19 +8,13 @@ angular.module('Pundit2.Dashboard')
     containerMaxHeight: 400,
     containerHeight: 250,
 
-    // dashboard lists panels (left)
-    initialListsRatio: 0.25,
-    listsMinWidth: 245,
+    panels: {
+        lists: { minWidth: 243 },
+        tools: { minWidth: 478 },
+        details: { minWidth: 239 }
+    },
 
-    // dashboard tools panels (center)
-    initialToolsRatio: 0.50,
-    toolsMinWidth: 480,
-
-    // dashboard details panels (right)
-    initialDetailsRatio: 0.25,
-    detailsMinWidth: 235,
-
-    // panel collapsed width
+    // panel collapsed width (collapse button width + separator width)
     panelCollapsedWidth: 28,
 
     // footer height
@@ -36,7 +30,10 @@ angular.module('Pundit2.Dashboard')
 
     var dashboard = new BaseComponent('Dashboard', DASHBOARDDEFAULTS);
 
-    var containerMinWidth = dashboard.options.listsMinWidth + dashboard.options.toolsMinWidth + dashboard.options.detailsMinWidth;
+    var containerMinWidth = 0;
+    for (var i in dashboard.options.panels) {
+        containerMinWidth += dashboard.options.panels[i].minWidth;
+    }
     
     var state = {
 
@@ -46,6 +43,8 @@ angular.module('Pundit2.Dashboard')
         containerHeight: dashboard.options.containerHeight
 
     };
+
+    var separatorWidth = 8;
 
     dashboard.canCollapsePanel = function(){
         var collapsedNum = panels.filter(function(p){
@@ -106,12 +105,7 @@ angular.module('Pundit2.Dashboard')
             state.containerWidth = containerMinWidth;
 
             // resize panels to min-width
-            var left = 0;
-            for (var p in panels) {
-                panels[p].width = panels[p].minWidth;
-                panels[p].left = left;
-                left = left + panels[p].width;
-            }
+            dashboard.resizeAll();
 
             $rootScope.$apply();
             dashboard.log('Dashboard is at min-width');
@@ -137,18 +131,13 @@ angular.module('Pundit2.Dashboard')
             panels[len - 1].collapsedWidth = dashboard.options.panelCollapsedWidth;
         }
         panelScope.isLast = true;
-        panelScope.collapsedWidth = dashboard.options.panelCollapsedWidth - 8;
+
+        panelScope.collapsedWidth = dashboard.options.panelCollapsedWidth - separatorWidth;
 
         panelScope.index = len;
         panels.push(panelScope);
 
-        if (panelScope.title === "lists") {
-            panelScope.minWidth = dashboard.options.listsMinWidth;
-        } else if (panelScope.title === "tools") {
-            panelScope.minWidth = dashboard.options.toolsMinWidth;
-        } else if (panelScope.title === "details") {
-            panelScope.minWidth = dashboard.options.detailsMinWidth;
-        }
+        panelScope.minWidth = dashboard.options.panels[panelScope.title].minWidth;
 
         if ( panels.length === 3 ) {
             dashboard.resizeAll();    
