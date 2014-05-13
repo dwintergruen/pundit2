@@ -124,7 +124,7 @@ describe('MyPundit service', function() {
 
         var promise = MyPundit.checkLoggedIn();
 
-        promise.then(function(value) {
+        promise.then(function() {
             //if everything is ok do nothing
 
         }, function(){
@@ -338,7 +338,7 @@ describe('MyPundit service', function() {
 
         var logoutPromise = MyPundit.logout();
 
-        logoutPromise.then(function(value) {
+        logoutPromise.then(function() {
             //if everything is ok do nothing
 
         }, function(){
@@ -378,15 +378,15 @@ describe('MyPundit service', function() {
 		$httpBackend.flush();
 	});
 
-    //TODO: FINIRE IL TEST
     it("should start login polling timer ", function() {
 
-        $httpBackend.whenGET(NameSpace.get('asUsersCurrent')).respond(userNotLogged);
-        MyPundit.login();
-        $rootScope.$digest();
-        $httpBackend.flush();
-        $httpBackend.resetExpectations();
+        $httpBackend
+            .expectGET(NameSpace.get('asUsersCurrent'))
+            .respond(userNotLogged);
 
+        MyPundit.login();
+
+        $httpBackend.flush();
 
         // login status should be loggedOff
         expect(MyPundit.getLoginStatus()).toBe("loggedOff");
@@ -395,28 +395,41 @@ describe('MyPundit service', function() {
         var modalContainer = angular.element.find('div.pnd-login-modal-container');
         expect(modalContainer.length).toBe(1);
 
+        $httpBackend.expectGET(NameSpace.get('asUsersCurrent')).respond(userNotLogged);
         // click open login popup
         var openPopUpButton = angular.element('.pnd-login-modal-openPopUp');
         openPopUpButton.trigger('click');
+        $httpBackend.flush();
         $rootScope.$digest();
+
         expect(MyPundit.getLoginStatus()).toBe("waitingForLogIn");
 
         //start polling
 
-        $httpBackend.whenGET(NameSpace.get('asUsersCurrent')).respond(userNotLogged);
+        // should be timeout tasks pending
         expect(function() {$timeout.verifyNoPendingTasks();}).toThrow();
-        $timeout.flush(MYPUNDITDEFAULTS.loginPollTimerMS);
-        $httpBackend.flush();
-        $httpBackend.resetExpectations();
-
-        expect(MyPundit.getLoginStatus()).toBe("waitingForLogIn");
-        $httpBackend.whenGET(NameSpace.get('asUsersCurrent')).respond(userLoggedIn);
-        $timeout.flush(MYPUNDITDEFAULTS.loginPollTimerMS);
-        $httpBackend.flush();
+        $httpBackend.expectGET(NameSpace.get('asUsersCurrent')).respond(userNotLogged);
         $rootScope.$digest();
-        console.log(MyPundit.getLoginStatus());
 
-        //expect(function() {$timeout.verifyNoPendingTasks();}).not.toThrow();
+        $timeout.flush(MYPUNDITDEFAULTS.loginPollTimerMS);
+        $httpBackend.flush();
+
+        // should be still timeout tasks pending
+        expect(function() {$timeout.verifyNoPendingTasks();}).toThrow();
+
+        // get user logged in
+        $httpBackend.expectGET(NameSpace.get('asUsersCurrent')).respond(userLoggedIn);
+        $rootScope.$digest();
+        $timeout.flush();
+        $httpBackend.flush();
+
+        expect(MyPundit.getLoginStatus()).toBe("loggedIn");
+
+        // flush timer to close modal
+        $timeout.flush();
+
+        // at this time should be not timeout tasks pending
+        expect(function() {$timeout.verifyNoPendingTasks();}).not.toThrow();
 
     });
 
@@ -433,7 +446,83 @@ describe('MyPundit service', function() {
         // an error message is shown
         expect($log.error.logs.length).toBe(1);
 
+    });
 
+    it("should close the modal when user is logged in ", function() {
+
+        $httpBackend
+            .expectGET(NameSpace.get('asUsersCurrent'))
+            .respond(userNotLogged);
+
+        MyPundit.login();
+
+        $httpBackend.flush();
+
+        // modal should be open
+        var modalContainer = angular.element.find('div.pnd-login-modal-container');
+        expect(modalContainer.length).toBe(1);
+
+
+        $httpBackend.expectGET(NameSpace.get('asUsersCurrent')).respond(userLoggedIn);
+        // click open login popup
+        var openPopUpButton = angular.element('.pnd-login-modal-openPopUp');
+        openPopUpButton.trigger('click');
+        $rootScope.$digest();
+        $httpBackend.flush();
+
+        $rootScope.$digest();
+
+        // close button should be shown
+        var closeButton = angular.element.find('.pnd-login-modal-close');
+        expect(closeButton.length).toBe(1);
+        expect(angular.element(closeButton).hasClass('ng-hide')).toBe(false);
+
+        // click close button
+        var close = angular.element('.pnd-login-modal-close');
+        close.trigger('click');
+        $rootScope.$digest();
+
+        // modal should be closed
+        modalContainer = angular.element.find('div.pnd-login-modal-container');
+        expect(modalContainer.length).toBe(0);
+
+    });
+
+    it("should reject loginPromise", function() {
+
+        var serverError = false;
+
+        $httpBackend
+            .expectGET(NameSpace.get('asUsersCurrent'))
+            .respond(userNotLogged);
+
+        var loginPromise = MyPundit.login();
+
+        loginPromise.then(function() {
+            //if everything is ok do nothing
+
+        }, function(){
+            // if error is occurred
+            serverError = true;
+
+        });
+
+        $httpBackend.flush();
+
+        // modal should be open
+        var modalContainer = angular.element.find('div.pnd-login-modal-container');
+        expect(modalContainer.length).toBe(1);
+
+        // reject checkedLoggedIn promise
+        $httpBackend.expectGET(NameSpace.get('asUsersCurrent')).respond(505);
+
+        // click open login popup
+        var openPopUpButton = angular.element('.pnd-login-modal-openPopUp');
+        openPopUpButton.trigger('click');
+        $rootScope.$digest();
+        $httpBackend.flush();
+
+        expect(serverError).toBe(true);
     });
 
 });

@@ -133,7 +133,7 @@ describe('Preview service', function() {
 		expect(item).toNotBe("");
 		expect(item.uri).toBe(item2.uri);
 
-	})
+	});
 
     it('should show welcome message set in default when no item is shown in preview', function() {
 
