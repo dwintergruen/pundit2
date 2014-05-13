@@ -59,19 +59,28 @@ describe('Dashboard service', function() {
     });
 
     it("should read containerWidth as window innerWidth or minimum width", function() {
-        var minWidth = DASHBOARDDEFAULTS.listsMinWidth + DASHBOARDDEFAULTS.toolsMinWidth + DASHBOARDDEFAULTS.detailsMinWidth;
+        var minWidth = 0;
+        for (var i in DASHBOARDDEFAULTS.panels) {
+            minWidth += DASHBOARDDEFAULTS.panels[i].minWidth;
+        }
         var bw = Math.max(angular.element($window).innerWidth(), minWidth);
         expect(Dashboard.getContainerWidth()).toBe(bw);
     });
 
     it("should set containerWidth", function() {
-        var minWidth = DASHBOARDDEFAULTS.listsMinWidth + DASHBOARDDEFAULTS.toolsMinWidth + DASHBOARDDEFAULTS.detailsMinWidth;
+        var minWidth = 0;
+        for (var i in DASHBOARDDEFAULTS.panels) {
+            minWidth += DASHBOARDDEFAULTS.panels[i].minWidth;
+        }
         Dashboard.setContainerWidth(minWidth+43);
         expect(Dashboard.getContainerWidth()).toBe(minWidth+43);
     });
 
     it("should not set containerWidth under minWidth", function() {
-        var minWidth = DASHBOARDDEFAULTS.listsMinWidth + DASHBOARDDEFAULTS.toolsMinWidth + DASHBOARDDEFAULTS.detailsMinWidth;
+        var minWidth = 0;
+        for (var i in DASHBOARDDEFAULTS.panels) {
+            minWidth += DASHBOARDDEFAULTS.panels[i].minWidth;
+        }
         Dashboard.setContainerWidth(minWidth-43);
         expect(Dashboard.getContainerWidth()).not.toBe(minWidth-43);
         expect(Dashboard.getContainerWidth()).toBe(minWidth);
@@ -114,7 +123,10 @@ describe('Dashboard service', function() {
         var el = compileDirective();
         var panels = angular.element(el).find('dashboard-panel').toArray();
 
-        var minWidth = DASHBOARDDEFAULTS.listsMinWidth + DASHBOARDDEFAULTS.toolsMinWidth + DASHBOARDDEFAULTS.detailsMinWidth;
+        var minWidth = 0;
+        for (var i in DASHBOARDDEFAULTS.panels) {
+            minWidth += DASHBOARDDEFAULTS.panels[i].minWidth;
+        }
         Dashboard.setContainerWidth(minWidth);
         
         var totalWidth = 0;
@@ -159,7 +171,7 @@ describe('Dashboard service', function() {
         Dashboard.setContainerWidth(width);
 
         var scope = angular.element(panels[0]).isolateScope();
-        var diff = scope.width - DASHBOARDDEFAULTS.listsMinWidth;
+        var diff = scope.width - DASHBOARDDEFAULTS.panels.lists.minWidth;
 
         scope.width -= diff;
         angular.element(panels[1]).isolateScope().width += diff;
@@ -202,7 +214,7 @@ describe('Dashboard service', function() {
         expect(scope.isCollapsed).toBe(false);
         scope.toggleCollapse();        
         expect(scope.isCollapsed).toBe(true);
-        expect(scope.width).toBe(DASHBOARDDEFAULTS.panelCollapseWidth);
+        expect(scope.width).toBe(DASHBOARDDEFAULTS.panelCollapsedWidth);
         // after collapse dashboard call resizeAll
         var totalWidth = 0;
         for ( var i in panels ) {
@@ -212,7 +224,7 @@ describe('Dashboard service', function() {
 
         scope.toggleCollapse();
         expect(scope.isCollapsed).toBe(false);
-        expect(scope.width).not.toBe(DASHBOARDDEFAULTS.panelCollapseWidth);
+        expect(scope.width).not.toBe(DASHBOARDDEFAULTS.panelCollapsedWidth);
         // after collapse dashboard call resizeAll
         totalWidth = 0;
         for ( var i in panels ) {
@@ -232,14 +244,14 @@ describe('Dashboard service', function() {
         expect(scope.isCollapsed).toBe(false);
         scope.toggleCollapse();        
         expect(scope.isCollapsed).toBe(true);
-        expect(scope.width).toBe(DASHBOARDDEFAULTS.panelCollapseWidth);
+        expect(scope.width).toBe(DASHBOARDDEFAULTS.panelCollapsedWidth);
 
         // collapse
         scope = angular.element(panels[1]).isolateScope();
         expect(scope.isCollapsed).toBe(false);
         scope.toggleCollapse();        
         expect(scope.isCollapsed).toBe(true);
-        expect(scope.width).toBe(DASHBOARDDEFAULTS.panelCollapseWidth);
+        expect(scope.width).toBe(DASHBOARDDEFAULTS.panelCollapsedWidth);
 
         // not collapse
         scope = angular.element(panels[2]).isolateScope();
