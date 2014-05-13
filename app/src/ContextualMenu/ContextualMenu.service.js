@@ -50,10 +50,7 @@ angular.module('Pundit2.ContextualMenu')
         } else {
             options.placement = contextualMenu.options.position;
         }        
-        options.template = 'src/Toolbar/dropdown.tmpl.html';
-        // add css class in teamplate
-        // TODO duplicate template ?
-        options.scope.contextMenu = true;
+        options.template = 'src/ContextualMenu/dropdown.tmpl.html';
 
         return $dropdown(state.anchor, options);
         
@@ -196,7 +193,7 @@ angular.module('Pundit2.ContextualMenu')
             top: state.lastY
         });
 
-        // TODO check memory leaks
+        // TODO check memory leaks ?
         //state.mockMenu.destroy();
         angular.element('.pnd-context-menu').remove();
 

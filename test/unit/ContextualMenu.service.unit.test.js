@@ -1,4 +1,4 @@
-ddescribe('ContextualMenu service', function() {
+describe('ContextualMenu service', function() {
     
     var ContextualMenu,
         $window,
@@ -18,16 +18,18 @@ ddescribe('ContextualMenu service', function() {
         angular.element("body").append("<div data-ng-app='Pundit2'></div>");
     });    
 
-    beforeEach(inject(function(_$rootScope_, _$window_, _CONTEXTUALMENUDEFAULTS_,  _ContextualMenu_, _$log_){
+    beforeEach(inject(function(_$rootScope_, _$window_, _$animate_, _CONTEXTUALMENUDEFAULTS_,  _ContextualMenu_, _$log_){
         $rootScope = _$rootScope_;
         $window = _$window_;
         $log = _$log_;
+        $animate = _$animate_;
         ContextualMenu = _ContextualMenu_;
         CONTEXTUALMENUDEFAULTS = _CONTEXTUALMENUDEFAULTS_;
         // reset state
         state = ContextualMenu.getState();
         state.menuElements = [];
         state.content = null;
+        ContextualMenu.hide();
     }));
 
     var clickTest = false;
@@ -204,8 +206,7 @@ ddescribe('ContextualMenu service', function() {
         expect(clickTest).toBe(true);
     });
 
-    it('should not show without content', function(){
-
+    it('should not show without element', function(){
         ContextualMenu.show(10, 10, {}, 'type99');
         expect($log.error.logs.length).toBe(1);
         $log.reset();
@@ -225,7 +226,7 @@ ddescribe('ContextualMenu service', function() {
         $log.reset();
     });
 
-    it('should correctly position to place menu inside window', function(){
+    it('should correctly position menu to place inside window', function(){
         var element = {
             outerWidth: function(){
                 return 250;
