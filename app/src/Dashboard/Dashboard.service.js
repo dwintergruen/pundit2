@@ -24,6 +24,10 @@ angular.module('Pundit2.Dashboard')
     // this component
     clientDomTemplate: "src/Dashboard/ClientDashboard.tmpl.html",
 
+    // Width in px of the separators (draggable columns between panels). Must be kept in sync
+    // with the defined css
+    separatorWidth: 8,
+
     debug: false
 })
 .service('Dashboard', function(BaseComponent, DASHBOARDDEFAULTS, $window, $rootScope) {
@@ -40,21 +44,24 @@ angular.module('Pundit2.Dashboard')
         isDashboardVisible: dashboard.options.isDashboardVisible,
 
         containerWidth: Math.max(angular.element($window).innerWidth(), containerMinWidth),
-        containerHeight: dashboard.options.containerHeight
+        containerHeight: dashboard.options.containerHeight,
 
+        // If the .addContent() is called on some non-existing panel, they might get
+        // added later on. We save tabName and tabTemplate and add them when the
+        // panels call addPanel()
+        panelsContent: {}
     };
 
-    var separatorWidth = 8;
+    dashboard.getConfiguredPanels = function() {
+        return dashboard.options.panels;
+    };
 
     dashboard.canCollapsePanel = function(){
         var collapsedNum = panels.filter(function(p){
                 return p.isCollapsed;
             }).length;
-        if ( collapsedNum < 2 ){
-            return true;
-        } else {
-            return false;
-        }
+
+        return collapsedNum < panels.length-1;
     };
 
     /**** DASHBOARD ****/
@@ -69,7 +76,7 @@ angular.module('Pundit2.Dashboard')
     /**** CONTAINER ****/
     dashboard.getContainerHeight = function() {
         return state.containerHeight;
-    }
+    };
 
     dashboard.increaseContainerHeight = function(dy) {
 
@@ -117,7 +124,6 @@ angular.module('Pundit2.Dashboard')
         dashboard.resizeAll();
 
         $rootScope.$apply();
-        return;
     };
 
 
@@ -126,20 +132,34 @@ angular.module('Pundit2.Dashboard')
         dashboard.log("Adding panel", panelScope.title);
         var len = panels.length;
 
+        // Last panel is slighty different: its collapsedWidth must NOT include
+        // The separatorWidth, since it's not displayed
         if (len > 0) {
             panels[len - 1].isLast = false;
             panels[len - 1].collapsedWidth = dashboard.options.panelCollapsedWidth;
         }
         panelScope.isLast = true;
-
-        panelScope.collapsedWidth = dashboard.options.panelCollapsedWidth - separatorWidth;
-
+        panelScope.collapsedWidth = dashboard.options.panelCollapsedWidth - dashboard.options.separatorWidth;
+        panelScope.minWidth = dashboard.options.panels[panelScope.title].minWidth;
         panelScope.index = len;
+
         panels.push(panelScope);
 
-        panelScope.minWidth = dashboard.options.panels[panelScope.title].minWidth;
+        // If there's any previously saved panel content for this panel, add it
+        if (panelScope.title in state.panelsContent) {
+            var contents = state.panelsContent[panelScope.title];
+            for (var l=contents.length; l--;) {
+                dashboard.log('Adding tab '+contents[l].tabName+' to existing panel '+panelScope.title);
+                panelScope.addContent(contents[l].tabName, contents[l].tabTemplate);
+            }
+        }
 
-        if ( panels.length === 3 ) {
+        // When the last panel is added, resize them all
+        var configuredPanelsLen = 0;
+        for (var p in dashboard.options.panels) {
+            configuredPanelsLen++;
+        }
+        if (panels.length === configuredPanelsLen) {
             dashboard.resizeAll();    
         }
         
@@ -365,16 +385,31 @@ angular.module('Pundit2.Dashboard')
     };
 
     // Will render the specified template inside specified panel.
-    // panelTitle can be one of the Dashboard configured panel names
+    // panelTitle can be one of the Dashboard configured panel names.
+    // If the panels has not been added yet, it will save the contents and add them
+    // as soon as the panel is added
     dashboard.addContent = function(panelTitle, tabName, tabTemplate) {
         for (var i in panels) {
             if (panels[i].title === panelTitle) {
-                dashboard.log('Adding tab '+tabName+' to panel '+panelTitle);
+                dashboard.log('Adding tab '+tabName+' to existing panel '+panelTitle);
                 panels[i].addContent(tabName, tabTemplate);
                 return;
             }
         }
-        dashboard.err("Could not add tab name "+tabName+" to panel "+panelTitle+": panel not found.");
+
+        // Panels are not ready yet: save the content and add them when addPanel() is
+        // called by individual panels
+        var content = {
+            tabName: tabName,
+            tabTemplate: tabTemplate
+        };
+        if (panelTitle in state.panelsContent) {
+            state.panelsContent[panelTitle].push(content);
+        } else {
+            state.panelsContent[panelTitle] = [content];
+        }
+
+        dashboard.log("Added tab "+tabName+" to non-existing panel "+panelTitle+": for later use.");
     };
 
     dashboard.log('Service run');

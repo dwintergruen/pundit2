@@ -97,7 +97,7 @@ angular.module('Pundit2.Client')
                             .addContent(mod.options.clientDashboardPanel,
                                         mod.options.clientDashboardTabTitle,
                                         mod.options.clientDashboardTemplate);
-                        client.log('Adding to Dashboard '+ mod.name +' to panel '+mod.options.clientDashboardPanel);
+                        client.log('Adding to Dashboard: '+ mod.name +' to panel '+mod.options.clientDashboardPanel);
                     }
                     continue;
                 }

@@ -1,5 +1,5 @@
 angular.module('Pundit2.Dashboard')
-.controller('DashboardCtrl', function($document, $window, $scope, Dashboard) {
+.controller('DashboardCtrl', function($document, $window, $scope, $compile, Dashboard) {
 
     var jqElement = {
         container : angular.element('.pnd-dashboard-container'),
@@ -12,14 +12,6 @@ angular.module('Pundit2.Dashboard')
         'height' : Dashboard.options.footerHeight
     });
 
-    /*
-    // TODO: this is done already by $watch
-    // set container height
-    jqElement.container.css({
-        'height' : Dashboard.getContainerHeight()
-    });
-    */
-
     $scope.isDashboardVisible = Dashboard.isDashboardVisible();
 
     var windowLastWidth = 0, windowCurrentWidth;
@@ -30,6 +22,20 @@ angular.module('Pundit2.Dashboard')
             Dashboard.setContainerWidth(windowCurrentWidth);
         }
     });
+
+
+    // Add configured panels markup to the Dashboard
+    $scope.$watch(function() {
+        return Dashboard.getConfiguredPanels();
+    }, function(panels) {
+        for (var p in panels) {
+            Dashboard.log('Adding configured panel to Dashboard: '+ p);
+            jqElement.container.append('<dashboard-panel title="'+ p +'"></dashboard-panel>');
+        }
+        var added = angular.element("dashboard-panel");
+        $compile(added)($scope);
+    });
+
 
     /**** CONTAINER WATCHER ****/
 
