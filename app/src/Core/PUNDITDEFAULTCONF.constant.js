@@ -11,7 +11,7 @@ angular.module('Pundit2.Core')
         // to some Dashboard panel) by the client are listed as .bootModules inside the
         // modules.Client conf object. See CLIENTDEFAULTS
         Client: {
-            active: true
+            active: false
         },
 
         // Modules active by default are activated here with active=true
