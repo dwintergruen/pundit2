@@ -15,6 +15,9 @@ angular.module('Pundit2.AnnotationSidebar')
     var toolbarHeight = 30;
     var newMarginTopSidebar;
 
+    var sidebarCurrentHeight;
+    var sidebarNewHeight;
+
     container.css('height', body.innerHeight() + 'px');
 
     // Start reading the default
@@ -53,16 +56,23 @@ angular.module('Pundit2.AnnotationSidebar')
         }
     }, true);
 
-    // Watch height of body for height of sidebar
-    var sidebarCurrentHeight;
+    // Annotation sidebar height
+    var resizeSidebarHeight = function(bodyHeight, windowHeight) {
+        sidebarNewHeight = Math.max(bodyHeight, windowHeight);
+        sidebarCurrentHeight = container.innerHeight();
+        if (sidebarNewHeight !== sidebarCurrentHeight) {
+            container.css('height', sidebarNewHeight + 'px');
+        }
+    };
     $scope.$watch(function() {
         return body.innerHeight();
     }, function(bodyHeight) {
-        sidebarCurrentHeight = container.innerHeight();
-        if ( bodyHeight !== sidebarCurrentHeight ) {
-            container.css('height', bodyHeight + 'px');
-        }
+        resizeSidebarHeight(bodyHeight, $window.innerHeight);
     });
+    angular.element($window).bind('resize', function () {
+        resizeSidebarHeight(body.innerHeight(), $window.innerHeight);
+    });
+
   
     AnnotationSidebar.log('Controller Run');
 });
