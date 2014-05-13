@@ -162,7 +162,6 @@ describe('Dashboard service', function() {
         expect(preTotalWidth).not.toBe(totalWidth);
     });
 
-    // TODO select specific panel by css attribute selector
     it("should update total panels width to containerWidth when resizing when one panel is at minwidth", function(){
         var el = compileDirective();
         var panels = angular.element(el).find('dashboard-panel').toArray();
@@ -170,7 +169,8 @@ describe('Dashboard service', function() {
 
         Dashboard.setContainerWidth(width);
 
-        var scope = angular.element(panels[0]).isolateScope();
+        var scope = angular.element(el).find('dashboard-panel[title="lists"]').isolateScope();
+        console.log(scope)
         var diff = scope.width - DASHBOARDDEFAULTS.panels.lists.minWidth;
 
         scope.width -= diff;
@@ -262,24 +262,21 @@ describe('Dashboard service', function() {
         
     });
 
-    it("should correctly resize first panel", function(){
+    it("should correctly resize/expand panels by drag simulation", function(){
         var el = compileDirective();
         var panels = angular.element(el).find('dashboard-panel').toArray();
         
         Dashboard.setContainerWidth(1200);
+
+        var listsScope = angular.element(el).find('dashboard-panel[title="lists"]').isolateScope();
+        var listsWidth = listsScope.width;
+        var toolsScope = angular.element(el).find('dashboard-panel[title="tools"]').isolateScope();
+        var toolsWidth = toolsScope.width;        
 
         expect(Dashboard.tryToResizeCouples(0,-30)).toBe(true);
+        expect(listsScope.width).toBe(listsWidth-30);
+        expect(toolsScope.width).toBe(toolsWidth+30);
 
-    });
-
-    it("should correctly expand second panel", function(){
-        var el = compileDirective();
-        var panels = angular.element(el).find('dashboard-panel').toArray();
-        
-        Dashboard.setContainerWidth(1200);
-
-        expect(Dashboard.tryToResizeCouples(1,+30)).toBe(true);   
-        
     });
 
 });
