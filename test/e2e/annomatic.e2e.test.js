@@ -4,7 +4,7 @@ describe("The annomatic module", function() {
     // TODO: mock the datatxt backend with those 25 annotations
     
     it('should load some 25 annotations from datatxt', function() {
-        p.get('/app/examples/annomatic-module.html');
+        p.get('/app/examples/annomatic.html');
 
         p.findElement(protractor.By.css('header button')).click().then(function(){
             p.waitForAngular();
@@ -15,7 +15,7 @@ describe("The annomatic module", function() {
     });
 
     it('should accept an annotation clicking on accept and removing it by clicking on remove', function() {
-        p.get('/app/examples/annomatic-module.html');
+        p.get('/app/examples/annomatic.html');
 
         // Get annotations
         p.findElement(protractor.By.css('header button')).click();
