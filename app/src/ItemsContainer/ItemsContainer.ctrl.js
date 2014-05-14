@@ -1,10 +1,7 @@
 angular.module('Pundit2.ItemsContainer')
 .controller('ItemsContainerCtrl', function($scope, ItemsExchange) {
 
-    var allItems,
-        textItems,
-        imageItems,
-        pageItems;
+    var itemsArrays = [];
 
     $scope.tabs = [
         {
@@ -25,62 +22,52 @@ angular.module('Pundit2.ItemsContainer')
         }
     ];
 
-    // initialy display all items
+    // initialy show all items
     $scope.tabs.activeTab = 0;
 
     $scope.$watch(function() {
         return $scope.tabs.activeTab;
     }, function(activeTab) {
-        updateDisplayed(activeTab);
-        console.log(activeTab);
+        $scope.displayedItems = itemsArrays[activeTab];
     });
 
-    var buildItemsArray = function(itemsArray) {
+    $scope.$watch(function() {
+        return $scope.search;
+    }, function(str) {
+        // filter items actualy showed
+        $scope.displayedItems = $scope.displayedItems.filter(function(items){
+            return items.label.indexOf(str);
+        });
         
-        allItems = itemsArray;
+    });
 
-        /*textItems = itemsArray.filter(function(item){
+    var buildItemsArray = function(items) {
+        
+        itemsArrays[0] = items;
+
+        itemsArrays[1] = items.filter(function(item){
             return item.isTextFragment();
-        });*/
+        });
 
-        imageItems = itemsArray.filter(function(item){
+        itemsArrays[2] = items.filter(function(item){
             return item.isImage();
         });
 
-        pageItems = itemsArray.filter(function(item){
+        itemsArrays[3] = items.filter(function(item){
             return item.isWebPage();
         });
 
     };
 
-    var updateDisplayed = function(active) {
-        switch (active) {
-            // all items
-            case 0:
-                $scope.displayedItems = allItems;
-                break;
-            // text items
-            case 1:
-                $scope.displayedItems = textItems;
-                break;
-            // image items
-            case 2:
-                $scope.displayedItems = imageItems;
-                break;
-            // page items
-            case 3:
-                $scope.displayedItems = pageItems;
-                break;
-        }
-    };
-
     $scope.$watch(function() {
+        // TODO get items by container
+        // return ItemsExchange.getItemsByContainer($scope.container);
         return ItemsExchange.getItems();
     }, function(newItems) {
         // update all items array
         buildItemsArray(newItems);
         // than display new items
-        updateDisplayed($scope.tabs.activeTab);
+        $scope.displayedItems = itemsArrays[$scope.tabs.activeTab];
         //console.log(newItems, allItems, textItems, imageItems, pageItems);
     }, true);
 
