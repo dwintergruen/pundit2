@@ -61,7 +61,7 @@ angular.module('Pundit2.ItemsContainer')
 
         // filter items actualy showed
         $scope.displayedItems = itemsArrays[$scope.tabs.activeTab].filter(function(items){
-            return items.label.indexOf(str) > -1;
+            return items.label.toLowerCase().indexOf(str.toLowerCase()) > -1;
         });
 
     });
