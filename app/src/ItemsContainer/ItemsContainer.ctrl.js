@@ -34,9 +34,18 @@ angular.module('Pundit2.ItemsContainer')
     $scope.$watch(function() {
         return $scope.search;
     }, function(str) {
+
+        if (typeof($scope.displayedItems) === 'undefined') {
+            return;
+        }
+
+        if (typeof(str) === 'undefined') {
+            str = '';
+        }
+
         // filter items actualy showed
-        $scope.displayedItems = $scope.displayedItems.filter(function(items){
-            return items.label.indexOf(str);
+        $scope.displayedItems = itemsArrays[$scope.tabs.activeTab].filter(function(items){
+            return items.label.indexOf(str) > -1;
         });
         
     });
