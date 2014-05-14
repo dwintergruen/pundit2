@@ -1,36 +1,51 @@
 angular.module('Pundit2.ItemsContainer')
 .controller('ItemsContainerCtrl', function($scope, ItemsExchange) {
 
+    // array of items array, one foreach tab
+    // contain all items array, text items array, image items array and page items array
     var itemsArrays = [];
 
     $scope.tabs = [
         {
             title: 'All Items',
-            template: 'src/ItemsContainer/items.tmpl.html'
+            template: 'src/ItemsContainer/items.tmpl.html',
+            filterFunction: function(){
+                return true;
+            }
         },
         {
             title: 'Text',
-            template: 'src/ItemsContainer/items.tmpl.html'
+            template: 'src/ItemsContainer/items.tmpl.html',
+            filterFunction: function(item){
+                return item.isTextFragment();
+            }
         },
         {
             title: 'Images',
-            template: 'src/ItemsContainer/items.tmpl.html'
+            template: 'src/ItemsContainer/items.tmpl.html',
+            filterFunction: function(item){
+                return item.isImage();
+            }
         },
         {
             title: 'Pages',
-            template: 'src/ItemsContainer/items.tmpl.html'
+            template: 'src/ItemsContainer/items.tmpl.html',
+            filterFunction: function(item){
+                return item.isWebPage();
+            }
         }
     ];
 
-    // initialy show all items
     $scope.tabs.activeTab = 0;
 
+    // every time that change active tab show new items array
     $scope.$watch(function() {
         return $scope.tabs.activeTab;
     }, function(activeTab) {
         $scope.displayedItems = itemsArrays[activeTab];
     });
 
+    // every time that user digit text inside <input>
     $scope.$watch(function() {
         return $scope.search;
     }, function(str) {
@@ -39,6 +54,7 @@ angular.module('Pundit2.ItemsContainer')
             return;
         }
 
+        // this appen when the user delete last char in the <input>
         if (typeof(str) === 'undefined') {
             str = '';
         }
@@ -47,24 +63,18 @@ angular.module('Pundit2.ItemsContainer')
         $scope.displayedItems = itemsArrays[$scope.tabs.activeTab].filter(function(items){
             return items.label.indexOf(str) > -1;
         });
-        
+
     });
 
     var buildItemsArray = function(items) {
-        
-        itemsArrays[0] = items;
 
-        itemsArrays[1] = items.filter(function(item){
-            return item.isTextFragment();
-        });
-
-        itemsArrays[2] = items.filter(function(item){
-            return item.isImage();
-        });
-
-        itemsArrays[3] = items.filter(function(item){
-            return item.isWebPage();
-        });
+        for (var i=0; i<$scope.tabs.length; i++) {
+            if ( angular.isObject($scope.tabs[i]) && typeof($scope.tabs[i].filterFunction) !== 'undefined' ) {
+                itemsArrays[i] = items.filter(function(item){
+                    return $scope.tabs[i].filterFunction(item);
+                });
+            }
+        }
 
     };
 
@@ -75,9 +85,8 @@ angular.module('Pundit2.ItemsContainer')
     }, function(newItems) {
         // update all items array
         buildItemsArray(newItems);
-        // than display new items
+        // then display new items
         $scope.displayedItems = itemsArrays[$scope.tabs.activeTab];
-        //console.log(newItems, allItems, textItems, imageItems, pageItems);
     }, true);
 
     console.log('itemsContainer controller run with container: ', $scope.container);
