@@ -25,9 +25,14 @@ describe('Dashboard service', function() {
 
     var compileDirective = function(){
         var elem = $compile('<dashboard></dashboard>')($rootScope);
+        angular.element('body').append(elem);
         $rootScope.$digest();
         return elem;
     };
+
+    afterEach(function(){
+        angular.element('dashboard').remove();
+    });
 
     it("should read default visible and toggle", function() {
         var vis = Dashboard.isDashboardVisible();
@@ -170,7 +175,7 @@ describe('Dashboard service', function() {
         Dashboard.setContainerWidth(width);
 
         var scope = angular.element(el).find('dashboard-panel[title="lists"]').isolateScope();
-        console.log(scope)
+        
         var diff = scope.width - DASHBOARDDEFAULTS.panels.lists.minWidth;
 
         scope.width -= diff;
