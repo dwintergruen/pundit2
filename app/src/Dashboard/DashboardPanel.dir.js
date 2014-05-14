@@ -1,5 +1,5 @@
 angular.module('Pundit2.Dashboard')
-.directive('dashboardPanel', function(Dashboard, $document) {
+.directive('dashboardPanel', function() {
     return {
         // require: "^dashboard",
         restrict: 'E',
@@ -8,9 +8,6 @@ angular.module('Pundit2.Dashboard')
             title: '@'
         },
         templateUrl: "src/Dashboard/DashboardPanel.dir.tmpl.html",
-        controller: "DashboardPanelCtrl",
-        link: function(scope, element, attrs) {
-            
-        }
+        controller: "DashboardPanelCtrl"
     };
 });
