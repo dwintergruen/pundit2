@@ -25,6 +25,22 @@ angular.module('Pundit2.Core')
         return this.type.indexOf(NameSpace.rdf.property) !== -1;
     };
 
+    ItemFactory.prototype.isTextFragment = function() {
+        return this.type.indexOf(NameSpace.fragment.text) !== -1;
+    };
+
+    ItemFactory.prototype.isImage = function() {
+        return this.type.indexOf(NameSpace.types.image) !== -1;
+    };
+
+    ItemFactory.prototype.isImageFragment = function() {
+        return this.type.indexOf(NameSpace.fragment.imagePart) !== -1;
+    };
+
+    ItemFactory.prototype.isWebPage = function() {
+        return this.type.indexOf(NameSpace.types.page) !== -1;
+    };
+
     ItemFactory.prototype.fromAnnotationRdf = function(annotationRDF) {
 
         var ns = NameSpace.item,
