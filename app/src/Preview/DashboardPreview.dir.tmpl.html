@@ -1,57 +1,47 @@
-<div ng-controller = "PreviewCtrl">
-        <div class="panel panel-default pnd-dashboard-preview">
+<div class="pnd-panel-tab-content" ng-controller = "PreviewCtrl">
 
-            <!-- panel heading -->
-            <div class="panel-heading pnd-dashboard-preview-panel-heading" ng-if="!isItemEmpty()">
-                <!-- Label -->
-                {{itemDashboardPreview.label}}
-                <!-- Clear Sticky Icon -->
-                <span class="pnd-icon-times pnd-dashboard-preview-clear-sticky-button" ng-click="clearSticky()" ng-if="!isStickyItemEmpty()"></span>
-            </div>
+    <!-- HEADER -->
 
-            <!-- show welcome header when preview is empty -->
-            <div class="panel-heading pnd-dashboard-preview-panel-heading" ng-if="isItemEmpty()">
-                <span>{{getWelcomeHeaderMessage()}}</span>
-            </div>
+    <div class="pnd-panel-tab-content-header">
+        <span class="panel-heading pnd-dashboard-preview-panel-heading" ng-if="isItemEmpty()">{{getWelcomeHeaderMessage()}}</span>
+        <span ng-if="!isItemEmpty()">{{itemDashboardPreview.label}}</span>
+    </div> <!-- end pnd-panel-tab-content-header -->
 
-            <!-- panel body -->
-            <div class="panel-body pnd-dashboard-preview-panel-body">
+    <!-- CONTENT -->
 
-                <div class="pnd-dashboard-preview-item-container" ng-if="!isItemEmpty()">
+    <!-- show welcome content when preview is empty -->
+    <div class="pnd-panel-tab-content-content">
+        <span class="pnd-dashboard-preview-welcome" ng-if="isItemEmpty()">{{getWelcomeBodyMessage()}}</span>
 
-                    <!-- Image -->
-                    <div ng-if="hasImage" class="pnd-preview-item-image">
-                        <img ng-src="{{itemDashboardPreview.image}}" />
-                    </div>
-
-                    <!-- Description -->
-                    <div class="pnd-dashboard-preview-item-description">
-                        <p>{{itemDashboardPreview.description}}</p>
-                    </div>
-
-                    <!-- Types -->
-                    <div class="pnd-dashboard-preview-item-types">
-                        <ul>
-                            <li ng-repeat="type in itemDashboardPreview.type">{{getLabelType(type)}}</li>
-                        </ul>
-                    </div>
-
-                </div> <!-- end pnd-dashboard-preview-item-container-->
-
-                <!-- show welcome content when preview is empty -->
-                <div class="pnd-dashboard-preview-welcome" ng-if="isItemEmpty()">
-                    <span>{{getWelcomeBodyMessage()}}</span>
-                </div>
-
-            </div> <!-- end pnd-dashboard-preview-panel-body -->
-        </div> <!-- end pnd-dashboard-preview -->
-
-        <!-- Buttons -->
-        <div ng-if="!isItemEmpty()">
-            <!-- More info -->
-            <a class="btn btn-success pnd-dashboard-preview-more-info-button" ng-href="{{itemDashboardPreview.uri}}" ng-class="{disabled: !isStickyItem()}"target="_blank" >More info</a>
-            <!-- Open image -->
-            <a class="pnd-icon-external-link pnd-dashboard-preview-external-modal-button" ng-if="itemIsAnImage"></a>
+        <!-- Image -->
+        <div ng-if="hasImage" class="pnd-preview-item-image">
+            <img ng-src="{{itemDashboardPreview.image}}" />
         </div>
+
+        <!-- Description -->
+        <div class="pnd-dashboard-preview-item-description">
+            <p>{{itemDashboardPreview.description}}</p>
+        </div>
+
+        <!-- Types -->
+        <div class="pnd-dashboard-preview-item-types">
+            <ul>
+                <li ng-repeat="type in itemDashboardPreview.type">{{getLabelType(type)}}</li>
+            </ul>
+        </div>
+    </div> <!-- end pnd-panel-tab-content-content -->
+
+    <!-- FOOTER -->
+
+    <div class="pnd-panel-tab-content-footer">
+
+        <!-- More info -->
+        <a class="btn btn-success pnd-dashboard-preview-more-info-button" ng-if="!isItemEmpty()" ng-href="{{itemDashboardPreview.uri}}" ng-class="{disabled: !isStickyItem()}"target="_blank" >More info</a>
+        <!-- Open image -->
+        <a class="pnd-icon-external-link pnd-dashboard-preview-external-modal-button" ng-if="itemIsAnImage && !isStickyItemEmpty()"></a>
+        <!-- Clear Sticky Icon -->
+        <span class="pnd-icon-times pnd-dashboard-preview-clear-sticky-button" ng-click="clearSticky()" ng-if="!isStickyItemEmpty()"></span>
+
+    </div> <!-- end pnd-panel-tab-content-footer -->
 
 </div>
