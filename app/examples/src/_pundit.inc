@@ -64,6 +64,10 @@
     <script src="../src/ContextualMenu/ContextualMenu.js"></script>
     <script src="../src/ContextualMenu/ContextualMenu.service.js"></script>
 
+    <script src="../src/ItemsContainer/ItemsContainer.js"></script>
+    <script src="../src/ItemsContainer/ItemsContainer.dir.js"></script>
+    <script src="../src/ItemsContainer/ItemsContainer.ctrl.js"></script>
+
     <script src="../src/Toolbar/Toolbar.js"></script>
     <script src="../src/Toolbar/Toolbar.dir.js"></script>
     <script src="../src/Toolbar/Toolbar.ctrl.js"></script>

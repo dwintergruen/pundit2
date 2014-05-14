@@ -20,6 +20,7 @@ module.exports = function(config) {
             'app/src/Annomatic/Annomatic.js',
             'app/src/Dashboard/Dashboard.js',
             'app/src/ContextualMenu/ContextualMenu.js',
+            'app/src/ItemsContainer/ItemsContainer.js',
             'app/src/Toolbar/Toolbar.js',
             'app/src/Preview/Preview.js',
             'app/src/Communication/Communication.js',
