@@ -1,7 +1,5 @@
 describe('Preview service', function() {
 
-    // TODO: configura l'editor per usare 4 spazi invece di un tab
-
 	var Preview,
 		$rootScope,
 		$httpBackend,

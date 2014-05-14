@@ -3,7 +3,7 @@
     <!-- HEADER -->
 
     <div class="pnd-panel-tab-content-header">
-        <span class="panel-heading pnd-dashboard-preview-panel-heading" ng-if="isItemEmpty()">{{getWelcomeHeaderMessage()}}</span>
+        <span class="pnd-dashboard-preview-panel-heading" ng-if="isItemEmpty()">{{getWelcomeHeaderMessage()}}</span>
         <span ng-if="!isItemEmpty()">{{itemDashboardPreview.label}}</span>
     </div> <!-- end pnd-panel-tab-content-header -->
 
@@ -36,11 +36,11 @@
     <div class="pnd-panel-tab-content-footer">
 
         <!-- More info -->
-        <a class="btn btn-success pnd-dashboard-preview-more-info-button" ng-if="!isItemEmpty()" ng-href="{{itemDashboardPreview.uri}}" ng-class="{disabled: !isStickyItem()}"target="_blank" >More info</a>
+        <button class="btn btn-success pnd-dashboard-preview-more-info-button" ng-href="{{itemDashboardPreview.uri}}" ng-class="{disabled: !isStickyItem()}" target="_blank" >More info</button>
         <!-- Open image -->
-        <a class="pnd-icon-external-link pnd-dashboard-preview-external-modal-button" ng-if="itemIsAnImage && !isStickyItemEmpty()"></a>
+        <button class="btn btn-success pnd-dashboard-preview-external-modal-button" ng-class="{disabled: !isStickyItem()}" ng-if="itemIsAnImage">Open Image</button>
         <!-- Clear Sticky Icon -->
-        <span class="pnd-icon-times pnd-dashboard-preview-clear-sticky-button" ng-click="clearSticky()" ng-if="!isStickyItemEmpty()"></span>
+        <button class="btn btn-success pnd-dashboard-preview-clear-sticky-button" ng-click="clearSticky()" ng-class="{disabled: !isStickyItem()}">Clear Sticky</button>
 
     </div> <!-- end pnd-panel-tab-content-footer -->
 
