@@ -182,7 +182,9 @@ angular.module("Pundit2.Core")
     ns.asOpenNBMeta        = ns.as + "api/open/notebooks/{{id}}/metadata";
     ns.asOpenNBAnnMeta     = ns.as + "api/open/notebooks/{{id}}/annotations/metadata";
 
+    ns.asAnnMetaSearch     = ns.as + "api/annotations/metadata/search";
     ns.asOpenAnnMetaSearch = ns.as + "api/open/metadata/search";
+    ns.asAnn               = ns.as + "api/annotations/{{id}}";
     ns.asOpenAnn           = ns.as + "api/open/annotations/{{id}}";
 
 

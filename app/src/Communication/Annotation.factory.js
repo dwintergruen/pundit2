@@ -1,6 +1,6 @@
 angular.module('Pundit2.Communication')
 .factory('Annotation', function(BaseComponent, NameSpace, Utils, Item, TypesHelper, Analytics,
-                                AnnotationsExchange, $http, $q) {
+                                AnnotationsExchange, MyPundit, $http, $q) {
 
     var annotationComponent = new BaseComponent("Annotation");
 
@@ -27,7 +27,9 @@ angular.module('Pundit2.Communication')
     };
     
     Annotation.prototype.load = function(useCache) {
-        var self = this;
+        var self = this,
+            nsKey = (MyPundit.getUserLogged()) ? 'asAnn' : 'asOpenAnn';
+
 
         if (typeof(useCache) === "undefined") {
             useCache = true;
@@ -40,7 +42,8 @@ angular.module('Pundit2.Communication')
             headers: { 'Accept': 'application/json' },
             method: 'GET',
             cache: useCache,
-            url: NameSpace.get('asOpenAnn', {id: self.id})
+            url: NameSpace.get(nsKey, {id: self.id}),
+            withCredentials: true
 
         }).success(function(data) {
 

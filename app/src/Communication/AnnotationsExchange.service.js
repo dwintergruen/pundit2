@@ -7,7 +7,8 @@ angular.module('Pundit2.Communication')
         var annList = [],
             annListById = {};
 
-        // Returns a promise which gets resolved by an array of IDS of the annotations found
+        // Returns a promise which gets resolved by an array of IDS of the annotations found.
+        // If the user is logged in, the authenticated API is called, otherwise
         annotationExchange.searchByUri = function(uris) {
 
             if (!angular.isArray(uris)) {
@@ -17,12 +18,13 @@ angular.module('Pundit2.Communication')
             annotationExchange.log('Searching for annotations with '+uris.length+' URIs from the server');
 
             var promise = $q.defer(),
-                httpPromise;
+                httpPromise,
+                nsKey = (MyPundit.getUserLogged()) ? 'asAnnMetaSearch' : 'asOpenAnnMetaSearch';
 
             httpPromise = $http({
                 headers: { 'Accept': 'application/json' },
                 method: 'GET',
-                url: NameSpace.get('asOpenAnnMetaSearch'),
+                url: NameSpace.get(nsKey),
                 params: {
                     scope: "all",
                     query: {
@@ -48,9 +50,10 @@ angular.module('Pundit2.Communication')
                 annotationExchange.log("Retrieved annotations IDs searching by URIs");
 
             }).error(function(data, statusCode) {
-                promise.reject("Error from server while retrieving list of my notebooks: "+ statusCode);
-                annotationExchange.err("Error from server while retrieving list of my notebooks: "+ statusCode);
-                Analytics.track('api', 'error', 'get notebook owned', statusCode);
+                var err = "Error from server while searching for annotations by URIs: "+ statusCode;
+                promise.reject(err);
+                annotationExchange.err(err);
+                Analytics.track('api', 'error', 'get '+nsKey, statusCode);
             });
 
             return promise.promise;
