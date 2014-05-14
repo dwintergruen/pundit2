@@ -7,9 +7,7 @@ angular.module('Pundit2.Communication')
         var annList = [],
             annListById = {};
 
-        // Returns a promise which gets resolved by all of the annotations
-        // returned by the search API
-        // TODO: what if an annotation gets resolved and another rejected?
+        // Returns a promise which gets resolved by an array of IDS of the annotations found
         annotationExchange.searchByUri = function(uris) {
 
             if (!angular.isArray(uris)) {

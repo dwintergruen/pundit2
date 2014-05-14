@@ -131,6 +131,9 @@ angular.module('Pundit2.Communication')
         // Extract all of the entities and items involved in this annotation:
         // subjects and objects which are NOT literals
         ann.entities = [];
+
+        // Extract all of the predicates involved too
+        ann.predicates = [];
         for (var s in data.graph) {
 
             if (ann.entities.indexOf(s) === -1) {
@@ -147,6 +150,9 @@ angular.module('Pundit2.Communication')
                         type: [NameSpace.rdf.property],
                         label: Utils.getLabelFromURI(p)
                     };
+                    if (ann.predicates.indexOf(p) === -1) {
+                        ann.predicates.push(p);
+                    }
                 }
 
                 for (var o in data.graph[s][p]) {
