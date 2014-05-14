@@ -60,6 +60,8 @@
     <script src="../src/Dashboard/Dashboard.service.js"></script>
     <script src="../src/Dashboard/DashboardPanel.dir.js"></script>
     <script src="../src/Dashboard/DashboardPanel.ctrl.js"></script>
+    <script src="../src/Dashboard/pndTabs.dir.js"></script>
+    <script src="../src/Dashboard/pndTabs.ctrl.js"></script>
 
     <script src="../src/ContextualMenu/ContextualMenu.js"></script>
     <script src="../src/ContextualMenu/ContextualMenu.service.js"></script>

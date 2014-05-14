@@ -1,0 +1,9 @@
+<ul class="nav nav-tabs pnd-tab-header">
+    <li ng-repeat="pane in panes" ng-class="{active: $index == active}" ng-show="pane.isVisible">
+        <a data-toggle="tab" ng-click="setActive($index, $event)" data-index="{{$index}}" ng-bind-html="pane.title"></a>
+    </li>
+    <button class="bnt btn-success" ng-click="showTabsOut()" ng-show="showMoreTabsButton()">show</button>
+</ul>
+<div class="tab-content pnd-tab-content">
+    <div ng-repeat="pane in panes" class="tab-pane" ng-class="[$index == active ? 'active' : '']" ng-include="pane.template"></div>
+</div>
