@@ -3,10 +3,7 @@
 
     <div class="pnd-dashboard-panel-expanded" ng-hide="isCollapsed">
         <!--<div class="pnd-dashboard-panel-nav"></div>-->
-        <div class="pnd-dashboard-panel-content" bs-tabs="tabs">
-            <h3>{{title}}</h3>
-            width: {{width | number: 3}}<br>
-            ratio {{ratio | number: 3}}
+        <div class="pnd-dashboard-panel-content" template="src/Dashboard/DashboardPanelTabs.tmpl.html" bs-tabs="tabs">
             <!-- the content comes from outside-->
         </div>
         <button type="button" class="btn btn-xs btn-default" ng-click="toggleCollapse()"><span class="pnd-icon pnd-icon-times"></span></button>

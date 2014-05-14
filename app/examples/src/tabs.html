@@ -1,0 +1,42 @@
+<!-- buildexamples:section header --><!-- /buildexamples -->
+
+<script>
+
+    var punditConfig = {
+        modules: {
+            "Dashboard": {
+                isDashboardVisible: true
+            }
+        }
+
+    };
+
+    var DashboardDemoCtrl = function($scope, Dashboard, $templateCache) {
+
+        $scope.toogle = function(){
+            Dashboard.toggle();
+        };
+
+        $templateCache.put('t1.html', 'This is the content of the template');
+        $templateCache.put('t2.html', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras quis est lectus. Etiam non nulla et purus imperdiet pulvinar id volutpat orci. Curabitur consequat lorem at eros imperdiet gravida. Sed vitae mauris ultricies, pretium arcu in, dignissim tortor. Praesent ut augue felis. Praesent bibendum aliquam commodo. Quisque purus ipsum, semper sagittis mauris vitae, mollis aliquam arcu. Aenean hendrerit, est sed imperdiet porttitor, velit augue pharetra elit, ac pretium neque metus in leo. Pellentesque volutpat, est at interdum fringilla, justo metus facilisis ante, ut vestibulum dolor sapien quis dui. Donec eget ultricies magna. Maecenas scelerisque ut neque tempor rhoncus. Praesent vehicula a massa at elementum. Integer facilisis adipiscing lacus, ut varius metus. Fusce et nibh a ipsum tincidunt volutpat. Vestibulum quis faucibus augue. Integer hendrerit ipsum dapibus varius commodo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aenean sit amet est enim. Aliquam elementum mi ac quam imperdiet dapibus. Quisque vitae sapien sem. Sed consequat pretium gravida. In dui leo, accumsan et posuere non, porta in risus. Quisque massa justo, rhoncus ut venenatis non, mattis sit amet odio. Etiam placerat, felis ac condimentum dignissim, dui mauris mattis lorem, vel cursus diam velit nec leo. Donec dapibus dui dictum nisl sodales placerat.Pellentesque blandit lobortis magna ac accumsan. Nulla nibh lorem, sagittis id varius in, lobortis in libero. Duis eget est quis elit ullamcorper sollicitudin ut non mi. Nulla vulputate a nisi sit amet venenatis. Fusce hendrerit odio eu mi pharetra, at bibendum nibh aliquam. Sed vehicula aliquet diam, aliquam congue odio fringilla ut. Curabitur sit amet dictum nulla. Pellentesque eget erat vitae erat euismod mattis.Donec sem risus, pulvinar tempor eros at, bibendum euismod erat. Nulla consectetur semper lorem, vitae blandit orci consectetur sit amet. Phasellus ipsum ligula, tincidunt eu tincidunt ut, porttitor vel ipsum. Nullam nec tincidunt dui. Proin semper lobortis arcu, id vestibulum mi dapibus quis. Vivamus vehicula pretium orci, nec faucibus tortor rutrum sed. Vivamus luctus leo elit. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed vel libero sodales, vestibulum nisi sed, euismod sem. Quisque consectetur eu quam sed imperdiet.Sed diam erat, condimentum nec dictum id, placerat nec ipsum. Integer porta velit non leo lacinia iaculis. Nullam eros erat, mollis eget suscipit venenatis, varius in erat. Nunc interdum ligula in magna bibendum, at adipiscing massa dictum. Mauris in tortor sem. Phasellus gravida ac erat dictum eleifend. Ut nec lorem quis dui aliquam faucibus. Fusce lobortis risus ut orci fringilla, ut tempor nulla commodo. Maecenas ac hendrerit tellus, id gravida lacus. Duis risus arcu, malesuada venenatis faucibus vel, tincidunt quis erat. Fusce laoreet convallis massa id lacinia.');
+
+        Dashboard.addContent("details", "tab-content1", "t1.html");
+        Dashboard.addContent("details", "tab-content2", "t2.html");
+        Dashboard.addContent("details", "tab-content3", "t1.html");
+        Dashboard.addContent("details", "tab-content4", "t2.html");
+        Dashboard.addContent("details", "tab-content5", "t1.html");
+    }
+
+</script>
+
+<div data-ng-app="Pundit2" class="pnd-wrp">
+    <dashboard></dashboard>
+
+    <br><br><br>
+
+    <div ng-controller="DashboardDemoCtrl">
+        <button type="button" class="pnd-dashboard-toggle-btn btn btn-default" ng-click="toogle()">Toggle</button>
+    </div>
+</div>
+
+<!-- buildexamples:section footer --><!-- /buildexamples -->
