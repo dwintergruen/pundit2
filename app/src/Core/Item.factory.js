@@ -26,7 +26,7 @@ angular.module('Pundit2.Core')
     };
 
     ItemFactory.prototype.isTextFragment = function() {
-        return this.type.indexOf(NameSpace.fragment.text) !== -1;
+        return this.type.indexOf(NameSpace.fragments.text) !== -1;
     };
 
     ItemFactory.prototype.isImage = function() {
@@ -34,7 +34,7 @@ angular.module('Pundit2.Core')
     };
 
     ItemFactory.prototype.isImageFragment = function() {
-        return this.type.indexOf(NameSpace.fragment.imagePart) !== -1;
+        return this.type.indexOf(NameSpace.fragments.imagePart) !== -1;
     };
 
     ItemFactory.prototype.isWebPage = function() {
