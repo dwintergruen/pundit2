@@ -4,6 +4,7 @@ describe('Dashboard service', function() {
         $window,
         $compile,
         $rootScope,
+        $templateCache,
         DASHBOARDDEFAULTS;
 
     var maxError = 1;
@@ -15,10 +16,11 @@ describe('Dashboard service', function() {
         'src/Dashboard/DashboardPanel.dir.tmpl.html'
     ));
 
-    beforeEach(inject(function(_$window_, _$rootScope_, _$compile_, _DASHBOARDDEFAULTS_,  _Dashboard_){
+    beforeEach(inject(function(_$window_, _$rootScope_, _$compile_, _$templateCache_, _DASHBOARDDEFAULTS_,  _Dashboard_){
         $window = _$window_;
         $rootScope = _$rootScope_;
         $compile = _$compile_;
+        $templateCache = _$templateCache_;
         Dashboard = _Dashboard_;
         DASHBOARDDEFAULTS = _DASHBOARDDEFAULTS_;
     }));
@@ -57,9 +59,23 @@ describe('Dashboard service', function() {
         expect(Dashboard.getContainerHeight()).toBe(DASHBOARDDEFAULTS.containerMaxHeight);
     });
 
+    it("should not set container height over max when is at maxHeight", function() {
+        var before = Dashboard.getContainerHeight();
+        expect(Dashboard.increaseContainerHeight(999)).toBe(true);
+        expect(Dashboard.increaseContainerHeight(999)).toBe(false);
+        expect(Dashboard.getContainerHeight()).toBe(DASHBOARDDEFAULTS.containerMaxHeight);
+    });
+
     it("should not set container height under min", function() {
         var before = Dashboard.getContainerHeight();
         expect(Dashboard.increaseContainerHeight(-999)).toBe(true);
+        expect(Dashboard.getContainerHeight()).toBe(DASHBOARDDEFAULTS.containerMinHeight);
+    });
+
+    it("should not set container height under min when is at minHeight", function() {
+        var before = Dashboard.getContainerHeight();
+        expect(Dashboard.increaseContainerHeight(-999)).toBe(true);
+        expect(Dashboard.increaseContainerHeight(-999)).toBe(false);
         expect(Dashboard.getContainerHeight()).toBe(DASHBOARDDEFAULTS.containerMinHeight);
     });
 
@@ -282,6 +298,58 @@ describe('Dashboard service', function() {
         expect(listsScope.width).toBe(listsWidth-30);
         expect(toolsScope.width).toBe(toolsWidth+30);
 
+    });
+
+    it("should correctly resize panels by drag simulation when one panel is collapsed", function(){
+        var el = compileDirective();
+        var panels = angular.element(el).find('dashboard-panel').toArray();
+        
+        Dashboard.setContainerWidth(1200);
+
+        var toolsScope = angular.element(el).find('dashboard-panel[title="tools"]').isolateScope();
+        toolsScope.toggleCollapse();
+
+        var listsScope = angular.element(el).find('dashboard-panel[title="lists"]').isolateScope();
+        var listsWidth = listsScope.width;
+        
+        var detailsScope = angular.element(el).find('dashboard-panel[title="details"]').isolateScope();
+        var detailsWidth = detailsScope.width;             
+
+        expect(Dashboard.tryToResizeCouples(1,+54)).toBe(true);
+
+        expect(listsScope.width).toBe(listsWidth+54);
+        expect(detailsScope.width).toBe(detailsWidth-54);
+
+    });
+
+    it("should add content as expected when dashboard is yet ready", function(){
+        var el = compileDirective();
+
+        $templateCache.put('templateId.html', '<div class="testClass">mytestcontent</div>');
+
+        Dashboard.addContent('lists', 'testTab', 'templateId.html');
+        $rootScope.$digest();
+
+        var content = angular.element(el).find('.testClass');
+
+        expect(content.toArray().length).toBe(1);
+        expect(content.html()).toBe('mytestcontent');
+    });
+
+    it("should add content as expected when dashboard is not yet ready", function(){
+
+        $templateCache.put('templateId.html', '<div class="testClass">mytestcontent</div>');
+
+        Dashboard.addContent('lists', 'testTab', 'templateId.html');
+
+        var elem = $compile('<dashboard></dashboard>')($rootScope);
+        angular.element('body').append(elem);
+        $rootScope.$digest();
+
+        var content = angular.element(elem).find('.testClass');
+
+        expect(content.toArray().length).toBe(1);
+        expect(content.html()).toBe('mytestcontent');
     });
 
 });
