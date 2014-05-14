@@ -7,6 +7,12 @@ angular.module('Pundit2.Communication')
         var annList = [],
             annListById = {};
 
+        annotationExchange.wipe = function() {
+            annotationExchange.log('Wiping every loaded annotation.');
+            annList = [];
+            annListById = {};
+        };
+
         // Returns a promise which gets resolved by an array of IDS of the annotations found.
         // If the user is logged in, the authenticated API is called, otherwise
         annotationExchange.searchByUri = function(uris) {
@@ -25,6 +31,7 @@ angular.module('Pundit2.Communication')
                 headers: { 'Accept': 'application/json' },
                 method: 'GET',
                 url: NameSpace.get(nsKey),
+                cache: false,
                 params: {
                     scope: "all",
                     query: {
@@ -78,7 +85,6 @@ angular.module('Pundit2.Communication')
         annotationExchange.getAnnotationsHash = function() {
             return annListById;
         };
-
 
         annotationExchange.log('Component up and running');
         return annotationExchange;

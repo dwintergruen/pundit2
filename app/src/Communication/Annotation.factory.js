@@ -30,7 +30,6 @@ angular.module('Pundit2.Communication')
         var self = this,
             nsKey = (MyPundit.getUserLogged()) ? 'asAnn' : 'asOpenAnn';
 
-
         if (typeof(useCache) === "undefined") {
             useCache = true;
         }

@@ -154,6 +154,21 @@ angular.module('Pundit2.Client')
                 // annotations: auth or non-auth form the server
                 client.getAnnotations();
 
+                $rootScope.$watch(function() {
+                    return MyPundit.getUserLogged();
+                }, function(newStatus, oldStatus) {
+                    if (newStatus === oldStatus) {
+                        return;
+                    }
+                    if (newStatus === true) {
+                        client.log("User just logged in");
+                        onLogin();
+                    } else {
+                        client.log("User just logged out");
+                        onLogout();
+                    }
+                });
+
                 // TODO: get my items?
             });
 
@@ -170,6 +185,29 @@ angular.module('Pundit2.Client')
             //         Notebook Manager
             //         Tool: comment tag, triple composer
 
+        };
+
+        // Called when the user completed the login process with the modal etc, NOT if the user
+        // was already logged in on boot etc
+        var onLogin = function() {
+
+            // TODO: consolidation wipe! YAYYYYYY
+            ItemsExchange.wipe();
+            AnnotationsExchange.wipe();
+
+            // There could be private annotations we want to show, get them again
+            client.getAnnotations();
+        };
+
+        // Called when the user completed the logout process, clicking on logout
+        var onLogout = function() {
+
+            // TODO: consolidation wipe! YAYYYYYY
+            ItemsExchange.wipe();
+            AnnotationsExchange.wipe();
+
+            // There might have been private annotations we dont want to show anymore
+            client.getAnnotations();
         };
 
         client.log("Component up and running");

@@ -5,9 +5,17 @@ angular.module('Pundit2.Core')
         var itemsExchange = new BaseComponent("ItemsExchange");
 
         var itemListByContainer = {},
-            itemContainers = {};
+            itemContainers = {},
             itemList = [],
             itemListByURI = {};
+
+        itemsExchange.wipe = function() {
+            itemsExchange.log('Wiping every loaded item.');
+            itemListByContainer = {};
+            itemContainers = {};
+            itemList = [];
+            itemListByURI = {};
+        };
 
         itemsExchange.getItems = function() {
             return itemList;

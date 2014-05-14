@@ -9,6 +9,13 @@ angular.module('Pundit2.Core')
             uriTypeMap = {},
             itemListByURI = {};
 
+        cc.wipe = function() {
+            itemListByType = {};
+            typeUriMap = {};
+            uriTypeMap = {};
+            itemListByURI = {};
+        };
+
         cc.getItems = function() {
             return itemListByURI;
         };
@@ -56,13 +63,6 @@ angular.module('Pundit2.Core')
                 return item.uri in itemListByURI;
             else
                 return false;
-        };
-
-        cc.wipe = function() {
-            itemListByType = {};
-            typeUriMap = {};
-            uriTypeMap = {};
-            itemListByURI = {};
         };
 
         // TODO: pass an element and consolidate just that element? or a named content?

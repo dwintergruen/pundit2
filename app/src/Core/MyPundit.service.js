@@ -94,7 +94,7 @@ angular.module('Pundit2.Core')
     // return promise, resolved as true when user is logged in
     myPundit.openLoginPopUp = function(){
 
-        if(typeof(loginPromise) === 'undefined') {
+        if (typeof(loginPromise) === 'undefined') {
             myPundit.err("Login promise not defined, you should call login() first");
             return;
         } else {
