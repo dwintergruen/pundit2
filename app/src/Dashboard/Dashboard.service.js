@@ -294,7 +294,7 @@ angular.module('Pundit2.Dashboard')
                         break;
                     }
                 }
-                // if all collapsed
+                // all left panels are collapsed
                 if ( i < 0 ) {
                     return false;
                 }                

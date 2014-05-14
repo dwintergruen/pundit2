@@ -283,7 +283,7 @@ describe('Dashboard service', function() {
         
     });
 
-    it("should correctly resize/expand panels by drag simulation", function(){
+    it("should correctly resize panels by drag simulation", function(){
         var el = compileDirective();
         var panels = angular.element(el).find('dashboard-panel').toArray();
         
@@ -300,7 +300,47 @@ describe('Dashboard service', function() {
 
     });
 
-    it("should correctly resize panels by drag simulation when one panel is collapsed", function(){
+    it("should not resize panels by left drag simulation when is at minWidth", function(){
+        var el = compileDirective();
+        var panels = angular.element(el).find('dashboard-panel').toArray();
+        var minWidth = 0;
+        for (var i in DASHBOARDDEFAULTS.panels) {
+            minWidth += DASHBOARDDEFAULTS.panels[i].minWidth;
+        }
+        Dashboard.setContainerWidth(minWidth);
+
+        var listsScope = angular.element(el).find('dashboard-panel[title="lists"]').isolateScope();
+        var listsWidth = listsScope.width;
+        var toolsScope = angular.element(el).find('dashboard-panel[title="tools"]').isolateScope();
+        var toolsWidth = toolsScope.width;        
+
+        expect(Dashboard.tryToResizeCouples(0,-30)).toBe(false);
+        expect(listsScope.width).toBe(listsWidth);
+        expect(toolsScope.width).toBe(toolsWidth);
+
+    });
+
+    it("should not resize panels by right drag simulation when is at minWidth", function(){
+        var el = compileDirective();
+        var panels = angular.element(el).find('dashboard-panel').toArray();
+        var minWidth = 0;
+        for (var i in DASHBOARDDEFAULTS.panels) {
+            minWidth += DASHBOARDDEFAULTS.panels[i].minWidth;
+        }
+        Dashboard.setContainerWidth(minWidth);
+
+        var listsScope = angular.element(el).find('dashboard-panel[title="lists"]').isolateScope();
+        var listsWidth = listsScope.width;
+        var toolsScope = angular.element(el).find('dashboard-panel[title="tools"]').isolateScope();
+        var toolsWidth = toolsScope.width;        
+
+        expect(Dashboard.tryToResizeCouples(0,+30)).toBe(false);
+        expect(listsScope.width).toBe(listsWidth);
+        expect(toolsScope.width).toBe(toolsWidth);
+
+    });
+
+    it("should correctly resize panels by right drag simulation when tools is collapsed", function(){
         var el = compileDirective();
         var panels = angular.element(el).find('dashboard-panel').toArray();
         
@@ -322,6 +362,89 @@ describe('Dashboard service', function() {
 
     });
 
+    it("should correctly resize panels by left drag simulation when tools is collapsed", function(){
+        var el = compileDirective();
+        var panels = angular.element(el).find('dashboard-panel').toArray();
+        
+        Dashboard.setContainerWidth(1200);
+
+        var toolsScope = angular.element(el).find('dashboard-panel[title="tools"]').isolateScope();
+        toolsScope.toggleCollapse();
+
+        var listsScope = angular.element(el).find('dashboard-panel[title="lists"]').isolateScope();
+        var listsWidth = listsScope.width;
+        
+        var detailsScope = angular.element(el).find('dashboard-panel[title="details"]').isolateScope();
+        var detailsWidth = detailsScope.width;             
+
+        expect(Dashboard.tryToResizeCouples(0,-54)).toBe(true);
+
+        expect(listsScope.width).toBe(listsWidth-54);
+        expect(detailsScope.width).toBe(detailsWidth+54);
+
+    });
+
+    it("should not resize panels by drag simulation when all next panels are collapsed", function(){
+        var el = compileDirective();
+        var panels = angular.element(el).find('dashboard-panel').toArray();
+        
+        Dashboard.setContainerWidth(1200);
+
+        var toolsScope = angular.element(el).find('dashboard-panel[title="tools"]').isolateScope();
+        toolsScope.toggleCollapse();
+
+        var detailsScope = angular.element(el).find('dashboard-panel[title="details"]').isolateScope();
+        detailsScope.toggleCollapse();            
+
+        var listsScope = angular.element(el).find('dashboard-panel[title="lists"]').isolateScope();
+        var listsWidth = listsScope.width;
+        
+
+        expect(Dashboard.tryToResizeCouples(0,+54)).toBe(false);
+
+        expect(listsScope.width).toBe(listsWidth);
+
+    });
+
+    it("should not resize panels by drag simulation when all before panels are collapsed", function(){
+        var el = compileDirective();
+        var panels = angular.element(el).find('dashboard-panel').toArray();
+        
+        Dashboard.setContainerWidth(1200);
+
+        var toolsScope = angular.element(el).find('dashboard-panel[title="tools"]').isolateScope();
+        toolsScope.toggleCollapse();
+
+        var listsScope = angular.element(el).find('dashboard-panel[title="lists"]').isolateScope();
+        listsScope.toggleCollapse();
+        
+
+        expect(Dashboard.tryToResizeCouples(1,+54)).toBe(false);
+
+    });
+
+    it("should not resize panels by drag simulation when i am collapsed and all next panels are collapsed", function(){
+        var el = compileDirective();
+        var panels = angular.element(el).find('dashboard-panel').toArray();
+        
+        Dashboard.setContainerWidth(1200);
+
+        var toolsScope = angular.element(el).find('dashboard-panel[title="tools"]').isolateScope();
+        toolsScope.toggleCollapse();
+
+        var detailsScope = angular.element(el).find('dashboard-panel[title="details"]').isolateScope();
+        detailsScope.toggleCollapse();            
+
+        var listsScope = angular.element(el).find('dashboard-panel[title="lists"]').isolateScope();
+        var listsWidth = listsScope.width;
+        
+
+        expect(Dashboard.tryToResizeCouples(1,+54)).toBe(false);
+
+        expect(listsScope.width).toBe(listsWidth);
+
+    });
+
     it("should add content as expected when dashboard is yet ready", function(){
         var el = compileDirective();
 
@@ -339,8 +462,10 @@ describe('Dashboard service', function() {
     it("should add content as expected when dashboard is not yet ready", function(){
 
         $templateCache.put('templateId.html', '<div class="testClass">mytestcontent</div>');
+        $templateCache.put('secondtemplateId.html', '<div class="testClass">mytestcontent</div>');
 
         Dashboard.addContent('lists', 'testTab', 'templateId.html');
+        Dashboard.addContent('lists', 'testTab2', 'secondtemplateId.html');
 
         var elem = $compile('<dashboard></dashboard>')($rootScope);
         angular.element('body').append(elem);
@@ -348,7 +473,7 @@ describe('Dashboard service', function() {
 
         var content = angular.element(elem).find('.testClass');
 
-        expect(content.toArray().length).toBe(1);
+        expect(content.toArray().length).toBe(2);
         expect(content.html()).toBe('mytestcontent');
     });
 
