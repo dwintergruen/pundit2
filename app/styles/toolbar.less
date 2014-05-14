@@ -184,8 +184,12 @@ body.pnd-toolbar-active {
     &.pnd-toolbar-error-button .dropdown-menu {
     	padding: 0px;
     	border: 1px solid @brand-warning;
+    	
+    	li:first-child a {
+            border-top: 0px;
+            }
      
-        a {
+        li a {
             background-color: @brand-warning;
             color: #fff;
             padding: 3px 10px;
