@@ -60,8 +60,12 @@ angular.module('Pundit2.ItemsContainer')
         }
 
         // filter items actualy showed
+        str = str.toLowerCase();
+        var strParts = str.split(' ');
+            reg = new RegExp(strParts.join('.*'));
         $scope.displayedItems = itemsArrays[$scope.tabs.activeTab].filter(function(items){
-            return items.label.toLowerCase().indexOf(str.toLowerCase()) > -1;
+            return items.label.toLowerCase().match(reg) !== null;
+            // return items.label.toLowerCase().indexOf(str.toLowerCase()) > -1;
         });
 
     });
