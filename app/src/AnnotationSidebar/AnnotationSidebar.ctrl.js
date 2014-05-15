@@ -42,19 +42,15 @@ angular.module('Pundit2.AnnotationSidebar')
         }
     }); 
 
-    $scope.$watch(function() {
-        return $scope.filters;
-    }, function(currentFilters) {
-        // TODO: individuare un modo migliore per rilevare i singoli filtri attivi
-        $scope.annotations = AnnotationSidebar.getAllAnnotationsFiltered(currentFilters);
-    }, true);
-
     // Watch annotations
     $scope.$watch(function() {
         return AnnotationSidebar.getAllAnnotations();
     }, function(currentAnnotations) {
-        $scope.annotations = currentAnnotations;
-        // TODO: se ci sono filtri attivi, bisogna richiamare i filtri
+        if (needToFilter()) {
+            $scope.annotations = AnnotationSidebar.getAllAnnotationsFiltered($scope.filters);
+        } else {
+            $scope.annotations = currentAnnotations;
+        }
     });
 
     $scope.$watch(function() {
@@ -63,7 +59,7 @@ angular.module('Pundit2.AnnotationSidebar')
         $scope.authors = currentListAuthors;
     });
 
-    // Wacth dashobard height for top of sidebar
+    // Watch dashboard height for top of sidebar
     $scope.$watch(function() {
         return {
             dashboardHeight: Dashboard.getContainerHeight(),
@@ -94,6 +90,42 @@ angular.module('Pundit2.AnnotationSidebar')
     angular.element($window).bind('resize', function () {
         resizeSidebarHeight(body.innerHeight(), $window.innerHeight);
     });
-  
+
+
+
+    $scope.filters = {
+        // predicates: [],
+        // entities: [],
+        author: [],
+        fromDate: '',
+        toDate: ''
+    };
+
+    var needToFilter = function() {
+        for (var f in $scope.filters) {
+            var current = $scope.filters[f];
+            if (typeof(current) === "string" && current !== '') {
+                return true;
+            } else if (angular.isArray(current) && current.length > 0) {
+                return true;
+            }
+        }
+        return false;
+    };
+
+    $scope.toggleAuthor = function(author) {
+        AnnotationSidebar.log('Toggling author '+ author);
+        if ($scope.filters.author.indexOf(author) === -1) {
+            $scope.filters.author.push(author);
+        }
+    };
+
+    $scope.$watch('filters', function(currentFilters) {
+        console.log('Watch filters', currentFilters);
+        // TODO: individuare un modo migliore per rilevare i singoli filtri attivi
+        $scope.annotations = AnnotationSidebar.getAllAnnotationsFiltered(currentFilters);
+    }, true);
+
+
     AnnotationSidebar.log('Controller Run');
 });

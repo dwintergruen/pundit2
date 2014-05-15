@@ -8,7 +8,7 @@
             <span ng-show="value.length>0">{{key}} - {{value}}</span> <br />
         </p>
         <br /><hr />
-        Search: <input ng-model="filters.author">
+        Search: <input ng-model="filters.authorOLD">
         <br />
         <br />
         fromDate: <input ng-model="filters.fromDate">
@@ -17,10 +17,14 @@
         <br /><br />
         Numero filtrate: {{filtered.length}}
         <br /><hr />
-        Autori: 
-        <p ng-repeat="auth in authors">
+        Autori:
+
+        <div ng-repeat="auth in authors">
             <span>{{auth}}</span>
-        </p>
+            <button class="btn btn-info" ng-click="toggleAuthor(auth)">v</button>
+        </div>
+
+
         <br /><hr />
         <p ng-repeat="ann in filtered = (annotations)">
             <span>Created by: {{ann.creatorName}}</span> <br />

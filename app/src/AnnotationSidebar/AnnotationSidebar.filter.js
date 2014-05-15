@@ -2,21 +2,22 @@
 
 angular.module('Pundit2.AnnotationSidebar')
 .filter('author', function() {
-  return function(input, search) {
-    var results = [];
-    var currentAuthor;
-    if (search){
-        angular.forEach(input,function (e) {
-            currentAuthor = e.creatorName.toLowerCase();
-            if (currentAuthor.indexOf(search.toLowerCase()) >= 0) {
-                results.push(e);
-            }
-        });     
-    } else {
-        results = input;
-    }
-    return results;
-  };
+    return function(input, search) {
+        var results = [];
+        var currentAuthor;
+
+        if (search.length > 0) {
+            angular.forEach(input, function (e) {
+                currentAuthor = e.creatorName;
+                if (search.indexOf(currentAuthor) !== -1) {
+                    results.push(e);
+                }
+            });
+        } else {
+            results = input;
+        }
+        return results;
+    };
 })
 .filter('fromDate', function() {
     return function(input, fromValue) {

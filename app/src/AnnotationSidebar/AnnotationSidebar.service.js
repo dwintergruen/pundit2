@@ -40,8 +40,11 @@ angular.module('Pundit2.AnnotationSidebar')
   
     annotationSidebar.getAllAnnotationsFiltered = function(filters) {
         state.filteredAnnotations = angular.copy(state.allAnnotations);
-        angular.forEach(filters,function(expression,filter){
-            if(expression !== ''){
+
+        annotationSidebar.log('Filtering ', filters);
+
+        angular.forEach(filters, function(expression, filter){
+            if (expression !== ''){
                 state.filteredAnnotations = $filter(filter)(state.filteredAnnotations, expression);
             }
         }); 
