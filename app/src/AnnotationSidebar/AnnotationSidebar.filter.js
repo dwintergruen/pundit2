@@ -18,30 +18,6 @@ angular.module('Pundit2.AnnotationSidebar')
     return results;
   };
 })
-// .filter('dateRange', function() {
-//     return function(input, range) {
-//         var results = [];
-//         var fromDateParsed;
-//         var toDateParsed;
-
-//         if (range.fromDate || range.toDate) {
-//             var fromDateParsed = new Date( (range.fromDate && !isNaN(Date.parse(range.fromDate))) ? Date.parse(range.fromDate) : 0 );
-//             var toDateParsed = new Date( (range.toDate && !isNaN(Date.parse(range.toDate))) ? Date.parse(range.toDate) : new Date().getTime() );
-//             fromDateParsed.setHours(0, 0, 0);
-//             toDateParsed.setHours(23, 59, 59);
-        
-//             angular.forEach(input,function (e) {
-//                 var currentAnnotationData = Date.parse(e.created);
-//                 if (currentAnnotationData >= fromDateParsed && currentAnnotationData <= toDateParsed){
-//                     results.push(e);
-//                 }
-//             });
-//         } else {
-//             results = input;
-//         }
-//         return results;
-//     };
-// })
 .filter('fromDate', function() {
     return function(input, fromValue) {
         var results = [];

@@ -17,7 +17,12 @@
         <br /><br />
         Numero filtrate: {{filtered.length}}
         <br /><hr />
-        <p ng-repeat="ann in annotations">
+        Autori: 
+        <p ng-repeat="auth in authors">
+            <span>{{auth}}</span>
+        </p>
+        <br /><hr />
+        <p ng-repeat="ann in filtered = (annotations)">
             <span>Created by: {{ann.creatorName}}</span> <br />
             <span>On: {{ann.created | date : 'MMM d, y H:mm a'}}</span> <br />
         </p>  

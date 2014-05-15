@@ -57,6 +57,12 @@ angular.module('Pundit2.AnnotationSidebar')
         // TODO: se ci sono filtri attivi, bisogna richiamare i filtri
     });
 
+    $scope.$watch(function() {
+        return AnnotationSidebar.getAuthors();
+    }, function(currentListAuthors) {
+        $scope.authors = currentListAuthors;
+    });
+
     // Wacth dashobard height for top of sidebar
     $scope.$watch(function() {
         return {

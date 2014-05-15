@@ -23,7 +23,8 @@ angular.module('Pundit2.AnnotationSidebar')
     var state = {
         isExpanded: annotationSidebar.options.isAnnotationSidebarExpanded,
         allAnnotations: [],
-        filteredAnnotations: []
+        filteredAnnotations: [],
+        authors: []
     };
 
     annotationSidebar.toggle = function(){
@@ -35,7 +36,7 @@ angular.module('Pundit2.AnnotationSidebar')
 
     annotationSidebar.getAllAnnotations = function() {
         return state.allAnnotations;
-    }
+    };
   
     annotationSidebar.getAllAnnotationsFiltered = function(filters) {
         state.filteredAnnotations = angular.copy(state.allAnnotations);
@@ -45,7 +46,18 @@ angular.module('Pundit2.AnnotationSidebar')
             }
         }); 
         return state.filteredAnnotations
-    }
+    };
+
+    var setAuthors = function(annotations){
+        angular.forEach(annotations, function (e) {
+            if(state.authors.indexOf(e.creatorName) === -1){
+                state.authors.push(e.creatorName);
+            }
+        });
+    };
+    annotationSidebar.getAuthors = function(){
+        return state.authors;
+    };
 
     var timeoutPromise;
     $rootScope.$watch(function() {
@@ -56,6 +68,7 @@ angular.module('Pundit2.AnnotationSidebar')
         }
         timeoutPromise = $timeout(function() {
             state.allAnnotations = annotations;
+            setAuthors(annotations);
         }, annotationSidebar.options.annotationsRefresh);
     }, true);
 
