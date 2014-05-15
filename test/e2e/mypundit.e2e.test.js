@@ -63,6 +63,9 @@ describe("OpenID Login", function() {
 						expect(userButton[0].getText()).toBe(username);
 
 					}); // end find .pnd-toolbar-user-button
+                    p.sleep(1000);
+                    p.findElement(protractor.By.css('.btn-example-logout')).click();
+                    p.sleep(1000);
 
 				}); //  end fine signIn
 
