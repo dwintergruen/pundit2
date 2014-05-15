@@ -7,7 +7,7 @@
         var p = new Annotation("da128c73");
         var item;
         p.then(function() {
-            item = ItemsExchange.getItems()[2];
+            item = ItemsExchange.getItems()[0];
             angular.element('.pnd-wrp').append('<item uri="'+item.uri+'"></item>');
 
             var added = angular.element('[data-ng-app="Pundit2"] item');
