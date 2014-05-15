@@ -1,12 +1,5 @@
-angular.module('Pundit2.ItemsContainer')
-.constant('ITEMSCONTAINERDEFAULTS', {
-    initialActiveTab: 0,
-
-    debug: false
-})
-.controller('ItemsContainerCtrl', function($scope, BaseComponent, ITEMSCONTAINERDEFAULTS, ItemsExchange) {
-
-    var itemsContainer = new BaseComponent('ItemsContainer', ITEMSCONTAINERDEFAULTS);
+angular.module('Pundit2.PageItemsContainer')
+.controller('PageItemsContainerCtrl', function($scope, PageItemsContainer, ItemsExchange) {
 
     // array of items array, one foreach tab, when activeTab change the showed items change
     // contain all items array (all items array, text items array, image items array and page items array)
@@ -15,35 +8,35 @@ angular.module('Pundit2.ItemsContainer')
     $scope.tabs = [
         {
             title: 'All Items',
-            template: 'src/ItemsContainer/items.tmpl.html',
+            template: 'src/PageItemsContainer/items.tmpl.html',
             filterFunction: function(){
                 return true;
             }
         },
         {
             title: 'Text',
-            template: 'src/ItemsContainer/items.tmpl.html',
+            template: 'src/PageItemsContainer/items.tmpl.html',
             filterFunction: function(item){
                 return item.isTextFragment();
             }
         },
         {
             title: 'Images',
-            template: 'src/ItemsContainer/items.tmpl.html',
+            template: 'src/PageItemsContainer/items.tmpl.html',
             filterFunction: function(item){
                 return item.isImage();
             }
         },
         {
             title: 'Pages',
-            template: 'src/ItemsContainer/items.tmpl.html',
+            template: 'src/PageItemsContainer/items.tmpl.html',
             filterFunction: function(item){
                 return item.isWebPage();
             }
         }
     ];
 
-    $scope.tabs.activeTab = itemsContainer.options.initialActiveTab;
+    $scope.tabs.activeTab = PageItemsContainer.options.initialActiveTab;
 
     // every time that change active tab show new items array
     $scope.$watch(function() {
