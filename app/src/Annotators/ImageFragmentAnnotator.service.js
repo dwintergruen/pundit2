@@ -1,12 +1,12 @@
 angular.module('Pundit2.Annotators')
-.service('ImageFragmentAnnotator', function(NameSpace, BaseComponent, AnnotatorsOrchestrator) {
+.service('ImageFragmentAnnotator', function(NameSpace, BaseComponent, Consolidation) {
 
     // Create the component and declare what we deal with: text
     var ifa = new BaseComponent('ImageFragmentAnnotator');
-    ifa.label = "image",
+    ifa.label = "image";
     ifa.type = NameSpace.fragments[ifa.label];
 
-    AnnotatorsOrchestrator.addAnnotator(ifa);
+    Consolidation.addAnnotator(ifa);
     
     ifa.isConsolidable = function(item) {
         if (!angular.isArray(item.type)) {
@@ -17,7 +17,7 @@ angular.module('Pundit2.Annotators')
             return false;
         }
         
-        // TODO: it's a valid text fragment if:
+        // TODO: it's a valid image fragment if:
         // - one of its types is the fragment-image type
         // - has a part of
         // - .selector contains something
@@ -31,6 +31,10 @@ angular.module('Pundit2.Annotators')
 
         ifa.log("Item not valid: not recognized as a consolidable "+ ifa.label);
         return false;
+    };
+
+    ifa.getAvailableTargets = function() {
+        return [];
     };
 
     ifa.log("Component up and running");

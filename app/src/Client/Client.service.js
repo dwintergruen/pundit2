@@ -17,8 +17,9 @@ angular.module('Pundit2.Client')
         bootModules: ['Toolbar', 'Dashboard', 'AnnotationSidebar', 'Preview', 'PageItemsContainer']
     })
 
-    .service('Client', function(BaseComponent, Config, MyPundit, AnnotatorsOrchestrator,
-                                TextFragmentAnnotator, AnnotationsExchange, Consolidation,
+    .service('Client', function(BaseComponent, Config, MyPundit,
+                                ImageFragmentAnnotator, TextFragmentAnnotator, Consolidation,
+                                AnnotationsExchange,
                                 ItemsExchange, Annotation, CLIENTDEFAULTS,
                                 $injector, $templateCache, $rootScope) {
 
@@ -103,7 +104,7 @@ angular.module('Pundit2.Client')
         // Retrieves the annotations for this page and consolidates them
         client.getAnnotations = function() {
 
-            var uris = AnnotatorsOrchestrator.getAvailableTargets(),
+            var uris = Consolidation.getAvailableTargets(),
                 annPromise = AnnotationsExchange.searchByUri(uris);
 
             client.log('Getting annotations for available targets', uris);

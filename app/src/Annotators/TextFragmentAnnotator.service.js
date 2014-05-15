@@ -12,7 +12,7 @@ angular.module('Pundit2.Annotators')
 })
 
 .service('TextFragmentAnnotator',
-    function(TEXTFRAGMENTANNOTATORDEFAULTS, NameSpace, BaseComponent, AnnotatorsOrchestrator,
+    function(TEXTFRAGMENTANNOTATORDEFAULTS, NameSpace, BaseComponent, Consolidation,
              XpointersHelper, ContextualMenu, $compile, $rootScope, $location) {
 
     // Create the component and declare what we deal with: text
@@ -22,7 +22,7 @@ angular.module('Pundit2.Annotators')
 
     // The orchestrator will be called by the consolidation service as single point of
     // interaction when it comes to deal with fragments. Let's subscribe the text type.
-    AnnotatorsOrchestrator.addAnnotator(tfa);
+    Consolidation.addAnnotator(tfa);
 
 
     // Contextual Menu actions for text fragments

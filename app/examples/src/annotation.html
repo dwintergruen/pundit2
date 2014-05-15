@@ -20,7 +20,6 @@ var punditConfig = {
     modules: {
         "Annotation": { debug: false },
         "Consolidation": { debug: false },
-        "AnnotatorsOrchestrator": { debug: false },
         "TextFragmentAnnotator": { debug: true },
         "ImageFragmentAnnotator": { debug: false },
         "XpointersHelper": { debug: true },
@@ -29,7 +28,7 @@ var punditConfig = {
 
 };
 
-var AnnotationDemoCtrl = function($scope, $q, Consolidation, Annotation, AnnotatorsOrchestrator,
+var AnnotationDemoCtrl = function($scope, $q, Consolidation, Annotation,
     TextFragmentAnnotator, ItemsExchange) {
 
     var toLoad = ["8fd05a49", "65286186", "385c1647"],

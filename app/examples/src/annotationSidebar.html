@@ -19,7 +19,7 @@
 
         };
 
-    var AnnotationSidebarDemoCtrl = function($scope, $q, AnnotationSidebar, AnnotatorsOrchestrator,
+    var AnnotationSidebarDemoCtrl = function($scope, $q, AnnotationSidebar,
                                              AnnotationsExchange, Consolidation, ItemsExchange,
                                              Annotation) {
 
@@ -33,7 +33,7 @@
 
         // ---
 
-        var uris = AnnotatorsOrchestrator.getAvailableTargets();
+        var uris = Consolidation.getAvailableTargets();
         console.log('Available targets', uris);
 
         var annPromise = AnnotationsExchange.searchByUri(uris);
