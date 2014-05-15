@@ -3,10 +3,7 @@ angular.module('Pundit2.Dashboard')
 
         return {
             restrict: 'EAC',
-            scope: {
-                tabs: "=pndTabs"
-            },
-            require: '?ngModel',
+            scope: true,
             templateUrl: 'src/Dashboard/pndTabs.dir.tmpl.html',
             controller: 'pndTabsCtrl'
         };

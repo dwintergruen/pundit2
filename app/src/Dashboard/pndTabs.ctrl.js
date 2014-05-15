@@ -126,6 +126,10 @@ angular.module('Pundit2.Dashboard')
     // set a tab as active
     $scope.setActive = function(index) {
         $scope.active = index;
+
+        // Setting activeTab back into the original tabs array, so the provider of the tabs
+        // can be notified when a tab is selected (eg: PageItemsContainer!)
+        $scope.tabs.activeTab = index;
         // set to true if an hidden tab is selected and is active
         $scope.hiddenTabIsActive = !$scope.panes[index].isVisible;
     };
