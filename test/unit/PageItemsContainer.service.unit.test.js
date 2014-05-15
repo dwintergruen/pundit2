@@ -17,15 +17,21 @@ describe("PageItemsContainer", function(){
         PageItemsContainer = _PageItemsContainer_;
     }));
 
-    var compileDirective = function(){
+    /*var compileDirective = function(){
         var elem = $compile('<page-item-container></page-item-container>')($rootScope);
         angular.element('body').append(elem);
         $rootScope.$digest();
         return elem;
-    };
+    };*/
 
-    afterEach(function(){
+    /*afterEach(function(){
         angular.element('page-item-container').remove();
+    });*/
+
+    it('should correctly initialize', function(){
+        expect(PageItemsContainer.buildItemsArray).toBeDefined();
+        expect(PageItemsContainer.getItemsArrays).toBeDefined();
+        expect(PageItemsContainer.getItemsArrays().length).toBe(0);
     });
 
 });

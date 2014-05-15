@@ -3,14 +3,14 @@ angular.module('Pundit2.PageItemsContainer')
 
     $scope.dropdownTemplate = "src/Toolbar/dropdown.tmpl.html";
 
-    // how items property is compare to sort
-    // legal value are: 'type', 'label'
+    // items property used to compare
+    // legal value are: 'type' and 'label'
     var order = PageItemsContainer.options.order;
 
     // how order items, true is ascending, false is descending
     $scope.reverse = PageItemsContainer.options.reverse;
 
-    // items tabs used to filter items list
+    // tabs used to filter items list by type (all, text, image and pages)
     $scope.tabs = [
         {
             title: 'All Items',
@@ -42,7 +42,7 @@ angular.module('Pundit2.PageItemsContainer')
         }
     ];
 
-    // index of the active tab inside $scope.tabs 
+    // index of the active tab (the tab that actualy show it content) 
     $scope.tabs.activeTab = PageItemsContainer.options.initialActiveTab;
 
     // sort button dropdown content
@@ -69,7 +69,7 @@ angular.module('Pundit2.PageItemsContainer')
         return str.replace(/ /g,'');
     };
 
-    // getter function used to order items inside template
+    // getter function used inside template to order items 
     // return the items property value used to order
     $scope.getOrderProperty = function(item){
 
@@ -104,6 +104,7 @@ angular.module('Pundit2.PageItemsContainer')
         return $scope.search;
     }, function(str) {
 
+        // any item is actualy showed
         if (typeof($scope.displayedItems) === 'undefined') {
             return;
         }
@@ -121,7 +122,6 @@ angular.module('Pundit2.PageItemsContainer')
 
         $scope.displayedItems = PageItemsContainer.getItemsArrays()[$scope.tabs.activeTab].filter(function(items){
             return items.label.toLowerCase().match(reg) !== null;
-            // return items.label.toLowerCase().indexOf(str.toLowerCase()) > -1;
         });
 
     });

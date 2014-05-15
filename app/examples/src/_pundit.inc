@@ -71,6 +71,10 @@
     <script src="../src/PageItemsContainer/PageItemsContainer.ctrl.js"></script>
     <script src="../src/PageItemsContainer/PageItemsContainer.service.js"></script>
 
+    <script src="../src/Items/Items.js"></script>
+    <script src="../src/Items/Items.dir.js"></script>
+    <script src="../src/Items/Items.ctrl.js"></script>
+
     <script src="../src/Toolbar/Toolbar.js"></script>
     <script src="../src/Toolbar/Toolbar.dir.js"></script>
     <script src="../src/Toolbar/Toolbar.ctrl.js"></script>

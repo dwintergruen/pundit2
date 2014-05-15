@@ -9,7 +9,7 @@ angular.module('Pundit2.PageItemsContainer')
     clientDashboardPanel: "lists",
     clientDashboardTabTitle: "Page Items",
 
-    // how items property is used to compare
+    // items property used to compare
     order: 'label',
     // how order items (true ascending, false descending)
     reverse: false,
@@ -20,7 +20,7 @@ angular.module('Pundit2.PageItemsContainer')
 
     var pageItemsContainer = new BaseComponent('PageItemsContainer', ITEMSCONTAINERDEFAULTS);
 
-    // array of items array, one foreach tab, when activeTab change the showed items change
+    // array of items array, one foreach tab, when activeTab change the showed array change
     // contain all items array (all items array, text items array, image items array and page items array)
     var itemsArrays = [];
 
