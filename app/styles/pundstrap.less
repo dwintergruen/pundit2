@@ -1,6 +1,14 @@
 // Path where to find bootstrap's .less sources
 @bspath: "../../bower_components/bootstrap/less/";
 
+
+// Core variables and mixins, imported again to being able to use them
+// outside of the .pnd-wrp import
+@import "@{bspath}variables.less";
+@import "@{bspath}mixins.less";
+@import "variables.less";
+
+
 // Wrap every bs rule under one of our nodes
 .pnd-wrp {
 
@@ -42,21 +50,17 @@
     @import "@{bspath}popovers.less";
     @import "@{bspath}carousel.less";
 
-    @import "@{bspath}utilities.less";
+    // NOT importng utilities, see the rest of this file
+    // @import "@{bspath}utilities.less";
     @import "@{bspath}responsive-utilities.less";
 
 }
 
-// Core variables and mixins, imported again to being able to use them
-// outside of the .pnd-wrp import
-@import "@{bspath}variables.less";
-@import "@{bspath}mixins.less";
-@import "variables.less";
-
 .pnd-wrp {
-@import "theme.less";
-@import "panel.less";
+    @import "theme.less";
+    @import "panel.less";
 }
+
 
 //////////////////////////////////////////////////////////////////////////
 // Rewrite every rule which was applied to body, html or any other rule //
@@ -82,3 +86,10 @@
     color: @text-color;
     background-color: @body-bg;
 }
+
+
+// utilities.less: NOT importing it prefixed, or clearfix() mixin (and others) will get extend()-ed
+// by too much stuff elsewhere and we end up with double prefixes
+// TODO: can we prefix at least SOMETHING inside this utilities.less??
+
+@import "@{bspath}utilities.less";
