@@ -39,15 +39,18 @@ angular.module('Pundit2.PageItemsContainer')
         return itemsArrays;
     };
 
+    var removeSpace = function(str){
+        return str.replace(/ /g,'');
+    };
 
     pageItemsContainer.sortByLabel = function(asc, activeTab){
         if (asc) {
-            itemsArrays[activeTab].sort(function(a, b){
-                return a.label.localeCompare(b.label);
+            itemsArrays[activeTab].sort(function(itemA, itemB){
+                return removeSpace(itemA.label).localeCompare(removeSpace(itemB.label));
             });
         } else {
-            itemsArrays[activeTab].sort(function(a, b){
-                return b.label.localeCompare(a.label);
+            itemsArrays[activeTab].sort(function(itemA, itemB){
+                return removeSpace(itemB.label).localeCompare(removeSpace(itemA.label));
             });
         }        
     };
@@ -55,14 +58,14 @@ angular.module('Pundit2.PageItemsContainer')
     pageItemsContainer.sortByType = function(asc, activeTab){
         if (asc) {
             itemsArrays[activeTab].sort(function(itemA, itemB){
-                var aTypeLabel = TypesHelper.getLabel(itemA.type[0]),
-                    bTypeLabel = TypesHelper.getLabel(itemB.type[0]);
+                var aTypeLabel = removeSpace(TypesHelper.getLabel(itemA.type[0])),
+                    bTypeLabel = removeSpace(TypesHelper.getLabel(itemB.type[0]));
                 return aTypeLabel.localeCompare(bTypeLabel);
             });
         } else {
             itemsArrays[activeTab].sort(function(itemA, itemB){
-                var aTypeLabel = TypesHelper.getLabel(itemA.type[0]),
-                    bTypeLabel = TypesHelper.getLabel(itemB.type[0]);
+                var aTypeLabel = removeSpace(TypesHelper.getLabel(itemA.type[0])),
+                    bTypeLabel = removeSpace(TypesHelper.getLabel(itemB.type[0]));
                 return bTypeLabel.localeCompare(aTypeLabel);
             });
         }
