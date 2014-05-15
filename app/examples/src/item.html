@@ -1,0 +1,25 @@
+<!-- buildexamples:section header --><!-- /buildexamples -->
+
+<script>
+
+    var ItemContainerDemoCtrl = function($scope, $compile, Annotation, ItemsExchange) {
+    
+        var p = new Annotation("da128c73");
+        var item;
+        p.then(function() {
+            item = ItemsExchange.getItems()[2];
+            angular.element('.pnd-wrp').append('<item uri="'+item.uri+'"></item>');
+
+            var added = angular.element('[data-ng-app="Pundit2"] item');
+            $compile(added)($scope);
+        });
+        
+    };
+
+</script>
+
+<div data-ng-app="Pundit2" class="pnd-wrp" ng-controller="ItemContainerDemoCtrl">
+    
+</div>
+
+<!-- buildexamples:section footer --><!-- /buildexamples -->
