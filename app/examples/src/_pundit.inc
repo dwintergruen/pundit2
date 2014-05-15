@@ -52,6 +52,7 @@
     <script src="../src/AnnotationSidebar/AnnotationSidebar.js"></script>
     <script src="../src/AnnotationSidebar/AnnotationSidebar.dir.js"></script>
     <script src="../src/AnnotationSidebar/AnnotationSidebar.ctrl.js"></script>
+    <script src="../src/AnnotationSidebar/AnnotationSidebar.filter.js"></script>
     <script src="../src/AnnotationSidebar/AnnotationSidebar.service.js"></script>
 
     <script src="../src/Dashboard/Dashboard.js"></script>

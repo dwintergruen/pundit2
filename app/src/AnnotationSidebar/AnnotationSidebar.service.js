@@ -16,13 +16,14 @@ angular.module('Pundit2.AnnotationSidebar')
 
     debug: false
 })
-.service('AnnotationSidebar', function($rootScope, $timeout, BaseComponent, AnnotationsExchange, ANNOTATIONSIDEBARDEFAULTS) {
+.service('AnnotationSidebar', function($rootScope, $filter, $timeout, BaseComponent, AnnotationsExchange, ANNOTATIONSIDEBARDEFAULTS) {
     
     var annotationSidebar = new BaseComponent('AnnotationSidebar', ANNOTATIONSIDEBARDEFAULTS);
 
     var state = {
         isExpanded: annotationSidebar.options.isAnnotationSidebarExpanded,
-        allAnnotations: []
+        allAnnotations: [],
+        filteredAnnotations: []
     };
 
     annotationSidebar.toggle = function(){
@@ -34,6 +35,16 @@ angular.module('Pundit2.AnnotationSidebar')
 
     annotationSidebar.getAllAnnotations = function() {
         return state.allAnnotations;
+    }
+  
+    annotationSidebar.getAllAnnotationsFiltered = function(filters) {
+        state.filteredAnnotations = angular.copy(state.allAnnotations);
+        angular.forEach(filters,function(expression,filter){
+            if(expression !== ''){
+                state.filteredAnnotations = $filter(filter)(state.filteredAnnotations, expression);
+            }
+        }); 
+        return state.filteredAnnotations
     }
 
     var timeoutPromise;

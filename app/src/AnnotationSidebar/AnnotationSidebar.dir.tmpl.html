@@ -2,10 +2,24 @@
     <div class="pnd-annotation-sidebar-content" ng-show="isAnnotationSidebarExpanded">
         <button>Annotations</button>
         <button>Suggestions</button>
+        <br /><hr />
+        Filtri attivi <br />
+        <p ng-repeat="(key, value) in filters">
+            <span ng-show="value.length>0">{{key}} - {{value}}</span> <br />
+        </p>
+        <br /><hr />
+        Search: <input ng-model="filters.author">
         <br />
+        <br />
+        fromDate: <input ng-model="filters.fromDate">
+        <br />
+        toDate: <input ng-model="filters.toDate">
+        <br /><br />
+        Numero filtrate: {{filtered.length}}
+        <br /><hr />
         <p ng-repeat="ann in annotations">
             <span>Created by: {{ann.creatorName}}</span> <br />
-            <span>On: {{ann.created}}</span> <br />
-        </p>
+            <span>On: {{ann.created | date : 'MMM d, y H:mm a'}}</span> <br />
+        </p>  
     </div>
 </div>

@@ -1,7 +1,7 @@
 /*jshint strict: false*/
 
 angular.module('Pundit2.AnnotationSidebar')
-.controller('AnnotationSidebarCtrl', function($scope, $rootScope, $window, AnnotationSidebar, Dashboard) {
+.controller('AnnotationSidebarCtrl', function($scope, $filter, $window, AnnotationSidebar, Dashboard) {
     var bodyClasses = AnnotationSidebar.options.bodyExpandedClass + ' ' + AnnotationSidebar.options.bodyCollapsedClass;
     var sidebarClasses = AnnotationSidebar.options.sidebarExpandedClass + ' ' + AnnotationSidebar.options.sidebarCollapsedClass;
 
@@ -10,13 +10,14 @@ angular.module('Pundit2.AnnotationSidebar')
 
     // TODO: prelevare la dimensione reale
     // TODO: sarebbe meglio avere un metodo direttamente di toolbar?
-
     // var toolbarHeight = angular.element('toolbar nav').css('height');
-    var toolbarHeight = 30;
-    var newMarginTopSidebar;
 
-    var sidebarCurrentHeight;
-    var sidebarNewHeight;
+    var state = {
+        toolbarHeight: 30,
+        newMarginTopSidebar: 0,
+        sidebarCurrentHeight: 0,
+        sidebarNewHeight: 0
+    };
 
     container.css('height', body.innerHeight() + 'px');
 
@@ -39,14 +40,22 @@ angular.module('Pundit2.AnnotationSidebar')
             body.toggleClass(bodyClasses);
             container.toggleClass(sidebarClasses);
         }
-    });
+    }); 
+
+    $scope.$watch(function() {
+        return $scope.filters;
+    }, function(currentFilters) {
+        // TODO: individuare un modo migliore per rilevare i singoli filtri attivi
+        $scope.annotations = AnnotationSidebar.getAllAnnotationsFiltered(currentFilters);
+    }, true);
 
     // Watch annotations
     $scope.$watch(function() {
         return AnnotationSidebar.getAllAnnotations();
     }, function(currentAnnotations) {
         $scope.annotations = currentAnnotations;
-    }, true);
+        // TODO: se ci sono filtri attivi, bisogna richiamare i filtri
+    });
 
     // Wacth dashobard height for top of sidebar
     $scope.$watch(function() {
@@ -56,19 +65,19 @@ angular.module('Pundit2.AnnotationSidebar')
         };
     }, function(dashboardValue) {
         if (dashboardValue.dashboardVisibility){
-            newMarginTopSidebar = toolbarHeight + dashboardValue.dashboardHeight;
-            container.css('top', newMarginTopSidebar + 'px');
+            state.newMarginTopSidebar = state.toolbarHeight + dashboardValue.dashboardHeight;
+            container.css('top', state.newMarginTopSidebar + 'px');
         } else {
-            container.css('top', toolbarHeight + 'px');
+            container.css('top', state.toolbarHeight + 'px');
         }
     }, true);
 
     // Annotation sidebar height
     var resizeSidebarHeight = function(bodyHeight, windowHeight) {
-        sidebarNewHeight = Math.max(bodyHeight, windowHeight);
-        sidebarCurrentHeight = container.innerHeight();
-        if (sidebarNewHeight !== sidebarCurrentHeight) {
-            container.css('height', sidebarNewHeight + 'px');
+        state.sidebarNewHeight = Math.max(bodyHeight, windowHeight - state.toolbarHeight);
+        state.sidebarCurrentHeight = container.innerHeight();
+        if (state.sidebarNewHeight !== state.sidebarCurrentHeight) {
+            container.css('height', state.sidebarNewHeight + 'px');
         }
     };
     $scope.$watch(function() {
@@ -79,7 +88,6 @@ angular.module('Pundit2.AnnotationSidebar')
     angular.element($window).bind('resize', function () {
         resizeSidebarHeight(body.innerHeight(), $window.innerHeight);
     });
-
   
     AnnotationSidebar.log('Controller Run');
 });

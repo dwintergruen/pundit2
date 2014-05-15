@@ -4,6 +4,9 @@
     .pnd-cons {
         background: #fc0;
     }
+    pre {
+        float: left;
+    }
 </style>
 
 <script type="text/javascript">
@@ -23,6 +26,10 @@
         $scope.toogle = function(){
             AnnotationSidebar.toggle();
         };
+
+        // $scope.bla = function(){
+        //     AnnotationSidebar.setFilter("gatto", "matto");
+        // };
 
         // ---
 
@@ -58,6 +65,7 @@
 
     <div>
         <button type="button" class="btn btn-default" ng-click="toogle()">Annotations</button>
+        <button type="button" class="btn btn-default" ng-click="bla()">Prova</button>
     </div>
 
     <br />
@@ -77,9 +85,9 @@
             </div>
 
         </div>
-        <div class="col-sm-6">
+        <!-- <div class="col-sm-6">
             <pre>Annotations: {{tempannotations}}</pre>
-        </div>
+        </div> -->
 
     </div>
 
