@@ -1,3 +1,5 @@
 <ul>
-    <li ng-repeat="pndItem in displayedItems | orderBy:getOrderProperty:reverse" ng-mouseover="onItemsMouseOver(pndItem)">{{pndItem.label}}</li>
+    <li ng-repeat="pndItem in displayedItems | orderBy:getOrderProperty:reverse">
+        <item uri="{{pndItem.uri}}"></item>
+    </li>
 </ul>

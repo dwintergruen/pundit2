@@ -135,10 +135,4 @@ angular.module('Pundit2.PageItemsContainer')
         $scope.displayedItems = PageItemsContainer.buildItemsArray($scope.tabs.activeTab, $scope.tabs, newItems);
     }, true);
 
-    $scope.onItemsMouseOver = function(item){
-        Preview.showDashboardPreview(item);
-    }
-
-    console.log('itemsContainer controller run with container: ', $scope.container);
-
 });
