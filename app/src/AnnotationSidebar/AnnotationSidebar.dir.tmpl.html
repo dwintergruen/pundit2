@@ -5,15 +5,15 @@
         <br /><hr />
         Filtri attivi <br />
         <p ng-repeat="(key, value) in filters">
-            <span ng-show="value.length>0">{{key}} - {{value}}</span> <br />
+            <span ng-show="value.expression.length>0">{{value.filterLabel}} = {{value.expression}}</span> <br />
         </p>
         <br /><hr />
-        Search: <input ng-model="filters.authorOLD">
+        Search: <input ng-model="filters.freeText.expression">
         <br />
         <br />
-        fromDate: <input ng-model="filters.fromDate">
+        fromDate: <input ng-model="filters.fromDate.expression">
         <br />
-        toDate: <input ng-model="filters.toDate">
+        toDate: <input ng-model="filters.toDate.expression">
         <br /><br />
         Numero filtrate: {{filtered.length}}
         <br /><hr />
@@ -23,7 +23,6 @@
             <span>{{auth}}</span>
             <button class="btn btn-info" ng-click="toggleAuthor(auth)">v</button>
         </div>
-
 
         <br /><hr />
         <p ng-repeat="ann in filtered = (annotations)">

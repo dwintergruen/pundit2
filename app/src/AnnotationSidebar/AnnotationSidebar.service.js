@@ -39,16 +39,19 @@ angular.module('Pundit2.AnnotationSidebar')
     };
   
     annotationSidebar.getAllAnnotationsFiltered = function(filters) {
+        var currentFilterObjExpression;
+        var currentFilterName;
         state.filteredAnnotations = angular.copy(state.allAnnotations);
-
-        annotationSidebar.log('Filtering ', filters);
-
-        angular.forEach(filters, function(expression, filter){
-            if (expression !== ''){
-                state.filteredAnnotations = $filter(filter)(state.filteredAnnotations, expression);
+        angular.forEach(filters, function(filterObj){
+            currentFilterName = filterObj.filterName;
+            currentFilterObjExpression = filterObj.expression;
+            if (typeof(currentFilterObjExpression) === "string" && currentFilterObjExpression !== '') {
+                state.filteredAnnotations = $filter(currentFilterName)(state.filteredAnnotations, currentFilterObjExpression);
+            } else if (angular.isArray(currentFilterObjExpression) && currentFilterObjExpression.length > 0) {
+                state.filteredAnnotations = $filter(currentFilterName)(state.filteredAnnotations, currentFilterObjExpression);
             }
         }); 
-        return state.filteredAnnotations
+        return state.filteredAnnotations;
     };
 
     var setAuthors = function(annotations){

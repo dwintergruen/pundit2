@@ -1,6 +1,14 @@
 /*jshint strict: false*/
 
 angular.module('Pundit2.AnnotationSidebar')
+.filter('freeText', function() {
+    return function(input, search) {
+        // TODO: freeText work-in-progress
+        var results = [];
+        results = input;
+        return results;
+    };
+})
 .filter('author', function() {
     return function(input, search) {
         var results = [];

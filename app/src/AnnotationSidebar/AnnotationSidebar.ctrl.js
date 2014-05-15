@@ -42,23 +42,6 @@ angular.module('Pundit2.AnnotationSidebar')
         }
     }); 
 
-    // Watch annotations
-    $scope.$watch(function() {
-        return AnnotationSidebar.getAllAnnotations();
-    }, function(currentAnnotations) {
-        if (needToFilter()) {
-            $scope.annotations = AnnotationSidebar.getAllAnnotationsFiltered($scope.filters);
-        } else {
-            $scope.annotations = currentAnnotations;
-        }
-    });
-
-    $scope.$watch(function() {
-        return AnnotationSidebar.getAuthors();
-    }, function(currentListAuthors) {
-        $scope.authors = currentListAuthors;
-    });
-
     // Watch dashboard height for top of sidebar
     $scope.$watch(function() {
         return {
@@ -92,18 +75,34 @@ angular.module('Pundit2.AnnotationSidebar')
     });
 
 
-
+    // # Filters
+    
     $scope.filters = {
-        // predicates: [],
-        // entities: [],
-        author: [],
-        fromDate: '',
-        toDate: ''
+        freeText: {
+            filterName: 'freeText',
+            filterLabel: 'Free text',
+            expression: ''
+        },
+        author: {
+            filterName: 'author',
+            filterLabel: 'Author',
+            expression: []
+        },
+        fromDate: {
+            filterName: 'fromDate',
+            filterLabel: 'From date',
+            expression: ''
+        },
+        toDate: {
+            filterName: 'toDate',
+            filterLabel: 'To date',
+            expression: ''
+        }
     };
 
     var needToFilter = function() {
         for (var f in $scope.filters) {
-            var current = $scope.filters[f];
+            var current = $scope.filters[f].expression;
             if (typeof(current) === "string" && current !== '') {
                 return true;
             } else if (angular.isArray(current) && current.length > 0) {
@@ -113,12 +112,16 @@ angular.module('Pundit2.AnnotationSidebar')
         return false;
     };
 
-    $scope.toggleAuthor = function(author) {
-        AnnotationSidebar.log('Toggling author '+ author);
-        if ($scope.filters.author.indexOf(author) === -1) {
-            $scope.filters.author.push(author);
+    // Watch annotations
+    $scope.$watch(function() {
+        return AnnotationSidebar.getAllAnnotations();
+    }, function(currentAnnotations) {
+        if (needToFilter()) {
+            $scope.annotations = AnnotationSidebar.getAllAnnotationsFiltered($scope.filters);
+        } else {
+            $scope.annotations = currentAnnotations;
         }
-    };
+    }); 
 
     $scope.$watch('filters', function(currentFilters) {
         console.log('Watch filters', currentFilters);
@@ -126,6 +129,21 @@ angular.module('Pundit2.AnnotationSidebar')
         $scope.annotations = AnnotationSidebar.getAllAnnotationsFiltered(currentFilters);
     }, true);
 
+    $scope.$watch(function() {
+        return AnnotationSidebar.getAuthors();
+    }, function(currentListAuthors) {
+        $scope.authors = currentListAuthors;
+    });
+
+    $scope.toggleAuthor = function(author) {
+        AnnotationSidebar.log('Toggling author '+ author);
+        var indexAuthor = $scope.filters.author.expression.indexOf(author);
+        if (indexAuthor === -1) {
+            $scope.filters.author.expression.push(author);
+        } else {
+            $scope.filters.author.expression.splice(indexAuthor, 1);
+        }
+    };
 
     AnnotationSidebar.log('Controller Run');
 });
