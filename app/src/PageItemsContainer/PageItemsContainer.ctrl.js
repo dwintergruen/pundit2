@@ -1,9 +1,5 @@
 angular.module('Pundit2.PageItemsContainer')
-.controller('PageItemsContainerCtrl', function($scope, PageItemsContainer, ItemsExchange) {
-
-    // array of items array, one foreach tab, when activeTab change the showed items change
-    // contain all items array (all items array, text items array, image items array and page items array)
-    var itemsArrays = [];
+.controller('PageItemsContainerCtrl', function($scope, PageItemsContainer, ItemsExchange, Preview) {
 
     $scope.tabs = [
         {
@@ -42,7 +38,7 @@ angular.module('Pundit2.PageItemsContainer')
     $scope.$watch(function() {
         return $scope.tabs.activeTab;
     }, function(activeTab) {
-        $scope.displayedItems = itemsArrays[activeTab];
+        $scope.displayedItems = PageItemsContainer.getItemsArrays()[activeTab];
     });
 
     // every time that user digit text inside <input>
@@ -65,37 +61,25 @@ angular.module('Pundit2.PageItemsContainer')
         str = str.toLowerCase().replace(/\s+/g, ' ');
         var strParts = str.split(' ');
             reg = new RegExp(strParts.join('.*'));
-        $scope.displayedItems = itemsArrays[$scope.tabs.activeTab].filter(function(items){
+        $scope.displayedItems = PageItemsContainer.getItemsArrays()[$scope.tabs.activeTab].filter(function(items){
             return items.label.toLowerCase().match(reg) !== null;
             // return items.label.toLowerCase().indexOf(str.toLowerCase()) > -1;
         });
 
     });
 
-    var buildItemsArray = function(items) {
-
-        for (var i=0; i<$scope.tabs.length; i++) {
-            // check if it is my object
-            if ( angular.isObject($scope.tabs[i]) && typeof($scope.tabs[i].filterFunction) !== 'undefined' ) {
-                // filter items with relative filter function
-                itemsArrays[i] = items.filter(function(item){
-                    return $scope.tabs[i].filterFunction(item);
-                });
-            }
-        }
-
-    };
-
     $scope.$watch(function() {
         // TODO get items by container
         // return ItemsExchange.getItemsByContainer($scope.container);
         return ItemsExchange.getItems();
     }, function(newItems) {
-        // update all items array
-        buildItemsArray(newItems);
-        // then display new items
-        $scope.displayedItems = itemsArrays[$scope.tabs.activeTab];
+        // update all items array and display new items
+        $scope.displayedItems = PageItemsContainer.buildItemsArray(newItems, $scope.tabs.activeTab, $scope.tabs);
     }, true);
+
+    $scope.onItemsMouseOver = function(item){
+        Preview.showDashboardPreview(item);
+    }
 
     console.log('itemsContainer controller run with container: ', $scope.container);
 

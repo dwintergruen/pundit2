@@ -13,9 +13,33 @@ angular.module('Pundit2.PageItemsContainer')
 })
 .service('PageItemsContainer', function(ITEMSCONTAINERDEFAULTS, BaseComponent) {
 
-    var itemsContainer = new BaseComponent('PageItemsContainer', ITEMSCONTAINERDEFAULTS);
+    var pageItemsContainer = new BaseComponent('PageItemsContainer', ITEMSCONTAINERDEFAULTS);
+
+    // array of items array, one foreach tab, when activeTab change the showed items change
+    // contain all items array (all items array, text items array, image items array and page items array)
+    var itemsArrays = [];
+
+    pageItemsContainer.buildItemsArray = function(items, activeTab, tabs) {
+
+        for (var i=0; i<tabs.length; i++) {
+            // check if it is my object
+            if ( angular.isObject(tabs[i]) && typeof(tabs[i].filterFunction) !== 'undefined' ) {
+                // filter items with relative filter function
+                itemsArrays[i] = items.filter(function(item){
+                    return tabs[i].filterFunction(item);
+                });
+            }
+        }
+
+        return itemsArrays[activeTab];
+
+    };
+
+    pageItemsContainer.getItemsArrays = function(){
+        return itemsArrays;
+    } 
 
 
-    return itemsContainer;
+    return pageItemsContainer;
 
 });
