@@ -108,7 +108,7 @@ angular.module('Pundit2.Dashboard')
                 $scope.panes[i].isVisible = false;
                 var t = {
                     text: $scope.panes[i].title,
-                    click: "setActive($index, $event)"
+                    click: "setActive("+i+", $event)"
                 };
                 $scope.hiddenTabs.push(t);
             }
@@ -119,12 +119,16 @@ angular.module('Pundit2.Dashboard')
     $element.addClass('tabs');
 
     $scope.active = $scope.activePane = 0;
-    // view -> model
+
+    // set a tab as active
     $scope.setActive = function(index) {
         $scope.active = index;
+        // set to true if an hidden tab is selected and is active
+        $scope.hiddenTabIsActive = !$scope.panes[index].isVisible;
     };
 
     var hiddenTabsArePresent = false;
+
 
     // check when array containing tabs don't fit in the panel,
     // and set true if array contain is not empty, false otherwise
