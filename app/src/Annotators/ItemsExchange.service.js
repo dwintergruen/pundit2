@@ -24,6 +24,13 @@ angular.module('Pundit2.Core')
             return itemListByURI;
         };
 
+        itemsExchange.getItemByUri = function(uri) {
+            if (uri in itemListByURI) {
+                return itemListByURI[uri];
+            }
+            // If the item is not found, it will return undefined
+        };
+
         itemsExchange.getAll = function() {
             return {
                 itemListByURI: itemListByURI,
