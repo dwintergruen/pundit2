@@ -1,6 +1,8 @@
 angular.module('Pundit2.PageItemsContainer')
 .controller('PageItemsContainerCtrl', function($scope, PageItemsContainer, ItemsExchange, Preview, TypesHelper) {
 
+    $scope.dropdownTemplate = "src/Toolbar/dropdown.tmpl.html";
+
     // how items property is compare to sort
     // legal value are: 'type', 'label'
     var order = PageItemsContainer.options.order;
@@ -84,7 +86,16 @@ angular.module('Pundit2.PageItemsContainer')
         return $scope.tabs.activeTab;
     }, function(activeTab) {
         $scope.displayedItems = PageItemsContainer.getItemsArrays()[activeTab];
-    }, true);
+        // disable sort by type dropdown link
+        // enable only in All Items tab
+        if ($scope.tabs[activeTab].title !== $scope.tabs[0].title) {
+            $scope.dropdownOrdering[2].disable = true;
+            $scope.dropdownOrdering[3].disable = true;
+        } else {
+            $scope.dropdownOrdering[2].disable = false;
+            $scope.dropdownOrdering[3].disable = false;
+        }
+    });
 
     // every time that user digit text inside <input> filter the items showed
     // show only items that contain the $scope.search substring inside their label
