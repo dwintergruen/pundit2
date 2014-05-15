@@ -32,6 +32,21 @@ angular.module('Pundit2.PageItemsContainer')
         }
     ];
 
+    $scope.dropdownOrdering = [
+        { text: 'Asc', click: function(){
+            PageItemsContainer.sortByLabel(true, $scope.tabs.activeTab);
+        }},
+        { text: 'Desc', click: function(){
+            PageItemsContainer.sortByLabel(false, $scope.tabs.activeTab);
+        }},
+        { text: 'Type Asc', click: function(){
+            PageItemsContainer.sortByType(true, $scope.tabs.activeTab);
+        }},
+        { text: 'Type Desc', click: function(){
+            PageItemsContainer.sortByType(false, $scope.tabs.activeTab);
+        }}
+    ];
+
     $scope.tabs.activeTab = PageItemsContainer.options.initialActiveTab;
 
     // every time that change active tab show new items array

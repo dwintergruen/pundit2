@@ -11,7 +11,7 @@ angular.module('Pundit2.PageItemsContainer')
 
     debug: false
 })
-.service('PageItemsContainer', function(ITEMSCONTAINERDEFAULTS, BaseComponent) {
+.service('PageItemsContainer', function(ITEMSCONTAINERDEFAULTS, BaseComponent, TypesHelper) {
 
     var pageItemsContainer = new BaseComponent('PageItemsContainer', ITEMSCONTAINERDEFAULTS);
 
@@ -37,8 +37,36 @@ angular.module('Pundit2.PageItemsContainer')
 
     pageItemsContainer.getItemsArrays = function(){
         return itemsArrays;
-    } 
+    };
 
+
+    pageItemsContainer.sortByLabel = function(asc, activeTab){
+        if (asc) {
+            itemsArrays[activeTab].sort(function(a, b){
+                return a.label.localeCompare(b.label);
+            });
+        } else {
+            itemsArrays[activeTab].sort(function(a, b){
+                return b.label.localeCompare(a.label);
+            });
+        }        
+    };
+
+    pageItemsContainer.sortByType = function(asc, activeTab){
+        if (asc) {
+            itemsArrays[activeTab].sort(function(itemA, itemB){
+                var aTypeLabel = TypesHelper.getLabel(itemA.type[0]),
+                    bTypeLabel = TypesHelper.getLabel(itemB.type[0]);
+                return aTypeLabel.localeCompare(bTypeLabel);
+            });
+        } else {
+            itemsArrays[activeTab].sort(function(itemA, itemB){
+                var aTypeLabel = TypesHelper.getLabel(itemA.type[0]),
+                    bTypeLabel = TypesHelper.getLabel(itemB.type[0]);
+                return bTypeLabel.localeCompare(aTypeLabel);
+            });
+        }
+    };
 
     return pageItemsContainer;
 
