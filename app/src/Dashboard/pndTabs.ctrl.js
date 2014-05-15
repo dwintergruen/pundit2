@@ -39,7 +39,8 @@ angular.module('Pundit2.Dashboard')
 
         $scope.$watch(
         function() {
-            return angular.element($element).find('ul.pnd-tab-header>li').length;
+            //return angular.element($element).find('ul.pnd-tab-header>li').length;
+            return angular.element($element).children('ul.pnd-tab-header').children('li').length;
         },
         function(liLength) {
             if (liLength > 0) {
@@ -54,7 +55,8 @@ angular.module('Pundit2.Dashboard')
     // when <ul> is ready, check is executed
     $scope.$watch(
         function() {
-            return angular.element($element).find('ul.pnd-tab-header').css('width');
+            //return angular.element($element).find('ul.pnd-tab-header').css('width');
+            return angular.element($element).children('ul.pnd-tab-header').css('width');
         },
         function(newWidth) {
             panesWidth = parseInt(newWidth, 10);
@@ -77,7 +79,8 @@ angular.module('Pundit2.Dashboard')
     // <li> tabs initialization
     // for each <li> tab get his width and store it
     var init = function() {
-        var tabsElement = angular.element($element).find('ul.pnd-tab-header>li');
+        //var tabsElement = angular.element($element).find('ul.pnd-tab-header>li');
+        var tabsElement = angular.element($element).children('ul.pnd-tab-header').children('li');
         for (var i = 0; i < tabsElement.length; i++){
             var w = parseInt(angular.element(tabsElement[i]).css('width'), 10);
             $scope.panes[i].width = w;
