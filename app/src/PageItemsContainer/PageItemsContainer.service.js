@@ -9,6 +9,11 @@ angular.module('Pundit2.PageItemsContainer')
     clientDashboardPanel: "lists",
     clientDashboardTabTitle: "Page Items",
 
+    // how items property is used to compare
+    order: 'label',
+    // how order items (true ascending, false descending)
+    reverse: false,
+
     debug: false
 })
 .service('PageItemsContainer', function(ITEMSCONTAINERDEFAULTS, BaseComponent, TypesHelper) {
@@ -19,12 +24,14 @@ angular.module('Pundit2.PageItemsContainer')
     // contain all items array (all items array, text items array, image items array and page items array)
     var itemsArrays = [];
 
-    pageItemsContainer.buildItemsArray = function(items, activeTab, tabs) {
+    pageItemsContainer.buildItemsArray = function(activeTab, tabs, items) {
 
+        // forEach tab build the relative items array
+        // using the tab filter function
         for (var i=0; i<tabs.length; i++) {
-            // check if it is my object
+            // check if it have the filter function
             if ( angular.isObject(tabs[i]) && typeof(tabs[i].filterFunction) !== 'undefined' ) {
-                // filter items with relative filter function
+                // filter all items to obtain the specific tab array
                 itemsArrays[i] = items.filter(function(item){
                     return tabs[i].filterFunction(item);
                 });
@@ -32,43 +39,10 @@ angular.module('Pundit2.PageItemsContainer')
         }
 
         return itemsArrays[activeTab];
-
     };
 
     pageItemsContainer.getItemsArrays = function(){
         return itemsArrays;
-    };
-
-    var removeSpace = function(str){
-        return str.replace(/ /g,'');
-    };
-
-    pageItemsContainer.sortByLabel = function(asc, activeTab){
-        if (asc) {
-            itemsArrays[activeTab].sort(function(itemA, itemB){
-                return removeSpace(itemA.label).localeCompare(removeSpace(itemB.label));
-            });
-        } else {
-            itemsArrays[activeTab].sort(function(itemA, itemB){
-                return removeSpace(itemB.label).localeCompare(removeSpace(itemA.label));
-            });
-        }        
-    };
-
-    pageItemsContainer.sortByType = function(asc, activeTab){
-        if (asc) {
-            itemsArrays[activeTab].sort(function(itemA, itemB){
-                var aTypeLabel = removeSpace(TypesHelper.getLabel(itemA.type[0])),
-                    bTypeLabel = removeSpace(TypesHelper.getLabel(itemB.type[0]));
-                return aTypeLabel.localeCompare(bTypeLabel);
-            });
-        } else {
-            itemsArrays[activeTab].sort(function(itemA, itemB){
-                var aTypeLabel = removeSpace(TypesHelper.getLabel(itemA.type[0])),
-                    bTypeLabel = removeSpace(TypesHelper.getLabel(itemB.type[0]));
-                return bTypeLabel.localeCompare(aTypeLabel);
-            });
-        }
     };
 
     return pageItemsContainer;

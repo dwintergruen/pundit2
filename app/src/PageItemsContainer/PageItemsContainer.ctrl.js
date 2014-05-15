@@ -1,6 +1,14 @@
 angular.module('Pundit2.PageItemsContainer')
-.controller('PageItemsContainerCtrl', function($scope, PageItemsContainer, ItemsExchange, Preview) {
+.controller('PageItemsContainerCtrl', function($scope, PageItemsContainer, ItemsExchange, Preview, TypesHelper) {
 
+    // how items property is compare to sort
+    // legal value are: 'type', 'label'
+    var order = PageItemsContainer.options.order;
+
+    // how order items, true is ascending, false is descending
+    $scope.reverse = PageItemsContainer.options.reverse;
+
+    // items tabs used to filter items list
     $scope.tabs = [
         {
             title: 'All Items',
@@ -32,31 +40,55 @@ angular.module('Pundit2.PageItemsContainer')
         }
     ];
 
+    // index of the active tab inside $scope.tabs 
+    $scope.tabs.activeTab = PageItemsContainer.options.initialActiveTab;
+
+    // sort button dropdown content
     $scope.dropdownOrdering = [
-        { text: 'Asc', click: function(){
-            PageItemsContainer.sortByLabel(true, $scope.tabs.activeTab);
+        { text: 'Label Asc', click: function(){
+            order = 'label';
+            $scope.reverse = false;
         }},
-        { text: 'Desc', click: function(){
-            PageItemsContainer.sortByLabel(false, $scope.tabs.activeTab);
+        { text: 'Label Desc', click: function(){
+            order = 'label';
+            $scope.reverse = true;
         }},
         { text: 'Type Asc', click: function(){
-            PageItemsContainer.sortByType(true, $scope.tabs.activeTab);
+            order = 'type';
+            $scope.reverse = false;
         }},
         { text: 'Type Desc', click: function(){
-            PageItemsContainer.sortByType(false, $scope.tabs.activeTab);
+            order = 'type';
+            $scope.reverse = true;
         }}
     ];
 
-    $scope.tabs.activeTab = PageItemsContainer.options.initialActiveTab;
+    var removeSpace = function(str){
+        return str.replace(/ /g,'');
+    };
+
+    // getter function used to order items inside template
+    // return the items property value used to order
+    $scope.getOrderProperty = function(item){
+
+        if (order === 'label') {
+            return removeSpace(item.label);
+        } else if (order === 'type') {
+            return removeSpace(TypesHelper.getLabel(item.type[0]));
+        }
+
+    };
 
     // every time that change active tab show new items array
     $scope.$watch(function() {
         return $scope.tabs.activeTab;
     }, function(activeTab) {
         $scope.displayedItems = PageItemsContainer.getItemsArrays()[activeTab];
-    });
+    }, true);
 
-    // every time that user digit text inside <input>
+    // every time that user digit text inside <input> filter the items showed
+    // show only items that contain the $scope.search substring inside their label
+    // the match function ignore multiple space
     $scope.$watch(function() {
         return $scope.search;
     }, function(str) {
@@ -71,11 +103,11 @@ angular.module('Pundit2.PageItemsContainer')
         }
 
         // filter items actualy showed
-
         // go to lowerCase and replace multiple space with single space
         str = str.toLowerCase().replace(/\s+/g, ' ');
         var strParts = str.split(' ');
             reg = new RegExp(strParts.join('.*'));
+
         $scope.displayedItems = PageItemsContainer.getItemsArrays()[$scope.tabs.activeTab].filter(function(items){
             return items.label.toLowerCase().match(reg) !== null;
             // return items.label.toLowerCase().indexOf(str.toLowerCase()) > -1;
@@ -89,7 +121,7 @@ angular.module('Pundit2.PageItemsContainer')
         return ItemsExchange.getItems();
     }, function(newItems) {
         // update all items array and display new items
-        $scope.displayedItems = PageItemsContainer.buildItemsArray(newItems, $scope.tabs.activeTab, $scope.tabs);
+        $scope.displayedItems = PageItemsContainer.buildItemsArray($scope.tabs.activeTab, $scope.tabs, newItems);
     }, true);
 
     $scope.onItemsMouseOver = function(item){
