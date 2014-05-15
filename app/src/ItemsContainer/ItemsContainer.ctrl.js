@@ -1,8 +1,15 @@
 angular.module('Pundit2.ItemsContainer')
-.controller('ItemsContainerCtrl', function($scope, ItemsExchange) {
+.constant('ITEMSCONTAINERDEFAULTS', {
+    initialActiveTab: 0,
 
-    // array of items array, one foreach tab
-    // contain all items array, text items array, image items array and page items array
+    debug: false
+})
+.controller('ItemsContainerCtrl', function($scope, BaseComponent, ITEMSCONTAINERDEFAULTS, ItemsExchange) {
+
+    var itemsContainer = new BaseComponent('ItemsContainer', ITEMSCONTAINERDEFAULTS);
+
+    // array of items array, one foreach tab, when activeTab change the showed items change
+    // contain all items array (all items array, text items array, image items array and page items array)
     var itemsArrays = [];
 
     $scope.tabs = [
@@ -36,7 +43,7 @@ angular.module('Pundit2.ItemsContainer')
         }
     ];
 
-    $scope.tabs.activeTab = 0;
+    $scope.tabs.activeTab = itemsContainer.options.initialActiveTab;
 
     // every time that change active tab show new items array
     $scope.$watch(function() {
@@ -60,7 +67,9 @@ angular.module('Pundit2.ItemsContainer')
         }
 
         // filter items actualy showed
-        str = str.toLowerCase();
+
+        // go to lowerCase and replace multiple space with single space
+        str = str.toLowerCase().replace(/\s+/g, ' ');
         var strParts = str.split(' ');
             reg = new RegExp(strParts.join('.*'));
         $scope.displayedItems = itemsArrays[$scope.tabs.activeTab].filter(function(items){
@@ -73,7 +82,9 @@ angular.module('Pundit2.ItemsContainer')
     var buildItemsArray = function(items) {
 
         for (var i=0; i<$scope.tabs.length; i++) {
+            // check if it is my object
             if ( angular.isObject($scope.tabs[i]) && typeof($scope.tabs[i].filterFunction) !== 'undefined' ) {
+                // filter items with relative filter function
                 itemsArrays[i] = items.filter(function(item){
                     return $scope.tabs[i].filterFunction(item);
                 });
