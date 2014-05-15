@@ -43,7 +43,7 @@ angular.module('Pundit2.Dashboard')
 
         isDashboardVisible: dashboard.options.isDashboardVisible,
 
-        containerWidth: Math.max(angular.element($window).innerWidth(), containerMinWidth),
+        containerWidth: Math.max(angular.element('body').innerWidth(), containerMinWidth),
         containerHeight: dashboard.options.containerHeight,
 
         // If the .addContent() is called on some non-existing panel, they might get
@@ -114,7 +114,7 @@ angular.module('Pundit2.Dashboard')
             // resize panels to min-width
             dashboard.resizeAll();
 
-            $rootScope.$apply();
+            $rootScope.$$phase || $rootScope.$digest();
             dashboard.log('Dashboard is at min-width');
             return;
         }
@@ -123,7 +123,7 @@ angular.module('Pundit2.Dashboard')
 
         dashboard.resizeAll();
 
-        $rootScope.$apply();
+        $rootScope.$$phase || $rootScope.$digest();
     };
 
 
