@@ -40,7 +40,7 @@ angular.module('Pundit2.Dashboard')
         $scope.$watch(
         function() {
             //return angular.element($element).find('ul.pnd-tab-header>li').length;
-            return angular.element($element).children('ul.pnd-tab-header').children('li').length;
+            return angular.element($element).children('ul.pnd-tab-header').children('li:not(.pull-right)').length;
         },
         function(liLength) {
             if (liLength > 0) {
@@ -80,7 +80,7 @@ angular.module('Pundit2.Dashboard')
     // for each <li> tab get his width and store it
     var init = function() {
         //var tabsElement = angular.element($element).find('ul.pnd-tab-header>li');
-        var tabsElement = angular.element($element).children('ul.pnd-tab-header').children('li');
+        var tabsElement = angular.element($element).children('ul.pnd-tab-header').children('li:not(.pull-right)');
         for (var i = 0; i < tabsElement.length; i++){
             var w = parseInt(angular.element(tabsElement[i]).css('width'), 10);
             $scope.panes[i].width = w;
