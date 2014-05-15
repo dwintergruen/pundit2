@@ -93,7 +93,7 @@ angular.module('Pundit2.Dashboard')
     // otherwise set its visibility to false
     // and add the tab in an array containing all tabs thad don't fit
     var setVisibility = function(ulWidth) {
-        
+
         var widthToFit = ulWidth - options.offsetButton;
         var tmpWidth = 0;
 
