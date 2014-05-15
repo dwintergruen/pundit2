@@ -3,7 +3,7 @@ angular.module('Pundit2.Dashboard')
 
     var options = {
         animation: 'am-fade',
-        offsetButton: 20
+        offsetButton: 40
     };
 
     // Support animations
