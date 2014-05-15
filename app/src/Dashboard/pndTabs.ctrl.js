@@ -39,7 +39,7 @@ angular.module('Pundit2.Dashboard')
 
         $scope.$watch(
         function() {
-            return angular.element($element).find('ul.pnd-tab-header li').length;
+            return angular.element($element).find('ul.pnd-tab-header>li').length;
         },
         function(liLength) {
             if (liLength > 0) {
@@ -77,7 +77,7 @@ angular.module('Pundit2.Dashboard')
     // <li> tabs initialization
     // for each <li> tab get his width and store it
     var init = function() {
-        var tabsElement = angular.element($element).find('ul.pnd-tab-header li');
+        var tabsElement = angular.element($element).find('ul.pnd-tab-header>li');
         for (var i = 0; i < tabsElement.length; i++){
             var w = parseInt(angular.element(tabsElement[i]).css('width'), 10);
             $scope.panes[i].width = w;
@@ -106,11 +106,13 @@ angular.module('Pundit2.Dashboard')
             } else {
                 // it width tab doesn't fit, set its visibility to false and add tabs in hiddenTabs array
                 $scope.panes[i].isVisible = false;
-                $scope.hiddenTabs.push($scope.panes[i]);
+                var t = {
+                    text: $scope.panes[i].title,
+                    click: "setActive($index, $event)"
+                };
+                $scope.hiddenTabs.push(t);
             }
         }
-
-
     };
 
     // Add base class
@@ -122,12 +124,7 @@ angular.module('Pundit2.Dashboard')
         $scope.active = index;
     };
 
-    // TODO: trigger show hidden tabs
-    $scope.showTabsOut = function() {
-        console.log($scope.hiddenTabs);
-    };
-
-    var showMoreTabsButton = false;
+    var hiddenTabsArePresent = false;
 
     // check when array containing tabs don't fit in the panel,
     // and set true if array contain is not empty, false otherwise
@@ -136,12 +133,12 @@ angular.module('Pundit2.Dashboard')
             return $scope.hiddenTabs;
         },
         function() {
-            showMoreTabsButton = $scope.hiddenTabs.length > 0;
+            hiddenTabsArePresent = $scope.hiddenTabs.length > 0;
     });
 
-    // return true is button "more" must be shown
-    $scope.showMoreTabsButton = function() {
-        return showMoreTabsButton;
+    // return true if there are some hidden tabs to show
+    $scope.hiddenTabsToShow = function() {
+        return hiddenTabsArePresent;
     };
 
 });
