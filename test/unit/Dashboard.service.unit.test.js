@@ -54,26 +54,22 @@ describe('Dashboard service', function() {
     });
 
     it("should not set container height over max", function() {
-        var before = Dashboard.getContainerHeight();
         expect(Dashboard.increaseContainerHeight(999)).toBe(true);
         expect(Dashboard.getContainerHeight()).toBe(DASHBOARDDEFAULTS.containerMaxHeight);
     });
 
     it("should not set container height over max when is at maxHeight", function() {
-        var before = Dashboard.getContainerHeight();
         expect(Dashboard.increaseContainerHeight(999)).toBe(true);
         expect(Dashboard.increaseContainerHeight(999)).toBe(false);
         expect(Dashboard.getContainerHeight()).toBe(DASHBOARDDEFAULTS.containerMaxHeight);
     });
 
     it("should not set container height under min", function() {
-        var before = Dashboard.getContainerHeight();
         expect(Dashboard.increaseContainerHeight(-999)).toBe(true);
         expect(Dashboard.getContainerHeight()).toBe(DASHBOARDDEFAULTS.containerMinHeight);
     });
 
     it("should not set container height under min when is at minHeight", function() {
-        var before = Dashboard.getContainerHeight();
         expect(Dashboard.increaseContainerHeight(-999)).toBe(true);
         expect(Dashboard.increaseContainerHeight(-999)).toBe(false);
         expect(Dashboard.getContainerHeight()).toBe(DASHBOARDDEFAULTS.containerMinHeight);
@@ -151,8 +147,8 @@ describe('Dashboard service', function() {
         Dashboard.setContainerWidth(minWidth);
         
         var totalWidth = 0;
-        for ( var i in panels ) {
-            totalWidth = totalWidth + angular.element(panels[i]).isolateScope().width;   
+        for ( var j in panels ) {
+            totalWidth = totalWidth + angular.element(panels[j]).isolateScope().width;   
         }
 
         expect(totalWidth - minWidth).toBeLessThan(maxError);
@@ -175,8 +171,8 @@ describe('Dashboard service', function() {
         Dashboard.setContainerWidth(newWidth);
         
         var totalWidth = 0;
-        for ( var i in panels ) {
-            totalWidth = totalWidth + angular.element(panels[i]).isolateScope().width;   
+        for ( var j in panels ) {
+            totalWidth = totalWidth + angular.element(panels[j]).isolateScope().width;   
         }
         expect(totalWidth - newWidth).toBeLessThan(maxError);
 
@@ -248,8 +244,8 @@ describe('Dashboard service', function() {
         expect(scope.width).not.toBe(DASHBOARDDEFAULTS.panelCollapsedWidth);
         // after collapse dashboard call resizeAll
         totalWidth = 0;
-        for ( var i in panels ) {
-            totalWidth = totalWidth + angular.element(panels[i]).isolateScope().width;   
+        for ( var j in panels ) {
+            totalWidth = totalWidth + angular.element(panels[j]).isolateScope().width;   
         }
         expect(totalWidth - width).toBeLessThan(maxError);
         
@@ -285,7 +281,6 @@ describe('Dashboard service', function() {
 
     it("should correctly resize panels by drag simulation", function(){
         var el = compileDirective();
-        var panels = angular.element(el).find('dashboard-panel').toArray();
         
         Dashboard.setContainerWidth(1200);
 
@@ -302,7 +297,6 @@ describe('Dashboard service', function() {
 
     it("should not resize panels by left drag simulation when is at minWidth", function(){
         var el = compileDirective();
-        var panels = angular.element(el).find('dashboard-panel').toArray();
         var minWidth = 0;
         for (var i in DASHBOARDDEFAULTS.panels) {
             minWidth += DASHBOARDDEFAULTS.panels[i].minWidth;
@@ -322,7 +316,6 @@ describe('Dashboard service', function() {
 
     it("should not resize panels by right drag simulation when is at minWidth", function(){
         var el = compileDirective();
-        var panels = angular.element(el).find('dashboard-panel').toArray();
         var minWidth = 0;
         for (var i in DASHBOARDDEFAULTS.panels) {
             minWidth += DASHBOARDDEFAULTS.panels[i].minWidth;
@@ -342,7 +335,6 @@ describe('Dashboard service', function() {
 
     it("should correctly resize panels by right drag simulation when tools is collapsed", function(){
         var el = compileDirective();
-        var panels = angular.element(el).find('dashboard-panel').toArray();
         
         Dashboard.setContainerWidth(1200);
 
@@ -364,7 +356,6 @@ describe('Dashboard service', function() {
 
     it("should correctly resize panels by left drag simulation when tools is collapsed", function(){
         var el = compileDirective();
-        var panels = angular.element(el).find('dashboard-panel').toArray();
         
         Dashboard.setContainerWidth(1200);
 
@@ -386,7 +377,6 @@ describe('Dashboard service', function() {
 
     it("should not resize panels by drag simulation when all next panels are collapsed", function(){
         var el = compileDirective();
-        var panels = angular.element(el).find('dashboard-panel').toArray();
         
         Dashboard.setContainerWidth(1200);
 
@@ -408,7 +398,6 @@ describe('Dashboard service', function() {
 
     it("should not resize panels by drag simulation when all before panels are collapsed", function(){
         var el = compileDirective();
-        var panels = angular.element(el).find('dashboard-panel').toArray();
         
         Dashboard.setContainerWidth(1200);
 
@@ -425,7 +414,6 @@ describe('Dashboard service', function() {
 
     it("should not resize panels by drag simulation when i am collapsed and all next panels are collapsed", function(){
         var el = compileDirective();
-        var panels = angular.element(el).find('dashboard-panel').toArray();
         
         Dashboard.setContainerWidth(1200);
 
