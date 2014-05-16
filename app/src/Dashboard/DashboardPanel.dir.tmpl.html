@@ -6,12 +6,12 @@
         <div class="pnd-dashboard-panel-content" pnd-tabs="tabs">
             <!-- the content comes from outside-->
         </div>
-        <button type="button" class="btn btn-xs btn-default" ng-click="toggleCollapse()"><span class="pnd-icon pnd-icon-times"></span></button>
+        <button type="button" class="btn btn-xs btn-default pnd-btn-dashboard" ng-click="toggleCollapse()"><span class="pnd-icon pnd-icon-times"></span></button>
     </div>
 
     <div class="pnd-dashboard-panel-collapsed" ng-show="isCollapsed" style="width: {{collapsedWidth}}px;">
         <div class="pnd-dashboard-panel-collapsed-content"></div>
-        <button type="button" class="btn btn-xs btn-default" ng-click="toggleCollapse()"><span class="pnd-icon pnd-icon-expand"></span></button>
+        <button type="button" class="btn btn-xs btn-default  pnd-btn-dashboard" ng-click="toggleCollapse()"><span class="pnd-icon pnd-icon-expand"></span></button>
     </div>
 
     <div class="pnd-dashboard-panel-separator"
