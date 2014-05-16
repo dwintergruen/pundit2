@@ -7,6 +7,7 @@ angular.module('Pundit2.AnnotationSidebar')
 
     var body = angular.element('body');
     var container = angular.element('.pnd-annotation-sidebar-container');
+    var content = angular.element('.pnd-annotation-sidebar-content');
 
     // TODO: prelevare la dimensione reale
     // TODO: sarebbe meglio avere un metodo direttamente di toolbar?
@@ -58,20 +59,24 @@ angular.module('Pundit2.AnnotationSidebar')
     }, true);
 
     // Annotation sidebar height
-    var resizeSidebarHeight = function(bodyHeight, windowHeight) {
-        state.sidebarNewHeight = Math.max(bodyHeight, windowHeight - state.toolbarHeight);
+    var resizeSidebarHeight = function(bodyHeight, windowHeight, contentHeight) {
+        state.sidebarNewHeight = Math.max(bodyHeight, windowHeight - state.toolbarHeight, contentHeight);
         state.sidebarCurrentHeight = container.innerHeight();
+        console.log('new '+state.sidebarNewHeight + " current "+state.sidebarCurrentHeight)
         if (state.sidebarNewHeight !== state.sidebarCurrentHeight) {
             container.css('height', state.sidebarNewHeight + 'px');
         }
     };
     $scope.$watch(function() {
-        return body.innerHeight();
-    }, function(bodyHeight) {
-        resizeSidebarHeight(bodyHeight, $window.innerHeight);
-    });
+        return {
+            bodyHeight: body.innerHeight(),
+            contentHeight: content.innerHeight()
+        }
+    }, function(heightValue) {
+        resizeSidebarHeight(heightValue.bodyHeight, $window.innerHeight, heightValue.contentHeight);
+    }, true);
     angular.element($window).bind('resize', function () {
-        resizeSidebarHeight(body.innerHeight(), $window.innerHeight);
+        resizeSidebarHeight(body.innerHeight(), $window.innerHeight, content.innerHeight());
     });
 
 
@@ -124,7 +129,6 @@ angular.module('Pundit2.AnnotationSidebar')
     }); 
 
     $scope.$watch('filters', function(currentFilters) {
-        console.log('Watch filters', currentFilters);
         // TODO: individuare un modo migliore per rilevare i singoli filtri attivi
         $scope.annotations = AnnotationSidebar.getAllAnnotationsFiltered(currentFilters);
     }, true);
