@@ -140,8 +140,7 @@ describe("The toolbar module", function() {
     afterEach(function() {
         p.removeMockModule('httpBackendMock');
     });
-    
-        
+
     it('should show button in according with user status', function() {
 
         p.get('/app/examples/toolbar.html');
@@ -150,17 +149,17 @@ describe("The toolbar module", function() {
         checkNotLoggedUserButtons();
         
         // click login button and get login
-        p.findElement(protractor.By.css('.btn-example-login')).click();
-        
-        // at this time user should be logged in
-        checkLoggedUserButtons();
-        
+        p.findElement(protractor.By.css('.btn-example-login')).click().then(function() {
+            // at this time user should be logged in
+            checkLoggedUserButtons();
+        });
+
         // click logout button
-        p.findElement(protractor.By.css('.btn-example-logout')).click();
-        
-        // at this time user should not be logged in anymore
-        checkNotLoggedUserButtons();
-            
+        p.findElement(protractor.By.css('.btn-example-logout')).click().then(function() {
+            // at this time user should not be logged in anymore
+            checkNotLoggedUserButtons();
+        });
+
     });
 
 });

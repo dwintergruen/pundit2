@@ -119,6 +119,7 @@ describe("Dashboard interaction", function() {
         var panelNum = 3;
 
         p.get('/app/examples/dashboard.html');
+        p.driver.manage().window().setSize(1200, 960);
 
         // find panel-expanded element contained in dashboard-panel tag with attribute title=
         p.findElements(protractor.By.css('dashboard-panel .pnd-dashboard-panel-expanded')).then(function(elements) {
@@ -126,9 +127,15 @@ describe("Dashboard interaction", function() {
         });
 
         // click collapse
-        p.findElement(protractor.By.css('dashboard-panel[title=lists] .btn.btn-default')).click();
-        p.findElement(protractor.By.css('dashboard-panel[title=tools] .btn.btn-default')).click();
-        p.findElement(protractor.By.css('dashboard-panel[title=details] .btn.btn-default')).click();
+        p.findElement(protractor.By.css('dashboard-panel[title=lists] .btn.btn-default')).then(function(b) {
+            b.click();
+            p.findElement(protractor.By.css('dashboard-panel[title=tools] .btn.btn-default')).then(function(b1) {
+                b1.click();
+                p.findElement(protractor.By.css('dashboard-panel[title=details] .btn.btn-default')).then(function(b2) {
+                    b2.click();
+                });
+            });
+        });
 
         // check if the elements have ng-hide attribute
         p.findElements(protractor.By.css('dashboard-panel .pnd-dashboard-panel-expanded.ng-hide')).then(function(elements) {

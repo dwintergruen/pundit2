@@ -63,14 +63,24 @@ describe("OpenID Login", function() {
 						expect(userButton[0].getText()).toBe(username);
 
 					}); // end find .pnd-toolbar-user-button
+
+                    // get logout
                     p.sleep(1000);
-                    p.findElement(protractor.By.css('.btn-example-logout')).click();
-                    p.sleep(1000);
+                    p.findElement(protractor.By.css('.btn-example-logout')).then(function(logoutButton){
+                        logoutButton.click().then(function(){
+                            p.sleep(1000);
+                            p.findElements(protractor.By.css('.pnd-toolbar-user-button.ng-hide')).then(function(userButton) {
+                                expect(userButton.length).toBe(1);
+                                p.waitForAngular();
+                                p.sleep(1000);
+                                p.ignoreSynchronization = false;
+                            });
+                        });
+                    });
 
 				}); //  end fine signIn
 
 			}); // end find .google.openid_large_btn
-
 		}); // end getAllWindowHandles
 
 	}); // end test
