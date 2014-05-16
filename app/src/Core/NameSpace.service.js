@@ -187,6 +187,8 @@ angular.module("Pundit2.Core")
     ns.asAnn               = ns.as + "api/annotations/{{id}}";
     ns.asOpenAnn           = ns.as + "api/open/annotations/{{id}}";
 
+    ns.asPref              = ns.as + "api/services/preferences/{{type}}";
+
 
     // Gets a key of the namespace, interpolating variables if needed
     ns.get = function(key, context) {

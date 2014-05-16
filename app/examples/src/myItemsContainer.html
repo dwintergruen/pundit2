@@ -1,0 +1,21 @@
+<!-- buildexamples:section header --><!-- /buildexamples -->
+
+<script>
+
+    var MyItemsDemoCtrl = function($scope, MyItems, Annotation) {
+
+        var toLoad = ["8fd05a49", "65286186", "385c1647"];
+
+        for (var l=toLoad.length; l--;) {
+            new Annotation(toLoad[l]);
+        }
+
+    };
+
+</script>
+
+<div data-ng-app="Pundit2" class="pnd-wrp" ng-controller="MyItemsDemoCtrl">
+    <my-items-container container="pincopallino"></my-items-container>
+</div>
+
+<!-- buildexamples:section footer --><!-- /buildexamples -->

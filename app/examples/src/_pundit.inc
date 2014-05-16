@@ -75,6 +75,12 @@
     <script src="../src/Item/Item.dir.js"></script>
     <script src="../src/Item/Item.ctrl.js"></script>
 
+    <script src="../src/MyItemsContainer/MyItemsContainer.js"></script>
+    <script src="../src/MyItemsContainer/MyItemsContainer.dir.js"></script>
+    <script src="../src/MyItemsContainer/MyItemsContainer.ctrl.js"></script>
+    <script src="../src/MyItemsContainer/MyItemsContainer.service.js"></script>
+    <script src="../src/MyItemsContainer/MyItems.service.js"></script>
+
     <script src="../src/Toolbar/Toolbar.js"></script>
     <script src="../src/Toolbar/Toolbar.dir.js"></script>
     <script src="../src/Toolbar/Toolbar.ctrl.js"></script>
