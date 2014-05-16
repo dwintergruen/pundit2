@@ -1,8 +1,4 @@
 
-.pnd-inner {
-    overflow: hidden;
-    overflow-y: scroll;
-    }
 
 //
 // Header
@@ -19,19 +15,25 @@
 
 .pnd-panel-tab-content-content {
     margin: 0px;
-    background-color: aqua;
     }
   
+.pnd-inner  .pnd-tab-content{
+  	height: 300px;
+    margin: 0px 10px 50px 0px;
+    overflow-y: scroll;
+    }
+
     
 //
 // Content Tabs
 // --------------------------------------------------
 
-.pnd-panel-tab-content {
+.pnd-panel-tab-content  {
+
 
 // Give the tabs something to sit on
 .nav-tabs {
-      margin-bottom: 10px;
+      margin-bottom: 5px;
       margin-right: 0px;
       background-color: #fff;
       border-top: 1px solid @gray-light;
@@ -84,8 +86,14 @@
 // --------------------------------------------------
 
 
-.pnd-panel-tab-content-footer{
-	background-color: blue;
-	height: 50px;
-
+.pnd-panel-tab-content .pnd-panel-tab-content-footer{
+	display: block;
+	border-top: 1px solid @gray-light;
+	background-color: #fff;
+	height: 30px;
+	padding: 5px;
+	position: absolute;
+	bottom: 0;
+	right: 10px;
+	left: 0;
 }

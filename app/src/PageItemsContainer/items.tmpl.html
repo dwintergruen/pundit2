@@ -1,5 +1,5 @@
-<ul>
-    <li ng-repeat="pndItem in displayedItems | orderBy:getOrderProperty:reverse">
+<ul class="list-group">
+    <li class="list-group-item" ng-repeat="pndItem in displayedItems | orderBy:getOrderProperty:reverse">
         <item uri="{{pndItem.uri}}"></item>
     </li>
 </ul>
