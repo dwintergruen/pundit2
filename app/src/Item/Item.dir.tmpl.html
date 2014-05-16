@@ -1,7 +1,7 @@
-<div class="pnd-item" ng-class="{'pnd-stcky-item': stickyItem}" ng-mouseover="onItemMouseOver()" ng-mouseleave="onItemMouseLeave()">
+<div class="pnd-item" ng-class="{'pnd-sticky-item': isStickyItem}" ng-mouseover="onItemMouseOver()" ng-mouseleave="onItemMouseLeave()">
 
     <div class="pnd-item-buttons">
-        <button>contextual menu</button>
+        <button ng-click="onClickMenu($event)">menu</button>
         <button ng-click="onClickSticky()">sticky</button>
     </div>
 

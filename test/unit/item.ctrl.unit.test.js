@@ -68,7 +68,7 @@ describe("Item", function(){
         expect(scope.itemTypeLabel).toBeDefined();
         expect(typeof(scope.itemTypeLabel)).toBe('string');
         expect(typeof(scope.item.label)).toBe('string');
-        expect(scope.stickyItem).toBe(false);
+        expect(scope.isStickyItem).toBe(false);
     });
 
     it('should correctly show item inside preview', function(){
@@ -103,7 +103,7 @@ describe("Item", function(){
 
         scope.onClickSticky();
 
-        expect(scope.stickyItem).toBe(true);
+        expect(scope.isStickyItem).toBe(true);
 
         var item = Preview.getItemDashboardSticky();
         expect(item).toBe(scope.item);
