@@ -219,13 +219,21 @@
     .dropdown-menu {
         margin-right: 8px !important;
         }
+	      
 
    
     // Show tabs button
     
-    .show-tabs a {
-    	background-color: @nav-tabs-active-link-hover-bg;
-    	//margin-right: 8px;
+    .show-tabs {
+    
+    	&.active a {
+	        background-color: @nav-tabs-active-link-hover-bg;
+	        color: @brand-success;
+	      }	
+    
+    	a {
+    	background-color: darken(@gray-light, 6%);
+    	color: #fff;
     	width: 30px;
     	
     	  .pnd-icon {
@@ -235,12 +243,12 @@
 	       }
     	 
 	      &:hover {
-	        background-color: @nav-tabs-active-link-hover-bg;
-	        color: @brand-danger;
+	        background-color: darken(@gray-light, 14%);
+	        color: #fff;
 	      }	
-    	
-    	
-      } 
+
+	   }
+    }  
 
 
   > li {
@@ -252,13 +260,11 @@
       margin-right: 0px;
       line-height: @line-height-base;
       border: 0px solid transparent;
-      //border-top: 4px solid @gray-light;
       border-radius: @border-radius-base @border-radius-base 0 0;
       background-color: @gray-light;
       
       &:hover {
         border-color: transparent;
-        //border-top: 4px solid @gray-light;
         background-color: @gray-lighter;
         cursor: pointer;
       }
@@ -273,9 +279,8 @@
         color: @nav-tabs-active-link-hover-color;
         background-color: @nav-tabs-active-link-hover-bg;
         border: 0px;
-        //border-top: 4px solid @gray-light;
         border-bottom-color: transparent;
-        cursor: default;
+        cursor: pointer;
       }
     }
 
