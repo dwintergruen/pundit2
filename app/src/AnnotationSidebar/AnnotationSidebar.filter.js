@@ -30,14 +30,36 @@ angular.module('Pundit2.AnnotationSidebar')
 .filter('predicates', function() {
     return function(input, search) {
         var results = [];
-        var currentPredicates;
+        var currentPredicate;
 
         if (search.length > 0) {
             angular.forEach(input, function (e) {
-                currentPredicates = e.predicates[0];
-                if (search.indexOf(currentPredicates) !== -1) {
-                    results.push(e);
-                }
+                angular.forEach(e.predicates, function(predicate) {
+                    currentPredicate = predicate;
+                    if (search.indexOf(currentPredicate) !== -1) {
+                        results.push(e);
+                    }
+                });
+            });
+        } else {
+            results = input;
+        }
+        return results;
+    };
+})
+.filter('entities', function() {
+    return function(input, search) {
+        var results = [];
+        var currentEnt;
+
+        if (search.length > 0) {
+            angular.forEach(input, function (e) {
+                angular.forEach(e.entities, function(ent) {
+                    currentEnt = ent;
+                    if (search.indexOf(currentEnt) !== -1) {
+                        results.push(e);
+                    }
+                });
             });
         } else {
             results = input;

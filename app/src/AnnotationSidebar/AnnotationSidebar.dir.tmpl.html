@@ -3,6 +3,8 @@
         <button>Annotations</button>
         <button>Suggestions</button>
         <br /><hr />
+        Number of annotations ({{annotations.length}} / {{allAnnotations.length}}))
+        <br /><hr />
         Filtri attivi <br />
         <p ng-repeat="(key, value) in filters">
             <span ng-show="value.expression.length>0">{{value.filterLabel}} = {{value.expression}}</span> <br />
@@ -14,8 +16,6 @@
         fromDate: <input ng-model="filters.fromDate.expression">
         <br />
         toDate: <input ng-model="filters.toDate.expression">
-        <br /><br />
-        Numero filtrate: {{filtered.length}}
         <br /><hr />
         <strong>Autori:</strong>
         <div ng-repeat="auth in authors">
@@ -25,7 +25,7 @@
         <br />
         <strong>Entities:</strong>
         <div ng-repeat="ent in entities">
-            <span>{{ent}}</span>
+            <span>{{getLabelType(ent)}}</span>
             <button class="btn btn-info" ng-click="toggleEntities(ent)">v</button>
         </div>
         <br /><br />

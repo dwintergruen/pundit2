@@ -56,17 +56,21 @@ angular.module('Pundit2.AnnotationSidebar')
         return state.filteredAnnotations;
     };
 
-    var setFilterElements = function(annotations){
-        angular.forEach(annotations, function (e) {
-            if(state.authors.indexOf(e.creatorName) === -1){
+    var setFilterElements = function(annotations) {
+        angular.forEach(annotations, function(e) {
+            if (state.authors.indexOf(e.creatorName) === -1){
                 state.authors.push(e.creatorName);
             }
-            if(state.predicates.indexOf(e.predicates[0]) === -1){
-                state.predicates.push(e.predicates[0]);
-            }
-            // if(state.entities.indexOf(e.entities[0]) === -1){
-            //     state.entities.push(e.entities[0]);
-            // }
+            angular.forEach(e.predicates, function(predicate) {
+                if (state.predicates.indexOf(predicate) === -1){
+                    state.predicates.push(predicate);
+                }
+            });
+            angular.forEach(e.entities, function(ent) {
+                if (state.entities.indexOf(ent) === -1){
+                    state.entities.push(ent);
+                }
+            });
         });
     };
 

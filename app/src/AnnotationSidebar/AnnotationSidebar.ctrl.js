@@ -106,6 +106,11 @@ angular.module('Pundit2.AnnotationSidebar')
             filterName: 'predicates',
             filterLabel: 'Predicates',
             expression: []  
+        },
+        entities: {
+            filterName: 'entities',
+            filterLabel: 'Entities',
+            expression: []  
         }
     };
 
@@ -125,6 +130,7 @@ angular.module('Pundit2.AnnotationSidebar')
     $scope.$watch(function() {
         return AnnotationSidebar.getAllAnnotations();
     }, function(currentAnnotations) {
+        $scope.allAnnotations = currentAnnotations;
         if (needToFilter()) {
             $scope.annotations = AnnotationSidebar.getAllAnnotationsFiltered($scope.filters);
         } else {
@@ -135,6 +141,7 @@ angular.module('Pundit2.AnnotationSidebar')
     $scope.$watch('filters', function(currentFilters) {
         // TODO: individuare un modo migliore per rilevare i singoli filtri attivi
         $scope.annotations = AnnotationSidebar.getAllAnnotationsFiltered(currentFilters);
+
     }, true);
 
     $scope.$watch(function() {
@@ -167,6 +174,14 @@ angular.module('Pundit2.AnnotationSidebar')
             $scope.filters.predicates.expression.push(predicates);
         } else {
             $scope.filters.predicates.expression.splice(indexPredicates, 1);
+        }
+    };
+    $scope.toggleEntities = function(entities) {
+        var indexEntities = $scope.filters.entities.expression.indexOf(entities);
+        if (indexEntities === -1) {
+            $scope.filters.entities.expression.push(entities);
+        } else {
+            $scope.filters.entities.expression.splice(indexEntities, 1);
         }
     };
 
