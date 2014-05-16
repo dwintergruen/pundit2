@@ -1,3 +1,81 @@
-page-items-container .pnd-panel-tab-content {
-    border: 1px solid red;
+
+.pnd-inner {
+    overflow: hidden;
+    overflow-y: scroll;
+    }
+
+//
+// Header
+// --------------------------------------------------
+
+.pnd-panel-tab-content-header{
+    margin: 10px;
+    }
+    
+//
+// Content
+// --------------------------------------------------
+  
+
+.pnd-panel-tab-content-content {
+    margin: 0px;
+    background-color: aqua;
+    }
+    
+    
+//
+// Content Tabs
+// --------------------------------------------------
+
+.pnd-panel-tab-content {
+
+// Give the tabs something to sit on
+.nav-tabs {
+      margin-bottom: 10px;
+      margin-right: 0px;
+      background-color: #fff;
+      border-top: 1px solid @gray-light;
+      border-bottom: 1px solid @gray-light;
+	      
+
+  > li {
+
+
+    // Actual tabs (as links)
+    > a {
+	  color: @nav-tabs-active-link-hover-color;
+      margin-right: 0px;
+      line-height: @line-height-base;
+      border: 0px;
+      border-bottom: 1px solid @gray-light;
+      border-top: 2px solid transparent;
+      background-color: #fff;
+
+      
+      &:hover {
+        background-color: transparent;
+        border-bottom: 1px solid @gray-light;
+        color: #000;
+        cursor: pointer;
+      }
+      
+    }
+
+    // Active state, and its :hover to override normal :hover
+    &.active > a {
+      &,
+      &:hover,
+      &:focus {
+        border-bottom-color: transparent;
+        border-top: 2px solid @gray;
+        cursor: pointer;
+      }
+    }
+
+        
+    
+  }
+
 }
+}
+
