@@ -3,7 +3,7 @@
         <button>Annotations</button>
         <button>Suggestions</button>
         <br /><hr />
-        Number of annotations ({{annotations.length}} / {{allAnnotations.length}}))
+        Number of annotations ({{annotations.length}} of {{allAnnotations.length}})
         <br /><hr />
         Filtri attivi <br />
         <p ng-repeat="(key, value) in filters">
@@ -25,14 +25,14 @@
         <br />
         <strong>Entities:</strong>
         <div ng-repeat="ent in entities">
-            <span>{{getLabelType(ent)}}</span>
-            <button class="btn btn-info" ng-click="toggleEntities(ent)">v</button>
+            <span>{{ent.label}}</span>
+            <button class="btn btn-info" ng-click="toggleEntities(ent.uri)">v</button>
         </div>
         <br /><br />
         <strong>Predicates:</strong>
         <div ng-repeat="pred in predicates">
-            <span>{{getLabelType(pred)}}</span>
-            <button class="btn btn-info" ng-click="togglePredicates(pred)">v</button>
+            <span>{{pred.label}}</span>
+            <button class="btn btn-info" ng-click="togglePredicates(pred.uri)">v</button>
         </div>
 
         <br /><hr />

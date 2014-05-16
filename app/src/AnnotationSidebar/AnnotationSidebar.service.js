@@ -56,19 +56,27 @@ angular.module('Pundit2.AnnotationSidebar')
         return state.filteredAnnotations;
     };
 
+    var containsElementsUri = function(currentElements, currentArray) {
+        for (var i = 0; i < currentArray.length; i++) {
+            if (currentArray[i].uri === currentElements) {
+                return true;
+            }
+        }
+        return false;
+    }
     var setFilterElements = function(annotations) {
         angular.forEach(annotations, function(e) {
             if (state.authors.indexOf(e.creatorName) === -1){
                 state.authors.push(e.creatorName);
             }
-            angular.forEach(e.predicates, function(predicate) {
-                if (state.predicates.indexOf(predicate) === -1){
-                    state.predicates.push(predicate);
+            angular.forEach(e.predicates, function(predicateUri) {
+                if (!containsElementsUri(predicateUri, state.predicates)){
+                    state.predicates.push({uri: predicateUri, label: e.items[predicateUri].label});
                 }
             });
-            angular.forEach(e.entities, function(ent) {
-                if (state.entities.indexOf(ent) === -1){
-                    state.entities.push(ent);
+            angular.forEach(e.entities, function(entUri) {
+                if (!containsElementsUri(entUri, state.entities)){
+                    state.entities.push({uri: entUri, label: e.items[entUri].label});
                 }
             });
         });
