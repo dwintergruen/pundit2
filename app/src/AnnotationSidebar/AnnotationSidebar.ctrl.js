@@ -1,7 +1,7 @@
 /*jshint strict: false*/
 
 angular.module('Pundit2.AnnotationSidebar')
-.controller('AnnotationSidebarCtrl', function($scope, $filter, $window, AnnotationSidebar, Dashboard) {
+.controller('AnnotationSidebarCtrl', function($scope, $filter, $window, AnnotationSidebar, Dashboard, TypesHelper) {
     var bodyClasses = AnnotationSidebar.options.bodyExpandedClass + ' ' + AnnotationSidebar.options.bodyCollapsedClass;
     var sidebarClasses = AnnotationSidebar.options.sidebarExpandedClass + ' ' + AnnotationSidebar.options.sidebarCollapsedClass;
 
@@ -62,7 +62,6 @@ angular.module('Pundit2.AnnotationSidebar')
     var resizeSidebarHeight = function(bodyHeight, windowHeight, contentHeight) {
         state.sidebarNewHeight = Math.max(bodyHeight, windowHeight - state.toolbarHeight, contentHeight);
         state.sidebarCurrentHeight = container.innerHeight();
-        console.log('new '+state.sidebarNewHeight + " current "+state.sidebarCurrentHeight)
         if (state.sidebarNewHeight !== state.sidebarCurrentHeight) {
             container.css('height', state.sidebarNewHeight + 'px');
         }
@@ -102,6 +101,11 @@ angular.module('Pundit2.AnnotationSidebar')
             filterName: 'toDate',
             filterLabel: 'To date',
             expression: ''
+        },
+        predicates: {
+            filterName: 'predicates',
+            filterLabel: 'Predicates',
+            expression: []  
         }
     };
 
@@ -138,15 +142,37 @@ angular.module('Pundit2.AnnotationSidebar')
     }, function(currentListAuthors) {
         $scope.authors = currentListAuthors;
     });
+    $scope.$watch(function() {
+        return AnnotationSidebar.getPredicates();
+    }, function(currentListPredicates) {
+        $scope.predicates = currentListPredicates;
+    });
+    $scope.$watch(function() {
+        return AnnotationSidebar.getEntities();
+    }, function(currentListEntities) {
+        $scope.entities = currentListEntities;
+    });
 
     $scope.toggleAuthor = function(author) {
-        AnnotationSidebar.log('Toggling author '+ author);
         var indexAuthor = $scope.filters.author.expression.indexOf(author);
         if (indexAuthor === -1) {
             $scope.filters.author.expression.push(author);
         } else {
             $scope.filters.author.expression.splice(indexAuthor, 1);
         }
+    };
+    $scope.togglePredicates = function(predicates) {
+        var indexPredicates = $scope.filters.predicates.expression.indexOf(predicates);
+        if (indexPredicates === -1) {
+            $scope.filters.predicates.expression.push(predicates);
+        } else {
+            $scope.filters.predicates.expression.splice(indexPredicates, 1);
+        }
+    };
+
+    // get label of a type from his uri
+    $scope.getLabelType = function(uri) {
+        return TypesHelper.getLabel(uri);
     };
 
     AnnotationSidebar.log('Controller Run');

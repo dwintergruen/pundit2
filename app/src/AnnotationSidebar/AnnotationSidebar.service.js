@@ -16,7 +16,7 @@ angular.module('Pundit2.AnnotationSidebar')
 
     debug: false
 })
-.service('AnnotationSidebar', function($rootScope, $filter, $timeout, BaseComponent, AnnotationsExchange, ANNOTATIONSIDEBARDEFAULTS) {
+.service('AnnotationSidebar', function($rootScope, $filter, $timeout, BaseComponent, AnnotationsExchange, TypesHelper, ANNOTATIONSIDEBARDEFAULTS) {
     
     var annotationSidebar = new BaseComponent('AnnotationSidebar', ANNOTATIONSIDEBARDEFAULTS);
 
@@ -24,7 +24,9 @@ angular.module('Pundit2.AnnotationSidebar')
         isExpanded: annotationSidebar.options.isAnnotationSidebarExpanded,
         allAnnotations: [],
         filteredAnnotations: [],
-        authors: []
+        authors: [],
+        entities: [],
+        predicates: []
     };
 
     annotationSidebar.toggle = function(){
@@ -54,15 +56,28 @@ angular.module('Pundit2.AnnotationSidebar')
         return state.filteredAnnotations;
     };
 
-    var setAuthors = function(annotations){
+    var setFilterElements = function(annotations){
         angular.forEach(annotations, function (e) {
             if(state.authors.indexOf(e.creatorName) === -1){
                 state.authors.push(e.creatorName);
             }
+            if(state.predicates.indexOf(e.predicates[0]) === -1){
+                state.predicates.push(e.predicates[0]);
+            }
+            // if(state.entities.indexOf(e.entities[0]) === -1){
+            //     state.entities.push(e.entities[0]);
+            // }
         });
     };
+
     annotationSidebar.getAuthors = function(){
         return state.authors;
+    };
+    annotationSidebar.getEntities = function(){
+        return state.entities;
+    };
+    annotationSidebar.getPredicates = function(){
+        return state.predicates;
     };
 
     var timeoutPromise;
@@ -74,7 +89,7 @@ angular.module('Pundit2.AnnotationSidebar')
         }
         timeoutPromise = $timeout(function() {
             state.allAnnotations = annotations;
-            setAuthors(annotations);
+            setFilterElements(annotations);
         }, annotationSidebar.options.annotationsRefresh);
     }, true);
 

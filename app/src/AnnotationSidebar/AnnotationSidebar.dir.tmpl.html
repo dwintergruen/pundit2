@@ -17,11 +17,22 @@
         <br /><br />
         Numero filtrate: {{filtered.length}}
         <br /><hr />
-        Autori:
-
+        <strong>Autori:</strong>
         <div ng-repeat="auth in authors">
             <span>{{auth}}</span>
             <button class="btn btn-info" ng-click="toggleAuthor(auth)">v</button>
+        </div>
+        <br />
+        <strong>Entities:</strong>
+        <div ng-repeat="ent in entities">
+            <span>{{ent}}</span>
+            <button class="btn btn-info" ng-click="toggleEntities(ent)">v</button>
+        </div>
+        <br /><br />
+        <strong>Predicates:</strong>
+        <div ng-repeat="pred in predicates">
+            <span>{{getLabelType(pred)}}</span>
+            <button class="btn btn-info" ng-click="togglePredicates(pred)">v</button>
         </div>
 
         <br /><hr />

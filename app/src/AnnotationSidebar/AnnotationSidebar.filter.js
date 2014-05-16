@@ -27,6 +27,24 @@ angular.module('Pundit2.AnnotationSidebar')
         return results;
     };
 })
+.filter('predicates', function() {
+    return function(input, search) {
+        var results = [];
+        var currentPredicates;
+
+        if (search.length > 0) {
+            angular.forEach(input, function (e) {
+                currentPredicates = e.predicates[0];
+                if (search.indexOf(currentPredicates) !== -1) {
+                    results.push(e);
+                }
+            });
+        } else {
+            results = input;
+        }
+        return results;
+    };
+})
 .filter('fromDate', function() {
     return function(input, fromValue) {
         var results = [];
