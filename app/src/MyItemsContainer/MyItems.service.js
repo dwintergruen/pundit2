@@ -12,22 +12,29 @@ angular.module("Pundit2.MyItemsContainer")
 
     var myItems = new BaseComponent("MyItems");
 
-    // my items local storage
-    var myItemsArray = [];
-
-    // TODO how i can create item by new ItemFactory() without a uri?
-    // inside http call the item uri is not present
-    // ItemFactory add item to itemsExchange without a container
+    // the item uri inside http request is named value
+    // ItemFactory add item to itemsExchange default container
+    // after add item to default duplicate it in myItems container
     myItems.getMyItems = function(){
+        var item;
+
         $http({
             headers: { 'Accept': 'application/json' },
             method: 'GET',
             url: NameSpace.get('asPref', {type: myItems.options.api})            
         }).success(function(data) {
             for (var i in data.value) {
-                myItemsArray.push(data.value[i]);
-                // TODO need to clean object ? need a copy?
-                ItemsExchange.addItem(data.value[i], myItems.options.container);
+                // clean server object
+                delete data.value[i].type;
+                delete data.value[i].rdfData;
+                delete data.value[i].favorite;
+                // rename rdftype property in type
+                data.value[i].type = data.value[i].rdftype;
+                delete data.value[i].rdftype;
+                // create new item
+                item = new ItemFactory(data.value[i].value, data.value[i]);
+                // add to myItems container
+                ItemsExchange.addItemToContainer(item, myItems.options.container);
             }
         }).error(function() {
             console.log('http error, cant find my items');
