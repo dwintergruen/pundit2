@@ -32,38 +32,11 @@ angular.module('Pundit2.Item')
             });            
         }
     };
-
-    var menuActions = [
-        {
-            name: 'action1',
-            type: ['ExampleType'],
-            label: "Find Item",
-            priority: 0,
-            showIf: function(){
-                return true;
-            },
-            action: function(resource){
-                
-            }
-        },
-        {
-            name: 'action2',
-            type: ['ExampleType'],
-            label: "Delete Item",
-            priority: 0,
-            showIf: function(){
-                return true;
-            },
-            action: function(resource){
-                
-            }
-        }
-    ];
     
     $scope.onClickMenu = function($event){
-        ContextualMenu.addAction(menuActions[0]);
-        ContextualMenu.addAction(menuActions[1]);
-        ContextualMenu.show($event.clientX, $event.clientY, {}, 'ExampleType');
+        // TODO need to chek if it is myItems or pageItems then show the correct menu
+        // show myItem menu on item, the action is added by MyItemsContainer service
+        ContextualMenu.show($event.pageX, $event.pageY, $scope.item, 'myItemType');
     };
 
 });

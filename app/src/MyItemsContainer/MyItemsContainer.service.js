@@ -16,13 +16,32 @@ angular.module('Pundit2.MyItemsContainer')
 
     debug: false
 })
-.service('MyItemsContainer', function(MYITEMSCONTAINERDEFAULTS, BaseComponent, TypesHelper) {
+.service('MyItemsContainer', function(MYITEMSCONTAINERDEFAULTS, BaseComponent, TypesHelper, ContextualMenu, MyItems) {
 
     var myItemsContainer = new BaseComponent('MyItemsContainer', MYITEMSCONTAINERDEFAULTS);
 
     // array of items array, one foreach tab, when activeTab change the showed array change
     // contain all items array (all items array, text items array, image items array and page items array)
     var itemsArrays = [];
+
+    // menu actions relative to item contextual menu (TODO where add action? myItems or pageItems)
+    var menuActions = [
+        {
+            name: 'delteItem',
+            type: ['myItemType'],
+            label: "Delete This Item",
+            priority: 0,
+            showIf: function(){
+                return true;
+            },
+            action: function(resource){
+                // resource need to be the item to delete
+                MyItems.deleteSingleMyItems(resource);
+            }
+        }
+    ];
+
+    ContextualMenu.addAction(menuActions[0]);
 
     myItemsContainer.buildItemsArray = function(activeTab, tabs, items) {
 

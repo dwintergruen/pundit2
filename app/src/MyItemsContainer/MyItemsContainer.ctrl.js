@@ -1,5 +1,5 @@
 angular.module('Pundit2.MyItemsContainer')
-.controller('MyItemsContainerCtrl', function($scope, MyItemsContainer, ItemsExchange, Preview, TypesHelper) {
+.controller('MyItemsContainerCtrl', function($scope, MyItemsContainer, ItemsExchange, MyItems, Preview, TypesHelper) {
 
     // This is the centralized template to dropdown
     $scope.dropdownTemplate = "src/Toolbar/dropdown.tmpl.html";
@@ -86,6 +86,11 @@ angular.module('Pundit2.MyItemsContainer')
 
     };
 
+    // delte all my Items
+    $scope.onClickDeleteAllMyItems = function(){
+        MyItems.deleteAllMyItems();
+    };
+
     // every time that change active tab show new items array
     $scope.$watch(function() {
         return $scope.tabs.activeTab;
@@ -131,10 +136,13 @@ angular.module('Pundit2.MyItemsContainer')
 
     });
 
+    var myItemsCont = MyItems.getMyItemsContainer();
+    // TODO how get my items? only one time?
+    // get my items from server
+    MyItems.getMyItems();
+
     $scope.$watch(function() {
-        // TODO get items by container
-        // return ItemsExchange.getItemsByContainer($scope.container);
-        return ItemsExchange.getItems();
+        return ItemsExchange.getItemsByContainer(myItemsCont);
     }, function(newItems) {
         // update all items array and display new items
         $scope.displayedItems = MyItemsContainer.buildItemsArray($scope.tabs.activeTab, $scope.tabs, newItems);

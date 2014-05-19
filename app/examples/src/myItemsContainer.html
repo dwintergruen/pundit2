@@ -2,20 +2,24 @@
 
 <script>
 
-    var MyItemsDemoCtrl = function($scope, MyItems, Annotation) {
+    var punditConfig = {
+        annotationServerBaseURL: 'http://as.thepund.it:8080/annotationserver/'
+    };
 
-        var toLoad = ["8fd05a49", "65286186", "385c1647"];
+    var MyItemsDemoCtrl = function($scope, MyItems, MyPundit) {
 
-        for (var l=toLoad.length; l--;) {
-            new Annotation(toLoad[l]);
-        }
+        MyPundit.login().then(function(value) {
+           console.log("Is logged in is "+value);
+        }, function() {
+           console.log("Error: "+value);
+        });
 
     };
 
 </script>
 
 <div data-ng-app="Pundit2" class="pnd-wrp" ng-controller="MyItemsDemoCtrl">
-    <my-items-container container="pincopallino"></my-items-container>
+    <my-items-container></my-items-container>
 </div>
 
 <!-- buildexamples:section footer --><!-- /buildexamples -->
