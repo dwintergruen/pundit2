@@ -36,12 +36,15 @@ angular.module("Pundit2.MyItemsContainer")
                 // add to myItems container
                 ItemsExchange.addItemToContainer(item, myItems.options.container);
             }
+            myItems.log('http success, find my items on server');
         }).error(function() {
-            console.log('http error, cant find my items');
+            myItems.log('http error, cant find my items on server');
         });
     };
 
-
+    myItems.getMyItemsContainer = function(){
+        return myItems.options.container;
+    };
 
     return myItems;
 

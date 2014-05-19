@@ -1,6 +1,7 @@
 angular.module('Pundit2.MyItemsContainer')
 .controller('MyItemsContainerCtrl', function($scope, MyItemsContainer, ItemsExchange, Preview, TypesHelper) {
 
+    // This is the centralized template to dropdown
     $scope.dropdownTemplate = "src/Toolbar/dropdown.tmpl.html";
 
     // items property used to compare
@@ -14,28 +15,32 @@ angular.module('Pundit2.MyItemsContainer')
     $scope.tabs = [
         {
             title: 'All Items',
-            template: 'src/MyItemsContainer/items.tmpl.html',
+            // this is the centalized template to items list
+            template: 'src/PageItemsContainer/items.tmpl.html',
             filterFunction: function(){
                 return true;
             }
         },
         {
             title: 'Text',
-            template: 'src/MyItemsContainer/items.tmpl.html',
+            // this is the centalized template to items list
+            template: 'src/PageItemsContainer/items.tmpl.html',
             filterFunction: function(item){
                 return item.isTextFragment();
             }
         },
         {
             title: 'Images',
-            template: 'src/MyItemsContainer/items.tmpl.html',
+            // this is the centalized template to items list
+            template: 'src/PageItemsContainer/items.tmpl.html',
             filterFunction: function(item){
                 return item.isImage();
             }
         },
         {
             title: 'Pages',
-            template: 'src/MyItemsContainer/items.tmpl.html',
+            // this is the centalized template to items list
+            template: 'src/PageItemsContainer/items.tmpl.html',
             filterFunction: function(item){
                 return item.isWebPage();
             }

@@ -1,5 +1,5 @@
 angular.module('Pundit2.PageItemsContainer')
-.constant('ITEMSCONTAINERDEFAULTS', {
+.constant('PAGEITEMSCONTAINERDEFAULTS', {
 
     initialActiveTab: 0,
 
@@ -16,9 +16,9 @@ angular.module('Pundit2.PageItemsContainer')
 
     debug: false
 })
-.service('PageItemsContainer', function(ITEMSCONTAINERDEFAULTS, BaseComponent, TypesHelper) {
+.service('PageItemsContainer', function(PAGEITEMSCONTAINERDEFAULTS, BaseComponent, TypesHelper) {
 
-    var pageItemsContainer = new BaseComponent('PageItemsContainer', ITEMSCONTAINERDEFAULTS);
+    var pageItemsContainer = new BaseComponent('PageItemsContainer', PAGEITEMSCONTAINERDEFAULTS);
 
     // array of items array, one foreach tab, when activeTab change the showed array change
     // contain all items array (all items array, text items array, image items array and page items array)
