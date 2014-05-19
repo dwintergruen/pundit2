@@ -1,5 +1,5 @@
 angular.module('Pundit2.Preview')
-.controller('PreviewCtrl', function($scope, Preview, TypesHelper) {
+.controller('PreviewCtrl', function($scope, Preview, TypesHelper, $window) {
 
     $scope.itemDashboardPreview = null;
 
@@ -50,4 +50,9 @@ angular.module('Pundit2.Preview')
     $scope.getLabelType = function(uri) {
         return TypesHelper.getLabel(uri);
     };
+
+    // open item url in a new window when click on More Info button in a preview
+    $scope.openUrl = function(url){
+        $window.open(url);
+    }
 });

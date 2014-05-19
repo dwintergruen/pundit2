@@ -36,7 +36,7 @@
     <div class="pnd-panel-tab-content-footer">
 
         <!-- More info -->
-        <button class="btn btn-success btn-xs pnd-dashboard-preview-more-info-button" ng-href="{{itemDashboardPreview.uri}}" ng-class="{disabled: !isStickyItem()}" target="_blank" >More info</button>
+        <button class="btn btn-success btn-xs pnd-dashboard-preview-more-info-button" ng-click="openUrl(itemDashboardPreview.uri)" ng-class="{disabled: !isStickyItem()}">More info</button>
         <!-- Open image -->
         <button class="btn btn-success pnd-dashboard-preview-external-modal-button" ng-class="{disabled: !isStickyItem()}" ng-if="itemIsAnImage">Open Image</button>
         <!-- Clear Sticky Icon -->
