@@ -9,6 +9,9 @@ angular.module('Pundit2.PageItemsContainer')
     clientDashboardPanel: "lists",
     clientDashboardTabTitle: "Page Items",
 
+    // page items contextual menu type
+    pageItemsMenuType: 'pageItems',
+
     // items property used to compare
     order: 'label',
     // how order items (true ascending, false descending)
@@ -28,7 +31,7 @@ angular.module('Pundit2.PageItemsContainer')
     var menuActions = [
         {
             name: 'pageItem1',
-            type: ['pageItem'],
+            type: [pageItemsContainer.options.pageItemsMenuType],
             label: "Page item action",
             priority: 0,
             showIf: function(){

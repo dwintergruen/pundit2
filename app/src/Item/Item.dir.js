@@ -4,7 +4,7 @@ angular.module('Pundit2.Item')
         restrict: 'E',
         scope: {
             uri: '@',
-            type: '@',
+            menuType: '@'
         },
         templateUrl: "src/Item/Item.dir.tmpl.html",
         controller: "ItemCtrl"

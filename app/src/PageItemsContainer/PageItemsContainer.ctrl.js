@@ -3,7 +3,10 @@ angular.module('Pundit2.PageItemsContainer')
 
     $scope.dropdownTemplate = "src/Toolbar/dropdown.tmpl.html";
 
-    $scope.itemType = "pageItem";
+    // read by <item> directive (in PageItemsContainer/items.tmpl.html)
+    // specifie how action add to contextual menu
+    $scope.itemMenuType = PageItemsContainer.options.pageItemsMenuType;
+    
 
     // items property used to compare
     // legal value are: 'type' and 'label'

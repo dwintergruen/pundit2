@@ -20,7 +20,7 @@ angular.module('Pundit2.Client')
     .service('Client', function(BaseComponent, Config, MyPundit,
                                 ImageFragmentAnnotator, TextFragmentAnnotator, Consolidation,
                                 AnnotationsExchange,
-                                ItemsExchange, Annotation, CLIENTDEFAULTS,
+                                ItemsExchange, Annotation, CLIENTDEFAULTS, MyItems,
                                 $injector, $templateCache, $rootScope) {
 
         var client = new BaseComponent('Client', CLIENTDEFAULTS),
@@ -170,7 +170,7 @@ angular.module('Pundit2.Client')
                     }
                 });
 
-                // TODO: get my items?
+                MyItems.getMyItems();
             });
 
             client.addComponents();
@@ -198,6 +198,8 @@ angular.module('Pundit2.Client')
 
             // There could be private annotations we want to show, get them again
             client.getAnnotations();
+
+            MyItems.getMyItems();
         };
 
         // Called when the user completed the logout process, clicking on logout

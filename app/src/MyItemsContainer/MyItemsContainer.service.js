@@ -9,6 +9,9 @@ angular.module('Pundit2.MyItemsContainer')
     clientDashboardPanel: "lists",
     clientDashboardTabTitle: "My Items",
 
+    // my items contextual menu type
+    myItemsMenuType: 'myItems',
+
     // items property used to compare
     order: 'label',
     // how order items (true ascending, false descending)
@@ -28,7 +31,7 @@ angular.module('Pundit2.MyItemsContainer')
     var menuActions = [
         {
             name: 'delteItem',
-            type: ['myItem'],
+            type: [myItemsContainer.options.myItemsMenuType],
             label: "Delete This Item",
             priority: 0,
             showIf: function(){

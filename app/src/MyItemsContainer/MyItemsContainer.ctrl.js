@@ -1,7 +1,9 @@
 angular.module('Pundit2.MyItemsContainer')
 .controller('MyItemsContainerCtrl', function($scope, MyItemsContainer, ItemsExchange, MyItems, Preview, TypesHelper) {
 
-    $scope.itemType = "myItem";
+    // read by <item> directive (in PageItemsContainer/items.tmpl.html)
+    // specifie how contextual menu type show on item
+    $scope.itemMenuType = MyItemsContainer.options.myItemsMenuType;
 
     // This is the centralized template to dropdown
     $scope.dropdownTemplate = "src/Toolbar/dropdown.tmpl.html";
