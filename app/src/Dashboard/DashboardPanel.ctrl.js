@@ -1,5 +1,5 @@
 angular.module('Pundit2.Dashboard')
-.controller('DashboardPanelCtrl', function($document, $window, $scope, Dashboard) {
+.controller('DashboardPanelCtrl', function($document, $window, $scope, $element, Dashboard) {
 
     // readed from default (not change)
     $scope.collapsedWidth = Dashboard.options.panelCollapseWidth;
@@ -37,6 +37,7 @@ angular.module('Pundit2.Dashboard')
             title: tabName,
             template: tabContent
         });
+        Dashboard.log('Added content '+tabName+' to panel '+$scope.title);
     };
 
     var lastPageX;
@@ -49,21 +50,53 @@ angular.module('Pundit2.Dashboard')
             lastPageX = evt.pageX;
         }
     };
-    var upHandler = function(evt) {
+    var upHandler = function() {
         $document.off('mousemove', moveHandler);
         $document.off('mouseup', upHandler);
     };
 
-    $scope.mouseDownHandler = function(e) {
-        e.preventDefault();
-        lastPageX = e.pageX;
+    $scope.mouseDownHandler = function(evt) {
+        evt.preventDefault();
+        lastPageX = evt.pageX;
         $document.on('mousemove', moveHandler);
         $document.on('mouseup', upHandler);  
-        
+    };
+
+    // When the panel height gets resized, we must set some tab-content height to make it
+    // scrollable properly
+    $scope.$watch(function() {
+        return Dashboard.getContainerHeight();
+    }, function(newValue, oldValue) {
+        $scope.setTabContentHeight();
+    });
+
+    $scope.setTabContentHeight = function() {
+
+        var el = angular.element($element).find('.pnd-inner .pnd-tab-content');
+        if (el.length === 0) {
+            return;
+        }
+
+        var h = Dashboard.getContainerHeight();
+
+        // .pnd-tab-header height
+        h -= Dashboard.options.panelTabsHeight;
+
+        // .pnd-panel-tab-content-header height
+        h -= Dashboard.options.panelContentHeaderHeight;
+
+        // .pnd-inner .pnd-panel-tab-header height
+        h -= Dashboard.options.panelInnerTabsHeight;
+
+        // .panel-tab-content-footer height
+        h -= Dashboard.options.panelFooterHeight;
+
+        // Dashboard footer height
+        h -= Dashboard.options.footerHeight;
+
+        el.height(h);
     };
 
     Dashboard.addPanel($scope);
-
-    Dashboard.log('Panel Controller Run');
-
+    Dashboard.log('Panel '+$scope.title+' Controller Run');
 });

@@ -20,6 +20,13 @@ angular.module('Pundit2.Dashboard')
     // footer height
     footerHeight: 20,
 
+    // Panels elements heights: used to fix scrollable elements height inside
+    // panels controllers. In pixels, included margins, borders and everything!
+    panelTabsHeight: 27,
+    panelContentHeaderHeight: 43,
+    panelInnerTabsHeight: 31,
+    panelFooterHeight: 30,
+
     // The Client will append the content of this template to the DOM to bootstrap
     // this component
     clientDomTemplate: "src/Dashboard/ClientDashboard.tmpl.html",
@@ -67,6 +74,13 @@ angular.module('Pundit2.Dashboard')
     /**** DASHBOARD ****/
     dashboard.toggle = function(){
         state.isDashboardVisible = !state.isDashboardVisible;
+
+        // If we are expanded, help the panels setting their height properly
+        if (state.isDashboardVisible) {
+            for (var p in panels) {
+                panels[p].setTabContentHeight();
+            }
+        }
     };
 
     dashboard.isDashboardVisible = function(){
