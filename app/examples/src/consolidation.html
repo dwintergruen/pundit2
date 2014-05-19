@@ -44,6 +44,11 @@ var ConsolidationDemoCtrl = function($scope, $q, Consolidation, Annotation,
         Consolidation.consolidate(ItemsExchange.getItems());
     };
 
+    $scope.wipe = function() {
+        console.log('## Wiping consolidated annotations');
+        Consolidation.wipe();
+    };
+
     $scope.high = function(uri) {
         TextFragmentAnnotator.highlightByUri(uri);
     };
@@ -66,8 +71,7 @@ var ConsolidationDemoCtrl = function($scope, $q, Consolidation, Annotation,
         <h3>Consolidation</h3>
 
         <button class="btn btn-info" ng-click="go()">go</button>
-        <button class="btn btn-warning" ng-mouseover="high()" ng-mouseout="reset()">Highlight
-         something?</button>
+        <button class="btn btn-danger" ng-click="wipe()">wipe</button>
 
         <div class="row">
 

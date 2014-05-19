@@ -34,7 +34,12 @@ angular.module('Pundit2.Annotators')
     };
 
     ifa.getAvailableTargets = function() {
+        // TODO
         return [];
+    };
+
+    ifa.wipe = function() {
+        // TODO
     };
 
     ifa.log("Component up and running");

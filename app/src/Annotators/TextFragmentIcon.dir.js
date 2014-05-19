@@ -8,8 +8,10 @@ angular.module('Pundit2.Annotators')
         templateUrl: 'src/Annotators/TextFragmentIcon.dir.tmpl.html',
         replace: true,
         link: function(scope, element /*, attrs */) {
-            // TODO: move this to TextFragmentHandler options?
-            scope.iconClass = "pnd-icon-tag";
+
+            // TODO: different icon depending on .. something?
+            scope.iconClass = TextFragmentAnnotator.options.iconClass;
+            scope.textFragmentIconClass = TextFragmentAnnotator.options.textFragmentIconClass;
 
             // Will use the icon to calculate this fragment height with respect to
             // the document

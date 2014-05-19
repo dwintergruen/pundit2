@@ -1,9 +1,9 @@
 angular.module('Pundit2.Annotators')
 .constant('XPOINTERSHELPERDEFAULTS', {
     // if no other option is given, the helper will use these node name and node classes to
-    // wrap the consolidated DOM fragments
+    // wrap the consolidated DOM fragments. TextFragmentAnnotator will provide its value!
     wrapNodeName: 'span',
-    wrapNodeClass: 'pnd-cons'
+    wrapNodeClass: 'pnd-cons-xpointer-helper-default'
 })
 .service('XpointersHelper', function(XPOINTERSHELPERDEFAULTS, NameSpace, BaseComponent, $document) {
 
@@ -379,12 +379,45 @@ angular.module('Pundit2.Annotators')
         var element = $document[0].createElement(htmlTag);
         angular.element(element).addClass(htmlClass);
 
-        // make it a directive
+        // TODO: make this directive name configurable!
         angular.element(element).attr('text-fragment-bit', '');
         angular.element(element).attr('fragments', parents.join(','));
         return element;
     };
 
-        xp.log("Component up and running");
+    xp.isTextNode = function(node) {
+        return node.nodeType === Node.TEXT_NODE;
+    };
+
+    xp.isElementNode = function(node) {
+        return node.nodeType === Node.ELEMENT_NODE;
+    };
+
+    // Merges text nodes: when unwrapping consolidated fragments we are splitting the original
+    // text nodes in multiple nodes. Merging them together should get us the very same DOM we
+    // started with before the consolidation.
+    xp.mergeTextNodes = function(node) {
+
+        if (!node) {
+            return;
+        }
+
+        if ((typeof(node.childNodes) !== "undefined") && (node.childNodes.length > 0)) {
+            var i = node.childNodes.length - 1;
+
+            var child, sibling;
+            while (child = node.childNodes[i--]) {
+                if (xp.isTextNode(child) && (sibling = node.childNodes[i]) && xp.isTextNode(sibling)) {
+                    sibling.nodeValue = sibling.nodeValue + child.nodeValue;
+                    node.removeChild(child);
+                } else if (xp.isElementNode(child)) {
+                    xp.mergeTextNodes(child);
+                }
+            }
+        }
+
+    };
+
+    xp.log("Component up and running");
     return xp;
 });

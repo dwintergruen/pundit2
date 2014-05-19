@@ -12,6 +12,12 @@ angular.module('Pundit2.Core')
             state.typeUriMap = {};
             state.uriTypeMap = {};
             state.itemListByURI = {};
+
+            for (var a in state.annotators) {
+                state.annotators[a].wipe();
+            }
+
+            cc.log('Wiped up!');
         };
         cc.wipe();
 
