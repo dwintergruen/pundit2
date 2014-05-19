@@ -3,7 +3,8 @@ angular.module('Pundit2.Item')
     return {
         restrict: 'E',
         scope: {
-            uri: '@'
+            uri: '@',
+            type: '@',
         },
         templateUrl: "src/Item/Item.dir.tmpl.html",
         controller: "ItemCtrl"

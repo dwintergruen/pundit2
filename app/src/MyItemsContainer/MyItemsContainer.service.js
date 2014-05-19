@@ -24,11 +24,11 @@ angular.module('Pundit2.MyItemsContainer')
     // contain all items array (all items array, text items array, image items array and page items array)
     var itemsArrays = [];
 
-    // menu actions relative to item contextual menu (TODO where add action? myItems or pageItems)
+    // menu actions relative to myItem contextual menu
     var menuActions = [
         {
             name: 'delteItem',
-            type: ['myItemType'],
+            type: ['myItem'],
             label: "Delete This Item",
             priority: 0,
             showIf: function(){

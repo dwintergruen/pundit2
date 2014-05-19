@@ -3,6 +3,8 @@ angular.module('Pundit2.PageItemsContainer')
 
     $scope.dropdownTemplate = "src/Toolbar/dropdown.tmpl.html";
 
+    $scope.itemType = "pageItem";
+
     // items property used to compare
     // legal value are: 'type' and 'label'
     var order = PageItemsContainer.options.order;
@@ -127,7 +129,7 @@ angular.module('Pundit2.PageItemsContainer')
     });
 
     $scope.$watch(function() {
-        // TODO get items by container
+        // TODO get items by page container (need to add page container)
         // return ItemsExchange.getItemsByContainer($scope.container);
         return ItemsExchange.getItems();
     }, function(newItems) {

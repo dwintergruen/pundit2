@@ -1,6 +1,8 @@
 angular.module('Pundit2.MyItemsContainer')
 .controller('MyItemsContainerCtrl', function($scope, MyItemsContainer, ItemsExchange, MyItems, Preview, TypesHelper) {
 
+    $scope.itemType = "myItem";
+
     // This is the centralized template to dropdown
     $scope.dropdownTemplate = "src/Toolbar/dropdown.tmpl.html";
 
@@ -137,10 +139,7 @@ angular.module('Pundit2.MyItemsContainer')
     });
 
     var myItemsCont = MyItems.getMyItemsContainer();
-    // TODO how get my items? only one time?
-    // get my items from server
-    MyItems.getMyItems();
-
+    // watch only my items
     $scope.$watch(function() {
         return ItemsExchange.getItemsByContainer(myItemsCont);
     }, function(newItems) {

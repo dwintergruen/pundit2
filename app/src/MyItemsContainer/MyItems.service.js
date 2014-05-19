@@ -12,13 +12,22 @@ angular.module("Pundit2.MyItemsContainer")
 
     var myItems = new BaseComponent("MyItems", MYITEMSDEFAULTS);
 
-    // the item uri inside http request is named value
-    // ItemFactory add item to itemsExchange default container
-    // after add item to default duplicate it in myItems container
+    // the first time that we get my items from pundit server we obtain pundit1 items:
+    // - value is pundit2 uri property
+    // - type property is not necessary (in pundit2 we use this property name with other semantic)
+    // - rdfData is not necessary
+    // - favorite is not necessary
+    //
+    // in pundit2 item:
+    // - uri property replace value property
+    // - type property replace rdftype property
+    //
+    // itemsExchange store items
+    // new Item() add item to itemsExchange default container
+    // then we duplicate it in myItems container
+
     myItems.getMyItems = function(){
         var item;
-
-        console.log(NameSpace.get('asPref', {type: myItems.options.api}));
 
         $http({
             headers: { 'Accept': 'application/json' },
@@ -28,33 +37,42 @@ angular.module("Pundit2.MyItemsContainer")
         }).success(function(data) {
 
             for (var i in data.value) {
-                // clean server object
-                delete data.value[i].type;
-                delete data.value[i].rdfData;
-                delete data.value[i].favorite;
-                // rename rdftype property in type
-                data.value[i].type = data.value[i].rdftype;
-                delete data.value[i].rdftype;
-                // create new item
-                item = new Item(data.value[i].value, data.value[i]);
+
+                // TODO is pundit1 object? (need to add a dedicated flag?)
+                if (data.value[i].rdftype) {
+                    // delete property
+                    delete data.value[i].type;
+                    delete data.value[i].rdfData;
+                    delete data.value[i].favorite;
+                    // rename rdftype property in type
+                    data.value[i].type = data.value[i].rdftype;
+                    delete data.value[i].rdftype;
+                    // rename value property in uri
+                    data.value[i].uri = data.value[i].value;
+                    delete data.value[i].value;
+                }
+
+                // create new item (pundit2 item)
+                item = new Item(data.value[i].uri, data.value[i]);               
+                
                 // add to myItems container
                 ItemsExchange.addItemToContainer(item, myItems.options.container);
             }
 
-            myItems.log('http success, find my items on server', data);
+            myItems.log('http success, find my items on server', data, ItemsExchange.getItems());
 
         }).error(function() {
             myItems.log('http error, cant find my items on server');
         });
     };
 
-    // delete all my items from server (TODO and from items exchange)
+    // delete all my items from server 
+    // TODO need an API call inside items exchange to delete all my items
     myItems.deleteAllMyItems = function(){
         var currentTime = new Date();
 
         $http({
             headers: {"Content-Type":"application/json;charset=UTF-8;"},
-            //handleAs: "text",
             method: 'POST',
             url: NameSpace.get('asPref', {type: myItems.options.api}),
             withCredentials: true,
@@ -62,7 +80,6 @@ angular.module("Pundit2.MyItemsContainer")
         }).success(function(data) {
 
             myItems.log('http success, delte all my items on server', data);
-
             // need to remove my items from items exchange? need removeItemsFromContainer()
 
         }).error(function() {
@@ -74,24 +91,19 @@ angular.module("Pundit2.MyItemsContainer")
     // value to be an array with new my items to post on server ?
     myItems.deleteSingleMyItems = function(value){
 
-        // remove only when items ctx menu is fixed
-        return;
-
         var currentTime = new Date();
 
         // get all my items
         var items = ItemsExchange.getItemsByContainer(myItems.options.container);
 
         // remove value from my items
-        // TODO need to find by uri ?
+        // TODO need to remove by API call
         var index = items.indexOf(value);
-        items.splice(index, 1);
-
-        
-
-        // if call http break all items on sever
+        items.splice(index, 1);        
 
         // update to server the new my items
+        // the new my items format is different from pundit1 item format
+        // this break punti1 compatibility
         $http({
             headers: {"Content-Type":"application/json;charset=UTF-8;"},
             method: 'POST',
@@ -101,8 +113,6 @@ angular.module("Pundit2.MyItemsContainer")
         }).success(function(data) {
 
             myItems.log('http success, delte single my items on server', data);
-
-            // width splice the items array update correctly and item is removed from itemesExchange
 
         }).error(function() {
             myItems.log('http error, cant delte single my items on server');

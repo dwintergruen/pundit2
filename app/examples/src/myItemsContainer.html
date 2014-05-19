@@ -10,6 +10,7 @@
 
         MyPundit.login().then(function(value) {
            console.log("Is logged in is "+value);
+           MyItems.getMyItems();
         }, function() {
            console.log("Error: "+value);
         });

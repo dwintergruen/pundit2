@@ -36,7 +36,7 @@ angular.module('Pundit2.Item')
     $scope.onClickMenu = function($event){
         // TODO need to chek if it is myItems or pageItems then show the correct menu
         // show myItem menu on item, the action is added by MyItemsContainer service
-        ContextualMenu.show($event.pageX, $event.pageY, $scope.item, 'myItemType');
+        ContextualMenu.show($event.pageX, $event.pageY, $scope.item, $scope.type);
     };
 
 });
