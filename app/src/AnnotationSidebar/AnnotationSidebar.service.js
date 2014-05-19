@@ -24,9 +24,10 @@ angular.module('Pundit2.AnnotationSidebar')
         isExpanded: annotationSidebar.options.isAnnotationSidebarExpanded,
         allAnnotations: [],
         filteredAnnotations: [],
-        authors: [],
-        entities: [],
-        predicates: []
+        authors: {},
+        entities: {},
+        predicates: {},
+        types: {}
     };
 
     annotationSidebar.toggle = function(){
@@ -56,28 +57,43 @@ angular.module('Pundit2.AnnotationSidebar')
         return state.filteredAnnotations;
     };
 
-    var containsElementsUri = function(currentElements, currentArray) {
-        for (var i = 0; i < currentArray.length; i++) {
-            if (currentArray[i].uri === currentElements) {
-                return true;
-            }
-        }
-        return false;
-    }
     var setFilterElements = function(annotations) {
+        state.predicates = {}; // TODO gestire il count diversamente?
         angular.forEach(annotations, function(e) {
-            if (state.authors.indexOf(e.creatorName) === -1){
-                state.authors.push(e.creatorName);
+            // Annotation authors
+            if (state.authors[e.creatorName] === undefined){
+                state.authors[e.creatorName] = {label: e.creatorName, count: 1};
+            } else {
+                state.authors[e.creatorName].count++;
             }
+
+            // Predicates
             angular.forEach(e.predicates, function(predicateUri) {
-                if (!containsElementsUri(predicateUri, state.predicates)){
-                    state.predicates.push({uri: predicateUri, label: e.items[predicateUri].label});
+                if (state.predicates[predicateUri] === undefined){
+                    state.predicates[predicateUri] = {uri: predicateUri, label: e.items[predicateUri].label, count: 1};
+                } else {
+                    state.predicates[predicateUri].count++;
                 }
             });
+
+            // Entities
             angular.forEach(e.entities, function(entUri) {
-                if (!containsElementsUri(entUri, state.entities)){
-                    state.entities.push({uri: entUri, label: e.items[entUri].label});
+                if (state.entities[entUri] === undefined){
+                    state.entities[entUri] = {uri: entUri, label: e.items[entUri].label, count: 1};
+                } else {
+                    state.entities[entUri].count++;
                 }
+            });
+            
+            // Types
+            angular.forEach(e.items, function(singleItem) {
+                angular.forEach(singleItem.type, function(typeUri) {;
+                    if (state.types[typeUri] === undefined){
+                        state.types[typeUri] = {uri: typeUri, label: TypesHelper.getLabel(typeUri), count: 1};
+                    } else {
+                        state.types[typeUri].count++;
+                    }
+                });
             });
         });
     };
@@ -90,6 +106,9 @@ angular.module('Pundit2.AnnotationSidebar')
     };
     annotationSidebar.getPredicates = function(){
         return state.predicates;
+    };
+    annotationSidebar.getTypes = function(){
+        return state.types;
     };
 
     var timeoutPromise;

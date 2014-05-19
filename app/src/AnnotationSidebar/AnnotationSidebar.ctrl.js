@@ -105,12 +105,17 @@ angular.module('Pundit2.AnnotationSidebar')
         predicates: {
             filterName: 'predicates',
             filterLabel: 'Predicates',
-            expression: []  
+            expression: []
         },
         entities: {
             filterName: 'entities',
             filterLabel: 'Entities',
-            expression: []  
+            expression: []
+        },
+        types: {
+            filterName: 'types',
+            filterLabel: 'Types',
+            expression: []
         }
     };
 
@@ -159,6 +164,13 @@ angular.module('Pundit2.AnnotationSidebar')
     }, function(currentListEntities) {
         $scope.entities = currentListEntities;
     });
+    $scope.$watch(function() {
+        return AnnotationSidebar.getTypes();
+    }, function(currentListTypes) { 
+        $scope.types = currentListTypes;
+        // $scope.types = $filter('orderBy')(currentListTypes, 'count');
+        //$filter('orderBy')(array, expression, reverse);
+    });
 
     $scope.toggleAuthor = function(author) {
         var indexAuthor = $scope.filters.author.expression.indexOf(author);
@@ -182,6 +194,14 @@ angular.module('Pundit2.AnnotationSidebar')
             $scope.filters.entities.expression.push(entities);
         } else {
             $scope.filters.entities.expression.splice(indexEntities, 1);
+        }
+    };
+    $scope.toggleTypes = function(types) {
+        var indexTypes = $scope.filters.types.expression.indexOf(types);
+        if (indexTypes === -1) {
+            $scope.filters.types.expression.push(types);
+        } else {
+            $scope.filters.types.expression.splice(indexTypes, 1);
         }
     };
 

@@ -1,6 +1,26 @@
 /*jshint strict: false*/
 
 angular.module('Pundit2.AnnotationSidebar')
+.filter('orderObjectBy', function(){
+    return function(input, attribute, order) {
+        var results = [];
+        
+        if (!angular.isObject(input)){
+            return input;
+        }
+        for(var key in input) {
+            results.push(input[key]);
+        }
+        results.sort( function(a, b) {
+            // parseInt for textual attribute
+            a = parseInt(a[attribute]);
+            b = parseInt(b[attribute]);
+            return order == 'asc' ? a - b : b - a;
+        });
+
+        return results;
+    }                                           
+})
 .filter('freeText', function() {
     return function(input, search) {
         // TODO: freeText work-in-progress
@@ -59,6 +79,28 @@ angular.module('Pundit2.AnnotationSidebar')
                     if (search.indexOf(currentEnt) !== -1) {
                         results.push(e);
                     }
+                });
+            });
+        } else {
+            results = input;
+        }
+        return results;
+    };
+})
+.filter('types', function() {
+    return function(input, search) {
+        var results = [];
+        var currentTyp;
+
+        if (search.length > 0) {
+            angular.forEach(input, function (e) {
+                angular.forEach(e.items, function(item) {
+                    angular.forEach(item.type, function(typeUri) {
+                        currentTyp = typeUri;
+                        if (search.indexOf(currentTyp) !== -1) {
+                            results.push(e);
+                        }
+                    });
                 });
             });
         } else {
