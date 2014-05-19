@@ -1,19 +1,73 @@
 angular.module('Pundit2.Toolbar')
 .constant('TOOLBARDEFAULTS', {
+    /**
+     * @ngdoc property
+     * @name Configuration#modules.Toolbar.askLinkDefault
+     *
+     * @description
+     * `string`
+     *
+     * URL to Ask the Pundit shown when user is not logged in
+     *
+     * Default value:
+     * <pre> askLinkDefault: "http://ask.thepund.it/" </pre>
+     */
     askLinkDefault: "http://ask.thepund.it/",
+    /**
+     * @ngdoc property
+     * @name Configuration#modules.Toolbar.askLinkUser
+     *
+     * @description
+     * `string`
+     *
+     * URL to Ask the Pundit logged in user page
+     *
+     * Default value:
+     * <pre> askLinkUser: "http://ask.thepund.it/#/myAsk/" </pre>
+     */
     askLinkUser: "http://ask.thepund.it/#/myAsk/",
-
-    // Class added to the body element as soon as the directive is rendered. It will
-    // push down body with some css magic
+    /**
+     * @ngdoc property
+     * @name Configuration#modules.Toolbar.bodyClass
+     *
+     * @description
+     * `string`
+     *
+     * Class added to the body element as soon as the directive is rendered. It will push down body with some css magic
+     *
+     * Default value:
+     * <pre> bodyClass: "pnd-toolbar-active" </pre>
+     */
     bodyClass: "pnd-toolbar-active",
-
-    // The Client will append the content of this template to the DOM to bootstrap
-    // this component
+    /**
+     * @ngdoc property
+     * @name Configuration#modules.Toolbar.clientDomTemplate
+     *
+     * @description
+     * `string`
+     *
+     * The Client will append the content of this template to the DOM to bootstrap this component
+     *
+     * Default value:
+     * <pre> clientDomTemplate: "src/Toolbar/ClientToolbar.tmpl.html" </pre>
+     */
     clientDomTemplate: "src/Toolbar/ClientToolbar.tmpl.html",
-
+    /**
+     * @ngdoc property
+     * @name Configuration#modules.Toolbar.debug
+     *
+     * @description
+     * `boolean`
+     *
+     * Active debug log
+     *
+     * Default value:
+     * <pre> debug: false </pre>
+     */
     debug: false
 })
-.service('Toolbar', function(BaseComponent, TOOLBARDEFAULTS, MyPundit) {
+
+    .service('Toolbar', function(BaseComponent, TOOLBARDEFAULTS, MyPundit) {
 
     var toolbar = new BaseComponent('Toolbar', TOOLBARDEFAULTS);
     

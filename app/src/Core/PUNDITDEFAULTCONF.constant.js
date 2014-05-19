@@ -1,12 +1,53 @@
 // TODO: docs!
 angular.module('Pundit2.Core')
-.constant('PUNDITDEFAULTCONF', {
+/**
+ *
+ * @ngdoc object
+ * @name Configuration
+ *
+ * @module Pundit2.Core
+ *
+ * @description
+ * This is the object configuration in which is possible to set
+ * values of its properties.
+ *
+ * Each properties has a default value.
+ */
+    .constant('PUNDITDEFAULTCONF', {
     annotationServerBaseURL: 'http://demo-cloud.as.thepund.it:8080/annotationserver/',
     debugAllModules: false,
     vocabularies: [],
     useBasicRelations: true,
 
+
     // Modules active by default are activated here with active=true
+        /**
+         *
+         * @ngdoc property
+         * @name Configuration#modules
+         *
+         * @module Pundit2.Core
+         *
+         * @description
+         * This is the list of modules requires in Pundit 2 and its own configuration.
+         * Each module has a configuration object describe below.
+         *
+         * Example
+         *
+         * <pre>
+         *     modules: {
+         *         'Toolbar': {
+         *             askLinkDefault: "http://ask.thepund.it/",
+         *             debug: false
+         *         },
+         *         'Preview': {
+         *             welcomeHeaderMessage: "Welcome in Pundit 2",
+         *             welcomeBodyMessage: "Enjoy it"
+         *         }
+         *     }
+         *
+         * </pre>
+         */
     modules: {
 
         // Modules which requires to be bootstrapped (add stuff to Pundit2's root node or

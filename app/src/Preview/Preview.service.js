@@ -1,9 +1,69 @@
 angular.module('Pundit2.Preview')
 .constant('PREVIEWDEFAULTS', {
+    /**
+     * @ngdoc property
+     * @name Configuration#modules.Preview.welcomeHeaderMessage
+     *
+     * @description
+     * `string`
+     *
+     * A welcome message visible in the header of preview panel when it is empty
+     *
+     * Default value:
+     * <pre> welcomeHeaderMessage: "Welcome in Pundit 2" </pre>
+     */
     welcomeHeaderMessage: "Welcome in Pundit 2",
+    /**
+     * @ngdoc property
+     * @name Configuration#modules.Preview.welcomeBodyMessage
+     *
+     * @description
+     * `string`
+     *
+     * A welcome message visible in the body of preview panel when it is empty
+     *
+     * Default value:
+     * <pre> welcomeBodyMessage: "Enjoy it" </pre>
+     */
     welcomeBodyMessage: "Enjoy it",
+    /**
+     * @ngdoc property
+     * @name Configuration#modules.Preview.clientDashboardTemplate
+     *
+     * @description
+     * `string`
+     *
+     * Path of template containing preview directive
+     *
+     * Default value:
+     * <pre> clientDashboardTemplate: "src/Preview/ClientDashboardPreview.tmpl.html" </pre>
+     */
     clientDashboardTemplate: "src/Preview/ClientDashboardPreview.tmpl.html",
+    /**
+     * @ngdoc property
+     * @name Configuration#modules.Preview.clientDashboardPanel
+     *
+     * @description
+     * `string`
+     *
+     * Dashboard panel where preview will be shown
+     *
+     * Default value:
+     * <pre> clientDashboardPanel: "details" </pre>
+     */
     clientDashboardPanel: "details",
+        /**
+         * @ngdoc property
+         * @name Configuration#modules.Preview.clientDashboardTabTitle
+         *
+         * @description
+         * `string`
+         *
+         * Title of the panel where preview will be shown
+         *
+         * Default value:
+         * <pre> clientDashboardTabTitle: "Preview" </pre>
+         */
     clientDashboardTabTitle: "Preview"
 })
 

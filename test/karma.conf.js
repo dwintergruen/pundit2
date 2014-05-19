@@ -25,6 +25,7 @@ module.exports = function(config) {
             'app/src/Item/Item.js',
             'app/src/Toolbar/Toolbar.js',
             'app/src/Preview/Preview.js',
+            'app/src/Configuration/Configuration.js',
             'app/src/Communication/Communication.js',
             'app/src/**/*.js',
             'test/unit/**/*.js'

@@ -163,13 +163,13 @@ module.exports = function(grunt) {
             main: {
                 src: ['<%= conf.app %>/src/**/*.tmpl.html'],
                 dest: '<%= conf.app %>/src/templates.js'
-            },
+            }
         },
 
 
         concat: {
             docApp: {
-                src: ["<%= conf.app %>/../docs/app/*js"],
+                src: ["<%= conf.app %>/../docsAssets/app/*js"],
                 dest: "<%= conf.build %>/docs/js/docs.js"
             }
         },
@@ -180,7 +180,7 @@ module.exports = function(grunt) {
                 files: [
                 {
                     expand: true,
-                    cwd: '<%= conf.app %>/../docs/assets',
+                    cwd: '<%= conf.app %>/../docsAssets/assets',
                     dest: '<%= conf.build %>/docs',
                     src: [
                         '*',
@@ -345,7 +345,7 @@ module.exports = function(grunt) {
                     '<%= conf.tests %>/*.js',
                     '<%= conf.tests %>/**/*.js'
                 ],
-                tasks: ['jshint', 'karma:unit'],
+                tasks: ['jshint', 'karma:unit']
             },
             buildhtml: {
                 files: [
@@ -369,7 +369,7 @@ module.exports = function(grunt) {
                     '<%= conf.app %>/css/*.css',
                     '<%= conf.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
                 ]
-            },
+            }
 
         },
 
@@ -379,7 +379,7 @@ module.exports = function(grunt) {
             },
             
             doc: {
-                url: 'http://pundit2.local/build/docs'
+                url: 'http://localhost:<%= connect.options.port %>/build/docs/'
             }
         },
         
@@ -415,7 +415,7 @@ module.exports = function(grunt) {
                         inject: true,
                         protractor: true,
                         jasmine: true,
-                        angular: true,
+                        angular: true
                     }
                 },
                 files: {
@@ -437,10 +437,10 @@ module.exports = function(grunt) {
 
         karma: {
             options: {
-                configFile: './test/karma.conf.js',
+                configFile: './test/karma.conf.js'
             },
             headless: {
-                browsers:  ['PhantomJS'],
+                browsers:  ['PhantomJS']
             },
             unit: {
                 autoWatch: false,
@@ -487,7 +487,7 @@ module.exports = function(grunt) {
             },
             pre: {
                 src: "<%= conf.app %>/examples/src/*.pre.inc",
-                dest: "<%= conf.app %>/examples/examples.list.html",
+                dest: "<%= conf.app %>/examples/examples.list.html"
             },
             dev: {
                 src: "<%= conf.app %>/examples/src/*.html",
@@ -535,7 +535,7 @@ module.exports = function(grunt) {
         var dgeni = require('dgeni');
         var done = this.async();
         
-        dgeni('docs/dgeni.conf.js')
+        dgeni('docsAssets/dgeni.conf.js')
           .generateDocs()
           .then(done);
       });
