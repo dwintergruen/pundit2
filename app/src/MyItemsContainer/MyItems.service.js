@@ -10,7 +10,7 @@ angular.module("Pundit2.MyItemsContainer")
 })
 .service("MyItems", function(BaseComponent, NameSpace, $http, MYITEMSDEFAULTS) {
 
-    var myItems = new BaseComponent("MyItems");
+    var myItems = new BaseComponent("MyItems", MYITEMSDEFAULTS);
 
     // the item uri inside http request is named value
     // ItemFactory add item to itemsExchange default container

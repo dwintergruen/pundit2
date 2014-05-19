@@ -34,6 +34,9 @@ angular.module('Pundit2.Core')
         PageItemsContainer: {
             active: true
         },
+        MyItemsContainer: {
+            active: true
+        },
 
         selectors: {
             'Freebase': {

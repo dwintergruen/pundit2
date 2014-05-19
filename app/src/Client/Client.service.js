@@ -14,7 +14,7 @@ angular.module('Pundit2.Client')
 
     .constant('CLIENTDEFAULTS', {
         debug: false,
-        bootModules: ['Toolbar', 'Dashboard', 'AnnotationSidebar', 'Preview', 'PageItemsContainer']
+        bootModules: ['Toolbar', 'Dashboard', 'AnnotationSidebar', 'Preview', 'PageItemsContainer', 'MyItemsContainer']
     })
 
     .service('Client', function(BaseComponent, Config, MyPundit,
