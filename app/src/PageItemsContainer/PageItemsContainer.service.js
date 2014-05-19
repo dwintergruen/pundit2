@@ -19,7 +19,7 @@ angular.module('Pundit2.PageItemsContainer')
 
     debug: false
 })
-.service('PageItemsContainer', function(PAGEITEMSCONTAINERDEFAULTS, BaseComponent, TypesHelper, ContextualMenu) {
+.service('PageItemsContainer', function(PAGEITEMSCONTAINERDEFAULTS, BaseComponent, TypesHelper, ContextualMenu, MyItems, ItemsExchange) {
 
     var pageItemsContainer = new BaseComponent('PageItemsContainer', PAGEITEMSCONTAINERDEFAULTS);
 
@@ -30,15 +30,19 @@ angular.module('Pundit2.PageItemsContainer')
     // menu actions relative to pageItem contextual menu
     var menuActions = [
         {
-            name: 'pageItem1',
+            name: 'addToMyItems',
             type: [pageItemsContainer.options.pageItemsMenuType],
-            label: "Page item action",
+            label: "Add To My Items",
             priority: 0,
-            showIf: function(){
-                return true;
+            showIf: function(resource){
+                
+                var myItemsCont = MyItems.getMyItemsContainer();
+                var items = ItemsExchange.getItemsByContainer(myItemsCont);
+
+                return items.indexOf(resource) === -1;
             },
             action: function(resource){
-
+                // TODO add myItems API to add item to pundit server
             }
         }
     ];
