@@ -70,14 +70,15 @@ angular.module('Pundit2.Dashboard')
         $scope.setTabContentHeight();
     });
 
+    // Sets the scrollable height to the right values, depending on Dashboard's height.
+    // Multiple cases:
+    // .pnd-inner-scrollable (eg: Preview): larger scrollable area
+    // .pnd-inner .pnd-tab-content (eg: Items containers): tinier scrollable area
     $scope.setTabContentHeight = function() {
 
-        var el = angular.element($element).find('.pnd-inner .pnd-tab-content');
-        if (el.length === 0) {
-            return;
-        }
-
-        var h = Dashboard.getContainerHeight();
+        var h = Dashboard.getContainerHeight(),
+            elInner = angular.element($element).find('.pnd-inner .pnd-tab-content'),
+            elInnerScrollable = angular.element($element).find('.pnd-inner-scrollable');
 
         // .pnd-tab-header height
         h -= Dashboard.options.panelTabsHeight;
@@ -85,16 +86,21 @@ angular.module('Pundit2.Dashboard')
         // .pnd-panel-tab-content-header height
         h -= Dashboard.options.panelContentHeaderHeight;
 
-        // .pnd-inner .pnd-panel-tab-header height
-        h -= Dashboard.options.panelInnerTabsHeight;
-
         // .panel-tab-content-footer height
         h -= Dashboard.options.panelFooterHeight;
 
         // Dashboard footer height
         h -= Dashboard.options.footerHeight;
 
-        el.height(h);
+        if (elInner.length > 0) {
+            // .pnd-inner .pnd-panel-tab-header height
+            h -= Dashboard.options.panelInnerTabsHeight;
+
+            elInner.height(h);
+        } else if (elInnerScrollable.length > 0) {
+            elInnerScrollable.height(h);
+        }
+
     };
 
     Dashboard.addPanel($scope);
