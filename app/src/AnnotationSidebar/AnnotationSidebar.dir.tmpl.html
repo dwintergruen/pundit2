@@ -6,20 +6,18 @@
         <br />
         Number of annotations ({{annotations.length}} of {{allAnnotations.length}})
         
+
         <br /><hr />
         Search: <input ng-model="filters.freeText.expression"> 
         <br /><hr />
-        From <input type="date" min="{{fromMinDate}}" max="{{fromMaxDate}}" ng-model="filters.fromDate.expression" data-date-type="string" data-date-format="yyyy-MM-dd">
-        <br />
-        From <input type="date" min="{{fromMinDate}}" max="{{fromMaxDate}}" ng-model="filters.fromDate.expression" data-date-type="string" data-date-format="yyyy-MM-dd">
-        <br />
-        to <input type="date" min="{{toMinDate}}" max="{{toMaxDate}}" ng-model="filters.toDate.expression" data-date-type="string" data-date-format="yyyy-MM-dd">
+        <input type="text" class="form-control" ng-model="filters.fromDate.expression" data-min-date="{{fromMinDate}}" data-max-date="{{fromMaxDate}}" placeholder="From" data-autoclose="1" data-date-type="string" data-date-format="yyyy-MM-dd" bs-datepicker>
+        <input type="text" class="form-control" ng-model="filters.toDate.expression" data-min-date="{{toMinDate}}" data-max-date="{{toMaxDate}}" placeholder="To" data-autoclose="1" data-date-type="string" data-date-format="yyyy-MM-dd" bs-datepicker>
         <br /><hr />
         <strong>Autori:</strong>
         <br />Search: <input ng-model="searchAuthors">
         <div ng-repeat="auth in authors | orderObjectBy:'count':'dsc' | filter:searchAuthors">
             <span>{{auth.label}} ({{auth.count}})</span>
-            <button class="btn btn-info" ng-click="toggleAuthor(auth.label)">v</button>
+            <button class="btn btn-info" ng-click="toggleAuthor(auth.uri)">v</button>
         </div>
         <br />
         <strong>Entities:</strong>

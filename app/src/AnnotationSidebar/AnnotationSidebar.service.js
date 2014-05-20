@@ -59,13 +59,19 @@ angular.module('Pundit2.AnnotationSidebar')
     };
 
     var setFilterElements = function(annotations) {
-        state.predicates = {}; // TODO gestire il count diversamente?
+        state.predicates = {};
+        state.authors = {};
+        state.entities = {};
+        state.predicates = {};
+        state.types = {};
+
         angular.forEach(annotations, function(e) {
+
             // Annotation authors
-            if (state.authors[e.creatorName] === undefined){
-                state.authors[e.creatorName] = {label: e.creatorName, count: 1};
+            if (state.authors[e.creator] === undefined){
+                state.authors[e.creator] = {uri: e.creator, label: e.creatorName, count: 1};
             } else {
-                state.authors[e.creatorName].count++;
+                state.authors[e.creator].count++;
             }
 
             // Annotation date
@@ -75,11 +81,11 @@ angular.module('Pundit2.AnnotationSidebar')
 
             // Predicates
             angular.forEach(e.predicates, function(predicateUri) {
-                if (state.predicates[predicateUri] === undefined){
-                    state.predicates[predicateUri] = {uri: predicateUri, label: e.items[predicateUri].label, count: 1};
-                } else {
-                    state.predicates[predicateUri].count++;
-                }
+                    if (state.predicates[predicateUri] === undefined){
+                        state.predicates[predicateUri] = {uri: predicateUri, label: e.items[predicateUri].label, count: 1};
+                    } else {
+                        state.predicates[predicateUri].count++;
+                    }
             });
 
             // Entities
@@ -95,7 +101,6 @@ angular.module('Pundit2.AnnotationSidebar')
             angular.forEach(e.items, function(singleItem) {
                 angular.forEach(singleItem.type, function(typeUri) {;
                     if (state.types[typeUri] === undefined){
-                        console.log("ent ur "+typeUri+" lab: "+TypesHelper.getLabel(typeUri));
                         state.types[typeUri] = {uri: typeUri, label: TypesHelper.getLabel(typeUri), count: 1};
                     } else {
                         state.types[typeUri].count++;

@@ -36,7 +36,7 @@ angular.module('Pundit2.AnnotationSidebar')
 
         if (search.length > 0) {
             angular.forEach(input, function (e) {
-                currentAuthor = e.creatorName;
+                currentAuthor = e.creator;
                 if (search.indexOf(currentAuthor) !== -1) {
                     results.push(e);
                 }
