@@ -142,7 +142,7 @@ angular.module('Pundit2.Client')
                 "label": "is date",
                 "description": "The selected text fragment corresponds to the specified Date",
                 "domain": ["http://purl.org/pundit/ont/ao#fragment-text"],
-                "range": ["http://www.w3.org/2000/01/rdf-schema#Literal"],
+                "range": ["http://www.w3.org/2001/XMLSchema#dateTime"],
                 "uri": "http://purl.org/pundit/ont/oa#isDate"
             },
             {
@@ -150,7 +150,7 @@ angular.module('Pundit2.Client')
                 "label": "period of dates starts at",
                 "description": "The selected text fragment corresponds to the specified date period which starts at the specified Date",
                 "domain": ["http://purl.org/pundit/ont/ao#fragment-text"],
-                "range": ["http://www.w3.org/2000/01/rdf-schema#Literal"],
+                "range": ["http://www.w3.org/2001/XMLSchema#dateTime"],
                 "uri": "http://purl.org/pundit/ont/oa#periodStartDate"
             },
             {
@@ -158,7 +158,7 @@ angular.module('Pundit2.Client')
                 "label": "period of dates ends at",
                 "description": "The selected text fragment corresponds to the specified date period which ends at the specified Date",
                 "domain": ["http://purl.org/pundit/ont/ao#fragment-text"],
-                "range": ["http://www.w3.org/2000/01/rdf-schema#Literal"],
+                "range": ["http://www.w3.org/2001/XMLSchema#dateTime"],
                 "uri": "http://purl.org/pundit/ont/oa#periodEndDate"
             },
             {
@@ -200,7 +200,7 @@ angular.module('Pundit2.Client')
             root;
 
         // Verifies that the root node has the wrap class
-        client.fixRootNode = function() {
+        var fixRootNode = function() {
             root = angular.element("[data-ng-app='Pundit2']");
             if (!root.hasClass('pnd-wrp')) {
                 root.addClass('pnd-wrp');
@@ -217,7 +217,7 @@ angular.module('Pundit2.Client')
         // .clientDashboardPanel: name of the panel the template will get appended to. See
         //                        Dashboard configuration for the list of legal panel names
         // .clientDashboardTabTitle: title of the tab shown inside the panel
-        client.addComponents = function() {
+        var addComponents = function() {
             for (var i= 0, l=client.options.bootModules.length; i<l; i++) {
                 var name = client.options.bootModules[i];
 
@@ -270,10 +270,10 @@ angular.module('Pundit2.Client')
 
             } // for l=client.options.bootModules.length
 
-        }; // client.addComponents()
+        }; // addComponents()
 
         // Retrieves the annotations for this page and consolidates them
-        client.getAnnotations = function() {
+        var getAnnotations = function() {
 
             var uris = Consolidation.getAvailableTargets(),
                 annPromise = AnnotationsExchange.searchByUri(uris);
@@ -316,7 +316,7 @@ angular.module('Pundit2.Client')
         // bootstrapped (gets annotations, check if the user is logged in, etc)
         client.boot = function() {
 
-            client.fixRootNode();
+            fixRootNode();
 
             // Check if we're logged in, other components should $watch MyPundit
             // and get notified automatically when logged in, if needed
@@ -324,7 +324,7 @@ angular.module('Pundit2.Client')
 
                 // Now that we know if we're logged in or not, we can download the right
                 // annotations: auth or non-auth form the server
-                client.getAnnotations();
+                getAnnotations();
 
                 $rootScope.$watch(function() {
                     return MyPundit.getUserLogged();
@@ -344,7 +344,7 @@ angular.module('Pundit2.Client')
                 MyItems.getMyItems();
             });
 
-            client.addComponents();
+            addComponents();
 
             // TODO:
             // * Lists (My, page?, vocabs?, selectors?)
@@ -368,7 +368,7 @@ angular.module('Pundit2.Client')
             AnnotationsExchange.wipe();
 
             // There could be private annotations we want to show, get them again
-            client.getAnnotations();
+            getAnnotations();
 
             MyItems.getMyItems();
         };
@@ -381,7 +381,7 @@ angular.module('Pundit2.Client')
             AnnotationsExchange.wipe();
 
             // There might have been private annotations we dont want to show anymore
-            client.getAnnotations();
+            getAnnotations();
         };
 
         client.log("Component up and running");
