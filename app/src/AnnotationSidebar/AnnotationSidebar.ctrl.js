@@ -119,8 +119,10 @@ angular.module('Pundit2.AnnotationSidebar')
         }
     };
 
-    $scope.minDate = new Date();
-    $scope.maxDate = new Date();
+    $scope.fromMinDate = new Date();
+    $scope.toMinDate = new Date();
+    $scope.fromMaxDate = new Date();
+    $scope.fromToDate = new Date();
 
 
     var needToFilter = function() {
@@ -151,14 +153,36 @@ angular.module('Pundit2.AnnotationSidebar')
         return AnnotationSidebar.getMinDate();
     }, function(minDate) {
         if (minDate !== undefined){
-            $scope.minDate = $filter('date')(minDate, 'yyyy-MM-dd');
+            var newMinDate = $filter('date')(minDate, 'yyyy-MM-dd');
+            $scope.fromMinDate = newMinDate;
+            if ($scope.filters.fromDate.expression === ''){
+                $scope.toMinDate = newMinDate;
+            }
         }
     }); 
     $scope.$watch(function() {
         return AnnotationSidebar.getMaxDate();
     }, function(maxDate) {
         if (maxDate !== undefined){
-            $scope.maxDate = $filter('date')(maxDate, 'yyyy-MM-dd');
+            var newMaxDate = $filter('date')(maxDate, 'yyyy-MM-dd');
+            $scope.toMaxDate = newMaxDate;
+            if ($scope.filters.toDate.expression === ''){
+                $scope.fromMaxDate = newMaxDate;
+            }
+        }
+    });
+    $scope.$watch('filters.fromDate.expression', function(currentFromDate) {
+        if (currentFromDate !== ''){
+            $scope.toMinDate = currentFromDate;
+        } else{
+            $scope.toMinDate = $scope.fromMinDate;
+        }
+    });
+    $scope.$watch('filters.toDate.expression', function(currentToDate) {
+        if (currentToDate !== ''){
+            $scope.fromMaxDate = currentToDate;
+        } else{
+            $scope.fromMaxDate = $scope.toMaxDate;
         }
     });
 

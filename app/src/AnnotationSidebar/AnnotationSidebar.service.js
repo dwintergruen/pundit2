@@ -95,6 +95,7 @@ angular.module('Pundit2.AnnotationSidebar')
             angular.forEach(e.items, function(singleItem) {
                 angular.forEach(singleItem.type, function(typeUri) {;
                     if (state.types[typeUri] === undefined){
+                        console.log("ent ur "+typeUri+" lab: "+TypesHelper.getLabel(typeUri));
                         state.types[typeUri] = {uri: typeUri, label: TypesHelper.getLabel(typeUri), count: 1};
                     } else {
                         state.types[typeUri].count++;
@@ -116,7 +117,7 @@ angular.module('Pundit2.AnnotationSidebar')
     annotationSidebar.getTypes = function(){
         return state.types;
     };
-    
+
     annotationSidebar.getMinDate = function(){
         if (state.annotationsDate.length > 0){
             return state.annotationsDate.reduce(
