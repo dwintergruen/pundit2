@@ -1,6 +1,6 @@
 angular.module('Pundit2.Communication')
 .factory('Annotation', function(BaseComponent, NameSpace, Utils, Item, TypesHelper, Analytics,
-                                AnnotationsExchange, MyPundit, $http, $q) {
+                                AnnotationsExchange, MyPundit, ItemsExchange, $http, $q) {
 
     var annotationComponent = new BaseComponent("Annotation");
 
@@ -172,6 +172,12 @@ angular.module('Pundit2.Communication')
             var item = new Item(k, ann.items[k]);
 
             item.fromAnnotationRdf(data.items);
+
+            // discrad predicate
+            if (!item.isProperty()) {
+                // duplicate item inside page items container
+                ItemsExchange.addItemToContainer(item, ItemsExchange.pageItemContainer);                
+            }
 
             // Help out by givin the types to the helper, UI will say thanks
             for (var t in item.type) {

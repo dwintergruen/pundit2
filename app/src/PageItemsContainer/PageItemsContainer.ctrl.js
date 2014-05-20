@@ -132,9 +132,7 @@ angular.module('Pundit2.PageItemsContainer')
     });
 
     $scope.$watch(function() {
-        // TODO get items by page container (need to add page container)
-        // return ItemsExchange.getItemsByContainer($scope.container);
-        return ItemsExchange.getItems();
+        return ItemsExchange.getItemsByContainer(ItemsExchange.pageItemContainer);
     }, function(newItems) {
         // update all items array and display new items
         $scope.displayedItems = PageItemsContainer.buildItemsArray($scope.tabs.activeTab, $scope.tabs, newItems);

@@ -4,6 +4,9 @@ angular.module('Pundit2.Core')
         // TODO: inherit from a Store or something()? Annotations, items, ...
         var itemsExchange = new BaseComponent("ItemsExchange");
 
+        // TODO where define?
+        itemsExchange.pageItemContainer = 'pageItems';
+
         var itemListByContainer = {},
             itemContainers = {},
             itemList = [],
