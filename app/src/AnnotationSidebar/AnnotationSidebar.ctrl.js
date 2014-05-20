@@ -119,6 +119,9 @@ angular.module('Pundit2.AnnotationSidebar')
         }
     };
 
+    $scope.minDate = new Date();
+    $scope.maxDate = new Date();
+
 
     var needToFilter = function() {
         for (var f in $scope.filters) {
@@ -143,6 +146,21 @@ angular.module('Pundit2.AnnotationSidebar')
             $scope.annotations = currentAnnotations;
         }
     }); 
+
+    $scope.$watch(function() {
+        return AnnotationSidebar.getMinDate();
+    }, function(minDate) {
+        if (minDate !== undefined){
+            $scope.minDate = $filter('date')(minDate, 'yyyy-MM-dd');
+        }
+    }); 
+    $scope.$watch(function() {
+        return AnnotationSidebar.getMaxDate();
+    }, function(maxDate) {
+        if (maxDate !== undefined){
+            $scope.maxDate = $filter('date')(maxDate, 'yyyy-MM-dd');
+        }
+    });
 
     $scope.$watch('filters', function(currentFilters) {
         // TODO: individuare un modo migliore per rilevare i singoli filtri attivi

@@ -24,6 +24,7 @@ angular.module('Pundit2.AnnotationSidebar')
         isExpanded: annotationSidebar.options.isAnnotationSidebarExpanded,
         allAnnotations: [],
         filteredAnnotations: [],
+        annotationsDate: [],
         authors: {},
         entities: {},
         predicates: {},
@@ -65,6 +66,11 @@ angular.module('Pundit2.AnnotationSidebar')
                 state.authors[e.creatorName] = {label: e.creatorName, count: 1};
             } else {
                 state.authors[e.creatorName].count++;
+            }
+
+            // Annotation date
+            if (state.annotationsDate.indexOf(e.created) === -1){
+                state.annotationsDate.push(e.created);
             }
 
             // Predicates
@@ -109,6 +115,25 @@ angular.module('Pundit2.AnnotationSidebar')
     };
     annotationSidebar.getTypes = function(){
         return state.types;
+    };
+    
+    annotationSidebar.getMinDate = function(){
+        if (state.annotationsDate.length > 0){
+            return state.annotationsDate.reduce(
+                function(prev,current){ 
+                    return prev < current ? prev:current;
+                }
+            );
+        }
+    };
+    annotationSidebar.getMaxDate = function(){
+        if (state.annotationsDate.length > 0){
+            return state.annotationsDate.reduce(
+                function(prev,current){ 
+                    return prev > current ? prev:current;
+                }
+            );
+        }
     };
 
     var timeoutPromise;

@@ -16,9 +16,9 @@
         <br /><hr />
         Search: <input ng-model="filters.freeText.expression"> 
         <br /><hr />
-        From <input type="date" ng-model="filters.fromDate.expression" data-date-type="string" data-date-format="yyyy-MM-dd">
+        From <input type="date" min="{{minDate}}" max="{{maxDate}}" ng-model="filters.fromDate.expression" data-date-type="string" data-date-format="yyyy-MM-dd">
         <br />
-        to <input type="date" ng-model="filters.toDate.expression" data-date-type="string" data-date-format="yyyy-MM-dd">
+        to <input type="date" min="{{minDate}}" max="{{maxDate}}" ng-model="filters.toDate.expression" data-date-type="string" data-date-format="yyyy-MM-dd">
         <br /><hr />
         <strong>Autori:</strong>
         <br />Search: <input ng-model="searchAuthors">
