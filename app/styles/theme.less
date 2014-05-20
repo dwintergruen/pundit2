@@ -64,7 +64,14 @@
   &:active,
   &.active {
     background-image: none;
+    outline: 0;
   }
+  
+  &:hover,
+  &:focus {
+    outline: 0;
+  }
+  
 }
 
 // Apply the mixin to the buttons
@@ -90,7 +97,6 @@
 
   &:hover,
   &:focus {
-    //color: @gray-dark;
     color: @brand-success;
     text-decoration: none;
     background-color: transparent;
