@@ -1,9 +1,10 @@
 angular.module("Pundit2.MyItemsContainer")
 .constant('MYITEMSDEFAULTS', {
 
-    // where find my items on pundit server
-    api: 'favorites',
-    // where store my items inside itemsExchange
+    // Key used for the /services/preferences/ server API to store the my items object
+    apiPreferencesKey: 'favorites',
+
+    // Container used to store the my items in the itemsExchange
     container: 'myItems',
 
     debug: true
@@ -12,7 +13,7 @@ angular.module("Pundit2.MyItemsContainer")
 
     var myItems = new BaseComponent("MyItems", MYITEMSDEFAULTS);
 
-    // the first time that we get my items from pundit server we obtain pundit1 items:
+    // The very first time that we get my items from pundit server we might obtain pundit1 items:
     // - value is pundit2 uri property
     // - type property is not necessary (in pundit2 we use this property name with other semantic)
     // - rdfData is not necessary
@@ -23,8 +24,8 @@ angular.module("Pundit2.MyItemsContainer")
     // - type property replace rdftype property
     //
     // itemsExchange store all application items
-    // "new Item()" add item to itemsExchange "default" container
-    // then we duplicate it in "myItems" container
+    // "new Item()" adds the item to itemsExchange "default" container
+    // then we add it to "myItems" container too
 
     myItems.getMyItems = function(){
         var item;
@@ -32,11 +33,13 @@ angular.module("Pundit2.MyItemsContainer")
         $http({
             headers: { 'Accept': 'application/json' },
             method: 'GET',
-            url: NameSpace.get('asPref', {type: myItems.options.api}),
+            url: NameSpace.get('asPref', { key: myItems.options.apiPreferencesKey }),
             withCredentials: true         
         }).success(function(data) {
+            var num = 0;
 
             for (var i in data.value) {
+                num++;
 
                 // TODO is pundit1 object? (need to add a dedicated flag?)
                 if (data.value[i].rdftype) {
@@ -59,10 +62,10 @@ angular.module("Pundit2.MyItemsContainer")
                 ItemsExchange.addItemToContainer(item, myItems.options.container);
             }
 
-            myItems.log('http success, find my items on server', data, ItemsExchange.getItems());
+            myItems.log('Retrieved my items from the server: '+num+' items');
 
-        }).error(function() {
-            myItems.log('http error, cant find my items on server');
+        }).error(function(msg) {
+            myItems.log('Http error while retrieving my items from the server: ', msg);
         });
     };
 
@@ -78,15 +81,13 @@ angular.module("Pundit2.MyItemsContainer")
         $http({
             headers: {"Content-Type":"application/json;charset=UTF-8;"},
             method: 'POST',
-            url: NameSpace.get('asPref', {type: myItems.options.api}),
+            url: NameSpace.get('asPref', { key: myItems.options.apiPreferencesKey }),
             withCredentials: true,
             data: angular.toJson({value: [], created: currentTime.getTime()})     
         }).success(function(data) {
-
-            myItems.log('http success, delte all my items on server', data);
-
-        }).error(function() {
-            myItems.log('http error, cant delte all my items on server');
+            myItems.log('Deleted all my items on server', data);
+        }).error(function(msg) {
+            myItems.err('Cant delete my items on server: ', msg);
         });
     };
 
@@ -102,19 +103,19 @@ angular.module("Pundit2.MyItemsContainer")
 
         // update to server the new my items 
         // the new my items format is different from pundit1 item format
-        // this break punti1 compatibility
+        // this break pundit1 compatibility
         $http({
             headers: {"Content-Type":"application/json;charset=UTF-8;"},
             method: 'POST',
-            url: NameSpace.get('asPref', {type: myItems.options.api}),
+            url: NameSpace.get('asPref', { key: myItems.options.apiPreferencesKey }),
             withCredentials: true,
             data: angular.toJson({value: items, created: currentTime.getTime()})     
         }).success(function(data) {
 
-            myItems.log('http success, delte single my items on server', data);
+            myItems.log('Deleted from my item: '+ value.label);
 
-        }).error(function() {
-            myItems.log('http error, cant delte single my items on server');
+        }).error(function(msg) {
+            myItems.err('Cant delete a my item on the server: ', msg);
         });
     };
 
@@ -135,15 +136,15 @@ angular.module("Pundit2.MyItemsContainer")
         $http({
             headers: {"Content-Type":"application/json;charset=UTF-8;"},
             method: 'POST',
-            url: NameSpace.get('asPref', {type: myItems.options.api}),
+            url: NameSpace.get('asPref', { key: myItems.options.apiPreferencesKey }),
             withCredentials: true,
             data: angular.toJson({value: items, created: currentTime.getTime()})     
         }).success(function(data) {
 
-            myItems.log('http success, add item to my items on server', data);
+            myItems.log('Added item to my items: '+ value.label);
 
-        }).error(function() {
-            myItems.log('http error, cant add item to my items on server');
+        }).error(function(msg) {
+            myItems.err('Cant add item to my items on the server: ', msg);
         });
 
     };
