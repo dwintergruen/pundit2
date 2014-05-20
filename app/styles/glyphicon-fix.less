@@ -1,0 +1,28 @@
+// glyphicons: angular strap uses it. Rewrite what we need using our pundit-font
+.pnd-wrp .glyphicon {
+
+    font-family: 'pundit-font';
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    // Used by calendar left and right arrows
+    &.glyphicon-chevron-left:before {
+        content: "\f053";
+    }
+    &.glyphicon-chevron-right:before {
+        content: "\f054";
+    }
+
+    // Used by multiple select, in Annomatic
+    &.glyphicon-ok:before {
+        content: "\f058";
+    }
+}
