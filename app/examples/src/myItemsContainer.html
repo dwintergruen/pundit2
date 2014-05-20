@@ -2,10 +2,6 @@
 
 <script>
 
-    var punditConfig = {
-        annotationServerBaseURL: 'http://as.thepund.it:8080/annotationserver/'
-    };
-
     var MyItemsDemoCtrl = function($scope, MyItems, MyPundit) {
 
         MyPundit.login().then(function(value) {

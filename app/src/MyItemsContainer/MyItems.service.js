@@ -72,10 +72,6 @@ angular.module("Pundit2.MyItemsContainer")
     myItems.deleteAllMyItems = function(){
         var currentTime = new Date();
 
-        // remove all my items on application
-        // controller watch now update the view
-        ItemsExchange.wipeContainer(myItems.options.container);
-
         // remove all my item on pundit server
         // setting it to []
         $http({
@@ -85,6 +81,10 @@ angular.module("Pundit2.MyItemsContainer")
             withCredentials: true,
             data: angular.toJson({value: [], created: currentTime.getTime()})     
         }).success(function(data) {
+            // remove all my items on application
+            // controller watch now update the view
+            ItemsExchange.wipeContainer(myItems.options.container);
+            
             myItems.log('Deleted all my items on server', data);
         }).error(function(msg) {
             myItems.err('Cant delete my items on server: ', msg);
