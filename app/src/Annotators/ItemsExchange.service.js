@@ -89,8 +89,9 @@ angular.module('Pundit2.Core')
             for (var i=containers.length; i--;) {
                 var container = containers[i];
 
+                // TODO why this?
                 if (itemContainers[item.uri] && itemContainers[item.uri].indexOf(container) !== -1) {
-                    itemContainers.log('Item '+item.label+' already belongs to container '+container);
+                    itemsExchange.log('Item '+item.label+' already belongs to container '+container);
                     return;
                 }
 
@@ -100,6 +101,7 @@ angular.module('Pundit2.Core')
                     itemListByContainer[container] = [item];
                 }
 
+                // TODO what is itemsContainers?
                 if (item.uri in itemContainers) {
                     itemContainers[item.uri].push(container);
                 } else {
@@ -114,13 +116,13 @@ angular.module('Pundit2.Core')
             var containerItems = itemListByContainer[container];
 
             if (typeof(containerItems) === 'undefined') {
-                itemsExchange.err("Cannot remove item '+item.label+' from container "+ container+": container not found.");
+                itemsExchange.err("Cannot remove item "+item.label+" from container "+ container+": container not found.");
                 return;
             }
 
             var index = containerItems.indexOf(item);
             if (index === -1) {
-                itemsExchange.err("Cannot remove item '+item.label+' from container "+ container+": item not in container.");
+                itemsExchange.err("Cannot remove item "+item.label+" from container "+ container+": item not in container.");
                 return;
             }
 
