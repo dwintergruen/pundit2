@@ -1,10 +1,46 @@
 <!-- buildexamples:section header --><!-- /buildexamples -->
 
 <script>
+    var ResourcePanelDemoCtrl = function($scope, ResourcePanel) {
+    $scope.text = '';
+        // check where a new item is selected to get a preview
+        $scope.$watch(function() { return ResourcePanel.getLiteral(); }, function(newItem) {
+            $scope.text = newItem;
+        });
 
+        $scope.testLiteral = function(elementID) {
+            var element = angular.element('#testAnchor');
+            console.log('Element?!?!', elementID);
+            ResourcePanel.showLiteral(element).then(function(value){
+                console.log('Popover promise ', elementID);
+                angular.element('#'+elementID).text(value);
+            });
+        };
+
+    };
 </script>
+
 <div data-ng-app="Pundit2" class="pnd-wrp">
-    <resource-panel></resource-panel>
+    <div class="container">
+
+
+        <div ng-controller="ResourcePanelDemoCtrl">
+            <span id="testAnchor">anchor</span>
+
+            <div>
+                <button class="btn btn-warning" ng-click="testLiteral('test1')">Open literal</button>
+                <span id="test1">Test 1</span>
+            </div>
+
+            <div>
+                <button class="btn btn-warning" ng-click="testLiteral('test2')">Open literal2</button>
+                <span id="test2">Test 2</span>
+            </div>
+
+        </div>
+    </div>
+
 </div>
+
 
 <!-- buildexamples:section footer --><!-- /buildexamples -->
