@@ -104,23 +104,24 @@ angular.module('Pundit2.PageItemsContainer')
 
     // every time that user digit text inside <input> filter the items showed
     // show only items that contain the $scope.search substring inside their label
-    // the match function ignore multiple space
+    // the match function ignore multiple spaces
     $scope.$watch(function() {
         return $scope.search;
     }, function(str) {
 
-        // any item is actualy showed
+        // All items are shown
         if (typeof($scope.displayedItems) === 'undefined') {
             return;
         }
 
-        // this appen when the user delete last char in the <input>
+        // This happens when the user delete last char in the <input>
         if (typeof(str) === 'undefined') {
             str = '';
         }
 
-        // filter items actualy showed
-        // go to lowerCase and replace multiple space with single space
+        // Filter items which are shown
+        // go to lowerCase and replace multiple space with single space, to make the regexp
+        // work properly
         str = str.toLowerCase().replace(/\s+/g, ' ');
         var strParts = str.split(' ');
             reg = new RegExp(strParts.join('.*'));
