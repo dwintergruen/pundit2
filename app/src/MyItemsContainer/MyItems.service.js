@@ -22,9 +22,9 @@ angular.module("Pundit2.MyItemsContainer")
     // - uri property replace value property
     // - type property replace rdftype property
     //
-    // itemsExchange store items
-    // new Item() add item to itemsExchange default container
-    // then we duplicate it in myItems container
+    // itemsExchange store all application items
+    // "new Item()" add item to itemsExchange "default" container
+    // then we duplicate it in "myItems" container
 
     myItems.getMyItems = function(){
         var item;
@@ -44,15 +44,15 @@ angular.module("Pundit2.MyItemsContainer")
                     delete data.value[i].type;
                     delete data.value[i].rdfData;
                     delete data.value[i].favorite;
-                    // rename rdftype property in type
+                    // rename "rdftype" property in "type"
                     data.value[i].type = data.value[i].rdftype;
                     delete data.value[i].rdftype;
-                    // rename value property in uri
+                    // rename "value" property in "uri"
                     data.value[i].uri = data.value[i].value;
                     delete data.value[i].value;
                 }
 
-                // create new item (pundit2 item)
+                // create new item (now is a pundit2 item) (implicit add to default container)
                 item = new Item(data.value[i].uri, data.value[i]);               
                 
                 // add to myItems container
@@ -66,11 +66,15 @@ angular.module("Pundit2.MyItemsContainer")
         });
     };
 
-    // delete all my items from server 
-    // TODO need an API call inside items exchange to delete all my items
     myItems.deleteAllMyItems = function(){
         var currentTime = new Date();
 
+        // remove all my items on application
+        // controller watch now update the view
+        ItemsExchange.wipeContainer(myItems.options.container);
+
+        // remove all my item on pundit server
+        // setting it to []
         $http({
             headers: {"Content-Type":"application/json;charset=UTF-8;"},
             method: 'POST',
@@ -80,27 +84,23 @@ angular.module("Pundit2.MyItemsContainer")
         }).success(function(data) {
 
             myItems.log('http success, delte all my items on server', data);
-            // need to remove my items from items exchange? need removeItemsFromContainer()
 
         }).error(function() {
             myItems.log('http error, cant delte all my items on server');
         });
     };
 
-    // delete one item from server (TODO and from items exchange)
-    // value to be an array with new my items to post on server ?
     myItems.deleteSingleMyItem = function(value){
 
         var currentTime = new Date();
 
-        // get all my items
+        // get all my items (inside app)
         var items = ItemsExchange.getItemsByContainer(myItems.options.container);
-
         // remove value from my items
-        // TODO need to remove by API call
+        // controller watch now update the view
         ItemsExchange.removeItemFromContainer(value, myItems.options.container);        
 
-        // update to server the new my items
+        // update to server the new my items 
         // the new my items format is different from pundit1 item format
         // this break punti1 compatibility
         $http({
@@ -124,6 +124,7 @@ angular.module("Pundit2.MyItemsContainer")
         var currentTime = new Date();
 
         // add value to my items
+        // controller watch now update the view
         ItemsExchange.addItemToContainer(value, myItems.options.container);       
         // get all my items
         var items = ItemsExchange.getItemsByContainer(myItems.options.container);

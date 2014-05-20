@@ -17,6 +17,11 @@ angular.module('Pundit2.Core')
             itemListByURI = {};
         };
 
+        itemsExchange.wipeContainer = function(container) {
+            itemsExchange.log('Wiping every container item.');
+            itemListByContainer[container] = [];
+        };
+
         itemsExchange.getItems = function() {
             return itemList;
         };
