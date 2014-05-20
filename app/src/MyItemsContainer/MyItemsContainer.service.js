@@ -19,7 +19,7 @@ angular.module('Pundit2.MyItemsContainer')
 
     debug: false
 })
-.service('MyItemsContainer', function(MYITEMSCONTAINERDEFAULTS, BaseComponent, TypesHelper, ContextualMenu, MyItems) {
+.service('MyItemsContainer', function(MYITEMSCONTAINERDEFAULTS, BaseComponent, TypesHelper, ContextualMenu, MyItems, MyPundit) {
 
     var myItemsContainer = new BaseComponent('MyItemsContainer', MYITEMSCONTAINERDEFAULTS);
 
@@ -35,7 +35,7 @@ angular.module('Pundit2.MyItemsContainer')
             label: "Remove from MyItems",
             priority: 0,
             showIf: function(){
-                return true;
+                return MyPundit.getUserLogged();
             },
             action: function(resource){
                 // resource need to be the item to delete

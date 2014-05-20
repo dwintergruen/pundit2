@@ -22,7 +22,7 @@ angular.module('Pundit2.PageItemsContainer')
 
     debug: false
 })
-.service('PageItemsContainer', function(PAGEITEMSCONTAINERDEFAULTS, BaseComponent, TypesHelper, ContextualMenu, MyItems, ItemsExchange) {
+.service('PageItemsContainer', function(PAGEITEMSCONTAINERDEFAULTS, BaseComponent, TypesHelper, ContextualMenu, MyItems, MyPundit, ItemsExchange) {
 
     var pageItemsContainer = new BaseComponent('PageItemsContainer', PAGEITEMSCONTAINERDEFAULTS);
 
@@ -38,6 +38,10 @@ angular.module('Pundit2.PageItemsContainer')
             label: "Add To My Items",
             priority: 0,
             showIf: function(resource){
+
+                if (!MyPundit.getUserLogged()){
+                    return false;
+                }
                 
                 var myItemsCont = MyItems.getMyItemsContainer();
                 var items = ItemsExchange.getItemsByContainer(myItemsCont);
@@ -55,6 +59,11 @@ angular.module('Pundit2.PageItemsContainer')
             label: "Remove from MyItems",
             priority: 0,
             showIf: function(resource){
+
+                if (!MyPundit.getUserLogged()){
+                    return false;
+                }
+
                 var myItemsCont = MyItems.getMyItemsContainer();
                 var items = ItemsExchange.getItemsByContainer(myItemsCont);
 

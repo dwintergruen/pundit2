@@ -115,6 +115,10 @@ angular.module("Pundit2.MyItemsContainer")
             myItems.log('Deleted from my item: '+ value.label);
 
         }).error(function(msg) {
+            // TODO not good now item appear in the last position
+            // add value to my items
+            // controller watch now update the view
+            ItemsExchange.addItemToContainer(value, myItems.options.container);
             myItems.err('Cant delete a my item on the server: ', msg);
         });
     };
@@ -144,6 +148,8 @@ angular.module("Pundit2.MyItemsContainer")
             myItems.log('Added item to my items: '+ value.label);
 
         }).error(function(msg) {
+            // restore my items
+            ItemsExchange.removeItemFromContainer(value, myItems.options.container);
             myItems.err('Cant add item to my items on the server: ', msg);
         });
 

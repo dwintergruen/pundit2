@@ -4,16 +4,18 @@ describe('MyItems service', function() {
     $httpBackend,
     NameSpace,
     ItemsExchange,
-    MYITEMSDEFAULTS;
+    MYITEMSDEFAULTS,
+    Item;
 
     beforeEach(module('Pundit2'));
 
-    beforeEach(inject(function(_MyItems_, _$httpBackend_, _NameSpace_, _ItemsExchange_, _MYITEMSDEFAULTS_){
+    beforeEach(inject(function(_MyItems_, _$httpBackend_, _NameSpace_, _ItemsExchange_, _MYITEMSDEFAULTS_, _Item_){
         MyItems = _MyItems_;
         $httpBackend = _$httpBackend_;
         NameSpace = _NameSpace_;
         ItemsExchange = _ItemsExchange_;
         MYITEMSDEFAULTS = _MYITEMSDEFAULTS_;
+        Item = _Item_;
     }));
 
     afterEach(function(){
@@ -134,6 +136,28 @@ describe('MyItems service', function() {
         expect(ItemsExchange.getItemsByContainer(MYITEMSDEFAULTS.container).length).toBe(2);
     });
 
+    it('should add one item to my items', function(){
 
+        $httpBackend.whenPOST(NameSpace.get('asPref')).respond(201, '');
+
+        MyItems.addSingleMyItem(new Item(myItemsHttpResponse.value[0].uri));
+
+        $httpBackend.flush();
+
+        expect(ItemsExchange.getItemsByContainer(MYITEMSDEFAULTS.container).length).toBe(1);
+    });
+
+    it('should not add one item to my items when http fail', function(){
+
+        $httpBackend.whenPOST(NameSpace.get('asPref')).respond(500, '');
+
+        MyItems.addSingleMyItem(new Item(myItemsHttpResponse.value[0].uri));
+
+        $httpBackend.flush();
+
+        expect(ItemsExchange.getItemsByContainer(MYITEMSDEFAULTS.container).length).toBe(0);
+    });
+
+    // TODO need to test deleteSingleItem()
 
 });
