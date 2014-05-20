@@ -99,6 +99,22 @@ angular.module('Pundit2.Core')
 
         };
 
+        itemsExchange.removeItemFromContainer = function(item, container) {
+
+            var containerItems = itemListByContainer[container];
+
+            var index = containerItems.indexOf(item);
+
+            if (index === -1) {
+                itemsExchange.err("Ouch, cannot remove this item (not find) ... ", item);
+                return;
+            } else {
+                containerItems.splice(index, 1); 
+                itemsExchange.log("Item removed: "+ item.label);
+            }            
+
+        };
+
         itemsExchange.addItem = function(item, container) {
 
             if (typeof(container) === "undefined") {

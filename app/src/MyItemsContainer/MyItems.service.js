@@ -98,8 +98,7 @@ angular.module("Pundit2.MyItemsContainer")
 
         // remove value from my items
         // TODO need to remove by API call
-        var index = items.indexOf(value);
-        items.splice(index, 1);        
+        ItemsExchange.removeItemFromContainer(value, myItems.options.container);        
 
         // update to server the new my items
         // the new my items format is different from pundit1 item format
@@ -128,7 +127,6 @@ angular.module("Pundit2.MyItemsContainer")
         ItemsExchange.addItemToContainer(value, myItems.options.container);       
         // get all my items
         var items = ItemsExchange.getItemsByContainer(myItems.options.container);
-        console.log(items, value);
 
         // update to server the new my items
         // the new my items format is different from pundit1 item format
