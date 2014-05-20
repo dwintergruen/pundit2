@@ -10,10 +10,10 @@ angular.module('Pundit2.Core')
         }
         this.uri = uri;
         this.type = [];
-        this.label = '';
+        this.label = 'default item label';
 
         if (angular.isObject(values)) {
-            itemComponent.log('Extending new Item with values ', values);
+            itemComponent.log('Extending new Item with values '+this.uri, values);
             Utils.deepExtend(this, values);
         }
 
@@ -48,7 +48,7 @@ angular.module('Pundit2.Core')
 
         // Cant find any rdf for this item?? Where is it?!1?
         if (typeof(itemRDF) === "undefined") {
-            ItemFactory.log('Error? No RDF for this item? ', this.uri);
+            itemComponent.log('Error? No RDF for this item? ', this.uri);
             return;
         }
 
@@ -106,7 +106,7 @@ angular.module('Pundit2.Core')
 
         // TODO: more special cases, named content, webpage, video fragment, other selectors?
 
-        itemComponent.log("Created new item: "+ this.label);
+        itemComponent.log("Created new item from annotation RDF: "+ this.label);
     };
 
     ItemFactory.prototype.toRdf = function() {

@@ -2,11 +2,15 @@ angular.module('Pundit2.Core')
     .service('ItemsExchange', function(BaseComponent) {
 
         // TODO: inherit from a Store or something()? Annotations, items, ...
-        var itemsExchange = new BaseComponent("ItemsExchange");
+        var itemsExchange = new BaseComponent("ItemsExchange"),
 
-        var itemListByContainer = {},
+            // container: [ array of ItemFactory objects belonging to that container ]
+            itemListByContainer = {},
+            // item uri : [ array of containers which contains the ItemFactory with that uri ]
             itemContainers = {},
+            // [ array of ItemFactory objects ]
             itemList = [],
+            // item uri : { ItemFactory object }
             itemListByURI = {};
 
         itemsExchange.wipe = function() {
@@ -73,13 +77,6 @@ angular.module('Pundit2.Core')
             }
         };
 
-        itemsExchange.addItems = function(items) {
-            // TODO: sanity checks
-            for (var l=items.length; l--;) {
-                itemsExchange.addItem(items[l]);
-            }
-        };
-
         itemsExchange.addItemToContainer = function(item, containers) {
 
             if (!angular.isArray(containers)) {
@@ -90,7 +87,7 @@ angular.module('Pundit2.Core')
                 var container = containers[i];
 
                 // TODO why this?
-                if (itemContainers[item.uri] && itemContainers[item.uri].indexOf(container) !== -1) {
+                if (item.uri in itemContainers && itemContainers[item.uri].indexOf(container) !== -1) {
                     itemsExchange.log('Item '+item.label+' already belongs to container '+container);
                     return;
                 }
@@ -130,6 +127,13 @@ angular.module('Pundit2.Core')
             itemsExchange.log("Item "+ item.label +" removed from container "+ container);
         };
 
+        itemsExchange.addItems = function(items) {
+            // TODO: sanity checks
+            for (var l=items.length; l--;) {
+                itemsExchange.addItem(items[l]);
+            }
+        };
+
         itemsExchange.addItem = function(item, container) {
 
             if (typeof(container) === "undefined") {
@@ -141,7 +145,7 @@ angular.module('Pundit2.Core')
                 itemsExchange.err("Ouch, cannot add this item ... ", item);
                 return;
             } else if (item.uri in itemListByURI) {
-                itemsExchange.log("Item already present: "+ item.label);
+                itemsExchange.log("Item already present: "+ item.uri);
                 return;
             } else if (item.isProperty()) {
                 // TODO: magic string, get it somewhere else, options, defaults, other component..
@@ -152,7 +156,7 @@ angular.module('Pundit2.Core')
             itemList.push(item);
             itemsExchange.addItemToContainer(item, container);
 
-            itemsExchange.log("Added item: " +item.label);
+            itemsExchange.log("Added item: " +item.uri);
         };
 
         itemsExchange.log('Component up and running');

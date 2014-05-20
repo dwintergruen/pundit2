@@ -380,7 +380,6 @@ angular.module('Pundit2.Client')
         // was already logged in on boot etc
         var onLogin = function() {
 
-            // TODO: consolidation wipe! YAYYYYYY
             ItemsExchange.wipe();
             AnnotationsExchange.wipe();
 
@@ -393,7 +392,6 @@ angular.module('Pundit2.Client')
         // Called when the user completed the logout process, clicking on logout
         var onLogout = function() {
 
-            // TODO: consolidation wipe! YAYYYYYY
             ItemsExchange.wipe();
             AnnotationsExchange.wipe();
 

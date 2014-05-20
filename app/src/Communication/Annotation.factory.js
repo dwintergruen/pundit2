@@ -132,10 +132,9 @@ angular.module('Pundit2.Communication')
         }
 
         // Extract all of the entities and items involved in this annotation:
-        // subjects and objects which are NOT literals
+        // subjects and objects which are NOT literals. Extract all of the predicates
+        // involved too
         ann.entities = [];
-
-        // Extract all of the predicates involved too
         ann.predicates = [];
         for (var s in data.graph) {
 
@@ -164,15 +163,29 @@ angular.module('Pundit2.Communication')
                         ann.entities.push(object.value);
                         ann.items[object.value] = {};
                     }
-                }
-            }
-        }
+                } // for o (objects)
+            } // for p (predicates)
+        } // for s (subjects)
 
         // Create a real Item for each previously identified item
-        for (var k in ann.items) {
-            var item = new Item(k, ann.items[k]);
+        for (var uri in ann.items) {
 
-            item.fromAnnotationRdf(data.items);
+            // This item might exist already (my item? another annotation?). If it does not
+            // exist, create it from this annotation content
+            var item = ItemsExchange.getItemByUri(uri);
+            if (typeof(item) === "undefined") {
+
+                // If it's not empty, let ItemFactory extend it with the previously gathered
+                // values
+                if (angular.equals(ann.items[uri], {})) {
+                    item = new Item(uri);
+                } else {
+                    item = new Item(uri, ann.items[uri]);
+                }
+
+                // And read what the annotation says about the item
+                item.fromAnnotationRdf(data.items);
+            }
 
             // discard predicates
             if (!item.isProperty()) {
@@ -180,13 +193,13 @@ angular.module('Pundit2.Communication')
                 ItemsExchange.addItemToContainer(item, PageItemsContainer.options.container);
             }
 
-            // Help out by givin the types to the helper, UI will say thanks
+            // Help out by giving the types to the helper, UI will say thanks
             for (var t in item.type) {
                 TypesHelper.addFromAnnotationRdf(item.type[t], data.items);
             }
 
-            ann.items[k] = item;
-        }
+            ann.items[uri] = item;
+        } // for uri in ann.items
 
     }; // readAnnotationData()
 
