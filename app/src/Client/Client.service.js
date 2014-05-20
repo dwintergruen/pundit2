@@ -14,6 +14,7 @@ angular.module('Pundit2.Client')
 
     .constant('CLIENTDEFAULTS', {
         debug: false,
+        relationsContainer: "usableRelations",
         bootModules: [
             'Toolbar', 'Dashboard', 'AnnotationSidebar', 'Preview',
             'PageItemsContainer', 'MyItemsContainer'
@@ -190,7 +191,7 @@ angular.module('Pundit2.Client')
 
     .service('Client', function(BaseComponent, Config, MyPundit,
                                 ImageFragmentAnnotator, TextFragmentAnnotator, Consolidation,
-                                AnnotationsExchange,
+                                AnnotationsExchange, Item,
                                 ItemsExchange, Annotation, CLIENTDEFAULTS, MyItems,
                                 $injector, $templateCache, $rootScope) {
 
@@ -312,11 +313,27 @@ angular.module('Pundit2.Client')
 
         }; // client.getAnnotations()
 
+        // Loads the basic relations into some special ItemsExchange container
+        var loadBasicRelations = function() {
+            var num = 0,
+                relations = client.options.basicRelations;
+            for (var p in relations) {
+                var item = new Item(relations[p].uri, relations[p]);
+                ItemsExchange.addItemToContainer(item, client.options.relationsContainer);
+            }
+            client.log('Loaded '+num+' basic relations');
+        };
+
+
         // Reads the conf and initializes the active components, bootstrap what needs to be
         // bootstrapped (gets annotations, check if the user is logged in, etc)
         client.boot = function() {
 
             fixRootNode();
+
+            if (Config.useBasicRelations) {
+                loadBasicRelations();
+            }
 
             // Check if we're logged in, other components should $watch MyPundit
             // and get notified automatically when logged in, if needed
