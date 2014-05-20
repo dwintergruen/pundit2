@@ -21,8 +21,13 @@ angular.module('Pundit2.Core')
         };
 
         itemsExchange.wipeContainer = function(container) {
-            itemsExchange.log('Wiping every container item.');
-            itemListByContainer[container] = [];
+
+            if (typeof(itemListByContainer[container]) === 'undefined') {
+                itemsExchange.log('Try to wipe undefined container');
+            } else {
+                itemListByContainer[container] = [];
+                itemsExchange.log('Wipe '+container+' container');              
+            }
         };
 
         itemsExchange.getItems = function() {
@@ -111,14 +116,19 @@ angular.module('Pundit2.Core')
 
             var containerItems = itemListByContainer[container];
 
+            if (typeof(containerItems) === 'undefined') {
+                itemsExchange.err("Ouch, cannot found container ... ", container);
+                return;
+            }
+
             var index = containerItems.indexOf(item);
 
             if (index === -1) {
-                itemsExchange.err("Ouch, cannot remove this item (not find) ... ", item);
+                itemsExchange.err("Ouch, cannot remove item from container (not found) ... ", item);
                 return;
             } else {
                 containerItems.splice(index, 1); 
-                itemsExchange.log("Item removed: "+ item.label);
+                itemsExchange.log("Item "+ item.label +" removed from container: "+ container);
             }            
 
         };
