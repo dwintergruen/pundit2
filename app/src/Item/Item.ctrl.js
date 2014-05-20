@@ -16,20 +16,15 @@ angular.module('Pundit2.Item')
         Preview.hideDashboardPreview();
     };
 
-    $scope.onClickSticky = function(){
-        if (!$scope.isStickyItem) {
-            
-            $scope.isStickyItem = true;
-            Preview.setItemDashboardSticky($scope.item);
+    $scope.isSticky = function() {
+        return Preview.isStickyItem($scope.item);
+    };
 
-            var unbindWatch = $scope.$watch( function(){
-                return Preview.isStickyItem($scope.item);
-            }, function(newIsStcky, oldIsStcky){
-                if (!newIsStcky && newIsStcky!==oldIsStcky) {
-                    $scope.isStickyItem = false;
-                    unbindWatch();
-                }
-            });            
+    $scope.onClickSticky = function(){
+        if (Preview.isStickyItem($scope.item)) {
+            Preview.clearItemDashboardSticky();
+        } else {
+            Preview.setItemDashboardSticky($scope.item);
         }
     };
     
