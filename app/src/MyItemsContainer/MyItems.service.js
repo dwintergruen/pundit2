@@ -89,7 +89,7 @@ angular.module("Pundit2.MyItemsContainer")
 
     // delete one item from server (TODO and from items exchange)
     // value to be an array with new my items to post on server ?
-    myItems.deleteSingleMyItems = function(value){
+    myItems.deleteSingleMyItem = function(value){
 
         var currentTime = new Date();
 
@@ -117,6 +117,36 @@ angular.module("Pundit2.MyItemsContainer")
         }).error(function() {
             myItems.log('http error, cant delte single my items on server');
         });
+    };
+
+    // add one item to my items on pundit server
+    myItems.addSingleMyItem = function(value){
+
+        var currentTime = new Date();
+
+        // add value to my items
+        ItemsExchange.addItemToContainer(value, myItems.options.container);       
+        // get all my items
+        var items = ItemsExchange.getItemsByContainer(myItems.options.container);
+        console.log(items, value);
+
+        // update to server the new my items
+        // the new my items format is different from pundit1 item format
+        // this break punti1 compatibility
+        $http({
+            headers: {"Content-Type":"application/json;charset=UTF-8;"},
+            method: 'POST',
+            url: NameSpace.get('asPref', {type: myItems.options.api}),
+            withCredentials: true,
+            data: angular.toJson({value: items, created: currentTime.getTime()})     
+        }).success(function(data) {
+
+            myItems.log('http success, add item to my items on server', data);
+
+        }).error(function() {
+            myItems.log('http error, cant add item to my items on server');
+        });
+
     };
 
     myItems.getMyItemsContainer = function(){

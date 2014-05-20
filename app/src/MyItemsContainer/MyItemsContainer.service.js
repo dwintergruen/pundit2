@@ -30,16 +30,16 @@ angular.module('Pundit2.MyItemsContainer')
     // menu actions relative to myItem contextual menu
     var menuActions = [
         {
-            name: 'delteItem',
+            name: 'removeMyItemFromMyItem',
             type: [myItemsContainer.options.myItemsMenuType],
-            label: "Delete This Item",
+            label: "Remove from MyItems",
             priority: 0,
             showIf: function(){
                 return true;
             },
             action: function(resource){
                 // resource need to be the item to delete
-                MyItems.deleteSingleMyItems(resource);
+                MyItems.deleteSingleMyItem(resource);
             }
         }
     ];

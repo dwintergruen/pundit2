@@ -30,7 +30,7 @@ angular.module('Pundit2.PageItemsContainer')
     // menu actions relative to pageItem contextual menu
     var menuActions = [
         {
-            name: 'addToMyItems',
+            name: 'addPageItemToMyItems',
             type: [pageItemsContainer.options.pageItemsMenuType],
             label: "Add To My Items",
             priority: 0,
@@ -42,12 +42,30 @@ angular.module('Pundit2.PageItemsContainer')
                 return items.indexOf(resource) === -1;
             },
             action: function(resource){
-                // TODO add myItems API to add item to pundit server
+                // add to my items on pundit server
+                MyItems.addSingleMyItem(resource);
+            }
+        },
+        {
+            name: 'removePageItemFromMyItem',
+            type: [pageItemsContainer.options.pageItemsMenuType],
+            label: "Remove from MyItems",
+            priority: 0,
+            showIf: function(resource){
+                var myItemsCont = MyItems.getMyItemsContainer();
+                var items = ItemsExchange.getItemsByContainer(myItemsCont);
+
+                return items.indexOf(resource) > -1;
+            },
+            action: function(resource){
+                // resource need to be the item to delete
+                MyItems.deleteSingleMyItem(resource);
             }
         }
     ];
 
     ContextualMenu.addAction(menuActions[0]);
+    ContextualMenu.addAction(menuActions[1]);
 
     pageItemsContainer.buildItemsArray = function(activeTab, tabs, items) {
 
