@@ -14,33 +14,36 @@
 
         
         <br /><hr />
-        Search: <input ng-model="filters.freeText.expression">
+        Search: <input ng-model="filters.freeText.expression"> 
+        <br /><hr />
+        From <input type="date" ng-model="filters.fromDate.expression" data-date-type="string" data-date-format="yyyy-MM-dd">
         <br />
-        <br />
-        fromDate: <input ng-model="filters.fromDate.expression">
-        <br />
-        toDate: <input ng-model="filters.toDate.expression">
+        to <input type="date" ng-model="filters.toDate.expression" data-date-type="string" data-date-format="yyyy-MM-dd">
         <br /><hr />
         <strong>Autori:</strong>
-        <div ng-repeat="auth in authors | orderObjectBy:'count':'dsc'">
+        <br />Search: <input ng-model="searchAuthors">
+        <div ng-repeat="auth in authors | orderObjectBy:'count':'dsc' | filter:searchAuthor">
             <span>{{auth.label}} ({{auth.count}})</span>
             <button class="btn btn-info" ng-click="toggleAuthor(auth.label)">v</button>
         </div>
         <br />
         <strong>Entities:</strong>
-        <div ng-repeat="ent in entities | orderObjectBy:'count':'dsc'">
+        <br />Search: <input ng-model="searchEntities">
+        <div ng-repeat="ent in entities | orderObjectBy:'count':'dsc'| filter:searchEntities">
             <span>{{ent.label}} ({{ent.count}})</span>
             <button class="btn btn-info" ng-click="toggleEntities(ent.uri)">v</button>
         </div>
         <br /><br />
         <strong>Predicates:</strong>
-        <div ng-repeat="pred in predicates | orderObjectBy:'count':'dsc'">
+        <br />Search: <input ng-model="searchPredicates">
+        <div ng-repeat="pred in predicates | orderObjectBy:'count':'dsc'| filter:searchPredicates">
             <span>{{pred.label}} ({{pred.count}})</span>
             <button class="btn btn-info" ng-click="togglePredicates(pred.uri)">v</button>
         </div>
         <br /><br />
         <strong>Types:</strong>
-        <div ng-repeat="typ in types | orderObjectBy:'count':'dsc'">
+        <br />Search: <input ng-model="searchTypes">
+        <div ng-repeat="typ in types | orderObjectBy:'count':'dsc'| filter:searchTypes">
             <span>{{typ.label}} ({{typ.count}})</span>
             <button class="btn btn-info" ng-click="toggleTypes(typ.uri)">v</button>
         </div>

@@ -119,6 +119,7 @@ angular.module('Pundit2.AnnotationSidebar')
         }
     };
 
+
     var needToFilter = function() {
         for (var f in $scope.filters) {
             var current = $scope.filters[f].expression;
@@ -147,7 +148,7 @@ angular.module('Pundit2.AnnotationSidebar')
         // TODO: individuare un modo migliore per rilevare i singoli filtri attivi
         $scope.annotations = AnnotationSidebar.getAllAnnotationsFiltered(currentFilters);
 
-    }, true);
+    }, true);    
 
     $scope.$watch(function() {
         return AnnotationSidebar.getAuthors();
@@ -168,8 +169,6 @@ angular.module('Pundit2.AnnotationSidebar')
         return AnnotationSidebar.getTypes();
     }, function(currentListTypes) { 
         $scope.types = currentListTypes;
-        // $scope.types = $filter('orderBy')(currentListTypes, 'count');
-        //$filter('orderBy')(array, expression, reverse);
     });
 
     $scope.toggleAuthor = function(author) {
