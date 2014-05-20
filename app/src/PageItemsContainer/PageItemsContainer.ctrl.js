@@ -132,7 +132,7 @@ angular.module('Pundit2.PageItemsContainer')
     });
 
     $scope.$watch(function() {
-        return ItemsExchange.getItemsByContainer(ItemsExchange.pageItemContainer);
+        return ItemsExchange.getItemsByContainer(PageItemsContainer.options.container);
     }, function(newItems) {
         // update all items array and display new items
         $scope.displayedItems = PageItemsContainer.buildItemsArray($scope.tabs.activeTab, $scope.tabs, newItems);
