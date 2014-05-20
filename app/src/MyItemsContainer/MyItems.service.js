@@ -38,6 +38,12 @@ angular.module("Pundit2.MyItemsContainer")
         }).success(function(data) {
             var num = 0;
 
+            if (typeof(data.redirectTo) !== 'undefined') {
+                myItems.log('Get all my items on server produce a redirect response to: ', data);
+                return;
+            }
+
+            // for each item
             for (var i in data.value) {
                 num++;
 
@@ -81,6 +87,11 @@ angular.module("Pundit2.MyItemsContainer")
             withCredentials: true,
             data: angular.toJson({value: [], created: currentTime.getTime()})     
         }).success(function(data) {
+
+            if (typeof(data.redirectTo) !== 'undefined') {
+                myItems.log('Deleted all my items on server produce a redirect response to: ', data);
+                return;
+            }
             // remove all my items on application
             // controller watch now update the view
             ItemsExchange.wipeContainer(myItems.options.container);
@@ -97,9 +108,10 @@ angular.module("Pundit2.MyItemsContainer")
 
         // get all my items (inside app)
         var items = ItemsExchange.getItemsByContainer(myItems.options.container);
-        // remove value from my items
-        // controller watch now update the view
-        ItemsExchange.removeItemFromContainer(value, myItems.options.container);        
+        var index = items.indexOf(value);
+        var copiedItems = angular.copy(items);
+        // remove item from the copied array
+        copiedItems.splice(index, 1);       
 
         // update to server the new my items 
         // the new my items format is different from pundit1 item format
@@ -109,16 +121,21 @@ angular.module("Pundit2.MyItemsContainer")
             method: 'POST',
             url: NameSpace.get('asPref', { key: myItems.options.apiPreferencesKey }),
             withCredentials: true,
-            data: angular.toJson({value: items, created: currentTime.getTime()})     
+            data: angular.toJson({value: copiedItems, created: currentTime.getTime()})     
         }).success(function(data) {
+
+            if (typeof(data.redirectTo) !== 'undefined') {
+                myItems.log('Deleted single my item on server produce a redirect response to: ', data);
+                return;
+            }
+
+            // remove value from my items
+            // controller watch now update the view
+            ItemsExchange.removeItemFromContainer(value, myItems.options.container);
 
             myItems.log('Deleted from my item: '+ value.label);
 
         }).error(function(msg) {
-            // TODO not good now item appear in the last position
-            // add value to my items
-            // controller watch now update the view
-            ItemsExchange.addItemToContainer(value, myItems.options.container);
             myItems.err('Cant delete a my item on the server: ', msg);
         });
     };
@@ -127,12 +144,11 @@ angular.module("Pundit2.MyItemsContainer")
     myItems.addSingleMyItem = function(value){
 
         var currentTime = new Date();
-
-        // add value to my items
-        // controller watch now update the view
-        ItemsExchange.addItemToContainer(value, myItems.options.container);       
-        // get all my items
-        var items = ItemsExchange.getItemsByContainer(myItems.options.container);
+       
+        // get all my items and make a copy
+        var items = angular.copy(ItemsExchange.getItemsByContainer(myItems.options.container));
+        // add new item to the copied array
+        items.push(value);
 
         // update to server the new my items
         // the new my items format is different from pundit1 item format
@@ -145,11 +161,18 @@ angular.module("Pundit2.MyItemsContainer")
             data: angular.toJson({value: items, created: currentTime.getTime()})     
         }).success(function(data) {
 
+            if (typeof(data.redirectTo) !== 'undefined') {
+                myItems.log('Add single item to my items on server produce a redirect response to: ', data);
+                return;
+            }
+
+            // add value to my items
+            // controller watch now update the view
+            ItemsExchange.addItemToContainer(value, myItems.options.container);
+
             myItems.log('Added item to my items: '+ value.label);
 
         }).error(function(msg) {
-            // restore my items
-            ItemsExchange.removeItemFromContainer(value, myItems.options.container);
             myItems.err('Cant add item to my items on the server: ', msg);
         });
 

@@ -1,5 +1,5 @@
 angular.module('Pundit2.MyItemsContainer')
-.controller('MyItemsContainerCtrl', function($scope, MyItemsContainer, ItemsExchange, MyItems, Preview, TypesHelper) {
+.controller('MyItemsContainerCtrl', function($scope, MyItemsContainer, ItemsExchange, MyItems, MyPundit, Preview, TypesHelper) {
 
     // read by <item> directive (in PageItemsContainer/items.tmpl.html)
     // specifie how contextual menu type show on item
@@ -92,7 +92,9 @@ angular.module('Pundit2.MyItemsContainer')
 
     // delte all my Items
     $scope.onClickDeleteAllMyItems = function(){
-        MyItems.deleteAllMyItems();
+        if (MyPundit.getUserLogged()) {
+            MyItems.deleteAllMyItems();
+        }
     };
 
     // every time that change active tab show new items array
