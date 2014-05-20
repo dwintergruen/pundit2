@@ -48,7 +48,7 @@ angular.module('Pundit2.Core')
 
         // Cant find any rdf for this item?? Where is it?!1?
         if (typeof(itemRDF) === "undefined") {
-            console.log('Error? No RDF for this item? ', this.uri);
+            ItemFactory.log('Error? No RDF for this item? ', this.uri);
             return;
         }
 
