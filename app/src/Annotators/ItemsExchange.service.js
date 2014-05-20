@@ -10,21 +10,21 @@ angular.module('Pundit2.Core')
             itemListByURI = {};
 
         itemsExchange.wipe = function() {
-            itemsExchange.log('Wiping every loaded item.');
             itemListByContainer = {};
             itemContainers = {};
             itemList = [];
             itemListByURI = {};
+            itemsExchange.log('Wiped every loaded item and every container.');
         };
 
         itemsExchange.wipeContainer = function(container) {
-
             if (typeof(itemListByContainer[container]) === 'undefined') {
-                itemsExchange.log('Try to wipe undefined container');
-            } else {
-                itemListByContainer[container] = [];
-                itemsExchange.log('Wipe '+container+' container');              
+                itemsExchange.log('Cannot wipe undefined container '+ container);
+                return;
             }
+
+            itemListByContainer[container] = [];
+            itemsExchange.log('Wiped '+container+' container.');
         };
 
         itemsExchange.getItems = function() {
@@ -90,7 +90,7 @@ angular.module('Pundit2.Core')
                 var container = containers[i];
 
                 if (itemContainers[item.uri] && itemContainers[item.uri].indexOf(container) !== -1) {
-                    console.log('Already belongs to this container');
+                    itemContainers.log('Item '+item.label+' already belongs to container '+container);
                     return;
                 }
 
@@ -114,20 +114,18 @@ angular.module('Pundit2.Core')
             var containerItems = itemListByContainer[container];
 
             if (typeof(containerItems) === 'undefined') {
-                itemsExchange.err("Ouch, cannot found container ... ", container);
+                itemsExchange.err("Cannot remove item '+item.label+' from container "+ container+": container not found.");
                 return;
             }
 
             var index = containerItems.indexOf(item);
-
             if (index === -1) {
-                itemsExchange.err("Ouch, cannot remove item from container (not found) ... ", item);
+                itemsExchange.err("Cannot remove item '+item.label+' from container "+ container+": item not in container.");
                 return;
-            } else {
-                containerItems.splice(index, 1); 
-                itemsExchange.log("Item "+ item.label +" removed from container: "+ container);
-            }            
+            }
 
+            containerItems.splice(index, 1);
+            itemsExchange.log("Item "+ item.label +" removed from container "+ container);
         };
 
         itemsExchange.addItem = function(item, container) {
