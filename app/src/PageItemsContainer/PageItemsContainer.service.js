@@ -17,6 +17,9 @@ angular.module('Pundit2.PageItemsContainer')
     // how order items (true ascending, false descending)
     reverse: false,
 
+    // Container used to store the page items in the itemsExchange
+    container: 'pageItems',
+
     debug: false
 })
 .service('PageItemsContainer', function(PAGEITEMSCONTAINERDEFAULTS, BaseComponent, TypesHelper, ContextualMenu, MyItems, ItemsExchange) {
