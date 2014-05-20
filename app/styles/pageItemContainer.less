@@ -65,7 +65,29 @@
 
 .pnd-panel-tab-content  {
 
-// Sticky
+ // List
+
+  .list-group-item {
+   padding: 4px 8px;
+   
+     &:first-child {
+      border-top: 0px;
+     }    
+  } 
+
+  .list-group-item.active,
+  .list-group-item.active:hover,
+  .list-group-item.active:focus {
+   text-shadow: 0 -1px 0 darken(@list-group-active-bg, 10%);
+   border-color: darken(@list-group-active-border, 7.5%);
+  }
+  
+  .list-group-item:hover {
+   background-color: @gray-lighter;
+   }
+
+
+   // Sticky item
 
 	.pnd-sticky-item {
 	

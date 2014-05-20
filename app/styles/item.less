@@ -1,6 +1,30 @@
 .pnd-item-buttons {
-    display: inline;
+    display: none;
 }
-.pnd-item-text {
-    display: inline;
+
+
+//
+// ITEM ROLLOVER
+// --------------------------------------------------
+
+
+.pnd-item {
+
+    &:hover {
+	    
+	    .pnd-item-buttons {
+	    	margin-right: 10px;
+	     	display: inline;
+	     	float: left;
+	     	}
+	     	
+	    .pnd-item-text {
+	    	display: inline;
+	    	}    	
+	}
+
+	.pnd-item-text {
+	    display: inline;
+	    }
+
 }
