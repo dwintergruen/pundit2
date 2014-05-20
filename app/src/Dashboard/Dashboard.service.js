@@ -25,7 +25,7 @@ angular.module('Pundit2.Dashboard')
     panelTabsHeight: 27,
     panelContentHeaderHeight: 43,
     panelInnerTabsHeight: 31,
-    panelFooterHeight: 30,
+    panelFooterHeight: 40,
 
     // The Client will append the content of this template to the DOM to bootstrap
     // this component
