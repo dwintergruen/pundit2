@@ -1,5 +1,5 @@
 angular.module('Pundit2.Core')
-    .service('ItemsExchange', function(BaseComponent, NameSpace) {
+    .service('ItemsExchange', function(BaseComponent) {
 
         // TODO: inherit from a Store or something()? Annotations, items, ...
         var itemsExchange = new BaseComponent("ItemsExchange");
