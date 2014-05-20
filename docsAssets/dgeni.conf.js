@@ -26,10 +26,10 @@ module.exports = function(config) {
   config.set('source.projectPath', '..');
 
   config.set('source.files', [
-/*    {
-      pattern: 'app/src/*.js',
+    {
+      pattern: 'docsAssets/fakeSrc/*.js',
       basePath: path.resolve(__dirname, '..')
-    },*/
+    },
     {
       pattern: 'app/src/**/*.js',
       basePath: path.resolve(__dirname, '..')

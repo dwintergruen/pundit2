@@ -1,8 +1,20 @@
 angular.module('Pundit2.Toolbar')
 .constant('TOOLBARDEFAULTS', {
+        /**
+         * @module punditConf
+         * @ngdoc property
+         * @name modules#Toolbar
+         *
+         * @description
+         * `object`
+         *
+         * Configuration for Toolbar module
+         */
+
     /**
+     * @module punditConf
      * @ngdoc property
-     * @name Configuration#modules.Toolbar.askLinkDefault
+     * @name modules#Toolbar.askLinkDefault
      *
      * @description
      * `string`

@@ -1,4 +1,3 @@
-// TODO: docs!
 angular.module('Pundit2.Core')
 /**
  *
@@ -23,30 +22,27 @@ angular.module('Pundit2.Core')
     // Modules active by default are activated here with active=true
         /**
          *
-         * @ngdoc property
-         * @name Configuration#modules
+         * @module punditConf
+         * @ngdoc object
+         * @name modules
          *
-         * @module Pundit2.Core
          *
          * @description
          * This is the list of modules requires in Pundit 2 and its own configuration.
          * Each module has a configuration object describe below.
          *
-         * Example
+         * example
          *
-         * <pre>
-         *     modules: {
-         *         'Toolbar': {
-         *             askLinkDefault: "http://ask.thepund.it/",
-         *             debug: false
-         *         },
-         *         'Preview': {
-         *             welcomeHeaderMessage: "Welcome in Pundit 2",
-         *             welcomeBodyMessage: "Enjoy it"
-         *         }
+         * <pre>modules: {
+         *     Toolbar: {
+         *        askLinkDefault: "http://ask.thepund.it/",
+         *        debug: false
+         *     },
+         *     Preview: {
+         *         welcomeHeaderMessage: "Welcome in Pundit 2",
+         *         welcomeBodyMessage: "Enjoy it"
          *     }
-         *
-         * </pre>
+         * }</pre>
          */
     modules: {
 
