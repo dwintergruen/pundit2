@@ -17,6 +17,10 @@
 	    }
 	
 
+    .pnd-item-text {
+        margin-left: -50px;
+    }
+
     &:hover {
 	    
 	    .pnd-item-buttons {
@@ -25,12 +29,15 @@
 	     	visibility: visible;
 	     	-webkit-animation-name: item-menu-hover;
 	     	-webkit-animation-duration: 250ms;
+            -webkit-animation-delay: 100ms;
 	     	-webkit-animation-timing-function: linear;
 	     	animation-fill-mode:backwards;
 	     	-webkit-animation-fill-mode:backwards; /* Safari and Chrome */
 	     	}
 	     	
 	    .pnd-item-text {
+            transition: margin-left 250ms 150ms linear;
+            margin-left: 0px;
 	    	display: inline;
 	    	}    	
 	}
@@ -43,6 +50,10 @@
 
 	&.pnd-sticky-item {
 		animation: none;
+
+        .pnd-item-text {
+            margin-left: 0px;
+        }
 		
 		&:hover {
 		     	
