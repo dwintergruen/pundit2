@@ -8,11 +8,8 @@
             $scope.text = newItem;
         });
 
-        $scope.testLiteral = function(elementID) {
-            var element = angular.element('#testAnchor');
-            console.log('Element?!?!', elementID);
-            ResourcePanel.showLiteral(element).then(function(value){
-                console.log('Popover promise ', elementID);
+        $scope.testLiteral = function(elementID, $event) {
+            ResourcePanel.showPopoverLiteral($event.pageX, $event.pageY, "Default content", $event.target).then(function(value){
                 angular.element('#'+elementID).text(value);
             });
         };
@@ -25,15 +22,14 @@
 
 
         <div ng-controller="ResourcePanelDemoCtrl">
-            <span id="testAnchor">anchor</span>
 
             <div>
-                <button class="btn btn-warning" ng-click="testLiteral('test1')">Open literal</button>
+                <button class="btn btn-warning" ng-click="testLiteral('test1', $event)">Open literal</button>
                 <span id="test1">Test 1</span>
             </div>
 
             <div>
-                <button class="btn btn-warning" ng-click="testLiteral('test2')">Open literal2</button>
+                <button class="btn btn-warning" ng-click="testLiteral('test2', $event)">Open literal2</button>
                 <span id="test2">Test 2</span>
             </div>
 

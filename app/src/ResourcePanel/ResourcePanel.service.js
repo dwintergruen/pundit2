@@ -4,67 +4,96 @@ angular.module('Pundit2.ResourcePanel')
 })
 .service('ResourcePanel', function(BaseComponent, RESOURCEPANELDEFAULTS, $rootScope, $popover, $q) {
 
-    var selectors = ['freebase', 'dbpedia', 'korbo'];
-
-
     var resourcePanel = new BaseComponent('ResourcePanel', RESOURCEPANELDEFAULTS);
     var state = {};
-    var literal = null;
 
+    state.selectors = ['freebase', 'dbpedia', 'korbo'];
 
-    var options = {scope: $rootScope.$new()};
+    // create div literalAnchor where literal append popover
+    angular.element("[data-ng-app='Pundit2']")
+        .prepend("<div class='pnd-literal-popover-literalAnchor' style='position: absolute; left: -500px; top: -500px;'><div>");
+    state.literalAnchor = angular.element('.pnd-literal-popover-literalAnchor');
 
-        // initialize literal text popover
-    var initLiteral = function(element){
-        // var options = {scope: $rootScope.$new()};
+    state.popoverLiteral = null;
 
-        options.scope.literalText = 'valore di default';
+    // scope needed to instantiate a new popover using $popover provider
+    state.popoverOptions = {scope: $rootScope.$new()};
 
-        // handle save a new literal
-        options.scope.save = function(literalText) {
-            resourcePanel.save(this.literalText);
-            resourcePromise.resolve(this.literalText);
-        };
+    // initialize popoverLiteral text popover
+    var initPopoverLiteral = function(x, y, content, target){
+        // move literalAnchor to correct position
+        state.literalAnchor.css({
+            left: x,
+            top: y
+        });
 
-        // close literal popover without saving
-        options.scope.cancel = function() {
-            resourcePanel.hide();
-        };
-
-        options.placement = 'bottom';
-        options.animation = null;
-        options.template = 'src/ResourcePanel/popoverLiteralText.tmpl.html';
-        literal = $popover(element, options);
-        return literal;
-    };
-
-    var resourcePromise;
-
-    resourcePanel.showLiteral = function(element){
-
-        if (literal === null){
-            literal = initLiteral(element);
-            literal.$promise.then(literal.show);
+        if(typeof(content) === 'undefined') {
+            state.popoverOptions.scope.literalText = '';
         } else {
-            literal.hide;
-            literal.destroy();
-            literal = null;
+            state.popoverOptions.scope.literalText = content;
         }
-        resourcePromise = $q.defer();
-        return resourcePromise.promise;
+
+        // handle save a new popoverLiteral
+        state.popoverOptions.scope.save = function() {
+            resourcePanel.saveLiteral(this.literalText);
+            state.resourcePromise.resolve(this.literalText);
+        };
+
+        // close popoverLiteral popover without saving
+        state.popoverOptions.scope.cancel = function() {
+            resourcePanel.hideLiteral();
+        };
+
+        state.popoverOptions.placement = 'bottom';
+        state.popoverOptions.template = 'src/ResourcePanel/popoverLiteralText.tmpl.html';
+        state.popoverLiteral = $popover(state.literalAnchor, state.popoverOptions);
+        state.popoverLiteral.clickTarget = target;
+        return state.popoverLiteral;
     };
 
-    resourcePanel.hide = function(){
-        literal.hide();
-        literal.destroy();
-        literal = null;
+    state.resourcePromise;
+
+    resourcePanel.showPopoverLiteral = function(x, y, content, target){
+
+        // if click the same popover, toggle it
+        if (state.popoverLiteral !== null && state.popoverLiteral.clickTarget === target) {
+            console.log("hai cliccato sullo stesso elemento--->TOGGLE");
+            state.popoverLiteral.$promise.then(state.popoverLiteral.toggle);
+        }
+
+        // if click a different popover, hide the shown popover and show the clicked one
+        if (state.popoverLiteral !== null && state.popoverLiteral.clickTarget !== target) {
+            console.log("hai cliccato su un altro elemento--->hide and show");
+            resourcePanel.hideLiteral();
+            state.popoverLiteral = initPopoverLiteral(x, y, content, target);
+            state.popoverLiteral.$promise.then(state.popoverLiteral.show);
+        }
+
+        // if no popover is shown, just show it
+        if (state.popoverLiteral === null) {
+            state.popoverLiteral = initPopoverLiteral(x, y, content, target);
+            state.popoverLiteral.$promise.then(state.popoverLiteral.show);
+            console.log("primo elemento");
+
+         }
+
+        state.resourcePromise = $q.defer();
+        return state.resourcePromise.promise;
     };
 
-    resourcePanel.save = function(text){
+    resourcePanel.hideLiteral = function(){
+
+        if(state.popoverLiteral === null){
+            return;
+        }
+        state.popoverLiteral.hide();
+        state.popoverLiteral.destroy();
+        state.popoverLiteral = null;
+    };
+
+    resourcePanel.saveLiteral = function(text){
         state.literal = text;
-        literal.hide();
-        literal.destroy();
-        literal = null;
+        resourcePanel.hideLiteral();
     };
 
     resourcePanel.getLiteral = function() {
