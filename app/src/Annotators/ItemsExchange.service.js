@@ -21,14 +21,20 @@ angular.module('Pundit2.Core')
             itemsExchange.log('Wiped every loaded item and every container.');
         };
 
-        // TODO need to wipe itemContainers
         itemsExchange.wipeContainer = function(container) {
             if (typeof(itemListByContainer[container]) === 'undefined') {
                 itemsExchange.log('Cannot wipe undefined container '+ container);
                 return;
             }
 
+            // for each item inside specified container list
+            itemListByContainer[container].forEach(function(item){
+                // remove container from itemContainers object array
+                itemContainers[item.uri].splice(itemContainers[item.uri].indexOf(container), 1);
+            });
+            // empty container list
             itemListByContainer[container] = [];
+
             itemsExchange.log('Wiped '+container+' container.');
         };
 
