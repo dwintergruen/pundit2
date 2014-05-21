@@ -9,16 +9,16 @@ angular.module('Pundit2.Vocabularies')
     freebaseItemsBaseURL: 'http://www.freebase.com',
     freebaseAPIKey: 'AIzaSyCJjAj7Nd2wKsZ8d7XQ9ZvUwN5SF0tZBsE',
 
+    limit: 1,
+
     debug: true
 
 })
-.service('FreebaseSelector', function(BaseComponent, FREEBASESELECTORDEFAULTS, NameSpace, $http) {
+.service('FreebaseSelector', function(BaseComponent, FREEBASESELECTORDEFAULTS, $http) {
 
     var freebaseSelector = new BaseComponent('FreebaseSelector', FREEBASESELECTORDEFAULTS);
 
     var exampleQuery = "Jimi Hendrix";
-
-    var resultItems = [];
 
     var output = null;
 
@@ -32,7 +32,7 @@ angular.module('Pundit2.Vocabularies')
             params: {
                 key: freebaseSelector.options.freebaseAPIKey,
                 query: exampleQuery,
-                limit: 1
+                limit: freebaseSelector.options.limit
             }    
         }).success(function(data) {
 
@@ -49,6 +49,7 @@ angular.module('Pundit2.Vocabularies')
                     label: data.result[i].name,
                     mid: data.result[i].mid,
                     freebaseId: data.result[i].id,
+                    image: freebaseSelector.options.freebaseImagesBaseURL + data.result[i].mid,
                     description: -1,
                     value: -1
                 };
@@ -66,7 +67,7 @@ angular.module('Pundit2.Vocabularies')
 
     freebaseSelector.getItemDetails = function(item){
 
-        // get TYPE
+        // get TOPIC
         $http({
             method: 'GET',
             url: freebaseSelector.options.freebaseMQLReadURL,
@@ -106,7 +107,7 @@ angular.module('Pundit2.Vocabularies')
             freebaseSelector.err('Cant get TOPIC from freebase: ', msg);
         });
 
-        // get DETAILS
+        // get MQL
         $http({
             method: 'GET',
             url: freebaseSelector.options.freebaseTopicURL + item.mid,

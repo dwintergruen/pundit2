@@ -1,7 +1,16 @@
 angular.module('Pundit2.Vocabularies')
-.service('DbPediaSelector', function(BaseComponent, NameSpace, $http) {
+.constant('DBPEDIASELECTORDEFAULTS', {
 
-    var dbPediaSelector = new BaseComponent('DbPediaSelector');
+    dbpediaKeywordSearchURL: "http://lookup.dbpedia.org/api/search.asmx/KeywordSearch",
+
+    limit: 1,
+
+    debug: true
+
+})
+.service('DbPediaSelector', function(BaseComponent, DBPEDIASELECTORDEFAULTS, NameSpace, $http) {
+
+    var dbPediaSelector = new BaseComponent('DbPediaSelector', DBPEDIASELECTORDEFAULTS);
 
     return dbPediaSelector;
 

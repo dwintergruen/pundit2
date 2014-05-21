@@ -2,15 +2,21 @@
 
 <script>
 
-    var VocabDemoCtrl = function(FreebaseSelector, $scope) {
-        FreebaseSelector.getItems(angular.element(".voc-example-output"));
+    var VocabDemoCtrl = function(FreebaseSelector, DbPediaSelector, MurucaSelector) {
+        //DbPediaSelector.getItems(angular.element(".vocDB-example-output"));
+        FreebaseSelector.getItems(angular.element(".vocFREE-example-output"));
+        MurucaSelector.getItems(angular.element(".vocMUR-example-output"));
     };
 
 </script>
 
 <div data-ng-app="Pundit2" class="pnd-wrp" ng-controller="VocabDemoCtrl">
-    <h3>First HTPP</h3>
-    <pre class="voc-example-output"></pre>
+    <h3>DBPEDIA</h3>
+    <pre class="vocDB-example-output"></pre>
+    <h3>MURUCA</h3>
+    <pre class="vocMUR-example-output"></pre>
+    <h3>FREEBASE</h3>
+    <pre class="vocFREE-example-output"></pre>
 </div>
 
 <!-- buildexamples:section footer --><!-- /buildexamples -->
