@@ -65,45 +65,56 @@ angular.module('Pundit2.AnnotationSidebar')
         state.predicates = {};
         state.types = {};
 
-        angular.forEach(annotations, function(e) {
+        angular.forEach(annotations, function(annotation) {
+
+            var uriList = {};
 
             // Annotation authors
-            if (state.authors[e.creator] === undefined){
-                state.authors[e.creator] = {uri: e.creator, label: e.creatorName, count: 1};
+            if (typeof(state.authors[annotation.creator]) === 'undefined'){
+                state.authors[annotation.creator] = {uri: annotation.creator, label: annotation.creatorName, count: 1};
             } else {
-                state.authors[e.creator].count++;
+                state.authors[annotation.creator].count++;
             }
 
             // Annotation date
-            if (state.annotationsDate.indexOf(e.created) === -1){
-                state.annotationsDate.push(e.created);
+            if (state.annotationsDate.indexOf(annotation.created) === -1){
+                state.annotationsDate.push(annotation.created);
             }
 
             // Predicates
-            angular.forEach(e.predicates, function(predicateUri) {
-                    if (state.predicates[predicateUri] === undefined){
-                        state.predicates[predicateUri] = {uri: predicateUri, label: e.items[predicateUri].label, count: 1};
+            angular.forEach(annotation.predicates, function(predicateUri) {
+                if (typeof(uriList[predicateUri]) === 'undefined'){
+                    uriList[predicateUri] = {uri: predicateUri};
+                    if (typeof(state.predicates[predicateUri]) === 'undefined'){
+                        state.predicates[predicateUri] = {uri: predicateUri, label: annotation.items[predicateUri].label, count: 1};
                     } else {
                         state.predicates[predicateUri].count++;
                     }
+                }
             });
 
             // Entities
-            angular.forEach(e.entities, function(entUri) {
-                if (state.entities[entUri] === undefined){
-                    state.entities[entUri] = {uri: entUri, label: e.items[entUri].label, count: 1};
-                } else {
-                    state.entities[entUri].count++;
+            angular.forEach(annotation.entities, function(entUri) {
+                if (typeof(uriList[entUri]) === 'undefined'){
+                    uriList[entUri] = {uri: entUri};
+                    if (typeof(state.entities[entUri]) === 'undefined'){
+                        state.entities[entUri] = {uri: entUri, label: annotation.items[entUri].label, count: 1};
+                    } else {
+                        state.entities[entUri].count++;
+                    }
                 }
             });
             
             // Types
-            angular.forEach(e.items, function(singleItem) {
-                angular.forEach(singleItem.type, function(typeUri) {;
-                    if (state.types[typeUri] === undefined){
-                        state.types[typeUri] = {uri: typeUri, label: TypesHelper.getLabel(typeUri), count: 1};
-                    } else {
-                        state.types[typeUri].count++;
+            angular.forEach(annotation.items, function(singleItem) {
+                angular.forEach(singleItem.type, function(typeUri) {
+                    if (typeof(uriList[typeUri]) === 'undefined'){
+                        uriList[typeUri] = {uri: typeUri};
+                        if (typeof(state.types[typeUri]) === 'undefined'){
+                            state.types[typeUri] = {uri: typeUri, label: TypesHelper.getLabel(typeUri), count: 1};
+                        } else {
+                            state.types[typeUri].count++;
+                        }
                     }
                 });
             });

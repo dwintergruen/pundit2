@@ -125,6 +125,8 @@ angular.module('Pundit2.AnnotationSidebar')
     $scope.fromToDate = new Date();
 
 
+    // TODO: da spostare in service? nel caso sarebbe forse opportuno
+    // spostare anche la struttura dei filtri nel modello
     var needToFilter = function() {
         for (var f in $scope.filters) {
             var current = $scope.filters[f].expression;
@@ -152,10 +154,11 @@ angular.module('Pundit2.AnnotationSidebar')
     $scope.$watch(function() {
         return AnnotationSidebar.getMinDate();
     }, function(minDate) {
-        if (minDate !== undefined){
+        if (typeof(minDate) !== 'undefined'){
             var newMinDate = $filter('date')(minDate, 'yyyy-MM-dd');
             $scope.fromMinDate = newMinDate;
             if ($scope.filters.fromDate.expression === ''){
+                $scope.filters.fromDate.expression = newMinDate;
                 $scope.toMinDate = newMinDate;
             }
         }
@@ -163,10 +166,11 @@ angular.module('Pundit2.AnnotationSidebar')
     $scope.$watch(function() {
         return AnnotationSidebar.getMaxDate();
     }, function(maxDate) {
-        if (maxDate !== undefined){
+        if (typeof(maxDate) !== 'undefined'){
             var newMaxDate = $filter('date')(maxDate, 'yyyy-MM-dd');
             $scope.toMaxDate = newMaxDate;
             if ($scope.filters.toDate.expression === ''){
+                $scope.filters.toDate.expression = newMaxDate;
                 $scope.fromMaxDate = newMaxDate;
             }
         }
@@ -244,11 +248,6 @@ angular.module('Pundit2.AnnotationSidebar')
         } else {
             $scope.filters.types.expression.splice(indexTypes, 1);
         }
-    };
-
-    // get label of a type from his uri
-    $scope.getLabelType = function(uri) {
-        return TypesHelper.getLabel(uri);
     };
 
     AnnotationSidebar.log('Controller Run');

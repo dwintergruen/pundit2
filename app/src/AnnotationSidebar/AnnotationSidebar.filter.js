@@ -35,10 +35,10 @@ angular.module('Pundit2.AnnotationSidebar')
         var currentAuthor;
 
         if (search.length > 0) {
-            angular.forEach(input, function (e) {
-                currentAuthor = e.creator;
+            angular.forEach(input, function (annotation) {
+                currentAuthor = annotation.creator;
                 if (search.indexOf(currentAuthor) !== -1) {
-                    results.push(e);
+                    results.push(annotation);
                 }
             });
         } else {
@@ -53,13 +53,14 @@ angular.module('Pundit2.AnnotationSidebar')
         var currentPredicate;
 
         if (search.length > 0) {
-            angular.forEach(input, function (e) {
-                angular.forEach(e.predicates, function(predicate) {
-                    currentPredicate = predicate;
+            angular.forEach(input, function (annotation) {
+                for (var p in annotation.predicates){
+                    currentPredicate = annotation.predicates[p];
                     if (search.indexOf(currentPredicate) !== -1) {
-                        results.push(e);
+                        results.push(annotation);
+                        return;
                     }
-                });
+                }
             });
         } else {
             results = input;
@@ -73,13 +74,14 @@ angular.module('Pundit2.AnnotationSidebar')
         var currentEnt;
 
         if (search.length > 0) {
-            angular.forEach(input, function (e) {
-                angular.forEach(e.entities, function(ent) {
-                    currentEnt = ent;
+            angular.forEach(input, function (annotation) {
+                for (var e in annotation.entities){
+                    currentEnt = annotation.entities[e];
                     if (search.indexOf(currentEnt) !== -1) {
-                        results.push(e);
+                        results.push(annotation);
+                        return;
                     }
-                });
+                }
             });
         } else {
             results = input;
@@ -91,17 +93,21 @@ angular.module('Pundit2.AnnotationSidebar')
     return function(input, search) {
         var results = [];
         var currentTyp;
+        var boolCheck = false;
 
         if (search.length > 0) {
-            angular.forEach(input, function (e) {
-                angular.forEach(e.items, function(item) {
-                    angular.forEach(item.type, function(typeUri) {
-                        currentTyp = typeUri;
+            angular.forEach(input, function (annotation) {
+                for (var i in annotation.items){
+                    var item = annotation.items[i];
+                    for (var t in item.type){
+                        currentTyp = item.type[t];
                         if (search.indexOf(currentTyp) !== -1) {
-                            results.push(e);
+                            results.push(annotation);
+                            return;
                         }
-                    });
-                });
+                    }   
+                }
+
             });
         } else {
             results = input;
@@ -118,10 +124,10 @@ angular.module('Pundit2.AnnotationSidebar')
             var fromDateParsed = new Date( (fromValue && !isNaN(Date.parse(fromValue))) ? Date.parse(fromValue) : 0 );
             fromDateParsed.setHours(0, 0, 0);
         
-            angular.forEach(input,function (e) {
-                var currentAnnotationData = Date.parse(e.created);
+            angular.forEach(input,function (annotation) {
+                var currentAnnotationData = Date.parse(annotation.created);
                 if (currentAnnotationData >= fromDateParsed){
-                    results.push(e);
+                    results.push(annotation);
                 }
             });
         } else {
@@ -139,10 +145,10 @@ angular.module('Pundit2.AnnotationSidebar')
             var toDateParsed = new Date( (toValue && !isNaN(Date.parse(toValue))) ? Date.parse(toValue) : new Date().getTime() );
             toDateParsed.setHours(23, 59, 59);
         
-            angular.forEach(input,function (e) {
-                var currentAnnotationData = Date.parse(e.created);
+            angular.forEach(input,function (annotation) {
+                var currentAnnotationData = Date.parse(annotation.created);
                 if (currentAnnotationData <= toDateParsed){
-                    results.push(e);
+                    results.push(annotation);
                 }
             });
         } else {
