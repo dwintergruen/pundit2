@@ -21,8 +21,10 @@ angular.module('Pundit2.Annotators')
                 xpaths[xpointer] = obj;
                 xpointers.push(xpointer);
             } else {
-                // TODO ?
-                xp.log("Invalid xpointer :(");
+                // TODO: here we could pass back the list of invalid xpointers, but they
+                // should have been checked already by consolidation .. BEFORE the consolidation
+                // process actually starts .... !
+                xp.err("Invalid xpointer passed to getXPathsFromXPointers: THIS SHOULD NOT HAPPEN!", xpointer);
             }
         } // for i
 

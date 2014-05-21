@@ -76,15 +76,16 @@ angular.module('Pundit2.Annotators')
             tfa.log("Item not valid: not a "+ tfa.type);
             return false;
         } else if (!XpointersHelper.isValidXpointerURI(item.uri)) {
-            tfa.log("Item not valid: not a valid xpointer uri"+ item.uri);
+            tfa.log("Item not valid: not a valid xpointer uri: "+ item.uri);
+            return false;
+        } else if (!XpointersHelper.isValidXpointer(item.uri)) {
+            tfa.log("Item not valid: not consolidable on this page: "+ item.uri);
             return false;
         }
 
         // TODO: it's a valid text fragment if:
-        // - one of its types is the fragment-text type
         // - has a part of
         // - has a page context
-        // - .uri is an xpointer
 
         tfa.log("Item not valid: not recognized as a consolidable "+ tfa.label);
         return true;
