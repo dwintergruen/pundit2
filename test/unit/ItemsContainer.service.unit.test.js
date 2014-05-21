@@ -33,9 +33,37 @@ describe('ItemsContainer (page item and my item)', function() {
         { uri: 'item3', isTextFragment: function(){return false;}}
     ];
 
-    xit('should build all items', function(){
+
+    it('should correctly build items array that pass filtering (PageItemsContainer)', function(){
+        var showed = PageItemsContainer.buildItemsArray(1, tabs, items);
+        expect(showed.length).toBe(1);
+        expect(showed[0].title).toBe(items[0].title);
+    });
+
+    it('should correctly build all items arrays (PageItemsContainer)', function(){
         var showed = PageItemsContainer.buildItemsArray(0, tabs, items);
         expect(showed.length).toBe(3);
+
+        var arrays = PageItemsContainer.getItemsArrays();
+        expect(arrays.length).toBe(2);
+        expect(arrays[1].length).toBe(1);
+    });
+
+    // same test on MyItemsContainer
+
+    it('should correctly build items array that pass filtering (MyItemsContainer)', function(){
+        var showed = MyItemsContainer.buildItemsArray(1, tabs, items);
+        expect(showed.length).toBe(1);
+        expect(showed[0].title).toBe(items[0].title);
+    });
+
+    it('should correctly build all items arrays (MyItemsContainer)', function(){
+        var showed = MyItemsContainer.buildItemsArray(0, tabs, items);
+        expect(showed.length).toBe(3);
+
+        var arrays = MyItemsContainer.getItemsArrays();
+        expect(arrays.length).toBe(2);
+        expect(arrays[1].length).toBe(1);
     });
 
 });
