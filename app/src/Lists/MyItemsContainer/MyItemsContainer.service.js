@@ -17,6 +17,10 @@ angular.module('Pundit2.MyItemsContainer')
     // how order items (true ascending, false descending)
     reverse: false,
 
+    // Icons shown in the search input when it's empty and when it has some content
+    inputIconSearch: 'pnd-icon-search',
+    inputIconClear: 'pnd-icon-times',
+
     debug: false
 })
 .service('MyItemsContainer', function(MYITEMSCONTAINERDEFAULTS, BaseComponent, TypesHelper, ContextualMenu, MyItems, MyPundit) {

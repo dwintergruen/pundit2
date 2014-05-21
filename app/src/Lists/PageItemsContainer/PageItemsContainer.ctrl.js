@@ -105,8 +105,12 @@ angular.module('Pundit2.PageItemsContainer')
     // every time that user digit text inside <input> filter the items showed
     // show only items that contain the $scope.search substring inside their label
     // the match function ignore multiple spaces
+    $scope.search = {
+        icon: PageItemsContainer.options.inputIconSearch,
+        term: ''
+    };
     $scope.$watch(function() {
-        return $scope.search;
+        return $scope.search.term;
     }, function(str) {
 
         // All items are shown
@@ -114,9 +118,12 @@ angular.module('Pundit2.PageItemsContainer')
             return;
         }
 
-        // This happens when the user delete last char in the <input>
-        if (typeof(str) === 'undefined') {
+        // this happens when the user deletes last char in the <input>
+        if (typeof(str) === 'undefined' || str === '') {
             str = '';
+            $scope.search.icon = PageItemsContainer.options.inputIconSearch;
+        } else {
+            $scope.search.icon = PageItemsContainer.options.inputIconClear;
         }
 
         // Filter items which are shown

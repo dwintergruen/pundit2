@@ -20,6 +20,10 @@ angular.module('Pundit2.PageItemsContainer')
     // Container used to store the page items in the itemsExchange
     container: 'pageItems',
 
+    // Icons shown in the search input when it's empty and when it has some content
+    inputIconSearch: 'pnd-icon-search',
+    inputIconClear: 'pnd-icon-times',
+
     debug: false
 })
 .service('PageItemsContainer', function(PAGEITEMSCONTAINERDEFAULTS, BaseComponent, TypesHelper, ContextualMenu, MyItems, MyPundit, ItemsExchange) {

@@ -19,7 +19,7 @@ angular.module('Pundit2.MyItemsContainer')
     $scope.tabs = [
         {
             title: 'All Items',
-            // this is the centalized template to items list
+            // this is the centralized template to items list
             template: 'src/Lists/itemList.tmpl.html',
             filterFunction: function(){
                 return true;
@@ -27,7 +27,7 @@ angular.module('Pundit2.MyItemsContainer')
         },
         {
             title: 'Text',
-            // this is the centalized template to items list
+            // this is the centralized template to items list
             template: 'src/Lists/itemList.tmpl.html',
             filterFunction: function(item){
                 return item.isTextFragment();
@@ -35,7 +35,7 @@ angular.module('Pundit2.MyItemsContainer')
         },
         {
             title: 'Images',
-            // this is the centalized template to items list
+            // this is the centralized template to items list
             template: 'src/Lists/itemList.tmpl.html',
             filterFunction: function(item){
                 return item.isImage();
@@ -43,7 +43,7 @@ angular.module('Pundit2.MyItemsContainer')
         },
         {
             title: 'Pages',
-            // this is the centalized template to items list
+            // this is the centralized template to items list
             template: 'src/Lists/itemList.tmpl.html',
             filterFunction: function(item){
                 return item.isWebPage();
@@ -51,7 +51,7 @@ angular.module('Pundit2.MyItemsContainer')
         }
     ];
 
-    // index of the active tab (the tab that actualy show it content) 
+    // index of the active tab (the tab that currently shows its content)
     $scope.tabs.activeTab = MyItemsContainer.options.initialActiveTab;
 
     // sort button dropdown content
@@ -79,7 +79,7 @@ angular.module('Pundit2.MyItemsContainer')
     };
 
     // getter function used inside template to order items 
-    // return the items property value used to order
+    // returns the items property value used to order
     $scope.getOrderProperty = function(item){
 
         if (order === 'label') {
@@ -90,7 +90,7 @@ angular.module('Pundit2.MyItemsContainer')
 
     };
 
-    // delte all my Items
+    // delete all my Items
     $scope.onClickDeleteAllMyItems = function(){
         if (MyPundit.getUserLogged()) {
             MyItems.deleteAllMyItems();
@@ -113,27 +113,34 @@ angular.module('Pundit2.MyItemsContainer')
         }
     });
 
-    // every time that user digit text inside <input> filter the items showed
-    // show only items that contain the $scope.search substring inside their label
-    // the match function ignore multiple space
+    // Every time that user digit text inside <input> filter the items shown.
+    // Show only items that contain the $scope.search.term substring inside their label.
+    // The match function ignore multiple space
+    $scope.search = {
+        icon: MyItemsContainer.options.inputIconSearch,
+        term: ''
+    };
     $scope.$watch(function() {
-        return $scope.search;
+        return $scope.search.term;
     }, function(str) {
 
-        // any item is actualy showed
+        // any item is currently shown
         if (typeof($scope.displayedItems) === 'undefined') {
             return;
         }
 
-        // this appen when the user delete last char in the <input>
-        if (typeof(str) === 'undefined') {
+        // this happens when the user deletes last char in the <input>
+        if (typeof(str) === 'undefined' || str === '') {
             str = '';
+            $scope.search.icon = MyItemsContainer.options.inputIconSearch;
+        } else {
+            $scope.search.icon = MyItemsContainer.options.inputIconClear;
         }
 
-        // filter items actualy showed
-        // go to lowerCase and replace multiple space with single space
+        // Filter items currently shown
+        // Go to lowerCase and replace multiple space with single space
         str = str.toLowerCase().replace(/\s+/g, ' ');
-        var strParts = str.split(' ');
+        var strParts = str.split(' '),
             reg = new RegExp(strParts.join('.*'));
 
         $scope.displayedItems = MyItemsContainer.getItemsArrays()[$scope.tabs.activeTab].filter(function(items){
