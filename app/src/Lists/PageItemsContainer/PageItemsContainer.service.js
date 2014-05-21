@@ -5,7 +5,7 @@ angular.module('Pundit2.PageItemsContainer')
 
     // The Client will append the content of this template to the DOM to bootstrap
     // this component
-    clientDashboardTemplate: "src/PageItemsContainer/ClientPageItemsContainer.tmpl.html",
+    clientDashboardTemplate: "src/Lists/PageItemsContainer/ClientPageItemsContainer.tmpl.html",
     clientDashboardPanel: "lists",
     clientDashboardTabTitle: "Page Items",
 

@@ -5,7 +5,7 @@ angular.module('Pundit2.PageItemsContainer')
             scope: {
                 
             },
-            templateUrl: "src/PageItemsContainer/PageItemsContainer.dir.tmpl.html",
+            templateUrl: "src/Lists/PageItemsContainer/PageItemsContainer.dir.tmpl.html",
             controller: "PageItemsContainerCtrl"
         };
     });

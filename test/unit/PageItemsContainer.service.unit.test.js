@@ -7,8 +7,8 @@ describe("PageItemsContainer", function(){
     beforeEach(module('Pundit2'));
 
     beforeEach(module(
-        'src/PageItemsContainer/PageItemsContainer.dir.tmpl.html',
-        'src/PageItemsContainer/items.tmpl.html'
+        'src/Lists/PageItemsContainer/PageItemsContainer.dir.tmpl.html',
+        'src/Lists/itemList.tmpl.html'
     ));
 
     beforeEach(inject(function(_$rootScope_, _$compile_, _PageItemsContainer_){

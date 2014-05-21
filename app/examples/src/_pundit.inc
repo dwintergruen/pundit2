@@ -66,24 +66,24 @@
     <script src="../src/ContextualMenu/ContextualMenu.js"></script>
     <script src="../src/ContextualMenu/ContextualMenu.service.js"></script>
 
-    <script src="../src/PageItemsContainer/PageItemsContainer.js"></script>
-    <script src="../src/PageItemsContainer/PageItemsContainer.dir.js"></script>
-    <script src="../src/PageItemsContainer/PageItemsContainer.ctrl.js"></script>
-    <script src="../src/PageItemsContainer/PageItemsContainer.service.js"></script>
+    <script src="../src/Lists/PageItemsContainer/PageItemsContainer.js"></script>
+    <script src="../src/Lists/PageItemsContainer/PageItemsContainer.dir.js"></script>
+    <script src="../src/Lists/PageItemsContainer/PageItemsContainer.ctrl.js"></script>
+    <script src="../src/Lists/PageItemsContainer/PageItemsContainer.service.js"></script>
 
     <script src="../src/Item/Item.js"></script>
     <script src="../src/Item/Item.dir.js"></script>
     <script src="../src/Item/Item.ctrl.js"></script>
 
-    <script src="../src/MyItemsContainer/MyItemsContainer.js"></script>
-    <script src="../src/MyItemsContainer/MyItemsContainer.dir.js"></script>
-    <script src="../src/MyItemsContainer/MyItemsContainer.ctrl.js"></script>
-    <script src="../src/MyItemsContainer/MyItemsContainer.service.js"></script>
-    <script src="../src/MyItemsContainer/MyItems.service.js"></script>
+    <script src="../src/Lists/MyItemsContainer/MyItemsContainer.js"></script>
+    <script src="../src/Lists/MyItemsContainer/MyItemsContainer.dir.js"></script>
+    <script src="../src/Lists/MyItemsContainer/MyItemsContainer.ctrl.js"></script>
+    <script src="../src/Lists/MyItemsContainer/MyItemsContainer.service.js"></script>
+    <script src="../src/Lists/MyItemsContainer/MyItems.service.js"></script>
 
-    <script src="../src/Vocabularies/Vocabularies.js"></script>
-    <script src="../src/Vocabularies/FreebaseSelector.service.js"></script>
-    <script src="../src/Vocabularies/DbPediaSelector.service.js"></script>
+    <script src="../src/Lists/Vocabularies/Vocabularies.js"></script>
+    <script src="../src/Lists/Vocabularies/FreebaseSelector.service.js"></script>
+    <script src="../src/Lists/Vocabularies/DbPediaSelector.service.js"></script>
 
     <script src="../src/Toolbar/Toolbar.js"></script>
     <script src="../src/Toolbar/Toolbar.dir.js"></script>
