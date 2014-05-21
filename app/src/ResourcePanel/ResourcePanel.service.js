@@ -2,7 +2,7 @@ angular.module('Pundit2.ResourcePanel')
 .constant('RESOURCEPANELDEFAULTS', {
 
 })
-.service('ResourcePanel', function(BaseComponent, RESOURCEPANELDEFAULTS, $rootScope, $popover, $q) {
+.service('ResourcePanel', function(BaseComponent, RESOURCEPANELDEFAULTS, $rootScope, $popover, $q, ItemsExchange, MyItems, PageItemsContainer, Client) {
 
     var resourcePanel = new BaseComponent('ResourcePanel', RESOURCEPANELDEFAULTS);
     var state = {};
@@ -107,6 +107,7 @@ angular.module('Pundit2.ResourcePanel')
      *
      *
      */
+
     // create div literalAnchor where literal append popover
     angular.element("[data-ng-app='Pundit2']")
         .prepend("<div class='pnd-calendar-popover-calendarAnchor' style='position: absolute; left: -500px; top: -500px;'><div>");
@@ -144,7 +145,10 @@ angular.module('Pundit2.ResourcePanel')
         // if no popover is shown, just show it
         if (state.popoverCalendar === null) {
             state.popoverCalendar = initPopoverCalendar(x, y, date, target);
-            state.popoverCalendar.$promise.then(state.popoverCalendar.show);
+            state.popoverCalendar.$promise.then(function() {
+                state.popoverCalendar.show();
+
+            });
         }
 
         // if click the same popover, toggle it
@@ -173,10 +177,110 @@ angular.module('Pundit2.ResourcePanel')
         state.popoverCalendar = null;
     };
 
-    resourcePanel.saveDate = function(date) {
-        console.log("date selected", date);
+    resourcePanel.saveDate = function() {
         resourcePanel.hideCalendar();
     }
+
+    /*
+     *
+     * RESOURCE PANEL POPOVER METHOD
+     *
+     *
+     */
+
+    // create div literalAnchor where literal append popover
+    angular.element("[data-ng-app='Pundit2']")
+        .prepend("<div class='pnd-reousrce-panel-popover-rpAnchor' style='position: absolute; left: -500px; top: -500px;'><div>");
+    state.resourcePanelAnchor = angular.element('.pnd-calendar-popover-calendarAnchor');
+
+    state.popoverResourcePanel = null;
+
+    // initialize calendar popover
+    var initPopoverResourcePanel = function(x, y, target, pageItems, myItems, properties){
+
+        // move literalAnchor to correct position
+        state.resourcePanelAnchor.css({
+            left: x,
+            top: y
+        });
+        state.popoverOptions.scope.pageItems = pageItems;
+        state.popoverOptions.scope.myItems = myItems;
+        state.popoverOptions.scope.properties = properties;
+        // handle save a new popoverLiteral
+        state.popoverOptions.scope.save = function(elem) {
+            console.log("saved", elem);
+            resourcePanel.hideResourcePanel();
+            state.resourcePromise.resolve(elem);
+        };
+
+        // close popoverLiteral popover without saving
+        state.popoverOptions.scope.cancel = function() {
+            resourcePanel.hideResourcePanel();
+        };
+
+        state.popoverOptions.placement = 'bottom';
+        state.popoverOptions.template = 'src/ResourcePanel/popoverResourcePanel.tmpl.html';
+        state.popoverResourcePanel = $popover(state.resourcePanelAnchor, state.popoverOptions);
+        state.popoverResourcePanel.clickTarget = target;
+        return state.popoverResourcePanel;
+    };
+
+    var showPopoverResourcePanel = function(x, y, target, pageItems, myItems, properties){
+
+        // if no popover is shown, just show it
+        if (state.popoverResourcePanel === null) {
+            state.popoverResourcePanel = initPopoverResourcePanel(x, y, target, pageItems, myItems, properties);
+            state.popoverResourcePanel.$promise.then(function() {
+                state.popoverResourcePanel.show();
+            });
+        }
+
+        // if click the same popover, toggle it
+        else if (state.popoverResourcePanel !== null && state.popoverResourcePanel.clickTarget === target) {
+            state.popoverResourcePanel.$promise.then(state.popoverResourcePanel.toggle);
+        }
+
+        // if click a different popover, hide the shown popover and show the clicked one
+        else if (state.popoverResourcePanel !== null && state.popoverResourcePanel.clickTarget !== target) {
+            resourcePanel.hideResourcePanel();
+            state.popoverResourcePanel = initPopoverResourcePanel(x, y, target, pageItems, myItems, properties);
+            state.popoverResourcePanel.$promise.then(state.popoverResourcePanel.show);
+        }
+
+    };
+
+    resourcePanel.hideResourcePanel = function(){
+
+        if(state.popoverResourcePanel === null){
+            return;
+        }
+        state.popoverResourcePanel.hide();
+        state.popoverResourcePanel.destroy();
+        state.popoverResourcePanel = null;
+    };
+
+    resourcePanel.showEntity = function(x, y, triple, target) {
+        var myItemsContainer = MyItems.options.container;
+        var myItems = ItemsExchange.getItemsByContainer(myItemsContainer);
+
+        var pageItemsContainer = PageItemsContainer.options.container;
+        var pageItems = ItemsExchange.getItemsByContainer(pageItemsContainer);
+
+        showPopoverResourcePanel(x, y, target, pageItems, myItems, "");
+
+        state.resourcePromise = $q.defer();
+        return state.resourcePromise.promise;
+
+    };
+
+    resourcePanel.showProperties = function(x, y, triple, target) {
+        var propertiesContainer = Client.options.relationsContainer;
+        var properties = ItemsExchange.getItemsByContainer(propertiesContainer);
+        showPopoverResourcePanel(x, y, target, "", "", properties);
+
+        state.resourcePromise = $q.defer();
+        return state.resourcePromise.promise;
+    };
 
     return resourcePanel;
 });

@@ -1,12 +1,31 @@
 <!-- buildexamples:section header --><!-- /buildexamples -->
 
 <script>
-    var ResourcePanelDemoCtrl = function($scope, ResourcePanel) {
-    $scope.text = '';
-        // check where a new item is selected to get a preview
-        $scope.$watch(function() { return ResourcePanel.getLiteral(); }, function(newItem) {
-            $scope.text = newItem;
+    var ResourcePanelDemoCtrl = function($scope, ResourcePanel, Annotation, MyItems, MyPundit, Client, Item, ItemsExchange) {
+
+        var toLoad = ["8fd05a49", "65286186", "385c1647"];
+
+        for (var l=toLoad.length; l--;) {
+            new Annotation(toLoad[l]);
+        }
+
+        MyPundit.login().then(function(value) {
+            console.log("Is logged in is "+value);
+            MyItems.getMyItems();
+        }, function() {
+            console.log("Error: "+value);
         });
+
+        var loadBasicRelations = function() {
+            var num = 0,
+                    relations = Client.options.basicRelations;
+            for (var p in relations) {
+                var item = new Item(relations[p].uri, relations[p]);
+                ItemsExchange.addItemToContainer(item, Client.options.relationsContainer);
+            }
+            Client.log('Loaded '+num+' basic relations');
+        }();
+
 
         $scope.testLiteral = function(elementID, $event) {
             ResourcePanel.showPopoverLiteral($event.pageX, $event.pageY, "Default content", $event.target).then(function(value){
@@ -18,7 +37,19 @@
             ResourcePanel.showPopoverCalendar($event.pageX, $event.pageY, "Default content", $event.target).then(function(value){
                 angular.element('#'+elementID).text(value);
             });
-        }
+        };
+
+        $scope.testEntity = function(elementID, $event){
+            ResourcePanel.showEntity($event.pageX, $event.pageY, "", $event.target).then(function(value){
+                angular.element('#'+elementID).text(value.label);
+            });
+        };
+
+        $scope.testProperties = function(elementID, $event){
+            ResourcePanel.showProperties($event.pageX, $event.pageY, "", $event.target).then(function(value){
+                angular.element('#'+elementID).text(value.label);
+            });
+        };
 
     };
 </script>
@@ -27,23 +58,38 @@
     <div class="container">
 
 
-        <div ng-controller="ResourcePanelDemoCtrl">
-
+        <div ng-controller="ResourcePanelDemoCtrl" style="display: inline;">
             <div>
-                <button class="btn btn-warning" ng-click="testLiteral('test1', $event)">Open literal</button>
-                <span id="test1">Test 1</span>
-            </div>
+                <ul>
+                    <li style="display:inline-block;">
+                        <button class="btn btn-warning" ng-click="testLiteral('test1', $event)">Open literal</button>
+                    </li>
+                    <li style="display:inline-block;">
+                        <button class="btn btn-warning" ng-click="testLiteral('test2', $event)">Open literal2</button>
 
-            <div>
-                <button class="btn btn-warning" ng-click="testLiteral('test2', $event)">Open literal2</button>
-                <span id="test2">Test 2</span>
-            </div>
+                    </li>
+                    <li style="display:inline-block;">
+                        <button class="btn btn-warning" ng-click="testCalendar('test3', $event)">Open Calendar</button>
 
-            <div>
-                <button class="btn btn-warning" ng-click="testCalendar('test3', $event)">Open Calendar</button>
-                <span id="test3">Select a date</span>
-            </div>
+                    </li>
+                    <li style="display:inline-block;">
+                        <button class="btn btn-warning" ng-click="testEntity('test5', $event)">Show entity</button>
 
+                    </li>
+                    <li style="display:inline-block;">
+                        <button class="btn btn-warning" ng-click="testProperties('test6', $event)">Show Properties</button>
+
+                    </li>
+
+                </ul>
+            </div>
+            <pre>
+            <div>Literal 1: <span id="test1"></span></div>
+            <div>Literal 2: <span id="test2"></span></div>
+            <div>Date selected: <span id="test3"></span></div>
+            <div>Item selected: <span id="test5"></span></div>
+            <div>Propertie selected: <span id="test6"></span></div>
+            </pre>
         </div>
     </div>
 
