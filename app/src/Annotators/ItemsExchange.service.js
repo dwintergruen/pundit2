@@ -125,10 +125,7 @@ angular.module('Pundit2.Core')
 
             // remove container from itemContainers
             var containerIndex = itemContainers[item.uri].indexOf(container);
-            if (item.uri in itemContainers && containerIndex !== -1 ) {
-
-                itemContainers[item.uri].splice(containerIndex, 1);
-            }
+            itemContainers[item.uri].splice(containerIndex, 1);
 
             itemsExchange.log("Item "+ item.label +" removed from container "+ container);
         };
