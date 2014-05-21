@@ -1,7 +1,7 @@
 angular.module('Pundit2.Vocabularies')
 .constant('MURUCASELECTORDEFAULTS', {
 
-    murucaReconURL: 'http://demo2.galassiaariosto.netseven.it/reconcile',
+    murucaReconURL: 'http://dev.galassiaariosto.netseven.it/backend.php/reconcile',
 
     queryType: '',
     queryProperties: {},

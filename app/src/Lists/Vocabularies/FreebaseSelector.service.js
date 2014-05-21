@@ -14,7 +14,7 @@ angular.module('Pundit2.Vocabularies')
     debug: true
 
 })
-.service('FreebaseSelector', function(BaseComponent, FREEBASESELECTORDEFAULTS, $http) {
+.service('FreebaseSelector', function(BaseComponent, FREEBASESELECTORDEFAULTS, TypesHelper, $http) {
 
     var freebaseSelector = new BaseComponent('FreebaseSelector', FREEBASESELECTORDEFAULTS);
 
@@ -84,8 +84,6 @@ angular.module('Pundit2.Vocabularies')
             freebaseSelector.log('Http success, get TOPIC from freebase', data);
 
             item.value = freebaseSelector.options.freebaseItemsBaseURL + data.result.mid;
-            // TODO need to add type labels ?
-            // item.typeLabels = [];
             item.type = [];
 
             // Take the types labels
@@ -93,11 +91,11 @@ angular.module('Pundit2.Vocabularies')
                 var o = data.result.type[l],
                     uri = freebaseSelector.options.freebaseSchemaBaseURL + o.id;
                 item.type.push(uri);
-                // item.typeLabels.push({uri: uri, label: o.name });
+                //TypesHelper.add(uri, o.name);
             }
 
             // Value != -1: this call is the last one, we're done
-            if (item.value !== -1) {
+            if (item.description !== -1) {
                 freebaseSelector.log('TOPIC was last, complete for item ', item);
                 // put output inside element (test)
                 output.html(JSON.stringify(item, null, "  "));
@@ -125,7 +123,7 @@ angular.module('Pundit2.Vocabularies')
                 item.description = item.label;
 
             // Description is not -1: this call is the last one, we're done
-            if (item.description !== -1) {
+            if (item.value !== -1) {
                 freebaseSelector.log('MQL was last, complete http for item ', item);
                 // put output inside element (test)
                 output.html(JSON.stringify(item, null, "  "));
