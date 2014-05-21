@@ -133,9 +133,6 @@ angular.module("Pundit2.MyItemsContainer")
             // controller watch now update the view
             ItemsExchange.removeItemFromContainer(value, myItems.options.container);
 
-            console.log(ItemsExchange.getItemsByContainer(myItems.options.container));
-            console.log(ItemsExchange.getAll());
-
             myItems.log('Deleted from my item: '+ value.label);
 
         }).error(function(msg) {
@@ -172,9 +169,6 @@ angular.module("Pundit2.MyItemsContainer")
             // add value to my items
             // controller watch now update the view
             ItemsExchange.addItemToContainer(value, myItems.options.container);
-
-            console.log(ItemsExchange.getItemsByContainer(myItems.options.container));
-            console.log(ItemsExchange.getAll());
 
             myItems.log('Added item to my items: '+ value.label);
 
