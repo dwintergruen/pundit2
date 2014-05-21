@@ -21,6 +21,7 @@ angular.module('Pundit2.Core')
             itemsExchange.log('Wiped every loaded item and every container.');
         };
 
+        // TODO need to wipe itemContainers
         itemsExchange.wipeContainer = function(container) {
             if (typeof(itemListByContainer[container]) === 'undefined') {
                 itemsExchange.log('Cannot wipe undefined container '+ container);

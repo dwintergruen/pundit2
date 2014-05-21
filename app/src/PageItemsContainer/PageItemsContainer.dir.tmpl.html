@@ -1,19 +1,6 @@
 <div class="pnd-panel-tab-content">
 
-    <!-- HEADER -->
-
-    <div class="pnd-panel-tab-content-header">
-        <div class="left-inner-icon">
-            <span class="pnd-icon pnd-icon-search"></span>
-            <input type="text" ng-model="search" required class="input-xs">
-        </div>
-    </div> <!-- end pnd-panel-tab-content-header -->
-
-    <!-- CONTENT -->
-
-    <div class="pnd-panel-tab-content-content pnd-inner">
-        <div ng-model="tabs.activeTab" pnd-tabs="tabs"></div>
-    </div> <!-- end pnd-panel-tab-content-content -->
+    <ng-include src="'/app/src/PageItemsContainer/itemsContainer.tmpl.html'"></ng-include>
 
     <!-- FOOTER -->
 
@@ -24,5 +11,3 @@
     </div> <!-- end pnd-panel-tab-content-footer -->
 
 </div>
-
-
