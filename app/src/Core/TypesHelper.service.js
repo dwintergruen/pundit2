@@ -27,6 +27,16 @@ angular.module('Pundit2.Core')
         }
     };
 
+    // Adds new information for the given type.
+    // Label is mandatory.
+    typesHelper.add = function(uri, label, description) {
+        types[uri].label = label;
+
+        if (typeof(description) !== "undefined") {
+            types[uri].description = description;
+        }
+    };
+
     typesHelper.getLabel = function(uri) {
 
         // TODO: Other special cases for example for pundit ontology types?
