@@ -57,13 +57,11 @@ angular.module('Pundit2.ResourcePanel')
 
         // if click the same popover, toggle it
         if (state.popoverLiteral !== null && state.popoverLiteral.clickTarget === target) {
-            console.log("hai cliccato sullo stesso elemento--->TOGGLE");
             state.popoverLiteral.$promise.then(state.popoverLiteral.toggle);
         }
 
         // if click a different popover, hide the shown popover and show the clicked one
         if (state.popoverLiteral !== null && state.popoverLiteral.clickTarget !== target) {
-            console.log("hai cliccato su un altro elemento--->hide and show");
             resourcePanel.hideLiteral();
             state.popoverLiteral = initPopoverLiteral(x, y, content, target);
             state.popoverLiteral.$promise.then(state.popoverLiteral.show);
@@ -73,8 +71,6 @@ angular.module('Pundit2.ResourcePanel')
         if (state.popoverLiteral === null) {
             state.popoverLiteral = initPopoverLiteral(x, y, content, target);
             state.popoverLiteral.$promise.then(state.popoverLiteral.show);
-            console.log("primo elemento");
-
          }
 
         state.resourcePromise = $q.defer();
