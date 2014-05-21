@@ -38,7 +38,19 @@ angular.module('Pundit2.MyItemsContainer')
             // this is the centralized template to items list
             template: 'src/Lists/itemList.tmpl.html',
             filterFunction: function(item){
-                return item.isImage();
+                return item.isImage() || item.isImageFragment();
+            }
+        },
+        {
+            title: 'Entities',
+            template: 'src/Lists/itemList.tmpl.html',
+            filterFunction: function(item){
+                return !item.isImage() &&
+                    !item.isProperty() &&
+                    !item.isTextFragment() &&
+                    !item.isImage() &&
+                    !item.isImageFragment() &&
+                    !item.isWebPage();
             }
         },
         {
