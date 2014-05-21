@@ -81,6 +81,10 @@
     <script src="../src/MyItemsContainer/MyItemsContainer.service.js"></script>
     <script src="../src/MyItemsContainer/MyItems.service.js"></script>
 
+    <script src="../src/Vocabularies/Vocabularies.js"></script>
+    <script src="../src/Vocabularies/FreebaseSelector.service.js"></script>
+    <script src="../src/Vocabularies/DbPediaSelector.service.js"></script>
+
     <script src="../src/Toolbar/Toolbar.js"></script>
     <script src="../src/Toolbar/Toolbar.dir.js"></script>
     <script src="../src/Toolbar/Toolbar.ctrl.js"></script>

@@ -23,6 +23,7 @@ module.exports = function(config) {
             'app/src/PageItemsContainer/PageItemsContainer.js',
             'app/src/MyItemsContainer/MyItemsContainer.js',
             'app/src/Item/Item.js',
+            'app/src/Vocabularies/Vocabularies.js',
             'app/src/Toolbar/Toolbar.js',
             'app/src/Preview/Preview.js',
             'app/src/ResourcePanel/ResourcePanel.js',
