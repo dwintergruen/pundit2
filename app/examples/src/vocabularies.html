@@ -2,14 +2,15 @@
 
 <script>
 
-    var VocabDemoCtrl = function() {
-
+    var VocabDemoCtrl = function(FreebaseSelector, $scope) {
+        FreebaseSelector.getItems(angular.element(".voc-example-output"));
     };
 
 </script>
 
 <div data-ng-app="Pundit2" class="pnd-wrp" ng-controller="VocabDemoCtrl">
-    
+    <h3>First HTPP</h3>
+    <pre class="voc-example-output"></pre>
 </div>
 
 <!-- buildexamples:section footer --><!-- /buildexamples -->
