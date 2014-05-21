@@ -1,16 +1,16 @@
 <div class="popover">
     <div class="arrow"></div>
-    <div ng-show = "myItems.length>0"> My items
+    <div ng-show = "myItems.length>0"> My items ({{myItems.length}})
         <ul>
             <li ng-repeat="mi in myItems" ng-click="save(mi)">{{mi.label}}</li>
         </ul>
     </div>
-    <div ng-show = "pageItems.length>0"> Page Items
+    <div ng-show = "pageItems.length>0"> Page Items ({{pageItems.length}})
         <ul>
             <li ng-repeat="pi in pageItems" ng-click="save(pi)">{{pi.label}}</li>
         </ul>
     </div>
-    <div ng-show = "properties.length>0"> Properties
+    <div ng-show = "properties.length>0"> Properties ({{properties.length}})
         <ul>
             <li ng-repeat="pr in properties" ng-click="save(pr)">{{pr.label}}</li>
         </ul>
