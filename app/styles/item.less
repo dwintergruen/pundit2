@@ -4,106 +4,48 @@
 // --------------------------------------------------
 
 
+
+
 .pnd-item {
 	    white-space: nowrap;
     	overflow: hidden;
     	text-overflow: ellipsis;
+    	transition: margin-left 250ms 150ms linear;
+    	margin-left: -55px;
+	     	   	
+	    &:hover {
+	    	transition: margin-left 250ms 150ms linear;
+	    	margin-left: 0px;  
+	    	}
     	
     .pnd-item-buttons {
-	 	margin-right: 10px;
-	 	visibility: hidden;
+	 	margin-right: 7px;
 	 	display: inline;
 	 	float: left;
 	    }
 	
 
     .pnd-item-text {
-        margin-left: -50px;
+	    display: inline;
     }
 
-    &:hover {
-	    
-	    .pnd-item-buttons {
-	     	display: inline;
-	     	float: left;
-	     	visibility: visible;
-	     	-webkit-animation-name: item-menu-hover;
-	     	-webkit-animation-duration: 250ms;
-            -webkit-animation-delay: 100ms;
-	     	-webkit-animation-timing-function: linear;
-	     	animation-fill-mode:backwards;
-	     	-webkit-animation-fill-mode:backwards; /* Safari and Chrome */
-	     	}
-	     	
-	    .pnd-item-text {
-            transition: margin-left 250ms 150ms linear;
-            margin-left: 0px;
-	    	display: inline;
-	    	}    	
-	}
-
-	.pnd-item-text {
-	    display: inline;
-	    }
 	    
    // Sticky item
 
 	&.pnd-sticky-item {
-		animation: none;
-
-        .pnd-item-text {
-            margin-left: 0px;
-        }
+		margin-left: 0px; 
 		
-		&:hover {
-		     	
-			.pnd-item-buttons {
-	     	-webkit-animation-name: none !important;
-	     	}
-		     	
-		}
+		&:hover {    	
+				.pnd-item-buttons {
+		     		-webkit-animation-name: none !important;
+		    		}
+		    	}
 	
 		.pnd-icon-thumb-tack{
 			color: @brand-warning;
 			}
 			
-		    .pnd-item-buttons {
-	     		display: inline;
-	     		visibility: visible;
-	     		}
 	    }
 	    
 }
 
-
-//
-// ANIMATION
-// --------------------------------------------------
-
-@-webkit-keyframes 'item-menu-hover' {
-
-	0% {
-		visibility: hidden;
-		display: inline;
-		float: left;
-		-moz-transform: translateX(-100px) translateY(0px);
-		-webkit-transform: translateX(-100px) translateY(0px);
-		-o-transform: translateX(-100px) translateY(0px);
-		-ms-transform: translateX(-100px) translateY(0px);
-		transform: translateX(-100px) translateY(0px);
-	}
-	
-	
-	100% {
-		visibility: visible;
-		display: inline;
-		visibility: visible;
-		float: left;
-		-moz-transform: translateX(0px) translateY(0px);
-		-webkit-transform: translateX(0px) translateY(0px);
-		-o-transform: translateX(0px) translateY(0px);
-		-ms-transform: translateX(0px) translateY(0px);
-		transform: translateX(0px) translateY(0px);
-	
-	}
-}
