@@ -10,6 +10,10 @@ angular.module("Pundit2.Core")
         
     $window.PUNDIT.ns = ns;
 
+    // BaseURL of every Pundit-created item, fragment, predicate etc. Will be used
+    // to deal with special cases like TypesHelper labels for our fragment types.
+    ns.punditOntologyBaseURL = _pnd;
+
     // RDF namespace uris
     ns.rdf = {};
     ns.rdf.type       = _rdf + "type";
@@ -146,7 +150,6 @@ angular.module("Pundit2.Core")
         isIncludedIn: _pnd + "isIncludedIn",
     };
 
-    // TODO: doc
     // TODO: move to Consolidation.options ??
     // Consolidation use this to know what items are consolidable
     ns.fragments = {
@@ -161,6 +164,15 @@ angular.module("Pundit2.Core")
         image: "http://xmlns.com/foaf/0.1/Image",
         named: _pnd + "named-content"
     };
+
+    // Our types labels, will be read by the TypesHelper
+    ns.typesLabels = {};
+    ns.typesLabels[ns.fragments.imagePart] = "Image fragment";
+    ns.typesLabels[ns.fragments.text] = "Text fragment";
+    ns.typesLabels[ns.types.page] = "Web page";
+    ns.typesLabels[ns.types.image] = "Image";
+    ns.typesLabels[ns.types.named] = "Named content";
+
 
     ns.selectors = {
         baseURI: "http://purl.org/pundit/selector/",

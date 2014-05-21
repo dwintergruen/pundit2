@@ -42,9 +42,20 @@ angular.module('Pundit2.Core')
         // TODO: Other special cases for example for pundit ontology types?
 
         if (typeof(types[uri]) === "undefined") {
+            var label;
+
+            // If it's one of our types, we know the labels. If not, we create one
+            // using Utils super charged label producer.
+            if (uri.match(NameSpace.punditOntologyBaseURL) && uri in NameSpace.typesLabels) {
+                label =  NameSpace.typesLabels[uri];
+            } else {
+                label = Utils.getLabelFromURI(uri);
+            }
+
             types[uri] = {
-                label: Utils.getLabelFromURI(uri)
+                label: label
             };
+
         }
         return types[uri].label;
     };

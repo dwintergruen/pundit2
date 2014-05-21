@@ -23,14 +23,6 @@ angular.module('Pundit2.Core')
             return label;
         }
 
-        // Pundit ontology custom labels
-        if (uri.match(/http:\/\/purl.org\/pundit\/ont\/ao#/)) {
-            label = uri.substr(30)
-                        .replace(/([A-Z])/g, ' $1')
-                        .replace(/^./, function(str){ return str.toUpperCase(); });
-            return label;
-        }
-
         // All other label types, take the last part
         label = uri.substring(uri.lastIndexOf('/') + 1);
         if (label.indexOf('#') !== -1) {
