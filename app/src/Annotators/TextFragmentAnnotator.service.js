@@ -207,16 +207,14 @@ angular.module('Pundit2.Annotators')
         // Replace wrapped nodes with their content
         var bits = angular.element('.'+ tfa.options.wrapNodeClass);
         angular.forEach(bits, function(node) {
-            console.log('Ara che bit', node.parentNode);
             var parent = node.parentNode;
             while (node.firstChild)
                 parent.insertBefore(node.firstChild, node);
             angular.element(node).remove();
         });
 
-
+        // Finally merge splitted text nodes
         XpointersHelper.mergeTextNodes(angular.element('body')[0]);
-
     };
 
 
