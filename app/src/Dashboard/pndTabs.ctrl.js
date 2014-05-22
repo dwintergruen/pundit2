@@ -61,6 +61,13 @@ angular.module('Pundit2.Dashboard')
         function(newWidth) {
             panesWidth = parseInt(newWidth, 10);
             check();
+
+            // update show-tabs button state
+            if(isTabHidden() === -1) {
+                $scope.hiddenTabIsActive = false;
+            } else {
+                $scope.hiddenTabIsActive = true;
+            }
     });
 
     // check if panels are renderer.
@@ -114,8 +121,45 @@ angular.module('Pundit2.Dashboard')
                     click: "setActive("+i+", $event)"
                 };
                 $scope.hiddenTabs.push(t);
+
             }
         }
+    };
+
+    // check it a tab is hidden or not
+    // if called without parameter, check if selected tab is hidden or not
+    // return -1 if tab is not hidden
+    // otherwise return index of hidden tab
+    var isTabHidden = function(tab) {
+        var tabToFind;
+        // se non ho tab nascoste, ritorno -1
+        if(typeof($scope.hiddenTabs) === 'undefined') {
+            return -1;
+        }
+
+        if($scope.hiddenTabs.length === 0) {
+            return -1;
+        }
+
+        // se non ho tab attive, ritorno -1
+        if(typeof($scope.tabs.activeTab) === 'undefined') {
+            return -1;
+        }
+
+        // se tab === '' allora cerco la tab attiva, altrimenti cerco la tab passata
+        if(tab === '' || typeof(tab) === 'undefined') {
+            var index = $scope.tabs.activeTab;
+            tabToFind = $scope.panes[index];
+        } else {
+            tabToFind = tab;
+        }
+
+        for(var j=0; j<$scope.hiddenTabs.length; j++){
+            if($scope.hiddenTabs[j].text === tabToFind.title){
+                return j;
+            }
+        }
+        return -1;
     };
 
     // Add base class
@@ -132,6 +176,7 @@ angular.module('Pundit2.Dashboard')
         $scope.tabs.activeTab = index;
         // set to true if an hidden tab is selected and is active
         $scope.hiddenTabIsActive = !$scope.panes[index].isVisible;
+
     };
 
     var hiddenTabsArePresent = false;
@@ -151,5 +196,6 @@ angular.module('Pundit2.Dashboard')
     $scope.hiddenTabsToShow = function() {
         return hiddenTabsArePresent;
     };
+
 
 });
