@@ -24,14 +24,6 @@ var punditConfig = {
 var ConsolidationDemoCtrl = function($scope, $q, Consolidation, Annotation, AnnotationsExchange,
     TextFragmentAnnotator, ItemsExchange) {
 
-    /*
-    var toLoad = ["8fd05a49", "65286186", "385c1647"],
-        proms = [];
-
-    for (var l=toLoad.length; l--;) {
-        proms[l] = new Annotation(toLoad[l]);
-    }
-    */
     var uris = Consolidation.getAvailableTargets();
     console.log('Available targets', uris);
 
