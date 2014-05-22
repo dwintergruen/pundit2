@@ -74,7 +74,7 @@ angular.module('Pundit2.Dashboard')
     // check if panels are renderer.
     // Init() is executed only when <li> tabs are changed in DOM
     var check = function() {
-        $scope.hiddenTabs = [];
+        //$scope.hiddenTabs = [];
         if (panesLen > 0 && panesWidth > 0) {
             if (panesJustChanged) {
                 panesJustChanged = false;
@@ -100,34 +100,56 @@ angular.module('Pundit2.Dashboard')
     // if fit, set its visibility to true and show in DOM
     // otherwise set its visibility to false
     // and add the tab in an array containing all tabs thad don't fit
-    var setVisibility = function(ulWidth) {
 
+        var tmpHiddenTabs = [];
+    var setVisibility = function(ulWidth) {
+        tmpHiddenTabs = angular.copy($scope.hiddenTabs);
+        $scope.hiddenTabs = [];
         var widthToFit = ulWidth - options.offsetButton;
         var tmpWidth = 0;
+        var currentTab
 
         // for each tabs, check if his width, added to the total current width
         // fit to the container width
         for (var i = 0; i < $scope.panes.length; i++){
             // total width of current visible tabs
-            var w = tmpWidth + $scope.panes[i].width;
+            currentTab = $scope.panes[i];
+            var w = tmpWidth + currentTab.width;
             // if width tab fit, set its visibility to true and update the total width of current visible tabs
             if (w < widthToFit){
-                $scope.panes[i].isVisible = true;
+                currentTab.isVisible = true;
                 tmpWidth = w;
-            } else {
+
+            } else  {
                 // it width tab doesn't fit, set its visibility to false and add tabs in hiddenTabs array
-                $scope.panes[i].isVisible = false;
+                currentTab.isVisible = false;
                 var t = {
-                    text: $scope.panes[i].title,
-                    click: "setActive("+i+", $event)",
-                    isActive: false
+                    text: currentTab.title,
+                    click: "setActive("+i+", $event)"
+                    //isActive: false
                 };
+                if(i === $scope.tabs.activeTab){
+                    t.isActive = true;
+                } else {
+                    t.isActive = false;
+                }
                 $scope.hiddenTabs.push(t);
 
             }
         }
     };
 
+    var findTab = function(tab, container) {
+        if(typeof(container) === 'undefined') {
+            return -1;
+        }
+        for(var j=0; j<container.length; j++){
+            if(container[j].text === tab.title){
+                return j;
+            }
+        }
+        return -1;
+    }
     // check it a tab is hidden or not
     // if called without parameter, check if selected tab is hidden or not
     // return -1 if tab is not hidden
@@ -193,6 +215,8 @@ angular.module('Pundit2.Dashboard')
             $scope.hiddenTabIsActive = true;
             var i = isTabHidden($scope.panes[index]);
             $scope.hiddenTabs[i].isActive = true;
+        } else {
+            $scope.hiddenTabIsActive = false;
         }
 
     };
