@@ -20,6 +20,8 @@ angular.module('Pundit2.AnnotationSidebar')
         sidebarNewHeight: 0
     };
 
+    $scope.annotationSidebar = AnnotationSidebar;
+
     container.css('height', body.innerHeight() + 'px');
 
     // Start reading the default
@@ -80,44 +82,6 @@ angular.module('Pundit2.AnnotationSidebar')
 
 
     // # Filters
-    
-    $scope.filters = {
-        freeText: {
-            filterName: 'freeText',
-            filterLabel: 'Free text',
-            expression: ''
-        },
-        author: {
-            filterName: 'author',
-            filterLabel: 'Author',
-            expression: []
-        },
-        fromDate: {
-            filterName: 'fromDate',
-            filterLabel: 'From date',
-            expression: ''
-        },
-        toDate: {
-            filterName: 'toDate',
-            filterLabel: 'To date',
-            expression: ''
-        },
-        predicates: {
-            filterName: 'predicates',
-            filterLabel: 'Predicates',
-            expression: []
-        },
-        entities: {
-            filterName: 'entities',
-            filterLabel: 'Entities',
-            expression: []
-        },
-        types: {
-            filterName: 'types',
-            filterLabel: 'Types',
-            expression: []
-        }
-    };
 
     $scope.fromMinDate = new Date();
     $scope.toMinDate = new Date();
@@ -125,27 +89,13 @@ angular.module('Pundit2.AnnotationSidebar')
     $scope.fromToDate = new Date();
 
 
-    // TODO: da spostare in service? nel caso sarebbe forse opportuno
-    // spostare anche la struttura dei filtri nel modello
-    var needToFilter = function() {
-        for (var f in $scope.filters) {
-            var current = $scope.filters[f].expression;
-            if (typeof(current) === "string" && current !== '') {
-                return true;
-            } else if (angular.isArray(current) && current.length > 0) {
-                return true;
-            }
-        }
-        return false;
-    };
-
     // Watch annotations
     $scope.$watch(function() {
         return AnnotationSidebar.getAllAnnotations();
     }, function(currentAnnotations) {
         $scope.allAnnotations = currentAnnotations;
-        if (needToFilter()) {
-            $scope.annotations = AnnotationSidebar.getAllAnnotationsFiltered($scope.filters);
+        if (AnnotationSidebar.needToFilter()) {
+            $scope.annotations = AnnotationSidebar.getAllAnnotationsFiltered(AnnotationSidebar.filters);
         } else {
             $scope.annotations = currentAnnotations;
         }
@@ -157,8 +107,8 @@ angular.module('Pundit2.AnnotationSidebar')
         if (typeof(minDate) !== 'undefined'){
             var newMinDate = $filter('date')(minDate, 'yyyy-MM-dd');
             $scope.fromMinDate = newMinDate;
-            if ($scope.filters.fromDate.expression === ''){
-                $scope.filters.fromDate.expression = newMinDate;
+            if (AnnotationSidebar.filters.fromDate.expression === ''){
+                AnnotationSidebar.filters.fromDate.expression = newMinDate;
                 $scope.toMinDate = newMinDate;
             }
         }
@@ -169,32 +119,32 @@ angular.module('Pundit2.AnnotationSidebar')
         if (typeof(maxDate) !== 'undefined'){
             var newMaxDate = $filter('date')(maxDate, 'yyyy-MM-dd');
             $scope.toMaxDate = newMaxDate;
-            if ($scope.filters.toDate.expression === ''){
-                $scope.filters.toDate.expression = newMaxDate;
+            if (AnnotationSidebar.filters.toDate.expression === ''){
+                AnnotationSidebar.filters.toDate.expression = newMaxDate;
                 $scope.fromMaxDate = newMaxDate;
             }
         }
     });
-    $scope.$watch('filters.fromDate.expression', function(currentFromDate) {
-        if (currentFromDate !== ''){
+    $scope.$watch('annotationSidebar.filters.fromDate.expression', function(currentFromDate) {
+        if (typeof(currentFromDate) !== 'undefined'){
             $scope.toMinDate = currentFromDate;
         } else{
             $scope.toMinDate = $scope.fromMinDate;
         }
     });
-    $scope.$watch('filters.toDate.expression', function(currentToDate) {
-        if (currentToDate !== ''){
+    $scope.$watch('annotationSidebar.filters.toDate.expression', function(currentToDate) {
+        if (typeof(currentToDate) !== 'undefined'){
             $scope.fromMaxDate = currentToDate;
         } else{
             $scope.fromMaxDate = $scope.toMaxDate;
         }
     });
 
-    $scope.$watch('filters', function(currentFilters) {
+    $scope.$watch('annotationSidebar.filters', function(currentFilters) {
         // TODO: individuare un modo migliore per rilevare i singoli filtri attivi
         $scope.annotations = AnnotationSidebar.getAllAnnotationsFiltered(currentFilters);
 
-    }, true);    
+    }, true);
 
     $scope.$watch(function() {
         return AnnotationSidebar.getAuthors();
@@ -218,35 +168,35 @@ angular.module('Pundit2.AnnotationSidebar')
     });
 
     $scope.toggleAuthor = function(author) {
-        var indexAuthor = $scope.filters.author.expression.indexOf(author);
+        var indexAuthor = AnnotationSidebar.filters.author.expression.indexOf(author);
         if (indexAuthor === -1) {
-            $scope.filters.author.expression.push(author);
+            AnnotationSidebar.filters.author.expression.push(author);
         } else {
-            $scope.filters.author.expression.splice(indexAuthor, 1);
+            AnnotationSidebar.filters.author.expression.splice(indexAuthor, 1);
         }
     };
     $scope.togglePredicates = function(predicates) {
-        var indexPredicates = $scope.filters.predicates.expression.indexOf(predicates);
+        var indexPredicates = AnnotationSidebar.filters.predicates.expression.indexOf(predicates);
         if (indexPredicates === -1) {
-            $scope.filters.predicates.expression.push(predicates);
+            AnnotationSidebar.filters.predicates.expression.push(predicates);
         } else {
-            $scope.filters.predicates.expression.splice(indexPredicates, 1);
+            AnnotationSidebar.filters.predicates.expression.splice(indexPredicates, 1);
         }
     };
     $scope.toggleEntities = function(entities) {
-        var indexEntities = $scope.filters.entities.expression.indexOf(entities);
+        var indexEntities = AnnotationSidebar.filters.entities.expression.indexOf(entities);
         if (indexEntities === -1) {
-            $scope.filters.entities.expression.push(entities);
+            AnnotationSidebar.filters.entities.expression.push(entities);
         } else {
-            $scope.filters.entities.expression.splice(indexEntities, 1);
+            AnnotationSidebar.filters.entities.expression.splice(indexEntities, 1);
         }
     };
     $scope.toggleTypes = function(types) {
-        var indexTypes = $scope.filters.types.expression.indexOf(types);
+        var indexTypes = AnnotationSidebar.filters.types.expression.indexOf(types);
         if (indexTypes === -1) {
-            $scope.filters.types.expression.push(types);
+            AnnotationSidebar.filters.types.expression.push(types);
         } else {
-            $scope.filters.types.expression.splice(indexTypes, 1);
+            AnnotationSidebar.filters.types.expression.splice(indexTypes, 1);
         }
     };
 

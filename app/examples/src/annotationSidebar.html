@@ -27,9 +27,12 @@
             AnnotationSidebar.toggle();
         };
 
-        // $scope.bla = function(){
-        //     AnnotationSidebar.setFilter("gatto", "matto");
-        // };
+        $scope.setAuthor = function(){
+            AnnotationSidebar.setFilter('author', 'http://purl.org/pundit/demo-cloud-server/user/1eb3f800');
+        };
+        $scope.setDate = function(){
+            AnnotationSidebar.setFilter('toDate', '2014-04-28');
+        };
 
         // ---
 
@@ -65,7 +68,8 @@
 
     <div>
         <button type="button" class="btn btn-default" ng-click="toogle()">Annotations</button>
-        <button type="button" class="btn btn-default" ng-click="bla()">Prova</button>
+        <button type="button" class="btn btn-default" ng-click="setAuthor()">Imposta filtro autore</button>
+        <button type="button" class="btn btn-default" ng-click="setDate()">Imposta filtro data</button>
     </div>
 
     <br />

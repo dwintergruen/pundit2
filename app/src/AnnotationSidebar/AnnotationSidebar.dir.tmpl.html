@@ -5,43 +5,46 @@
         <button>Annotations ({{allAnnotations.length}})</button>
         <br />
         Number of annotations ({{annotations.length}} of {{allAnnotations.length}})
-        
 
         <br /><hr />
-        Search: <input ng-model="filters.freeText.expression"> 
+        Free text: <input ng-model="annotationSidebar.filters.freeText.expression"> 
         <br /><hr />
-        <input type="text" class="form-control" ng-model="filters.fromDate.expression" data-min-date="{{fromMinDate}}" data-max-date="{{fromMaxDate}}" placeholder="From" data-autoclose="1" data-date-type="string" data-date-format="yyyy-MM-dd" bs-datepicker>
-        <input type="text" class="form-control" ng-model="filters.toDate.expression" data-min-date="{{toMinDate}}" data-max-date="{{toMaxDate}}" placeholder="To" data-autoclose="1" data-date-type="string" data-date-format="yyyy-MM-dd" bs-datepicker>
-        <br /><hr />
-        <strong>Autori:</strong>
-        <br />Search: <input ng-model="searchAuthors">
+        <strong>Annotation author</strong>
+        <br /><input ng-model="searchAuthors" placeholder="Search">
         <div ng-repeat="auth in authors | orderObjectBy:'count':'dsc' | filter:searchAuthors">
             <span>{{auth.label}} ({{auth.count}})</span>
             <button class="btn btn-info" ng-click="toggleAuthor(auth.uri)">v</button>
         </div>
-        <br />
-        <strong>Entities:</strong>
-        <br />Search: <input ng-model="searchEntities">
-        <div ng-repeat="ent in entities | orderObjectBy:'count':'dsc'| filter:searchEntities">
-            <span>{{ent.label}} ({{ent.count}})</span>
-            <button class="btn btn-info" ng-click="toggleEntities(ent.uri)">v</button>
+        <br /><hr />
+        <strong>Types</strong>
+        <br /><input ng-model="searchTypes" placeholder="Search">
+        <div ng-repeat="typ in types | orderObjectBy:'count':'dsc'| filter:searchTypes">
+            <span>{{typ.label}} ({{typ.count}})</span>
+            <button class="btn btn-info" ng-click="toggleTypes(typ.uri)">v</button>
         </div>
         <br /><br />
-        <strong>Predicates:</strong>
-        <br />Search: <input ng-model="searchPredicates">
+        <strong>Used predicate</strong>
+        <br /><input ng-model="searchPredicates" placeholder="Search">
         <div ng-repeat="pred in predicates | orderObjectBy:'count':'dsc'| filter:searchPredicates">
             <span>{{pred.label}} ({{pred.count}})</span>
             <button class="btn btn-info" ng-click="togglePredicates(pred.uri)">v</button>
         </div>
         <br /><br />
-        <strong>Types:</strong>
-        <br />Search: <input ng-model="searchTypes">
-        <div ng-repeat="typ in types | orderObjectBy:'count':'dsc'| filter:searchTypes">
-            <span>{{typ.label}} ({{typ.count}})</span>
-            <button class="btn btn-info" ng-click="toggleTypes(typ.uri)">v</button>
+        <strong>Entities</strong>
+        <br /><input ng-model="searchEntities" placeholder="Search">
+        <div ng-repeat="ent in entities | orderObjectBy:'count':'dsc'| filter:searchEntities">
+            <span>{{ent.label}} ({{ent.count}})</span>
+            <button class="btn btn-info" ng-click="toggleEntities(ent.uri)">v</button>
         </div>
-
         <br /><hr />
+        <strong>Date</strong>
+        <br /><input type="text" class="form-control" ng-model="annotationSidebar.filters.fromDate.expression" data-min-date="{{fromMinDate}}" data-max-date="{{fromMaxDate}}" placeholder="From" data-autoclose="1" data-date-type="string" data-date-format="yyyy-MM-dd" bs-datepicker>
+        <input type="text" class="form-control" ng-model="annotationSidebar.filters.toDate.expression" data-min-date="{{toMinDate}}" data-max-date="{{toMaxDate}}" placeholder="To" data-autoclose="1" data-date-type="string" data-date-format="yyyy-MM-dd" bs-datepicker>
+        <br /><hr />
+
+        <br />
+        <button ng-click="annotationSidebar.resetFilters()">Remove all filters</button>
+        <br /><br /><hr />
         <p ng-repeat="ann in filtered = (annotations)">
             <span>Created by: {{ann.creatorName}}</span> <br />
             <span>On: {{ann.created | date : 'MMM d, y H:mm a'}}</span> <br />

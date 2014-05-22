@@ -23,12 +23,53 @@ angular.module('Pundit2.AnnotationSidebar')
     var state = {
         isExpanded: annotationSidebar.options.isAnnotationSidebarExpanded,
         allAnnotations: [],
-        filteredAnnotations: [],
+        filteredAnnotations: []
+    };
+
+    var elementsList = {
         annotationsDate: [],
         authors: {},
         entities: {},
         predicates: {},
         types: {}
+    };
+
+    annotationSidebar.filters = {
+        freeText: {
+            filterName: 'freeText',
+            filterLabel: 'Free text',
+            expression: ''
+        },
+        author: {
+            filterName: 'author',
+            filterLabel: 'Author',
+            expression: []
+        },
+        fromDate: {
+            filterName: 'fromDate',
+            filterLabel: 'From date',
+            expression: ''
+        },
+        toDate: {
+            filterName: 'toDate',
+            filterLabel: 'To date',
+            expression: ''
+        },
+        predicates: {
+            filterName: 'predicates',
+            filterLabel: 'Predicates',
+            expression: []
+        },
+        entities: {
+            filterName: 'entities',
+            filterLabel: 'Entities',
+            expression: []
+        },
+        types: {
+            filterName: 'types',
+            filterLabel: 'Types',
+            expression: []
+        }
     };
 
     annotationSidebar.toggle = function(){
@@ -59,36 +100,36 @@ angular.module('Pundit2.AnnotationSidebar')
     };
 
     var setFilterElements = function(annotations) {
-        state.predicates = {};
-        state.authors = {};
-        state.entities = {};
-        state.predicates = {};
-        state.types = {};
+        elementsList.predicates = {};
+        elementsList.authors = {};
+        elementsList.entities = {};
+        elementsList.predicates = {};
+        elementsList.types = {};
 
         angular.forEach(annotations, function(annotation) {
 
             var uriList = {};
 
             // Annotation authors
-            if (typeof(state.authors[annotation.creator]) === 'undefined'){
-                state.authors[annotation.creator] = {uri: annotation.creator, label: annotation.creatorName, count: 1};
+            if (typeof(elementsList.authors[annotation.creator]) === 'undefined'){
+                elementsList.authors[annotation.creator] = {uri: annotation.creator, label: annotation.creatorName, count: 1};
             } else {
-                state.authors[annotation.creator].count++;
+                elementsList.authors[annotation.creator].count++;
             }
 
             // Annotation date
-            if (state.annotationsDate.indexOf(annotation.created) === -1){
-                state.annotationsDate.push(annotation.created);
+            if (elementsList.annotationsDate.indexOf(annotation.created) === -1){
+                elementsList.annotationsDate.push(annotation.created);
             }
 
             // Predicates
             angular.forEach(annotation.predicates, function(predicateUri) {
                 if (typeof(uriList[predicateUri]) === 'undefined'){
                     uriList[predicateUri] = {uri: predicateUri};
-                    if (typeof(state.predicates[predicateUri]) === 'undefined'){
-                        state.predicates[predicateUri] = {uri: predicateUri, label: annotation.items[predicateUri].label, count: 1};
+                    if (typeof(elementsList.predicates[predicateUri]) === 'undefined'){
+                        elementsList.predicates[predicateUri] = {uri: predicateUri, label: annotation.items[predicateUri].label, count: 1};
                     } else {
-                        state.predicates[predicateUri].count++;
+                        elementsList.predicates[predicateUri].count++;
                     }
                 }
             });
@@ -97,10 +138,10 @@ angular.module('Pundit2.AnnotationSidebar')
             angular.forEach(annotation.entities, function(entUri) {
                 if (typeof(uriList[entUri]) === 'undefined'){
                     uriList[entUri] = {uri: entUri};
-                    if (typeof(state.entities[entUri]) === 'undefined'){
-                        state.entities[entUri] = {uri: entUri, label: annotation.items[entUri].label, count: 1};
+                    if (typeof(elementsList.entities[entUri]) === 'undefined'){
+                        elementsList.entities[entUri] = {uri: entUri, label: annotation.items[entUri].label, count: 1};
                     } else {
-                        state.entities[entUri].count++;
+                        elementsList.entities[entUri].count++;
                     }
                 }
             });
@@ -110,10 +151,10 @@ angular.module('Pundit2.AnnotationSidebar')
                 angular.forEach(singleItem.type, function(typeUri) {
                     if (typeof(uriList[typeUri]) === 'undefined'){
                         uriList[typeUri] = {uri: typeUri};
-                        if (typeof(state.types[typeUri]) === 'undefined'){
-                            state.types[typeUri] = {uri: typeUri, label: TypesHelper.getLabel(typeUri), count: 1};
+                        if (typeof(elementsList.types[typeUri]) === 'undefined'){
+                            elementsList.types[typeUri] = {uri: typeUri, label: TypesHelper.getLabel(typeUri), count: 1};
                         } else {
-                            state.types[typeUri].count++;
+                            elementsList.types[typeUri].count++;
                         }
                     }
                 });
@@ -122,21 +163,21 @@ angular.module('Pundit2.AnnotationSidebar')
     };
 
     annotationSidebar.getAuthors = function(){
-        return state.authors;
+        return elementsList.authors;
     };
     annotationSidebar.getEntities = function(){
-        return state.entities;
+        return elementsList.entities;
     };
     annotationSidebar.getPredicates = function(){
-        return state.predicates;
+        return elementsList.predicates;
     };
     annotationSidebar.getTypes = function(){
-        return state.types;
+        return elementsList.types;
     };
 
     annotationSidebar.getMinDate = function(){
-        if (state.annotationsDate.length > 0){
-            return state.annotationsDate.reduce(
+        if (elementsList.annotationsDate.length > 0){
+            return elementsList.annotationsDate.reduce(
                 function(prev,current){ 
                     return prev < current ? prev:current;
                 }
@@ -144,13 +185,44 @@ angular.module('Pundit2.AnnotationSidebar')
         }
     };
     annotationSidebar.getMaxDate = function(){
-        if (state.annotationsDate.length > 0){
-            return state.annotationsDate.reduce(
+        if (elementsList.annotationsDate.length > 0){
+            return elementsList.annotationsDate.reduce(
                 function(prev,current){ 
                     return prev > current ? prev:current;
                 }
             );
         }
+    };
+
+    annotationSidebar.needToFilter = function() {
+        for (var f in annotationSidebar.filters) {
+            var current = annotationSidebar.filters[f].expression;
+            if (typeof(current) === "string" && current !== '') {
+                return true;
+            } else if (angular.isArray(current) && current.length > 0) {
+                return true;
+            }
+        }
+        return false;
+    };
+
+    annotationSidebar.setFilter = function(filter, value) {
+        currentFilter = annotationSidebar.filters[filter].expression;
+        if (typeof(currentFilter) === 'string'){
+            annotationSidebar.filters[filter].expression = value;
+        } else if (typeof(currentFilter) === 'object'){
+            annotationSidebar.filters[filter].expression.push(value);
+        }
+    };
+
+    annotationSidebar.resetFilters = function() {
+        angular.forEach(annotationSidebar.filters, function(filter) {
+            if (typeof(filter.expression) === 'string'){
+                filter.expression = '';
+            } else if (typeof(filter.expression) === 'object'){
+                filter.expression = [];
+            }
+        });
     };
 
     var timeoutPromise;
