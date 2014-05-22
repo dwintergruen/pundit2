@@ -3,7 +3,7 @@ angular.module('Pundit2.ContextualMenu')
 
     position: 'bottom-left',
 
-    debug: true
+    debug: false
 })
 .service('ContextualMenu', function($rootScope, BaseComponent, CONTEXTUALMENUDEFAULTS, $dropdown, $window) {
 
