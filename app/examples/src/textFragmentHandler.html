@@ -21,10 +21,11 @@ var punditConfig = {
 
 };
 
-var ConsolidationDemoCtrl = function($scope, $q, Consolidation, Annotation, AnnotationsExchange,
+var TextFragmentHandlerDemoCtrl = function($scope, $q, Consolidation, Annotation,
+                                          AnnotationsExchange,
     TextFragmentAnnotator, ItemsExchange, TextFragmentHandler) {
 
-    var uris = Consolidation.getAvailableTargets();
+    var uris = []; // Consolidation.getAvailableTargets();
     console.log('Available targets', uris);
 
     var annPromise = AnnotationsExchange.searchByUri(uris);
@@ -80,9 +81,9 @@ var ConsolidationDemoCtrl = function($scope, $q, Consolidation, Annotation, Anno
 
 <div data-ng-app="Pundit2" class="pnd-wrp">
 
-    <div ng-controller="ConsolidationDemoCtrl" class="container clearfix">
+    <div ng-controller="TextFragmentHandlerDemoCtrl" class="container clearfix">
 
-        <h3>Consolidation</h3>
+        <h3>Text Fragment Handler</h3>
 
         <button class="btn btn-info" ng-click="go()">go</button>
         <button class="btn btn-danger" ng-click="wipe()">wipe</button>
@@ -137,9 +138,50 @@ var ConsolidationDemoCtrl = function($scope, $q, Consolidation, Annotation, Anno
             </div>
 
             <div class="col-sm-6">
-                Items from a public annotation: 
-                    <pre>{{allItemsJSON}}</pre>
+
+                This content is selectable .. This content is selectable ..
+                This content is selectable .. This content is selectable ..
+                This content is selectable .. This content is selectable ..
+
+                <div style="margin: 10px; border: 1px solid blue;">
+                    This content is selectable too .. This content is selectable too ..
+                    This content is selectable too .. This content is selectable too ..
+                    This content is selectable too .. This content is selectable too ..
+                </div>
+
+                <div class="pnd-ignore" style="margin: 10px; border: 2px solid red;">
+                    <h3>You cannot select this zone ..</h3>
+                    Not this zone either .... Not this zone either .... Not this zone either ....
+                    Not this zone either .... Not this zone either .... Not this zone either ....
+                    <div style="margin: 10px; border: 1px solid green;">
+                        nor childrens ... nor childrens ... nor childrens ... nor childrens ...
+                        nor childrens ... nor childrens ... nor childrens ... nor childrens ...
+                        nor childrens ... nor childrens ... nor childrens ... nor childrens ...
+                    </div>
+                </div>
+
+                This content is selectable again .. This content is selectable again ..
+                This content is selectable again .. This content is selectable again ..
+
+                <div style="margin: 10px; border: 1px solid blue;">
+                    This content is selectable too .. This content is selectable too ..
+                    This content is selectable too .. This content is selectable too ..
+                    This content is selectable too .. This content is selectable too ..
+                </div>
+
+                <div class="pnd-ignore" style="margin: 10px; border: 2px solid red;">
+                    <h3>You cannot select this zone ..</h3>
+                    Not this zone either .... Not this zone either .... Not this zone either ....
+                    Not this zone either .... Not this zone either .... Not this zone either ....
+                    <div style="margin: 10px; border: 1px solid green;">
+                        nor childrens ... nor childrens ... nor childrens ... nor childrens ...
+                        nor childrens ... nor childrens ... nor childrens ... nor childrens ...
+                        nor childrens ... nor childrens ... nor childrens ... nor childrens ...
+                    </div>
+                </div>
+
             </div>
+
 
         </div>
 
