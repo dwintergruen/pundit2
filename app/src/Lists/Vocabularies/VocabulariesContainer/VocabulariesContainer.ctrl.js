@@ -66,4 +66,34 @@ angular.module('Pundit2.Vocabularies')
 
     };
 
+    // every time that user digit text inside <input> filter the items showed
+    // show only items that contain the $scope.search substring inside their label
+    // the match function ignore multiple spaces
+    $scope.search = {
+        icon: VocabulariesContainer.options.inputIconSearch,
+        term: ''
+    };
+    $scope.$watch(function() {
+        return $scope.search.term;
+    }, function(str) {
+
+        // this happens when the user deletes last char in the <input>
+        if (typeof(str) === 'undefined' || str === '') {
+            str = '';
+            $scope.search.icon = VocabulariesContainer.options.inputIconSearch;
+            console.log('empty input');
+        } else {
+            $scope.search.icon = VocabulariesContainer.options.inputIconClear;
+        }
+
+        // need to query vocab then update showed items
+
+        
+
+    });
+
+    var callback = function(items){
+        $scope.displayedItems = items;
+    };
+
 });

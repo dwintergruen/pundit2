@@ -12,6 +12,8 @@ angular.module('Pundit2.Vocabularies')
     // TODO server support query limit ?
     limit: 1,
 
+    container: 'Muruca',
+
     debug: true
 
 })
@@ -22,13 +24,9 @@ angular.module('Pundit2.Vocabularies')
 
     var exampleQuery = "spada";
 
-    var output = null;
-
     SelectorsManager.addSelector(murucaSelector);
 
-    murucaSelector.getItems = function(el){
-
-        output = el;
+    murucaSelector.getItems = function(callback){
 
         var config = {
             params: {
@@ -83,8 +81,6 @@ angular.module('Pundit2.Vocabularies')
             }
 
             punditItem.push(item);
-            // put output inside element (test)
-            output.html(JSON.stringify(punditItem, null, "  "));
 
         }
 

@@ -9,25 +9,25 @@ angular.module('Pundit2.Vocabularies')
     freebaseItemsBaseURL: 'http://www.freebase.com',
     freebaseAPIKey: 'AIzaSyCJjAj7Nd2wKsZ8d7XQ9ZvUwN5SF0tZBsE',
 
-    limit: 1,
+    limit: 5,
+
+    container: 'freebase',
 
     debug: true
 
 })
-.service('FreebaseSelector', function(BaseComponent, FREEBASESELECTORDEFAULTS, TypesHelper, SelectorsManager, $http) {
+.service('FreebaseSelector', function(BaseComponent, FREEBASESELECTORDEFAULTS, TypesHelper, SelectorsManager, Item, ItemsExchange, $http) {
 
     var freebaseSelector = new BaseComponent('FreebaseSelector', FREEBASESELECTORDEFAULTS);
     freebaseSelector.label = 'freebaseSelector';
 
     var exampleQuery = "Jimi Hendrix";
 
-    var output = null;
-
     SelectorsManager.addSelector(freebaseSelector);
 
-    freebaseSelector.getItems = function(el){
+    var pendingRequest;
 
-        output = el;
+    freebaseSelector.getItems = function(callback){
 
         $http({
             method: 'GET',
@@ -41,6 +41,8 @@ angular.module('Pundit2.Vocabularies')
 
             freebaseSelector.log('Http success, get items from freebase', data);
 
+            pendingRequest = data.result.length;
+
             for (var i in data.result) {
 
                 // The item borns as half empty, will get filled up
@@ -52,10 +54,10 @@ angular.module('Pundit2.Vocabularies')
                     // TODO this link is ok?
                     image: freebaseSelector.options.freebaseImagesBaseURL + data.result[i].mid,
                     description: -1,
-                    value: -1
+                    uri: -1
                 };
 
-                freebaseSelector.getItemDetails(item);
+                freebaseSelector.getItemDetails(item, callback);
 
             }
 
@@ -66,7 +68,7 @@ angular.module('Pundit2.Vocabularies')
     };
 
 
-    freebaseSelector.getItemDetails = function(item){
+    freebaseSelector.getItemDetails = function(item, callback){
 
         // get TOPIC
         $http({
@@ -84,7 +86,7 @@ angular.module('Pundit2.Vocabularies')
 
             freebaseSelector.log('Http success, get TOPIC from freebase', data);
 
-            item.value = freebaseSelector.options.freebaseItemsBaseURL + data.result.mid;
+            item.uri = freebaseSelector.options.freebaseItemsBaseURL + data.result.mid;
             item.type = [];
 
             // Take the types labels
@@ -98,12 +100,14 @@ angular.module('Pundit2.Vocabularies')
             // Value != -1: this call is the last one, we're done
             if (item.description !== -1) {
                 freebaseSelector.log('TOPIC was last, complete for item ', item);
-                // put output inside element (test)
-                output.html(JSON.stringify(item, null, "  "));
+                var add = new Item(item.uri, item);
+                ItemsExchange.addItemToContainer(add, freebaseSelector.options.container);
+                checkEnd(callback);
             }
 
         }).error(function(msg) {
             freebaseSelector.err('Cant get TOPIC from freebase: ', msg);
+            checkEnd(callback);
         });
 
         // get MQL
@@ -124,16 +128,26 @@ angular.module('Pundit2.Vocabularies')
                 item.description = item.label;
 
             // Description is not -1: this call is the last one, we're done
-            if (item.value !== -1) {
+            if (item.uri !== -1) {
                 freebaseSelector.log('MQL was last, complete http for item ', item);
-                // put output inside element (test)
-                output.html(JSON.stringify(item, null, "  "));
+                var add = new Item(item.uri, item);
+                ItemsExchange.addItemToContainer(add, freebaseSelector.options.container);
+                checkEnd(callback);
             }
 
         }).error(function(msg) {
             freebaseSelector.err('Cant get MQL from freebase: ', msg);
+            checkEnd(callback);
         });
 
+    };
+
+    var checkEnd = function(callback){
+        pendingRequest--;
+        if (pendingRequest <= 0) {
+            callback();
+        }
+        
     };
 
     freebaseSelector.log('service init');
