@@ -1,0 +1,150 @@
+<!-- buildexamples:section header --><!-- /buildexamples -->
+
+<style>
+    .pnd-cons {
+        background: #fc0;
+    }
+</style>
+
+<script>
+
+var punditConfig = {
+    debugAllModules: false,
+    modules: {
+        "Annotation": { debug: false },
+        "Consolidation": { debug: false },
+        "TextFragmentAnnotator": { debug: false },
+        "ImageFragmentAnnotator": { debug: false },
+        "XpointersHelper": { debug: true },
+        "TextFragmentHandler": { debug: true }
+    }
+
+};
+
+var ConsolidationDemoCtrl = function($scope, $q, Consolidation, Annotation, AnnotationsExchange,
+    TextFragmentAnnotator, ItemsExchange, TextFragmentHandler) {
+
+    var uris = Consolidation.getAvailableTargets();
+    console.log('Available targets', uris);
+
+    var annPromise = AnnotationsExchange.searchByUri(uris);
+    annPromise.then(function(ids) {
+        console.log('Found '+ids.length+' annotations on the current page.', ids);
+
+        var annPromises = [];
+        for (var i=0; i<ids.length; i++) {
+            var a = new Annotation(ids[i]);
+            annPromises.push(a);
+        }
+        $q.all(annPromises).then(function(ret) {
+            console.log("Retrieved annotations details searching by URIs", ret);
+        });
+
+    }, function() {
+        // TODO: cant search for annotations? OUCH
+    });
+
+
+    $scope.$watch(function() {
+        return ItemsExchange.getItems();
+    }, function(newItems, oldItems) {
+        $scope.allItems = newItems;
+        $scope.allItemsJSON = JSON.stringify(newItems, null, "  ");
+    }, true);
+
+
+    $scope.go = function() {
+        console.log('## Will pass items to consolidate: '+ ItemsExchange.getItems().length);
+        Consolidation.consolidate(ItemsExchange.getItems());
+    };
+
+    $scope.wipe = function() {
+        console.log('## Wiping consolidated annotations');
+        Consolidation.wipe();
+    };
+
+    $scope.high = function(uri) {
+        TextFragmentAnnotator.highlightByUri(uri);
+    };
+
+    $scope.reset = function(uri) {
+        TextFragmentAnnotator.clearHighlightByUri(uri);
+    };
+
+    $scope.isConsolidated = function(item) {
+        return Consolidation.isConsolidated(item);
+    };
+
+}
+</script>
+
+<div data-ng-app="Pundit2" class="pnd-wrp">
+
+    <div ng-controller="ConsolidationDemoCtrl" class="container clearfix">
+
+        <h3>Consolidation</h3>
+
+        <button class="btn btn-info" ng-click="go()">go</button>
+        <button class="btn btn-danger" ng-click="wipe()">wipe</button>
+
+        <div class="row">
+
+            <div class="col-sm-6">
+
+                <div class="pundit-content"
+                     about="http://fake-url.it/release_bot/build/examples/dante-1.html">
+                <h1>Dante Alighieri</h1>
+                <div>
+                    <p><img src="http://upload.wikimedia.org/wikipedia/commons/a/a4/Dante-alighieri.jpg" height="150" class="pull-left" /><p><b>Durante degli Alighieri</b> (<small>US:&nbsp;</small><span title="Pronunciation in IPA" class="IPA"><a title="Wikipedia:IPA for English">/ˈdɑːnteɪ/</a></span>; <small>UK:&nbsp;</small><span title="Pronunciation in IPA"><a title="Wikipedia:IPA for English">/ˈdænti/</a></span>; 1265–1321), commonly known as <b>Dante</b>, was a major Italian poet of the <a title="Middle Ages">Middle Ages</a>. His <i><a title="Divine Comedy">Divine Comedy</a></i>, originally called <i><span>Commedia</span></i> and later called <i><span lang="it" xml:lang="it">Divina</span></i> by <a title="Boccaccio">Boccaccio</a>, is considered the greatest literary work composed in the <a title="Italian language">Italian language</a> and a masterpiece of world <a title="Literature">literature</a>.<sup><a><span>[</span>1<span>]</span></a></sup></p>
+                    <p>&nbsp;</p>
+                </div>
+                </br></br></br>
+
+                </div>
+
+                <div class="pundit-content" about="http://metasound.dibet.univpm.it/release_bot/build/examples/dante-1.html">
+
+                    <h1 class="title">Dante Alighieri </h1>
+
+                    <div class="entry">
+                        <p><img src="http://upload.wikimedia.org/wikipedia/commons/a/a4/Dante-alighieri.jpg" alt="" height="150" class="left" /><p><b>Durante degli Alighieri</b> (<small>US:&nbsp;</small><span title="Pronunciation in IPA" class="IPA"><a href="#" title="Wikipedia:IPA for English">/ˈdɑːnteɪ/</a></span>; <small>UK:&nbsp;</small><span title="Pronunciation in IPA" class="IPA"><a href="#" title="Wikipedia:IPA for English">/ˈdænti/</a></span>; 1265–1321), commonly known as <b>Dante</b>, was a major Italian poet of the <a href="#" title="Middle Ages">Middle Ages</a>. His <i><a href="#" title="Divine Comedy">Divine Comedy</a></i>, originally called <i><span lang="it" xml:lang="it">Commedia</span></i> and later called <i><span lang="it" xml:lang="it">Divina</span></i> by <a href="#" title="Boccaccio" class="mw-redirect">Boccaccio</a>, is considered the greatest literary work composed in the <a href="#" title="Italian language">Italian language</a> and a masterpiece of world <a href="#" title="Literature">literature</a>.<sup id="cite_ref-0" class="reference"><a href="#cite_note-0"><span>[</span>1<span>]</span></a></sup></p>
+                        <p>&nbsp;</p>
+                    </div>
+                    </br></br></br>
+
+                </div>
+
+                <div class="pundit-content"
+                     about="http://metasound.dibet.univpm.it/release_bot/build/examples/ariosto-1.html">
+
+                    <h1>Ludovico Ariosto </h1>
+
+                    <div>
+                        <p><img src="http://release-bot.thepund.it/build/examples/images/ariosto1.jpg" alt="" height="150" class="left" /><p><b>Ludovico Ariosto</b> (8 September 1474 – 6 July 1533) was an <a href="#" title="Italians" class="mw-redirect">Italian</a> <a href="#" title="Poet">poet</a>. He is best known as the author of the <a href="#" title="Romance (genre)">romance</a> <a href="#" title="Epic poetry">epic</a> <i><a href="#" title="Orlando Furioso">Orlando Furioso</a></i> (1516). The poem, a continuation of <a href="#" title="Matteo Maria Boiardo">Matteo Maria Boiardo</a>'s <i><a href="#" title="Orlando Innamorato">Orlando Innamorato</a></i>, describes the adventures of <a href="#" title="Charlemagne">Charlemagne</a>, <a href="#" title="Roland">Orlando</a>, and the <a href="#" title="Frankish Empire" class="mw-redirect">Franks</a> as they battle against the <a href="#" title="Saracen">Saracens</a> with diversions into many sideplots. Ariosto composed the poem in the <a href="#" title="Ottava rima">ottava rima</a> rhyme scheme and introduced narrative commentary throughout the work.</p></p>
+                        <p>&nbsp;</p>
+                        </br>
+                    </div>
+                </div>
+
+
+                <span ng-repeat="item in allItems">
+                    <button class="btn"
+                        ng-class="{'btn-warning': isConsolidated(item), 'btn-success': item.isProperty()}"
+                        ng-mouseout="reset(item.uri)"
+                        ng-mouseover="high(item.uri)">{{item.label}}</button>
+                </span>
+
+            </div>
+
+            <div class="col-sm-6">
+                Items from a public annotation: 
+                    <pre>{{allItemsJSON}}</pre>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- buildexamples:section footer --><!-- /buildexamples -->

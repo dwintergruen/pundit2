@@ -33,6 +33,7 @@
     <script src="../src/Annotators/TextFragmentBit.dir.js"></script>
     <script src="../src/Annotators/TextFragmentIcon.dir.js"></script>
     <script src="../src/Annotators/ItemsExchange.service.js"></script>
+    <script src="../src/Annotators/TextFragmentHandler.service.js"></script>
 
     <script src="../src/Communication/Communication.js"></script>
     <script src="../src/Communication/Notebook.factory.js"></script>
