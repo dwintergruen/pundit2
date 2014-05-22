@@ -30,6 +30,10 @@ angular.module('Pundit2.Core')
     // Adds new information for the given type.
     // Label is mandatory.
     typesHelper.add = function(uri, label, description) {
+
+        if(!(uri in types)) {
+            types[uri] = {};
+        }
         types[uri].label = label;
 
         if (typeof(description) !== "undefined") {

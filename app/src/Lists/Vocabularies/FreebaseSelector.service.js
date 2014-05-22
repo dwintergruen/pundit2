@@ -14,13 +14,16 @@ angular.module('Pundit2.Vocabularies')
     debug: true
 
 })
-.service('FreebaseSelector', function(BaseComponent, FREEBASESELECTORDEFAULTS, TypesHelper, $http) {
+.service('FreebaseSelector', function(BaseComponent, FREEBASESELECTORDEFAULTS, TypesHelper, SelectorsManager, $http) {
 
     var freebaseSelector = new BaseComponent('FreebaseSelector', FREEBASESELECTORDEFAULTS);
+    freebaseSelector.label = 'freebaseSelector';
 
     var exampleQuery = "Jimi Hendrix";
 
     var output = null;
+
+    SelectorsManager.addSelector(freebaseSelector);
 
     freebaseSelector.getItems = function(el){
 
@@ -40,15 +43,13 @@ angular.module('Pundit2.Vocabularies')
 
             for (var i in data.result) {
 
-                // TODO need to add image property ?
-
                 // The item borns as half empty, will get filled up
                 // by later calls.
                 var item = {
-                    type: ['subject'],
                     label: data.result[i].name,
                     mid: data.result[i].mid,
                     freebaseId: data.result[i].id,
+                    // TODO this link is ok?
                     image: freebaseSelector.options.freebaseImagesBaseURL + data.result[i].mid,
                     description: -1,
                     value: -1
@@ -91,7 +92,7 @@ angular.module('Pundit2.Vocabularies')
                 var o = data.result.type[l],
                     uri = freebaseSelector.options.freebaseSchemaBaseURL + o.id;
                 item.type.push(uri);
-                //TypesHelper.add(uri, o.name);
+                TypesHelper.add(uri, o.name);
             }
 
             // Value != -1: this call is the last one, we're done
