@@ -5,6 +5,7 @@ angular.module('Pundit2.Dashboard')
         animation: 'am-fade',
         offsetButton: 40
     };
+    $scope.hiddenTabsDropdownTemplate = 'src/ContextualMenu/dropdown.tmpl.html';
 
     // Support animations
     if(options.animation) {
@@ -118,7 +119,8 @@ angular.module('Pundit2.Dashboard')
                 $scope.panes[i].isVisible = false;
                 var t = {
                     text: $scope.panes[i].title,
-                    click: "setActive("+i+", $event)"
+                    click: "setActive("+i+", $event)",
+                    isActive: false
                 };
                 $scope.hiddenTabs.push(t);
 
@@ -132,7 +134,7 @@ angular.module('Pundit2.Dashboard')
     // otherwise return index of hidden tab
     var isTabHidden = function(tab) {
         var tabToFind;
-        // se non ho tab nascoste, ritorno -1
+        // if there aren't hidden tabs return -1
         if(typeof($scope.hiddenTabs) === 'undefined') {
             return -1;
         }
@@ -141,12 +143,12 @@ angular.module('Pundit2.Dashboard')
             return -1;
         }
 
-        // se non ho tab attive, ritorno -1
+        // if there aren't active tabs return -1
         if(typeof($scope.tabs.activeTab) === 'undefined') {
             return -1;
         }
 
-        // se tab === '' allora cerco la tab attiva, altrimenti cerco la tab passata
+        // if tab is undefined, check the active tab, otherwise check tab given as parameter
         if(tab === '' || typeof(tab) === 'undefined') {
             var index = $scope.tabs.activeTab;
             tabToFind = $scope.panes[index];
@@ -154,6 +156,7 @@ angular.module('Pundit2.Dashboard')
             tabToFind = tab;
         }
 
+        // if tab is found in hiddenTabs array, return index of its position in the array
         for(var j=0; j<$scope.hiddenTabs.length; j++){
             if($scope.hiddenTabs[j].text === tabToFind.title){
                 return j;
@@ -169,13 +172,28 @@ angular.module('Pundit2.Dashboard')
 
     // set a tab as active
     $scope.setActive = function(index) {
+
+        // reset state for hidden tabs if present
+        if($scope.hiddenTabs.length !== 0){
+            for(var i=0; i<$scope.hiddenTabs.length; i++){
+                $scope.hiddenTabs[i].isActive = false;
+            }
+
+        }
+
         $scope.active = index;
 
         // Setting activeTab back into the original tabs array, so the provider of the tabs
         // can be notified when a tab is selected (eg: PageItemsContainer!)
         $scope.tabs.activeTab = index;
+        
         // set to true if an hidden tab is selected and is active
-        $scope.hiddenTabIsActive = !$scope.panes[index].isVisible;
+        //$scope.hiddenTabIsActive = !$scope.panes[index].isVisible;
+        if(!$scope.panes[index].isVisible) {
+            $scope.hiddenTabIsActive = true;
+            var i = isTabHidden($scope.panes[index]);
+            $scope.hiddenTabs[i].isActive = true;
+        }
 
     };
 

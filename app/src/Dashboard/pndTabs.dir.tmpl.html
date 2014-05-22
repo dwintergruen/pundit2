@@ -2,7 +2,7 @@
     <li ng-repeat="pane in panes" ng-class="{active: $index == active}" ng-show="pane.isVisible">
         <a data-toggle="tab" ng-click="setActive($index, $event)" data-index="{{$index}}" ng-bind-html="pane.title"></a>
     </li>
-    <li class="pull-right show-tabs" ng-class="{active: hiddenTabIsActive}" placement="bottom-right" bs-dropdown="hiddenTabs" ng-show="hiddenTabsToShow()">
+    <li class="pull-right show-tabs" ng-class="{active: hiddenTabIsActive}" placement="bottom-right" template="{{hiddenTabsDropdownTemplate}}" bs-dropdown="hiddenTabs" ng-show="hiddenTabsToShow()">
         <a><span class="pnd-icon  pnd-icon-bars"></span></a>
     </li>
 </ul>
