@@ -1,6 +1,7 @@
 angular.module('Pundit2.Annotators')
     .constant('TEXTFRAGMENTHANDLERDEFAULTS', {
-        ignoreClasses: ['pnd-ignore']
+        ignoreClasses: ['pnd-ignore'],
+        removeSelectionOnAbort: true
     })
     .service('TextFragmentHandler', function(TEXTFRAGMENTHANDLERDEFAULTS, NameSpace, BaseComponent,
                                              ContextualMenu, XpointersHelper,
@@ -16,12 +17,21 @@ angular.module('Pundit2.Annotators')
             var target = downEvt.target;
             if (isToBeIgnored(target)) {
                 tfh.log('ABORT: ignoring mouse DOWN event on document: ignore class spotted.');
+                if (tfh.options.removeSelectionOnAbort) {
+                    downEvt.preventDefault();
+                }
                 return;
             }
 
             $document.on('mouseup', mouseUpHandler);
             tfh.log('Selection started on document, waiting for mouse up.');
         });
+
+        var removeSelection = function() {
+            if (tfh.options.removeSelectionOnAbort) {
+                $document[0].getSelection().removeAllRanges();
+            }
+        };
 
         var mouseUpHandler = function(upEvt) {
 
@@ -30,12 +40,14 @@ angular.module('Pundit2.Annotators')
             var target = upEvt.target;
             if (isToBeIgnored(target)) {
                 tfh.log('ABORT: ignoring mouse UP event on document: ignore class spotted.');
+                removeSelection();
                 return;
             }
 
 
             var range = tfh.getSelectedRange();
             if (range === null) {
+                removeSelection();
                 return;
             }
 
@@ -47,6 +59,7 @@ angular.module('Pundit2.Annotators')
             while (nodesLen--) {
                 if (isToBeIgnored(nodes[nodesLen])) {
                     tfh.log('ABORT: ignoring range: ignore class spotted inside it, somewhere.');
+                    removeSelection();
                     return;
                 }
             }
