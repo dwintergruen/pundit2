@@ -184,8 +184,8 @@ angular.module('Pundit2.ContextualMenu')
     // when mock menu show the dimensions can be readed
     // and can calculate the proper placement for the real menu
     mockOptions.scope.$on('tooltip.show', function(){
-        
-        var place = contextualMenu.position(angular.element('.pnd-context-menu'), state.lastX, state.lastY);
+
+        var place = contextualMenu.position(angular.element(state.mockMenu.$element), state.lastX, state.lastY);
 
         // move anchor to correct position
         state.anchor.css({
@@ -195,7 +195,7 @@ angular.module('Pundit2.ContextualMenu')
 
         // TODO check memory leaks ?
         //state.mockMenu.destroy();
-        angular.element('.pnd-context-menu').remove();
+        angular.element(state.mockMenu.$element).remove();
 
         // create real menu
         state.menu = init(realOptions, place);
