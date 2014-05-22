@@ -206,12 +206,31 @@ angular.module('Pundit2.AnnotationSidebar')
         return false;
     };
 
+    // TODO: verificare che l'elemento sia presente fra gli elementi prima
+    // di impostarlo? es. nessuna annotazione con autore X
     annotationSidebar.setFilter = function(filter, value) {
-        currentFilter = annotationSidebar.filters[filter].expression;
+        var currentIndex;
+        var currentFilter = annotationSidebar.filters[filter].expression;
         if (typeof(currentFilter) === 'string'){
             annotationSidebar.filters[filter].expression = value;
         } else if (typeof(currentFilter) === 'object'){
-            annotationSidebar.filters[filter].expression.push(value);
+            currentIndex = annotationSidebar.filters[filter].expression.indexOf(value);
+            if (currentIndex === -1){
+                annotationSidebar.filters[filter].expression.push(value);
+            }
+        }
+    };
+
+    annotationSidebar.removeFilter = function(filter, value) {
+        var currentIndex;
+        var currentFilter = annotationSidebar.filters[filter].expression;
+        if (typeof(currentFilter) === 'string'){
+            annotationSidebar.filters[filter].expression = '';
+        } else if (typeof(currentFilter) === 'object'){
+            currentIndex = annotationSidebar.filters[filter].expression.indexOf(value);
+            if (currentIndex !== -1){
+                annotationSidebar.filters[filter].expression.splice(currentIndex, 1);
+            }
         }
     };
 
