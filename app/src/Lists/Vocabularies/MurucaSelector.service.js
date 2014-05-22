@@ -1,11 +1,15 @@
 angular.module('Pundit2.Vocabularies')
 .constant('MURUCASELECTORDEFAULTS', {
 
-    murucaReconURL: 'http://dev.galassiaariosto.netseven.it/backend.php/reconcile',
+    murucaReconURL: 'http://demo2.galassiaariosto.netseven.it/backend.php/reconcile',
+    // 'http://demo2.galassiaariosto.netseven.it/reconcile',
+    // 'http://dev.galassiaariosto.netseven.it/backend.php/reconcile',
 
-    queryType: '',
+    //queryType: '',
+    queryType: 'http://purl.org/galassiariosto/types/Azione',
     queryProperties: {},
 
+    // TODO server support query limit ?
     limit: 1,
 
     debug: true
@@ -16,7 +20,7 @@ angular.module('Pundit2.Vocabularies')
     var murucaSelector = new BaseComponent('MurucaSelector', MURUCASELECTORDEFAULTS);
     murucaSelector.label = 'murucaSelector';
 
-    var exampleQuery = "Jimi Hendrix";
+    var exampleQuery = "spada";
 
     var output = null;
 
@@ -26,24 +30,24 @@ angular.module('Pundit2.Vocabularies')
 
         output = el;
 
-        $http({
-            method: 'GET',
-            url: murucaSelector.options.murucaReconURL,
+        var config = {
             params: {
                 query: angular.toJson({
                     query: exampleQuery,
                     type: murucaSelector.options.queryType,
                     properties: murucaSelector.options.queryProperties
                 })
-            },
-            withCredentials: true
-        }).success(function(data) {
+            }
+        };
 
-            murucaSelector.log('Http success, get items from muruca', data);
+        $http.jsonp(murucaSelector.options.murucaReconURL+"?jsonp=JSON_CALLBACK", config)
+            .success(function(data){
 
-        }).error(function(msg) {
-            murucaSelector.err('Error in get items from muruca: ', msg);
-        });
+                murucaSelector.log('Http success, get items from muruca', data);
+
+                murucaSelector.getItemsDetails(data.result);
+
+            });
 
     };
 
@@ -80,7 +84,7 @@ angular.module('Pundit2.Vocabularies')
 
             punditItem.push(item);
             // put output inside element (test)
-            output.html(JSON.stringify(item, null, "  "));
+            output.html(JSON.stringify(punditItem, null, "  "));
 
         }
 
