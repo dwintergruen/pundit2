@@ -23,9 +23,27 @@ angular.module('Pundit2.AnnotationSidebar')
 })
 .filter('freeText', function() {
     return function(input, search) {
-        // TODO: freeText work-in-progress
         var results = [];
-        results = input;
+        var currentTyp;
+
+        if (search.length > 0) {
+            angular.forEach(input, function (annotation) {
+                for (var i in annotation.items){
+                    var label = annotation.items[i].label;
+                    var str = search.toLowerCase().replace(/\s+/g, ' '),
+                        strParts = str.split(' '),
+                        reg = new RegExp(strParts.join('.*'));
+
+                    if (label.toLowerCase().match(reg) !== null) {
+                        results.push(annotation);
+                        return;
+                    }
+                }
+
+            });
+        } else {
+            results = input;
+        }
         return results;
     };
 })
@@ -93,7 +111,6 @@ angular.module('Pundit2.AnnotationSidebar')
     return function(input, search) {
         var results = [];
         var currentTyp;
-        var boolCheck = false;
 
         if (search.length > 0) {
             angular.forEach(input, function (annotation) {

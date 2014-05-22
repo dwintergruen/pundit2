@@ -38,8 +38,30 @@
         </div>
         <br /><hr />
         <strong>Date</strong>
-        <br /><input type="text" class="form-control" ng-model="annotationSidebar.filters.fromDate.expression" data-min-date="{{fromMinDate}}" data-max-date="{{fromMaxDate}}" placeholder="From" data-autoclose="1" data-date-type="string" data-date-format="yyyy-MM-dd" bs-datepicker>
-        <input type="text" class="form-control" ng-model="annotationSidebar.filters.toDate.expression" data-min-date="{{toMinDate}}" data-max-date="{{toMaxDate}}" placeholder="To" data-autoclose="1" data-date-type="string" data-date-format="yyyy-MM-dd" bs-datepicker>
+        <br />
+        <input 
+            type="text" 
+            class="form-control" 
+            ng-model="annotationSidebar.filters.fromDate.expression" 
+            data-min-date="{{fromMinDate}}" 
+            data-max-date="{{fromMaxDate}}" 
+            placeholder="From" 
+            data-autoclose="1" 
+            data-date-type="string" 
+            data-date-format="yyyy-MM-dd" 
+            bs-datepicker>
+
+        <input 
+            type="text" 
+            class="form-control" 
+            ng-model="annotationSidebar.filters.toDate.expression" 
+            data-min-date="{{toMinDate}}" 
+            data-max-date="{{toMaxDate}}" 
+            placeholder="To" 
+            data-autoclose="1" 
+            data-date-type="string" 
+            data-date-format="yyyy-MM-dd" 
+            bs-datepicker>
         <br /><hr />
 
         <br />

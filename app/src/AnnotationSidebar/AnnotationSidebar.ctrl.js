@@ -88,6 +88,14 @@ angular.module('Pundit2.AnnotationSidebar')
     $scope.fromMaxDate = new Date();
     $scope.fromToDate = new Date();
 
+    // Temp fix for bs-datepicker issues min value
+    var setMin = function(currentMin){
+        var newMinDate = new Date( (currentMin && !isNaN(Date.parse(currentMin))) ? Date.parse(currentMin) : 0 );
+        newMinDate.setDate(newMinDate.getDate() - 1);
+
+        return $filter('date')(newMinDate, 'yyyy-MM-dd');
+    };
+
 
     // Watch annotations
     $scope.$watch(function() {
@@ -106,10 +114,10 @@ angular.module('Pundit2.AnnotationSidebar')
     }, function(minDate) {
         if (typeof(minDate) !== 'undefined'){
             var newMinDate = $filter('date')(minDate, 'yyyy-MM-dd');
-            $scope.fromMinDate = newMinDate;
+            $scope.fromMinDate = setMin(newMinDate);
             if (AnnotationSidebar.filters.fromDate.expression === ''){
-                AnnotationSidebar.filters.fromDate.expression = newMinDate;
-                $scope.toMinDate = newMinDate;
+                // AnnotationSidebar.filters.fromDate.expression = newMinDate;
+                $scope.toMinDate = setMin(newMinDate);
             }
         }
     }); 
@@ -120,16 +128,16 @@ angular.module('Pundit2.AnnotationSidebar')
             var newMaxDate = $filter('date')(maxDate, 'yyyy-MM-dd');
             $scope.toMaxDate = newMaxDate;
             if (AnnotationSidebar.filters.toDate.expression === ''){
-                AnnotationSidebar.filters.toDate.expression = newMaxDate;
+                // AnnotationSidebar.filters.toDate.expression = newMaxDate;
                 $scope.fromMaxDate = newMaxDate;
             }
         }
     });
     $scope.$watch('annotationSidebar.filters.fromDate.expression', function(currentFromDate) {
         if (typeof(currentFromDate) !== 'undefined'){
-            $scope.toMinDate = currentFromDate;
+            $scope.toMinDate = setMin(currentFromDate);
         } else{
-            $scope.toMinDate = $scope.fromMinDate;
+            $scope.toMinDate = setMin($scope.fromMinDate);
         }
     });
     $scope.$watch('annotationSidebar.filters.toDate.expression', function(currentToDate) {
