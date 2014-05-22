@@ -54,5 +54,5 @@ angular.module('Pundit2.Preview')
     // open item url in a new window when click on More Info button in a preview
     $scope.openUrl = function(url){
         $window.open(url);
-    }
+    };
 });
