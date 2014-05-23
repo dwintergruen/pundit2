@@ -43,6 +43,13 @@ angular.module('Pundit2.AnnotationSidebar')
             body.toggleClass(bodyClasses);
             container.toggleClass(sidebarClasses);
         }
+    });
+
+    // Watch filters expanded or collapsed
+    $scope.$watch(function() {
+        return AnnotationSidebar.isFiltersExpanded();
+    }, function(currentState, oldState) {
+        $scope.isFiltersShowed = currentState;
     }); 
 
     // Watch dashboard height for top of sidebar
@@ -81,7 +88,7 @@ angular.module('Pundit2.AnnotationSidebar')
     });
 
 
-    // # Filters
+    // # Filters //
 
     $scope.fromMinDate = new Date();
     $scope.toMinDate = new Date();
@@ -95,7 +102,6 @@ angular.module('Pundit2.AnnotationSidebar')
 
         return $filter('date')(newMinDate, 'yyyy-MM-dd');
     };
-
 
     // Watch annotations
     $scope.$watch(function() {
@@ -175,36 +181,53 @@ angular.module('Pundit2.AnnotationSidebar')
         $scope.types = currentListTypes;
     });
 
+    $scope.showFilter = function(event){
+        var currentElement = angular.element(event.target.parentElement);
+        currentElement.addClass('pnd-annotation-sidebar-filter-show');
+    };
+    $scope.hideFilter = function(event){
+        var currentElement = angular.element(event.currentTarget);
+        currentElement.removeClass('pnd-annotation-sidebar-filter-show');
+    };
+
     $scope.toggleAuthor = function(author) {
         var indexAuthor = AnnotationSidebar.filters.author.expression.indexOf(author);
         if (indexAuthor === -1) {
             AnnotationSidebar.filters.author.expression.push(author);
+            AnnotationSidebar.toggleActiveFilter('authors', author);
         } else {
             AnnotationSidebar.filters.author.expression.splice(indexAuthor, 1);
+            AnnotationSidebar.toggleActiveFilter('authors', author);
         }
     };
     $scope.togglePredicates = function(predicates) {
         var indexPredicates = AnnotationSidebar.filters.predicates.expression.indexOf(predicates);
         if (indexPredicates === -1) {
             AnnotationSidebar.filters.predicates.expression.push(predicates);
+            AnnotationSidebar.toggleActiveFilter('predicates', predicates);
         } else {
             AnnotationSidebar.filters.predicates.expression.splice(indexPredicates, 1);
+            AnnotationSidebar.toggleActiveFilter('predicates', predicates);
         }
     };
     $scope.toggleEntities = function(entities) {
         var indexEntities = AnnotationSidebar.filters.entities.expression.indexOf(entities);
         if (indexEntities === -1) {
             AnnotationSidebar.filters.entities.expression.push(entities);
+            AnnotationSidebar.toggleActiveFilter('entities', entities);
         } else {
             AnnotationSidebar.filters.entities.expression.splice(indexEntities, 1);
+            AnnotationSidebar.toggleActiveFilter('entities', entities);
         }
     };
     $scope.toggleTypes = function(types) {
         var indexTypes = AnnotationSidebar.filters.types.expression.indexOf(types);
         if (indexTypes === -1) {
             AnnotationSidebar.filters.types.expression.push(types);
+            AnnotationSidebar.toggleActiveFilter('types', types);
         } else {
             AnnotationSidebar.filters.types.expression.splice(indexTypes, 1);
+            AnnotationSidebar.toggleActiveFilter('types', types);
         }
     };
 

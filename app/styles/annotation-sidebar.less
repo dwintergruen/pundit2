@@ -36,3 +36,27 @@ body.pnd-annotation-sidebar-expanded {
 .pnd-annotation-sidebar-container.pnd-annotation-sidebar-expanded {
     width: @annotation-sidebar-exp-width;
 }
+
+.pnd-annotation-sidebar-filter {
+    margin: 10px 0 10px 0;
+    cursor: pointer;
+}
+
+.pnd-annotation-sidebar-filter {
+    &.pnd-annotation-sidebar-filter-show .pnd-annotation-sidebar-filter-element {
+        display: block;
+    }
+    &.pnd-annotation-sidebar-filter-show .pnd-annotation-sidebar-filter-input {
+        display: block;
+    }
+    .pnd-annotation-sidebar-filter-element { 
+        display: none; 
+        &.pnd-as-current-filter-active {
+            color: red;
+            display: block;
+        }
+    }
+    .pnd-annotation-sidebar-filter-input { 
+        display: none; 
+    }
+}

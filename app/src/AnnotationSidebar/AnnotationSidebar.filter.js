@@ -47,7 +47,7 @@ angular.module('Pundit2.AnnotationSidebar')
         return results;
     };
 })
-.filter('author', function() {
+.filter('authors', function() {
     return function(input, search) {
         var results = [];
         var currentAuthor;

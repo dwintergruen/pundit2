@@ -1,72 +1,103 @@
 <div class="pnd-annotation-sidebar-container">
     <div class="pnd-annotation-sidebar-content" ng-show="isAnnotationSidebarExpanded">
+        <button ng-click="annotationSidebar.toggleFilters()" ng-show="!isFiltersShowed">Show Filter</button>
+        <div class="pnd-annotation-sidebar-filters-container" ng-show="isFiltersShowed">
+            <button>Suggestions</button>
+            <button>Annotations ({{annotations.length}}/{{allAnnotations.length}})</button>
 
-        <button>Suggestions</button>
-        <button>Annotations ({{allAnnotations.length}})</button>
-        <br />
-        Number of annotations ({{annotations.length}} of {{allAnnotations.length}})
+            <br /><hr />
+            <div class="pnd-annotation-sidebar-freetext">
+                <div class="pnd-annotation-sidebar-filter-input">
+                    Free text: <input ng-model="annotationSidebar.filters.freeText.expression">
+                </div>
+            </div>
+            <div class="pnd-annotation-sidebar-filter" ng-mouseleave="hideFilter($event)">
+            <strong ng-click = "showFilter($event)">Annotation author</strong>
+                <div class="pnd-annotation-sidebar-filter-input"><br /><input ng-model="searchAuthors" placeholder="Search"></div>
+                <div 
+                    ng-repeat="(index, auth) in authors | orderObjectBy:'count':'dsc' | filter:searchAuthors" 
+                    ng-class="{'pnd-as-current-filter-active': auth.active}"
+                    class="pnd-annotation-sidebar-filter-element">
+                    <span>
+                        {{auth.label}} ({{auth.count}}) 
+                        <button class="btn btn-info" ng-click="toggleAuthor(auth.uri)">v</button>    
+                    </span>
+                </div>
+            </div>
 
-        <br /><hr />
-        Free text: <input ng-model="annotationSidebar.filters.freeText.expression"> 
-        <br /><hr />
-        <strong>Annotation author</strong>
-        <br /><input ng-model="searchAuthors" placeholder="Search">
-        <div ng-repeat="auth in authors | orderObjectBy:'count':'dsc' | filter:searchAuthors">
-            <span>{{auth.label}} ({{auth.count}})</span>
-            <button class="btn btn-info" ng-click="toggleAuthor(auth.uri)">v</button>
-        </div>
-        <br /><hr />
-        <strong>Types</strong>
-        <br /><input ng-model="searchTypes" placeholder="Search">
-        <div ng-repeat="typ in types | orderObjectBy:'count':'dsc'| filter:searchTypes">
-            <span>{{typ.label}} ({{typ.count}})</span>
-            <button class="btn btn-info" ng-click="toggleTypes(typ.uri)">v</button>
-        </div>
-        <br /><br />
-        <strong>Used predicate</strong>
-        <br /><input ng-model="searchPredicates" placeholder="Search">
-        <div ng-repeat="pred in predicates | orderObjectBy:'count':'dsc'| filter:searchPredicates">
-            <span>{{pred.label}} ({{pred.count}})</span>
-            <button class="btn btn-info" ng-click="togglePredicates(pred.uri)">v</button>
-        </div>
-        <br /><br />
-        <strong>Entities</strong>
-        <br /><input ng-model="searchEntities" placeholder="Search">
-        <div ng-repeat="ent in entities | orderObjectBy:'count':'dsc'| filter:searchEntities">
-            <span>{{ent.label}} ({{ent.count}})</span>
-            <button class="btn btn-info" ng-click="toggleEntities(ent.uri)">v</button>
-        </div>
-        <br /><hr />
-        <strong>Date</strong>
-        <br />
-        <input 
-            type="text" 
-            class="form-control" 
-            ng-model="annotationSidebar.filters.fromDate.expression" 
-            data-min-date="{{fromMinDate}}" 
-            data-max-date="{{fromMaxDate}}" 
-            placeholder="From" 
-            data-autoclose="1" 
-            data-date-type="string" 
-            data-date-format="yyyy-MM-dd" 
-            bs-datepicker>
+            <div class="pnd-annotation-sidebar-filter" ng-mouseleave="hideFilter($event)">
+                <strong ng-click = "showFilter($event)">Types</strong>
+                <div class="pnd-annotation-sidebar-filter-input"><br /><input ng-model="searchTypes" placeholder="Search"></div>
+                <div 
+                    ng-repeat="typ in types | orderObjectBy:'count':'dsc'| filter:searchTypes"
+                    ng-class="{'pnd-as-current-filter-active': typ.active}"
+                    class="pnd-annotation-sidebar-filter-element">
+                    <span>
+                        {{typ.label}} ({{typ.count}})
+                        <button class="btn btn-info" ng-click="toggleTypes(typ.uri)">v</button>
+                    </span>
+                </div>
+            </div>
+            <div class="pnd-annotation-sidebar-filter" ng-mouseleave="hideFilter($event)">
+                <strong ng-click = "showFilter($event)">Used predicate</strong>
+                <div class="pnd-annotation-sidebar-filter-input"><br /><input ng-model="searchPredicates" placeholder="Search"></div>
+                <div 
+                    ng-repeat="pred in predicates | orderObjectBy:'count':'dsc'| filter:searchPredicates"
+                    ng-class="{'pnd-as-current-filter-active': pred.active}"
+                    class="pnd-annotation-sidebar-filter-element">
+                    <span>
+                        {{pred.label}} ({{pred.count}})
+                        <button class="btn btn-info" ng-click="togglePredicates(pred.uri)">v</button>
+                    </span>
+                </div>
+            </div>
+            <div class="pnd-annotation-sidebar-filter" ng-mouseleave="hideFilter($event)">
+                <strong ng-click = "showFilter($event)">Entities</strong>
+                <div class="pnd-annotation-sidebar-filter-input"><br /><input ng-model="searchEntities" placeholder="Search"></div>
+                <div 
+                    ng-repeat="ent in entities | orderObjectBy:'count':'dsc'| filter:searchEntities"
+                    ng-class="{'pnd-as-current-filter-active': ent.active}"
+                    class="pnd-annotation-sidebar-filter-element">
+                    <span>
+                        {{ent.label}} ({{ent.count}})
+                        <button class="btn btn-info" ng-click="toggleEntities(ent.uri)">v</button>
+                    </span>
+                </div>
+            </div>
+            <div class="pnd-annotation-sidebar-filter" ng-mouseleave="hideFilter($event)">
+                <strong ng-click = "showFilter($event)">Date</strong>
+                <div class="pnd-annotation-sidebar-filter-input"><br />
+                <input 
+                    type="text" 
+                    class="form-control" 
+                    ng-model="annotationSidebar.filters.fromDate.expression" 
+                    data-min-date="{{fromMinDate}}" 
+                    data-max-date="{{fromMaxDate}}" 
+                    placeholder="From" 
+                    data-autoclose="1" 
+                    data-date-type="string" 
+                    data-date-format="yyyy-MM-dd" 
+                    bs-datepicker>
 
-        <input 
-            type="text" 
-            class="form-control" 
-            ng-model="annotationSidebar.filters.toDate.expression" 
-            data-min-date="{{toMinDate}}" 
-            data-max-date="{{toMaxDate}}" 
-            placeholder="To" 
-            data-autoclose="1" 
-            data-date-type="string" 
-            data-date-format="yyyy-MM-dd" 
-            bs-datepicker>
-        <br /><hr />
-
-        <br />
-        <button ng-click="annotationSidebar.resetFilters()">Remove all filters</button>
-        <br /><br /><hr />
+                <input 
+                    type="text" 
+                    class="form-control" 
+                    ng-model="annotationSidebar.filters.toDate.expression" 
+                    data-min-date="{{toMinDate}}" 
+                    data-max-date="{{toMaxDate}}" 
+                    placeholder="To" 
+                    data-autoclose="1" 
+                    data-date-type="string" 
+                    data-date-format="yyyy-MM-dd" 
+                    bs-datepicker></div>
+            </div>
+            <br />
+            <hr />
+            <button ng-click="annotationSidebar.resetFilters()">Remove all filters</button>
+            <br />
+            <button ng-click="annotationSidebar.toggleFilters()">Close</button>
+            <br /><br /><hr />
+        </div>
         <p ng-repeat="ann in filtered = (annotations)">
             <span>Created by: {{ann.creatorName}}</span> <br />
             <span>On: {{ann.created | date : 'MMM d, y H:mm a'}}</span> <br />
