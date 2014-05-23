@@ -23,6 +23,7 @@ angular.module('Pundit2.Vocabularies')
 
     SelectorsManager.addSelector(freebaseSelector);
 
+    // TODO need to add max time after then abort the request
     var pendingRequest;
 
     freebaseSelector.getItems = function(term, callback){
@@ -143,6 +144,7 @@ angular.module('Pundit2.Vocabularies')
     var checkEnd = function(callback){
         pendingRequest--;
         if (pendingRequest <= 0) {
+            freebaseSelector.log('complete item parsing');
             callback();
         }
         

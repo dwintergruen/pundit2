@@ -17,7 +17,7 @@ angular.module('Pundit2.Vocabularies')
 
     var output = null;
 
-    SelectorsManager.addSelector(dbPediaSelector);
+    // SelectorsManager.addSelector(dbPediaSelector);
     
     dbPediaSelector.getItems = function(el){
 

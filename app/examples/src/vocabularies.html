@@ -2,18 +2,20 @@
 
 <script>
 
-    var VocabDemoCtrl = function(ItemsExchange, FreebaseSelector, DbPediaSelector, MurucaSelector) {
-        var callback = function(){
+    var VocabDemoCtrl = function(ItemsExchange, SelectorsManager, FreebaseSelector, DbPediaSelector, MurucaSelector) {
+        /*var callback = function(){
             console.log('freebase complete quering', ItemsExchange.getAll());
-            ItemsExchange.wipeContainer('freebase');
-            console.log('freebase wipe', ItemsExchange.getAll());
         };
         FreebaseSelector.getItems("Lady Gaga", callback);
         //DbPediaSelector.getItems(angular.element(".vocDB-example-output"));
         var murucaCallback = function(){
             console.log('muruca complete quering', ItemsExchange.getAll());
         }
-        MurucaSelector.getItems("spada", murucaCallback);
+        MurucaSelector.getItems("spada", murucaCallback);*/
+        var callback = function(){
+            console.log('all selectors complete quering', ItemsExchange.getAll());
+        }
+        SelectorsManager.getItems("spada", callback);
     };
 
 </script>

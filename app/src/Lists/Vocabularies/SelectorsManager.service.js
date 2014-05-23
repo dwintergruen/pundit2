@@ -11,13 +11,33 @@ angular.module('Pundit2.Vocabularies')
     // active selectors services
     var selectors = {};
 
-    selectorsManager.getItems = function(query){
+    selectorsManager.getItems = function(term, callback){
+        
+        pendingRequest = 0;
+        registeredCallback = callback;
+
         // get items from actives selectors
+        for (var name in selectors) {
+            pendingRequest++;
+            selectors[name].getItems(term, checkAllSelectorEnd);
+        }
+
     };
 
     selectorsManager.addSelector = function(selector){
         selectors[selector.label] = selector;
         selectorsManager.log("Add selector ", selector.label);
+    };
+
+    // TODO need to add max time after then abort the request
+    var pendingRequest,
+        registeredCallback = null;
+    var checkAllSelectorEnd = function(){
+        pendingRequest--;
+        if (pendingRequest <= 0 && registeredCallback!== null) {
+            registeredCallback();
+            registeredCallback = null;
+        }
     };
 
 
