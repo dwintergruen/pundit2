@@ -30,9 +30,12 @@
 	    
 	.pnd-dashboard-preview-item-description {
 		font-size: 13px;
+    	overflow: hidden;
+    	text-overflow: ellipsis;
 		}
 	    
 	.pnd-dashboard-preview-item-types {
+			clear: both;
 		
 		ul {
 			padding: 10px;
@@ -44,6 +47,9 @@
 				margin: 3px;
 				background-color: @gray-lighter;
 				list-style: none;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
 				}	
 			}
 		
