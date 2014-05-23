@@ -12,10 +12,8 @@ angular.module('Pundit2.Annotators')
     initContextualMenu: true,
 
     // Class to get the consolidated icon: normal consolidated fragment
-    iconClass: "pnd-icon-tag",
+    iconClass: "pnd-icon-tag"
 
-    // Class added to every consolidation icon
-    textFragmentIconClass: "pnd-text-fragment-icon"
 })
 
 .service('TextFragmentAnnotator',
@@ -203,7 +201,7 @@ angular.module('Pundit2.Annotators')
         fragmentById = {};
 
         // Remove icons
-        angular.element('.' + tfa.options.textFragmentIconClass).remove();
+        angular.element('.' + XpointersHelper.options.textFragmentIconClass).remove();
 
         // Replace wrapped nodes with their content
         var bits = angular.element('.'+ XpointersHelper.options.wrapNodeClass);

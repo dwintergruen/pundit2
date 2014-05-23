@@ -1,5 +1,5 @@
 angular.module('Pundit2.Annotators')
-.directive('textFragmentIcon', function(TextFragmentAnnotator, ContextualMenu) {
+.directive('textFragmentIcon', function(TextFragmentAnnotator, ContextualMenu, XpointersHelper) {
     return {
         restrict: 'E',
         scope: {
@@ -11,7 +11,7 @@ angular.module('Pundit2.Annotators')
 
             // TODO: different icon depending on .. something?
             scope.iconClass = TextFragmentAnnotator.options.iconClass;
-            scope.textFragmentIconClass = TextFragmentAnnotator.options.textFragmentIconClass;
+            scope.textFragmentIconClass = XpointersHelper.options.textFragmentIconClass;
 
             // Will use the icon to calculate this fragment height with respect to
             // the document
