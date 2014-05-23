@@ -66,11 +66,11 @@ angular.module('Pundit2.Preview')
          */
     clientDashboardTabTitle: "Preview",
 
-    iconDefault: 'pnd-icon-eye',
-    iconImage: 'pnd-icon-picture-o',
-    iconText: 'pnd-icon-list',
-    iconWebPage: 'pnd-icon-file-o',
-    iconEntity: 'pnd-icon-external-link',
+    iconDefault: 'pnd-icon pnd-icon-eye',
+    iconImage: 'pnd-icon pnd-icon-camera',
+    iconText: 'pnd-icon pnd-icon-align-center',
+    iconWebPage: 'pnd-icon-file-text',
+    iconEntity: 'pnd-icon pnd-icon-code-fork',
 
     classDefault: 'pnd-item-default',
     classImage: 'pnd-item-image',
