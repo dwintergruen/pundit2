@@ -64,7 +64,14 @@ angular.module('Pundit2.Preview')
          * Default value:
          * <pre> clientDashboardTabTitle: "Preview" </pre>
          */
-    clientDashboardTabTitle: "Preview"
+    clientDashboardTabTitle: "Preview",
+
+    iconDefault: 'pnd-icon-eye',
+    iconImage: 'pnd-icon-picture-o',
+    iconText: 'pnd-icon-list',
+    iconWebPage: 'pnd-icon-file-o',
+    iconEntity: 'pnd-icon-external-link'
+
 })
 
 .service('Preview', function(BaseComponent, PREVIEWDEFAULTS, NameSpace) {
@@ -132,9 +139,10 @@ angular.module('Pundit2.Preview')
 
     // check if item is an image or not
     // return true if is an image, false otherwise
+    /// TODO : item.isImage() ... !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     var checkIfItemIsImage = function(item){
         state.isItemDashboardAnImage = false;
-        if(item === null || typeof(item.type) === 'undefined') {
+        if (item === null || typeof(item.type) === 'undefined') {
             state.isItemDashboardAnImage = false;
         } else {
             // for each type, check if it is an image-type
@@ -155,19 +163,36 @@ angular.module('Pundit2.Preview')
     preview.isStickyItem = function(item) {
         var itemToCheck;
 
-        if(typeof(item) !== 'undefined') {
+        if (typeof(item) !== 'undefined') {
             itemToCheck = item;
         } else {
             itemToCheck = state.itemDashboardPreview;
         }
 
-        if( state.itemDashboardSticky !== null && itemToCheck !== null) {
+        if (state.itemDashboardSticky !== null && itemToCheck !== null) {
             return state.itemDashboardSticky.uri === itemToCheck.uri;
         } else {
             return false;
         }
 
     };
+
+    preview.getItemIcon = function() {
+        var item = state.itemDashboardPreview;
+
+        if (item.isImage() || item.isImageFragment()) {
+            return preview.options.iconImage;
+        } else if (item.isTextFragment()) {
+            return preview.options.iconText;
+        } else if (item.isWebPage()) {
+            return preview.options.iconWebPage;
+        } else if (item.isEntity()) {
+            return preview.options.iconEntity;
+        }
+
+        return preview.options.iconDefault;
+    };
+
 
     return preview;
 });
