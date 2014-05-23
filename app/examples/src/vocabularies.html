@@ -6,9 +6,12 @@
         var callback = function(){
             console.log('freebase complete quering', ItemsExchange.getAll());
         };
-        FreebaseSelector.getItems(callback);
+        FreebaseSelector.getItems("Lady Gaga", callback);
         //DbPediaSelector.getItems(angular.element(".vocDB-example-output"));
-        //MurucaSelector.getItems(angular.element(".vocMUR-example-output"));
+        var murucaCallback = function(){
+            console.log('muruca complete quering', ItemsExchange.getAll());
+        }
+        MurucaSelector.getItems("spada", murucaCallback);
     };
 
 </script>

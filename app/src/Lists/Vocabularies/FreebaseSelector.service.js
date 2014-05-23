@@ -21,20 +21,18 @@ angular.module('Pundit2.Vocabularies')
     var freebaseSelector = new BaseComponent('FreebaseSelector', FREEBASESELECTORDEFAULTS);
     freebaseSelector.label = 'freebaseSelector';
 
-    var exampleQuery = "Jimi Hendrix";
-
     SelectorsManager.addSelector(freebaseSelector);
 
     var pendingRequest;
 
-    freebaseSelector.getItems = function(callback){
+    freebaseSelector.getItems = function(term, callback){
 
         $http({
             method: 'GET',
             url: freebaseSelector.options.freebaseSearchURL,
             params: {
                 key: freebaseSelector.options.freebaseAPIKey,
-                query: exampleQuery,
+                query: term,
                 limit: freebaseSelector.options.limit
             }    
         }).success(function(data) {
@@ -84,10 +82,10 @@ angular.module('Pundit2.Vocabularies')
             }    
         }).success(function(data) {
 
-            freebaseSelector.log('Http success, get TOPIC from freebase', data);
-
             item.uri = freebaseSelector.options.freebaseItemsBaseURL + data.result.mid;
             item.type = [];
+
+            freebaseSelector.log('Http success, get TOPIC from freebase' + item.uri);
 
             // Take the types labels
             for (var l=data.result.type.length; l--;) {
@@ -99,7 +97,7 @@ angular.module('Pundit2.Vocabularies')
 
             // Value != -1: this call is the last one, we're done
             if (item.description !== -1) {
-                freebaseSelector.log('TOPIC was last, complete for item ', item);
+                freebaseSelector.log('TOPIC was last, complete for item ' + item.uri);
                 var add = new Item(item.uri, item);
                 ItemsExchange.addItemToContainer(add, freebaseSelector.options.container);
                 checkEnd(callback);
@@ -120,7 +118,7 @@ angular.module('Pundit2.Vocabularies')
             }    
         }).success(function(data) {
 
-            freebaseSelector.log('Http success, get MQL from freebase', data);
+            freebaseSelector.log('Http success, get MQL from freebase' + item.uri);
 
             if (typeof(data.property) !== 'undefined' && data.property['/common/topic/description'].values.length > 0)
                 item.description = data.property['/common/topic/description'].values[0].value;
@@ -129,7 +127,7 @@ angular.module('Pundit2.Vocabularies')
 
             // Description is not -1: this call is the last one, we're done
             if (item.uri !== -1) {
-                freebaseSelector.log('MQL was last, complete http for item ', item);
+                freebaseSelector.log('MQL was last, complete http for item ' + item.uri);
                 var add = new Item(item.uri, item);
                 ItemsExchange.addItemToContainer(add, freebaseSelector.options.container);
                 checkEnd(callback);

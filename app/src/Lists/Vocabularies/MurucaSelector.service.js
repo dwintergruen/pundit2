@@ -5,33 +5,31 @@ angular.module('Pundit2.Vocabularies')
     // 'http://demo2.galassiaariosto.netseven.it/reconcile',
     // 'http://dev.galassiaariosto.netseven.it/backend.php/reconcile',
 
-    //queryType: '',
+    // queryType: '',
     queryType: 'http://purl.org/galassiariosto/types/Azione',
     queryProperties: {},
 
     // TODO server support query limit ?
     limit: 1,
 
-    container: 'Muruca',
+    container: 'muruca',
 
     debug: true
 
 })
-.service('MurucaSelector', function(BaseComponent, MURUCASELECTORDEFAULTS, SelectorsManager, $http) {
+.service('MurucaSelector', function(BaseComponent, MURUCASELECTORDEFAULTS, Item, ItemsExchange, SelectorsManager, $http) {
 
     var murucaSelector = new BaseComponent('MurucaSelector', MURUCASELECTORDEFAULTS);
     murucaSelector.label = 'murucaSelector';
 
-    var exampleQuery = "spada";
-
     SelectorsManager.addSelector(murucaSelector);
 
-    murucaSelector.getItems = function(callback){
+    murucaSelector.getItems = function(term, callback){
 
         var config = {
             params: {
                 query: angular.toJson({
-                    query: exampleQuery,
+                    query: term,
                     type: murucaSelector.options.queryType,
                     properties: murucaSelector.options.queryProperties
                 })
@@ -43,26 +41,24 @@ angular.module('Pundit2.Vocabularies')
 
                 murucaSelector.log('Http success, get items from muruca', data);
 
-                murucaSelector.getItemsDetails(data.result);
+                murucaSelector.getItemsDetails(data.result, callback);
 
             });
 
     };
 
-    murucaSelector.getItemsDetails = function(result){
-
-        var punditItem = [];
+    murucaSelector.getItemsDetails = function(result, callback){
 
         for (var i=0; i<result.length; i++) {
             var current = result[i];
 
             var item = {
                 label: current.name, 
-                value: current.resource_url,
+                uri: current.resource_url,
                 type: []
             };
 
-            murucaSelector.log('Loading metadata for item '+ item.value);
+            murucaSelector.log('Loading metadata for item '+ item.uri);
 
             if ('description' in current) {
                 item.description = current.description;
@@ -80,11 +76,14 @@ angular.module('Pundit2.Vocabularies')
                 }
             }
 
-            punditItem.push(item);
+            var added = new Item(item.uri, item);
+            ItemsExchange.addItemToContainer(added, murucaSelector.options.container);
 
         }
 
-        murucaSelector.log('Complete parsing for items ', punditItem);
+        callback();
+
+        murucaSelector.log('Complete items parsing');
 
     };
 
