@@ -5,8 +5,8 @@ angular.module('Pundit2.Dashboard')
 
     // dashboard container
     containerMinHeight: 200,
-    containerMaxHeight: 400,
-    containerHeight: 250,
+    containerMaxHeight: 800,
+    containerHeight: 300,
 
     panels: {
         lists: { minWidth: 243 },
