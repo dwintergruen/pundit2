@@ -181,6 +181,20 @@ angular.module('Pundit2.AnnotationSidebar')
         $scope.types = currentListTypes;
     });
 
+    $scope.activeFilter = function (uri){
+        var findIndex;
+
+        for (var f in AnnotationSidebar.filters){
+            currentFilter = AnnotationSidebar.filters[f];
+            findIndex = currentFilter.expression.indexOf(uri);
+            if (findIndex !== -1){
+                return true;
+            }
+        }
+
+        return false;
+    };
+
     $scope.showFilter = function(event){
         var currentElement = angular.element(event.target.parentElement);
         currentElement.addClass('pnd-annotation-sidebar-filter-show');
@@ -190,16 +204,27 @@ angular.module('Pundit2.AnnotationSidebar')
         currentElement.removeClass('pnd-annotation-sidebar-filter-show');
     };
 
-    $scope.toggleAuthor = function(author) {
-        var indexAuthor = AnnotationSidebar.filters.author.expression.indexOf(author);
-        if (indexAuthor === -1) {
-            AnnotationSidebar.filters.author.expression.push(author);
-            AnnotationSidebar.toggleActiveFilter('authors', author);
+    $scope.toggleFilter = function(currentFilter, currentUri) {
+        var indexFilter = AnnotationSidebar.filters[currentFilter].expression.indexOf(currentUri);
+        if (indexFilter === -1) {
+            AnnotationSidebar.filters[currentFilter].expression.push(currentUri);
+            AnnotationSidebar.toggleActiveFilter(currentFilter, currentUri);
         } else {
-            AnnotationSidebar.filters.author.expression.splice(indexAuthor, 1);
-            AnnotationSidebar.toggleActiveFilter('authors', author);
+            AnnotationSidebar.filters[currentFilter].expression.splice(indexFilter, 1);
+            AnnotationSidebar.toggleActiveFilter(currentFilter, currentUri);
         }
     };
+
+    // $scope.toggleAuthor = function(author) {
+    //     var indexAuthor = AnnotationSidebar.filters.author.expression.indexOf(author);
+    //     if (indexAuthor === -1) {
+    //         AnnotationSidebar.filters.author.expression.push(author);
+    //         AnnotationSidebar.toggleActiveFilter('authors', author);
+    //     } else {
+    //         AnnotationSidebar.filters.author.expression.splice(indexAuthor, 1);
+    //         AnnotationSidebar.toggleActiveFilter('authors', author);
+    //     }
+    // };
     $scope.togglePredicates = function(predicates) {
         var indexPredicates = AnnotationSidebar.filters.predicates.expression.indexOf(predicates);
         if (indexPredicates === -1) {

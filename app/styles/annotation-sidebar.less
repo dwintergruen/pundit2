@@ -37,6 +37,15 @@ body.pnd-annotation-sidebar-expanded {
     width: @annotation-sidebar-exp-width;
 }
 
+.pnd-annotation-sidebar-btn-show-filter {
+    background: green;
+    width: 100%;
+    height: 20px;
+    color: white;   
+    cursor: pointer;
+    text-align: center;
+}
+
 .pnd-annotation-sidebar-filter {
     margin: 10px 0 10px 0;
     cursor: pointer;
@@ -51,8 +60,15 @@ body.pnd-annotation-sidebar-expanded {
     }
     .pnd-annotation-sidebar-filter-element { 
         display: none; 
-        &.pnd-as-current-filter-active {
-            color: red;
+        &.pnd-annotation-sidebar-current-filter-active {
+            color: yellow;
+            font-weight: bold;
+            display: block;
+        }
+    }
+    .pnd-annotation-sidebar-filter-input { 
+        display: none; 
+        &.pnd-annotation-sidebar-current-filter-active {
             display: block;
         }
     }

@@ -42,7 +42,7 @@ angular.module('Pundit2.AnnotationSidebar')
             filterLabel: 'Free text',
             expression: ''
         },
-        author: {
+        authors: {
             filterName: 'authors',
             filterLabel: 'Author',
             expression: []
@@ -228,6 +228,7 @@ angular.module('Pundit2.AnnotationSidebar')
         } else if (typeof(currentFilter) === 'object'){
             currentIndex = annotationSidebar.filters[filter].expression.indexOf(value);
             if (currentIndex === -1){
+                elementsList[annotationSidebar.filters[filter].filterName][value].active = true;
                 annotationSidebar.filters[filter].expression.push(value);
             }
         }
