@@ -60,4 +60,8 @@ angular.module('Pundit2.Preview')
         return Preview.getItemIcon();
     };
 
+    $scope.getItemClass = function() {
+        return Preview.getItemClass();
+    };
+
 });

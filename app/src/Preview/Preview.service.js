@@ -70,10 +70,15 @@ angular.module('Pundit2.Preview')
     iconImage: 'pnd-icon-picture-o',
     iconText: 'pnd-icon-list',
     iconWebPage: 'pnd-icon-file-o',
-    iconEntity: 'pnd-icon-external-link'
+    iconEntity: 'pnd-icon-external-link',
+
+    classDefault: 'pnd-item-default',
+    classImage: 'pnd-item-image',
+    classText: 'pnd-item-text',
+    classWebPage: 'pnd-item-web-page',
+    classEntity: 'pnd-item-entity'
 
 })
-
 .service('Preview', function(BaseComponent, PREVIEWDEFAULTS, NameSpace) {
 
     var preview = new BaseComponent('Preview', PREVIEWDEFAULTS);
@@ -180,7 +185,9 @@ angular.module('Pundit2.Preview')
     preview.getItemIcon = function() {
         var item = state.itemDashboardPreview;
 
-        if (item.isImage() || item.isImageFragment()) {
+        if (typeof(item) === "undefined" || item === null) {
+            return preview.options.iconDefault;
+        } else if (item.isImage() || item.isImageFragment()) {
             return preview.options.iconImage;
         } else if (item.isTextFragment()) {
             return preview.options.iconText;
@@ -192,6 +199,25 @@ angular.module('Pundit2.Preview')
 
         return preview.options.iconDefault;
     };
+
+    preview.getItemClass = function() {
+        var item = state.itemDashboardPreview;
+
+        if (typeof(item) === "undefined" || item === null) {
+            return preview.options.classDefault;
+        } else if (item.isImage() || item.isImageFragment()) {
+            return preview.options.classImage;
+        } else if (item.isTextFragment()) {
+            return preview.options.classText;
+        } else if (item.isWebPage()) {
+            return preview.options.classWebPage;
+        } else if (item.isEntity()) {
+            return preview.options.classEntity;
+        }
+
+        return preview.options.classDefault;
+    };
+
 
 
     return preview;
