@@ -19,7 +19,7 @@
 	    	background-color: @gray-lighter;
 	    	
 	    	    .pnd-item-typeLabel {
-		    	    background-color: #fff;
+		    	   // background-color: #fff;
 		    	    }
 	    	}
     	
@@ -37,6 +37,7 @@
 
     .pnd-item-label {
 	    display: inline;
+	    font-weight: bold;
     	}
 
     .pnd-item-typeLabel {
@@ -49,16 +50,33 @@
    // Sticky item
 
 	&.pnd-sticky-item {
-		margin-left: 0px; 
+		margin-left: 0px;
+		background-color:@brand-success; 
+		color: #fff;
+		
+		    .pnd-item-label {
+			    font-weight: bold;
+			    }
+		
+		    .pnd-item-typeLabel {
+				background-color: transparent;
+				padding: 2px 5px 3px 5px;
+				width: auto;
+				}
 		
 		&:hover {    	
 				.pnd-item-buttons {
 		     		-webkit-animation-name: none !important;
 		    		}
 		    	}
+		    	
+		.pnd-icon {
+			color: #fff;
+			}
+			
 	
 		.pnd-icon-thumb-tack{
-			color: @brand-warning;
+			color: #fff;
 			}
 			
 	    }
