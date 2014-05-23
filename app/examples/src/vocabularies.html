@@ -2,6 +2,13 @@
 
 <script>
 
+    var punditConfig = {
+        modules: {
+            "FreebaseSelector": { active: true },
+            "MurucaSelector": { active: true }
+        }
+    };
+
     var VocabDemoCtrl = function(ItemsExchange, SelectorsManager, FreebaseSelector, DbPediaSelector, MurucaSelector) {
         /*var callback = function(){
             console.log('freebase complete quering', ItemsExchange.getAll());
@@ -12,10 +19,10 @@
             console.log('muruca complete quering', ItemsExchange.getAll());
         }
         MurucaSelector.getItems("spada", murucaCallback);*/
-        var callback = function(){
+        /*var callback = function(){
             console.log('all selectors complete quering', ItemsExchange.getAll());
         }
-        SelectorsManager.getItems("spada", callback);
+        SelectorsManager.getItems("spada", callback);*/
     };
 
 </script>

@@ -1,5 +1,5 @@
 angular.module('Pundit2.Vocabularies')
-.controller('VocabulariesContainerCtrl', function($scope, VocabulariesContainer, SelectorsManager, ItemsExchange, Preview, TypesHelper) {
+.controller('VocabulariesContainerCtrl', function($scope, $timeout, VocabulariesContainer, SelectorsManager, ItemsExchange, TypesHelper) {
 
     $scope.dropdownTemplate = "src/Toolbar/dropdown.tmpl.html";
     
@@ -16,7 +16,8 @@ angular.module('Pundit2.Vocabularies')
     for (var name in selectors) {
         $scope.tabs.push({
             title: name,
-            template: 'src/Lists/itemList.tmpl.html'
+            template: 'src/Lists/itemList.tmpl.html',
+            itemsContainer: selectors[name].options.container
         });
     }
 
@@ -59,13 +60,11 @@ angular.module('Pundit2.Vocabularies')
 
     };
 
-    // every time that user digit text inside <input> filter the items showed
-    // show only items that contain the $scope.search substring inside their label
-    // the match function ignore multiple spaces
     $scope.search = {
         icon: VocabulariesContainer.options.inputIconSearch,
         term: ''
     };
+    var promise;
     $scope.$watch(function() {
         return $scope.search.term;
     }, function(str) {
@@ -74,23 +73,28 @@ angular.module('Pundit2.Vocabularies')
         if (typeof(str) === 'undefined' || str === '') {
             str = '';
             $scope.search.icon = VocabulariesContainer.options.inputIconSearch;
-            console.log('empty input');
+            return;
         } else {
             $scope.search.icon = VocabulariesContainer.options.inputIconClear;
         }
 
         // need to query vocab then update showed items
-
-        
+        $timeout.cancel(promise);
+        promise = $timeout(function(){
+            querySelectors();
+        }, 300);        
 
     });
 
-    var callback = function(items){
-        $scope.displayedItems = items;
+    var querySelectors = function(){
+        var callback = function(){
+            console.log('all selectors complete quering', ItemsExchange.getAll());
+        }
+        SelectorsManager.getItems($scope.search.term, callback);
     };
 
     $scope.$watch(function() {
-        return ItemsExchange.getItemsByContainer($scope.tabs[$scope.tabs.activeTab].title);
+        return ItemsExchange.getItemsByContainer($scope.tabs[$scope.tabs.activeTab].itemsContainer);
     }, function(newItems) {
         // update all items array and display new items
         $scope.displayedItems = newItems;

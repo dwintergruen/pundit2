@@ -10,9 +10,14 @@ angular.module('Pundit2.Vocabularies')
     queryProperties: {},
 
     // TODO server support query limit ?
-    limit: 1,
+    limit: 5,
 
+    // where put items inside items exchange
     container: 'muruca',
+    // used how tab title
+    name: 'Muruca',
+
+    active: true,
 
     debug: true
 
@@ -20,18 +25,23 @@ angular.module('Pundit2.Vocabularies')
 .service('MurucaSelector', function(BaseComponent, MURUCASELECTORDEFAULTS, Item, ItemsExchange, SelectorsManager, $http) {
 
     var murucaSelector = new BaseComponent('MurucaSelector', MURUCASELECTORDEFAULTS);
-    murucaSelector.label = murucaSelector.options.container;
+    murucaSelector.name = murucaSelector.options.name;
 
-    SelectorsManager.addSelector(murucaSelector);
+    if (murucaSelector.options.active) {
+        SelectorsManager.addSelector(murucaSelector);
+    }
 
     murucaSelector.getItems = function(term, callback){
+
+        ItemsExchange.wipeContainer(murucaSelector.options.container);
 
         var config = {
             params: {
                 query: angular.toJson({
                     query: term,
                     type: murucaSelector.options.queryType,
-                    properties: murucaSelector.options.queryProperties
+                    properties: murucaSelector.options.queryProperties,
+                    limit: murucaSelector.options.limit
                 })
             }
         };

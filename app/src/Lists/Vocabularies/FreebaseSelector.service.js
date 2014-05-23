@@ -11,7 +11,12 @@ angular.module('Pundit2.Vocabularies')
 
     limit: 5,
 
+    // where put items inside items exchange
     container: 'freebase',
+    // how name show inside tab
+    name: 'Freebase',
+
+    active: true,
 
     debug: true
 
@@ -19,14 +24,17 @@ angular.module('Pundit2.Vocabularies')
 .service('FreebaseSelector', function(BaseComponent, FREEBASESELECTORDEFAULTS, TypesHelper, SelectorsManager, Item, ItemsExchange, $http) {
 
     var freebaseSelector = new BaseComponent('FreebaseSelector', FREEBASESELECTORDEFAULTS);
-    freebaseSelector.label = freebaseSelector.options.container;
+    freebaseSelector.name = freebaseSelector.options.name;
 
-    SelectorsManager.addSelector(freebaseSelector);
+    if (freebaseSelector.options.active) {
+        SelectorsManager.addSelector(freebaseSelector);        
+    }
 
-    // TODO need to add max time after then abort the request
     var pendingRequest;
 
     freebaseSelector.getItems = function(term, callback){
+
+        ItemsExchange.wipeContainer(freebaseSelector.options.container);
 
         $http({
             method: 'GET',

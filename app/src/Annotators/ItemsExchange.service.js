@@ -41,7 +41,7 @@ angular.module('Pundit2.Core')
                 }
             });
             // empty container list
-            itemListByContainer[container] = [];
+            delete itemListByContainer[container];
 
             itemsExchange.log('Wiped '+container+' container.');
         };
