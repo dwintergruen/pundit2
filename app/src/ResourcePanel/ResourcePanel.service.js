@@ -300,7 +300,7 @@ angular.module('Pundit2.ResourcePanel')
     resourcePanel.showItemsForObject = function(x, y, triple, target) {
         state.resourcePromise = $q.defer();
         return state.resourcePromise.promise;
-    }
+    };
 
     // show only properties
     // will be executed for predicates
