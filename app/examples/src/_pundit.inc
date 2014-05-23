@@ -86,6 +86,7 @@
     <script src="../src/Lists/Vocabularies/FreebaseSelector.service.js"></script>
     <script src="../src/Lists/Vocabularies/DbPediaSelector.service.js"></script>
     <script src="../src/Lists/Vocabularies/MurucaSelector.service.js"></script>
+    <script src="../src/Lists/Vocabularies/KorboBasketSelector.service.js"></script>
     <script src="../src/Lists/Vocabularies/SelectorsManager.service.js"></script>
     <script src="../src/Lists/Vocabularies/VocabulariesContainer/VocabulariesContainer.dir.js"></script>
     <script src="../src/Lists/Vocabularies/VocabulariesContainer/VocabulariesContainer.ctrl.js"></script>

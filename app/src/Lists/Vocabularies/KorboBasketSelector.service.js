@@ -1,10 +1,15 @@
 angular.module('Pundit2.Vocabularies')
-.constant('MURUCASELECTORDEFAULTS', {
+.constant('KORBOBASKETSELECTORDEFAULTS', {
 
     // common configuration
-    murucaReconURL: 'http://demo2.galassiaariosto.netseven.it/backend.php/reconcile',
-    // 'http://demo2.galassiaariosto.netseven.it/reconcile',
-    queryProperties: {},
+    korboBasketReconURL: 'http://manager.korbo.org/api.php/basket/reconcile/',
+    korboBasketMetadataURL: 'http://manager.korbo.org/',
+    korboItemsBaseURL: 'http://purl.org/net7/korbo',
+    korboSchemaBaseURL: 'http://purl.org/net7/korbo/type/',
+    
+    baskets: [16],
+    //baskets: [82],
+
     // enable or disable all muruca selectors instances
     active: true,
     // max number of items
@@ -13,12 +18,10 @@ angular.module('Pundit2.Vocabularies')
     // singles instances configuration
     instances: [
         {
-            // query type
-            queryType: '',
             // where put items inside items exchange
-            container: 'muruca',
+            container: 'korboBasket',
             // used how tab title
-            label: 'Muruca',
+            label: 'KorboBasket',
             // true if this instace do the query
             active: true
         }
@@ -27,23 +30,23 @@ angular.module('Pundit2.Vocabularies')
     debug: true
 
 })
-.factory('MurucaSelector', function(BaseComponent, MURUCASELECTORDEFAULTS, Item, ItemsExchange, SelectorsManager, $http) {
+.factory('KorboBasketSelector', function(BaseComponent, KORBOBASKETSELECTORDEFAULTS, Item, ItemsExchange, SelectorsManager, $http) {
 
-    var murucaSelector = new BaseComponent('MurucaSelector', MURUCASELECTORDEFAULTS);
-    murucaSelector.name = 'MurucaSelector';
+    var korboBasketSelector = new BaseComponent('KorboBasketSelector', KORBOBASKETSELECTORDEFAULTS);
+    korboBasketSelector.name = 'KorboBasketSelector';
 
     // add this selector to selector manager
     // then the configured instances are read an instantiated
-    if (murucaSelector.options.active) {
-        SelectorsManager.addSelector(murucaSelector);
+    if (korboBasketSelector.options.active) {
+        SelectorsManager.addSelector(korboBasketSelector);
     }
 
     // selector instance constructor
-    var MurucaFactory = function(config){
+    var KorboBasketFactory = function(config){
         this.config = config;
     };
 
-    MurucaFactory.prototype.getItems = function(term, callback){
+    KorboBasketFactory.prototype.getItems = function(term, callback){
         var self = this;
 
         ItemsExchange.wipeContainer(self.config.container);
@@ -51,26 +54,24 @@ angular.module('Pundit2.Vocabularies')
         var config = {
             params: {
                 query: angular.toJson({
-                    query: term,
-                    type: self.config.queryType,
-                    properties: murucaSelector.options.queryProperties,
-                    limit: murucaSelector.options.limit
+                    query: term
+                    //limit: korboBasketSelector.options.limit
                 })
             }
         };
 
-        $http.jsonp(murucaSelector.options.murucaReconURL+"?jsonp=JSON_CALLBACK", config)
+        $http.jsonp(korboBasketSelector.options.korboBasketReconURL+korboBasketSelector.options.baskets[0]+"?jsonp=JSON_CALLBACK", config)
             .success(function(data){
 
-                murucaSelector.log('Http success, get items from muruca '+self.config.label, data);
+                korboBasketSelector.log('Http success, get items '+self.config.label, data);
 
-                self.getItemsDetails(data.result, callback);
+                //self.getItemsDetails(data.result, callback);
 
             });
 
     };
 
-    MurucaFactory.prototype.getItemsDetails = function(result, callback){
+    KorboBasketFactory.prototype.getItemsDetails = function(result, callback){
 
         var self = this;
 
@@ -83,7 +84,7 @@ angular.module('Pundit2.Vocabularies')
                 type: []
             };
 
-            murucaSelector.log('Loading metadata for item '+ item.uri);
+            korboBasketSelector.log('Loading metadata for item '+ item.uri);
 
             if ('description' in current) {
                 item.description = current.description;
@@ -96,7 +97,7 @@ angular.module('Pundit2.Vocabularies')
                         item.type.push(current.type[j]);
                     }
                     else {
-                        murucaSelector.log('ERROR: Weird type is weird? '+typeof(current.type[j])+': '+current.type[j]);
+                        korboBasketSelector.log('ERROR: Weird type is weird? '+typeof(current.type[j])+': '+current.type[j]);
                     }
                 }
             }
@@ -108,12 +109,12 @@ angular.module('Pundit2.Vocabularies')
 
         callback();
 
-        murucaSelector.log('Complete items parsing');
+        korboBasketSelector.log('Complete items parsing');
 
     };
 
-    murucaSelector.log('Factory init');
+    korboBasketSelector.log('Factory init');
 
-    return MurucaFactory;
+    return KorboBasketFactory;
 
 });

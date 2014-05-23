@@ -3,12 +3,6 @@ angular.module('Pundit2.Vocabularies')
 
     initialActiveTab: 0,
 
-    // The Client will append the content of this template to the DOM to bootstrap
-    // this component
-    clientDashboardTemplate: "src/Lists/Vocabularies/VocabulariesContainer/ClientVocabulariesContainer.tmpl.html",
-    clientDashboardPanel: "lists",
-    clientDashboardTabTitle: "Vocab",
-
     // items property used to compare
     order: 'label',
     // how order items (true ascending, false descending)
@@ -20,11 +14,16 @@ angular.module('Pundit2.Vocabularies')
 
     debug: false
 })
-.controller('VocabulariesContainerCtrl', function($scope, $timeout, BaseComponent, VOCABULARIESCONTAINERDEFAULTS,
-                                                    SelectorsManager, ItemsExchange, TypesHelper) {
+.controller('VocabulariesContainerCtrl', function($scope, $timeout, $injector, BaseComponent, VOCABULARIESCONTAINERDEFAULTS,
+                                                    SelectorsManager, ItemsExchange, TypesHelper,
+                                                    FreebaseSelector, MurucaSelector, KorboBasketSelector) {
 
     var vocabulariesContainer = new BaseComponent('VocabulariesContainer', VOCABULARIESCONTAINERDEFAULTS);
 
+    // to add a selector must to inject it in the controller dependency
+    // otherwise the SelectorsManager.addSelector() is never called
+    // and the selector manager can't show the selector
+    // es: FreebaseSelector, MurucaSelector
     SelectorsManager.init();
 
     $scope.dropdownTemplate = "src/Toolbar/dropdown.tmpl.html";

@@ -1,6 +1,12 @@
 angular.module('Pundit2.Vocabularies')
 .constant('SELECTORMANAGERDEFAULTS', {
 
+    // The Client will append the content of this template to the DOM to bootstrap
+    // this component
+    clientDashboardTemplate: "src/Lists/Vocabularies/VocabulariesContainer/ClientVocabulariesContainer.tmpl.html",
+    clientDashboardPanel: "lists",
+    clientDashboardTabTitle: "Vocab",
+
     debug: true
 
 })
@@ -53,6 +59,7 @@ angular.module('Pundit2.Vocabularies')
         selectorsManager.log("Add selector ", selector.name);
     };
 
+    // return all active selectors instances
     selectorsManager.getActiveSelectors = function(){
         return selectorInstances;
     };
