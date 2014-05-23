@@ -2,9 +2,6 @@ angular.module('Pundit2.Annotators')
 
 .constant('TEXTFRAGMENTANNOTATORDEFAULTS', {
 
-    // Classes to assign to named content to have them recognized by Pundit
-    contentClasses: ['pundit-content'],
-
     // Type of the contextual menu we want for text fragments. Will be used by icons/bits etc
     contextualMenuType: 'annotatedTextFragment',
 
@@ -91,15 +88,16 @@ angular.module('Pundit2.Annotators')
     };
 
     tfa.getAvailableTargets = function() {
-        var ret = [];
+        var ret = [],
+            nc = XpointersHelper.options.namedContentClasses;
 
         // The page URL is for xpointers out of named contents
         ret.push($location.absUrl());
 
-        // Look for named content: an element with a class listed in .contentClasses
+        // Look for named content: an element with a class listed in .namedContentClasses
         // then get its about attribute
-        for (var l=tfa.options.contentClasses.length; l--;) {
-            var className = tfa.options.contentClasses[l],
+        for (var l=nc.length; l--;) {
+            var className = nc[l],
                 nodes = angular.element('.'+className);
 
             for (var n=nodes.length; n--;) {
