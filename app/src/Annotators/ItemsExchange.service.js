@@ -33,6 +33,12 @@ angular.module('Pundit2.Core')
             itemListByContainer[container].forEach(function(item){
                 // remove container from itemContainers object array
                 itemContainers[item.uri].splice(itemContainers[item.uri].indexOf(container), 1);
+                // if we have only the default container must remove item everywhere
+                if (itemContainers[item.uri].length === 1 && itemContainers[item.uri][0] === 'default') {
+                    delete itemContainers[item.uri];
+                    delete itemListByURI[item.uri];
+                    itemListByContainer['default'].splice(itemListByContainer['default'].indexOf(item), 1);
+                }
             });
             // empty container list
             itemListByContainer[container] = [];

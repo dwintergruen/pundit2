@@ -5,6 +5,8 @@
     var VocabDemoCtrl = function(ItemsExchange, FreebaseSelector, DbPediaSelector, MurucaSelector) {
         var callback = function(){
             console.log('freebase complete quering', ItemsExchange.getAll());
+            ItemsExchange.wipeContainer('freebase');
+            console.log('freebase wipe', ItemsExchange.getAll());
         };
         FreebaseSelector.getItems("Lady Gaga", callback);
         //DbPediaSelector.getItems(angular.element(".vocDB-example-output"));
