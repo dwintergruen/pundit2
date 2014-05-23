@@ -1,18 +1,19 @@
 angular.module('Pundit2.Annotators')
 
 .constant('TEXTFRAGMENTANNOTATORDEFAULTS', {
-    // Class added to all of the consolidated text fragments
-    wrapNodeClass: 'pnd-cons',
 
     // Classes to assign to named content to have them recognized by Pundit
     contentClasses: ['pundit-content'],
+
     // Type of the contextual menu we want for text fragments. Will be used by icons/bits etc
     contextualMenuType: 'annotatedTextFragment',
+
     // Add elements to the contextual menu?
     initContextualMenu: true,
 
-    // Class to get the consolidated icon: normal consolidate fragment
+    // Class to get the consolidated icon: normal consolidated fragment
     iconClass: "pnd-icon-tag",
+
     // Class added to every consolidation icon
     textFragmentIconClass: "pnd-text-fragment-icon"
 })
@@ -157,7 +158,7 @@ angular.module('Pundit2.Annotators')
             // Instead of using classes, these ids will be saved in a node attribute.
             xpathsFragmentIds = XpointersHelper.getClassesForXpaths(xpointers, sorted, xpaths, fragmentIds);
 
-        XpointersHelper.updateDOM(sorted, tfa.options.wrapNodeClass, xpathsFragmentIds);
+        XpointersHelper.updateDOM(sorted, XpointersHelper.options.wrapNodeClass, xpathsFragmentIds);
 
         // TODO: better name? Elsewhere?
         activateFragments();
@@ -205,7 +206,7 @@ angular.module('Pundit2.Annotators')
         angular.element('.' + tfa.options.textFragmentIconClass).remove();
 
         // Replace wrapped nodes with their content
-        var bits = angular.element('.'+ tfa.options.wrapNodeClass);
+        var bits = angular.element('.'+ XpointersHelper.options.wrapNodeClass);
         angular.forEach(bits, function(node) {
             var parent = node.parentNode;
             while (node.firstChild)
