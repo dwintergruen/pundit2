@@ -28,6 +28,7 @@ angular.module('Pundit2.AnnotationSidebar')
         filteredAnnotations: []
     };
 
+    // Contains the list of elements relating to the annotations on the page
     var elementsList = {
         annotationsDate: [],
         authors: {},
@@ -36,6 +37,7 @@ angular.module('Pundit2.AnnotationSidebar')
         types: {}
     };
 
+    // Contains the values ​​of active filters
     annotationSidebar.filters = {
         freeText: {
             filterName: 'freeText',
@@ -74,15 +76,19 @@ angular.module('Pundit2.AnnotationSidebar')
         }
     };
 
+    // Expands or collapses the sidebar
     annotationSidebar.toggle = function(){
         state.isSidebarExpanded = !state.isSidebarExpanded;
     };
-    annotationSidebar.toggleFilters = function(){
+    // Show / hide the list of the filters in the sidebar
+    annotationSidebar.toggleFiltersContent = function(){
         state.isFiltersExpanded = !state.isFiltersExpanded;
     };
+    // Check if the sidebar is expanded
     annotationSidebar.isAnnotationSidebarExpanded = function() {
         return state.isSidebarExpanded;
     };
+    // Check if the list of the filters is visible
     annotationSidebar.isFiltersExpanded = function() {
         return state.isFiltersExpanded;
     };
@@ -90,7 +96,8 @@ angular.module('Pundit2.AnnotationSidebar')
     annotationSidebar.getAllAnnotations = function() {
         return state.allAnnotations;
     };
-  
+
+    // Get the array just of the filtered annotations
     annotationSidebar.getAllAnnotationsFiltered = function(filters) {
         var currentFilterObjExpression;
         var currentFilterName;
@@ -107,6 +114,7 @@ angular.module('Pundit2.AnnotationSidebar')
         return state.filteredAnnotations;
     };
 
+    // Updates the list of filters when new annotations comes
     var setFilterElements = function(annotations) {
         elementsList.predicates = {};
         elementsList.authors = {};
@@ -170,6 +178,7 @@ angular.module('Pundit2.AnnotationSidebar')
         });
     };
 
+    // TODO: unificare?
     annotationSidebar.getAuthors = function(){
         return elementsList.authors;
     };
@@ -202,6 +211,7 @@ angular.module('Pundit2.AnnotationSidebar')
         }
     };
 
+    // Check if some filters are active
     annotationSidebar.needToFilter = function() {
         for (var f in annotationSidebar.filters) {
             var current = annotationSidebar.filters[f].expression;
@@ -214,40 +224,43 @@ angular.module('Pundit2.AnnotationSidebar')
         return false;
     };
 
+    // Active / Disable a specific filter
     annotationSidebar.toggleActiveFilter = function(list, uri) {
         elementsList[list][uri].active = !elementsList[list][uri].active;
     };
 
     // TODO: verificare che l'elemento sia presente fra gli elementi prima
     // di impostarlo? es. nessuna annotazione con autore X
-    annotationSidebar.setFilter = function(filter, value) {
+    annotationSidebar.setFilter = function(filterKey, uriValue) {
         var currentIndex;
-        var currentFilter = annotationSidebar.filters[filter].expression;
+        var currentFilter = annotationSidebar.filters[filterKey].expression;
         if (typeof(currentFilter) === 'string'){
-            annotationSidebar.filters[filter].expression = value;
+            annotationSidebar.filters[filterKey].expression = uriValue;
         } else if (typeof(currentFilter) === 'object'){
-            currentIndex = annotationSidebar.filters[filter].expression.indexOf(value);
+            currentIndex = annotationSidebar.filters[filterKey].expression.indexOf(uriValue);
             if (currentIndex === -1){
-                elementsList[annotationSidebar.filters[filter].filterName][value].active = true;
-                annotationSidebar.filters[filter].expression.push(value);
+                elementsList[filterKey][uriValue].active = true;
+                annotationSidebar.filters[filterKey].expression.push(uriValue);
             }
         }
     };
 
-    annotationSidebar.removeFilter = function(filter, value) {
+    // Disable a specific filter 
+    annotationSidebar.removeFilter = function(filterKey, uriValue) {
         var currentIndex;
-        var currentFilter = annotationSidebar.filters[filter].expression;
+        var currentFilter = annotationSidebar.filters[filterKey].expression;
         if (typeof(currentFilter) === 'string'){
-            annotationSidebar.filters[filter].expression = '';
+            annotationSidebar.filters[filterKey].expression = '';
         } else if (typeof(currentFilter) === 'object'){
-            currentIndex = annotationSidebar.filters[filter].expression.indexOf(value);
+            currentIndex = annotationSidebar.filters[filterKey].expression.indexOf(uriValue);
             if (currentIndex !== -1){
-                elementsList[annotationSidebar.filters[filter].filterName][value].active = false;
-                annotationSidebar.filters[filter].expression.splice(currentIndex, 1);
+                elementsList[filterKey][uriValue].active = false;
+                annotationSidebar.filters[filterKey].expression.splice(currentIndex, 1);
             }
         }
     };
 
+    // Clear all active filters
     annotationSidebar.resetFilters = function() {
         angular.forEach(annotationSidebar.filters, function(filter) {
             if (typeof(filter.expression) === 'string'){

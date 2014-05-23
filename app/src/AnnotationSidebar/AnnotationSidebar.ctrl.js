@@ -180,12 +180,7 @@ angular.module('Pundit2.AnnotationSidebar')
     }, function(currentListTypes) { 
         $scope.types = currentListTypes;
     });
-
-    // $scope.filterActiveClass = function (currentInputText){
-    //     return {
-    //         'pnd-annotation-sidebar-current-filter-active': currentInputText.length>0
-    //     };
-    // };
+        
 
     $scope.isFilterLabelShowed = function(currentInputText) {
         if (typeof(currentInputText) === 'string'){
