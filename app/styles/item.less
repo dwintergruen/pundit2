@@ -17,6 +17,10 @@
 	    	transition: margin-left 250ms 150ms linear;
 	    	margin-left: 0px; 
 	    	background-color: @gray-lighter;
+	    	
+	    	    .pnd-item-typeLabel {
+		    	    background-color: #fff;
+		    	    }
 	    	}
     	
     .pnd-item-buttons {
@@ -28,8 +32,19 @@
 
     .pnd-item-text {
 	    display: inline;
+
     }
 
+    .pnd-item-label {
+	    display: inline;
+    	}
+
+    .pnd-item-typeLabel {
+		display: inline-block;
+		background-color: @gray-lighter;
+		padding: 2px 5px 3px 5px;
+		width: 9em;
+		}
 	    
    // Sticky item
 
@@ -49,4 +64,5 @@
 	    }
 	    
 }
+
 
