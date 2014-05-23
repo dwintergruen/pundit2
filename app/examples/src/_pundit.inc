@@ -89,7 +89,6 @@
     <script src="../src/Lists/Vocabularies/SelectorsManager.service.js"></script>
     <script src="../src/Lists/Vocabularies/VocabulariesContainer/VocabulariesContainer.dir.js"></script>
     <script src="../src/Lists/Vocabularies/VocabulariesContainer/VocabulariesContainer.ctrl.js"></script>
-    <script src="../src/Lists/Vocabularies/VocabulariesContainer/VocabulariesContainer.service.js"></script>
 
 
     <script src="../src/Toolbar/Toolbar.js"></script>

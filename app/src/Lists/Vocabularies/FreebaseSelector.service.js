@@ -27,10 +27,14 @@ angular.module('Pundit2.Vocabularies')
     freebaseSelector.name = freebaseSelector.options.name;
 
     if (freebaseSelector.options.active) {
-        SelectorsManager.addSelector(freebaseSelector);        
+        //SelectorsManager.addSelector(freebaseSelector);        
     }
 
     var pendingRequest;
+
+    freebaseSelector.getInstances = function(){
+        return freebaseSelector.options;
+    };
 
     freebaseSelector.getItems = function(term, callback){
 

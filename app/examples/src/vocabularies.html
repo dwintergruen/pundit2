@@ -5,11 +5,28 @@
     var punditConfig = {
         modules: {
             "FreebaseSelector": { active: true },
-            "MurucaSelector": { active: true }
+            "MurucaSelector": {
+
+                instances: [
+                    { 
+                        active: true,
+                        queryType: 'http://purl.org/galassiariosto/types/Scena',
+                        container: 'murucaSc',
+                        label: 'MurucaSc'
+                    },
+                    { 
+                        active: true,
+                        queryType: 'http://purl.org/galassiariosto/types/Azione',
+                        container: 'murucaAz',
+                        label: 'MurucaAz'
+                    }
+                ]
+                
+            }
         }
     };
 
-    var VocabDemoCtrl = function(ItemsExchange, SelectorsManager, FreebaseSelector, DbPediaSelector, MurucaSelector) {
+    var VocabDemoCtrl = function(ItemsExchange, FreebaseSelector, DbPediaSelector, MurucaSelector) {
         /*var callback = function(){
             console.log('freebase complete quering', ItemsExchange.getAll());
         };

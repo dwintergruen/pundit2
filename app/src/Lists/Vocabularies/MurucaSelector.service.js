@@ -1,45 +1,59 @@
 angular.module('Pundit2.Vocabularies')
 .constant('MURUCASELECTORDEFAULTS', {
 
+    // common configuration
     murucaReconURL: 'http://demo2.galassiaariosto.netseven.it/backend.php/reconcile',
     // 'http://demo2.galassiaariosto.netseven.it/reconcile',
     // 'http://dev.galassiaariosto.netseven.it/backend.php/reconcile',
-
-    // queryType: '',
-    queryType: 'http://purl.org/galassiariosto/types/Azione',
     queryProperties: {},
-
-    // TODO server support query limit ?
+    // enable or disable all muruca selectors instances
+    active: true,
+    // max number of items
     limit: 5,
 
-    // where put items inside items exchange
-    container: 'muruca',
-    // used how tab title
-    name: 'Muruca',
-
-    active: true,
+    // singles instances configuration
+    instances: [
+        {
+            // query type
+            queryType: '',
+            // where put items inside items exchange
+            container: 'muruca',
+            // used how tab title
+            label: 'Muruca',
+            // true if this instace do the query
+            active: true
+        }
+    ],    
 
     debug: true
 
 })
-.service('MurucaSelector', function(BaseComponent, MURUCASELECTORDEFAULTS, Item, ItemsExchange, SelectorsManager, $http) {
+.factory('MurucaSelector', function(BaseComponent, MURUCASELECTORDEFAULTS, Item, ItemsExchange, SelectorsManager, $http) {
 
     var murucaSelector = new BaseComponent('MurucaSelector', MURUCASELECTORDEFAULTS);
-    murucaSelector.name = murucaSelector.options.name;
+    murucaSelector.name = 'MurucaSelector';
 
+    // add this selector to selector manager
+    // then the configured instances are read an instantiated
     if (murucaSelector.options.active) {
         SelectorsManager.addSelector(murucaSelector);
     }
 
-    murucaSelector.getItems = function(term, callback){
+    // muruca selector instance constructor
+    var MurucaFactory = function(config){
+        this.config = config;
+    };
 
-        ItemsExchange.wipeContainer(murucaSelector.options.container);
+    MurucaFactory.prototype.getItems = function(term, callback){
+        var self = this;
+
+        ItemsExchange.wipeContainer(self.config.container);
 
         var config = {
             params: {
                 query: angular.toJson({
                     query: term,
-                    type: murucaSelector.options.queryType,
+                    type: self.config.queryType,
                     properties: murucaSelector.options.queryProperties,
                     limit: murucaSelector.options.limit
                 })
@@ -49,15 +63,17 @@ angular.module('Pundit2.Vocabularies')
         $http.jsonp(murucaSelector.options.murucaReconURL+"?jsonp=JSON_CALLBACK", config)
             .success(function(data){
 
-                murucaSelector.log('Http success, get items from muruca', data);
+                murucaSelector.log('Http success, get items from muruca '+self.config.label, data);
 
-                murucaSelector.getItemsDetails(data.result, callback);
+                self.getItemsDetails(data.result, callback);
 
             });
 
     };
 
-    murucaSelector.getItemsDetails = function(result, callback){
+    MurucaFactory.prototype.getItemsDetails = function(result, callback){
+
+        var self = this;
 
         for (var i=0; i<result.length; i++) {
             var current = result[i];
@@ -87,7 +103,7 @@ angular.module('Pundit2.Vocabularies')
             }
 
             var added = new Item(item.uri, item);
-            ItemsExchange.addItemToContainer(added, murucaSelector.options.container);
+            ItemsExchange.addItemToContainer(added, self.config.container);
 
         }
 
@@ -97,6 +113,8 @@ angular.module('Pundit2.Vocabularies')
 
     };
 
-    return murucaSelector;
+    murucaSelector.log('Factory init');
+
+    return MurucaFactory;
 
 });
