@@ -1,7 +1,7 @@
 /*jshint strict: false*/
 
 angular.module('Pundit2.AnnotationSidebar')
-.controller('AnnotationSidebarCtrl', function($scope, $filter, $window, AnnotationSidebar, Dashboard, TypesHelper) {
+.controller('AnnotationSidebarCtrl', function($scope, $filter, $window, AnnotationSidebar, Dashboard) {
     var bodyClasses = AnnotationSidebar.options.bodyExpandedClass + ' ' + AnnotationSidebar.options.bodyCollapsedClass;
     var sidebarClasses = AnnotationSidebar.options.sidebarExpandedClass + ' ' + AnnotationSidebar.options.sidebarCollapsedClass;
 
@@ -48,7 +48,7 @@ angular.module('Pundit2.AnnotationSidebar')
     // Watch filters expanded or collapsed
     $scope.$watch(function() {
         return AnnotationSidebar.isFiltersExpanded();
-    }, function(currentState, oldState) {
+    }, function(currentState) {
         $scope.isFiltersShowed = currentState;
     }); 
 
@@ -79,7 +79,7 @@ angular.module('Pundit2.AnnotationSidebar')
         return {
             bodyHeight: body.innerHeight(),
             contentHeight: content.innerHeight()
-        }
+        };
     }, function(heightValue) {
         resizeSidebarHeight(heightValue.bodyHeight, $window.innerHeight, heightValue.contentHeight);
     }, true);
@@ -181,27 +181,21 @@ angular.module('Pundit2.AnnotationSidebar')
         $scope.types = currentListTypes;
     });
 
-    $scope.activeFilter = function (uri){
-        var findIndex;
+    // $scope.filterActiveClass = function (currentInputText){
+    //     return {
+    //         'pnd-annotation-sidebar-current-filter-active': currentInputText.length>0
+    //     };
+    // };
 
-        for (var f in AnnotationSidebar.filters){
-            currentFilter = AnnotationSidebar.filters[f];
-            findIndex = currentFilter.expression.indexOf(uri);
-            if (findIndex !== -1){
-                return true;
-            }
+    $scope.isFilterLabelShowed = function(currentInputText) {
+        if (typeof(currentInputText) === 'string'){
+            return currentInputText.length > 0;
         }
-
-        return false;
     };
 
-    $scope.showFilter = function(event){
+    $scope.toggleFilterList = function(event) {
         var currentElement = angular.element(event.target.parentElement);
-        currentElement.addClass('pnd-annotation-sidebar-filter-show');
-    };
-    $scope.hideFilter = function(event){
-        var currentElement = angular.element(event.currentTarget);
-        currentElement.removeClass('pnd-annotation-sidebar-filter-show');
+        currentElement.toggleClass('pnd-annotation-sidebar-filter-show');
     };
 
     $scope.toggleFilter = function(currentFilter, currentUri) {

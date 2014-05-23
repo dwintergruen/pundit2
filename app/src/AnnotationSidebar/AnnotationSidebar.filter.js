@@ -19,12 +19,11 @@ angular.module('Pundit2.AnnotationSidebar')
         });
 
         return results;
-    }                                           
+    };
 })
 .filter('freeText', function() {
     return function(input, search) {
         var results = [];
-        var currentTyp;
 
         if (search.length > 0) {
             angular.forEach(input, function (annotation) {
@@ -138,7 +137,7 @@ angular.module('Pundit2.AnnotationSidebar')
         var fromDateParsed;
 
         if (fromValue) {
-            var fromDateParsed = new Date( (fromValue && !isNaN(Date.parse(fromValue))) ? Date.parse(fromValue) : 0 );
+            fromDateParsed = new Date( (fromValue && !isNaN(Date.parse(fromValue))) ? Date.parse(fromValue) : 0 );
             fromDateParsed.setHours(0, 0, 0);
         
             angular.forEach(input,function (annotation) {
@@ -159,7 +158,7 @@ angular.module('Pundit2.AnnotationSidebar')
         var toDateParsed;
 
         if (toValue) {
-            var toDateParsed = new Date( (toValue && !isNaN(Date.parse(toValue))) ? Date.parse(toValue) : new Date().getTime() );
+            toDateParsed = new Date( (toValue && !isNaN(Date.parse(toValue))) ? Date.parse(toValue) : new Date().getTime() );
             toDateParsed.setHours(23, 59, 59);
         
             angular.forEach(input,function (annotation) {

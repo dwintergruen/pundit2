@@ -13,7 +13,7 @@ angular.module('Pundit2.AnnotationSidebar')
 
     // The Client will append the content of this template to the DOM to bootstrap
     // this component
-    clientDomTemplate: "src/AnnotationSidebar/ClientAnnotationSidebar.tmpl.html",
+    clientDomTemplate: 'src/AnnotationSidebar/ClientAnnotationSidebar.tmpl.html',
 
     debug: false
 })
@@ -98,7 +98,7 @@ angular.module('Pundit2.AnnotationSidebar')
         angular.forEach(filters, function(filterObj){
             currentFilterName = filterObj.filterName;
             currentFilterObjExpression = filterObj.expression;
-            if (typeof(currentFilterObjExpression) === "string" && currentFilterObjExpression !== '') {
+            if (typeof(currentFilterObjExpression) === 'string' && currentFilterObjExpression !== '') {
                 state.filteredAnnotations = $filter(currentFilterName)(state.filteredAnnotations, currentFilterObjExpression);
             } else if (angular.isArray(currentFilterObjExpression) && currentFilterObjExpression.length > 0) {
                 state.filteredAnnotations = $filter(currentFilterName)(state.filteredAnnotations, currentFilterObjExpression);
@@ -205,7 +205,7 @@ angular.module('Pundit2.AnnotationSidebar')
     annotationSidebar.needToFilter = function() {
         for (var f in annotationSidebar.filters) {
             var current = annotationSidebar.filters[f].expression;
-            if (typeof(current) === "string" && current !== '') {
+            if (typeof(current) === 'string' && current !== '') {
                 return true;
             } else if (angular.isArray(current) && current.length > 0) {
                 return true;
@@ -253,7 +253,7 @@ angular.module('Pundit2.AnnotationSidebar')
             if (typeof(filter.expression) === 'string'){
                 filter.expression = '';
             } else if (typeof(filter.expression) === 'object'){
-                for (f in elementsList[filter.filterName]){
+                for (var f in elementsList[filter.filterName]){
                     elementsList[filter.filterName][f].active = false;
                 }
                 filter.expression = [];
