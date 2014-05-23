@@ -306,7 +306,48 @@ angular.module('Pundit2.ResourcePanel')
     // will be executed for predicates
     resourcePanel.showProperties = function(x, y, triple, target) {
         var propertiesContainer = Client.options.relationsContainer;
-        var properties = ItemsExchange.getItemsByContainer(propertiesContainer);
+        var properties;
+
+        if(typeof(triple) !== 'undefined'){
+            // subject is the first element of the triple
+            var subject = triple[0];
+
+            // if predicate is not defined
+            if( typeof(subject) === 'undefined' || subject === "") {
+                // all properties are good
+                properties = ItemsExchange.getItemsByContainer(propertiesContainer);
+            } else {
+                // get item predicate and check his domain
+                var itemSubject = ItemsExchange.getItemByUri(subject);
+                // predicate with empty domain
+                if(typeof(itemSubject.type) === 'undefined' || itemSubject.type.length === 0 || itemSubject.type[0] === ""){
+                    // all properties are good
+                    properties = ItemsExchange.getItemsByContainer(propertiesContainer);
+                } else {
+                    // predicate with a valid domain
+                    var types = itemSubject.type;
+
+                    // get only items matching with predicate domain
+                    var filter = function(item) {
+
+                        for(var i=0; i<types.length; i++){
+                            for (var j=0; j<item.domain.length; j++){
+                                if(types[i] === item.domain[j]) {
+                                    return true;
+                                }
+                            }
+                        }
+                        return false;
+                    };
+
+                    properties = ItemsExchange.getItemsFromContainerByFilter(propertiesContainer, filter);
+                }
+
+            }
+
+        }
+
+
         showPopoverResourcePanel(x, y, target, "", "", properties);
 
         state.resourcePromise = $q.defer();

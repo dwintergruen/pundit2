@@ -116,6 +116,11 @@
             $scope.triple[1] = pr;
         });
 
+        $scope.$watch('subjectUri', function(sub){
+            $scope.triple[0] = sub;
+
+        });
+
         var toLoad = ["8fd05a49", "65286186", "385c1647"];
 
         for (var l=toLoad.length; l--;) {
@@ -156,6 +161,7 @@
             ResourcePanel.showItemsForSubject($event.pageX, $event.pageY, $scope.triple, $event.target).then(function(value){
                 angular.element('#'+elementID).text(value.label);
                 $scope.subject = value;
+                $scope.subjectUri = value.uri;
             });
         };
 
