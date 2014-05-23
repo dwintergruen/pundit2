@@ -1,11 +1,29 @@
 angular.module('Pundit2.Annotators')
 .constant('XPOINTERSHELPERDEFAULTS', {
-    // if no other option is given, the helper will use these node name and node classes to
-    // wrap the consolidated DOM fragments. TextFragmentAnnotator will provide its value!
+    // The helper will use these node name and node classes to
+    // wrap the consolidated DOM fragments. TextFragmentAnnotator and Handler
+    // use these values too.
     wrapNodeName: 'span',
-    wrapNodeClass: 'pnd-cons-xpointer-helper-default'
+    wrapNodeClass: 'pnd-cons',
+
+    // Added by TextFragmentIcon directive, ignored when building xpointers
+    textFragmentIconClass: "pnd-text-fragment-icon",
+
+    // Nodes with these classes will be ignored when building xpointers
+    // and consolidating annotations. Add here any other UI element class which
+    // is not considered in the isIgnoreNode() method. wrapNodeClass and
+    // textFragmentIconClass are already considered.
+    ignoreClasses: [],
+
+    // Classes to assign to named content elements to have them recognized by Pundit
+    namedContentClasses: ['pundit-content']
+
 })
-.service('XpointersHelper', function(XPOINTERSHELPERDEFAULTS, NameSpace, BaseComponent, $document) {
+.config(function($locationProvider) {
+    $locationProvider.html5Mode(true);
+})
+.service('XpointersHelper', function(XPOINTERSHELPERDEFAULTS, NameSpace, BaseComponent,
+                                     $document, $location, $window) {
 
     var xp = new BaseComponent('XpointersHelper', XPOINTERSHELPERDEFAULTS);
 
@@ -309,7 +327,6 @@ angular.module('Pundit2.Annotators')
 
     }; // wrapElement()
 
-    xp.isElementNode = function(node) { return node.nodeType === Node.ELEMENT_NODE; };
         // Triple node check: will pass if it's a text node, if it's not
         // empty and if it is inside the given range
     xp.isTextNodeInsideRange = function(node, range) {
@@ -387,14 +404,6 @@ angular.module('Pundit2.Annotators')
         return element;
     };
 
-    xp.isTextNode = function(node) {
-        return node.nodeType === Node.TEXT_NODE;
-    };
-
-    xp.isElementNode = function(node) {
-        return node.nodeType === Node.ELEMENT_NODE;
-    };
-
     // Merges text nodes: when unwrapping consolidated fragments we are splitting the original
     // text nodes in multiple nodes. Merging them together should get us the very same DOM we
     // started with before the consolidation.
@@ -418,7 +427,150 @@ angular.module('Pundit2.Annotators')
             }
         }
 
+    }; // mergeTextNodes()
+
+
+    xp.isTextNode = function(node) {
+        return node.nodeType === Node.TEXT_NODE;
     };
+
+    xp.isElementNode = function(node) {
+        return node.nodeType === Node.ELEMENT_NODE;
+    };
+
+    // Returns true if the node is a wrap node, added by the consolidation
+    xp.isWrapNode = function(node) {
+
+        // Not an element node.. return false
+        if (!xp.isElementNode(node)) {
+            return false;
+        }
+
+        // If the node name is wrong.. return false
+        if (node.nodeName.toUpperCase() !== xp.options.wrapNodeName.toUpperCase())
+            return false;
+
+        // It is an element, with the right name: if it has the wrap class, it is a wrap node!
+        if (angular.element(node).hasClass(xp.options.wrapNodeClass)) {
+            return true;
+        }
+
+        return false;
+    }; // isWrapNode()
+
+    // Returns true if the given node is a tag which should be ignored while building xpointers,
+    // like an UI button, or a wrapped node class
+    xp.isIgnoreNode = function(node) {
+
+        if (!xp.isElementNode(node)) {
+            return false;
+        }
+
+        var toIgnore = [xp.options.textFragmentIconClass, xp.options.wrapNodeClass];
+        toIgnore = toIgnore.concat(xp.options.ignoreClasses);
+
+        for (var i = toIgnore.length; i--;) {
+            if (angular.element(node).hasClass(toIgnore[i])) {
+                return true;
+            }
+        }
+
+        return false;
+    }; // isIgnoreNode()
+
+    xp.isWrappedTextNode = function(node) {
+        if (!xp.isWrapNode(node)) {
+            return false;
+        }
+
+        if (xp.isTextNode(node.firstChild)) {
+            return false;
+        }
+
+        return true;
+    };
+
+    xp.isWrappedElementNode = function(node) {
+
+        if (!xp.isWrapNode(node)) {
+            return false;
+        }
+
+        if (!xp.isElementNode(node.firstChild)) {
+            return false;
+        }
+
+        return true;
+    };
+
+    xp.isNamedContentNode = function (node) {
+
+        if (!xp.isElementNode(node)) {
+            return false;
+        }
+
+        var c = xp.options.namedContentClasses;
+        for (var i = c.length; i--;) {
+            if (angular.element(node).hasClass(c[i])) {
+                return true;
+            }
+        }
+
+        return false;
+    };
+
+    xp.isUIButton = function(node) {
+
+        if (!xp.isElementNode(node)) {
+            return false;
+        }
+
+        if (angular.element(node).hasClass(xp.options.textFragmentIconClass)) {
+            return true;
+        }
+
+        return false;
+    };
+
+
+    // TODO: Maybe this belongs somewhere else .. need to refactor a bit of
+    //       TextFragmentHandler service ....
+    // Gets a safe page context, stripping out pundit-related query parameters
+    xp.getSafePageContext = function() {
+        var uri = $window.location.href,
+            fragment, query, queryObject;
+
+        // If there's a fragment, save it and remove it from the uri
+        if (uri.indexOf("#") !== -1) {
+            fragment = uri.substring(uri.indexOf("#") + 1, uri.length);
+            uri = uri.substring(0, uri.indexOf("#"));
+        }
+
+        // If there's a query, decode it and remove it from the uri. Look for the
+        // pundit-show parameter and strips it out
+        // TODO: "pundit-show" should be configurable ... ?
+        if (uri.indexOf("?") !== -1) {
+            query = uri.substring(uri.indexOf("?") + 1, uri.length);
+            uri = uri.substring(0, uri.indexOf("?"));
+
+            queryObject = $location.search();
+            delete queryObject['pundit-show'];
+
+            var queryArray = [];
+            for (var p in queryObject) {
+                queryArray.push(p + "=" + queryObject[p]);
+            }
+            query = queryArray.join("&");
+        }
+
+        // Build back the URI
+        if (query) uri += '?' + query;
+        if (fragment) uri += '#' + fragment;
+
+        return uri;
+    };
+
+
 
     xp.log("Component up and running");
     return xp;
