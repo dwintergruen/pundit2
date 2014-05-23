@@ -42,12 +42,7 @@ angular.module('Pundit2.PageItemsContainer')
             title: 'Entities',
             template: 'src/Lists/itemList.tmpl.html',
             filterFunction: function(item){
-                return !item.isImage() &&
-                    !item.isProperty() &&
-                    !item.isTextFragment() &&
-                    !item.isImage() &&
-                    !item.isImageFragment() &&
-                    !item.isWebPage();
+                return item.isEntity();
             }
         },
         {

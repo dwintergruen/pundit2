@@ -41,6 +41,16 @@ angular.module('Pundit2.Core')
         return this.type.indexOf(NameSpace.types.page) !== -1;
     };
 
+    // It's an entity if it's not an image, a property, a text fragment or a webpage
+    ItemFactory.prototype.isEntity = function() {
+        return !this.isImage() &&
+            !this.isProperty() &&
+            !this.isTextFragment() &&
+            !this.isImage() &&
+            !this.isImageFragment() &&
+            !this.isWebPage();
+    };
+
     ItemFactory.prototype.fromAnnotationRdf = function(annotationRDF) {
 
         var ns = NameSpace.item,
