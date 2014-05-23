@@ -83,6 +83,26 @@ angular.module('Pundit2.Core')
             return ret;
         };
 
+        itemsExchange.getItemsFromContainerByFilter = function(container, filter) {
+            if (typeof(filter) !== "function") {
+                return;
+            }
+
+            if (typeof(itemListByContainer[container]) === "undefined") {
+                return;
+            }
+
+            var ret = [];
+            var itemList = itemListByContainer[container];
+            for (var uri in itemList) {
+                var item = itemList[uri];
+                if (filter(item)) {
+                    ret.push(item);
+                }
+            }
+            return ret;
+        };
+
         itemsExchange.getItemsByContainer = function(container) {
             if (typeof(itemListByContainer[container]) !== "undefined") {
                 return itemListByContainer[container];
