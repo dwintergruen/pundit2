@@ -3,6 +3,7 @@ angular.module('Pundit2.Preview')
 
     $scope.itemDashboardPreview = null;
 
+
     // check where a new item is selected to get a preview
     $scope.$watch(function() { return Preview.getItemDashboardPreview(); }, function(newItem) {
         $scope.itemDashboardPreview = newItem;
@@ -10,12 +11,11 @@ angular.module('Pundit2.Preview')
         // check if item has an image to show
         if(newItem === null) {
             $scope.hasImage = false;
+            $scope.itemIsAnImage = false;
         } else {
             $scope.hasImage = (typeof(newItem.image) !== 'undefined');
+            $scope.itemIsAnImage = $scope.itemDashboardPreview.isImage() || $scope.itemDashboardPreview.isImageFragment();
         }
-
-        // true is item is an image
-        $scope.itemIsAnImage = Preview.isItemDashboardAnImage();
 
     });
 

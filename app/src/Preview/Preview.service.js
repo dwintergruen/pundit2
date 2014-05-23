@@ -85,8 +85,7 @@ angular.module('Pundit2.Preview')
     var state;
     state = {
         itemDashboardPreview: null,
-        itemDashboardSticky: null,
-        isItemDashboardAnImage: false
+        itemDashboardSticky: null
         };
 
     preview.getWelcomeHeaderMessage = function() {
@@ -99,18 +98,13 @@ angular.module('Pundit2.Preview')
 
     // show item preview in dashboard panel
     preview.showDashboardPreview = function(item) {
-        checkIfItemIsImage(item);
+        //checkIfItemIsImage(item);
         state.itemDashboardPreview = item;
     };
 
     // get current item shown in preview
     preview.getItemDashboardPreview = function() {
         return state.itemDashboardPreview;
-    };
-
-    // return true if item is an image, false otherwise
-    preview.isItemDashboardAnImage = function() {
-        return state.isItemDashboardAnImage;
     };
 
     // set an item as sticky
@@ -139,27 +133,6 @@ angular.module('Pundit2.Preview')
             state.itemDashboardPreview = null;
         } else {
             state.itemDashboardPreview = state.itemDashboardSticky;
-        }
-    };
-
-    // check if item is an image or not
-    // return true if is an image, false otherwise
-    /// TODO : item.isImage() ... !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    var checkIfItemIsImage = function(item){
-        state.isItemDashboardAnImage = false;
-        if (item === null || typeof(item.type) === 'undefined') {
-            state.isItemDashboardAnImage = false;
-        } else {
-            // for each type, check if it is an image-type
-            for (var i = 0; i < item.type.length; i++){
-
-                // if item is an image
-                if (item.type[i] === NameSpace.types.image || item.type[i] === NameSpace.fragments.imagePart) {
-                    state.isItemDashboardAnImage = true;
-                }
-            }
-            // item is not an image
-            //state.isItemDashboardAnImage = false;
         }
     };
 

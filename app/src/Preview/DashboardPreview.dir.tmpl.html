@@ -37,7 +37,7 @@
     <div class="pnd-panel-tab-content-footer">
 
         <!-- More info -->
-        <button class="btn btn-success btn-xs pnd-dashboard-preview-more-info-button" ng-click="openUrl(itemDashboardPreview.uri)" ng-class="{disabled: !isStickyItem()}">More info</button>
+        <button class="btn btn-success btn-xs pnd-dashboard-preview-more-info-button" ng-if="!itemIsAnImage" ng-click="openUrl(itemDashboardPreview.uri)" ng-class="{disabled: !isStickyItem()}">More info</button>
         <!-- Clear Sticky Icon -->
         <button class="btn btn-success btn-xs pnd-dashboard-preview-clear-sticky-button" ng-click="clearSticky()" ng-class="{disabled: !isStickyItem()}">Clear Sticky</button>
         <!-- Open image -->
