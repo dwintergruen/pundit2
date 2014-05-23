@@ -4,7 +4,20 @@
 
     var punditConfig = {
         modules: {
-            "FreebaseSelector": { active: true },
+            "FreebaseSelector": { 
+
+                instances: [
+                    {
+                        // where put items inside items exchange
+                        container: 'freebase',
+                        // used how tab title
+                        label: 'FreebaseSpecial',
+                        // true if this instace do the query
+                        active: true
+                    }
+                ]
+
+            },
             "MurucaSelector": {
 
                 instances: [

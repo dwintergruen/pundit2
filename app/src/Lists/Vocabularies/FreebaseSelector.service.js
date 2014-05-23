@@ -9,36 +9,48 @@ angular.module('Pundit2.Vocabularies')
     freebaseItemsBaseURL: 'http://www.freebase.com',
     freebaseAPIKey: 'AIzaSyCJjAj7Nd2wKsZ8d7XQ9ZvUwN5SF0tZBsE',
 
+    // enable or disable all selectors instances
+    active: true,
+    // max number of items
     limit: 5,
 
-    // where put items inside items exchange
-    container: 'freebase',
-    // how name show inside tab
-    name: 'Freebase',
+    instances: [
+        {
+            // where put items inside items exchange
+            container: 'freebase',
+            // used how tab title
+            label: 'Freebase',
+            // true if this instace do the query
+            active: true
+        }
 
-    active: true,
+    ],
 
     debug: true
 
 })
-.service('FreebaseSelector', function(BaseComponent, FREEBASESELECTORDEFAULTS, TypesHelper, SelectorsManager, Item, ItemsExchange, $http) {
+.factory('FreebaseSelector', function(BaseComponent, FREEBASESELECTORDEFAULTS, TypesHelper, SelectorsManager, Item, ItemsExchange, $http) {
 
     var freebaseSelector = new BaseComponent('FreebaseSelector', FREEBASESELECTORDEFAULTS);
-    freebaseSelector.name = freebaseSelector.options.name;
+    freebaseSelector.name = 'FreebaseSelector';
 
+    // add this selector to selector manager
+    // then the configured instances are read an instantiated
     if (freebaseSelector.options.active) {
-        //SelectorsManager.addSelector(freebaseSelector);        
+        SelectorsManager.addSelector(freebaseSelector);        
     }
 
-    var pendingRequest;
-
-    freebaseSelector.getInstances = function(){
-        return freebaseSelector.options;
+    // selector instance constructor
+    var FreebaseFactory = function(config){
+        this.config = config;
+        this.pendingRequest = 0;
     };
 
-    freebaseSelector.getItems = function(term, callback){
+    FreebaseFactory.prototype.getItems = function(term, callback){
 
-        ItemsExchange.wipeContainer(freebaseSelector.options.container);
+        var self = this;
+
+        ItemsExchange.wipeContainer(self.config.container);
 
         $http({
             method: 'GET',
@@ -52,7 +64,7 @@ angular.module('Pundit2.Vocabularies')
 
             freebaseSelector.log('Http success, get items from freebase', data);
 
-            pendingRequest = data.result.length;
+            self.pendingRequest = data.result.length;
 
             for (var i in data.result) {
 
@@ -68,7 +80,7 @@ angular.module('Pundit2.Vocabularies')
                     uri: -1
                 };
 
-                freebaseSelector.getItemDetails(item, callback);
+                self.getItemDetails(item, callback);
 
             }
 
@@ -79,7 +91,9 @@ angular.module('Pundit2.Vocabularies')
     };
 
 
-    freebaseSelector.getItemDetails = function(item, callback){
+    FreebaseFactory.prototype.getItemDetails = function(item, callback){
+
+        var self = this;
 
         // get TOPIC
         $http({
@@ -112,13 +126,13 @@ angular.module('Pundit2.Vocabularies')
             if (item.description !== -1) {
                 freebaseSelector.log('TOPIC was last, complete for item ' + item.uri);
                 var add = new Item(item.uri, item);
-                ItemsExchange.addItemToContainer(add, freebaseSelector.options.container);
-                checkEnd(callback);
+                ItemsExchange.addItemToContainer(add, self.config.container);
+                self.checkEnd(callback);
             }
 
         }).error(function(msg) {
             freebaseSelector.err('Cant get TOPIC from freebase: ', msg);
-            checkEnd(callback);
+            self.checkEnd(callback);
         });
 
         // get MQL
@@ -142,20 +156,20 @@ angular.module('Pundit2.Vocabularies')
             if (item.uri !== -1) {
                 freebaseSelector.log('MQL was last, complete http for item ' + item.uri);
                 var add = new Item(item.uri, item);
-                ItemsExchange.addItemToContainer(add, freebaseSelector.options.container);
-                checkEnd(callback);
+                ItemsExchange.addItemToContainer(add, self.config.container);
+                self.checkEnd(callback);
             }
 
         }).error(function(msg) {
             freebaseSelector.err('Cant get MQL from freebase: ', msg);
-            checkEnd(callback);
+            self.checkEnd(callback);
         });
 
     };
 
-    var checkEnd = function(callback){
-        pendingRequest--;
-        if (pendingRequest <= 0) {
+    FreebaseFactory.prototype.checkEnd = function(callback){
+        this.pendingRequest--;
+        if (this.pendingRequest <= 0) {
             freebaseSelector.log('complete item parsing');
             callback();
         }
@@ -164,6 +178,6 @@ angular.module('Pundit2.Vocabularies')
 
     freebaseSelector.log('service init');
 
-    return freebaseSelector;
+    return FreebaseFactory;
 
 });
