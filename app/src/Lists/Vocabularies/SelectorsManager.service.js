@@ -29,6 +29,10 @@ angular.module('Pundit2.Vocabularies')
         selectorsManager.log("Add selector ", selector.label);
     };
 
+    selectorsManager.getActiveSelectors = function(){
+        return selectors;
+    };
+
     // TODO need to add max time after then abort the request
     var pendingRequest,
         registeredCallback = null;

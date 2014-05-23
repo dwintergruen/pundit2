@@ -20,7 +20,7 @@ angular.module('Pundit2.Vocabularies')
 .service('MurucaSelector', function(BaseComponent, MURUCASELECTORDEFAULTS, Item, ItemsExchange, SelectorsManager, $http) {
 
     var murucaSelector = new BaseComponent('MurucaSelector', MURUCASELECTORDEFAULTS);
-    murucaSelector.label = 'murucaSelector';
+    murucaSelector.label = murucaSelector.options.container;
 
     SelectorsManager.addSelector(murucaSelector);
 

@@ -19,7 +19,7 @@ angular.module('Pundit2.Vocabularies')
 .service('FreebaseSelector', function(BaseComponent, FREEBASESELECTORDEFAULTS, TypesHelper, SelectorsManager, Item, ItemsExchange, $http) {
 
     var freebaseSelector = new BaseComponent('FreebaseSelector', FREEBASESELECTORDEFAULTS);
-    freebaseSelector.label = 'freebaseSelector';
+    freebaseSelector.label = freebaseSelector.options.container;
 
     SelectorsManager.addSelector(freebaseSelector);
 
