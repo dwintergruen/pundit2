@@ -24,7 +24,7 @@ angular.module('Pundit2.Vocabularies')
         }
     ],    
 
-    debug: true
+    debug: false
 
 })
 .factory('MurucaSelector', function(BaseComponent, MURUCASELECTORDEFAULTS, Item, ItemsExchange, SelectorsManager, $http) {

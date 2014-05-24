@@ -5,7 +5,7 @@ angular.module('Pundit2.Vocabularies')
 
     limit: 1,
 
-    debug: true
+    debug: false
 
 })
 .service('DbPediaSelector', function(BaseComponent, DBPEDIASELECTORDEFAULTS, NameSpace, SelectorsManager, $http) {

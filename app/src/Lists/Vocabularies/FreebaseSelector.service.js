@@ -26,7 +26,7 @@ angular.module('Pundit2.Vocabularies')
 
     ],
 
-    debug: true
+    debug: false
 
 })
 .factory('FreebaseSelector', function(BaseComponent, FREEBASESELECTORDEFAULTS, TypesHelper, SelectorsManager, Item, ItemsExchange, $http) {

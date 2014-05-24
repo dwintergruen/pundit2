@@ -7,7 +7,7 @@ angular.module("Pundit2.MyItemsContainer")
     // Container used to store the my items in the itemsExchange
     container: 'myItems',
 
-    debug: true
+    debug: false
 })
 .service("MyItems", function(MYITEMSDEFAULTS, BaseComponent, NameSpace, Item, ItemsExchange,
                              ContextualMenu, MyPundit, Config,

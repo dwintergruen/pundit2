@@ -27,7 +27,7 @@ angular.module('Pundit2.Vocabularies')
         }
     ],    
 
-    debug: true
+    debug: false
 
 })
 .factory('KorboBasketSelector', function(BaseComponent, KORBOBASKETSELECTORDEFAULTS, Item, ItemsExchange, SelectorsManager, $http) {

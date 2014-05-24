@@ -7,7 +7,7 @@ angular.module('Pundit2.Vocabularies')
     clientDashboardPanel: "lists",
     clientDashboardTabTitle: "Vocab",
 
-    debug: true
+    debug: false
 
 })
 .service('SelectorsManager', function(BaseComponent, SELECTORMANAGERDEFAULTS, $injector) {
