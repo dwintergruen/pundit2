@@ -96,8 +96,16 @@ module.exports = function(grunt) {
             }
         },
 
-        // *min: reduce spaces
+        // *min: reduce space
         imagemin: {
+            dev: {
+                files: [{
+                    expand: true,
+                    cwd: '<%= conf.app %>/styles/img',
+                    src: '{,*/}*.{png,jpg,jpeg,gif}',
+                    dest: '<%= conf.app %>/css/img'
+                }]
+            },
             dist: {
                 files: [{
                     expand: true,
@@ -551,7 +559,7 @@ module.exports = function(grunt) {
             'rev', 'usemin', 'htmlmin:final', 'copy:bookmarklet']);
 
     grunt.registerTask('dev', 'Live dev workflow: watches app files and reloads the browser automatically',
-        ['less:dev', 'copy:fonts', 'html2js', 'examples', 'connect:livereload', 'open:server', 'watch']);
+        ['less:dev', 'copy:fonts', 'imagemin:dev', 'html2js', 'examples', 'connect:livereload', 'open:server', 'watch']);
     grunt.registerTask('dev:unit', 'Live dev UNIT tests workflow: watches for test files and runs unit tests automatically',
         ['test:unit', 'watch:unit']);
 
