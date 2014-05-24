@@ -38,7 +38,6 @@ angular.module('Pundit2.Annotators')
                 return;
             }
 
-
             var range = tfh.getSelectedRange();
             if (range === null) {
                 removeSelection();
@@ -125,11 +124,14 @@ angular.module('Pundit2.Annotators')
             return false;
         };
 
+        // Takes a (dirty) range and returns a clean xpointer:
+        // - translate a dirty range into a clean one
+        // - correct any wrong number inside xpaths (node number, offsets)
+        // - build the xpointer starting from a named content, if present
+        // - build the xpointer strings
         var range2xpointer = function(dirtyRange) {
-            var cleanRange = dirtyRange2cleanRange(dirtyRange);
-
-
-            var cleanStartXPath = correctXPathFinalNumber(calculateCleanXPath(cleanRange.startContainer), cleanRange.cleanStartNumber),
+            var cleanRange = dirtyRange2cleanRange(dirtyRange),
+                cleanStartXPath = correctXPathFinalNumber(calculateCleanXPath(cleanRange.startContainer), cleanRange.cleanStartNumber),
                 cleanEndXPath = correctXPathFinalNumber(calculateCleanXPath(cleanRange.endContainer), cleanRange.cleanEndNumber),
                 xpointerURL = getContentURLFromXPath(cleanStartXPath),
                 xpointer = getXPointerString(xpointerURL, cleanStartXPath, cleanRange.startOffset, cleanEndXPath, cleanRange.endOffset);
@@ -176,99 +178,102 @@ angular.module('Pundit2.Annotators')
             return cleanRange;
         }; // dirtyRange2cleanRange()
 
+        // The offset is the node number or, more often, the character index inside a text node,
+        // used in xpointers along with xpaths to point a specific dom position.
+        // If the text nodes are split, we need to correct it. If consolidation added nodes,
+        // we need to check if they must be skipped
         var calculateCleanOffset = function(dirtyContainer, dirtyOffset) {
-            var currentNode,
-                node = dirtyContainer,
-                parentNode = node.parentNode,
-                offset = dirtyOffset;
+            var xp = XpointersHelper,
+                parentNode = dirtyContainer.parentNode,
+                currentNode, node, offset;
 
-            if (XpointersHelper.isElementNode(dirtyContainer) && !XpointersHelper.isIgnoreNode(dirtyContainer)) {
-                return {
-                    cleanContainer: node,
-                    cleanOffset: offset
-                };
+            // It's an element and it's not added by consolidation, everything is good
+            if (xp.isElementNode(dirtyContainer) && !xp.isConsolidationNode(dirtyContainer)) {
+                return { cleanContainer: dirtyContainer, cleanOffset: dirtyOffset };
             }
 
-            if (XpointersHelper.isTextNode(dirtyContainer) && XpointersHelper.isWrapNode(parentNode)) {
+            // The container is a text node and the parent is added by consolidation,
+            // recur into parent and let's start the offset dance
+            if (xp.isTextNode(dirtyContainer) && xp.isWrapNode(parentNode)) {
                 node = parentNode;
+            } else {
+                node = dirtyContainer;
             }
 
+            // Iterate over previous siblings (to the left of this current node) and calculate
+            // the right offset. We start from the dirty one
+            offset = dirtyOffset;
             while (currentNode = node.previousSibling) {
-                if (!XpointersHelper.isIgnoreNode(currentNode) && XpointersHelper.isElementNode(currentNode) && !XpointersHelper.isWrapNode(currentNode)) {
-                    if (XpointersHelper.isTextNode(dirtyContainer) && XpointersHelper.isWrapNode(parentNode)) {
-                        return {
-                            cleanContainer: dirtyContainer,
-                            cleanOffset: offset
-                        };
+
+                // If the node is not added by consolidation but it's an element, we're done
+                if (!xp.isConsolidationNode(currentNode) && xp.isElementNode(currentNode) && !xp.isWrapNode(currentNode)) {
+                    if (xp.isTextNode(dirtyContainer) && xp.isWrapNode(parentNode)) {
+                        return { cleanContainer: dirtyContainer, cleanOffset: offset };
                     } else {
-                        return {
-                            cleanContainer: node,
-                            cleanOffset: offset
-                        };
+                        return { cleanContainer: node, cleanOffset: offset };
                     }
                 }
 
-                if (XpointersHelper.isTextNode(currentNode)) {
+                // If not, keep going on the offset and go to next sibling
+                if (xp.isTextNode(currentNode)) {
                     offset += currentNode.length;
-                } else if (XpointersHelper.isWrapNode(currentNode)) {
+                } else if (xp.isWrapNode(currentNode)) {
                     offset += currentNode.firstChild.length;
                 }
 
                 node = currentNode;
             } // while currentNode
 
+            // We iterated over every sibling, we now have the correct offset
             if (XpointersHelper.isTextNode(dirtyContainer) && XpointersHelper.isWrapNode(parentNode)) {
-                return {
-                    cleanContainer: dirtyContainer,
-                    cleanOffset: offset
-                };
+                return { cleanContainer: dirtyContainer, cleanOffset: offset };
             } else {
-                return {
-                    cleanContainer: node,
-                    cleanOffset: offset
-                };
+                return { cleanContainer: node, cleanOffset: offset };
             }
         }; // calculateCleanOffset()
 
 
+        // Ugly names but at least useful, complicate conditions to check if we need
+        // to skip or count the current node
+        var check1 = function(currentNode) {
+            return XpointersHelper.isTextNode(currentNode) ||
+                XpointersHelper.isWrappedTextNode(currentNode) ||
+                XpointersHelper.isUIButton(currentNode);
+        };
+
+        var check2 = function(lastNode) {
+            return XpointersHelper.isElementNode(lastNode) &&
+            !XpointersHelper.isUIButton(lastNode) &&
+            !XpointersHelper.isWrappedTextNode(lastNode);
+        };
+
+        // The node number in an xpath /DIV[1]/P[2]/text()[16] is the number in []. It just counts
+        // the number of such nodes. If the DOM is consolidated (dirty) though, we need to skip
+        // those nodes and recalculate such number. Especially for text nodes, which gets
+        // very likely split into more nodes, we need to count them and come out with the number
+        // it would be if the DOM was clean.
         var calculateCleanNodeNumber = function(node) {
-            var cleanN,
+            var currentNode,
+                cleanN = 1,
+                xp = XpointersHelper,
                 nodeName = getXPathNodeName(node),
                 parentNode = node.parentNode,
-                currentNode,
-                lastNode = (XpointersHelper.isWrapNode(parentNode)) ? parentNode : node;
+                lastNode = (xp.isWrapNode(parentNode)) ? parentNode : node;
 
-            if (XpointersHelper.isTextNode(node)) {
+            if (xp.isTextNode(node)) {
 
-                // If it's a text node: skip ignore nodes, count text/element nodes
-                cleanN = 1;
+                // If it's a text node: skip ignore nodes, counting text/element nodes
                 while (currentNode = lastNode.previousSibling) {
-                    // TODO: this if is the ugliest if on earth :|
-                    if (
-                        (
-                            XpointersHelper.isTextNode(currentNode) ||
-                            XpointersHelper.isWrappedTextNode(currentNode) ||
-                            XpointersHelper.isUIButton(currentNode)
-                        ) &&
-                        (
-                            (
-                                XpointersHelper.isElementNode(lastNode) &&
-                                !XpointersHelper.isUIButton(lastNode) &&
-                                !XpointersHelper.isWrappedTextNode(lastNode)
-                            )
-                            || XpointersHelper.isWrappedElementNode(lastNode)
-                        )
-                    ) {
+                    if (check1(currentNode) && (check2(lastNode) || xp.isWrappedElementNode(lastNode))) {
                         cleanN++;
                     }
-
                     lastNode = currentNode;
                 } // while current_node
             } else {
-                // If it's an element node, count the siblings skipping ignore nodes
-                cleanN = 1;
+
+                // If it's an element node, count the siblings skipping consolidation nodes
                 while (currentNode = lastNode.previousSibling) {
-                    if (getXPathNodeName(currentNode) === nodeName && !XpointersHelper.isIgnoreNode(currentNode)) {
+                    if (getXPathNodeName(currentNode) === nodeName && !xp.isConsolidationNode(currentNode)) {
                         cleanN++;
                     }
                     lastNode = currentNode;
@@ -278,6 +283,7 @@ angular.module('Pundit2.Annotators')
             return cleanN;
         }; // calculateCleanNodeNumber()
 
+        // To build a correct xpath, text nodes must be called text()
         var getXPathNodeName = function(node) {
             if (XpointersHelper.isTextNode(node)) {
                 return "text()";
@@ -286,10 +292,12 @@ angular.module('Pundit2.Annotators')
             }
         };
 
-        var correctXPathFinalNumber = function(xpath, clean_number) {
-            return xpath.replace(/\[[0-9]+\]$/, '['+clean_number+']');
+        var correctXPathFinalNumber = function(xpath, cleanNumber) {
+            return xpath.replace(/\[[0-9]+\]$/, '['+cleanNumber+']');
         };
 
+        // Builds a clean xpath: given a node will traverse the DOM (parents and siblings)
+        // skipping consolidation nodes to produce an xpath which is valid in a clean DOM.
         var calculateCleanXPath = function(node, partialXpath) {
 
             // No node given? We recurred here with a null parent:
@@ -299,9 +307,12 @@ angular.module('Pundit2.Annotators')
                 return partialXpath;
             }
 
-            var nodeName = getXPathNodeName(node);
+            var xp = XpointersHelper,
+                nodeName = getXPathNodeName(node);
 
-            if (XpointersHelper.isNamedContentNode(node)) {
+            // We reached a named content, we can build the resulting xpath using it as
+            // the starting point
+            if (xp.isNamedContentNode(node)) {
                 if (typeof(partialXpath) !== 'undefined') {
                     return "//DIV[@about='" + angular.element(node).attr('about') + "']/" + partialXpath;
                 } else {
@@ -309,6 +320,7 @@ angular.module('Pundit2.Annotators')
                 }
             }
 
+            // .. or if we reach body or html (!!!), start building it from this node
             if (nodeName === 'BODY' || nodeName === 'HTML') {
                 if (typeof(partialXpath) !== 'undefined') {
                     return "//BODY/" + partialXpath;
@@ -317,61 +329,64 @@ angular.module('Pundit2.Annotators')
                 }
             }
 
-
             // Skip wrap nodes into the final XPath!
-            if (XpointersHelper.isWrapNode(node)) {
+            if (xp.isWrapNode(node)) {
                 return calculateCleanXPath(node.parentNode, partialXpath);
             }
 
-            var num = 1,
-                current_node = node;
-            if (!XpointersHelper.isTextNode(current_node)) {
-                while (sibling = current_node.previousSibling) {
-                    if (getXPathNodeName(sibling) === nodeName && !XpointersHelper.isIgnoreNode(sibling)) {
+            var sibling,
+                num = 1,
+                currentNode = node;
+            // If it's not a text node, and there's a siblings with the same
+            // nodeName, accumulate their number
+            if (!xp.isTextNode(currentNode)) {
+                while (sibling = currentNode.previousSibling) {
+                    if (getXPathNodeName(sibling) === nodeName && !xp.isConsolidationNode(sibling)) {
                         num++;
                     }
-                    current_node = sibling;
+                    currentNode = sibling;
                 }
             }
 
+            // Accumulate the xpath for this node
             if (typeof(partialXpath) !== 'undefined') {
                 partialXpath = nodeName + "[" + num + "]/" + partialXpath;
             } else {
                 partialXpath = nodeName + "[" + num + "]";
             }
 
-            // And recur up to the parent
+            // .. and recur into its parent
             return calculateCleanXPath(parentNode, partialXpath);
         }; // calculateCleanXPath
 
 
-        // Extracts the URL of the thc content node used in the xpath, or
+        // Extracts the URL of the named content node used in the xpath, or
         // gives window location
         var getContentURLFromXPath = function(xpath) {
             var contentUrl = XpointersHelper.getSafePageContext(),
+                // TODO: make this attribute configurable in XpointersHelper ?
                 index = xpath.indexOf('DIV[@about=\''),
                 tagName = "about";
 
-            // The given xpath points to a node outside of any
-            // @about described node, a thc content node:
-            // return window location without anchor part
-            if (index === -1)
+            // The given xpath points to a node outside of any @about described node:
+            // return window location without its anchor part
+            if (index === -1) {
                 return (contentUrl.indexOf('#') !== -1) ? contentUrl.split('#')[0] : contentUrl;
-
-            // It is a content tag: get the URL contained in the @about attribute
-            if (index < 3) {
-                var urlstart = index + 7 + tagName.length,
-                    pos = xpath.indexOf('_text\']'),
-                    urllength = ((pos !== -1) ? xpath.indexOf('_text\']') : xpath.indexOf('\']')) - urlstart;
-
-                return xpath.substr(urlstart, urllength);
             }
 
+            // It is a named content tag: get the URL contained in the @about attribute
+            if (index < 3) {
+                var urlStart = index + 7 + tagName.length,
+                    pos = xpath.indexOf('_text\']'),
+                    urlLength = ((pos !== -1) ? xpath.indexOf('_text\']') : xpath.indexOf('\']')) - urlStart;
+
+                return xpath.substr(urlStart, urlLength);
+            }
+
+            // We found too many div[@about= ... whaaaaat?
             tfh.log('ERROR: getContentURLFromXPath returning something weird? xpath = '+xpath);
             return '';
         }; // getContentURLFromXPath()
-
-
 
         tfh.log('Component up and running');
     });
