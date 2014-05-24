@@ -2,8 +2,9 @@ angular.module('Pundit2.Annotators')
 
 .constant('TEXTFRAGMENTANNOTATORDEFAULTS', {
 
-    // Type of the contextual menu we want for text fragments. Will be used by icons/bits etc
-    contextualMenuType: 'annotatedTextFragment',
+    // Type of the contextual menu to trigger on text fragments icons clicks.
+    // Will be used by icons/bits etc
+    cMenuType: 'annotatedTextFragment',
 
     // Add elements to the contextual menu?
     initContextualMenu: true,
@@ -31,27 +32,27 @@ angular.module('Pundit2.Annotators')
     // Contextual Menu actions for text fragments??
     var initContextualMenu = function() {
         ContextualMenu.addAction({
-            type: [tfa.options.contextualMenuType],
+            type: [tfa.options.cMenuType],
             name: 'showAllAnnotations',
             label: 'Show all annotations for this fragment',
             showIf: function() {
                 return true;
             },
-            priority: 1,
+            priority: 10,
             action: function(uri) {
                 console.log('Consolidated icon click action', uri);
             }
         });
 
         ContextualMenu.addAction({
-            type: [tfa.options.contextualMenuType],
+            type: [tfa.options.cMenuType],
             name: 'hideAllAnnotations',
             label: 'Hide all annotations for this fragment',
             showIf: function() {
                 // TODO: show just if there is some ann open
                 return true;
             },
-            priority: 2,
+            priority: 11,
             action: function(uri) {
                 console.log('Consolidated icon click action', uri);
             }
@@ -168,10 +169,12 @@ angular.module('Pundit2.Annotators')
     // For each fragment ID it will place an icon after the last BIT belonging
     // to the given fragment
     var placeIcons = function() {
+        var n = 0;
         for (var c in fragmentIds) {
             var id = fragmentIds[c],
-                lastBit = angular.element('[fragments*="'+ id +'"]').last();
+                lastBit = angular.element('.'+ id).last();
 
+            tfa.log('Placing icon '+ n++, id, lastBit.attr('fragments'));
             lastBit.after('<text-fragment-icon fragment="'+id+'"></text-fragment-icon>');
         }
     };
@@ -221,7 +224,7 @@ angular.module('Pundit2.Annotators')
     // fragment.
     tfa.addFragmentIcon = function(icon) {
         fragmentById[icon.fragment].icon = icon;
-        icon.fragmentUri = fragmentById[icon.fragment];
+        icon.item = fragmentById[icon.fragment].item;
 
 
         var item = fragmentById[icon.fragment].item,

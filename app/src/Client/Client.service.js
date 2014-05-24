@@ -189,10 +189,10 @@ angular.module('Pundit2.Client')
         ]
     })
 
-    .service('Client', function(BaseComponent, Config, MyPundit,
+    .service('Client', function(CLIENTDEFAULTS, BaseComponent, Config, MyPundit,
                                 ImageFragmentAnnotator, TextFragmentAnnotator, Consolidation,
-                                AnnotationsExchange, Item,
-                                ItemsExchange, Annotation, CLIENTDEFAULTS, MyItems,
+                                AnnotationsExchange, Item, ItemsExchange, Annotation, MyItems,
+                                TextFragmentHandler,
                                 $injector, $templateCache, $rootScope) {
 
         var client = new BaseComponent('Client', CLIENTDEFAULTS),
@@ -371,6 +371,9 @@ angular.module('Pundit2.Client')
             });
 
             addComponents();
+
+            client.log('Boot is completed, emitting pundit-init-done event!');
+            $rootScope.$emit('pundit-init-done');
 
             // TODO:
             // * Lists (My, page?, vocabs?, selectors?)

@@ -398,9 +398,13 @@ angular.module('Pundit2.Annotators')
         var element = $document[0].createElement(htmlTag);
         angular.element(element).addClass(htmlClass);
 
-        // TODO: make this directive name configurable!
+        // TODO: make this directive name configurable??
         angular.element(element).attr('text-fragment-bit', '');
+        // Parent fragment ids both in fragments attribute and in classes. First used to
+        // pass them back to the TextFragmentAnnotator service, the second to being able
+        // to retrieve the last of them with a css selector to place the icon
         angular.element(element).attr('fragments', parents.join(','));
+        angular.element(element).addClass(parents.join(' '));
         return element;
     };
 

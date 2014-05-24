@@ -10,29 +10,62 @@ angular.module("Pundit2.MyItemsContainer")
     debug: true
 })
 .service("MyItems", function(MYITEMSDEFAULTS, BaseComponent, NameSpace, Item, ItemsExchange,
-                             ContextualMenu, MyPundit, TextFragmentHandler, PageItemsContainer,
-                             $http) {
+                             ContextualMenu, MyPundit, Config,
+                             $http, $rootScope) {
 
     var myItems = new BaseComponent("MyItems", MYITEMSDEFAULTS);
 
-    ContextualMenu.addAction({
-        name: 'addToMyItems',
-        type: [
-            TextFragmentHandler.options.cMenuType,
-            PageItemsContainer.options.cMenuType
-        ],
-        label: "Add to My Items (SERVICE)",
-        priority: 1,
-        showIf: function() {
-            return MyPundit.getUserLogged();
-        },
-        action: function(item){
-            myItems.addSingleMyItem(item);
-            console.log('############## Adding to my items ', item);
-            return true;
-        }
-    });
 
+    var initContextualMenu = function() {
+
+        // TODO: sanity checks on Config.modules.* ? Are they active? Think so??
+        var cMenuTypes = [
+            Config.modules.TextFragmentHandler.cMenuType,
+            Config.modules.PageItemsContainer.cMenuType,
+            Config.modules.TextFragmentAnnotator.cMenuType
+        ];
+
+        ContextualMenu.addDivider({
+            priority: 99,
+            type: cMenuTypes
+        });
+
+        ContextualMenu.addAction({
+            name: 'addToMyItems',
+            type: cMenuTypes,
+            label: "Add to My Items",
+            priority: 100,
+            showIf: function(item) {
+                return MyPundit.getUserLogged() &&
+                    !ItemsExchange.isItemInContainer(item, myItems.options.container);
+            },
+            action: function(item) {
+                myItems.addSingleMyItem(item);
+                return true;
+            }
+        });
+
+        ContextualMenu.addAction({
+            name: 'removeFromMyItems',
+            type: cMenuTypes,
+            label: "Remove from My Items",
+            priority: 100,
+            showIf: function(item) {
+                return MyPundit.getUserLogged() &&
+                    ItemsExchange.isItemInContainer(item, myItems.options.container);
+            },
+            action: function(item) {
+                myItems.deleteSingleMyItem(item);
+                return true;
+            }
+        });
+
+    }; // initContextualMenu()
+
+    // When all modules have been initialized, services are up, Config are setup etc..
+    $rootScope.$on('pundit-init-done', function() {
+        initContextualMenu();
+    });
 
     // The very first time that we get my items from pundit server we might obtain pundit1 items:
     // - value is pundit2 uri property

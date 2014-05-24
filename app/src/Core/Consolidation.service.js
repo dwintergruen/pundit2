@@ -82,9 +82,6 @@ angular.module('Pundit2.Core')
                 }
             }
 
-            // TODO: Extract if everything was ok? It should be .. ?
-            // TODO: cycle over orchestrator something? or directly call him?
-            // TODO: DOMConsolidator ? (xpointers: text fragments, named content, full page?)
             // TODO: ImageConsolidator ? (polygons, areas, whatever: on images?)
             // TODO: More consolidator types? Video? Maps? ..
         };
@@ -109,10 +106,10 @@ angular.module('Pundit2.Core')
         };
 
         cc.isConsolidated = function(item) {
-            if (item instanceof Item)
+            if (item instanceof Item) {
                 return item.uri in state.itemListByURI;
-            else
-                return false;
+            }
+            return false;
         };
 
         // Gets the available targets or resources on the current page. They will most likely

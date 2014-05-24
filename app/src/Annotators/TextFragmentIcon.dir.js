@@ -26,7 +26,7 @@ angular.module('Pundit2.Annotators')
             };
 
             scope.clickHandler = function(event) {
-                ContextualMenu.show(event.pageX, event.pageY, scope.fragmentUri, TextFragmentAnnotator.options.contextualMenuType);
+                ContextualMenu.show(event.pageX, event.pageY, scope.item, TextFragmentAnnotator.options.cMenuType);
             };
 
         }

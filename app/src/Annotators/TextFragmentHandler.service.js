@@ -71,6 +71,13 @@ angular.module('Pundit2.Annotators')
                 }
             }
 
+            // TODO: this will create a new item in our container at each valid user selection.
+            // how to wipe them up? If the user keeps selecting stuff we end up with LOADS and
+            // LOADS of unused items.
+            // Problem: the item might be used by the triple composer, or added to my items or
+            // discarded at all.
+            // Possible solution: wipe the container when triple composer is empty, ctx menu is
+            // NOT shown on every dashboard open/close ?
             var item = createItemFromRange(range);
             tfh.log('Valid selection ended on document. Text fragment Item produced: '+ item.label);
 

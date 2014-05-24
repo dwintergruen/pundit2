@@ -260,7 +260,7 @@ angular.module('Pundit2.ContextualMenu')
         state.menuElements.push(e);
     };
 
-    // used in example (define where show the submenu)
+    // used in example (define where to show the submenu)
     contextualMenu.getSubMenuPlacement = function(){
         var i = realOptions.placement.indexOf('-'),
             place = realOptions.placement.substring(i+1);

@@ -10,7 +10,7 @@ angular.module('Pundit2.PageItemsContainer')
     clientDashboardTabTitle: "Page Items",
 
     // page items contextual menu type
-    pageItemsMenuType: 'pageItems',
+    cMenuType: 'pageItems',
 
     // items property used to compare
     order: 'label',
