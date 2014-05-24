@@ -1,6 +1,12 @@
 angular.module('Pundit2.Annotators')
     .constant('TEXTFRAGMENTHANDLERDEFAULTS', {
+
+        // Any content classes with any of these class will get ignored by the handler:
+        // if the selection starts, ends or contains them nothing will happen.
         ignoreClasses: ['pnd-ignore'],
+
+        // If true, when the user selects something which starts, ends or contains ignored
+        // stuff (see ignoreClasses) the selected text will get reseted
         removeSelectionOnAbort: true
     })
     .service('TextFragmentHandler', function(TEXTFRAGMENTHANDLERDEFAULTS, NameSpace, BaseComponent,
@@ -60,7 +66,6 @@ angular.module('Pundit2.Annotators')
             tfh.log('Selection ended on document. DIRTY range: ', range);
 
             var xp = range2xpointer(range);
-            console.log('### XPOINTER !!!!1!!!1! ', xp);
 
         };
 
@@ -172,8 +177,6 @@ angular.module('Pundit2.Annotators')
             tfh.log("dirty2cleanRange CLEAN: "+
                 cleanRange.startContainer.nodeName+"["+cleanRange.startOffset+"] > "+
                 cleanRange.endContainer.nodeName+"["+cleanRange.endOffset+"]");
-
-            console.log('Clean range ', cleanRange);
 
             return cleanRange;
         }; // dirtyRange2cleanRange()
