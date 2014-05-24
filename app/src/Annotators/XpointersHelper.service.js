@@ -447,8 +447,9 @@ angular.module('Pundit2.Annotators')
         }
 
         // If the node name is wrong.. return false
-        if (node.nodeName.toUpperCase() !== xp.options.wrapNodeName.toUpperCase())
+        if (node.nodeName.toUpperCase() !== xp.options.wrapNodeName.toUpperCase()) {
             return false;
+        }
 
         // It is an element, with the right name: if it has the wrap class, it is a wrap node!
         if (angular.element(node).hasClass(xp.options.wrapNodeClass)) {
@@ -483,7 +484,7 @@ angular.module('Pundit2.Annotators')
             return false;
         }
 
-        if (xp.isTextNode(node.firstChild)) {
+        if (!xp.isTextNode(node.firstChild)) {
             return false;
         }
 
