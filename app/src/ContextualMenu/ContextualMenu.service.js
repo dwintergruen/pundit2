@@ -156,7 +156,7 @@ angular.module('Pundit2.ContextualMenu')
 
         // need resource
         if ( typeof(resource) === 'undefined' ) {
-            contextualMenu.err('Try to show menu without resource');
+            contextualMenu.err('Try to show menu without resource for type '+ type);
             return;
         }
 
@@ -165,8 +165,8 @@ angular.module('Pundit2.ContextualMenu')
         state.menuType = type;
         state.content = contextualMenu.buildContent();
 
-        if ( state.content.length === 0 ) {
-            contextualMenu.err('Try to show menu without any content (buildContent fail)');
+        if (state.content.length === 0) {
+            contextualMenu.err('Tried to show menu for type '+type+' without any content (buildContent fail)');
             return;
         }
 

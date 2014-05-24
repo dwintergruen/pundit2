@@ -29,6 +29,9 @@ angular.module('Pundit2.Core')
             this.log('BaseComponent extending with Config.modules conf');
         }
 
+        // Save the built configuration into the Config with our name
+        Config.modules[this.name] = this.options;
+
     };
 
     // TODO: doc
