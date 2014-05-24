@@ -1,24 +1,32 @@
 angular.module('Pundit2.Annotators')
     .constant('TEXTFRAGMENTHANDLERDEFAULTS', {
 
-        // Any content classes with any of these class will get ignored by the handler:
+        // Any content classed with any of these class will get ignored by the handler:
         // if the selection starts, ends or contains them nothing will happen.
         ignoreClasses: ['pnd-ignore'],
 
         // If true, when the user selects something which starts, ends or contains ignored
         // stuff (see ignoreClasses) the selected text will get reseted
-        removeSelectionOnAbort: true
+        removeSelectionOnAbort: true,
+
+        // Container for the ItemsExchange
+        container: "createdTextFragments",
+
+        // Contextual menu type triggered by the text fragment handler. An Item will
+        // be passed as resource
+        cMenuType: "textFragmentHandlerItem",
+
+        // Label max characters number, will be cut from the selected text
+        labelMaxLength: 40
+
     })
     .service('TextFragmentHandler', function(TEXTFRAGMENTHANDLERDEFAULTS, NameSpace, BaseComponent,
-                                             ContextualMenu, XpointersHelper,
+                                             ContextualMenu, XpointersHelper, Item, ItemsExchange,
                                              $document) {
 
         var tfh = new BaseComponent('TextFragmentHandler', TEXTFRAGMENTHANDLERDEFAULTS);
 
         $document.on('mousedown', function(downEvt) {
-
-            // In any case, hide the contextual menu on mouse down
-            ContextualMenu.hide();
 
             var target = downEvt.target;
             if (isToBeIgnored(target)) {
@@ -50,9 +58,9 @@ angular.module('Pundit2.Annotators')
                 return;
             }
 
-            // Check every node contained in this range: if we select something inside the
-            // same text node the length will be 0: everything is ok. Otherwise check that
-            // every contained node must not be ignored
+            // Check every node contained in this range: if we select something which starts
+            // and ends inside the same text node the length will be 0: everything is ok.
+            // Otherwise check that every contained node must not be ignored
             var nodes = range.cloneContents().querySelectorAll("*"),
                 nodesLen = nodes.length;
             while (nodesLen--) {
@@ -63,11 +71,36 @@ angular.module('Pundit2.Annotators')
                 }
             }
 
-            tfh.log('Selection ended on document. DIRTY range: ', range);
+            var item = createItemFromRange(range);
+            tfh.log('Valid selection ended on document. Text fragment Item produced: '+ item.label);
 
-            var xp = range2xpointer(range);
+            ContextualMenu.show(upEvt.pageX, upEvt.pageY, item, tfh.options.cMenuType);
 
+        }; // mouseUpHandler()
+
+
+        var createItemFromRange = function(range) {
+            var item,
+                values = {};
+
+            values.uri = range2xpointer(range);
+            values.type = [NameSpace.fragments.text];
+            values.description = range.toString();
+
+            values.label = values.description;
+            if (values.label.length > tfh.options.labelMaxLength) {
+                values.label = values.label.substr(0, tfh.options.labelMaxLength) + ' ..';
+            }
+
+            values.pageContext = XpointersHelper.getSafePageContext();
+            values.isPartOf = values.uri.split('#')[0];
+
+            item = new Item(values.uri, values);
+            ItemsExchange.addItemToContainer(item, tfh.options.container);
+
+            return item;
         };
+
 
         // Gets the user's selected range on the page, checking if it's valid.
         // Will return a DIRTY range: a valid range in the current DOM the user
@@ -392,4 +425,5 @@ angular.module('Pundit2.Annotators')
         }; // getContentURLFromXPath()
 
         tfh.log('Component up and running');
+        return tfh;
     });

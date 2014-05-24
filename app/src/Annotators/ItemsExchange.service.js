@@ -21,8 +21,21 @@ angular.module('Pundit2.Core')
             itemsExchange.log('Wiped every loaded item and every container.');
         };
 
-        // TODO need to remove item from default container if it's the only container
-        // after wipe passed container
+        itemsExchange.isItemInContainer = function(item, container) {
+            var list = itemContainers[item.uri];
+
+            // Item not found .. !!?!
+            if (typeof(list) === "undefined") {
+                return false;
+            }
+
+            if (list.indexOf(container) === -1) {
+                return false;
+            }
+
+            return true;
+        };
+
         itemsExchange.wipeContainer = function(container) {
             if (typeof(itemListByContainer[container]) === 'undefined') {
                 itemsExchange.log('Cannot wipe undefined container '+ container);
@@ -49,6 +62,7 @@ angular.module('Pundit2.Core')
         itemsExchange.getItems = function() {
             return itemList;
         };
+
         itemsExchange.getItemsHash = function() {
             return itemListByURI;
         };

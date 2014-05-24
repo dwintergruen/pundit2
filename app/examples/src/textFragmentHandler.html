@@ -16,16 +16,18 @@ var punditConfig = {
         "TextFragmentAnnotator": { debug: false },
         "ImageFragmentAnnotator": { debug: false },
         "XpointersHelper": { debug: true },
-        "TextFragmentHandler": { debug: true }
+        "TextFragmentHandler": { debug: true },
+        "ContextualMenu": { debug: true }
     }
 
 };
 
 var TextFragmentHandlerDemoCtrl = function($scope, $q, Consolidation, Annotation,
-                                          AnnotationsExchange,
-    TextFragmentAnnotator, ItemsExchange, TextFragmentHandler) {
+                                           TextFragmentHandler,
+                                           AnnotationsExchange, TextFragmentAnnotator,
+                                           ItemsExchange) {
 
-    var uris = []; // Consolidation.getAvailableTargets();
+    var uris = Consolidation.getAvailableTargets();
     console.log('Available targets', uris);
 
     var annPromise = AnnotationsExchange.searchByUri(uris);
@@ -39,6 +41,7 @@ var TextFragmentHandlerDemoCtrl = function($scope, $q, Consolidation, Annotation
         }
         $q.all(annPromises).then(function(ret) {
             console.log("Retrieved annotations details searching by URIs", ret);
+            // Consolidation.consolidate(ItemsExchange.getItems());
         });
 
     }, function() {

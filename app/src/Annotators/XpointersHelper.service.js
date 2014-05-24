@@ -11,9 +11,9 @@ angular.module('Pundit2.Annotators')
 
     // Nodes with these classes will be ignored when building xpointers
     // and consolidating annotations. Add here any other UI element class which
-    // is not considered in the isIgnoreNode() method. wrapNodeClass and
+    // is not considered in the isConsolidationNode() method. wrapNodeClass and
     // textFragmentIconClass are already considered.
-    ignoreClasses: [],
+    consolidationClasses: [],
 
     // Classes to assign to named content elements to have them recognized by Pundit
     namedContentClasses: ['pundit-content']
@@ -460,15 +460,15 @@ angular.module('Pundit2.Annotators')
     }; // isWrapNode()
 
     // Returns true if the given node is a tag which should be ignored while building xpointers,
-    // like an UI button, or a wrapped node class
-    xp.isIgnoreNode = function(node) {
+    // like an UI icon (my items? more?), or a wrapped node class
+    xp.isConsolidationNode = function(node) {
 
         if (!xp.isElementNode(node)) {
             return false;
         }
 
         var toIgnore = [xp.options.textFragmentIconClass, xp.options.wrapNodeClass];
-        toIgnore = toIgnore.concat(xp.options.ignoreClasses);
+        toIgnore = toIgnore.concat(xp.options.consolidationClasses);
 
         for (var i = toIgnore.length; i--;) {
             if (angular.element(node).hasClass(toIgnore[i])) {
@@ -477,7 +477,7 @@ angular.module('Pundit2.Annotators')
         }
 
         return false;
-    }; // isIgnoreNode()
+    }; // isConsolidationNode()
 
     xp.isWrappedTextNode = function(node) {
         if (!xp.isWrapNode(node)) {

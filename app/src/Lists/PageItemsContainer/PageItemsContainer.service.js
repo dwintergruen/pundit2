@@ -26,7 +26,8 @@ angular.module('Pundit2.PageItemsContainer')
 
     debug: false
 })
-.service('PageItemsContainer', function(PAGEITEMSCONTAINERDEFAULTS, BaseComponent, TypesHelper, ContextualMenu, MyItems, MyPundit, ItemsExchange) {
+.service('PageItemsContainer', function(PAGEITEMSCONTAINERDEFAULTS, BaseComponent, TypesHelper,
+                                        ContextualMenu, MyPundit, ItemsExchange) {
 
     var pageItemsContainer = new BaseComponent('PageItemsContainer', PAGEITEMSCONTAINERDEFAULTS);
 
@@ -34,6 +35,7 @@ angular.module('Pundit2.PageItemsContainer')
     // contain all items array (all items array, text items array, image items array and page items array)
     var itemsArrays = [];
 
+        /*
     // menu actions relative to pageItem contextual menu
     var menuActions = [
         {
@@ -82,6 +84,8 @@ angular.module('Pundit2.PageItemsContainer')
 
     ContextualMenu.addAction(menuActions[0]);
     ContextualMenu.addAction(menuActions[1]);
+
+*/
 
     pageItemsContainer.buildItemsArray = function(activeTab, tabs, items) {
 

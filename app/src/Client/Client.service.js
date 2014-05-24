@@ -256,11 +256,13 @@ angular.module('Pundit2.Client')
                     if (typeof(tmpl) === "undefined") {
                         client.err('Can not bootstrap module '+mod.name+', template not found: '+mod.options.clientDashboardTemplate);
                     } else {
-                        // TODO: FIX MEEE .. dashboard is not ready yet :|
+
                         $injector.get("Dashboard")
-                            .addContent(mod.options.clientDashboardPanel,
-                            mod.options.clientDashboardTabTitle,
-                            mod.options.clientDashboardTemplate);
+                            .addContent(
+                                mod.options.clientDashboardPanel,
+                                mod.options.clientDashboardTabTitle,
+                                mod.options.clientDashboardTemplate
+                            );
                         client.log('Adding to Dashboard: '+ mod.name +' to panel '+mod.options.clientDashboardPanel);
                     }
                     continue;
@@ -301,7 +303,14 @@ angular.module('Pundit2.Client')
                         client.log('Received annotation '+settled+'/'+annPromises.length);
                         if (settled === annPromises.length) {
                             client.log('All promises settled, consolidating');
-                            Consolidation.consolidate(ItemsExchange.getItems());
+
+                            var pageItems = ItemsExchange.getItemsByContainer(Config.modules.PageItemsContainer.container),
+                                myItems = ItemsExchange.getItemsByContainer(Config.modules.MyItems.container),
+                                allItems = pageItems.concat(myItems);
+
+                            // TODO: UNIQUE THE ITEMS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+                            Consolidation.consolidate(allItems);
                         }
                     });
                     annPromises.push(a);

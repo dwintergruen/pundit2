@@ -9,9 +9,30 @@ angular.module("Pundit2.MyItemsContainer")
 
     debug: true
 })
-.service("MyItems", function(BaseComponent, NameSpace, $http, Item, ItemsExchange, MYITEMSDEFAULTS) {
+.service("MyItems", function(MYITEMSDEFAULTS, BaseComponent, NameSpace, Item, ItemsExchange,
+                             ContextualMenu, MyPundit, TextFragmentHandler, PageItemsContainer,
+                             $http) {
 
     var myItems = new BaseComponent("MyItems", MYITEMSDEFAULTS);
+
+    ContextualMenu.addAction({
+        name: 'addToMyItems',
+        type: [
+            TextFragmentHandler.options.cMenuType,
+            PageItemsContainer.options.cMenuType
+        ],
+        label: "Add to My Items (SERVICE)",
+        priority: 1,
+        showIf: function() {
+            return MyPundit.getUserLogged();
+        },
+        action: function(item){
+            myItems.addSingleMyItem(item);
+            console.log('############## Adding to my items ', item);
+            return true;
+        }
+    });
+
 
     // The very first time that we get my items from pundit server we might obtain pundit1 items:
     // - value is pundit2 uri property

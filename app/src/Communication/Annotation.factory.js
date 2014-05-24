@@ -1,6 +1,6 @@
 angular.module('Pundit2.Communication')
 .factory('Annotation', function(BaseComponent, NameSpace, Utils, Item, TypesHelper, Analytics,
-                                AnnotationsExchange, MyPundit, ItemsExchange, PageItemsContainer,
+                                AnnotationsExchange, MyPundit, ItemsExchange, Config,
                                 $http, $q) {
 
     var annotationComponent = new BaseComponent("Annotation");
@@ -190,7 +190,7 @@ angular.module('Pundit2.Communication')
             // discard predicates
             if (!item.isProperty()) {
                 // Add the item to the page items container
-                ItemsExchange.addItemToContainer(item, PageItemsContainer.options.container);
+                ItemsExchange.addItemToContainer(item, Config.modules.PageItemsContainer.container);
             }
 
             // Help out by giving the types to the helper, UI will say thanks

@@ -9,13 +9,15 @@ angular.module('Pundit2.Annotators')
     initContextualMenu: true,
 
     // Class to get the consolidated icon: normal consolidated fragment
-    iconClass: "pnd-icon-tag"
+    annotationIconClass: "pnd-icon-tag",
+    myItemsIconClass: "pnd-icon-certificate"
 
 })
 
 .service('TextFragmentAnnotator',
     function(TEXTFRAGMENTANNOTATORDEFAULTS, NameSpace, BaseComponent, Consolidation,
-             XpointersHelper, ContextualMenu, $compile, $rootScope, $location) {
+             XpointersHelper, ContextualMenu, ItemsExchange, Config,
+             $compile, $rootScope, $location) {
 
     // Create the component and declare what we deal with: text
     var tfa = new BaseComponent('TextFragmentAnnotator', TEXTFRAGMENTANNOTATORDEFAULTS);
@@ -26,8 +28,7 @@ angular.module('Pundit2.Annotators')
     // interaction when it comes to deal with fragments. Let's subscribe the text type.
     Consolidation.addAnnotator(tfa);
 
-
-    // Contextual Menu actions for text fragments
+    // Contextual Menu actions for text fragments??
     var initContextualMenu = function() {
         ContextualMenu.addAction({
             type: [tfa.options.contextualMenuType],
@@ -121,6 +122,7 @@ angular.module('Pundit2.Annotators')
         // .uri : uri of the original item
         // .bits: array of scopes of the bit directives for this fragment
         // .icon: scope of the icon directive for this fragment
+        // .item: Item belonging to this id
         fragmentById = {};
 
     // All of the items passed should be consolidable (checked by isConsolidable), in the
@@ -143,7 +145,8 @@ angular.module('Pundit2.Annotators')
             fragmentIds[uri] = ["fr-"+i];
             fragmentById["fr-"+i] = {
                 uri: uri,
-                bits: []
+                bits: [],
+                item: items[uri]
             };
             i++;
         }
@@ -165,7 +168,6 @@ angular.module('Pundit2.Annotators')
     // For each fragment ID it will place an icon after the last BIT belonging
     // to the given fragment
     var placeIcons = function() {
-
         for (var c in fragmentIds) {
             var id = fragmentIds[c],
                 lastBit = angular.element('[fragments*="'+ id +'"]').last();
@@ -221,7 +223,18 @@ angular.module('Pundit2.Annotators')
         fragmentById[icon.fragment].icon = icon;
         icon.fragmentUri = fragmentById[icon.fragment];
 
-        // TODO: which icon to use? How do we know?
+
+        var item = fragmentById[icon.fragment].item,
+            piContainer = Config.modules.PageItemsContainer.container,
+            miContainer = Config.modules.MyItems.container;
+        if (ItemsExchange.isItemInContainer(item, miContainer) &&
+            !ItemsExchange.isItemInContainer(item, piContainer)) {
+
+            icon.iconClass = tfa.options.myItemsIconClass;
+
+        } else {
+            icon.iconClass = tfa.options.annotationIconClass;
+        }
 
         tfa.log('Adding text fragment icon for fragment id='+ icon.fragment);
     };
