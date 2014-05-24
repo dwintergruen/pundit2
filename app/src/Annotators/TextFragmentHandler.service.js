@@ -32,7 +32,7 @@ angular.module('Pundit2.Annotators')
             if (isToBeIgnored(target)) {
                 tfh.log('ABORT: ignoring mouse DOWN event on document: ignore class spotted.');
                 if (tfh.options.removeSelectionOnAbort) {
-                    downEvt.preventDefault();
+                    $document.on('mouseup', mouseUpHandlerToRemove);
                 }
                 return;
             }
@@ -40,6 +40,14 @@ angular.module('Pundit2.Annotators')
             $document.on('mouseup', mouseUpHandler);
             tfh.log('Selection started on document, waiting for mouse up.');
         });
+
+        // If we are configured to remove the selection, we cannot preventDefault() or
+        // we will interfere with other clicks inside ignored containers (search inputs?!!).
+        // So we bind this up handler and just remove the selection on mouseup.
+        var mouseUpHandlerToRemove = function(upEvt) {
+            $document.off('mouseup', mouseUpHandlerToRemove);
+            removeSelection();
+        };
 
         var mouseUpHandler = function(upEvt) {
 
