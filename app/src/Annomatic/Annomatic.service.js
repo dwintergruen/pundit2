@@ -21,10 +21,10 @@ angular.module('Pundit2.Annomatic')
     
     annomatic.annotationNumber = 0;
 
-    // Wraps an annotation with a certain span, with a certain controller
-    // to handle clicks etc. 
-    // TODO: use a directive instead of a span?
-    var wrap = function(el, annotations) {
+    // Tries to find the given array of DataTXT annotations in the child nodes of the
+    // given node. Finding them might be a very delicate and fun dance!
+    // Returns an array of objects with range and annotation in them
+    var findAnnotations = function(el, annotations) {
         var node = el[0],
             text = el.html();
 
@@ -152,15 +152,11 @@ angular.module('Pundit2.Annomatic')
 
         } // while currentNode
 
-        // TODO: collected all ranges, create xpointers, consolidate. PROFIT.
-
         annomatic.log('Dance finished, found '+foundAnnotations.length+' annotations: ', foundAnnotations);
+        return foundAnnotations;
+    }; // findAnnotations()
 
-    }; // wrap()
-
-    var spacesUntilContent = function(string) {
-        return string.match(/^(\s*)/)[1].length;
-    };
+    // Returns an array of every multiple space found in the string, like ["  ", "    "]
     var multipleSpacesInContent = function(string) {
         var ret = string.match(/(\s\s+)/g);
 
@@ -178,6 +174,8 @@ angular.module('Pundit2.Annomatic')
         return ret;
     };
 
+    // Given a string, returns an array of numbers of multiple spaces found, with no
+    // repetitions, sorted. From ["   ", "  ", "     "] to [2, 3, 5]
     var multipleSpacesLengthInContent = function(string) {
         var doubleSpaces = multipleSpacesInContent(string),
             len = doubleSpaces.length;
@@ -305,16 +303,6 @@ angular.module('Pundit2.Annomatic')
 
         annomatic.log('Querying DataTXT for annotations on content: ', content);
 
-        /*
-        var mock = '{"time":10,"annotations":[{"start":0,"end":4,"spot":"Pisa","confidence":0.8537,"id":9164,"title":"Provincia di Pisa","uri":"http://it.wikipedia.org/wiki/Provincia_di_Pisa","abstract":"La provincia di Pisa è una provincia italiana della Toscana di oltre 415 000 abitanti. È la seconda Provincia toscana per popolazione.","label":"Provincia di Pisa","categories":["Provincia di Pisa"],"types":["http://dbpedia.org/ontology/Place","http://dbpedia.org/ontology/PopulatedPlace","http://dbpedia.org/ontology/Settlement"],"image":{"full":"https://upload.wikimedia.org/wikipedia/commons/b/bf/Toscana_Pisa1_tango7174.jpg","thumbnail":"https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Toscana_Pisa1_tango7174.jpg/200px-Toscana_Pisa1_tango7174.jpg"},"lod":{"wikipedia":"http://it.wikipedia.org/wiki/Provincia_di_Pisa","dbpedia":"http://it.dbpedia.org/resource/Provincia_di_Pisa"}},{"start":10,"end":25,"spot":"comune italiano","confidence":0.9169,"id":1217,"title":"Comuni d\u0027Italia","uri":"http://it.wikipedia.org/wiki/Comuni_d%27Italia","abstract":"Il comune, in Italia, è l\u0027ente locale fondamentale, autonomo ed indipendente secondo i princìpi consolidatisi nel Medioevo, e ripresi, in modo relativamente limitato, dalla rivoluzione francese, previsto dall\u0027 della Costituzione. Può essere suddiviso in frazioni, le quali possono a loro volta avere un limitato potere consultivo grazie alle consulte di frazione.","label":"Comune italiano","categories":["Comuni d\u0027Italia","Diritto amministrativo italiano","Diritto costituzionale italiano"],"types":["http://dbpedia.org/ontology/Place","http://dbpedia.org/ontology/PopulatedPlace","http://dbpedia.org/ontology/Settlement"],"image":{"full":"https://upload.wikimedia.org/wikipedia/commons/c/c3/Corona_di_comune.svg","thumbnail":"https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Corona_di_comune.svg/200px-Corona_di_comune.svg.png"},"lod":{"wikipedia":"http://it.wikipedia.org/wiki/Comuni_d%27Italia","dbpedia":"http://it.dbpedia.org/resource/Comuni_d\u0027Italia"}},{"start":95,"end":100,"spot":"Sesto","confidence":0.6072,"id":35303,"title":"Sesto (Italia)","uri":"http://it.wikipedia.org/wiki/Sesto_%28Italia%29","abstract":"Sesto (Sexten in tedesco, talvolta in italiano Sesto Pusteria) è un comune italiano di 1.945 abitanti della provincia autonoma di Bolzano.","label":"Sesto","categories":["Comuni d\u0027Italia confinanti con l\u0027Austria","Comuni della provincia di Bolzano","Stazioni e comprensori sciistici del Trentino-Alto Adige"],"types":["http://dbpedia.org/ontology/Place","http://dbpedia.org/ontology/PopulatedPlace","http://dbpedia.org/ontology/Settlement","http://dbpedia.org/ontology/City"],"image":{"full":"https://upload.wikimedia.org/wikipedia/commons/1/19/Sexten-Sesto2.JPG","thumbnail":"https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Sexten-Sesto2.JPG/200px-Sexten-Sesto2.JPG"},"lod":{"wikipedia":"http://it.wikipedia.org/wiki/Sesto_%28Italia%29","dbpedia":"http://it.dbpedia.org/resource/Sesto_(Italia)"}},{"start":432,"end":439,"spot":"vertice","confidence":0.0356,"id":596510,"title":"Vertice (geometria)","uri":"http://it.wikipedia.org/wiki/Vertice_%28geometria%29","abstract":"Il vertice, nella geometria piana è: il punto di incontro di due lati di un poligono (triangolo, quadrilatero, ecc).","label":"Vertici","categories":["Angolo","Poligoni","Poliedri"],"image":{"full":"https://upload.wikimedia.org/wikipedia/commons/8/81/V%C3%A9rtiz.jpg","thumbnail":"https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/V%C3%A9rtiz.jpg/200px-V%C3%A9rtiz.jpg"},"lod":{"wikipedia":"http://it.wikipedia.org/wiki/Vertice_%28geometria%29","dbpedia":"http://it.dbpedia.org/resource/Vertice_(geometria)"}}]}';
-        var data = JSON.parse(mock);
-
-        console.log('mock? ', data);
-        wrap(element, data.annotations);
-
-        return;
-        */
-
         annomatic.annotations = DataTXTResource.getAnnotations({
                 "$app_id": "cc85cdd8",
                 "$app_key": "668e4ac4f00f64c43ab4fefd5c8899fa",
@@ -323,22 +311,20 @@ angular.module('Pundit2.Annomatic')
             function(data) {
 
                 annomatic.log('Received '+data.annotations.length+' annotations from DataTXT');
-                console.log('Received text is ', data.text);
-                /*
-                var stop = 2;
-                for (var l=data.annotations.length, i=0; i<l; i++) {
-                    wrap(element, data.annotations[i], i);
-                    if (stop-- === 0) {
-                        break;
-                    }
-                }*/
-                wrap(element, data.annotations);
+                var validAnnotations = findAnnotations(element, data.annotations);
 
-                annomatic.ann.byNum = data.annotations;
+                annomatic.annotationNumber = validAnnotations.length;
                 annomatic.currAnn = 0;
-                annomatic.annotationNumber = data.annotations.length;
+
+                for (var l=validAnnotations.length, i=0; i<l; i++) {
+                    annomatic.ann.byNum.push(validAnnotations[i].annotation);
+                }
                 analyze();
+
+                /*
+                // TODO: after wrap:
                 $compile(element.contents())($rootScope);
+                */
             },
             function() {
                 annomatic.err('Error loading annotations from DataTXT');
