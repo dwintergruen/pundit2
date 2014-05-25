@@ -192,7 +192,7 @@ angular.module('Pundit2.Client')
     .service('Client', function(CLIENTDEFAULTS, BaseComponent, Config, MyPundit,
                                 ImageFragmentAnnotator, TextFragmentAnnotator, Consolidation,
                                 AnnotationsExchange, Item, ItemsExchange, Annotation, MyItems,
-                                TextFragmentHandler,
+                                TextFragmentHandler, Toolbar,
                                 $injector, $templateCache, $rootScope) {
 
         var client = new BaseComponent('Client', CLIENTDEFAULTS),
@@ -278,6 +278,8 @@ angular.module('Pundit2.Client')
         // Retrieves the annotations for this page and consolidates them
         var getAnnotations = function() {
 
+            Toolbar.setLoading(true);
+
             var uris = Consolidation.getAvailableTargets(),
                 annPromise = AnnotationsExchange.searchByUri(uris);
 
@@ -308,9 +310,9 @@ angular.module('Pundit2.Client')
                                 myItems = ItemsExchange.getItemsByContainer(Config.modules.MyItems.container),
                                 allItems = pageItems.concat(myItems);
 
-                            // TODO: UNIQUE THE ITEMS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
                             Consolidation.consolidate(allItems);
+
+                            Toolbar.setLoading(false);
                         }
                     });
                     annPromises.push(a);

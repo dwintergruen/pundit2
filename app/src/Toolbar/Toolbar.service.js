@@ -97,7 +97,7 @@ angular.module('Pundit2.Toolbar')
     };
 
     toolbar.setLoading = function(v) {
-        console.log('Setting loading ', v);
+        toolbar.log('Setting loading to '+ v);
         isLoadingShown = v;
     };
     
