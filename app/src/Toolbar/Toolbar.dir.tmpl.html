@@ -14,7 +14,14 @@
                 <li ng-show="showStatusButtonOk()" class="pnd-toolbar-status-button-ok">
                     <a href="javascript:void(0)"><span class="pnd-icon pnd-icon-check"></span></a>
                 </li>
-                
+
+                <!-- Loading button -->
+                <li ng-show="showStatusButtonLoading()" class="pnd-toolbar-loading-button">
+                    <a href="javascript:void(0)">
+                        <span></span>
+                    </a>
+                </li>
+
                 <!-- Login button -->
                 <li ng-show="showLogin()" class="pnd-toolbar-login-button pnd-toolbar-button-active">
                     <a href="javascript:void(0)" template="{{dropdownTemplate}}" bs-dropdown="userNotLoggedDropdown"><span>Login</span></a>
@@ -62,7 +69,7 @@
                 <!-- Annotations menu -->
                 <li class="pnd-toolbar-annotations-button">
                     <a href="javascript:void(0)" ng-click="annotationsClickHandler()">
-                        <span class="pnd-toolbar-active-element">Annotations</span>
+                        <span class="pnd-toolbar-active-element">Annotations Sidebar</span>
                     </a>
                 </li>
 

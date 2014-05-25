@@ -18,11 +18,15 @@ var ToolbarDemoCtrl = function($scope, Toolbar, MyPundit, $httpBackend, NameSpac
         return MyPundit.getUserLogged();
     };
     
-    $scope.addError = function(){
+    $scope.addError = function() {
         var n = numberErrors;
         var a = Toolbar.addError("Error #"+n, function() { console.log("clicked on error #", n) });
         numberErrors++;
     };
+
+    $scope.setLoading = function(v) {
+        Toolbar.setLoading(v);
+    }
 
 }
 
@@ -34,7 +38,13 @@ var ToolbarDemoCtrl = function($scope, Toolbar, MyPundit, $httpBackend, NameSpac
         <div ng-controller="ToolbarDemoCtrl">
             <button type="button" class="btn btn-success btn-example-login" ng-show="!getStatus()" ng-click="login()">Log in</button>
             <button type="button" class="btn btn-warning btn-example-logout" ng-show="getStatus()" ng-click="logout()">Log out</button>
-            <button type="button" class="btn btn-danger" ng-click="addError()" >Add Error</button>
+            <button type="button" class="btn btn-danger" ng-click="addError()">Add Error</button>
+            <button type="button" class="btn btn-info" ng-click="setLoading(true)">
+                Set loading status
+            </button>
+            <button type="button" class="btn btn-info" ng-click="setLoading(false)">
+                Remove loading status
+            </button>
         </div>
     </div>
 

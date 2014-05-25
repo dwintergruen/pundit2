@@ -123,7 +123,32 @@ body.pnd-toolbar-active {
             }
         }
     }
-    
+
+    // ---------- LOADING BUTTON
+    &.pnd-toolbar-loading-button {
+
+        border-right: 1px lighten(@brand-success, 30%) solid;
+
+        a {
+            padding-right: 8px;
+            padding-left: 8px;
+            background-color: @brand-success;
+            border: 0px;
+
+            &:hover,
+            &:focus {
+                background-color: @brand-success;
+            }
+
+            span {
+                height: 17px;
+                width: 16px;
+                display: block;
+                background: url("img/animated-loading-icon.gif");
+            }
+        }
+    }
+
     // ---------- BUTTON
     
     &.pnd-toolbar-button-active {
@@ -145,7 +170,7 @@ body.pnd-toolbar-active {
     
     .pnd-toolbar-status-ok-icon {
     }
-    
+
     // ---------- ERROR BUTTON
     
     &.pnd-toolbar-error-button {

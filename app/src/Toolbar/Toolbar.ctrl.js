@@ -36,30 +36,40 @@ angular.module('Pundit2.Toolbar')
     ];
     
     $scope.userData = {};
-    
+
     // listener for user status
     // when user is logged in, set flag isUserLogged to true
     $scope.$watch(function() { return MyPundit.getUserLogged(); }, function(newStatus) {
         $scope.isUserLogged = newStatus;
         $scope.userData = MyPundit.getUserData();
     });
-    
+
+    /*
+
+    // TODO: USELESS?
+
     // listener for error status
     // when an error is occured in, set flag isErrorOccured to true
     $scope.$watch(function() { return Toolbar.getErrorShown(); }, function(newStatus) {
         $scope.isErrorOccured = newStatus;
     });
 
+    */
+
     // return true if no errors are occured --> status button ok must be visible
     $scope.showStatusButtonOk = function() {
-        return $scope.isErrorOccured === false;
+        return !Toolbar.getErrorShown() && !Toolbar.isLoading();
     };
     
     // return true if an error is occured --> status button error must be visible
     $scope.showStatusButtonError = function() {
-        return $scope.isErrorOccured === true;
+        return Toolbar.getErrorShown();
     };
-    
+
+    $scope.showStatusButtonLoading = function() {
+        return Toolbar.isLoading() && !Toolbar.getErrorShown();
+    };
+
     // return true if user is not logged in --> login button must be visible
     $scope.showLogin = function() {
         return $scope.isUserLogged === false;
@@ -69,7 +79,7 @@ angular.module('Pundit2.Toolbar')
     $scope.showUserButton = function() {
         return $scope.isUserLogged === true;
     };
-    
+
     // return true if user is logged in --> dashboard button is active
     $scope.isDashboardActive = function() {
         return $scope.isUserLogged === true;

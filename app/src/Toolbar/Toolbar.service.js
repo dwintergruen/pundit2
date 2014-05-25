@@ -84,11 +84,21 @@ angular.module('Pundit2.Toolbar')
     var toolbar = new BaseComponent('Toolbar', TOOLBARDEFAULTS);
     
     var errorID = 0,
+        isLoadingShown = false,
         isErrorShown = false,
         errorMessageDropdown = [];
 
     toolbar.getErrorShown = function() {
         return isErrorShown;
+    };
+
+    toolbar.isLoading = function() {
+        return isLoadingShown;
+    };
+
+    toolbar.setLoading = function(v) {
+        console.log('Setting loading ', v);
+        isLoadingShown = v;
     };
     
     // Send error to show in the toolbar
