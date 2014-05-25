@@ -3,7 +3,7 @@ angular.module('Pundit2.Annomatic')
     container: 'annomatic'
 })
 .service('Annomatic', function(ANNOMATICDEFAULTS, BaseComponent, DataTXTResource, XpointersHelper,
-                               ItemsExchange, TextFragmentHandler,
+                               ItemsExchange, TextFragmentHandler, TypesHelper,
                                $rootScope, $timeout, $document, $q) {
 
     var annomatic = new BaseComponent('Annomatic', ANNOMATICDEFAULTS);
@@ -244,7 +244,7 @@ angular.module('Pundit2.Annomatic')
                 if (t in byType) {
                     byType[t].push(l);
                 } else {
-                    annomatic.ann.typesOptions.push({value: t, label: t.substr(-10) });
+                    annomatic.ann.typesOptions.push({value: t, label: TypesHelper.getLabel(t) });
                     byType[t] = [l];
                 }
             }
