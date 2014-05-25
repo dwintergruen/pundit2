@@ -1,13 +1,17 @@
 angular.module('Pundit2.Annomatic')
-.controller('AnnomaticPanelCtrl', function($scope, Annomatic, $window) {
+.controller('AnnomaticPanelCtrl', function($scope, Annomatic, Consolidation, ItemsExchange,
+                                           $window) {
 
     // Get ready to use the service
     var gotAnnotations = false;
     $scope.getAnnotations = function() {
         if (gotAnnotations) { return; }
         gotAnnotations = true;
-        Annomatic.getDataTXTAnnotations(annotationsRootNode);
+        Annomatic.getDataTXTAnnotations(annotationsRootNode).then(function() {
+            Consolidation.consolidate(ItemsExchange.getItemsByContainer(Annomatic.options.container));
+        });
     };
+
     $scope.startReview = function() {
         Annomatic.reviewNext(0);
     };

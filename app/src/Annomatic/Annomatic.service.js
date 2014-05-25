@@ -1,8 +1,12 @@
 angular.module('Pundit2.Annomatic')
-.factory('Annomatic', function(BaseComponent, DataTXTResource, XpointersHelper,
-                               $compile, $rootScope, $timeout, $document) {
+.constant('ANNOMATICDEFAULTS', {
+    container: 'annomatic'
+})
+.service('Annomatic', function(ANNOMATICDEFAULTS, BaseComponent, DataTXTResource, XpointersHelper,
+                               ItemsExchange, TextFragmentHandler,
+                               $rootScope, $timeout, $document, $q) {
 
-    var annomatic = new BaseComponent('Annomatic');
+    var annomatic = new BaseComponent('Annomatic', ANNOMATICDEFAULTS);
 
     annomatic.ann = {
         // The annotations, by number
@@ -297,8 +301,11 @@ angular.module('Pundit2.Annomatic')
         }
     };
 
+    // Given an HTML node, will query DataTXT for annotations on the contents of that node
+    // solving the promise when done.
     annomatic.getDataTXTAnnotations = function(node) {
-        var element = angular.element(node),
+        var promise = $q.defer(),
+            element = angular.element(node),
             content = element.html();
 
         annomatic.log('Querying DataTXT for annotations on content: ', content);
@@ -311,26 +318,28 @@ angular.module('Pundit2.Annomatic')
             function(data) {
 
                 annomatic.log('Received '+data.annotations.length+' annotations from DataTXT');
-                var validAnnotations = findAnnotations(element, data.annotations);
+                var item,
+                    validAnnotations = findAnnotations(element, data.annotations);
 
                 annomatic.annotationNumber = validAnnotations.length;
                 annomatic.currAnn = 0;
 
                 for (var l=validAnnotations.length, i=0; i<l; i++) {
                     annomatic.ann.byNum.push(validAnnotations[i].annotation);
+                    item = TextFragmentHandler.createItemFromRange(validAnnotations[i].range);
+                    ItemsExchange.addItemToContainer(item, annomatic.options.container);
                 }
-                analyze();
 
-                /*
-                // TODO: after wrap:
-                $compile(element.contents())($rootScope);
-                */
+                analyze();
+                promise.resolve();
+
             },
             function() {
                 annomatic.err('Error loading annotations from DataTXT');
             }
         );
 
+        return promise.promise;
     };
     
     annomatic.hideAnn = function(num) {

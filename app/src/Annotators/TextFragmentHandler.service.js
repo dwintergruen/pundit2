@@ -86,7 +86,9 @@ angular.module('Pundit2.Annotators')
             // discarded at all.
             // Possible solution: wipe the container when triple composer is empty, ctx menu is
             // NOT shown on every dashboard open/close ?
-            var item = createItemFromRange(range);
+            var item = tfh.createItemFromRange(range);
+            ItemsExchange.addItemToContainer(item, tfh.options.container);
+
             tfh.log('Valid selection ended on document. Text fragment Item produced: '+ item.label);
 
             ContextualMenu.show(upEvt.pageX, upEvt.pageY, item, tfh.options.cMenuType);
@@ -94,9 +96,9 @@ angular.module('Pundit2.Annotators')
         }; // mouseUpHandler()
 
 
-        var createItemFromRange = function(range) {
-            var item,
-                values = {};
+        // Creates a proper Item from a range .. it must be a valid range, kktnx.
+        tfh.createItemFromRange = function(range) {
+            var values = {};
 
             values.uri = range2xpointer(range);
             values.type = [NameSpace.fragments.text];
@@ -110,10 +112,7 @@ angular.module('Pundit2.Annotators')
             values.pageContext = XpointersHelper.getSafePageContext();
             values.isPartOf = values.uri.split('#')[0];
 
-            item = new Item(values.uri, values);
-            ItemsExchange.addItemToContainer(item, tfh.options.container);
-
-            return item;
+            return new Item(values.uri, values);
         };
 
 
