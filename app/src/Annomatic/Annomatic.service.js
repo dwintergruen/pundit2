@@ -48,41 +48,50 @@ angular.module('Pundit2.Annomatic')
             // Offset in the Annotations coordinates
             currentOffset = 0,
             currentAnnotationNum = 0,
-            currentAnnotation = annotations[currentAnnotationNum];
+            currentAnnotation = annotations[currentAnnotationNum],
+            sub, start, end, addedSpaces;
 
         while ((currentNode = stack.pop()) && currentAnnotationNum < annotations.length) {
+            addedSpaces = 0;
 
             console.log('## POPPED ', currentNode, currentAnnotation);
 
             if (XpointersHelper.isTextNode(currentNode)) {
 
-                var trimmedContent = currentNode.textContent.replace(/(?:(?:^|\n)\s+|\s+(?:$|\n))/g,'').replace(/\s+/g,' ');
+                var trimmedContent = currentNode.textContent.replace(/[\r\n]/g, " ").replace(/(?:(?:^|\n)\s+|\s+(?:$|\n))/g,'').replace(/\s+/g,' ');
 
                 // Super empty text node, skip it
                 if (trimmedContent.length === 0) {
                     console.log('Skipping empty text node. Current offset is still '+ currentOffset);
                 } else {
 
-                    if (trimmedContent.length !== currentNode.textContent.length) {
+                    // if (trimmedContent.length !== currentNode.textContent.length) {
                         console.log('Text node got content CLEANED: ', trimmedContent.length, currentNode.textContent.length, currentNode.textContent);
-                        // var content = currentNode.textContent;
 
-                        while (currentAnnotation.end < currentOffset + trimmedContent.length) {
+                        // While the current annotation should belong to this text node
+                        while (currentAnnotation.end <= currentOffset + trimmedContent.length +1) {
+                            found = false;
 
-                            console.log('(( Looking for '+currentAnnotation.start, currentAnnotation.end,' vs ', currentOffset + trimmedContent.length);
+                            console.log('(( Looking for '+currentAnnotation.start, currentAnnotation.end,' vs ', currentOffset + trimmedContent.length, 'Added spaces'+ addedSpaces);
 
                             var spacesLen = multipleSpacesLengthInContent(currentNode.textContent),
                                 found = false;
 
+                            spacesLen.push(0);
+
                             // There is spaces in the content   like     these
-                            if (spacesLen.length > 0 ){
+                            // if (spacesLen.length > 0){
 
                                 console.log('[[ Content got spaces '+spacesLen+' ]]');
 
                                 for (var l=spacesLen.length; l--;) {
-                                    var sub = currentNode.textContent.substring(currentOffset + spacesLen[l] + currentAnnotation.start, currentOffset + spacesLen[l] + currentAnnotation.end)
-                                    console.log('Trying to add spaces ', spacesLen[l], '--'+ sub +'--');
+
+                                    start = spacesLen[l] + currentAnnotation.start - currentOffset + addedSpaces;
+                                    end = spacesLen[l] + currentAnnotation.end - currentOffset + addedSpaces;
+                                    sub = currentNode.textContent.substring(start, end);
+                                    console.log('Trying to add spaces ', spacesLen[l], '--'+ sub +'--', currentAnnotation.spot, start, end);
                                     if (currentAnnotation.spot === sub) {
+                                        addedSpaces += spacesLen[l];
                                         found = true;
                                         console.log('@@@111@@@ FOUND ANNOTATION!!1!', currentAnnotation.spot, realOffset, realOffset+currentAnnotation.end);
                                         currentAnnotationNum++;
@@ -91,12 +100,27 @@ angular.module('Pundit2.Annomatic')
                                     }
                                 }
 
+                            /*
                             } else {
-                                var sub = currentNode.textContent.substring(currentOffset + currentAnnotation.start, currentAnnotation.end)
+                                sub = currentNode.textContent.substring(currentAnnotation.start - currentOffset, currentAnnotation.end - currentOffset);
+                                var sub = trimmedContent.substring(currentAnnotation.start - currentOffset, currentAnnotation.end - currentOffset),
+                                    sub2 = trimmedContent.substring(currentAnnotation.start - currentOffset-2, currentAnnotation.end - currentOffset-2);
+
                                 if (currentAnnotation.spot === sub) {
                                     console.log('@@@222@@@ FOUND ANNOTATION!!1!', currentAnnotation.spot, realOffset, realOffset+currentAnnotation.end);
+                                    currentAnnotationNum++;
+                                    currentAnnotation = annotations[currentAnnotationNum];
+                                } else if (currentAnnotation.spot === sub2) {
+                                    realOffset += 1;
+                                    currentOffset += 1;
+                                    console.log('@@@333@@@ FOUND ANNOTATION!!1!', currentAnnotation.spot, realOffset, realOffset + currentAnnotation.end);
+                                    currentAnnotationNum++;
+                                    currentAnnotation = annotations[currentAnnotationNum];
+                                } else {
+                                    console.log('Not found? --'+sub+'-- vs '+currentAnnotation.spot, currentOffset,  currentAnnotation.start);
                                 }
-                            }
+
+                            }*/
 
                             if (!found) {
                                 currentAnnotationNum++;
@@ -109,12 +133,21 @@ angular.module('Pundit2.Annomatic')
                                 break;
                             }
 
-                        }
+                            console.log('WHILE IS OVER ', currentAnnotation.end, currentOffset, trimmedContent.length, currentAnnotation.end <= currentOffset + trimmedContent.length)
+                            if (currentAnnotation.end > currentOffset + trimmedContent.length) {
+                                console.log('FUCKING TIRMMED COMMENENENTET ', trimmedContent, currentNode.textContent);
+                            }
 
+                        } // while currentAnnotation.end .. annotation should be in this text node
+
+                        // Let's move on to the next node, update current offset +1, since DataTXT
+                        // inserts a \n at the end of tags.. just because why not ..... :|
+                        currentOffset += trimmedContent.length +1;
                         realOffset += currentNode.textContent.length;
-                        currentOffset += trimmedContent.length;
-                        console.log('Offsets annotation/real: ', currentOffset, realOffset);
+                        console.log('Next annotation, offsets annotation/real: ', currentOffset, realOffset);
 
+
+/*
                     } else {
 
                         console.log('Text node got already clean content: ', trimmedContent.length, currentNode.textContent.length, currentNode.textContent);
@@ -125,12 +158,24 @@ angular.module('Pundit2.Annomatic')
 
                         if (currentAnnotation.spot === sub) {
                             console.log('@@@222@@@ FOUND ANNOTATION!!1!', currentAnnotation.spot, realOffset, realOffset+currentAnnotation.end);
+                            currentAnnotationNum++;
+                            currentAnnotation = annotations[currentAnnotationNum];
                         } else if (currentAnnotation.spot === sub2) {
+                            realOffset += 1;
+                            currentOffset += 1;
                             console.log('@@@333@@@ FOUND ANNOTATION!!1!', currentAnnotation.spot, realOffset, realOffset + currentAnnotation.end);
+                            currentAnnotationNum++;
+                            currentAnnotation = annotations[currentAnnotationNum];
                         } else {
                             console.log('Not found? --'+sub+'-- vs '+currentAnnotation.spot, currentOffset,  currentAnnotation.start);
                         }
+
+                        realOffset += currentNode.textContent.length;
+                        currentOffset += trimmedContent.length;
+                        console.log('Offsets annotation/real: ', currentOffset, realOffset);
+
                     }
+                    */
 
                     // if (annotation.start === currentOffset && annotation.)
 
@@ -168,6 +213,13 @@ angular.module('Pundit2.Annomatic')
             return [];
         }
 
+        // New lines? Replace them with a space ...
+        for (var len=ret.length; len--;) {
+            if (ret[len].match(/\n/)) {
+                ret[len] = ret[len].replace(/[\r\n]/g, " ");
+            }
+        }
+
         return ret;
     };
 
@@ -182,7 +234,7 @@ angular.module('Pundit2.Annomatic')
         var ret = [],
             seen = {};
         for (var i=0; i<len; i++) {
-            var current = doubleSpaces[i].length;
+            var current = doubleSpaces[i].length -1;
             if (typeof(seen[current]) === "undefined") {
                 seen[current] = true;
                 ret.push(current);
@@ -194,10 +246,7 @@ angular.module('Pundit2.Annomatic')
     };
 
 
-    PUNDIT.spaces = multipleSpacesLengthInContent;
-
-
-        // TODO: move this to some kind of configured CONSTANTS,
+    // TODO: move this to some kind of configured CONSTANTS,
     // and use them instead of magic 'strings'
     var stateClassMap = {
         'waiting' : 'ann-waiting',
@@ -301,14 +350,15 @@ angular.module('Pundit2.Annomatic')
 
         annomatic.log('Querying DataTXT for annotations on content: ', content);
 
-        var mock = '{"time":10,"annotations":[{"start":0,"end":4,"spot":"Pisa","confidence":0.8537,"id":9164,"title":"Provincia di Pisa","uri":"http://it.wikipedia.org/wiki/Provincia_di_Pisa","abstract":"La provincia di Pisa è una provincia italiana della Toscana di oltre 415 000 abitanti. È la seconda Provincia toscana per popolazione.","label":"Provincia di Pisa","categories":["Provincia di Pisa"],"types":["http://dbpedia.org/ontology/Place","http://dbpedia.org/ontology/PopulatedPlace","http://dbpedia.org/ontology/Settlement"],"image":{"full":"https://upload.wikimedia.org/wikipedia/commons/b/bf/Toscana_Pisa1_tango7174.jpg","thumbnail":"https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Toscana_Pisa1_tango7174.jpg/200px-Toscana_Pisa1_tango7174.jpg"},"lod":{"wikipedia":"http://it.wikipedia.org/wiki/Provincia_di_Pisa","dbpedia":"http://it.dbpedia.org/resource/Provincia_di_Pisa"}},{"start":10,"end":25,"spot":"comune italiano","confidence":0.9169,"id":1217,"title":"Comuni d\u0027Italia","uri":"http://it.wikipedia.org/wiki/Comuni_d%27Italia","abstract":"Il comune, in Italia, è l\u0027ente locale fondamentale, autonomo ed indipendente secondo i princìpi consolidatisi nel Medioevo, e ripresi, in modo relativamente limitato, dalla rivoluzione francese, previsto dall\u0027 della Costituzione. Può essere suddiviso in frazioni, le quali possono a loro volta avere un limitato potere consultivo grazie alle consulte di frazione.","label":"Comune italiano","categories":["Comuni d\u0027Italia","Diritto amministrativo italiano","Diritto costituzionale italiano"],"types":["http://dbpedia.org/ontology/Place","http://dbpedia.org/ontology/PopulatedPlace","http://dbpedia.org/ontology/Settlement"],"image":{"full":"https://upload.wikimedia.org/wikipedia/commons/c/c3/Corona_di_comune.svg","thumbnail":"https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Corona_di_comune.svg/200px-Corona_di_comune.svg.png"},"lod":{"wikipedia":"http://it.wikipedia.org/wiki/Comuni_d%27Italia","dbpedia":"http://it.dbpedia.org/resource/Comuni_d\u0027Italia"}},{"start":95,"end":100,"spot":"Sesto","confidence":0.6072,"id":35303,"title":"Sesto (Italia)","uri":"http://it.wikipedia.org/wiki/Sesto_%28Italia%29","abstract":"Sesto (Sexten in tedesco, talvolta in italiano Sesto Pusteria) è un comune italiano di 1.945 abitanti della provincia autonoma di Bolzano.","label":"Sesto","categories":["Comuni d\u0027Italia confinanti con l\u0027Austria","Comuni della provincia di Bolzano","Stazioni e comprensori sciistici del Trentino-Alto Adige"],"types":["http://dbpedia.org/ontology/Place","http://dbpedia.org/ontology/PopulatedPlace","http://dbpedia.org/ontology/Settlement","http://dbpedia.org/ontology/City"],"image":{"full":"https://upload.wikimedia.org/wikipedia/commons/1/19/Sexten-Sesto2.JPG","thumbnail":"https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Sexten-Sesto2.JPG/200px-Sexten-Sesto2.JPG"},"lod":{"wikipedia":"http://it.wikipedia.org/wiki/Sesto_%28Italia%29","dbpedia":"http://it.dbpedia.org/resource/Sesto_(Italia)"}}]}';
+        /*
+        var mock = '{"time":10,"annotations":[{"start":0,"end":4,"spot":"Pisa","confidence":0.8537,"id":9164,"title":"Provincia di Pisa","uri":"http://it.wikipedia.org/wiki/Provincia_di_Pisa","abstract":"La provincia di Pisa è una provincia italiana della Toscana di oltre 415 000 abitanti. È la seconda Provincia toscana per popolazione.","label":"Provincia di Pisa","categories":["Provincia di Pisa"],"types":["http://dbpedia.org/ontology/Place","http://dbpedia.org/ontology/PopulatedPlace","http://dbpedia.org/ontology/Settlement"],"image":{"full":"https://upload.wikimedia.org/wikipedia/commons/b/bf/Toscana_Pisa1_tango7174.jpg","thumbnail":"https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Toscana_Pisa1_tango7174.jpg/200px-Toscana_Pisa1_tango7174.jpg"},"lod":{"wikipedia":"http://it.wikipedia.org/wiki/Provincia_di_Pisa","dbpedia":"http://it.dbpedia.org/resource/Provincia_di_Pisa"}},{"start":10,"end":25,"spot":"comune italiano","confidence":0.9169,"id":1217,"title":"Comuni d\u0027Italia","uri":"http://it.wikipedia.org/wiki/Comuni_d%27Italia","abstract":"Il comune, in Italia, è l\u0027ente locale fondamentale, autonomo ed indipendente secondo i princìpi consolidatisi nel Medioevo, e ripresi, in modo relativamente limitato, dalla rivoluzione francese, previsto dall\u0027 della Costituzione. Può essere suddiviso in frazioni, le quali possono a loro volta avere un limitato potere consultivo grazie alle consulte di frazione.","label":"Comune italiano","categories":["Comuni d\u0027Italia","Diritto amministrativo italiano","Diritto costituzionale italiano"],"types":["http://dbpedia.org/ontology/Place","http://dbpedia.org/ontology/PopulatedPlace","http://dbpedia.org/ontology/Settlement"],"image":{"full":"https://upload.wikimedia.org/wikipedia/commons/c/c3/Corona_di_comune.svg","thumbnail":"https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Corona_di_comune.svg/200px-Corona_di_comune.svg.png"},"lod":{"wikipedia":"http://it.wikipedia.org/wiki/Comuni_d%27Italia","dbpedia":"http://it.dbpedia.org/resource/Comuni_d\u0027Italia"}},{"start":95,"end":100,"spot":"Sesto","confidence":0.6072,"id":35303,"title":"Sesto (Italia)","uri":"http://it.wikipedia.org/wiki/Sesto_%28Italia%29","abstract":"Sesto (Sexten in tedesco, talvolta in italiano Sesto Pusteria) è un comune italiano di 1.945 abitanti della provincia autonoma di Bolzano.","label":"Sesto","categories":["Comuni d\u0027Italia confinanti con l\u0027Austria","Comuni della provincia di Bolzano","Stazioni e comprensori sciistici del Trentino-Alto Adige"],"types":["http://dbpedia.org/ontology/Place","http://dbpedia.org/ontology/PopulatedPlace","http://dbpedia.org/ontology/Settlement","http://dbpedia.org/ontology/City"],"image":{"full":"https://upload.wikimedia.org/wikipedia/commons/1/19/Sexten-Sesto2.JPG","thumbnail":"https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Sexten-Sesto2.JPG/200px-Sexten-Sesto2.JPG"},"lod":{"wikipedia":"http://it.wikipedia.org/wiki/Sesto_%28Italia%29","dbpedia":"http://it.dbpedia.org/resource/Sesto_(Italia)"}},{"start":432,"end":439,"spot":"vertice","confidence":0.0356,"id":596510,"title":"Vertice (geometria)","uri":"http://it.wikipedia.org/wiki/Vertice_%28geometria%29","abstract":"Il vertice, nella geometria piana è: il punto di incontro di due lati di un poligono (triangolo, quadrilatero, ecc).","label":"Vertici","categories":["Angolo","Poligoni","Poliedri"],"image":{"full":"https://upload.wikimedia.org/wikipedia/commons/8/81/V%C3%A9rtiz.jpg","thumbnail":"https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/V%C3%A9rtiz.jpg/200px-V%C3%A9rtiz.jpg"},"lod":{"wikipedia":"http://it.wikipedia.org/wiki/Vertice_%28geometria%29","dbpedia":"http://it.dbpedia.org/resource/Vertice_(geometria)"}}]}';
         var data = JSON.parse(mock);
 
         console.log('mock? ', data);
         wrap(element, data.annotations);
 
         return;
-
+        */
 
         annomatic.annotations = DataTXTResource.getAnnotations({
                 "$app_id": "cc85cdd8",
@@ -318,14 +368,16 @@ angular.module('Pundit2.Annomatic')
             function(data) {
 
                 annomatic.log('Received '+data.annotations.length+' annotations from DataTXT');
-
+                console.log('Received text is ', data.text);
+                /*
                 var stop = 2;
                 for (var l=data.annotations.length, i=0; i<l; i++) {
                     wrap(element, data.annotations[i], i);
                     if (stop-- === 0) {
                         break;
                     }
-                }
+                }*/
+                wrap(element, data.annotations);
 
                 annomatic.ann.byNum = data.annotations;
                 annomatic.currAnn = 0;
