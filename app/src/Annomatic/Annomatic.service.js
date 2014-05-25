@@ -1,6 +1,6 @@
 angular.module('Pundit2.Annomatic')
 .factory('Annomatic', function(BaseComponent, DataTXTResource, XpointersHelper,
-                               $compile, $rootScope, $timeout) {
+                               $compile, $rootScope, $timeout, $document) {
 
     var annomatic = new BaseComponent('Annomatic');
 
@@ -28,180 +28,135 @@ angular.module('Pundit2.Annomatic')
         var node = el[0],
             text = el.html();
 
-        /*
-        var before = text.substring(0, annotation.start),
-            after = text.substring(annotation.end, text.length),
-            annotated = text.substring(annotation.start, annotation.end),
-            title = '',
-            content = '';
-        */
-
         annomatic.log('##### Wrapping annotations ', annotations.length, annotations);
 
-        // .replace(/(?:(?:^|\n)\s+|\s+(?:$|\n))/g,'').replace(/\s+/g,' ')
-
-
         var stack = [node],
-            currentNode = node,
-            // Offset in our HTML string
-            realOffset = 0,
-            // Offset in the Annotations coordinates
             currentOffset = 0,
             currentAnnotationNum = 0,
             currentAnnotation = annotations[currentAnnotationNum],
-            sub, start, end, addedSpaces;
+            sub, start, end, addedSpaces, currentNode, found,
+            foundAnnotations = [];
 
+        // Cycle over the nodes in the stack: depth first. We start from the given node
         while ((currentNode = stack.pop()) && currentAnnotationNum < annotations.length) {
+
+            // Spaces added to the current offsets to match the real content, it will
+            // be used to create valid ranges
             addedSpaces = 0;
 
-            console.log('## POPPED ', currentNode, currentAnnotation);
-
-            if (XpointersHelper.isTextNode(currentNode)) {
-
-                var trimmedContent = currentNode.textContent.replace(/[\r\n]/g, " ").replace(/(?:(?:^|\n)\s+|\s+(?:$|\n))/g,'').replace(/\s+/g,' ');
-
-                // Super empty text node, skip it
-                if (trimmedContent.length === 0) {
-                    console.log('Skipping empty text node. Current offset is still '+ currentOffset);
-                } else {
-
-                    // if (trimmedContent.length !== currentNode.textContent.length) {
-                        console.log('Text node got content CLEANED: ', trimmedContent.length, currentNode.textContent.length, currentNode.textContent);
-
-                        // While the current annotation should belong to this text node
-                        while (currentAnnotation.end <= currentOffset + trimmedContent.length +1) {
-                            found = false;
-
-                            console.log('(( Looking for '+currentAnnotation.start, currentAnnotation.end,' vs ', currentOffset + trimmedContent.length, 'Added spaces'+ addedSpaces);
-
-                            var spacesLen = multipleSpacesLengthInContent(currentNode.textContent),
-                                found = false;
-
-                            spacesLen.push(0);
-
-                            // There is spaces in the content   like     these
-                            // if (spacesLen.length > 0){
-
-                                console.log('[[ Content got spaces '+spacesLen+' ]]');
-
-                                for (var l=spacesLen.length; l--;) {
-
-                                    start = spacesLen[l] + currentAnnotation.start - currentOffset + addedSpaces;
-                                    end = spacesLen[l] + currentAnnotation.end - currentOffset + addedSpaces;
-                                    sub = currentNode.textContent.substring(start, end);
-                                    console.log('Trying to add spaces ', spacesLen[l], '--'+ sub +'--', currentAnnotation.spot, start, end);
-                                    if (currentAnnotation.spot === sub) {
-                                        addedSpaces += spacesLen[l];
-                                        found = true;
-                                        console.log('@@@111@@@ FOUND ANNOTATION!!1!', currentAnnotation.spot, realOffset, realOffset+currentAnnotation.end);
-                                        currentAnnotationNum++;
-                                        currentAnnotation = annotations[currentAnnotationNum];
-                                        break;
-                                    }
-                                }
-
-                            /*
-                            } else {
-                                sub = currentNode.textContent.substring(currentAnnotation.start - currentOffset, currentAnnotation.end - currentOffset);
-                                var sub = trimmedContent.substring(currentAnnotation.start - currentOffset, currentAnnotation.end - currentOffset),
-                                    sub2 = trimmedContent.substring(currentAnnotation.start - currentOffset-2, currentAnnotation.end - currentOffset-2);
-
-                                if (currentAnnotation.spot === sub) {
-                                    console.log('@@@222@@@ FOUND ANNOTATION!!1!', currentAnnotation.spot, realOffset, realOffset+currentAnnotation.end);
-                                    currentAnnotationNum++;
-                                    currentAnnotation = annotations[currentAnnotationNum];
-                                } else if (currentAnnotation.spot === sub2) {
-                                    realOffset += 1;
-                                    currentOffset += 1;
-                                    console.log('@@@333@@@ FOUND ANNOTATION!!1!', currentAnnotation.spot, realOffset, realOffset + currentAnnotation.end);
-                                    currentAnnotationNum++;
-                                    currentAnnotation = annotations[currentAnnotationNum];
-                                } else {
-                                    console.log('Not found? --'+sub+'-- vs '+currentAnnotation.spot, currentOffset,  currentAnnotation.start);
-                                }
-
-                            }*/
-
-                            if (!found) {
-                                currentAnnotationNum++;
-                                currentAnnotation = annotations[currentAnnotationNum];
-                                console.log(':(((( next annotation?', currentAnnotation);
-                            }
-
-                            if (currentAnnotationNum >= annotations.length) {
-                                console.log('Annotations are over!!1!');
-                                break;
-                            }
-
-                            console.log('WHILE IS OVER ', currentAnnotation.end, currentOffset, trimmedContent.length, currentAnnotation.end <= currentOffset + trimmedContent.length)
-                            if (currentAnnotation.end > currentOffset + trimmedContent.length) {
-                                console.log('FUCKING TIRMMED COMMENENENTET ', trimmedContent, currentNode.textContent);
-                            }
-
-                        } // while currentAnnotation.end .. annotation should be in this text node
-
-                        // Let's move on to the next node, update current offset +1, since DataTXT
-                        // inserts a \n at the end of tags.. just because why not ..... :|
-                        currentOffset += trimmedContent.length +1;
-                        realOffset += currentNode.textContent.length;
-                        console.log('Next annotation, offsets annotation/real: ', currentOffset, realOffset);
-
-
-/*
-                    } else {
-
-                        console.log('Text node got already clean content: ', trimmedContent.length, currentNode.textContent.length, currentNode.textContent);
-
-                        // Try to add 2, \n does get counted in the final string
-                        var sub = trimmedContent.substring(currentAnnotation.start - currentOffset, currentAnnotation.end - currentOffset),
-                            sub2 = trimmedContent.substring(currentAnnotation.start - currentOffset-2, currentAnnotation.end - currentOffset-2);
-
-                        if (currentAnnotation.spot === sub) {
-                            console.log('@@@222@@@ FOUND ANNOTATION!!1!', currentAnnotation.spot, realOffset, realOffset+currentAnnotation.end);
-                            currentAnnotationNum++;
-                            currentAnnotation = annotations[currentAnnotationNum];
-                        } else if (currentAnnotation.spot === sub2) {
-                            realOffset += 1;
-                            currentOffset += 1;
-                            console.log('@@@333@@@ FOUND ANNOTATION!!1!', currentAnnotation.spot, realOffset, realOffset + currentAnnotation.end);
-                            currentAnnotationNum++;
-                            currentAnnotation = annotations[currentAnnotationNum];
-                        } else {
-                            console.log('Not found? --'+sub+'-- vs '+currentAnnotation.spot, currentOffset,  currentAnnotation.start);
-                        }
-
-                        realOffset += currentNode.textContent.length;
-                        currentOffset += trimmedContent.length;
-                        console.log('Offsets annotation/real: ', currentOffset, realOffset);
-
-                    }
-                    */
-
-                    // if (annotation.start === currentOffset && annotation.)
-
-                }
-
-            } else {
+            // Not a text node, push every child in the stack starting from the last, so
+            // the first popped will be the first child: depth first visit
+            if (!XpointersHelper.isTextNode(currentNode)) {
                 if (currentNode.hasChildNodes()) {
                     var childNodes = currentNode.childNodes;
                     for (var len=childNodes.length; len--;) {
                         stack.push(childNodes[len]);
-                        console.log('Pushing ', childNodes[len]);
+                        annomatic.log('Pushing node ', childNodes[len]);
                     }
                 }
-            }
+
+            // If it's a text node.. let the dance begin!
+            } else {
+
+                // Trimmed content: DataTXT strips multiple spaces (more than allowed in HTML)
+                // to return a nice looking text only string. We strip the content of the
+                // current text node, hopefully to get the very same result as DataTXT
+                var trimmedContent = currentNode.textContent
+                    .replace(/[\r\n]/g, " ")
+                    .replace(/(?:(?:^|\n)\s+|\s+(?:$|\n))/g, '')
+                    .replace(/\s+/g, ' ');
+
+                // Super empty text node, just skip it
+                if (trimmedContent.length === 0) {
+                    annomatic.log('Skipping empty text node.');
+                } else {
+
+                    // Cycle over annotations, until the current annotation .end
+                    // is out of this node's content length. In that case we found the first
+                    // annotation belonging to the next node. We let the outer while pop the
+                    // next node and cycle over and over and over again.
+                    while (currentAnnotation.end <= currentOffset + trimmedContent.length + 1) {
+
+                        // True if we found an annotation on this node
+                        found = false;
+
+                        // HTML allows multiple spaces pretty much everywhere, rendering them
+                        // as a single one. New lines as well.
+                        // Gather every multiple space in this node: DataTXT strips them
+                        // off replacing them with single spaces, new lines included. We need
+                        // to know how many spaces got skipped so to being able to match
+                        // the annotated words even if after multiple spaces.
+                        var spacesLen = multipleSpacesLengthInContent(currentNode.textContent);
+
+                        // There might be no spaces at all .. check it out!
+                        spacesLen.push(0);
+
+                        // For each number of spaces found, try to match the content
+                        for (var l = spacesLen.length; l--;) {
+
+                            start = spacesLen[l] + currentAnnotation.start - currentOffset + addedSpaces;
+                            end = spacesLen[l] + currentAnnotation.end - currentOffset + addedSpaces;
+                            sub = currentNode.textContent.substring(start, end);
+
+                            annomatic.log('Trying to add '+spacesLen[l]+' spaces: --' + sub + '-- vs --'+ currentAnnotation.spot+"--");
+
+                            // TODO: we are losing all those annotations which are multiple words AND
+                            // in the DOM are splitted by spaces like "aa     bb" or "aa\n    bb".
+                            // It might be possible to catch this by checking if sub contains a
+                            // good number of spaces (with the regexp), add that number to the end
+                            // offset et voilà... should work.
+
+                            // Found the annotated fragment!
+                            if (currentAnnotation.spot === sub) {
+                                addedSpaces += spacesLen[l];
+                                found = true;
+                                annomatic.log('@@ Found annotation '+ currentAnnotation.spot);
+
+                                var range = $document[0].createRange();
+                                range.setStart(currentNode, start);
+                                range.setEnd(currentNode, end);
+
+                                if (range.toString() !== currentAnnotation.spot) {
+                                    annomatic.err('Annotation and range content do not match!! :((');
+                                } else {
+                                    foundAnnotations.push({
+                                        range: range,
+                                        annotation: currentAnnotation
+                                    });
+                                }
+                                break;
+                            }
+                        } // for l = spacesLen.length
+
+                        if (!found) {
+                            annomatic.log('Annotation NOT FOUND: ', currentAnnotation);
+                        }
+
+                        currentAnnotationNum++;
+                        currentAnnotation = annotations[currentAnnotationNum];
+
+                        if (currentAnnotationNum >= annotations.length) {
+                            annomatic.log('Annotations are over!!! We are done!!');
+                            break;
+                        }
+
+                    } // while currentAnnotation.end .. annotation should be in this text node
+
+                    // Let's move on to the next node, update current offset +1, since DataTXT
+                    // inserts a \n at the end of tags.. just because why not ..... :|
+                    currentOffset += trimmedContent.length + 1;
+                    annomatic.log('Moving to next node with current offset = '+ currentOffset);
+
+                } // if trimmedContentLength
+            } // if isTextNode()
 
         } // while currentNode
 
-        /*
-        title = annotation.label;
-        content += annotation.abstract.replace("'", "\'");
+        // TODO: collected all ranges, create xpointers, consolidate. PROFIT.
 
-        var wrapped = "<span ng-controller=\"AutomaticAnnotationCtrl\" ng-init=\"num="+num+"\" ng-click=\"handleSuggestionClick()\" class='{{stateClass}} ann-auto ann-"+num+"'>"+ annotated +"</span>";
-        // el.html(before + wrapped + after);
-        */
+        annomatic.log('Dance finished, found '+foundAnnotations.length+' annotations: ', foundAnnotations);
 
-    };
+    }; // wrap()
 
     var spacesUntilContent = function(string) {
         return string.match(/^(\s*)/)[1].length;
