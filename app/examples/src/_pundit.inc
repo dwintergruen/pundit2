@@ -44,7 +44,7 @@
     <script src="../src/Annomatic/Annomatic.js"></script>
     <script src="../src/Annomatic/AnnomaticPanel.dir.js"></script>
     <script src="../src/Annomatic/AnnomaticPanel.ctrl.js"></script>
-    <script src="../src/Annomatic/Annotate.service.js"></script>
+    <script src="../src/Annomatic/Annomatic.service.js"></script>
     <script src="../src/Annomatic/DataTXTResource.factory.js"></script>
     <script src="../src/Annomatic/AnnotationPopover.ctrl.js"></script>
     <script src="../src/Annomatic/AutomaticAnnotation.ctrl.js"></script>

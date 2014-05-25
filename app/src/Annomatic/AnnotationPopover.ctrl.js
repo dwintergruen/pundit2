@@ -1,32 +1,32 @@
 angular.module('Pundit2.Annomatic')
-.controller('AnnotationPopoverCtrl', function($scope, Annotate) {
+.controller('AnnotationPopoverCtrl', function($scope, Annomatic) {
 
     // Using popover's content variable to pass the number of the 
     // annotation
     $scope.num = parseInt($scope.content, 10);
-    $scope.ann = Annotate.ann;
+    $scope.ann = Annomatic.ann;
     
     $scope.instances = $scope.ann.byId[$scope.ann.byNum[$scope.num].id].length;
 
     $scope.setOk = function(num) {
         num = parseInt(num, 10);
         $scope.$hide();
-        Annotate.setState(num, 'accepted');
-        Annotate.reviewNext(num+1);
+        Annomatic.setState(num, 'accepted');
+        Annomatic.reviewNext(num+1);
     };
     
     $scope.setKo = function(num) {
         num = parseInt(num, 10);
         $scope.$hide();
-        Annotate.setState(num, 'removed');
-        Annotate.reviewNext(num+1);
+        Annomatic.setState(num, 'removed');
+        Annomatic.reviewNext(num+1);
     };
     
     $scope.goNext = function(num) {
         num = parseInt(num, 10);
         $scope.$hide();
-        Annotate.setLastState(num);
-        Annotate.reviewNext(num+1);
+        Annomatic.setLastState(num);
+        Annomatic.reviewNext(num+1);
     };
     
     $scope.acceptAll = function(num) {
@@ -36,11 +36,11 @@ angular.module('Pundit2.Annomatic')
             similar = $scope.ann.byId[id];
 
         for (var i=similar.length; i--;) {
-            Annotate.setState(similar[i], 'accepted');
+            Annomatic.setState(similar[i], 'accepted');
         }
         
         $scope.$hide();
-        Annotate.reviewNext(num+1);
+        Annomatic.reviewNext(num+1);
     };
     
     $scope.toggleSimilar = function(num) {
@@ -54,11 +54,11 @@ angular.module('Pundit2.Annomatic')
         // automatic annotation
         for (var i=similar.length; i--;) {
             if (similar[i] !== num) {
-                var similarAnn = Annotate.ann.byNum[similar[i]];
+                var similarAnn = Annomatic.ann.byNum[similar[i]];
                 if (similarAnn.state !== "active") {
-                    Annotate.setState(similar[i], 'active');
+                    Annomatic.setState(similar[i], 'active');
                 } else {
-                    Annotate.setLastState(similar[i]);
+                    Annomatic.setLastState(similar[i]);
                 }
             }
         }

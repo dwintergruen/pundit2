@@ -1,5 +1,5 @@
 angular.module('Pundit2.Annomatic')
-.controller('AutomaticAnnotationCtrl', function($scope, $popover, Annotate, $timeout) {
+.controller('AutomaticAnnotationCtrl', function($scope, $popover, Annomatic, $timeout) {
 
     $scope.$watch('num', function(num, oldValue) {
         if (typeof(num) === "undefined" && typeof(oldValue) === "undefined") {
@@ -18,16 +18,16 @@ angular.module('Pundit2.Annomatic')
             }
         );
         
-        Annotate.ann.autoAnnScopes[num] = $scope;
+        Annomatic.ann.autoAnnScopes[num] = $scope;
     });
 
-    // stateClass is read by the template and written by the Annotate service
+    // stateClass is read by the template and written by the Annomatic service
     $scope.stateClass = 'ann-waiting';
 
     $scope.show = function() {
         if ($scope.popover.$isShown === true) { return; }
-        Annotate.closeAll();
-        Annotate.setState($scope.num, 'active');
+        Annomatic.closeAll();
+        Annomatic.setState($scope.num, 'active');
         $timeout($scope.popover.show, 1);
     };
     
@@ -35,13 +35,13 @@ angular.module('Pundit2.Annomatic')
         if ($scope.popover.$isShown === false) {
             return;
         }
-        Annotate.setLastState($scope.num);
+        Annomatic.setLastState($scope.num);
         $timeout($scope.popover.hide, 1);
     };
 
     $scope.handleSuggestionClick = function() {
 
-        if (Annotate.ann.byNum[$scope.num].hidden) { return; }
+        if (Annomatic.ann.byNum[$scope.num].hidden) { return; }
 
         // TODO: can we decide the popover position at run time?
         // like if the annotation is too close to left/right margins

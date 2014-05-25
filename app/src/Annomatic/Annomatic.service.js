@@ -1,7 +1,8 @@
 angular.module('Pundit2.Annomatic')
-.factory('Annotate', function(DataTXTResource, $compile, $rootScope, $timeout) {
+.factory('Annomatic', function(BaseComponent, DataTXTResource,
+                               $compile, $rootScope, $timeout) {
 
-    var service = {};
+    var service = new BaseComponent('Annomatic');
 
     service.ann = {
         // The annotations, by number

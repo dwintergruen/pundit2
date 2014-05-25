@@ -1,22 +1,22 @@
 angular.module('Pundit2.Annomatic')
-.controller('AnnomaticPanelCtrl', function($scope, Annotate, $window) {
+.controller('AnnomaticPanelCtrl', function($scope, Annomatic, $window) {
 
     // Get ready to use the service
     var gotAnnotations = false;
     $scope.getAnnotations = function() {
         if (gotAnnotations) { return; }
         gotAnnotations = true;
-        Annotate.getDataTXTAnnotations(annotationsRootNode);
+        Annomatic.getDataTXTAnnotations(annotationsRootNode);
     };
     $scope.startReview = function() {
-        Annotate.reviewNext(0);
+        Annomatic.reviewNext(0);
     };
     
-    $scope.Annotate = Annotate;
+    $scope.Annomatic = Annomatic;
     
     $scope.$watch('filteredTypes', function(filtered, oldFiltered) {
         if (typeof(filtered) === "undefined" && typeof(oldFiltered) === "undefined") { return; }
-        Annotate.setTypeFilter(filtered);
+        Annomatic.setTypeFilter(filtered);
     });
 
 
