@@ -63,7 +63,7 @@ angular.module("Pundit2.MyItemsContainer")
     }; // initContextualMenu()
 
     // When all modules have been initialized, services are up, Config are setup etc..
-    $rootScope.$on('pundit-init-done', function() {
+    $rootScope.$on('pundit-boot-done', function() {
         initContextualMenu();
     });
 

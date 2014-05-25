@@ -372,15 +372,12 @@ angular.module('Pundit2.Client')
 
             addComponents();
 
-            client.log('Boot is completed, emitting pundit-init-done event!');
-            $rootScope.$emit('pundit-init-done');
+            client.log('Boot is completed, emitting pundit-boot-done event');
+            $rootScope.$emit('pundit-boot-done');
 
             // TODO:
             // * Lists (My, page?, vocabs?, selectors?)
-            // * TextFragmentHandler (TextAnnotator?)
             // * Selectors
-            // * MyItems
-            // ? Annotators
             // LATERS: image annotator handler, named content handler, page handler
             //         entity editor helper
             //         Notebook Manager
