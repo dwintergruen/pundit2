@@ -158,27 +158,6 @@ angular.module('Pundit2.AnnotationSidebar')
 
     }, true);
 
-    // $scope.$watch(function() {
-    //     return AnnotationSidebar.getAuthors();
-    // }, function(currentListAuthors) {
-    //     $scope.authors = currentListAuthors;
-    // });
-    // $scope.$watch(function() {
-    //     return AnnotationSidebar.getPredicates();
-    // }, function(currentListPredicates) {
-    //     $scope.predicates = currentListPredicates;
-    // });
-    // $scope.$watch(function() {
-    //     return AnnotationSidebar.getEntities();
-    // }, function(currentListEntities) {
-    //     $scope.entities = currentListEntities;
-    // });
-    // $scope.$watch(function() {
-    //     return AnnotationSidebar.getTypes();
-    // }, function(currentListTypes) { 
-    //     $scope.types = currentListTypes;
-    // });
-
     $scope.$watch(function() {
         return AnnotationSidebar.getFilters();
     }, function(currentFiltersList) {

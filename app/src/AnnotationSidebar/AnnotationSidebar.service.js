@@ -76,6 +76,8 @@ angular.module('Pundit2.AnnotationSidebar')
         }
     };
 
+    annotationSidebar.filtersCount = {};
+
     // Expands or collapses the sidebar
     annotationSidebar.toggle = function(){
         state.isSidebarExpanded = !state.isSidebarExpanded;
@@ -118,13 +120,18 @@ angular.module('Pundit2.AnnotationSidebar')
         return state.filteredAnnotations;
     };
 
+    var filterCountIncrement = function(uri){
+        if (typeof(annotationSidebar.filtersCount[uri]) === 'undefined'){
+            annotationSidebar.filtersCount[uri] = 1;
+        } else {
+            annotationSidebar.filtersCount[uri]++;
+        }
+        return annotationSidebar.filtersCount[uri];
+    };
+
     // Updates the list of filters when new annotations comes
     var setFilterElements = function(annotations) {
-        elementsList.predicates = {};
-        elementsList.authors = {};
-        elementsList.entities = {};
-        elementsList.predicates = {};
-        elementsList.types = {};
+        annotationSidebar.filtersCount = {};
 
         angular.forEach(annotations, function(annotation) {
 
@@ -132,9 +139,14 @@ angular.module('Pundit2.AnnotationSidebar')
 
             // Annotation authors
             if (typeof(elementsList.authors[annotation.creator]) === 'undefined'){
-                elementsList.authors[annotation.creator] = {uri: annotation.creator, label: annotation.creatorName, count: 1, active: false};
+                elementsList.authors[annotation.creator] = {
+                    uri: annotation.creator, 
+                    label: annotation.creatorName, 
+                    active: false, 
+                    count: filterCountIncrement(annotation.creator)
+                };
             } else {
-                elementsList.authors[annotation.creator].count++;
+                elementsList.authors[annotation.creator].count = filterCountIncrement(annotation.creator);
             }
 
             // Annotation date
@@ -147,9 +159,14 @@ angular.module('Pundit2.AnnotationSidebar')
                 if (typeof(uriList[predicateUri]) === 'undefined'){
                     uriList[predicateUri] = {uri: predicateUri};
                     if (typeof(elementsList.predicates[predicateUri]) === 'undefined'){
-                        elementsList.predicates[predicateUri] = {uri: predicateUri, label: annotation.items[predicateUri].label, count: 1, active: false};
+                        elementsList.predicates[predicateUri] = {
+                            uri: predicateUri, 
+                            label: annotation.items[predicateUri].label, 
+                            active: false,
+                            count: filterCountIncrement(predicateUri)
+                        };
                     } else {
-                        elementsList.predicates[predicateUri].count++;
+                        elementsList.predicates[predicateUri].count = filterCountIncrement(predicateUri);
                     }
                 }
             });
@@ -159,9 +176,14 @@ angular.module('Pundit2.AnnotationSidebar')
                 if (typeof(uriList[entUri]) === 'undefined'){
                     uriList[entUri] = {uri: entUri};
                     if (typeof(elementsList.entities[entUri]) === 'undefined'){
-                        elementsList.entities[entUri] = {uri: entUri, label: annotation.items[entUri].label, count: 1, active: false};
+                        elementsList.entities[entUri] = {
+                            uri: entUri, 
+                            label: annotation.items[entUri].label, 
+                            active: false,
+                            count: filterCountIncrement(entUri)
+                        };
                     } else {
-                        elementsList.entities[entUri].count++;
+                        elementsList.entities[entUri].count = filterCountIncrement(entUri);
                     }
                 }
             });
@@ -172,29 +194,20 @@ angular.module('Pundit2.AnnotationSidebar')
                     if (typeof(uriList[typeUri]) === 'undefined'){
                         uriList[typeUri] = {uri: typeUri};
                         if (typeof(elementsList.types[typeUri]) === 'undefined'){
-                            elementsList.types[typeUri] = {uri: typeUri, label: TypesHelper.getLabel(typeUri), count: 1, active: false};
+                            elementsList.types[typeUri] = {
+                                uri: typeUri, 
+                                label: TypesHelper.getLabel(typeUri), 
+                                active: false,
+                                count: filterCountIncrement(typeUri)
+                            };
                         } else {
-                            elementsList.types[typeUri].count++;
+                            elementsList.types[typeUri].count = filterCountIncrement(typeUri);
                         }
                     }
                 });
             });
         });
     };
-
-    // TODO: unificare?
-    // annotationSidebar.getAuthors = function(){
-    //     return elementsList.authors;
-    // };
-    // annotationSidebar.getEntities = function(){
-    //     return elementsList.entities;
-    // };
-    // annotationSidebar.getPredicates = function(){
-    //     return elementsList.predicates;
-    // };
-    // annotationSidebar.getTypes = function(){
-    //     return elementsList.types;
-    // };
 
     annotationSidebar.getFilters = function(){
         return elementsList;
