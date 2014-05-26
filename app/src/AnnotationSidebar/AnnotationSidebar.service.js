@@ -105,10 +105,14 @@ angular.module('Pundit2.AnnotationSidebar')
         angular.forEach(filters, function(filterObj){
             currentFilterName = filterObj.filterName;
             currentFilterObjExpression = filterObj.expression;
-            if (typeof(currentFilterObjExpression) === 'string' && currentFilterObjExpression !== '') {
-                state.filteredAnnotations = $filter(currentFilterName)(state.filteredAnnotations, currentFilterObjExpression);
-            } else if (angular.isArray(currentFilterObjExpression) && currentFilterObjExpression.length > 0) {
-                state.filteredAnnotations = $filter(currentFilterName)(state.filteredAnnotations, currentFilterObjExpression);
+            try {
+                if (typeof(currentFilterObjExpression) === 'string' && currentFilterObjExpression !== '') {
+                    state.filteredAnnotations = $filter(currentFilterName)(state.filteredAnnotations, currentFilterObjExpression);    
+                } else if (angular.isArray(currentFilterObjExpression) && currentFilterObjExpression.length > 0) {
+                    state.filteredAnnotations = $filter(currentFilterName)(state.filteredAnnotations, currentFilterObjExpression);
+                }
+            } catch(e) {
+                annotationSidebar.err('Filter is not defined '+e);
             }
         }); 
         return state.filteredAnnotations;

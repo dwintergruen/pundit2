@@ -122,7 +122,6 @@ angular.module('Pundit2.AnnotationSidebar')
             var newMinDate = $filter('date')(minDate, 'yyyy-MM-dd');
             $scope.fromMinDate = setMin(newMinDate);
             if (AnnotationSidebar.filters.fromDate.expression === ''){
-                // AnnotationSidebar.filters.fromDate.expression = newMinDate;
                 $scope.toMinDate = setMin(newMinDate);
             }
         }
@@ -134,7 +133,6 @@ angular.module('Pundit2.AnnotationSidebar')
             var newMaxDate = $filter('date')(maxDate, 'yyyy-MM-dd');
             $scope.toMaxDate = newMaxDate;
             if (AnnotationSidebar.filters.toDate.expression === ''){
-                // AnnotationSidebar.filters.toDate.expression = newMaxDate;
                 $scope.fromMaxDate = newMaxDate;
             }
         }
@@ -189,7 +187,11 @@ angular.module('Pundit2.AnnotationSidebar')
     };
 
     $scope.toggleFilterList = function(event) {
+        var previousElement = angular.element('.pnd-annotation-sidebar-filter-show');
         var currentElement = angular.element(event.target.parentElement);
+
+        // Close all filter list and toggle the current
+        previousElement.not(currentElement).removeClass('pnd-annotation-sidebar-filter-show');
         currentElement.toggleClass('pnd-annotation-sidebar-filter-show');
     };
 
