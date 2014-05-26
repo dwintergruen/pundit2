@@ -98,6 +98,7 @@ angular.module('Pundit2.Vocabularies')
         if (typeof(str) === 'undefined' || str === '') {
             str = '';
             $scope.search.icon = vocabulariesContainer.options.inputIconSearch;
+            $timeout.cancel(promise);
             return;
         } else {
             $scope.search.icon = vocabulariesContainer.options.inputIconClear;

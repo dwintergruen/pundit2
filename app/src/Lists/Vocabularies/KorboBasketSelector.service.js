@@ -7,7 +7,7 @@ angular.module('Pundit2.Vocabularies')
     korboItemsBaseURL: 'http://purl.org/net7/korbo',
     korboSchemaBaseURL: 'http://purl.org/net7/korbo/type/',
     
-    baskets: [16],
+    baskets: [109],
     //baskets: [82],
 
     // enable or disable all muruca selectors instances
@@ -27,7 +27,7 @@ angular.module('Pundit2.Vocabularies')
         }
     ],    
 
-    debug: false
+    debug: true
 
 })
 .factory('KorboBasketSelector', function(BaseComponent, KORBOBASKETSELECTORDEFAULTS, Item, ItemsExchange, SelectorsManager, $http) {
@@ -44,6 +44,7 @@ angular.module('Pundit2.Vocabularies')
     // selector instance constructor
     var KorboBasketFactory = function(config){
         this.config = config;
+        this.pendingRequest = 0;
     };
 
     KorboBasketFactory.prototype.getItems = function(term, callback){
@@ -54,10 +55,11 @@ angular.module('Pundit2.Vocabularies')
         var config = {
             params: {
                 query: angular.toJson({
-                    query: term
-                    //limit: korboBasketSelector.options.limit
+                    query: term,
+                    limit: korboBasketSelector.options.limit
                 })
-            }
+            },
+            withCredentials: true
         };
 
         $http.jsonp(korboBasketSelector.options.korboBasketReconURL+korboBasketSelector.options.baskets[0]+"?jsonp=JSON_CALLBACK", config)
@@ -65,51 +67,79 @@ angular.module('Pundit2.Vocabularies')
 
                 korboBasketSelector.log('Http success, get items '+self.config.label, data);
 
-                //self.getItemsDetails(data.result, callback);
+                if (data.result.length === 0) {
+                    korboBasketSelector.log('Empty response');
+                    callback();
+                }
+
+                self.pendingRequest = data.result.length;
+
+                for (var i=0; i<data.result.length; i++) {
+                    var current = data.result[i];
+
+                    var item = {
+                        label: current.name, 
+                        uri: current.resource_url,
+                        type: []
+                    };
+
+                self.getItemDetails(item, callback);
+
+                }
 
             });
 
     };
 
-    KorboBasketFactory.prototype.getItemsDetails = function(result, callback){
+    KorboBasketFactory.prototype.getItemDetails = function(item, callback){
 
         var self = this;
 
-        for (var i=0; i<result.length; i++) {
-            var current = result[i];
+        korboBasketSelector.log('Loading metadata for item '+ item.uri);
 
-            var item = {
-                label: current.name, 
-                uri: current.resource_url,
-                type: []
-            };
+        var config = {
+            params: {
+                url: item.uri
+            },
+            withCredentials: true
+        };
 
-            korboBasketSelector.log('Loading metadata for item '+ item.uri);
+        $http.jsonp(korboBasketSelector.options.korboBasketMetadataURL+korboBasketSelector.options.baskets[0]+"?jsonp=JSON_CALLBACK", config)
+            .success(function(data){
 
-            if ('description' in current) {
-                item.description = current.description;
-            }
-                
-            if (('type' in current) && ('length' in current.type)) {
-                for (var j = current.type.length; j--;) {
-                    if (typeof(current.type[j]) === 'string') {
-                        // add type to item
-                        item.type.push(current.type[j]);
-                    }
-                    else {
-                        korboBasketSelector.log('ERROR: Weird type is weird? '+typeof(current.type[j])+': '+current.type[j]);
+                korboBasketSelector.log('Http item details success, get item', data);
+
+                var o = data.result;
+
+                if ('image' in o) {
+                    item.image = o.image;
+                }                    
+
+                if ('description' in o) {
+                    item.description = o.description;
+                }                    
+                    
+                if (('rdftype' in o) && ('length' in o.rdftype)) {
+                    for (var j = o.rdftype.length; j--;) {
+                        if (typeof(o.rdftype[j]) === 'string') {
+                            item.type.push(o.rdftype[j]);
+                        }
+                        else {
+                            self.log('ERROR: Weird type is weird? '+typeof(o.rdftype[j])+': '+o.rdftype[j]);
+                        }
                     }
                 }
-            }
 
-            var added = new Item(item.uri, item);
-            ItemsExchange.addItemToContainer(added, self.config.container);
+                var added = new Item(item.uri, item);
+                ItemsExchange.addItemToContainer(added, self.config.container);
 
-        }
+                self.pendingRequest--;
+                if (self.pendingRequest <= 0) {
+                    callback();
+                    korboBasketSelector.log('Items complete parsing');
+                }
 
-        callback();
-
-        korboBasketSelector.log('Complete items parsing');
+            });
 
     };
 
