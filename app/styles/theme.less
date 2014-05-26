@@ -1,5 +1,3 @@
-
-
 //
 // Buttons
 // --------------------------------------------------
@@ -11,7 +9,7 @@
 .btn-info,
 .btn-warning,
 .btn-danger {
-  text-shadow: 0 -1px 0 rgba(0,0,0,.2);
+  //text-shadow: 0 -1px 0 rgba(0,0,0,.2);
   //@shadow: inset 0 1px 0 rgba(255,255,255,.15), 0 1px 1px rgba(0,0,0,.075);
   //.box-shadow(@shadow);
 
@@ -433,18 +431,23 @@ a {
   &:active,
     {
     outline: 0;
+    box-shadow: none;
   }		
 }
 
 .btn:focus,
 .btn:active:focus,
 .btn.active:focus,
-input:focus,
 :invalid,
 :-moz-submit-invalid,
 :-moz-ui-invalid {
   outline: 0;
   box-shadow: none;
 }
+
+input {
+    outline: 0;
+    box-shadow: none;
+  }		
 
 

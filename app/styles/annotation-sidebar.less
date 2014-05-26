@@ -52,24 +52,6 @@ body.pnd-annotation-sidebar-expanded {
 }
 */
 
-.pnd-annotation-sidebar-btn-remove-filters,
-.pnd-annotation-sidebar-btn-close-filters {
-    color: #fff;
-    margin: 10px 0px 10px 0px;
-    padding: 6px 0px;
-    background: @brand-success;
-    width: 49%;  
-    cursor: pointer;
-    text-align: center;
-    display: inline-block;
-    border: 0px;
-    
-    &:hover,
-    &:focus {
-      background-color: darken(@brand-success, 12%);
-      }
-    
-}
 
 .pnd-annotation-sidebar-filter {
     padding: 6px 0 6px 10px;
@@ -77,25 +59,37 @@ body.pnd-annotation-sidebar-expanded {
     border-bottom: 1px solid @gray-light;
 }
 
-.pnd-annotation-sidebar-filters-list {
+
+.pnd-annotation-sidebar-filter-content {
 	
 	button {
-	  color: @nav-tabs-active-link-hover-color;
-      margin: 0px 0px 10px 0px;
-      padding: 6px 0px;
-      background-color: @gray-dark;
-      border: 0px;
-      width: 49%;
-      outline: 0;
-      color: #fff;
       
-	      &:active,
-	      &:focus {
-	      	background-color: #fff;
-	      	color: @gray-dark;	
-	      	}
+      	  &.pnd-btn-sidebar {
+			  color: @nav-tabs-active-link-hover-color;
+		      margin: 0px 0px 10px 0px;
+		      padding: 6px 0px;
+		      background-color: @gray-dark;
+		      width: 50%;
+		      color: #fff;
+		      border: 1px solid #fff;
+		      	  
+		      	  &:hover,
+		  	      &:active,
+		  	      &:focus {
+			  	      background-color: #fff;
+			  	      color: @gray-dark;	
+			  	      } 
+			  }
+   	
+	  &.pnd-annotation-sidebar-btn-remove-filters,
+	  &.pnd-annotation-sidebar-btn-close-filters {
+		  margin: 10px 0px 10px 0px;
+		  width: 50%;  
+		  }
+	      	
 	}
 }
+
 
 .pnd-annotation-sidebar-filter {
     &.pnd-annotation-sidebar-filter-show .pnd-annotation-sidebar-filter-element {
@@ -103,24 +97,29 @@ body.pnd-annotation-sidebar-expanded {
     }
     &.pnd-annotation-sidebar-filter-show .pnd-annotation-sidebar-filter-input {
         display: block;
-        margin: 10px 0px;
         
         input  {
-	        outline: none;
+	        //outline: none;
+	        margin: 10px 0px;
 	        }
     }
     
     &.pnd-annotation-sidebar-filter-show .pnd-annotation-sidebar-filter-label {
         display: none;
+        
     }
     .pnd-annotation-sidebar-filter-element { 
         display: none; 
+        margin-top: 6px;
+        
         &.pnd-annotation-sidebar-current-filter-active {
             color: @brand-success;
             font-weight: bold;
             display: block;
         }
     }
+    
+
     .pnd-annotation-sidebar-filter-label {
         display: block;
     }

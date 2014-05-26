@@ -13,9 +13,9 @@
             </div>
             
             <div class="pnd-annotation-sidebar-filters-list" ng-show="isFiltersShowed">
-                <button>Suggestions</button>
-                <button>Annotations ({{annotations.length}}/{{allAnnotations.length}})</button>
-
+            <!-- buttons -->
+                <button type="button" class="btn pnd-btn-sidebar">Suggestions</button><button type="button" class="btn pnd-btn-sidebar">Annotations ({{annotations.length}}/{{allAnnotations.length}})</button>
+            <!-- // end buttons -->
                 
 
                 <!-- Free text -->
@@ -168,17 +168,9 @@
                         >
                         </div>
                 </div>
-                
-                <div 
-                    class="pnd-annotation-sidebar-btn-remove-filters" 
-                    ng-click="annotationSidebar.resetFilters()">
-                        Remove all filters
-                </div>
-                <div
-                    class="pnd-annotation-sidebar-btn-close-filters" 
-                    ng-click="annotationSidebar.toggleFiltersContent()">
-                        Close
-                </div>
+                <!-- buttons -->
+                <button type="button" class="btn btn-success pnd-annotation-sidebar-btn-remove-filters" ng-click="annotationSidebar.resetFilters()">Remove all filters</button><button type="button" class="btn btn-success pnd-annotation-sidebar-btn-close-filters" ng-click="annotationSidebar.toggleFiltersContent()">Close</button>
+                <!-- // end buttons -->
             </div>
         </div>
 
