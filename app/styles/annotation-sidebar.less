@@ -15,7 +15,7 @@ body.pnd-annotation-sidebar-expanded {
 // }    
 
 .pnd-annotation-sidebar-container {
-    background: @gray-light;
+    background: #fff;
 
     position: absolute;
     right: 0px;
@@ -24,11 +24,11 @@ body.pnd-annotation-sidebar-expanded {
     z-index: 99;
     // padding: 20px;
     display: block;
-    border-left: 1px solid #000;
-    opacity: 0.75;  
+    border-left: 1px solid @gray-lighter;
+    //opacity: 0.75;  
 }
 .pnd-annotation-sidebar-content{
-    padding: 10px;
+    padding: 0px;
 }
 .pnd-annotation-sidebar-container.pnd-annotation-sidebar-collapsed {
     width: @annotation-sidebar-coll-width;
@@ -56,8 +56,29 @@ body.pnd-annotation-sidebar-expanded {
 }
 
 .pnd-annotation-sidebar-filter {
-    margin: 10px 0 10px 0;
+    padding: 6px 0 6px 10px;
     cursor: pointer;
+    border-bottom: 1px solid @gray-light;
+}
+
+.pnd-annotation-sidebar-filters-list {
+	
+	button {
+	  color: @nav-tabs-active-link-hover-color;
+      margin: 0px 0px 10px 0px;
+      padding: 10px 0px;
+      background-color: @gray-dark;
+      border: 0px;
+      width: 49%;
+      outline: 0;
+      color: #fff;
+      
+	      &:active,
+	      &:focus {
+	      	background-color: #fff;
+	      	color: @gray-dark;	
+	      	}
+	}
 }
 
 .pnd-annotation-sidebar-filter {
@@ -66,14 +87,20 @@ body.pnd-annotation-sidebar-expanded {
     }
     &.pnd-annotation-sidebar-filter-show .pnd-annotation-sidebar-filter-input {
         display: block;
+        margin: 10px 0px;
+        
+        input  {
+	        outline: none;
+	        }
     }
+    
     &.pnd-annotation-sidebar-filter-show .pnd-annotation-sidebar-filter-label {
         display: none;
     }
     .pnd-annotation-sidebar-filter-element { 
         display: none; 
         &.pnd-annotation-sidebar-current-filter-active {
-            color: yellow;
+            color: @brand-success;
             font-weight: bold;
             display: block;
         }
