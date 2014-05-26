@@ -43,10 +43,12 @@ angular.module('Pundit2.Annotators')
 
         // If we are configured to remove the selection, we cannot preventDefault() or
         // we will interfere with other clicks inside ignored containers (search inputs?!!).
-        // So we bind this up handler and just remove the selection on mouseup.
+        // So we bind this up handler and just remove the selection on mouseup, if there is one.
         var mouseUpHandlerToRemove = function(upEvt) {
             $document.off('mouseup', mouseUpHandlerToRemove);
-            removeSelection();
+            if (tfh.getSelectedRange() !== null) {
+                removeSelection();
+            }
         };
 
         var mouseUpHandler = function(upEvt) {
@@ -62,7 +64,6 @@ angular.module('Pundit2.Annotators')
 
             var range = tfh.getSelectedRange();
             if (range === null) {
-                removeSelection();
                 return;
             }
 
