@@ -1,6 +1,6 @@
 angular.module('Pundit2.Toolbar')
 .controller('ToolbarCtrl', function($scope, Toolbar, MyPundit, Dashboard, AnnotationSidebar) {
-    
+
     $scope.dropdownTemplate = "src/ContextualMenu/dropdown.tmpl.html";
     
     var login = function() {
@@ -39,7 +39,7 @@ angular.module('Pundit2.Toolbar')
 
     // listener for user status
     // when user is logged in, set flag isUserLogged to true
-    $scope.$watch(function() { return MyPundit.getUserLogged(); }, function(newStatus) {
+    $scope.$watch(function() { return MyPundit.isUserLogged(); }, function(newStatus) {
         $scope.isUserLogged = newStatus;
         $scope.userData = MyPundit.getUserData();
     });

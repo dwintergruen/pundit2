@@ -355,7 +355,7 @@ angular.module('Pundit2.Client')
                 getAnnotations();
 
                 $rootScope.$watch(function() {
-                    return MyPundit.getUserLogged();
+                    return MyPundit.isUserLogged();
                 }, function(newStatus, oldStatus) {
                     if (newStatus === oldStatus) {
                         return;

@@ -40,7 +40,7 @@ angular.module('Pundit2.Communication')
         notebookComponent.log("Loading notebook "+self.id+" metadata with cache "+useCache);
 
         var httpPromise,
-            nsKey = MyPundit.getUserLogged() ? 'asNBMeta' : 'asOpenNBMeta';
+            nsKey = MyPundit.isUserLogged() ? 'asNBMeta' : 'asOpenNBMeta';
 
         httpPromise = $http({
             headers: { 'Accept': 'application/json' },

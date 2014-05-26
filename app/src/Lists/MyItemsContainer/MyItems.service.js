@@ -36,7 +36,7 @@ angular.module("Pundit2.MyItemsContainer")
             label: "Add to My Items",
             priority: 100,
             showIf: function(item) {
-                return MyPundit.getUserLogged() &&
+                return MyPundit.isUserLogged() &&
                     !ItemsExchange.isItemInContainer(item, myItems.options.container);
             },
             action: function(item) {
@@ -51,7 +51,7 @@ angular.module("Pundit2.MyItemsContainer")
             label: "Remove from My Items",
             priority: 100,
             showIf: function(item) {
-                return MyPundit.getUserLogged() &&
+                return MyPundit.isUserLogged() &&
                     ItemsExchange.isItemInContainer(item, myItems.options.container);
             },
             action: function(item) {

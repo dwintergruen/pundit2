@@ -5,14 +5,9 @@ describe('Preview service', function() {
 		$httpBackend,
 		NameSpace,
         $compile,
-        PREVIEWDEFAULTS;
-
-	var item1 = {
-		label: "item label",
-		description: "item description",
-		uri: "http://item-uri",
-		type: ["http://item-type"]
-	};
+        PREVIEWDEFAULTS,
+        Item,
+        item1;
 
     var imageItem = {
         label: "image item label",
@@ -41,14 +36,26 @@ describe('Preview service', function() {
         'src/Preview/DashboardPreview.dir.tmpl.html'
     ));
 
-	beforeEach(inject(function($injector, _$rootScope_, _$httpBackend_, _$compile_, _PREVIEWDEFAULTS_){
+	beforeEach(inject(function($injector, _$rootScope_, _$httpBackend_, _$compile_, _PREVIEWDEFAULTS_, _Item_){
 		Preview = $injector.get('Preview');
 		NameSpace = $injector.get('NameSpace');
 		$rootScope = _$rootScope_;
 		$httpBackend = _$httpBackend_;
         $compile = _$compile_;
         PREVIEWDEFAULTS = _PREVIEWDEFAULTS_;
+        Item = _Item_;
 	}));
+
+    beforeEach(function() {
+
+        var prop = {
+            label: "item label",
+            description: "item description",
+            //uri: "http://item-uri",
+            type: ["http://item-type"]
+        };
+        item1 = new Item("http://item-uri", prop);
+    });
 
     var compilePreviewDirective = function(){
         var elem = $compile('<preview></preview>')($rootScope);
@@ -173,33 +180,6 @@ describe('Preview service', function() {
         // preview panel body message should not be the welcome body message
         var previewPanelBody = angular.element(elem).find('.pnd-dashboard-preview-welcome');
         expect(angular.element(previewPanelBody).text().trim()).not.toBe(PREVIEWDEFAULTS.welcomeBodyMessage);
-
-    });
-
-    it('should check if an item is an image or not', function() {
-
-        // show item1 in preview
-        Preview.showDashboardPreview(item1);
-
-        // item1 is not an image item
-        expect(Preview.isItemDashboardAnImage()).toBe(false);
-
-        // show image item in preview
-        Preview.showDashboardPreview(imageItem);
-        expect(Preview.isItemDashboardAnImage()).toBe(true);
-
-        // show item2 in preview
-        Preview.showDashboardPreview(item2);
-        // item 2 is not an image item
-        expect(Preview.isItemDashboardAnImage()).toBe(false);
-
-        // show fragment image item preview
-        Preview.showDashboardPreview(fragmentImageItem);
-        expect(Preview.isItemDashboardAnImage()).toBe(true);
-
-        // show null item preview
-        Preview.showDashboardPreview(null);
-        expect(Preview.isItemDashboardAnImage()).toBe(false);
 
     });
 

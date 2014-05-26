@@ -29,7 +29,7 @@ angular.module('Pundit2.Communication')
     
     Annotation.prototype.load = function(useCache) {
         var self = this,
-            nsKey = (MyPundit.getUserLogged()) ? 'asAnn' : 'asOpenAnn';
+            nsKey = (MyPundit.isUserLogged()) ? 'asAnn' : 'asOpenAnn';
 
         if (typeof(useCache) === "undefined") {
             useCache = true;

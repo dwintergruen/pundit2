@@ -30,9 +30,9 @@ describe('Toolbar service', function() {
         return elem;
     };
 
-    // as default, getUserLogged() must return false
+    // as default, isUserLogged() must return false
     it("should be isUserLogged = false as default", function() {
-        expect(MyPundit.getUserLogged()).toBe(false);
+        expect(MyPundit.isUserLogged()).toBe(false);
     });
     
     it("should be isErrorShown false as default", function() {

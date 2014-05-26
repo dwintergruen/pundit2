@@ -99,7 +99,7 @@ angular.module('Pundit2.MyItemsContainer')
 
     // delete all my Items
     $scope.onClickDeleteAllMyItems = function(){
-        if (MyPundit.getUserLogged()) {
+        if (MyPundit.isUserLogged()) {
             MyItems.deleteAllMyItems();
         }
     };

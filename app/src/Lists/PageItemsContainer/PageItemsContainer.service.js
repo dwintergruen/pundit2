@@ -45,7 +45,7 @@ angular.module('Pundit2.PageItemsContainer')
             priority: 0,
             showIf: function(resource){
 
-                if (!MyPundit.getUserLogged()){
+                if (!MyPundit.isUserLogged()){
                     return false;
                 }
                 
@@ -66,7 +66,7 @@ angular.module('Pundit2.PageItemsContainer')
             priority: 0,
             showIf: function(resource){
 
-                if (!MyPundit.getUserLogged()){
+                if (!MyPundit.isUserLogged()){
                     return false;
                 }
 

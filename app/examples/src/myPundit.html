@@ -13,7 +13,7 @@ var MyPunditDemoCtrl = function($scope, MyPundit) {
     };
     
     $scope.userLogged = function(){
-        return MyPundit.getUserLogged();
+        return MyPundit.isUserLogged();
     };
     
     $scope.logout = function(){

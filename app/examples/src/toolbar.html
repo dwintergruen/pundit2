@@ -15,7 +15,7 @@ var ToolbarDemoCtrl = function($scope, Toolbar, MyPundit, $httpBackend, NameSpac
     };
     
     $scope.getStatus = function() {
-        return MyPundit.getUserLogged();
+        return MyPundit.isUserLogged();
     };
     
     $scope.addError = function() {

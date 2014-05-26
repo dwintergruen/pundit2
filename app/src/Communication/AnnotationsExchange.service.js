@@ -25,7 +25,7 @@ angular.module('Pundit2.Communication')
 
             var promise = $q.defer(),
                 httpPromise,
-                nsKey = (MyPundit.getUserLogged()) ? 'asAnnMetaSearch' : 'asOpenAnnMetaSearch';
+                nsKey = (MyPundit.isUserLogged()) ? 'asAnnMetaSearch' : 'asOpenAnnMetaSearch';
 
             httpPromise = $http({
                 headers: { 'Accept': 'application/json' },

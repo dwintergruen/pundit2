@@ -10,7 +10,7 @@ angular.module('Pundit2.Core')
     // get message to display
     $scope.$watch(function(){ return MyPundit.getLoginStatus(); }, function(status){
         $scope.notifyMessage = statusMessage[status];
-        if (MyPundit.getUserLogged()){
+        if (MyPundit.isUserLogged()){
             var userData = MyPundit.getUserData();
             $scope.notifyMessage = statusMessage[status]+" "+userData.fullName;
         }
@@ -33,6 +33,6 @@ angular.module('Pundit2.Core')
     };
     
     $scope.isUserLogged = function(){
-        return MyPundit.getUserLogged();
+        return MyPundit.isUserLogged();
     };
 });

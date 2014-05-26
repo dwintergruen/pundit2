@@ -157,7 +157,7 @@ angular.module('Pundit2.Toolbar')
     };
     
     toolbar.getAskLink = function() {
-        if (MyPundit.getUserLogged()) {
+        if (MyPundit.isUserLogged()) {
             return toolbar.options.askLinkUser;
         } else {
             return toolbar.options.askLinkDefault;

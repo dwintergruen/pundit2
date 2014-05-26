@@ -18,7 +18,7 @@ angular.module('Pundit2.Core')
     };
     
     // get if user is logged or not 
-    myPundit.getUserLogged = function() {
+    myPundit.isUserLogged = function() {
         return isUserLogged;
     };
     

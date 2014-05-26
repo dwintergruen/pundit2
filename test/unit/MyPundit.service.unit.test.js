@@ -73,7 +73,7 @@ describe('MyPundit service', function() {
 			expect(promiseValue).toBe(true);
 
 			// at this time user should be logged in, and isUserLogged should be true
-			expect(MyPundit.getUserLogged()).toBe(true);
+			expect(MyPundit.isUserLogged()).toBe(true);
 
 			// login status should be loggedIn
 			expect(MyPundit.getLoginStatus()).toBe("loggedIn");
@@ -104,7 +104,7 @@ describe('MyPundit service', function() {
 			expect(promiseValue).toBe(false);
 
 			// at this time user should not be logged in, and isUserLogged should be false
-			expect(MyPundit.getUserLogged()).toBe(false);
+			expect(MyPundit.isUserLogged()).toBe(false);
 		});
 
 		promise.then(function(value) {
@@ -290,7 +290,7 @@ describe('MyPundit service', function() {
 			// checkLoggedIn promise should be return true
 			expect(promiseValue).toBe(true);
 			// at this time user should be logged in
-			expect(MyPundit.getUserLogged()).toBe(true);
+			expect(MyPundit.isUserLogged()).toBe(true);
 			// get logout()
 			logoutTest();
 		});
@@ -317,7 +317,7 @@ describe('MyPundit service', function() {
 				expect(val).toBe(true);
 
 				// at this time user should be not logged in
-				expect(MyPundit.getUserLogged()).toBe(false);
+				expect(MyPundit.isUserLogged()).toBe(false);
 			});
 
 			logoutPromise.then(function(value) {

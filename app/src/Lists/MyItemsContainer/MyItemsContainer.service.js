@@ -39,7 +39,7 @@ angular.module('Pundit2.MyItemsContainer')
             label: "Remove from MyItems",
             priority: 0,
             showIf: function(){
-                return MyPundit.getUserLogged();
+                return MyPundit.isUserLogged();
             },
             action: function(resource){
                 // resource need to be the item to delete
