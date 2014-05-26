@@ -118,7 +118,10 @@
 
         $scope.$watch('subjectUri', function(sub){
             $scope.triple[0] = sub;
+        });
 
+        $scope.$watch('objectUri', function(obj){
+            $scope.triple[2] = obj;
         });
 
         var toLoad = ["8fd05a49", "65286186", "385c1647"];
@@ -170,6 +173,20 @@
                 angular.element('#'+elementID).text(value.label);
                 $scope.predicate = value.uri;
                 $scope.predicateDomain = value.domain;
+                $scope.predicateRange = value.range;
+            });
+        };
+
+        $scope.testObject = function(elementID, $event){
+            ResourcePanel.showItemsForObject($event.pageX, $event.pageY, $scope.triple, $event.target).then(function(value){
+                if(typeof(value.label) === 'undefined'){
+                    angular.element('#'+elementID).text(value);
+                } else {
+                    angular.element('#'+elementID).text(value.label);
+                }
+
+                $scope.object = value;
+                $scope.objectUri = value.uri;
             });
         };
 
@@ -200,7 +217,9 @@
                     </li>
                     <li style="display:inline-block;">
                         <button class="btn btn-warning" ng-click="testProperties('test6', $event)">Show Properties</button>
-
+                    </li>
+                    <li style="display:inline-block;">
+                        <button class="btn btn-warning" ng-click="testObject('test7', $event)">Show Object</button>
                     </li>
 
                 </ul>
@@ -215,9 +234,19 @@
                 </ul>
             </div>
             <div>Propertie selected: <span id="test6"></span>
+            <span>Domain: </span>
             <ul>
                 <li ng-repeat="uri in predicateDomain">{{uri}}</li>
             </ul>
+            <span>Range: </span>
+            <ul>
+                <li ng-repeat="r in predicateRange">{{r}}</li>
+            </ul>
+            </div>
+            <div>Object selected: <span id="test7"></span>
+                <ul>
+                    <li ng-repeat="type in object.type">{{type}}</li>
+                </ul>
             </div>
             </pre>
 

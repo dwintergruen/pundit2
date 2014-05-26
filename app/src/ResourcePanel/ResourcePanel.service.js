@@ -2,7 +2,7 @@ angular.module('Pundit2.ResourcePanel')
 .constant('RESOURCEPANELDEFAULTS', {
 
 })
-.service('ResourcePanel', function(BaseComponent, RESOURCEPANELDEFAULTS, $rootScope, $popover, $q, ItemsExchange, MyItems, PageItemsContainer, Client) {
+.service('ResourcePanel', function(BaseComponent, RESOURCEPANELDEFAULTS, $rootScope, $popover, $q, ItemsExchange, MyItems, PageItemsContainer, Client, NameSpace) {
 
     var resourcePanel = new BaseComponent('ResourcePanel', RESOURCEPANELDEFAULTS);
     var state = {};
@@ -298,6 +298,64 @@ angular.module('Pundit2.ResourcePanel')
     };
 
     resourcePanel.showItemsForObject = function(x, y, triple, target) {
+        var myItemsContainer = MyItems.options.container;
+        var pageItemsContainer = PageItemsContainer.options.container;
+        var myItems, pageItems;
+
+        if(typeof(triple) !== 'undefined'){
+
+            // predicate is the second element of the triple
+            var predicate = triple[1];
+
+            // if predicate is not defined
+            if( typeof(predicate) === 'undefined' || predicate === "") {
+                // all items are good
+                myItems = ItemsExchange.getItemsByContainer(myItemsContainer);
+                pageItems = ItemsExchange.getItemsByContainer(pageItemsContainer);
+                showPopoverResourcePanel(x, y, target, pageItems, myItems, "");
+
+            } else {
+                // get item predicate and check his domain
+                var itemPredicate = ItemsExchange.getItemByUri(predicate);
+                // predicate with empty domain
+                if(typeof(itemPredicate.range) === 'undefined' || itemPredicate.range.length === 0 || itemPredicate.range[0] === ""){
+                    // all items are good
+                    myItems = ItemsExchange.getItemsByContainer(myItemsContainer);
+                    pageItems = ItemsExchange.getItemsByContainer(pageItemsContainer);
+                    showPopoverResourcePanel(x, y, target, pageItems, myItems, "");
+
+                } else if(itemPredicate.range.length === 1 && itemPredicate.range[0] === NameSpace.rdfs.literal){
+                    resourcePanel.showPopoverLiteral(x, y, "", target);
+
+                } else if(itemPredicate.range.length === 1 && itemPredicate.range[0] === NameSpace.dateTime){
+                    resourcePanel.showPopoverCalendar(x, y, "", target);
+
+                } else {
+                    // predicate with a valid domain
+                    var range = itemPredicate.range;
+
+                    // get only items matching with predicate domain
+                    var filter = function(item) {
+
+                        for(var i=0; i<range.length; i++){
+                            for (var j=0; j<item.type.length; j++){
+                                if(range[i] === item.type[j]) {
+                                    return true;
+                                }
+                            }
+                        }
+                        return false;
+                    };
+
+                    myItems = ItemsExchange.getItemsFromContainerByFilter(myItemsContainer, filter);
+                    pageItems = ItemsExchange.getItemsFromContainerByFilter(pageItemsContainer, filter);
+                    showPopoverResourcePanel(x, y, target, pageItems, myItems, "");
+                }
+
+            }
+
+        }
+
         state.resourcePromise = $q.defer();
         return state.resourcePromise.promise;
     };
@@ -329,15 +387,19 @@ angular.module('Pundit2.ResourcePanel')
 
                     // get only items matching with predicate domain
                     var filter = function(item) {
-
-                        for(var i=0; i<types.length; i++){
-                            for (var j=0; j<item.domain.length; j++){
-                                if(types[i] === item.domain[j]) {
-                                    return true;
+                        if(typeof(item.domain) !== 'undefined'){
+                            for(var i=0; i<types.length; i++){
+                                for (var j=0; j<item.domain.length; j++){
+                                    if(types[i] === item.domain[j]) {
+                                        return true;
+                                    }
                                 }
                             }
+                            return false;
+                        } else {
+                            return false;
                         }
-                        return false;
+
                     };
 
                     properties = ItemsExchange.getItemsFromContainerByFilter(propertiesContainer, filter);

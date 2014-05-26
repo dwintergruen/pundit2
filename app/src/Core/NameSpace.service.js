@@ -19,7 +19,6 @@ angular.module("Pundit2.Core")
     ns.rdf.type       = _rdf + "type";
     ns.rdf.value      = _rdf + "value";
     ns.rdf.property   = _rdf + "Property";
-    ns.rdf.XMLLiteral = _rdf + "XMLLiteral";
     
     // RDFS namespace uris
     ns.rdfs = {};
@@ -28,6 +27,8 @@ angular.module("Pundit2.Core")
     ns.rdfs.resource = _rdfs + "Resource";
     ns.rdfs.literal  = _rdfs + "Literal";
     ns.rdfs.seeAlso  = _rdfs + "seeAlso";
+
+    ns.dateTime = "http://www.w3.org/2001/XMLSchema#dateTime";
 
 
     // Item properties
