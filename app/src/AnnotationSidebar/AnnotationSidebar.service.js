@@ -183,18 +183,22 @@ angular.module('Pundit2.AnnotationSidebar')
     };
 
     // TODO: unificare?
-    annotationSidebar.getAuthors = function(){
-        return elementsList.authors;
-    };
-    annotationSidebar.getEntities = function(){
-        return elementsList.entities;
-    };
-    annotationSidebar.getPredicates = function(){
-        return elementsList.predicates;
-    };
-    annotationSidebar.getTypes = function(){
-        return elementsList.types;
-    };
+    // annotationSidebar.getAuthors = function(){
+    //     return elementsList.authors;
+    // };
+    // annotationSidebar.getEntities = function(){
+    //     return elementsList.entities;
+    // };
+    // annotationSidebar.getPredicates = function(){
+    //     return elementsList.predicates;
+    // };
+    // annotationSidebar.getTypes = function(){
+    //     return elementsList.types;
+    // };
+
+    annotationSidebar.getFilters = function(){
+        return elementsList;
+    }
 
     annotationSidebar.getMinDate = function(){
         if (elementsList.annotationsDate.length > 0){

@@ -41,7 +41,7 @@
                         <input ng-model="searchAuthors.label" placeholder="Search">
                     </div>
                     <div 
-                        ng-repeat="elem in authors | orderObjectBy:'count':'dsc' | filter:searchAuthors" 
+                        ng-repeat="elem in filters.authors | orderObjectBy:'count':'dsc' | filter:searchAuthors" 
                         ng-class="{'pnd-annotation-sidebar-current-filter-active': elem.active}"
                         class="pnd-annotation-sidebar-filter-element">
                             <div 
@@ -64,7 +64,7 @@
                         <input ng-model="searchTypes.label" placeholder="Search">
                     </div>
                     <div 
-                        ng-repeat="elem in types | orderObjectBy:'count':'dsc' | filter:searchTypes" 
+                        ng-repeat="elem in filters.types | orderObjectBy:'count':'dsc' | filter:searchTypes" 
                         ng-class="{'pnd-annotation-sidebar-current-filter-active': elem.active}"
                         class="pnd-annotation-sidebar-filter-element">
                             <div 
@@ -88,7 +88,7 @@
                         <input ng-model="searchPredicates.label" placeholder="Search">
                     </div>
                     <div 
-                        ng-repeat="elem in predicates | orderObjectBy:'count':'dsc' | filter:searchPredicates" 
+                        ng-repeat="elem in filters.predicates | orderObjectBy:'count':'dsc' | filter:searchPredicates" 
                         ng-class="{'pnd-annotation-sidebar-current-filter-active': elem.active}"
                         class="pnd-annotation-sidebar-filter-element">
                             <div 
@@ -111,7 +111,7 @@
                         <input ng-model="searchEntities.label" placeholder="Search">
                     </div>
                     <div 
-                        ng-repeat="elem in entities | orderObjectBy:'count':'dsc' | filter:searchEntities" 
+                        ng-repeat="elem in filters.entities | orderObjectBy:'count':'dsc' | filter:searchEntities" 
                         ng-class="{'pnd-annotation-sidebar-current-filter-active': elem.active}"
                         class="pnd-annotation-sidebar-filter-element">
                             <div 
