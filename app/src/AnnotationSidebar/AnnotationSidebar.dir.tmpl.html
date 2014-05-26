@@ -17,15 +17,21 @@
         </div>
 
         <div class="pnd-annotation-sidebar-filter-content" ng-show="isAnnotationsPanelActive()">
-            <div
+
+            <button
                 ng-click="annotationSidebar.toggleFiltersContent()" 
                 ng-show="!isFiltersShowed"
-                class="pnd-annotation-sidebar-btn-show-filter">
-                    Show Filter
-            </div>
+                class="btn btn-success pnd-annotation-sidebar-btn-show-filter">
+                    Show Filters
+            </button>
+
             <div ng-show="annotationSidebar.needToFilter() && !isFiltersShowed">
+
                 {{annotations.length}}/{{allAnnotations.length}} Annotations    
-                <a href="#" ng-click="annotationSidebar.resetFilters()">Remove all filters</a>
+
+                <button class="btn btn-warning" ng-click="annotationSidebar.resetFilters()">
+                    Remove all filters
+                </button>
             </div>
 
             <div class="pnd-annotation-sidebar-filters-list" ng-show="isFiltersShowed">
@@ -35,11 +41,12 @@
 
                 <!-- Free text -->
                 <div class="pnd-annotation-sidebar-filter">
-                    <strong ng-click = "toggleFilterList($event)">Free text</strong>
+                    <strong ng-click="toggleFilterList($event)">Contains</strong>
                     <div 
                         ng-show="isFilterLabelShowed(annotationSidebar.filters.freeText.expression)"
                         class="pnd-annotation-sidebar-filter-label">
-                        -> {{annotationSidebar.filters.freeText.expression}}
+                        <span class="pnd-icon pnd-icon-check"></span>
+                        {{annotationSidebar.filters.freeText.expression}}
                     </div>
                     <div class="pnd-annotation-sidebar-filter-input">
                         <input ng-model="annotationSidebar.filters.freeText.expression">
@@ -61,10 +68,9 @@
                             <div 
                                 class="pnd-annotation-sidebar-filter-element-label"
                                 ng-click="toggleFilter('authors', elem.uri)">
-                                    - {{elem.label}}  
-                                    <span 
-                                        class="pnd-annotation-sidebar-filter-element-x"
-                                        ng-show="elem.active">({{elem.count}}) x</span>
+                                    <span class="pnd-icon pnd-icon-check"
+                                        ng-show="elem.active"></span>
+                                    {{elem.label}} ({{elem.count}})
                             </div>
                     </div>
                 </div>
@@ -84,10 +90,9 @@
                             <div 
                                 class="pnd-annotation-sidebar-filter-element-label"
                                 ng-click="toggleFilter('types', elem.uri)">
-                                    - {{elem.label}}  
-                                    <span 
-                                        class="pnd-annotation-sidebar-filter-element-x"
-                                        ng-show="elem.active">({{elem.count}}) x</span>
+                                    <span class="pnd-icon pnd-icon-check"
+                                          ng-show="elem.active"></span>
+                                {{elem.label}} ({{elem.count}})
                             </div>
                     </div>
                 </div>
@@ -108,10 +113,9 @@
                             <div 
                                 class="pnd-annotation-sidebar-filter-element-label"
                                 ng-click="toggleFilter('predicates', elem.uri)">
-                                    - {{elem.label}} 
-                                    <span 
-                                        class="pnd-annotation-sidebar-filter-element-x"
-                                        ng-show="elem.active">({{elem.count}}) x</span>
+                                    <span class="pnd-icon pnd-icon-check"
+                                          ng-show="elem.active"></span>
+                                {{elem.label}} ({{elem.count}})
                             </div>
                     </div>
                 </div>
@@ -131,10 +135,9 @@
                             <div 
                                 class="pnd-annotation-sidebar-filter-element-label"
                                 ng-click="toggleFilter('entities', elem.uri)">
-                                    - {{elem.label}}  
-                                    <span 
-                                        class="pnd-annotation-sidebar-filter-element-x"
-                                        ng-show="elem.active">({{elem.count}}) x</span>
+                                    <span class="pnd-icon pnd-icon-check"
+                                          ng-show="elem.active"></span>
+                                {{elem.label}} ({{elem.count}})
                             </div>
                     </div>
                 </div>
