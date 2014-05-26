@@ -27,7 +27,7 @@ angular.module('Pundit2.Vocabularies')
         }
     ],    
 
-    debug: true
+    debug: false
 
 })
 .factory('KorboBasketSelector', function(BaseComponent, KORBOBASKETSELECTORDEFAULTS, Item, ItemsExchange, SelectorsManager, $http) {
@@ -70,6 +70,7 @@ angular.module('Pundit2.Vocabularies')
                 if (data.result.length === 0) {
                     korboBasketSelector.log('Empty response');
                     callback();
+                    return;
                 }
 
                 self.pendingRequest = data.result.length;
@@ -135,8 +136,8 @@ angular.module('Pundit2.Vocabularies')
 
                 self.pendingRequest--;
                 if (self.pendingRequest <= 0) {
-                    callback();
                     korboBasketSelector.log('Items complete parsing');
+                    callback();
                 }
 
             });

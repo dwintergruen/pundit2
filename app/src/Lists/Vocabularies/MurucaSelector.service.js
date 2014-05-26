@@ -64,6 +64,10 @@ angular.module('Pundit2.Vocabularies')
 
                 murucaSelector.log('Http success, get items from muruca '+self.config.label, data);
 
+                if (data.result.length === 0) {
+                    murucaSelector.log('Empty Response');
+                }
+
                 self.getItemsDetails(data.result, callback);
 
             });

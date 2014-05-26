@@ -64,6 +64,12 @@ angular.module('Pundit2.Vocabularies')
 
             freebaseSelector.log('Http success, get items from freebase', data);
 
+            if (data.result.length === 0) {
+                freebaseSelector.log('Empry result');
+                callback();
+                return;
+            }
+
             self.pendingRequest = data.result.length;
 
             for (var i in data.result) {
@@ -86,6 +92,7 @@ angular.module('Pundit2.Vocabularies')
 
         }).error(function(msg) {
             freebaseSelector.err('Cant get items from freebase: ', msg);
+            callback();
         });
 
     };
@@ -94,6 +101,8 @@ angular.module('Pundit2.Vocabularies')
     FreebaseFactory.prototype.getItemDetails = function(item, callback){
 
         var self = this;
+
+        var error = 0;
 
         // get TOPIC
         $http({
@@ -132,7 +141,10 @@ angular.module('Pundit2.Vocabularies')
 
         }).error(function(msg) {
             freebaseSelector.err('Cant get TOPIC from freebase: ', msg);
-            self.checkEnd(callback);
+            if (item.description !== -1 || error>0) {
+                self.checkEnd(callback);
+            }
+            error++;
         });
 
         // get MQL
@@ -162,7 +174,10 @@ angular.module('Pundit2.Vocabularies')
 
         }).error(function(msg) {
             freebaseSelector.err('Cant get MQL from freebase: ', msg);
-            self.checkEnd(callback);
+            if (item.uri !== -1 || error>0) {
+                self.checkEnd(callback);
+            }
+            error++;
         });
 
     };
@@ -170,13 +185,13 @@ angular.module('Pundit2.Vocabularies')
     FreebaseFactory.prototype.checkEnd = function(callback){
         this.pendingRequest--;
         if (this.pendingRequest <= 0) {
-            freebaseSelector.log('complete item parsing');
+            freebaseSelector.log('Complete item parsing');
             callback();
         }
         
     };
 
-    freebaseSelector.log('service init');
+    freebaseSelector.log('Factory init');
 
     return FreebaseFactory;
 
