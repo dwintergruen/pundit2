@@ -125,6 +125,7 @@ body.pnd-toolbar-active {
     }
 
     // ---------- LOADING BUTTON
+    
     &.pnd-toolbar-loading-button {
 
         border-right: 1px lighten(@brand-success, 30%) solid;
@@ -229,7 +230,7 @@ body.pnd-toolbar-active {
     
     .dropdown-menu {
     	padding: 0px;
-    	
+    	border: 1px solid @brand-success;
     	
     	&.bottom-right {
     	left: auto !important;
@@ -242,11 +243,16 @@ body.pnd-toolbar-active {
     	}
      
         a {
-            background-color: transparent;
+            //background-color: transparent;
+            //padding: 3px 10px;
+            background-color: @brand-success;
+            color: #fff;
             padding: 3px 10px;
+            border-top: 1px lighten(@brand-success, 30%) solid ;
             
             &:hover {
-                background-color: @gray-lighter;
+                //background-color: @gray-lighter;
+                background-color: @brand-success;
             }
         }
     }
