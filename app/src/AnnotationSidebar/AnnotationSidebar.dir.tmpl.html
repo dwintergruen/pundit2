@@ -7,7 +7,6 @@
                 class="pnd-annotation-sidebar-btn-show-filter">
                     Show Filter
             </div>
-            
             <div ng-show="annotationSidebar.needToFilter() && !isFiltersShowed">
                 {{annotations.length}}/{{allAnnotations.length}} Annotations    
                 <a href="#" ng-click="annotationSidebar.resetFilters()">Remove all filters</a>
@@ -47,10 +46,10 @@
                             <div 
                                 class="pnd-annotation-sidebar-filter-element-label"
                                 ng-click="toggleFilter('authors', elem.uri)">
-                                    - {{elem.label}} ({{elem.count}}) 
+                                    - {{elem.label}}  
                                     <span 
                                         class="pnd-annotation-sidebar-filter-element-x"
-                                        ng-show="elem.active">x</span>
+                                        ng-show="elem.active">({{elem.count}}) x</span>
                             </div>
                     </div>
                 </div>
@@ -70,10 +69,10 @@
                             <div 
                                 class="pnd-annotation-sidebar-filter-element-label"
                                 ng-click="toggleFilter('types', elem.uri)">
-                                    - {{elem.label}} ({{elem.count}}) 
+                                    - {{elem.label}}  
                                     <span 
                                         class="pnd-annotation-sidebar-filter-element-x"
-                                        ng-show="elem.active">x</span>
+                                        ng-show="elem.active">({{elem.count}}) x</span>
                             </div>
                     </div>
                 </div>
@@ -94,10 +93,10 @@
                             <div 
                                 class="pnd-annotation-sidebar-filter-element-label"
                                 ng-click="toggleFilter('predicates', elem.uri)">
-                                    - {{elem.label}} ({{elem.count}}) 
+                                    - {{elem.label}} 
                                     <span 
                                         class="pnd-annotation-sidebar-filter-element-x"
-                                        ng-show="elem.active">x</span>
+                                        ng-show="elem.active">({{elem.count}}) x</span>
                             </div>
                     </div>
                 </div>
@@ -117,10 +116,10 @@
                             <div 
                                 class="pnd-annotation-sidebar-filter-element-label"
                                 ng-click="toggleFilter('entities', elem.uri)">
-                                    - {{elem.label}} ({{elem.count}}) 
+                                    - {{elem.label}}  
                                     <span 
                                         class="pnd-annotation-sidebar-filter-element-x"
-                                        ng-show="elem.active">x</span>
+                                        ng-show="elem.active">({{elem.count}}) x</span>
                             </div>
                     </div>
                 </div>
@@ -185,10 +184,9 @@
 
         <!-- List of annotations -->
         <div class="pnd-annotation-sidebar-annotations" ng-show="isAnnotationSidebarExpanded">
-            <p ng-repeat="ann in filtered = (annotations)">
-                <span>Created by: {{ann.creatorName}}</span> 
-                <span>On: {{ann.created | date : 'MMM d, y H:mm a'}}</span> 
-            </p>  
+            <div ng-repeat="ann in filtered = (annotations)">
+                <annotation-details id="{{ann.id}}"></annotation-details>
+            </div>  
         </div>
     </div>
 </div>

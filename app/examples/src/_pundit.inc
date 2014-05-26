@@ -54,6 +54,8 @@
     <script src="../src/AnnotationSidebar/AnnotationSidebar.ctrl.js"></script>
     <script src="../src/AnnotationSidebar/AnnotationSidebar.filter.js"></script>
     <script src="../src/AnnotationSidebar/AnnotationSidebar.service.js"></script>
+    <script src="../src/AnnotationSidebar/AnnotationDetails.dir.js"></script>
+    <script src="../src/AnnotationSidebar/AnnotationDetails.ctrl.js"></script>
 
     <script src="../src/Dashboard/Dashboard.js"></script>
     <script src="../src/Dashboard/Dashboard.dir.js"></script>
