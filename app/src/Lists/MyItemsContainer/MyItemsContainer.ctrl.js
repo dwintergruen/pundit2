@@ -72,10 +72,16 @@ angular.module('Pundit2.MyItemsContainer')
             $scope.reverse = true;
         }},
         { text: 'Type Asc', click: function(){
+            if ($scope.dropdownOrdering[2].disable) {
+                return;
+            }
             order = 'type';
             $scope.reverse = false;
         }},
         { text: 'Type Desc', click: function(){
+            if ($scope.dropdownOrdering[3].disable) {
+                return;
+            }
             order = 'type';
             $scope.reverse = true;
         }}
@@ -111,7 +117,7 @@ angular.module('Pundit2.MyItemsContainer')
         $scope.displayedItems = MyItemsContainer.getItemsArrays()[activeTab];
         // disable sort by type dropdown link
         // enable only in All Items tab
-        if ($scope.tabs[activeTab].title !== $scope.tabs[0].title) {
+        if ($scope.tabs[activeTab].title !== $scope.tabs[0].title && $scope.tabs[activeTab].title !== $scope.tabs[3].title) {
             $scope.dropdownOrdering[2].disable = true;
             $scope.dropdownOrdering[3].disable = true;
         } else {
