@@ -22,6 +22,7 @@ angular.module("Pundit2.MyItemsContainer")
         var cMenuTypes = [
             Config.modules.TextFragmentHandler.cMenuType,
             Config.modules.PageItemsContainer.cMenuType,
+            Config.modules.MyItemsContainer.cMenuType,
             Config.modules.TextFragmentAnnotator.cMenuType
         ];
 
@@ -45,6 +46,7 @@ angular.module("Pundit2.MyItemsContainer")
             }
         });
 
+        cMenuTypes.push()
         ContextualMenu.addAction({
             name: 'removeFromMyItems',
             type: cMenuTypes,

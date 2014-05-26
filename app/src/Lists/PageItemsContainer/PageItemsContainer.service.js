@@ -35,58 +35,6 @@ angular.module('Pundit2.PageItemsContainer')
     // contain all items array (all items array, text items array, image items array and page items array)
     var itemsArrays = [];
 
-        /*
-    // menu actions relative to pageItem contextual menu
-    var menuActions = [
-        {
-            name: 'addPageItemToMyItems',
-            type: [pageItemsContainer.options.pageItemsMenuType],
-            label: "Add To My Items",
-            priority: 0,
-            showIf: function(resource){
-
-                if (!MyPundit.isUserLogged()){
-                    return false;
-                }
-                
-                var myItemsCont = MyItems.getMyItemsContainer();
-                var items = ItemsExchange.getItemsByContainer(myItemsCont);
-
-                return items.indexOf(resource) === -1;
-            },
-            action: function(resource){
-                // add to my items on pundit server
-                MyItems.addSingleMyItem(resource);
-            }
-        },
-        {
-            name: 'removePageItemFromMyItem',
-            type: [pageItemsContainer.options.pageItemsMenuType],
-            label: "Remove from MyItems",
-            priority: 0,
-            showIf: function(resource){
-
-                if (!MyPundit.isUserLogged()){
-                    return false;
-                }
-
-                var myItemsCont = MyItems.getMyItemsContainer();
-                var items = ItemsExchange.getItemsByContainer(myItemsCont);
-
-                return items.indexOf(resource) > -1;
-            },
-            action: function(resource){
-                // resource need to be the item to delete
-                MyItems.deleteSingleMyItem(resource);
-            }
-        }
-    ];
-
-    ContextualMenu.addAction(menuActions[0]);
-    ContextualMenu.addAction(menuActions[1]);
-
-*/
-
     pageItemsContainer.buildItemsArray = function(activeTab, tabs, items) {
 
         // forEach tab build the relative items array

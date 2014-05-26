@@ -10,7 +10,7 @@ angular.module('Pundit2.MyItemsContainer')
     clientDashboardTabTitle: "My Items",
 
     // my items contextual menu type
-    myItemsMenuType: 'myItems',
+    cMenuType: 'myItems',
 
     // items property used to compare
     order: 'label',
@@ -30,25 +30,6 @@ angular.module('Pundit2.MyItemsContainer')
     // array of items array, one foreach tab, when activeTab change the showed array change
     // contain all items array (all items array, text items array, image items array and page items array)
     var itemsArrays = [];
-
-    // menu actions relative to myItem contextual menu
-    var menuActions = [
-        {
-            name: 'removeMyItemFromMyItem',
-            type: [myItemsContainer.options.myItemsMenuType],
-            label: "Remove from MyItems",
-            priority: 0,
-            showIf: function(){
-                return MyPundit.isUserLogged();
-            },
-            action: function(resource){
-                // resource need to be the item to delete
-                MyItems.deleteSingleMyItem(resource);
-            }
-        }
-    ];
-
-    ContextualMenu.addAction(menuActions[0]);
 
     myItemsContainer.buildItemsArray = function(activeTab, tabs, items) {
 
