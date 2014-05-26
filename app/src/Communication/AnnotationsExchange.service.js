@@ -82,6 +82,10 @@ angular.module('Pundit2.Communication')
             return annList;
         };
 
+        annotationExchange.getAnnotationById = function(id) {
+            return annListById[id];
+        };
+
         annotationExchange.getAnnotationsHash = function() {
             return annListById;
         };
