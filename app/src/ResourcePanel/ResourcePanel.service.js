@@ -360,6 +360,7 @@ angular.module('Pundit2.ResourcePanel')
         return state.resourcePromise.promise;
     };
 
+    var types;
     // show only properties
     // will be executed for predicates
     resourcePanel.showProperties = function(x, y, triple, target) {
@@ -369,52 +370,64 @@ angular.module('Pundit2.ResourcePanel')
         if(typeof(triple) !== 'undefined'){
             // subject is the first element of the triple
             var subject = triple[0];
+            // object is the third element of the triple
+            var object = triple[2];
 
-            // if predicate is not defined
-            if( typeof(subject) === 'undefined' || subject === "") {
+            // if subject and object are both not defined
+            if( (typeof(subject) === 'undefined' || subject === "") && (typeof(object) === 'undefined' || object === "")) {
                 // all properties are good
                 properties = ItemsExchange.getItemsByContainer(propertiesContainer);
-            } else {
-                // get item predicate and check his domain
+                showPopoverResourcePanel(x, y, target, "", "", properties);
+
+            // if only subject is defined
+            } else if( (typeof(subject) !== 'undefined' && subject !== "") && (typeof(object) === 'undefined' || object === "")) {
+
+                // get subject item
                 var itemSubject = ItemsExchange.getItemByUri(subject);
-                // predicate with empty domain
+                // if subject item has no type
                 if(typeof(itemSubject.type) === 'undefined' || itemSubject.type.length === 0 || itemSubject.type[0] === ""){
                     // all properties are good
                     properties = ItemsExchange.getItemsByContainer(propertiesContainer);
+                    showPopoverResourcePanel(x, y, target, "", "", properties);
                 } else {
                     // predicate with a valid domain
-                    var types = itemSubject.type;
-
-                    // get only items matching with predicate domain
-                    var filter = function(item) {
-                        if(typeof(item.domain) !== 'undefined'){
-                            for(var i=0; i<types.length; i++){
-                                for (var j=0; j<item.domain.length; j++){
-                                    if(types[i] === item.domain[j]) {
-                                        return true;
-                                    }
-                                }
-                            }
-                            return false;
-                        } else {
-                            return false;
-                        }
-
-                    };
-
-                    properties = ItemsExchange.getItemsFromContainerByFilter(propertiesContainer, filter);
+                    types = itemSubject.type;
+                    properties = ItemsExchange.getItemsFromContainerByFilter(propertiesContainer, filterByDomain);
+                    showPopoverResourcePanel(x, y, target, "", "", properties);
                 }
 
+            // if only object is defined
+            } else if( (typeof(object) !== 'undefined' && object !== "") && (typeof(subject) === 'undefined' || subject === "")) {
+                console.log("solo object definito");
+            } else if( (typeof(object) !== 'undefined' && object !== "") && (typeof(subject) !== 'undefined' || subject !== "")) {
+                console.log("entrambi definiti");
             }
 
         }
 
 
-        showPopoverResourcePanel(x, y, target, "", "", properties);
+
 
         state.resourcePromise = $q.defer();
         return state.resourcePromise.promise;
     };
+
+        // get only items matching with predicate domain
+        var filterByDomain = function(item) {
+            if(typeof(item.domain) !== 'undefined'){
+                for(var i=0; i<types.length; i++){
+                    for (var j=0; j<item.domain.length; j++){
+                        if(types[i] === item.domain[j]) {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            } else {
+                return false;
+            }
+
+        };
 
     return resourcePanel;
 });
