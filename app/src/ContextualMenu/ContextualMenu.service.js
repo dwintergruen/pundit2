@@ -95,9 +95,12 @@ angular.module('Pundit2.ContextualMenu')
                 });
 
             } else if ( filteredActions[i].divider ){
+
+                // add divider only if it is preceded or followed
+                // by a real action element
                 content.push({
-                    divider: true
-                });
+                        divider: true
+                    });             
 
             } else {
                 // standard content
@@ -111,6 +114,21 @@ angular.module('Pundit2.ContextualMenu')
                 });
             }
             
+        }
+
+        // remove divider in bad position
+        var j;
+        for (j=content.length-1; j>=0; j--) {
+            if (typeof(content[j].divider) === 'undefined') {
+                break;
+            }
+            content.splice(j, 1);
+        }
+        for (j=0; j<content.length; j++) {
+            if (typeof(content[j].divider) === 'undefined') {
+                break;
+            }
+            content.splice(j, 1);
         }
 
         contextualMenu.log('buildContent built '+content.length+' elements for type='+state.menuType);
