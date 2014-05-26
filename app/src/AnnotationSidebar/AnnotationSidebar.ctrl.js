@@ -33,6 +33,21 @@ angular.module('Pundit2.AnnotationSidebar')
         container.addClass(AnnotationSidebar.options.sidebarCollapsedClass);
     }
 
+    $scope.isSuggestionsPanelActive = function() {
+        return AnnotationSidebar.isSuggestionsPanelActive();
+    };
+    $scope.activateSuggestionsPanel = function() {
+        AnnotationSidebar.activateSuggestionsPanel();
+    };
+
+    $scope.isAnnotationsPanelActive = function() {
+        return AnnotationSidebar.isAnnotationsPanelActive();
+    };
+    $scope.activateAnnotationsPanel = function() {
+        AnnotationSidebar.activateAnnotationsPanel();
+    };
+
+
     // Watch annotation sidebar expanded or collapsed
     $scope.$watch(function() {
         return AnnotationSidebar.isAnnotationSidebarExpanded();

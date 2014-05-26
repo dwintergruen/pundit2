@@ -15,9 +15,15 @@ angular.module('Pundit2.AnnotationSidebar')
     // this component
     clientDomTemplate: 'src/AnnotationSidebar/ClientAnnotationSidebar.tmpl.html',
 
+    // What panel is active by default when opening the sidebar
+    annotationsPanelActive: true,
+    suggestionsPanelActive: false,
+
     debug: false
 })
-.service('AnnotationSidebar', function($rootScope, $filter, $timeout, BaseComponent, AnnotationsExchange, TypesHelper, ANNOTATIONSIDEBARDEFAULTS) {
+.service('AnnotationSidebar', function($rootScope, $filter, $timeout,
+                                       BaseComponent, AnnotationsExchange, TypesHelper,
+                                       ANNOTATIONSIDEBARDEFAULTS) {
     
     var annotationSidebar = new BaseComponent('AnnotationSidebar', ANNOTATIONSIDEBARDEFAULTS);
 
@@ -25,7 +31,9 @@ angular.module('Pundit2.AnnotationSidebar')
         isSidebarExpanded: annotationSidebar.options.isAnnotationSidebarExpanded,
         isFiltersExpanded: annotationSidebar.options.isFiltersShowed,
         allAnnotations: [],
-        filteredAnnotations: []
+        filteredAnnotations: [],
+        isAnnotationsPanelActive: annotationSidebar.options.annotationsPanelActive,
+        isSuggestionsPanelActive: annotationSidebar.options.suggestionsPanelActive
     };
 
     // Contains the list of elements relating to the annotations on the page
@@ -95,6 +103,21 @@ angular.module('Pundit2.AnnotationSidebar')
         return state.isFiltersExpanded;
     };
 
+    annotationSidebar.isAnnotationsPanelActive = function() {
+        return state.isAnnotationsPanelActive;
+    };
+    annotationSidebar.activateAnnotationsPanel = function() {
+        state.isAnnotationsPanelActive = true;
+        state.isSuggestionsPanelActive = false;
+    };
+
+    annotationSidebar.isSuggestionsPanelActive = function() {
+        return state.isSuggestionsPanelActive;
+    };
+    annotationSidebar.activateSuggestionsPanel = function() {
+        state.isSuggestionsPanelActive = true;
+        state.isAnnotationsPanelActive = false;
+    };
 
     var filterCountIncrement = function(uri){
         if (typeof(annotationSidebar.filtersCount[uri]) === 'undefined'){
@@ -147,7 +170,7 @@ angular.module('Pundit2.AnnotationSidebar')
                 });
             });
         });
-    }
+    };
 
     // Updates the list of filters when new annotations comes
     var setFilterElements = function(annotations) {
@@ -251,7 +274,7 @@ angular.module('Pundit2.AnnotationSidebar')
 
     annotationSidebar.getFilters = function(){
         return elementsList;
-    }
+    };
 
     annotationSidebar.getMinDate = function(){
         if (elementsList.annotationsDate.length > 0){
@@ -262,6 +285,7 @@ angular.module('Pundit2.AnnotationSidebar')
             );
         }
     };
+
     annotationSidebar.getMaxDate = function(){
         if (elementsList.annotationsDate.length > 0){
             return elementsList.annotationsDate.reduce(
@@ -285,7 +309,7 @@ angular.module('Pundit2.AnnotationSidebar')
         return false;
     };
 
-    // Active / Disable a specific filter
+    // Activate / Disable a specific filter
     annotationSidebar.toggleActiveFilter = function(list, uri) {
         elementsList[list][uri].active = !elementsList[list][uri].active;
     };

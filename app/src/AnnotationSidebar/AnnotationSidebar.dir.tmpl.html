@@ -1,7 +1,23 @@
 <div class="pnd-annotation-sidebar-container pnd-ignore">
     <div class="pnd-annotation-sidebar-content" ng-show="isAnnotationSidebarExpanded">
-        <div class="pnd-annotation-sidebar-filter-content">
-            <div 
+
+        <div class="pnd-annotation-sidebar-modes-buttons">
+            <button type="button"
+                    ng-click="activateSuggestionsPanel()"
+                    ng-class="{'pnd-active': isSuggestionsPanelActive()}"
+                    class="btn pnd-btn-sidebar">
+                Suggestions
+            </button>
+            <button type="button"
+                    ng-click="activateAnnotationsPanel()"
+                    ng-class="{'pnd-active': isAnnotationsPanelActive()}"
+                    class="btn pnd-btn-sidebar">
+                Annotations ({{annotations.length}}/{{allAnnotations.length}})
+            </button>
+        </div>
+
+        <div class="pnd-annotation-sidebar-filter-content" ng-show="isAnnotationsPanelActive()">
+            <div
                 ng-click="annotationSidebar.toggleFiltersContent()" 
                 ng-show="!isFiltersShowed"
                 class="pnd-annotation-sidebar-btn-show-filter">
@@ -11,10 +27,9 @@
                 {{annotations.length}}/{{allAnnotations.length}} Annotations    
                 <a href="#" ng-click="annotationSidebar.resetFilters()">Remove all filters</a>
             </div>
-            
+
             <div class="pnd-annotation-sidebar-filters-list" ng-show="isFiltersShowed">
             <!-- buttons -->
-                <button type="button" class="btn pnd-btn-sidebar">Suggestions</button><button type="button" class="btn pnd-btn-sidebar">Annotations ({{annotations.length}}/{{allAnnotations.length}})</button>
             <!-- // end buttons -->
                 
 
@@ -174,8 +189,13 @@
             </div>
         </div>
 
+        <!-- Suggestions panel -->
+        <div class="pnd-annotation-sidebar-annotations" ng-show="isSuggestionsPanelActive()">
+            TODO! :)
+        </div>
+
         <!-- List of annotations -->
-        <div class="pnd-annotation-sidebar-annotations" ng-show="isAnnotationSidebarExpanded">
+        <div class="pnd-annotation-sidebar-annotations" ng-show="isAnnotationsPanelActive()">
             <div ng-repeat="ann in filtered = (annotations)">
                 <annotation-details id="{{ann.id}}"></annotation-details>
             </div>  
