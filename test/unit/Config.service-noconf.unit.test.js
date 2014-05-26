@@ -34,7 +34,6 @@ describe('Config service without a punditConfig', function() {
     });
 
     it("should get the defaults from PUNDITDEFAULTCONF", function() {
-        expect(Config.modules).toEqual(PUNDITDEFAULTCONF.modules);
         expect(Config.vocabularies).toEqual(PUNDITDEFAULTCONF.vocabularies);
         expect(Config.useBasicRelations).toEqual(PUNDITDEFAULTCONF.useBasicRelations);
     });
