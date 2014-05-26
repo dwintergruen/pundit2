@@ -1,7 +1,7 @@
 angular.module('Pundit2.Toolbar')
 .controller('ToolbarCtrl', function($scope, Toolbar, MyPundit, Dashboard, AnnotationSidebar) {
     
-    $scope.dropdownTemplate = "src/Toolbar/dropdown.tmpl.html";
+    $scope.dropdownTemplate = "src/ContextualMenu/dropdown.tmpl.html";
     
     var login = function() {
         MyPundit.login();
@@ -43,18 +43,6 @@ angular.module('Pundit2.Toolbar')
         $scope.isUserLogged = newStatus;
         $scope.userData = MyPundit.getUserData();
     });
-
-    /*
-
-    // TODO: USELESS?
-
-    // listener for error status
-    // when an error is occured in, set flag isErrorOccured to true
-    $scope.$watch(function() { return Toolbar.getErrorShown(); }, function(newStatus) {
-        $scope.isErrorOccured = newStatus;
-    });
-
-    */
 
     // return true if no errors are occured --> status button ok must be visible
     $scope.showStatusButtonOk = function() {
