@@ -439,6 +439,12 @@ a {
 .btn:focus,
 .btn:active:focus,
 .btn.active:focus,
-input:focus {
+input:focus,
+:invalid,
+:-moz-submit-invalid,
+:-moz-ui-invalid {
   outline: 0;
+  box-shadow: none;
 }
+
+
