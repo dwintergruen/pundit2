@@ -187,13 +187,14 @@ describe('ContextualMenu service', function() {
 
     it('should correctly build diver content', function(){
 
+        addActions(false, true);
+
         var divider = { priority: 5, type: ['type2'] };
         ContextualMenu.addDivider(divider);
 
         ContextualMenu.show(10, 10, {}, 'type2');
         
-        expect(state.content.length).toBe(1);
-        expect(state.content[0].divider).toBe(true);
+        expect(state.content[1].divider).toBe(true);
     });
 
     it('should correctly call action on passed resource', function(){

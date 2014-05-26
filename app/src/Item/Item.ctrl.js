@@ -5,8 +5,6 @@ angular.module('Pundit2.Item')
     $scope.item = ItemsExchange.getItemByUri($scope.uri);
     // get item type label (then show it inside template)
     $scope.itemTypeLabel = TypesHelper.getLabel($scope.item.type[0]);
-    // true when the item is set stcky (used in template to add css class)
-    $scope.isStickyItem = false;
 
     $scope.onItemMouseOver = function(){
         Preview.showDashboardPreview($scope.item);
