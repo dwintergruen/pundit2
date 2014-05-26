@@ -52,8 +52,6 @@ angular.module('Pundit2.Vocabularies')
         var self = this,
             promise = $q.defer();
 
-        ItemsExchange.wipeContainer(self.config.container);
-
         $http({
             method: 'GET',
             url: freebaseSelector.options.freebaseSearchURL,
@@ -65,6 +63,9 @@ angular.module('Pundit2.Vocabularies')
         }).success(function(data) {
 
             freebaseSelector.log('Http success, get items from freebase', data);
+
+            // TODO need to cache item then wipe when all http calls ends ?
+            ItemsExchange.wipeContainer(self.config.container);
 
             if (data.result.length === 0) {
                 freebaseSelector.log('Empry result');

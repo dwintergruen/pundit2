@@ -51,8 +51,6 @@ angular.module('Pundit2.Vocabularies')
         var self = this,
             promise = $q.defer();
 
-        ItemsExchange.wipeContainer(self.config.container);
-
         var config = {
             params: {
                 query: angular.toJson({
@@ -67,6 +65,8 @@ angular.module('Pundit2.Vocabularies')
             .success(function(data){
 
                 korboBasketSelector.log('Http success, get items '+self.config.label, data);
+
+                ItemsExchange.wipeContainer(self.config.container);
 
                 if (data.result.length === 0) {
                     korboBasketSelector.log('Empty response');
