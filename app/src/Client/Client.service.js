@@ -17,7 +17,7 @@ angular.module('Pundit2.Client')
         relationsContainer: "usableRelations",
         bootModules: [
             'Toolbar', 'Dashboard', 'AnnotationSidebar', 'Preview',
-            'PageItemsContainer', 'MyItemsContainer'
+            'SelectorsManager', 'PageItemsContainer', 'MyItemsContainer'
         ],
         basicRelations: [
             {

@@ -108,15 +108,14 @@ angular.module('Pundit2.Vocabularies')
         $timeout.cancel(promise);
         promise = $timeout(function(){
             querySelectors();
-        }, 300);        
+        }, 500);        
 
     });
 
     var querySelectors = function(){
-        var callback = function(){
-            console.log('all selectors complete quering', ItemsExchange.getAll());
-        }
-        SelectorsManager.getItems($scope.search.term, callback);
+        SelectorsManager.getItems($scope.search.term).then(function(){
+            console.log('All selectors end http', ItemsExchange.getAll());
+        });
     };
 
     $scope.$watch(function() {

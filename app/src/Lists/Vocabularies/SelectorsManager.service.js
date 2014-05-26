@@ -10,7 +10,7 @@ angular.module('Pundit2.Vocabularies')
     debug: false
 
 })
-.service('SelectorsManager', function(BaseComponent, SELECTORMANAGERDEFAULTS, $injector) {
+.service('SelectorsManager', function(BaseComponent, SELECTORMANAGERDEFAULTS, $injector, $q) {
 
     var selectorsManager = new BaseComponent('SelectorsManager', SELECTORMANAGERDEFAULTS);
 
@@ -19,16 +19,28 @@ angular.module('Pundit2.Vocabularies')
     // active selectors services instance
     var selectorInstances = [];
 
-    selectorsManager.getItems = function(term, callback){
+    var pendingRequest;
+        
+    var promise = null;
+
+    selectorsManager.getItems = function(term){
         
         pendingRequest = 0;
-        registeredCallback = callback;
+        promise = $q.defer();
 
         // get items from actives selectors
         for (var j in selectorInstances) {
             pendingRequest++;
-            selectorInstances[j].getItems(term, checkAllSelectorEnd);
+            selectorInstances[j].getItems(term).then(function(){
+                pendingRequest--;
+                if (pendingRequest <= 0 && promise!== null) {
+                    promise.resolve();
+                    promise = null;
+                }
+            });
         }
+
+        return promise.promise;
 
     };
 
@@ -63,17 +75,6 @@ angular.module('Pundit2.Vocabularies')
     selectorsManager.getActiveSelectors = function(){
         return selectorInstances;
     };
-
-    var pendingRequest,
-        registeredCallback = null;
-    var checkAllSelectorEnd = function(){
-        pendingRequest--;
-        if (pendingRequest <= 0 && registeredCallback!== null) {
-            registeredCallback();
-            registeredCallback = null;
-        }
-    };
-
 
     return selectorsManager;
 

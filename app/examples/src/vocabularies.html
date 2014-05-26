@@ -11,7 +11,7 @@
                         // where put items inside items exchange
                         container: 'freebase',
                         // used how tab title
-                        label: 'FreebaseSpecial',
+                        label: 'Freebase',
                         // true if this instace do the query
                         active: true
                     }
@@ -35,24 +35,18 @@
                     }
                 ]
                 
+            },
+            "KorboBasketSelector": {
+
+                // all muruca instace search inside this basket
+                baskets: [109]
+                
             }
         }
     };
 
     var VocabDemoCtrl = function(/*ItemsExchange, FreebaseSelector, DbPediaSelector, MurucaSelector*/) {
-        /*var callback = function(){
-            console.log('freebase complete quering', ItemsExchange.getAll());
-        };
-        FreebaseSelector.getItems("Lady Gaga", callback);
-        //DbPediaSelector.getItems(angular.element(".vocDB-example-output"));
-        var murucaCallback = function(){
-            console.log('muruca complete quering', ItemsExchange.getAll());
-        }
-        MurucaSelector.getItems("spada", murucaCallback);*/
-        /*var callback = function(){
-            console.log('all selectors complete quering', ItemsExchange.getAll());
-        }
-        SelectorsManager.getItems("spada", callback);*/
+
     };
 
 </script>

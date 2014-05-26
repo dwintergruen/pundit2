@@ -29,7 +29,8 @@ angular.module('Pundit2.Vocabularies')
     debug: false
 
 })
-.factory('FreebaseSelector', function(BaseComponent, FREEBASESELECTORDEFAULTS, TypesHelper, SelectorsManager, Item, ItemsExchange, $http) {
+.factory('FreebaseSelector', function(BaseComponent, FREEBASESELECTORDEFAULTS, TypesHelper, SelectorsManager, Item, ItemsExchange, 
+                                        $http, $q) {
 
     var freebaseSelector = new BaseComponent('FreebaseSelector', FREEBASESELECTORDEFAULTS);
     freebaseSelector.name = 'FreebaseSelector';
@@ -46,9 +47,10 @@ angular.module('Pundit2.Vocabularies')
         this.pendingRequest = 0;
     };
 
-    FreebaseFactory.prototype.getItems = function(term, callback){
+    FreebaseFactory.prototype.getItems = function(term){
 
-        var self = this;
+        var self = this,
+            promise = $q.defer();
 
         ItemsExchange.wipeContainer(self.config.container);
 
@@ -66,7 +68,7 @@ angular.module('Pundit2.Vocabularies')
 
             if (data.result.length === 0) {
                 freebaseSelector.log('Empry result');
-                callback();
+                promise.resolve();
                 return;
             }
 
@@ -86,19 +88,21 @@ angular.module('Pundit2.Vocabularies')
                     uri: -1
                 };
 
-                self.getItemDetails(item, callback);
+                self.getItemDetails(item, promise);
 
             }
 
         }).error(function(msg) {
             freebaseSelector.err('Cant get items from freebase: ', msg);
-            callback();
+            promise.resolve();
         });
+
+        return promise.promise;
 
     };
 
 
-    FreebaseFactory.prototype.getItemDetails = function(item, callback){
+    FreebaseFactory.prototype.getItemDetails = function(item, promise){
 
         var self = this;
 
@@ -136,13 +140,13 @@ angular.module('Pundit2.Vocabularies')
                 freebaseSelector.log('TOPIC was last, complete for item ' + item.uri);
                 var add = new Item(item.uri, item);
                 ItemsExchange.addItemToContainer(add, self.config.container);
-                self.checkEnd(callback);
+                self.checkEnd(promise);
             }
 
         }).error(function(msg) {
             freebaseSelector.err('Cant get TOPIC from freebase: ', msg);
             if (item.description !== -1 || error>0) {
-                self.checkEnd(callback);
+                self.checkEnd(promise);
             }
             error++;
         });
@@ -169,24 +173,24 @@ angular.module('Pundit2.Vocabularies')
                 freebaseSelector.log('MQL was last, complete http for item ' + item.uri);
                 var add = new Item(item.uri, item);
                 ItemsExchange.addItemToContainer(add, self.config.container);
-                self.checkEnd(callback);
+                self.checkEnd(promise);
             }
 
         }).error(function(msg) {
             freebaseSelector.err('Cant get MQL from freebase: ', msg);
             if (item.uri !== -1 || error>0) {
-                self.checkEnd(callback);
+                self.checkEnd(promise);
             }
             error++;
         });
 
     };
 
-    FreebaseFactory.prototype.checkEnd = function(callback){
+    FreebaseFactory.prototype.checkEnd = function(promise){
         this.pendingRequest--;
         if (this.pendingRequest <= 0) {
             freebaseSelector.log('Complete item parsing');
-            callback();
+            promise.resolve();
         }
         
     };

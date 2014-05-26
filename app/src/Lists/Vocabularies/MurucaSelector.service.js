@@ -14,7 +14,7 @@ angular.module('Pundit2.Vocabularies')
     instances: [
         {
             // query type
-            queryType: '',
+            queryType: 'http://purl.org/galassiariosto/types/Azione', //Scena, Influenza, Ecphrasis, RappresentazioneOriginale, ecc.. 
             // where put items inside items exchange
             container: 'muruca',
             // used how tab title
@@ -27,7 +27,7 @@ angular.module('Pundit2.Vocabularies')
     debug: false
 
 })
-.factory('MurucaSelector', function(BaseComponent, MURUCASELECTORDEFAULTS, Item, ItemsExchange, SelectorsManager, $http) {
+.factory('MurucaSelector', function(BaseComponent, MURUCASELECTORDEFAULTS, Item, ItemsExchange, SelectorsManager, $http, $q) {
 
     var murucaSelector = new BaseComponent('MurucaSelector', MURUCASELECTORDEFAULTS);
     murucaSelector.name = 'MurucaSelector';
@@ -43,8 +43,9 @@ angular.module('Pundit2.Vocabularies')
         this.config = config;
     };
 
-    MurucaFactory.prototype.getItems = function(term, callback){
-        var self = this;
+    MurucaFactory.prototype.getItems = function(term){
+        var self = this,
+        promise = $q.defer();
 
         ItemsExchange.wipeContainer(self.config.container);
 
@@ -68,13 +69,15 @@ angular.module('Pundit2.Vocabularies')
                     murucaSelector.log('Empty Response');
                 }
 
-                self.getItemsDetails(data.result, callback);
+                self.getItemsDetails(data.result, promise);
 
             });
 
+            return promise.promise;
+
     };
 
-    MurucaFactory.prototype.getItemsDetails = function(result, callback){
+    MurucaFactory.prototype.getItemsDetails = function(result, promise){
 
         var self = this;
 
@@ -110,7 +113,7 @@ angular.module('Pundit2.Vocabularies')
 
         }
 
-        callback();
+        promise.resolve();
 
         murucaSelector.log('Complete items parsing');
 

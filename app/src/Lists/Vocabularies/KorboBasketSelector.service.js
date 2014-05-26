@@ -7,8 +7,7 @@ angular.module('Pundit2.Vocabularies')
     korboItemsBaseURL: 'http://purl.org/net7/korbo',
     korboSchemaBaseURL: 'http://purl.org/net7/korbo/type/',
     
-    baskets: [109],
-    //baskets: [82],
+    baskets: [16],
 
     // enable or disable all muruca selectors instances
     active: true,
@@ -30,7 +29,8 @@ angular.module('Pundit2.Vocabularies')
     debug: false
 
 })
-.factory('KorboBasketSelector', function(BaseComponent, KORBOBASKETSELECTORDEFAULTS, Item, ItemsExchange, SelectorsManager, $http) {
+.factory('KorboBasketSelector', function(BaseComponent, KORBOBASKETSELECTORDEFAULTS, Item, ItemsExchange, SelectorsManager,
+                                            $http, $q) {
 
     var korboBasketSelector = new BaseComponent('KorboBasketSelector', KORBOBASKETSELECTORDEFAULTS);
     korboBasketSelector.name = 'KorboBasketSelector';
@@ -47,8 +47,9 @@ angular.module('Pundit2.Vocabularies')
         this.pendingRequest = 0;
     };
 
-    KorboBasketFactory.prototype.getItems = function(term, callback){
-        var self = this;
+    KorboBasketFactory.prototype.getItems = function(term){
+        var self = this,
+            promise = $q.defer();
 
         ItemsExchange.wipeContainer(self.config.container);
 
@@ -69,7 +70,7 @@ angular.module('Pundit2.Vocabularies')
 
                 if (data.result.length === 0) {
                     korboBasketSelector.log('Empty response');
-                    callback();
+                    promise.resolve();
                     return;
                 }
 
@@ -84,15 +85,17 @@ angular.module('Pundit2.Vocabularies')
                         type: []
                     };
 
-                self.getItemDetails(item, callback);
+                self.getItemDetails(item, promise);
 
                 }
 
             });
 
+            return promise.promise;
+
     };
 
-    KorboBasketFactory.prototype.getItemDetails = function(item, callback){
+    KorboBasketFactory.prototype.getItemDetails = function(item, promise){
 
         var self = this;
 
@@ -137,7 +140,7 @@ angular.module('Pundit2.Vocabularies')
                 self.pendingRequest--;
                 if (self.pendingRequest <= 0) {
                     korboBasketSelector.log('Items complete parsing');
-                    callback();
+                    promise.resolve();
                 }
 
             });
