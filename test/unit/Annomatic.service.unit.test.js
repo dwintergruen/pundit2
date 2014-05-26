@@ -1,6 +1,6 @@
-describe('Annotate service', function() {
+describe('Annomatic service', function() {
 
-    var Annotate, $httpBackend, $compile, $rootScope, $document,
+    var Annomatic, $httpBackend, $compile, $rootScope, $document,
         testAnnotationsEmpty = {
             time: 0,
             annotations: []
@@ -71,7 +71,7 @@ describe('Annotate service', function() {
     beforeEach(module('Pundit2'));
     beforeEach(function() {
         inject(function($injector, _$httpBackend_, _$compile_, _$rootScope_, _$document_) {
-            Annotate = $injector.get('Annotate');
+            Annomatic = $injector.get('Annomatic');
             $httpBackend = _$httpBackend_;
             $compile = _$compile_;
             $rootScope = _$rootScope_;
@@ -85,54 +85,33 @@ describe('Annotate service', function() {
 
     var annotateTestContent = function() {
         $httpBackend
-            .when('POST', "https://api.dandelion.eu/datatxt/nex/v1?include_abstract=true&include_categories=true&include_image=true&include_lod=true&include_types=true&lang=it&min_confidence=0.3&min_length=3")
+            .when('POST', "https://api.dandelion.eu/datatxt/nex/v1?include_abstract=true&include_categories=true&include_image=true&include_lod=true&include_types=true&lang=it&min_confidence=0&min_length=3")
             .respond(testAnnotations);
 
         var elem = $compile("<div class='test-content'><p>Pisa è un comune italiano di 86.591 abitanti</p></div>")($rootScope);
         angular.element('body').append(elem);
 
-        Annotate.getDataTXTAnnotations(elem);
+        Annomatic.getDataTXTAnnotations(elem);
         $httpBackend.flush();
 
         return elem;
     };
 
     it('should start with no annotation', function() {
-        expect(Annotate.annotationNumber).toBe(0);
-        expect(Annotate.ann.byNum.length).toBe(0);
+        expect(Annomatic.annotationNumber).toBe(0);
+        expect(Annomatic.ann.byNum.length).toBe(0);
     });
 
     // TODO: move the httpbackend stuff to a function
     it('should get annotations with an HTTP call', function() {
         $httpBackend
-            .when('POST', "https://api.dandelion.eu/datatxt/nex/v1?include_abstract=true&include_categories=true&include_image=true&include_lod=true&include_types=true&lang=it&min_confidence=0.3&min_length=3")
+            .when('POST', "https://api.dandelion.eu/datatxt/nex/v1?include_abstract=true&include_categories=true&include_image=true&include_lod=true&include_types=true&lang=it&min_confidence=0&min_length=3")
             .respond(testAnnotationsEmpty);
         
         var elem = $compile("Some random content")($rootScope);
-        Annotate.getDataTXTAnnotations(elem);
+        Annomatic.getDataTXTAnnotations(elem);
 
         $httpBackend.flush();
     });
-    
-    it('should analyze the response of DataTXT service', function() {
-        annotateTestContent();
 
-        expect(Annotate.annotationNumber).toBe(testAnnotations.annotations.length);
-        expect(Annotate.ann.byNum.length).toBe(testAnnotations.annotations.length);
-    });
-
-    it('should create new scopes around annotations', function() {
-        var elem = annotateTestContent();
-
-        expect(Annotate.ann.autoAnnScopes.length).toBe(testAnnotations.annotations.length);
-        
-        var scope0 = angular.element(elem).find('.ann-auto.ann-0').scope();
-        expect(scope0).toBe(Annotate.ann.autoAnnScopes[0]);
-
-        var scope1 = angular.element(elem).find('.ann-auto.ann-1').scope();
-        expect(scope1).toBe(Annotate.ann.autoAnnScopes[1]);
-
-        expect(scope0).not.toBe(scope1);
-    });
-    
 });
