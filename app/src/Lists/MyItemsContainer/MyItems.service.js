@@ -41,7 +41,7 @@ angular.module("Pundit2.MyItemsContainer")
                     !ItemsExchange.isItemInContainer(item, myItems.options.container);
             },
             action: function(item) {
-                myItems.addSingleMyItem(item);
+                myItems.addItem(item);
                 return true;
             }
         });
@@ -57,7 +57,7 @@ angular.module("Pundit2.MyItemsContainer")
                     ItemsExchange.isItemInContainer(item, myItems.options.container);
             },
             action: function(item) {
-                myItems.deleteSingleMyItem(item);
+                myItems.deleteItem(item);
                 return true;
             }
         });
@@ -83,7 +83,7 @@ angular.module("Pundit2.MyItemsContainer")
     // "new Item()" adds the item to itemsExchange "default" container
     // then we add it to "myItems" container too
 
-    myItems.getMyItems = function(){
+    myItems.getAllItems = function(){
         var item;
 
         $http({
@@ -131,7 +131,7 @@ angular.module("Pundit2.MyItemsContainer")
         });
     };
 
-    myItems.deleteAllMyItems = function(){
+    myItems.deleteAllItems = function(){
         var currentTime = new Date();
 
         // remove all my item on pundit server
@@ -158,7 +158,7 @@ angular.module("Pundit2.MyItemsContainer")
         });
     };
 
-    myItems.deleteSingleMyItem = function(value){
+    myItems.deleteItem = function(value){
 
         var currentTime = new Date();
 
@@ -197,7 +197,7 @@ angular.module("Pundit2.MyItemsContainer")
     };
 
     // add one item to my items on pundit server
-    myItems.addSingleMyItem = function(value){
+    myItems.addItem = function(value){
 
         var currentTime = new Date();
        
@@ -232,10 +232,6 @@ angular.module("Pundit2.MyItemsContainer")
             myItems.err('Cant add item to my items on the server: ', msg);
         });
 
-    };
-
-    myItems.getMyItemsContainer = function(){
-        return myItems.options.container;
     };
 
     return myItems;

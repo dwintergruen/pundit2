@@ -69,7 +69,7 @@ describe('MyItems service', function() {
     it('should get my items', function(){
 
         $httpBackend.whenGET(NameSpace.get('asPref')).respond(myItemsHttpResponse);
-        MyItems.getMyItems();
+        MyItems.getAllItems();
         $httpBackend.flush();
 
         var items = ItemsExchange.getItemsByContainer(MYITEMSDEFAULTS.container);
@@ -83,7 +83,7 @@ describe('MyItems service', function() {
     it('should get my items and get redirect response', function(){
 
         $httpBackend.whenGET(NameSpace.get('asPref')).respond(redirectResponse);
-        MyItems.getMyItems();
+        MyItems.getAllItems();
         $httpBackend.flush();
 
         var items = ItemsExchange.getItemsByContainer(MYITEMSDEFAULTS.container);
@@ -95,7 +95,7 @@ describe('MyItems service', function() {
     it('should get my items from old pundit', function(){
 
         $httpBackend.whenGET(NameSpace.get('asPref')).respond(oldPunditMyItemsHttpResponse);
-        MyItems.getMyItems();
+        MyItems.getAllItems();
         $httpBackend.flush();
 
         var items = ItemsExchange.getItemsByContainer(MYITEMSDEFAULTS.container);
@@ -113,13 +113,13 @@ describe('MyItems service', function() {
     it('should delete all my items when http success', function(){
 
         $httpBackend.whenGET(NameSpace.get('asPref')).respond(myItemsHttpResponse);
-        MyItems.getMyItems();
+        MyItems.getAllItems();
         $httpBackend.flush();
 
         expect(ItemsExchange.getItemsByContainer(MYITEMSDEFAULTS.container).length).toBe(2);
 
         $httpBackend.whenPOST(NameSpace.get('asPref')).respond(201, '');
-        MyItems.deleteAllMyItems();
+        MyItems.deleteAllItems();
         $httpBackend.flush();
 
         expect(ItemsExchange.getItemsByContainer(MYITEMSDEFAULTS.container).length).toBe(0);
@@ -128,13 +128,13 @@ describe('MyItems service', function() {
     it('should not delete all my items when http success but get redirect response', function(){
 
         $httpBackend.whenGET(NameSpace.get('asPref')).respond(myItemsHttpResponse);
-        MyItems.getMyItems();
+        MyItems.getAllItems();
         $httpBackend.flush();
 
         expect(ItemsExchange.getItemsByContainer(MYITEMSDEFAULTS.container).length).toBe(2);
 
         $httpBackend.whenPOST(NameSpace.get('asPref')).respond(201, redirectResponse);
-        MyItems.deleteAllMyItems();
+        MyItems.deleteAllItems();
         $httpBackend.flush();
 
         expect(ItemsExchange.getItemsByContainer(MYITEMSDEFAULTS.container).length).toBe(2);
@@ -143,13 +143,13 @@ describe('MyItems service', function() {
     it('should not delete all my items when http fail', function(){
 
         $httpBackend.whenGET(NameSpace.get('asPref')).respond(myItemsHttpResponse);
-        MyItems.getMyItems();
+        MyItems.getAllItems();
         $httpBackend.flush();
 
         expect(ItemsExchange.getItemsByContainer(MYITEMSDEFAULTS.container).length).toBe(2);
 
         $httpBackend.whenPOST(NameSpace.get('asPref')).respond(500, '');
-        MyItems.deleteAllMyItems();
+        MyItems.deleteAllItems();
         $httpBackend.flush();
 
         expect(ItemsExchange.getItemsByContainer(MYITEMSDEFAULTS.container).length).toBe(2);
@@ -158,7 +158,7 @@ describe('MyItems service', function() {
     it('should add one item to my items', function(){
 
         $httpBackend.whenPOST(NameSpace.get('asPref')).respond(201, '');
-        MyItems.addSingleMyItem(new Item(myItemsHttpResponse.value[0].uri));
+        MyItems.addItem(new Item(myItemsHttpResponse.value[0].uri));
         $httpBackend.flush();
 
         expect(ItemsExchange.getItemsByContainer(MYITEMSDEFAULTS.container).length).toBe(1);
@@ -167,7 +167,7 @@ describe('MyItems service', function() {
     it('should not add one item to my items when http success but get redirect response', function(){
 
         $httpBackend.whenPOST(NameSpace.get('asPref')).respond(201, redirectResponse);
-        MyItems.addSingleMyItem(new Item(myItemsHttpResponse.value[0].uri));
+        MyItems.addItem(new Item(myItemsHttpResponse.value[0].uri));
         $httpBackend.flush();
 
         expect(ItemsExchange.getItemsByContainer(MYITEMSDEFAULTS.container).length).toBe(0);
@@ -176,7 +176,7 @@ describe('MyItems service', function() {
     it('should not add one item to my items when http fail', function(){
 
         $httpBackend.whenPOST(NameSpace.get('asPref')).respond(500, '');
-        MyItems.addSingleMyItem(new Item(myItemsHttpResponse.value[0].uri));
+        MyItems.addItem(new Item(myItemsHttpResponse.value[0].uri));
         $httpBackend.flush();
 
         expect(ItemsExchange.getItemsByContainer(MYITEMSDEFAULTS.container).length).toBe(0);
@@ -186,7 +186,7 @@ describe('MyItems service', function() {
 
         // add two items to my items
         $httpBackend.whenGET(NameSpace.get('asPref')).respond(myItemsHttpResponse);
-        MyItems.getMyItems();
+        MyItems.getAllItems();
         $httpBackend.flush();
 
         var items = ItemsExchange.getItemsByContainer(MYITEMSDEFAULTS.container);
@@ -194,7 +194,7 @@ describe('MyItems service', function() {
         expect(items.length).toBe(2);
 
         $httpBackend.whenPOST(NameSpace.get('asPref')).respond(201, '');
-        MyItems.deleteSingleMyItem(items[1]);
+        MyItems.deleteItem(items[1]);
         $httpBackend.flush();
 
         var newItem = ItemsExchange.getItemsByContainer(MYITEMSDEFAULTS.container);
@@ -206,7 +206,7 @@ describe('MyItems service', function() {
 
         // add two items to my items
         $httpBackend.whenGET(NameSpace.get('asPref')).respond(myItemsHttpResponse);
-        MyItems.getMyItems();
+        MyItems.getAllItems();
         $httpBackend.flush();
 
         var items = ItemsExchange.getItemsByContainer(MYITEMSDEFAULTS.container);
@@ -214,7 +214,7 @@ describe('MyItems service', function() {
         expect(items.length).toBe(2);
 
         $httpBackend.whenPOST(NameSpace.get('asPref')).respond(201, redirectResponse);
-        MyItems.deleteSingleMyItem(items[1]);
+        MyItems.deleteItem(items[1]);
         $httpBackend.flush();
 
         var newItem = ItemsExchange.getItemsByContainer(MYITEMSDEFAULTS.container);
@@ -225,7 +225,7 @@ describe('MyItems service', function() {
 
         // add two items to my items
         $httpBackend.whenGET(NameSpace.get('asPref')).respond(myItemsHttpResponse);
-        MyItems.getMyItems();
+        MyItems.getAllItems();
         $httpBackend.flush();
 
         var items = ItemsExchange.getItemsByContainer(MYITEMSDEFAULTS.container);
@@ -233,7 +233,7 @@ describe('MyItems service', function() {
         expect(items.length).toBe(2);
 
         $httpBackend.whenPOST(NameSpace.get('asPref')).respond(500, '');
-        MyItems.deleteSingleMyItem(items[1]);
+        MyItems.deleteItem(items[1]);
         $httpBackend.flush();
 
         var newItem = ItemsExchange.getItemsByContainer(MYITEMSDEFAULTS.container);

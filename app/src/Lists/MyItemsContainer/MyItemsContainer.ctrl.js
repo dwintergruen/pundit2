@@ -100,7 +100,7 @@ angular.module('Pundit2.MyItemsContainer')
     // delete all my Items
     $scope.onClickDeleteAllMyItems = function(){
         if (MyPundit.isUserLogged()) {
-            MyItems.deleteAllMyItems();
+            MyItems.deleteAllItems();
         }
     };
 
@@ -156,10 +156,9 @@ angular.module('Pundit2.MyItemsContainer')
 
     });
 
-    var myItemsCont = MyItems.getMyItemsContainer();
     // watch only my items
     $scope.$watch(function() {
-        return ItemsExchange.getItemsByContainer(myItemsCont);
+        return ItemsExchange.getItemsByContainer(MyItems.options.container);
     }, function(newItems) {
         // update all items array and display new items
         $scope.displayedItems = MyItemsContainer.buildItemsArray($scope.tabs.activeTab, $scope.tabs, newItems);

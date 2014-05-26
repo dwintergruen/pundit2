@@ -369,7 +369,7 @@ angular.module('Pundit2.Client')
                     }
                 });
 
-                MyItems.getMyItems();
+                MyItems.getAllItems();
             });
 
             addComponents();
@@ -397,7 +397,7 @@ angular.module('Pundit2.Client')
             // There could be private annotations we want to show, get them again
             getAnnotations();
 
-            MyItems.getMyItems();
+            MyItems.getAllItems();
         };
 
         // Called when the user completed the logout process, clicking on logout
