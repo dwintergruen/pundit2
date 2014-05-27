@@ -2,7 +2,22 @@
 
 <script>
 
-    var TripleComposerDemoCtrl = function() {
+    var TripleComposerDemoCtrl = function(Annotation, Client, ItemsExchange, Item) {
+        var toLoad = ["8fd05a49", "65286186", "385c1647"];
+
+        for (var l=toLoad.length; l--;) {
+            new Annotation(toLoad[l]);
+        }
+
+        var loadBasicRelations = function() {
+            var num = 0,
+                    relations = Client.options.basicRelations;
+            for (var p in relations) {
+                var item = new Item(relations[p].uri, relations[p]);
+                ItemsExchange.addItemToContainer(item, Client.options.relationsContainer);
+            }
+            Client.log('Loaded '+num+' basic relations');
+        }();
 
     };
 

@@ -1,4 +1,4 @@
-<div class="pnd-statement-row">
+<div class="pnd-statement-row clearfix">
 
     <!-- Subject -->
     <div class="pnd-statement-subject">
@@ -6,14 +6,14 @@
         <div ng-hide="subjectFound">
             <div class="left-inner-icon">
                 <span class="pnd-icon {{subjectIcon}}"></span>
-                <input type="text" class="input-sm" ng-model="subjectSearch" ng-click="click();">
+                <input type="text" class="input-sm" ng-model="subjectSearch" ng-click="onClickSubject($event)">
             </div>
             <button>NEW</button>
         </div>
 
         <div ng-show="subjectFound" ng-mouseover="subjectOver=true" ng-mouseleave="subjectOver=false">
-            <div>Subject Item Label</div>
-            <div ng-hide="subjectOver">Subject Item Type</div>
+            <div>{{subjectLabel}}</div>
+            <div ng-hide="subjectOver">{{subjectTypeLabel}}</div>
             <button ng-show="subjectOver">D</button>
         </div>
 
@@ -26,12 +26,12 @@
         <div ng-hide="predicateFound">
             <div class="left-inner-icon">
                 <span class="pnd-icon {{predicateIcon}}"></span>
-                <input type="text" ng-model="predicateSearch" class="input-sm">
+                <input type="text" class="input-sm" ng-model="predicateSearch" ng-click="onClickPredicate($event)">
             </div>
         </div>
 
         <div ng-show="predicateFound">
-            <div>Predicate Item Label</div>
+            <div>{{predicateLabel}}</div>
         </div>        
 
     </div>
@@ -42,25 +42,25 @@
         <div ng-hide="objectFound">
             <div class="left-inner-icon">
                 <span class="pnd-icon {{objectIcon}}"></span>
-                <input type="text" ng-model="objectSearch" class="input-sm">
+                <input type="text" class="input-sm" ng-model="objectSearch" ng-click="onClickObject($event)">
             </div>
             <!--Calendar Icon-->
-            <button>C</button>
+            <button ng-click="onClickObjectCalendar($event)">C</button>
             <!--Pen Icon-->
-            <button>P</button>
+            <button ng-click="onClickObjectLiteral($event)">P</button>
             <button>NEW</button>
         </div>
 
         <div ng-show="objectFound" ng-mouseover="objectOver=true" ng-mouseleave="objectOver=false">
-            <div>Object Item Label</div>
-            <div ng-hide="objectOver">Object Item Type</div>
+            <div>{{objectLabel}}</div>
+            <div ng-hide="objectOver">{{objectTypeLabel}}</div>
             <button ng-show="objectOver">D</button>
         </div>
 
     </div>
 
     <div class="pnd-statement-buttons">
-        <button>X</button>
+        <button ng-click="wipeStatement()">X</button>
         <button>[]</button>
     </div>
 
