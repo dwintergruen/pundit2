@@ -34,7 +34,7 @@ angular.module('Pundit2.Annomatic')
                     scope.element,
                     {
                         content: ""+scope.num,
-                        template: 'src/Annomatic/AnnotationPopover.tmpl.html',
+                        template: 'src/Annomatic/AnnomaticPopover.tmpl.html',
                         trigger: 'manual'
                     }// init()
                 );
