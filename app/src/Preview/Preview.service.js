@@ -64,19 +64,7 @@ angular.module('Pundit2.Preview')
          * Default value:
          * <pre> clientDashboardTabTitle: "Preview" </pre>
          */
-    clientDashboardTabTitle: "Preview",
-
-    iconDefault: 'pnd-icon pnd-icon-eye',
-    iconImage: 'pnd-icon pnd-icon-camera',
-    iconText: 'pnd-icon pnd-icon-align-center',
-    iconWebPage: 'pnd-icon-file-text',
-    iconEntity: 'pnd-icon pnd-icon-code-fork',
-
-    classDefault: 'pnd-item-default',
-    classImage: 'pnd-item-image',
-    classText: 'pnd-item-text',
-    classWebPage: 'pnd-item-web-page',
-    classEntity: 'pnd-item-entity'
+    clientDashboardTabTitle: "Preview"
 
 })
 .service('Preview', function(BaseComponent, PREVIEWDEFAULTS, NameSpace) {
@@ -152,46 +140,7 @@ angular.module('Pundit2.Preview')
         } else {
             return false;
         }
-
     };
-
-    preview.getItemIcon = function() {
-        var item = state.itemDashboardPreview;
-
-        if (typeof(item) === "undefined" || item === null) {
-            return preview.options.iconDefault;
-        } else if (item.isImage() || item.isImageFragment()) {
-            return preview.options.iconImage;
-        } else if (item.isTextFragment()) {
-            return preview.options.iconText;
-        } else if (item.isWebPage()) {
-            return preview.options.iconWebPage;
-        } else if (item.isEntity()) {
-            return preview.options.iconEntity;
-        }
-
-        return preview.options.iconDefault;
-    };
-
-    preview.getItemClass = function() {
-        var item = state.itemDashboardPreview;
-
-        if (typeof(item) === "undefined" || item === null) {
-            return preview.options.classDefault;
-        } else if (item.isImage() || item.isImageFragment()) {
-            return preview.options.classImage;
-        } else if (item.isTextFragment()) {
-            return preview.options.classText;
-        } else if (item.isWebPage()) {
-            return preview.options.classWebPage;
-        } else if (item.isEntity()) {
-            return preview.options.classEntity;
-        }
-
-        return preview.options.classDefault;
-    };
-
-
 
     return preview;
 });

@@ -57,11 +57,15 @@ angular.module('Pundit2.Preview')
     };
 
     $scope.getItemIcon = function() {
-        return Preview.getItemIcon();
+        if (!$scope.isItemEmpty()){
+            return $scope.itemDashboardPreview.getIcon();
+        }
     };
 
     $scope.getItemClass = function() {
-        return Preview.getItemClass();
+        if (!$scope.isItemEmpty()){
+            return $scope.itemDashboardPreview.getClass();
+        }
     };
 
 });

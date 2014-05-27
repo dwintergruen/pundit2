@@ -1,6 +1,19 @@
 angular.module('Pundit2.Core')
-.factory('Item', function(BaseComponent, NameSpace, Utils, ItemsExchange) {
-    var itemComponent = new BaseComponent("Item");
+.constant('ITEMDEFAULTS', {
+    iconDefault: 'pnd-icon pnd-icon-eye',
+    iconImage: 'pnd-icon pnd-icon-camera',
+    iconText: 'pnd-icon pnd-icon-align-center',
+    iconWebPage: 'pnd-icon-file-text',
+    iconEntity: 'pnd-icon pnd-icon-code-fork',
+
+    classDefault: 'pnd-item-default',
+    classImage: 'pnd-item-image',
+    classText: 'pnd-item-text',
+    classWebPage: 'pnd-item-web-page',
+    classEntity: 'pnd-item-entity'
+})
+.factory('Item', function(BaseComponent, NameSpace, Utils, ItemsExchange, ITEMDEFAULTS) {
+    var itemComponent = new BaseComponent("Item", ITEMDEFAULTS);
 
     var ItemFactory = function(uri, values) {
         // To create a new Item at least a URI is needed
@@ -126,6 +139,40 @@ angular.module('Pundit2.Core')
 
     ItemFactory.prototype.toJsonLD = function() {
         // TODO .. why not? needed? :)
+    };
+
+    ItemFactory.prototype.getIcon = function() {
+
+        if (typeof(this) === "undefined" || this === null) {
+            return itemComponent.options.iconDefault;
+        } else if (this.isImage() || this.isImageFragment()) {
+            return itemComponent.options.iconImage;
+        } else if (this.isTextFragment()) {
+            return itemComponent.options.iconText;
+        } else if (this.isWebPage()) {
+            return itemComponent.options.iconWebPage;
+        } else if (this.isEntity()) {
+            return itemComponent.options.iconEntity;
+        }
+
+        return itemComponent.options.iconDefault;
+    };
+
+    ItemFactory.prototype.getClass = function() {
+
+        if (typeof(this) === "undefined" || this === null) {
+            return itemComponent.options.classDefault;
+        } else if (this.isImage() || this.isImageFragment()) {
+            return itemComponent.options.classImage;
+        } else if (this.isTextFragment()) {
+            return itemComponent.options.classText;
+        } else if (this.isWebPage()) {
+            return itemComponent.options.classWebPage;
+        } else if (this.isEntity()) {
+            return itemComponent.options.classEntity;
+        }
+
+        return itemComponent.options.classDefault;
     };
 
 
