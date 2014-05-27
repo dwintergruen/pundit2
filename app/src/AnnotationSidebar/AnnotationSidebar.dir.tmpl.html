@@ -17,16 +17,18 @@
 
         <div class="pnd-annotation-sidebar-filter-content" ng-show="isAnnotationsPanelActive()">
 
-            <button
-                ng-click="annotationSidebar.toggleFiltersContent()" 
-                ng-show="!isFiltersShowed"
-                class="btn btn-success pnd-annotation-sidebar-btn-show-filter">
-                    Show Filters
-            </button>
+            <div ng-class="{'pnd-btn-sidebar-full': !isFiltersShowed'}">
+                <button
+                    ng-click="annotationSidebar.toggleFiltersContent()"
+                    ng-show="!isFiltersShowed"
+                    class="btn btn-success pnd-annotation-sidebar-btn-show-filter">
+                        Show Filters
+                </button>
 
-            <div ng-show="annotationSidebar.needToFilter() && !isFiltersShowed">
-                <button class="btn btn-warning" ng-click="annotationSidebar.resetFilters()">
-                    Remove all filters
+                <button
+                    ng-show="annotationSidebar.needToFilter() && !isFiltersShowed"
+                    class="btn btn-warning" ng-click="annotationSidebar.resetFilters()">
+                        Remove all filters
                 </button>
             </div>
 
