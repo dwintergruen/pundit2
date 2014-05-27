@@ -27,6 +27,10 @@ angular.module('Pundit2.Vocabularies')
     SelectorsManager.init();
 
     $scope.dropdownTemplate = "src/Toolbar/dropdown.tmpl.html";
+
+    // read by <item> directive (in PageItemsContainer/items.tmpl.html)
+    // will trigger this contextual menu type clicking on the contextual item icon
+    $scope.itemMenuType = SelectorsManager.options.cMenuType;
     
     // items property used to compare
     // legal value are: 'type' and 'label'

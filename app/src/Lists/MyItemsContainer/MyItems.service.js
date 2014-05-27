@@ -23,7 +23,8 @@ angular.module("Pundit2.MyItemsContainer")
             Config.modules.TextFragmentHandler.cMenuType,
             Config.modules.PageItemsContainer.cMenuType,
             Config.modules.MyItemsContainer.cMenuType,
-            Config.modules.TextFragmentAnnotator.cMenuType
+            Config.modules.TextFragmentAnnotator.cMenuType,
+            Config.modules.SelectorsManager.cMenuType
         ];
 
         ContextualMenu.addDivider({

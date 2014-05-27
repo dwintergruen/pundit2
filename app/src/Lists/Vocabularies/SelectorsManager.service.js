@@ -7,6 +7,10 @@ angular.module('Pundit2.Vocabularies')
     clientDashboardPanel: "lists",
     clientDashboardTabTitle: "Vocab",
 
+    // vocabulary items contextual menu type
+    // valid to all items obtaine by selectors
+    cMenuType: 'vocabItems',
+
     debug: false
 
 })
