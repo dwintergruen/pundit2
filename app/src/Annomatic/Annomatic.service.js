@@ -5,6 +5,7 @@ angular.module('Pundit2.Annomatic')
 })
 .service('Annomatic', function(ANNOMATICDEFAULTS, BaseComponent, DataTXTResource, XpointersHelper,
                                ItemsExchange, TextFragmentHandler, TypesHelper,
+                               DBPediaSpotlightResource,
                                $rootScope, $timeout, $document, $q) {
 
     var annomatic = new BaseComponent('Annomatic', ANNOMATICDEFAULTS);
@@ -52,6 +53,8 @@ angular.module('Pundit2.Annomatic')
 
         // Cycle over the nodes in the stack: depth first. We start from the given node
         while ((currentNode = stack.pop()) && currentAnnotationNum < annotations.length) {
+
+            annomatic.log("Popped node ", currentNode, ' current offset = '+currentOffset);
 
             // Spaces added to the current offsets to match the real content, it will
             // be used to create valid ranges
@@ -111,7 +114,9 @@ angular.module('Pundit2.Annomatic')
                             end = spacesLen[l] + currentAnnotation.end - currentOffset + addedSpaces;
                             sub = currentNode.textContent.substring(start, end);
 
-                            annomatic.log('Trying to add '+spacesLen[l]+' spaces: --' + sub + '-- vs --'+ currentAnnotation.spot+"--");
+                            annomatic.log('Trying to add '+spacesLen[l]+' spaces: --' +
+                                sub + '-- vs --'+ currentAnnotation.spot+'-- (' +
+                                start+' to '+end+')');
 
                             // TODO: we are losing all those annotations which are multiple words AND
                             // in the DOM are splitted by spaces like "aa     bb" or "aa\n    bb".
@@ -157,6 +162,7 @@ angular.module('Pundit2.Annomatic')
 
                     // Let's move on to the next node, update current offset +1, since DataTXT
                     // inserts a \n at the end of tags.. just because why not ..... :|
+                    // TODO: might not be because of DataTXT but because there was a \n after the nodes .. ??
                     currentOffset += trimmedContent.length + 1;
                     annomatic.log('Moving to next node with current offset = '+ currentOffset);
 
@@ -322,14 +328,27 @@ angular.module('Pundit2.Annomatic')
     annomatic.getDataTXTAnnotations = function(node) {
         var promise = $q.defer(),
             element = angular.element(node),
-            content = element.html();
+            content = element.text();
+
+        // It is possible to pass to DataTXT the HTML form of the content, findAnnotations()
+        // will to the magic rest ;)
+        // content = element.html();
+
+        // If we're not passing the HTML but just the text, we strip out extra spaces at beginning
+        // and end, and multiple spaces in the middle of the text
+        content = content
+            .replace(/[\r\n]/g, " ")
+            .replace(/(?:(?:^|\n)\s+|\s+(?:$|\n))/g, '')
+            .replace(/\s+/g, ' ');
 
         annomatic.log('Querying DataTXT for annotations on content: ', content);
+
 
         annomatic.annotations = DataTXTResource.getAnnotations({
                 "$app_id": "cc85cdd8",
                 "$app_key": "668e4ac4f00f64c43ab4fefd5c8899fa",
-                html: content
+                text: content
+                // html: content
             },
             function(data) {
 
