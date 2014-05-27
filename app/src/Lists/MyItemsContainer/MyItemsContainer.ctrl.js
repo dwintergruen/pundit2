@@ -132,7 +132,32 @@ angular.module('Pundit2.MyItemsContainer')
             $scope.dropdownOrdering[2].disable = false;
             $scope.dropdownOrdering[3].disable = false;
         }
+
+        if (typeof($scope.displayedItems) !== 'undefined' && typeof($scope.search.term) !== 'undefined') {
+            filterItems($scope.search.term);
+        }
+        
     });
+
+    // Filter items which are shown
+    // go to lowerCase and replace multiple space with single space, 
+    // to make the regexp work properly
+    var filterItems = function(str){
+        str = str.toLowerCase().replace(/\s+/g, ' ');
+        var strParts = str.split(' '),
+            reg = new RegExp(strParts.join('.*'));
+
+        $scope.displayedItems = MyItemsContainer.getItemsArrays()[$scope.tabs.activeTab].filter(function(items){
+            return items.label.toLowerCase().match(reg) !== null;
+        });
+
+        // update text messagge
+        if(str === ''){
+            $scope.message.text = "I'm a welcome message";
+        } else {
+            $scope.message.text = "No item found to: "+str;
+        }
+    };
 
     // Every time that user digit text inside <input> filter the items shown.
     // Show only items that contain the $scope.search.term substring inside their label.
@@ -158,22 +183,7 @@ angular.module('Pundit2.MyItemsContainer')
             $scope.search.icon = MyItemsContainer.options.inputIconClear;
         }
 
-        // Filter items currently shown
-        // Go to lowerCase and replace multiple space with single space
-        str = str.toLowerCase().replace(/\s+/g, ' ');
-        var strParts = str.split(' '),
-            reg = new RegExp(strParts.join('.*'));
-
-        $scope.displayedItems = MyItemsContainer.getItemsArrays()[$scope.tabs.activeTab].filter(function(items){
-            return items.label.toLowerCase().match(reg) !== null;
-        });
-
-        // update text messagge
-        if(str === ''){
-            $scope.message.text = "I'm a welcome message";
-        } else {
-            $scope.message.text = "No item found to: "+str;
-        }
+        filterItems(str);
 
     });
 

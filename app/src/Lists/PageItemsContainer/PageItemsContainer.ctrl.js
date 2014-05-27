@@ -103,6 +103,27 @@ angular.module('Pundit2.PageItemsContainer')
 
     };
 
+    // Filter items which are shown
+    // go to lowerCase and replace multiple space with single space, 
+    // to make the regexp work properly
+    var filterItems = function(str){
+
+        str = str.toLowerCase().replace(/\s+/g, ' ');
+        var strParts = str.split(' ');
+            reg = new RegExp(strParts.join('.*'));
+
+        $scope.displayedItems = PageItemsContainer.getItemsArrays()[$scope.tabs.activeTab].filter(function(items){
+            return items.label.toLowerCase().match(reg) !== null;
+        });
+
+        // update text messagge
+        if(str === ''){
+            $scope.message.text = "I'm a welcome message";
+        } else {
+            $scope.message.text = "No item found to: "+str;
+        }
+    };
+
     // every time that change active tab show new items array
     $scope.$watch(function() {
         return $scope.tabs.activeTab;
@@ -117,6 +138,11 @@ angular.module('Pundit2.PageItemsContainer')
             $scope.dropdownOrdering[2].disable = false;
             $scope.dropdownOrdering[3].disable = false;
         }
+
+        if (typeof($scope.displayedItems) !== 'undefined' && typeof($scope.search.term) !== 'undefined') {
+            filterItems($scope.search.term);
+        }
+
     });
 
     // every time that user digit text inside <input> filter the items showed
@@ -143,23 +169,7 @@ angular.module('Pundit2.PageItemsContainer')
             $scope.search.icon = PageItemsContainer.options.inputIconClear;
         }
 
-        // Filter items which are shown
-        // go to lowerCase and replace multiple space with single space, to make the regexp
-        // work properly
-        str = str.toLowerCase().replace(/\s+/g, ' ');
-        var strParts = str.split(' ');
-            reg = new RegExp(strParts.join('.*'));
-
-        $scope.displayedItems = PageItemsContainer.getItemsArrays()[$scope.tabs.activeTab].filter(function(items){
-            return items.label.toLowerCase().match(reg) !== null;
-        });
-
-        // update text messagge
-        if(str === ''){
-            $scope.message.text = "I'm a welcome message";
-        } else {
-            $scope.message.text = "No item found to: "+str;
-        }        
+        filterItems(str);        
 
     });
 
