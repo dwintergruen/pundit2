@@ -93,6 +93,9 @@
     <script src="../src/Lists/Vocabularies/VocabulariesContainer/VocabulariesContainer.dir.js"></script>
     <script src="../src/Lists/Vocabularies/VocabulariesContainer/VocabulariesContainer.ctrl.js"></script>
 
+    <script src="../src/Tools/TripleComposer/TripleComposer.js"></script>
+    <script src="../src/Tools/TripleComposer/TripleComposer.dir.js"></script>
+    <script src="../src/Tools/TripleComposer/TripleComposer.ctrl.js"></script>
 
     <script src="../src/Toolbar/Toolbar.js"></script>
     <script src="../src/Toolbar/Toolbar.dir.js"></script>
