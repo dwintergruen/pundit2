@@ -5,34 +5,31 @@ angular.module('Pundit2.Annomatic')
     // annotation
     $scope.num = parseInt($scope.content, 10);
     $scope.ann = Annomatic.ann;
-    
+
+    // Number of times this same suggestion occurs among all the suggestions.
+    // Will be used to show the button to accept all of them at once
     $scope.instances = $scope.ann.byId[$scope.ann.byNum[$scope.num].id].length;
 
-    $scope.setOk = function(num) {
-        num = parseInt(num, 10);
+    $scope.setOk = function() {
         $scope.$hide();
-        Annomatic.setState(num, 'accepted');
-        Annomatic.reviewNext(num+1);
+        Annomatic.setState($scope.num, 'accepted');
+        Annomatic.reviewNext($scope.num + 1);
     };
     
-    $scope.setKo = function(num) {
-        num = parseInt(num, 10);
+    $scope.setKo = function() {
         $scope.$hide();
-        Annomatic.setState(num, 'removed');
-        Annomatic.reviewNext(num+1);
+        Annomatic.setState($scope.num, 'removed');
+        Annomatic.reviewNext($scope.num + 1);
     };
     
-    $scope.goNext = function(num) {
-        num = parseInt(num, 10);
+    $scope.goNext = function() {
         $scope.$hide();
-        Annomatic.setLastState(num);
-        Annomatic.reviewNext(num+1);
+        Annomatic.setLastState($scope.num);
+        Annomatic.reviewNext($scope.num + 1);
     };
     
-    $scope.acceptAll = function(num) {
-        num = parseInt(num, 10);
-        
-        var id = $scope.ann.byNum[num].id,
+    $scope.acceptAll = function() {
+        var id = $scope.ann.byNum[$scope.num].id,
             similar = $scope.ann.byId[id];
 
         for (var i=similar.length; i--;) {
@@ -40,20 +37,18 @@ angular.module('Pundit2.Annomatic')
         }
         
         $scope.$hide();
-        Annomatic.reviewNext(num+1);
+        Annomatic.reviewNext($scope.num + 1);
     };
     
-    $scope.toggleSimilar = function(num) {
-        num = parseInt(num, 10);
-        
-        var ann = $scope.ann.byNum[num],
+    $scope.toggleSimilar = function() {
+        var ann = $scope.ann.byNum[$scope.num],
             id = ann.id,
             similar = $scope.ann.byId[id];
             
         // Skipping num so we dont toggle the state of the current
         // automatic annotation
         for (var i=similar.length; i--;) {
-            if (similar[i] !== num) {
+            if (similar[i] !== $scope.num) {
                 var similarAnn = Annomatic.ann.byNum[similar[i]];
                 if (similarAnn.state !== "active") {
                     Annomatic.setState(similar[i], 'active');

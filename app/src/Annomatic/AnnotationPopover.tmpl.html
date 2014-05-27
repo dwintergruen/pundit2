@@ -5,18 +5,18 @@
         <br>
 
         <div>
-            <button class="btn btn-sm btn-success" ng-click="setOk(content)">Accept</button>
-            <button class="btn btn-sm btn-danger" ng-click="setKo(content)">Remove</button>
+            <button class="btn btn-sm btn-success" ng-click="setOk()">Accept</button>
+            <button class="btn btn-sm btn-danger" ng-click="setKo()">Remove</button>
         </div>
 
         <div>
-            <button class="btn btn-sm btn-warning" ng-click="goNext(content)">Next</button>
+            <button class="btn btn-sm btn-warning" ng-click="goNext()">Next</button>
         </div>
         
         <div ng-show="instances > 1">
             <button class="btn btn-head" 
-                ng-click="acceptAll(content)"
-                ng-mouseover="toggleSimilar(content)" 
+                ng-click="acceptAll()"
+                ng-mouseover="toggleSimilar()"
                 ng-mouseout="toggleSimilar(content)">accept all {{instances}}</button>
         </div>
 
