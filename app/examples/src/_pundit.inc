@@ -96,6 +96,8 @@
     <script src="../src/Tools/TripleComposer/TripleComposer.js"></script>
     <script src="../src/Tools/TripleComposer/TripleComposer.dir.js"></script>
     <script src="../src/Tools/TripleComposer/TripleComposer.ctrl.js"></script>
+    <script src="../src/Tools/TripleComposer/Statement.dir.js"></script>
+    <script src="../src/Tools/TripleComposer/Statement.ctrl.js"></script>
 
     <script src="../src/Toolbar/Toolbar.js"></script>
     <script src="../src/Toolbar/Toolbar.dir.js"></script>
