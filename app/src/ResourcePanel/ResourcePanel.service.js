@@ -360,7 +360,8 @@ angular.module('Pundit2.ResourcePanel')
         return state.resourcePromise.promise;
     };
 
-    var types;
+    var objTypes,
+        subTypes;
     // show only properties
     // will be executed for predicates
     resourcePanel.showProperties = function(x, y, triple, target) {
@@ -391,43 +392,105 @@ angular.module('Pundit2.ResourcePanel')
                     showPopoverResourcePanel(x, y, target, "", "", properties);
                 } else {
                     // predicate with a valid domain
-                    types = itemSubject.type;
+                    subTypes = itemSubject.type;
                     properties = ItemsExchange.getItemsFromContainerByFilter(propertiesContainer, filterByDomain);
                     showPopoverResourcePanel(x, y, target, "", "", properties);
                 }
 
             // if only object is defined
             } else if( (typeof(object) !== 'undefined' && object !== "") && (typeof(subject) === 'undefined' || subject === "")) {
-                console.log("solo object definito");
+                // get object item
+                var itemObject = ItemsExchange.getItemByUri(object);
+                // if oject has no type
+                if(typeof(itemObject.type) === 'undefined' || itemObject.type.length === 0 || itemObject.type[0] === ""){
+                    // all properties are good
+                    properties = ItemsExchange.getItemsByContainer(propertiesContainer);
+                    showPopoverResourcePanel(x, y, target, "", "", properties);
+                } else {
+                    objTypes = itemObject.type;
+                    properties = ItemsExchange.getItemsFromContainerByFilter(propertiesContainer, filterByRange);
+                    showPopoverResourcePanel(x, y, target, "", "", properties);
+                }
+
+            // subject and object are both defined
             } else if( (typeof(object) !== 'undefined' && object !== "") && (typeof(subject) !== 'undefined' || subject !== "")) {
-                console.log("entrambi definiti");
+                var itemObject = ItemsExchange.getItemByUri(object);
+                var itemSubject = ItemsExchange.getItemByUri(subject);
+
+                // both subject and object have empty types
+                if((typeof(itemSubject.type) === 'undefined' || itemSubject.type.length === 0 || itemSubject.type[0] === "") && (typeof(itemObject.type) === 'undefined' || itemObject.type.length === 0 || itemObject.type[0] === "")){
+                    // all items are good
+                    properties = ItemsExchange.getItemsByContainer(propertiesContainer);
+                    showPopoverResourcePanel(x, y, target, "", "", properties);
+                }
+
+                // subjecy has no type, object has valid types --> filterByRange
+                else if((typeof(itemSubject.type) === 'undefined' || itemSubject.type.length === 0 || itemSubject.type[0] === "") && (typeof(itemObject.type) !== 'undefined' && itemObject.type[0] !== "")){
+                    objTypes = itemObject.type;
+                    properties = ItemsExchange.getItemsFromContainerByFilter(propertiesContainer, filterByRange);
+                    showPopoverResourcePanel(x, y, target, "", "", properties);
+                }
+
+                // object has no type, subject has valid types --> filterByDomain
+                else if((typeof(itemSubject.type) !== 'undefined' && itemSubject.type[0] !== "") && (typeof(itemObject.type) === 'undefined' || itemObject.type.length === 0 || itemObject.type[0] === "")){
+                    subTypes = itemSubject.type;
+                    properties = ItemsExchange.getItemsFromContainerByFilter(propertiesContainer, filterByDomain);
+                    showPopoverResourcePanel(x, y, target, "", "", properties);
+                }
+
+                // both object and subject have valid types --> filterByDomainAndRange
+                else if((typeof(itemSubject.type) !== 'undefined' && itemSubject.type[0] !== "") && (typeof(itemObject.type) !== 'undefined' && itemObject.type[0] !== "")){
+                    subTypes = itemSubject.type;
+                    objTypes = itemObject.type;
+                    properties = ItemsExchange.getItemsFromContainerByFilter(propertiesContainer, filterByRangeAndDomain);
+                    showPopoverResourcePanel(x, y, target, "", "", properties);
+                }
+
             }
 
         }
-
-
-
 
         state.resourcePromise = $q.defer();
         return state.resourcePromise.promise;
     };
 
-        // get only items matching with predicate domain
-        var filterByDomain = function(item) {
-            if(typeof(item.domain) !== 'undefined'){
-                for(var i=0; i<types.length; i++){
-                    for (var j=0; j<item.domain.length; j++){
-                        if(types[i] === item.domain[j]) {
-                            return true;
-                        }
+    // get only items matching with predicate domain
+    var filterByDomain = function(item) {
+        if(typeof(item.domain) !== 'undefined'){
+            for(var i=0; i<subTypes.length; i++){
+                for (var j=0; j<item.domain.length; j++){
+                    if(subTypes[i] === item.domain[j]) {
+                        return true;
                     }
                 }
-                return false;
-            } else {
-                return false;
             }
+            return false;
+        } else {
+            return false;
+        }
+    };
 
-        };
+    // get only items matching with predicate domain
+    var filterByRange = function(item) {
+        if(typeof(item.range) !== 'undefined'){
+            for(var i=0; i<objTypes.length; i++){
+                for (var j=0; j<item.range.length; j++){
+                    if(objTypes[i] === item.range[j]) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        } else {
+            return false;
+        }
+    };
+
+    // get only items matching with predicate domain and range
+    var filterByRangeAndDomain = function(item) {
+        var ret = filterByRange(item) && filterByDomain(item);
+        return ret;
+    };
 
     return resourcePanel;
 });
