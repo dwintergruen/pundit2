@@ -1,33 +1,67 @@
-<!-- TODO: allineare sulla stessa riga i div subject, property e object -->
+<div class="pnd-statement-row">
 
-<!-- Subject -->
-<div class="pnd-statement-subject">
-    <div class="left-inner-icon">
-        <span class="pnd-icon {{icon}}"></span>
-        <input type="text" ng-model="search" required class="input-xs">
+    <!-- Subject -->
+    <div class="pnd-statement-subject">
+
+        <div ng-hide="subjectFound">
+            <div class="left-inner-icon">
+                <span class="pnd-icon {{subjectIcon}}"></span>
+                <input type="text" class="input-sm" ng-model="subjectSearch" ng-click="click();">
+            </div>
+            <button>NEW</button>
+        </div>
+
+        <div ng-show="subjectFound" ng-mouseover="subjectOver=true" ng-mouseleave="subjectOver=false">
+            <div>Subject Item Label</div>
+            <div ng-hide="subjectOver">Subject Item Type</div>
+            <button ng-show="subjectOver">D</button>
+        </div>
+
+
     </div>
 
-    <div>NEW<div>
-</div>
+    <!-- Predicate (Relationship) -->
+    <div class="pnd-statement-predicate">
 
-<!-- Property (Relationship) -->
-<div class="pnd-statement-property">
-    <div class="left-inner-icon">
-        <span class="pnd-icon {{icon}}"></span>
-        <input type="text" ng-model="search" required class="input-xs">
+        <div ng-hide="predicateFound">
+            <div class="left-inner-icon">
+                <span class="pnd-icon {{predicateIcon}}"></span>
+                <input type="text" ng-model="predicateSearch" class="input-sm">
+            </div>
+        </div>
+
+        <div ng-show="predicateFound">
+            <div>Predicate Item Label</div>
+        </div>        
+
     </div>
 
-    <div>//////<div>
-<div>
+    <!-- Object -->
+    <div class="pnd-statement-object">
 
-<!-- Object -->
-<div class="pnd-statement-object">
-    <div class="left-inner-icon">
-        <span class="pnd-icon {{icon}}"></span>
-        <input type="text" ng-model="search" required class="input-xs">
+        <div ng-hide="objectFound">
+            <div class="left-inner-icon">
+                <span class="pnd-icon {{objectIcon}}"></span>
+                <input type="text" ng-model="objectSearch" class="input-sm">
+            </div>
+            <!--Calendar Icon-->
+            <button>C</button>
+            <!--Pen Icon-->
+            <button>P</button>
+            <button>NEW</button>
+        </div>
+
+        <div ng-show="objectFound" ng-mouseover="objectOver=true" ng-mouseleave="objectOver=false">
+            <div>Object Item Label</div>
+            <div ng-hide="objectOver">Object Item Type</div>
+            <button ng-show="objectOver">D</button>
+        </div>
+
     </div>
 
-    <div>Calendar Icon<div>
-    <div>Pen Icon<div>
-    <div>NEW<div>
+    <div class="pnd-statement-buttons">
+        <button>X</button>
+        <button>[]</button>
+    </div>
+
 </div>
