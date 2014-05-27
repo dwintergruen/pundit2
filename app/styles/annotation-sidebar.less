@@ -54,12 +54,12 @@ body.pnd-annotation-sidebar-expanded {
       
       	  &.pnd-btn-sidebar {
 			  color: @nav-tabs-active-link-hover-color;
-		      margin: 0px 0px 10px 0px;
+		      margin: 0px 0px 0px 0px;
 		      padding: 6px 0px;
 		      background-color: @gray-dark;
 		      width: 50%;
 		      color: @gray-light;
-		      border: 0px;
+		      border-bottom: 1px solid #fff;
 		      	  
 		      	  &:hover,
 		  	      &:active,
@@ -73,6 +73,10 @@ body.pnd-annotation-sidebar-expanded {
 			  	      color: @gray-dark;	
 			  	      } 
 			  }
+	
+	  &.pnd-annotation-sidebar-btn-show-filter {
+		  width: 100%;
+		  }
    	
 	  &.pnd-annotation-sidebar-btn-remove-filters,
 	  &.pnd-annotation-sidebar-btn-close-filters {
@@ -85,8 +89,12 @@ body.pnd-annotation-sidebar-expanded {
 
 
 .pnd-annotation-sidebar-filter {
+	max-height: 300px;
+	overflow-y: auto;
+	
     &.pnd-annotation-sidebar-filter-show .pnd-annotation-sidebar-filter-element {
         display: block;
+        
     }
     &.pnd-annotation-sidebar-filter-show .pnd-annotation-sidebar-filter-input {
         display: block;
