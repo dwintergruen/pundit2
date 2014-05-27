@@ -37,7 +37,7 @@
 
                 <!-- Free text -->
                 <div class="pnd-annotation-sidebar-filter">
-                    <strong ng-click="toggleFilterList($event)">Contains</strong>
+                    <div class="pnd-panel" ng-click="toggleFilterList($event)">Contains</div>
                     <div 
                         ng-show="isFilterLabelShowed(annotationSidebar.filters.freeText.expression)"
                         class="pnd-annotation-sidebar-filter-label">
@@ -51,9 +51,9 @@
 
                 <!-- Authors -->
                 <div class="pnd-annotation-sidebar-filter">
-                    <strong ng-click = "toggleFilterList($event); searchAuthors=''">
+                    <div class="pnd-panel" ng-click = "toggleFilterList($event); searchAuthors=''">
                         Annotation author
-                    </strong>
+                    </div>
                     <div class="pnd-annotation-sidebar-filter-input pnd-annotation-sidebar-filter-search">
                         <input ng-model="searchAuthors.label" placeholder="Search">
                     </div>
@@ -75,9 +75,9 @@
 
                 <!-- Types -->
                 <div class="pnd-annotation-sidebar-filter">
-                    <strong ng-click = "toggleFilterList($event); searchTypes=''">
+                    <div class="pnd-panel" ng-click = "toggleFilterList($event); searchTypes=''">
                         Types
-                    </strong>
+                    </div>
                     <div class="pnd-annotation-sidebar-filter-input pnd-annotation-sidebar-filter-search">
                         <input ng-model="searchTypes.label" placeholder="Search">
                     </div>
@@ -98,10 +98,10 @@
 
                 <!-- Used predicate -->
                 <div class="pnd-annotation-sidebar-filter">
-                    <strong 
+                    <div class="pnd-panel" 
                         ng-click = "toggleFilterList($event); searchPredicates=''">
                         Used predicate
-                    </strong>
+                    </div>
                     <div class="pnd-annotation-sidebar-filter-input pnd-annotation-sidebar-filter-search">
                         <input ng-model="searchPredicates.label" placeholder="Search">
                     </div>
@@ -121,9 +121,9 @@
 
                 <!-- Entities -->
                 <div class="pnd-annotation-sidebar-filter">
-                    <strong ng-click = "toggleFilterList($event); searchEntities=''">
+                    <div class="pnd-panel" ng-click = "toggleFilterList($event); searchEntities=''">
                         Entities
-                    </strong>
+                    </div>
                     <div class="pnd-annotation-sidebar-filter-input pnd-annotation-sidebar-filter-search">
                         <input ng-model="searchEntities.label" placeholder="Search">
                     </div>
@@ -145,7 +145,7 @@
 
                 <!-- Date -->
                 <div class="pnd-annotation-sidebar-filter">
-                    <strong ng-click = "toggleFilterList($event)">Date</strong>
+                    <div class="pnd-panel" ng-click = "toggleFilterList($event)">Date</div>
                     <span 
                         ng-show="isFilterLabelShowed(annotationSidebar.filters.fromDate.expression)"
                         class="pnd-annotation-sidebar-filter-label">
