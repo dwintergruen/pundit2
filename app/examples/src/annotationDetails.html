@@ -1,0 +1,51 @@
+<!-- buildexamples:section header --><!-- /buildexamples -->
+
+<style>
+    .pnd-cons {
+        background: #fc0;
+    }
+    pre {
+        float: left;
+    }
+</style>
+
+<script type="text/javascript">
+    // angular.element('body').css('margin-top', '30px');
+
+    // var punditConfig = {
+    //         modules: {
+    //             "AnnotationSidebar": { isAnnotationSidebarExpanded: true, debug: true }
+    //         }
+
+    //     };
+
+    var AnnotationDetailsDemoCtrl = function($scope, $q, AnnotationSidebar,
+                                             AnnotationsExchange, Consolidation,
+                                             Annotation) {
+
+        // var toLoad = ["385c1647"],
+        var toLoad = ["8fd05a49", "65286186", "385c1647"],
+        proms = [];
+
+        for (var l=toLoad.length; l--;) {
+            proms[l] = new Annotation(toLoad[l]);
+        }
+
+        $scope.annotations1 = [];
+        $q.all(proms).then(function(annos) {
+            $scope.annotations = annos;
+            // console.log('Annotations: ', annos);
+        });
+    }
+</script>
+
+<div data-ng-app="Pundit2" class="pnd-wrp" ng-controller="AnnotationDetailsDemoCtrl">
+    <!-- <annotation-details id="385c1647"></annotation-details> -->
+
+   <div ng-repeat="ann in annotations">
+        <annotation-details id="{{ann.id}}"></annotation-details>
+    </div>  
+
+</div>
+
+<!-- buildexamples:section footer --><!-- /buildexamples -->

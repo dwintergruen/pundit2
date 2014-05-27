@@ -268,7 +268,7 @@ angular.module('Pundit2.AnnotationSidebar')
                 annotationSidebar.err('Filter is not defined '+e);
             }
         });
-        filtersCount(state.filteredAnnotations); 
+        // filtersCount(state.filteredAnnotations); 
         return state.filteredAnnotations;
     };
 
