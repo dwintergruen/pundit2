@@ -23,11 +23,9 @@
                     ng-show="!isFiltersShowed"
                     class="btn btn-success pnd-annotation-sidebar-btn-show-filter">
                         Show Filters
-                </button>
-
-                <button
+                </button><button
                     ng-show="annotationSidebar.needToFilter() && !isFiltersShowed"
-                    class="btn btn-warning" ng-click="annotationSidebar.resetFilters()">
+                    class="btn btn-warning pnd-annotation-sidebar-btn-remove-filters" ng-click="annotationSidebar.resetFilters()">
                         Remove all filters
                 </button>
             </div>
@@ -59,17 +57,19 @@
                     <div class="pnd-annotation-sidebar-filter-input pnd-annotation-sidebar-filter-search">
                         <input ng-model="searchAuthors.label" placeholder="Search">
                     </div>
-                    <div 
-                        ng-repeat="elem in filters.authors | orderObjectBy:'count':'dsc' | filter:searchAuthors" 
-                        ng-class="{'pnd-annotation-sidebar-current-filter-active': elem.active}"
-                        class="pnd-annotation-sidebar-filter-element">
-                            <div 
-                                class="pnd-annotation-sidebar-filter-element-label"
-                                ng-click="toggleFilter('authors', elem.uri)">
-                                    <span class="pnd-icon pnd-icon-check"
-                                        ng-show="elem.active"></span>
-                                    {{elem.label}} ({{elem.count}})
-                            </div>
+                    <div class="pnd-sidebar-filter-scroll">
+	                    <div 
+	                        ng-repeat="elem in filters.authors | orderObjectBy:'count':'dsc' | filter:searchAuthors" 
+	                        ng-class="{'pnd-annotation-sidebar-current-filter-active': elem.active}"
+	                        class="pnd-annotation-sidebar-filter-element">
+	                            <div 
+	                                class="pnd-annotation-sidebar-filter-element-label"
+	                                ng-click="toggleFilter('authors', elem.uri)">
+	                                    <span class="pnd-icon pnd-icon-check"
+	                                        ng-show="elem.active"></span>
+	                                    {{elem.label}} ({{elem.count}})
+	                            </div>
+	                    </div>
                     </div>
                 </div>
 
@@ -81,17 +81,18 @@
                     <div class="pnd-annotation-sidebar-filter-input pnd-annotation-sidebar-filter-search">
                         <input ng-model="searchTypes.label" placeholder="Search">
                     </div>
-                    <div 
-                        ng-repeat="elem in filters.types | orderObjectBy:'count':'dsc' | filter:searchTypes" 
-                        ng-class="{'pnd-annotation-sidebar-current-filter-active': elem.active}"
-                        class="pnd-annotation-sidebar-filter-element">
-                            <div 
-                                class="pnd-annotation-sidebar-filter-element-label"
-                                ng-click="toggleFilter('types', elem.uri)">
-                                    <span class="pnd-icon pnd-icon-check"
-                                          ng-show="elem.active"></span>
-                                {{elem.label}} ({{elem.count}})
-                            </div>
+                    <div class="pnd-sidebar-filter-scroll">
+	                    <div ng-repeat="elem in filters.types | orderObjectBy:'count':'dsc' | filter:searchTypes" 
+	                        ng-class="{'pnd-annotation-sidebar-current-filter-active': elem.active}"
+	                        class="pnd-annotation-sidebar-filter-element">
+	                            <div 
+	                                class="pnd-annotation-sidebar-filter-element-label"
+	                                ng-click="toggleFilter('types', elem.uri)">
+	                                    <span class="pnd-icon pnd-icon-check"
+	                                          ng-show="elem.active"></span>
+	                                {{elem.label}} ({{elem.count}})
+	                            </div>
+	                    </div>
                     </div>
                 </div>
 
@@ -126,17 +127,19 @@
                     <div class="pnd-annotation-sidebar-filter-input pnd-annotation-sidebar-filter-search">
                         <input ng-model="searchEntities.label" placeholder="Search">
                     </div>
-                    <div 
-                        ng-repeat="elem in filters.entities | orderObjectBy:'count':'dsc' | filter:searchEntities" 
-                        ng-class="{'pnd-annotation-sidebar-current-filter-active': elem.active}"
-                        class="pnd-annotation-sidebar-filter-element">
-                            <div 
-                                class="pnd-annotation-sidebar-filter-element-label"
-                                ng-click="toggleFilter('entities', elem.uri)">
-                                    <span class="pnd-icon pnd-icon-check"
-                                          ng-show="elem.active"></span>
-                                {{elem.label}} ({{elem.count}})
-                            </div>
+                    <div class="pnd-sidebar-filter-scroll">
+	                    <div 
+	                        ng-repeat="elem in filters.entities | orderObjectBy:'count':'dsc' | filter:searchEntities" 
+	                        ng-class="{'pnd-annotation-sidebar-current-filter-active': elem.active}"
+	                        class="pnd-annotation-sidebar-filter-element">
+	                            <div 
+	                                class="pnd-annotation-sidebar-filter-element-label"
+	                                ng-click="toggleFilter('entities', elem.uri)">
+	                                    <span class="pnd-icon pnd-icon-check"
+	                                          ng-show="elem.active"></span>
+	                                {{elem.label}} ({{elem.count}})
+	                            </div>
+	                    </div>
                     </div>
                 </div>
 
@@ -185,7 +188,7 @@
                         </div>
                 </div>
                 <!-- buttons -->
-                <button type="button" class="btn btn-success pnd-annotation-sidebar-btn-remove-filters" ng-click="annotationSidebar.resetFilters()">Remove all filters</button><button type="button" class="btn btn-success pnd-annotation-sidebar-btn-close-filters" ng-click="annotationSidebar.toggleFiltersContent()">Close</button>
+                <button type="button" class="btn btn-success pnd-annotation-sidebar-btn-close-filters" ng-click="annotationSidebar.toggleFiltersContent()">Close</button><button type="button" class="btn btn-warning pnd-annotation-sidebar-btn-remove-filters" ng-click="annotationSidebar.resetFilters()">Remove all filters</button>
                 <!-- // end buttons -->
             </div>
         </div>

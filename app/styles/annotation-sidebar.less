@@ -48,8 +48,7 @@ body.pnd-annotation-sidebar-expanded {
 }
 
 
-
-
+// Buttons
 
 .pnd-annotation-sidebar-content {
 
@@ -78,34 +77,45 @@ body.pnd-annotation-sidebar-expanded {
 			  	      } 
 			  }
 	
-	  &.pnd-annotation-sidebar-btn-show-filter {
-		  width: 100%;
-		  }
    	
 	  &.pnd-annotation-sidebar-btn-remove-filters,
-	  &.pnd-annotation-sidebar-btn-close-filters {
-		  margin: 10px 0px 10px 0px;
+	  &.pnd-annotation-sidebar-btn-close-filters,
+	  &.pnd-annotation-sidebar-btn-show-filter {
+		  margin: 0px 0px 10px 0px;
 		  width: 50%;  
 		  }
 	      	
 	}
 	
 	.pnd-btn-sidebar-full {
-		background-color: aqua;
 		
 		button {
-			width: 50% !important;
+			width: 100%;
 		}
 	}
-
-
+	
+.pnd-annotation-sidebar-filter ~ button {
+		margin-top: 10px !important;
+		}
 	
 }
 
 
-.pnd-annotation-sidebar-filter {
+.pnd-sidebar-filter-scroll {
 	max-height: 300px;
+	margin-right: -10px;
 	overflow-y: auto;
+	overflow-x: hidden;	
+}
+
+
+
+.pnd-annotation-sidebar-filter {
+
+    &:last-child {
+        margin-bottom: 10px;
+        
+    }
 	
     &.pnd-annotation-sidebar-filter-show .pnd-annotation-sidebar-filter-element {
         display: block;
@@ -115,7 +125,6 @@ body.pnd-annotation-sidebar-expanded {
         display: block;
         
         input  {
-	        //outline: none;
 	        margin: 10px 0px;
 	        }
     }
