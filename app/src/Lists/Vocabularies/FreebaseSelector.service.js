@@ -82,8 +82,7 @@ angular.module('Pundit2.Vocabularies')
                 var item = {
                     label: data.result[i].name,
                     mid: data.result[i].mid,
-                    freebaseId: data.result[i].id,
-                    // TODO this link is ok?
+                    // freebaseId: data.result[i].id,
                     image: freebaseSelector.options.freebaseImagesBaseURL + data.result[i].mid,
                     description: -1,
                     uri: -1
@@ -139,6 +138,7 @@ angular.module('Pundit2.Vocabularies')
             // Value != -1: this call is the last one, we're done
             if (item.description !== -1) {
                 freebaseSelector.log('TOPIC was last, complete for item ' + item.uri);
+                delete item.mid;
                 var add = new Item(item.uri, item);
                 ItemsExchange.addItemToContainer(add, self.config.container);
                 self.checkEnd(promise);
@@ -172,6 +172,7 @@ angular.module('Pundit2.Vocabularies')
             // Description is not -1: this call is the last one, we're done
             if (item.uri !== -1) {
                 freebaseSelector.log('MQL was last, complete http for item ' + item.uri);
+                delete item.mid;
                 var add = new Item(item.uri, item);
                 ItemsExchange.addItemToContainer(add, self.config.container);
                 self.checkEnd(promise);
