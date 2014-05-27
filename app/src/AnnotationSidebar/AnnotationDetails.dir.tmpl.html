@@ -1,4 +1,64 @@
 <div class="pnd-annotation-details">
-    <div>Created by: {{annotation.creatorName}}</div> 
-    <div>On: {{annotation.created | date : 'MMM d, y H:mm a'}}</div>
+    <div class="pnd-annotation-details-header" ng-show="!isAnnotationExpanded">
+        <div style="display: inline" class="{{annotationClass}}">
+                <span class="{{annotationIcon}}"></span>
+                <span>{{annotationLabel}}</span>    
+        </div>
+
+        <button 
+            ng-click="isAnnotationExpanded = !isAnnotationExpanded" 
+            type="button" class="btn">
+            >
+        </button>
+    </div>
+
+    <div ng-show="isAnnotationExpanded">
+
+        <!-- Header -->
+        <div class="pnd-annotation-details-header">
+            <button type="button" class="btn">Info</button>
+            <button type="button" class="btn">Reply</button>
+            <button type="button" class="btn">Share</button>
+
+            <button 
+                ng-click="isAnnotationExpanded = !isAnnotationExpanded" 
+                type="button" class="btn">
+                ^
+            </button>
+        </div>
+
+        <!-- Content -->
+        <div class="pnd-annotation-details-content" style="padding: 10px">
+            <div ng-repeat="item in items">
+                <div style="display: inline" class="{{item.class}}">
+                        <span class="{{item.icon}}"></span>
+                        <span ng-click="itemInfo = !itemInfo">
+                            {{item.label}} 
+                            <strong>({{item.type}})</strong>
+                            <span ng-show="itemInfo">
+                                <ul>
+                                    <li ng-repeat="typ in item.types" class="ng-scope ng-binding">
+                                        {{typ}}
+                                    </li>
+                                </ul>
+                                <span ng-show="item.description.length>0">
+                                    <strong>Description:</strong> 
+                                    {{item.description}}
+                                </span>
+                                <br /><br />
+                            </span>
+                        </span>    
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="pnd-annotation-details-footer">
+            <button type="button" class="btn">Edit</button>
+            <button type="button" class="btn">Delete</button>
+        </div>
+
+        <!-- <div>Created by: {{annotation.creatorName}}</div>  -->
+        <!-- <div>On: {{annotation.created | date : 'MMM d, y H:mm a'}}</div> -->
+    </div>
 </div>
