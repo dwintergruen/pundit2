@@ -5,10 +5,13 @@ angular.module('Pundit2.ResourcePanel')
 .service('ResourcePanel', function(BaseComponent, RESOURCEPANELDEFAULTS, $rootScope, $popover, $q, ItemsExchange, MyItems, PageItemsContainer, Client, NameSpace) {
 
     var resourcePanel = new BaseComponent('ResourcePanel', RESOURCEPANELDEFAULTS);
-    var state = {};
-    state.popover = null;
 
+    var state = {};
+
+    state.popover = null;
     state.selectors = ['freebase', 'dbpedia', 'korbo'];
+    state.defaultPlacement = 'bottom';
+    state.resourcePromise = null;
 
     // hide and destroy a popover
     resourcePanel.hide = function(){
@@ -51,8 +54,8 @@ angular.module('Pundit2.ResourcePanel')
 
         // handle save a new popoverLiteral
         state.popoverOptions.scope.save = function() {
-            resourcePanel.saveLiteral(this.literalText);
             state.resourcePromise.resolve(this.literalText);
+            resourcePanel.hide();
         };
 
         // close popoverLiteral popover without saving
@@ -60,18 +63,20 @@ angular.module('Pundit2.ResourcePanel')
             resourcePanel.hide();
         };
 
-        state.popoverOptions.placement = 'bottom';
+        state.popoverOptions.placement = state.defaultPlacement;
         state.popoverOptions.template = 'src/ResourcePanel/popoverLiteralText.tmpl.html';
         state.popover = $popover(state.literalAnchor, state.popoverOptions);
         state.popover.clickTarget = target;
         return state.popover;
     };
 
-    state.resourcePromise = null;
-
+    // show popover literal
+    // x,y --> coordinate where popover will be shown
+    // content --> text to show in textarea
+    // target -->  targer element clicked
     resourcePanel.showPopoverLiteral = function(x, y, content, target){
 
-        // if click the same popover, toggle it
+        // if click the same popover, hide it
         if (state.popover !== null && state.popover.clickTarget === target) {
             resourcePanel.hide();
         }
@@ -93,16 +98,6 @@ angular.module('Pundit2.ResourcePanel')
         return state.resourcePromise.promise;
     };
 
-
-    resourcePanel.saveLiteral = function(text){
-        state.literal = text;
-        resourcePanel.hide();
-    };
-
-    resourcePanel.getLiteral = function() {
-        return state.literal;
-    };
-
     /*
      *
      * CALENDAR POPOVER METHOD
@@ -115,7 +110,6 @@ angular.module('Pundit2.ResourcePanel')
         .prepend("<div class='pnd-calendar-popover-calendarAnchor' style='position: absolute; left: -500px; top: -500px;'><div>");
     state.calendarAnchor = angular.element('.pnd-calendar-popover-calendarAnchor');
 
-    state.popoverCalendar = null;
     // initialize calendar popover
     var initPopoverCalendar = function(x, y, date, target){
         // move literalAnchor to correct position
@@ -126,8 +120,8 @@ angular.module('Pundit2.ResourcePanel')
 
         // handle save a new popoverLiteral
         state.popoverOptions.scope.save = function() {
-            resourcePanel.saveDate(this.selectedDate);
             state.resourcePromise.resolve(this.selectedDate);
+            resourcePanel.hide();
         };
 
         // close popoverLiteral popover without saving
@@ -135,7 +129,7 @@ angular.module('Pundit2.ResourcePanel')
             resourcePanel.hide();
         };
 
-        state.popoverOptions.placement = 'bottom';
+        state.popoverOptions.placement = state.defaultPlacement;
         state.popoverOptions.template = 'src/ResourcePanel/popoverCalendar.tmpl.html';
         state.popover = $popover(state.calendarAnchor, state.popoverOptions);
         state.popover.clickTarget = target;
@@ -155,7 +149,7 @@ angular.module('Pundit2.ResourcePanel')
 
         // if click the same popover, toggle it
         else if (state.popover !== null && state.popover.clickTarget === target) {
-            state.popover.$promise.then(state.popover.toggle);
+            resourcePanel.hide();
         }
 
         // if click a different popover, hide the shown popover and show the clicked one
@@ -169,10 +163,6 @@ angular.module('Pundit2.ResourcePanel')
         return state.resourcePromise.promise;
     };
 
-
-    resourcePanel.saveDate = function() {
-        resourcePanel.hide();
-    };
 
     /*
      *
@@ -210,7 +200,7 @@ angular.module('Pundit2.ResourcePanel')
             resourcePanel.hide();
         };
 
-        state.popoverOptions.placement = 'bottom';
+        state.popoverOptions.placement = state.defaultPlacement;
         state.popoverOptions.template = 'src/ResourcePanel/popoverResourcePanel.tmpl.html';
         state.popover = $popover(state.resourcePanelAnchor, state.popoverOptions);
         state.popover.clickTarget = target;
@@ -222,14 +212,12 @@ angular.module('Pundit2.ResourcePanel')
         // if no popover is shown, just show it
         if (state.popover === null) {
             state.popover = initPopoverResourcePanel(x, y, target, pageItems, myItems, properties);
-            state.popover.$promise.then(function() {
-                state.popover.show();
-            });
+            state.popover.$promise.then(state.popover.show);
         }
 
         // if click the same popover, toggle it
         else if (state.popover !== null && state.popover.clickTarget === target) {
-            state.popover.$promise.then(state.popover.toggle);
+            resourcePanel.hide();
         }
 
         // if click a different popover, hide the shown popover and show the clicked one
@@ -240,8 +228,11 @@ angular.module('Pundit2.ResourcePanel')
         }
 
     };
+
     // triple is an array of URI [subject, predicate, object]
+    // show all items compatibile as subject
     resourcePanel.showItemsForSubject = function(x, y, triple, target) {
+
         var myItemsContainer = MyItems.options.container;
         var pageItemsContainer = PageItemsContainer.options.container;
         var myItems, pageItems;
@@ -257,6 +248,7 @@ angular.module('Pundit2.ResourcePanel')
                 myItems = ItemsExchange.getItemsByContainer(myItemsContainer);
                 pageItems = ItemsExchange.getItemsByContainer(pageItemsContainer);
 
+            // if predicate is a valid uri
             } else {
                 // get item predicate and check his domain
                 var itemPredicate = ItemsExchange.getItemByUri(predicate);
@@ -284,11 +276,11 @@ angular.module('Pundit2.ResourcePanel')
 
                     myItems = ItemsExchange.getItemsFromContainerByFilter(myItemsContainer, filter);
                     pageItems = ItemsExchange.getItemsFromContainerByFilter(pageItemsContainer, filter);
-                }
+                } // end else domain defined
 
-            }
+            } // end else predicate valid uri
 
-        }
+        } // end if triple undefined
 
         showPopoverResourcePanel(x, y, target, pageItems, myItems, "");
 
@@ -297,7 +289,10 @@ angular.module('Pundit2.ResourcePanel')
 
     };
 
+    // triple is an array of URI [subject, predicate, object]
+    // show all items compatibile as object
     resourcePanel.showItemsForObject = function(x, y, triple, target) {
+
         var myItemsContainer = MyItems.options.container;
         var pageItemsContainer = PageItemsContainer.options.container;
         var myItems, pageItems;
@@ -324,9 +319,11 @@ angular.module('Pundit2.ResourcePanel')
                     pageItems = ItemsExchange.getItemsByContainer(pageItemsContainer);
                     showPopoverResourcePanel(x, y, target, pageItems, myItems, "");
 
+                // if predicate is literal, show popover literal
                 } else if(itemPredicate.range.length === 1 && itemPredicate.range[0] === NameSpace.rdfs.literal){
                     resourcePanel.showPopoverLiteral(x, y, "", target);
 
+                // if predicate is dateTime, show popover calendar
                 } else if(itemPredicate.range.length === 1 && itemPredicate.range[0] === NameSpace.dateTime){
                     resourcePanel.showPopoverCalendar(x, y, "", target);
 
@@ -352,9 +349,9 @@ angular.module('Pundit2.ResourcePanel')
                     showPopoverResourcePanel(x, y, target, pageItems, myItems, "");
                 }
 
-            }
+            } // end else predicate !== undefined
 
-        }
+        } // end if triple !== undefined
 
         state.resourcePromise = $q.defer();
         return state.resourcePromise.promise;
@@ -362,6 +359,7 @@ angular.module('Pundit2.ResourcePanel')
 
     var objTypes,
         subTypes;
+
     // show only properties
     // will be executed for predicates
     resourcePanel.showProperties = function(x, y, triple, target) {
@@ -446,9 +444,9 @@ angular.module('Pundit2.ResourcePanel')
                     showPopoverResourcePanel(x, y, target, "", "", properties);
                 }
 
-            }
+            } // end else both subject and object are defined
 
-        }
+        } // end triple !== undefined
 
         state.resourcePromise = $q.defer();
         return state.resourcePromise.promise;
