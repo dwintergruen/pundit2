@@ -20,6 +20,11 @@ angular.module('Pundit2.AnnotationSidebar')
         sidebarNewHeight: 0
     };
 
+    var search = {
+        icon: AnnotationSidebar.options.inputIconSearch,
+        clean: AnnotationSidebar.options.inputIconClear
+    };
+
     $scope.annotationSidebar = AnnotationSidebar;
 
     container.css('height', body.innerHeight() + 'px');
@@ -203,6 +208,14 @@ angular.module('Pundit2.AnnotationSidebar')
         } else {
             AnnotationSidebar.filters[currentFilter].expression.splice(indexFilter, 1);
             AnnotationSidebar.toggleActiveFilter(currentFilter, currentUri);
+        }
+    };
+
+    $scope.setSearchIcon = function(str) {
+        if (typeof(str) === 'undefined' || str === '') {
+            return search.icon;
+        } else {
+            return search.clean;
         }
     };
 

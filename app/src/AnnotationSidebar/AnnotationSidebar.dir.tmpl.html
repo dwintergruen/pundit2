@@ -45,7 +45,10 @@
                         {{annotationSidebar.filters.freeText.expression}}
                     </div>
                     <div class="pnd-annotation-sidebar-filter-input">
-                    	<span class="pnd-icon {{search.icon}}" ng-click="search.term = ''"></span>
+                    	<span 
+                            class="pnd-icon" 
+                            ng-class="setSearchIcon(annotationSidebar.filters.freeText.expression)" 
+                            ng-click="annotationSidebar.filters.freeText.expression = ''"></span>
                         <input class="form-control" ng-model="annotationSidebar.filters.freeText.expression" placeholder="Search">
                     </div>
                 </div>
@@ -56,7 +59,10 @@
                         Annotation author
                     </div>
                     <div class="pnd-annotation-sidebar-filter-input pnd-annotation-sidebar-filter-search">
-                    	<span class="pnd-icon {{search.icon}}" ng-click="search.term = ''"></span>
+                    	<span 
+                            class="pnd-icon" 
+                            ng-class="setSearchIcon(searchAuthors.label)" 
+                            ng-click="searchAuthors.label = ''"></span>
                         <input class="form-control" ng-model="searchAuthors.label" placeholder="Search">
                     </div>
                     <div class="pnd-sidebar-filter-scroll">
@@ -81,7 +87,10 @@
                         Types
                     </div>
                     <div class="pnd-annotation-sidebar-filter-input pnd-annotation-sidebar-filter-search">
-                    	<span class="pnd-icon {{search.icon}}" ng-click="search.term = ''"></span>
+                        <span 
+                            class="pnd-icon" 
+                            ng-class="setSearchIcon(searchTypes.label)" 
+                            ng-click="searchTypes.label = ''"></span>
                         <input class="form-control" ng-model="searchTypes.label" placeholder="Search">
                     </div>
                     <div class="pnd-sidebar-filter-scroll">
@@ -106,7 +115,10 @@
                         Used predicate
                     </div>
                     <div class="pnd-annotation-sidebar-filter-input pnd-annotation-sidebar-filter-search">
-                    	<span class="pnd-icon {{search.icon}}" ng-click="search.term = ''"></span>
+                    	<span 
+                            class="pnd-icon" 
+                            ng-class="setSearchIcon(searchPredicates.label)" 
+                            ng-click="searchPredicates.label = ''"></span>
                         <input class="form-control" ng-model="searchPredicates.label" placeholder="Search">
                     </div>
                     <div 
@@ -129,7 +141,10 @@
                         Entities
                     </div>
                     <div class="pnd-annotation-sidebar-filter-input pnd-annotation-sidebar-filter-search">
-                    	<span class="pnd-icon {{search.icon}}" ng-click="search.term = ''"></span>
+                    	<span 
+                            class="pnd-icon" 
+                            ng-class="setSearchIcon(searchEntities.label)" 
+                            ng-click="searchEntities.label = ''"></span>
                         <input class="form-control" ng-model="searchEntities.label" placeholder="Search">
                     </div>
                     <div class="pnd-sidebar-filter-scroll">

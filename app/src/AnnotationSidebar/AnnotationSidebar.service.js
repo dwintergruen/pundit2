@@ -19,6 +19,9 @@ angular.module('Pundit2.AnnotationSidebar')
     annotationsPanelActive: true,
     suggestionsPanelActive: false,
 
+    inputIconSearch: 'pnd-icon-search',
+    inputIconClear: 'pnd-icon-times',
+
     debug: false
 })
 .service('AnnotationSidebar', function($rootScope, $filter, $timeout,
