@@ -18,7 +18,7 @@ angular.module('Pundit2.Core')
         var label;
 
         // Freebase custom labels
-        if (uri.match(/http:\/\/www\.freebase\.com\/schema\//)) {
+        if (uri.match("http://www.freebase.com/schema/")) {
             label = uri
                 .substring(31)
                 .replace(/\//g, ': ')
