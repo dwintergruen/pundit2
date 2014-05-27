@@ -292,10 +292,14 @@ angular.module('Pundit2.Annomatic')
         ann.lastState = ann.state;
 
         ann.state = state;
-        scope.stateClass = stateClassMap[state];
+
+        var stateClass = stateClassMap[state];
         if (ann.hidden) {
-            scope.stateClass += ' '+stateClassMap.hidden;
+            stateClass += ' '+stateClassMap.hidden;
         }
+
+        scope.setStateClass(stateClassMap[ann.lastState], stateClass);
+
     };
     
     annomatic.setLastState = function(num) {
@@ -304,10 +308,13 @@ angular.module('Pundit2.Annomatic')
             
         updateStates(num, ann.state, ann.lastState);
         ann.state = ann.lastState;
-        scope.stateClass = stateClassMap[ann.state];
+
+        var stateClass = stateClassMap[ann.state];
         if (ann.hidden) {
-            scope.stateClass += ' '+stateClassMap.hidden;
+            stateClass += ' '+stateClassMap.hidden;
         }
+
+        scope.setStateClass(stateClassMap[ann.lastState], stateClass);
     };
 
     // Given an HTML node, will query DataTXT for annotations on the contents of that node
@@ -343,12 +350,11 @@ angular.module('Pundit2.Annomatic')
                 }
 
                 analyze();
-                console.log('Analyze done: ', annomatic.ann);
                 promise.resolve();
-
             },
-            function() {
+            function(msg) {
                 annomatic.err('Error loading annotations from DataTXT');
+                promise.reject(msg);
             }
         );
 
@@ -356,13 +362,20 @@ angular.module('Pundit2.Annomatic')
     };
     
     annomatic.hideAnn = function(num) {
-        annomatic.ann.byNum[num].hidden = true;
-        annomatic.ann.autoAnnScopes[num].stateClass = stateClassMap.hidden;
+        var ann = annomatic.ann.byNum[num],
+            scope = annomatic.ann.autoAnnScopes[num];
+
+        ann.hidden = true;
+        // annomatic.ann.autoAnnScopes[num].stateClass = stateClassMap.hidden;
+        scope.setStateClass(stateClassMap[ann.state], stateClassMap.hidden);
     };
     annomatic.showAnn = function(num) {
-        var ann = annomatic.ann.byNum[num];
+        var ann = annomatic.ann.byNum[num],
+            scope = annomatic.ann.autoAnnScopes[num];
+
         ann.hidden = false;
-        annomatic.ann.autoAnnScopes[num].stateClass = stateClassMap[ann.state];
+        // annomatic.ann.autoAnnScopes[num].stateClass = stateClassMap[ann.state];
+        scope.setStateClass(stateClassMap.hidden, stateClassMap[ann.state]);
     };
     
     // Given an array of types, shows only the annotations with that

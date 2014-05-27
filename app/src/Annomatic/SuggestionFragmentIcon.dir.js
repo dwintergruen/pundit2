@@ -7,6 +7,8 @@ angular.module('Pundit2.Annomatic')
         },
         templateUrl: 'src/Annomatic/SuggestionFragmentIcon.dir.tmpl.html',
         replace: true,
+
+        // TODO: move this to a controller .. ! :)
         link: function(scope, element) {
 
             // Common for all icons
@@ -28,12 +30,18 @@ angular.module('Pundit2.Annomatic')
                 scope.uri = scope.item.uri;
                 scope.num = Annomatic.ann.uriToNumMap[scope.uri];
 
+                // Add this scope to annomatic, so he can call our methods
                 Annomatic.ann.autoAnnScopes[scope.num] = scope;
+
+                // Add 'ann-auto' class to every bit belonging to this fragment
+                // TODO: make 'ann-auto' configurable? .options?
+                angular.element('.'+scope.fragment).addClass('ann-auto');
 
                 scope.popover = $popover(
                     scope.element,
                     {
                         content: ""+scope.num,
+                        placement: 'bottom',
                         template: 'src/Annomatic/AnnomaticPopover.tmpl.html',
                         trigger: 'manual'
                     }// init()
@@ -76,6 +84,16 @@ angular.module('Pundit2.Annomatic')
                 }
                 Annomatic.setLastState(scope.num);
                 scope.popover.hide();
+            };
+
+            scope.setStateClass = function(from, to) {
+                // TODO: removing ann-active too, since it's volatile, used on mouseover
+                // .. better store it in the ann.state directly and have the setStateClass
+                // remove it directly?
+
+                // Set the state class on every bit belonging to this fragment
+                angular.element('.'+scope.fragment).removeClass(from + ' ann-active');
+                angular.element('.'+scope.fragment).addClass(to);
             };
 
 
