@@ -2,5 +2,5 @@
     <li class="list-group-item" ng-repeat="pndItem in displayedItems | orderBy:getOrderProperty:reverse">
         <item uri="{{pndItem.uri}}" menu-type="{{itemMenuType}}"></item>
     </li>
-    <li ng-show="displayedItems.length === 0">Any Item Found</li>
+    <li ng-show="message.flag">{{message.text}}</li>
 </ul>

@@ -28,6 +28,11 @@ angular.module('Pundit2.Vocabularies')
 
     $scope.dropdownTemplate = "src/Toolbar/dropdown.tmpl.html";
 
+    $scope.message = {
+        flag: true,
+        text: "I'm a welcome message"
+    };
+
     // read by <item> directive (in PageItemsContainer/items.tmpl.html)
     // will trigger this contextual menu type clicking on the contextual item icon
     $scope.itemMenuType = SelectorsManager.options.cMenuType;
@@ -112,14 +117,19 @@ angular.module('Pundit2.Vocabularies')
         $timeout.cancel(promise);
         promise = $timeout(function(){
             querySelectors();
-        }, 500);        
+        }, 500);               
 
     });
 
+    var updateMessage = function(){
+        vocabulariesContainer.log('All selectors end http calls', ItemsExchange.getAll());
+        if ($scope.displayedItems.length === 0) {
+            $scope.message.text = "No item found to: "+$scope.search.term;
+        }
+    };
+
     var querySelectors = function(){
-        SelectorsManager.getItems($scope.search.term).then(function(){
-            vocabulariesContainer.log('All selectors end http calls', ItemsExchange.getAll());
-        });
+        SelectorsManager.getItems($scope.search.term).then(updateMessage, updateMessage);
     };
 
     $scope.$watch(function() {
@@ -128,5 +138,15 @@ angular.module('Pundit2.Vocabularies')
         // update all items array and display new items
         $scope.displayedItems = newItems;
     }, true);
+
+    $scope.$watch(function() {
+        return $scope.displayedItems.length;
+    }, function(len) {
+        if (len === 0){
+            $scope.message.flag = true;
+        } else {
+            $scope.message.flag = false;
+        }
+    });
 
 });

@@ -8,6 +8,14 @@ angular.module('Pundit2.MyItemsContainer')
     // This is the centralized template to dropdown
     $scope.dropdownTemplate = "src/Toolbar/dropdown.tmpl.html";
 
+    // showed when the items list is empty
+    $scope.message = {
+        // show or not
+        flag: true,
+        // text to show
+        text: "I'm a welcome message"
+    };
+
     // items property used to compare
     // legal value are: 'type' and 'label'
     var order = MyItemsContainer.options.order;
@@ -160,6 +168,13 @@ angular.module('Pundit2.MyItemsContainer')
             return items.label.toLowerCase().match(reg) !== null;
         });
 
+        // update text messagge
+        if(str === ''){
+            $scope.message.text = "I'm a welcome message";
+        } else {
+            $scope.message.text = "No item found to: "+str;
+        }
+
     });
 
     // watch only my items
@@ -169,5 +184,17 @@ angular.module('Pundit2.MyItemsContainer')
         // update all items array and display new items
         $scope.displayedItems = MyItemsContainer.buildItemsArray($scope.tabs.activeTab, $scope.tabs, newItems);
     }, true);
+
+    // watch showed items length
+    $scope.$watch(function() {
+        return $scope.displayedItems.length;
+    }, function(len) {
+        // show empty lists messagge
+        if (len === 0){
+            $scope.message.flag = true;
+        } else {
+            $scope.message.flag = false;
+        }
+    });
 
 });

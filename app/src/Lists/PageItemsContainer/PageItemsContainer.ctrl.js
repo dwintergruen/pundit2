@@ -6,7 +6,11 @@ angular.module('Pundit2.PageItemsContainer')
     // read by <item> directive (in PageItemsContainer/items.tmpl.html)
     // will trigger this contextual menu type clicking on the contextual item icon
     $scope.itemMenuType = PageItemsContainer.options.cMenuType;
-    
+
+    $scope.message = {
+        flag: true,
+        text: "I'm a welcome message"
+    };    
 
     // items property used to compare
     // legal value are: 'type' and 'label'
@@ -150,6 +154,13 @@ angular.module('Pundit2.PageItemsContainer')
             return items.label.toLowerCase().match(reg) !== null;
         });
 
+        // update text messagge
+        if(str === ''){
+            $scope.message.text = "I'm a welcome message";
+        } else {
+            $scope.message.text = "No item found to: "+str;
+        }        
+
     });
 
     $scope.$watch(function() {
@@ -158,5 +169,16 @@ angular.module('Pundit2.PageItemsContainer')
         // update all items array and display new items
         $scope.displayedItems = PageItemsContainer.buildItemsArray($scope.tabs.activeTab, $scope.tabs, newItems);
     }, true);
+
+    $scope.$watch(function() {
+        return $scope.displayedItems.length;
+    }, function(len) {
+        // show empty lists messagge
+        if (len === 0){
+            $scope.message.flag = true;
+        } else {
+            $scope.message.flag = false;
+        }
+    });
 
 });
