@@ -14,13 +14,14 @@ angular.module('Pundit2.Vocabularies')
 
     var selectorsManager = new BaseComponent('SelectorsManager', SELECTORMANAGERDEFAULTS);
 
-    // active selectors services
+    // registered selectors
     var selectors = {};
-    // active selectors services instance
+    // active selectors factory instances
     var selectorInstances = [];
-
+    // number of pending incomplete http request
     var pendingRequest;
-        
+    // a promise resolved when all selectors complete
+    // the http query request
     var promise = null;
 
     selectorsManager.getItems = function(term){
@@ -48,6 +49,10 @@ angular.module('Pundit2.Vocabularies')
     // and instantiate the various instance of the selectors
     // when the init run others factory must to be call the "addSelector" method
     selectorsManager.init = function(){
+
+        // TODO need to instance only one time
+        // then extend selectorInstance in the futures calls
+        selectorInstances = [];
 
         for (var key in selectors) {
 

@@ -23,7 +23,7 @@ angular.module('Pundit2.Vocabularies')
     // to add a selector must to inject it in the controller dependency
     // otherwise the SelectorsManager.addSelector() is never called
     // and the selector manager can't show the selector
-    // es: FreebaseSelector, MurucaSelector
+    // es: FreebaseSelector, MurucaSelector, KorboBasketSelector
     SelectorsManager.init();
 
     $scope.dropdownTemplate = "src/Toolbar/dropdown.tmpl.html";
@@ -114,7 +114,7 @@ angular.module('Pundit2.Vocabularies')
 
     var querySelectors = function(){
         SelectorsManager.getItems($scope.search.term).then(function(){
-            console.log('All selectors end http', ItemsExchange.getAll());
+            vocabulariesContainer.log('All selectors end http calls', ItemsExchange.getAll());
         });
     };
 
