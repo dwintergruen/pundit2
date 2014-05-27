@@ -45,7 +45,8 @@
                         {{annotationSidebar.filters.freeText.expression}}
                     </div>
                     <div class="pnd-annotation-sidebar-filter-input">
-                        <input ng-model="annotationSidebar.filters.freeText.expression">
+                    	<span class="pnd-icon {{search.icon}}" ng-click="search.term = ''"></span>
+                        <input class="form-control" ng-model="annotationSidebar.filters.freeText.expression" placeholder="Search">
                     </div>
                 </div>
 
@@ -55,7 +56,8 @@
                         Annotation author
                     </div>
                     <div class="pnd-annotation-sidebar-filter-input pnd-annotation-sidebar-filter-search">
-                        <input ng-model="searchAuthors.label" placeholder="Search">
+                    	<span class="pnd-icon {{search.icon}}" ng-click="search.term = ''"></span>
+                        <input class="form-control" ng-model="searchAuthors.label" placeholder="Search">
                     </div>
                     <div class="pnd-sidebar-filter-scroll">
 	                    <div 
@@ -79,7 +81,8 @@
                         Types
                     </div>
                     <div class="pnd-annotation-sidebar-filter-input pnd-annotation-sidebar-filter-search">
-                        <input ng-model="searchTypes.label" placeholder="Search">
+                    	<span class="pnd-icon {{search.icon}}" ng-click="search.term = ''"></span>
+                        <input class="form-control" ng-model="searchTypes.label" placeholder="Search">
                     </div>
                     <div class="pnd-sidebar-filter-scroll">
 	                    <div ng-repeat="elem in filters.types | orderObjectBy:'count':'dsc' | filter:searchTypes" 
@@ -103,7 +106,8 @@
                         Used predicate
                     </div>
                     <div class="pnd-annotation-sidebar-filter-input pnd-annotation-sidebar-filter-search">
-                        <input ng-model="searchPredicates.label" placeholder="Search">
+                    	<span class="pnd-icon {{search.icon}}" ng-click="search.term = ''"></span>
+                        <input class="form-control" ng-model="searchPredicates.label" placeholder="Search">
                     </div>
                     <div 
                         ng-repeat="elem in filters.predicates | orderObjectBy:'count':'dsc' | filter:searchPredicates" 
@@ -125,7 +129,8 @@
                         Entities
                     </div>
                     <div class="pnd-annotation-sidebar-filter-input pnd-annotation-sidebar-filter-search">
-                        <input ng-model="searchEntities.label" placeholder="Search">
+                    	<span class="pnd-icon {{search.icon}}" ng-click="search.term = ''"></span>
+                        <input class="form-control" ng-model="searchEntities.label" placeholder="Search">
                     </div>
                     <div class="pnd-sidebar-filter-scroll">
 	                    <div 

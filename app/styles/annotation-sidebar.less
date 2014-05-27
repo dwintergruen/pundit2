@@ -16,16 +16,13 @@ body.pnd-annotation-sidebar-expanded {
 
 .pnd-annotation-sidebar-container {
     background: #fff;
-
     position: absolute;
     right: 0px;
     top: @toolbar-height;
     height: 100%;
     z-index: 99;
-    // padding: 20px;
     display: block;
-    border-left: 1px solid @gray-lighter;
-    //opacity: 0.75;  
+    border-left: 1px solid @gray-lighter; 
 }
 .pnd-annotation-sidebar-content{
     padding: 0px;
@@ -40,16 +37,39 @@ body.pnd-annotation-sidebar-expanded {
     width: @annotation-sidebar-exp-width;
 }
 
-/*
-.pnd-annotation-sidebar-filter {
-    padding: 6px 10px 6px 10px;
-    cursor: pointer;
-    border-bottom: 1px solid @gray-light;
-}
 
-*/
 
-// Buttons
+//
+// INPUT SEARCH
+// --------------------------------------------------
+
+.pnd-annotation-sidebar-filter-input {
+    position: relative;
+         
+	    
+	 .pnd-icon {
+	    position: absolute;
+	    color: @gray-light;
+	    right: 8px;
+	    top: 5px;
+	    padding: 5px;
+	    }
+
+    // .pnd-icon-times is configured in *ItemsContainer.service.js defaults with
+    // inputIconClear: 'pnd-icon-times'
+    
+     .pnd-icon.pnd-icon-times:hover {
+        color:  @brand-success;
+        cursor: pointer;
+        }
+
+    }
+
+
+//
+// BUTTONS
+// --------------------------------------------------
+
 
 .pnd-annotation-sidebar-content {
 
@@ -105,11 +125,11 @@ body.pnd-annotation-sidebar-expanded {
 		padding: 0px 10px;
 		
 		&+ .pnd-annotation-sidebar-filter {
-		border-top: 1px solid @gray-light;
+		border-top: 1px solid @gray-extra-light;
 		}
 
 
-	// Panel
+	// ---------- PANELS
 
 	.pnd-panel {
 		font-weight: bold;

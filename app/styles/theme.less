@@ -421,8 +421,22 @@
 
 
 //
-// Outline
+// INPUT & Outline
 // --------------------------------------------------
+
+.form-control {
+	border-color: @gray-extra-light; 
+
+
+&:focus {
+    outline: 0;
+    box-shadow: none;
+    border-color: @gray-light !important;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+  }		
+
+}
 
 
 a {
