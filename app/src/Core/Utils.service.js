@@ -19,7 +19,20 @@ angular.module('Pundit2.Core')
 
         // Freebase custom labels
         if (uri.match(/http:\/\/www\.freebase\.com\/schema\//)) {
-            label = uri.substring(31).replace(/\//g, ': ').replace(/_/g, ' ');
+            label = uri
+                .substring(31)
+                .replace(/\//g, ': ')
+                .replace(/_/g, ' ');
+            return label;
+        }
+
+        // DBPedia custom labels
+        // Special case for DBPedia Types
+        if (uri.match("http://dbpedia.org/ontology/")) {
+            label = uri
+                .substring(28)
+                .replace(/([A-Z])/g, ' $1')
+                .replace(/^./, function(str){ return str.toUpperCase(); });
             return label;
         }
 

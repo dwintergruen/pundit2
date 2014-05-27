@@ -51,7 +51,7 @@ angular.module('Pundit2.Core')
             // If it's one of our types, we know the labels. If not, we create one
             // using Utils super charged label producer.
             if (uri.match(NameSpace.punditOntologyBaseURL) && uri in NameSpace.typesLabels) {
-                label =  NameSpace.typesLabels[uri];
+                label = NameSpace.typesLabels[uri];
             } else {
                 label = Utils.getLabelFromURI(uri);
             }
