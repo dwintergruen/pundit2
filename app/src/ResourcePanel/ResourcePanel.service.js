@@ -13,6 +13,22 @@ angular.module('Pundit2.ResourcePanel')
     state.defaultPlacement = 'bottom';
     state.resourcePromise = null;
 
+    // create div  where resource panel append popover
+    angular.element("[data-ng-app='Pundit2']")
+        .prepend("<div class='pnd-resource-panel-popover-rpAnchor' style='position: absolute; left: -500px; top: -500px;'><div>");
+    state.resourcePanelAnchor = angular.element('.pnd-resource-panel-popover-rpAnchor');
+
+    // create div literalAnchor where literal append popover
+    angular.element("[data-ng-app='Pundit2']")
+        .prepend("<div class='pnd-literal-popover-literalAnchor' style='position: absolute; left: -500px; top: -500px;'><div>");
+    state.literalAnchor = angular.element('.pnd-literal-popover-literalAnchor');
+
+
+    // create div literalAnchor where calendar append popover
+    angular.element("[data-ng-app='Pundit2']")
+        .prepend("<div class='pnd-calendar-popover-calendarAnchor' style='position: absolute; left: -500px; top: -500px;'><div>");
+    state.calendarAnchor = angular.element('.pnd-calendar-popover-calendarAnchor');
+
     // hide and destroy a popover
     resourcePanel.hide = function(){
 
@@ -23,59 +39,117 @@ angular.module('Pundit2.ResourcePanel')
         state.popover.destroy();
         state.popover = null;
     };
-    /*
-    *
-    * LITERAL POPOVER METHOD
-    *
-    */
-
-    // create div literalAnchor where literal append popover
-    angular.element("[data-ng-app='Pundit2']")
-        .prepend("<div class='pnd-literal-popover-literalAnchor' style='position: absolute; left: -500px; top: -500px;'><div>");
-    state.literalAnchor = angular.element('.pnd-literal-popover-literalAnchor');
-
 
     // scope needed to instantiate a new popover using $popover provider
     state.popoverOptions = {scope: $rootScope.$new()};
 
-    // initialize popoverLiteral text popover
-    var initPopoverLiteral = function(x, y, content, target){
-        // move literalAnchor to correct position
-        state.literalAnchor.css({
-            left: x,
-            top: y
-        });
+    // initialize a popover
+    var initPopover = function(x, y, content, target, placement, type){
+        var popoverAnchor;
 
-        if(typeof(content) === 'undefined') {
-            state.popoverOptions.scope.literalText = '';
-        } else {
-            state.popoverOptions.scope.literalText = content;
+        // initialize a calendar popover
+        if(type === 'calendar') {
+
+            state.popoverOptions.template = 'src/ResourcePanel/popoverCalendar.tmpl.html';
+            // move literalAnchor to correct position
+            state.calendarAnchor.css({
+                left: x,
+                top: y
+            });
+
+            popoverAnchor = state.calendarAnchor;
+
+            if(typeof(content.date) === 'undefined') {
+                state.popoverOptions.scope.selectedDate = '';
+            } else {
+                state.popoverOptions.scope.selectedDate = content.date;
+            }
+
+            state.popoverOptions.scope.save = function() {
+                state.resourcePromise.resolve(this.selectedDate);
+                resourcePanel.hide();
+            };
+
+            // close popoverLiteral popover without saving
+            state.popoverOptions.scope.cancel = function() {
+                resourcePanel.hide();
+            };
+
+        // initialize a literal popover
+        } else if(type === 'literal'){
+
+            state.popoverOptions.template = 'src/ResourcePanel/popoverLiteralText.tmpl.html';
+            state.literalAnchor.css({
+                left: x,
+                top: y
+            });
+
+            popoverAnchor = state.literalAnchor;
+
+            if(typeof(content.literalText) === 'undefined') {
+                state.popoverOptions.scope.literalText = '';
+            } else {
+                state.popoverOptions.scope.literalText = content.literalText;
+            }
+
+            // handle save a new popoverLiteral
+            state.popoverOptions.scope.save = function() {
+                state.resourcePromise.resolve(this.literalText);
+                resourcePanel.hide();
+            };
+
+            // close popoverLiteral popover without saving
+            state.popoverOptions.scope.cancel = function() {
+                resourcePanel.hide();
+            };
+
+            // initialize a resource panel popover
+        } else if(type === 'resourcePanel'){
+
+            state.popoverOptions.template = 'src/ResourcePanel/popoverResourcePanel.tmpl.html';
+            // move literalAnchor to correct position
+            state.resourcePanelAnchor.css({
+                left: x,
+                top: y
+            });
+
+            popoverAnchor = state.resourcePanelAnchor;
+            state.popoverOptions.scope.pageItems = content.pageItems;
+            state.popoverOptions.scope.myItems = content.myItems;
+            state.popoverOptions.scope.properties = content.properties;
+
+            // handle save a new popoverLiteral
+            state.popoverOptions.scope.save = function(elem) {
+                resourcePanel.hide();
+                state.resourcePromise.resolve(elem);
+            };
+
+            // close popoverLiteral popover without saving
+            state.popoverOptions.scope.cancel = function() {
+                resourcePanel.hide();
+            };
         }
 
-        // handle save a new popoverLiteral
-        state.popoverOptions.scope.save = function() {
-            state.resourcePromise.resolve(this.literalText);
-            resourcePanel.hide();
-        };
+        // common for all type of popover
+        if(typeof(placement) === 'undefined' || placement === ''){
+            state.popoverOptions.placement = state.defaultPlacement;
+        } else {
+            state.popoverOptions.placement = placement;
+        }
 
-        // close popoverLiteral popover without saving
-        state.popoverOptions.scope.cancel = function() {
-            resourcePanel.hide();
-        };
-
-        state.popoverOptions.placement = state.defaultPlacement;
-        state.popoverOptions.template = 'src/ResourcePanel/popoverLiteralText.tmpl.html';
-        state.popover = $popover(state.literalAnchor, state.popoverOptions);
+        state.popover = $popover(popoverAnchor, state.popoverOptions);
         state.popover.clickTarget = target;
         return state.popover;
     };
 
+
     // show popover literal
     // x,y --> coordinate where popover will be shown
-    // content --> text to show in textarea
+    // text --> text to show in textarea
     // target -->  targer element clicked
-    resourcePanel.showPopoverLiteral = function(x, y, content, target){
-
+    resourcePanel.showPopoverLiteral = function(x, y, text, target){
+        var content = {};
+        content.literalText = text;
         // if click the same popover, hide it
         if (state.popover !== null && state.popover.clickTarget === target) {
             resourcePanel.hide();
@@ -84,13 +158,13 @@ angular.module('Pundit2.ResourcePanel')
         // if click a different popover, hide the shown popover and show the clicked one
         else if (state.popover !== null && state.popover.clickTarget !== target) {
             resourcePanel.hide();
-            state.popover = initPopoverLiteral(x, y, content, target);
+            state.popover = initPopover(x, y, content, target, "", 'literal');
             state.popover.$promise.then(state.popover.show);
         }
 
         // if no popover is shown, just show it
         else if (state.popover === null) {
-            state.popover = initPopoverLiteral(x, y, content, target);
+            state.popover = initPopover(x, y, content, target, "", 'literal');
             state.popover.$promise.then(state.popover.show);
          }
 
@@ -98,53 +172,17 @@ angular.module('Pundit2.ResourcePanel')
         return state.resourcePromise.promise;
     };
 
-    /*
-     *
-     * CALENDAR POPOVER METHOD
-     *
-     *
-     */
-
-    // create div literalAnchor where literal append popover
-    angular.element("[data-ng-app='Pundit2']")
-        .prepend("<div class='pnd-calendar-popover-calendarAnchor' style='position: absolute; left: -500px; top: -500px;'><div>");
-    state.calendarAnchor = angular.element('.pnd-calendar-popover-calendarAnchor');
-
-    // initialize calendar popover
-    var initPopoverCalendar = function(x, y, date, target){
-        // move literalAnchor to correct position
-        state.calendarAnchor.css({
-            left: x,
-            top: y
-        });
-
-        // handle save a new popoverLiteral
-        state.popoverOptions.scope.save = function() {
-            state.resourcePromise.resolve(this.selectedDate);
-            resourcePanel.hide();
-        };
-
-        // close popoverLiteral popover without saving
-        state.popoverOptions.scope.cancel = function() {
-            resourcePanel.hide();
-        };
-
-        state.popoverOptions.placement = state.defaultPlacement;
-        state.popoverOptions.template = 'src/ResourcePanel/popoverCalendar.tmpl.html';
-        state.popover = $popover(state.calendarAnchor, state.popoverOptions);
-        state.popover.clickTarget = target;
-        return state.popover;
-    };
-
+    // show popover calendar
+    // x,y --> coordinate where popover will be shown
+    // date --> date to show in calendar
+    // target -->  targer element clicked
     resourcePanel.showPopoverCalendar = function(x, y, date, target){
-
+        var content = {};
+        content.date = date;
         // if no popover is shown, just show it
         if (state.popover === null) {
-            state.popover = initPopoverCalendar(x, y, date, target);
-            state.popover.$promise.then(function() {
-                state.popover.show();
-
-            });
+            state.popover = initPopover(x, y, content, target, "", 'calendar');
+            state.popover.$promise.then(state.popover.show);
         }
 
         // if click the same popover, toggle it
@@ -155,7 +193,7 @@ angular.module('Pundit2.ResourcePanel')
         // if click a different popover, hide the shown popover and show the clicked one
         else if (state.popover !== null && state.popover.clickTarget !== target) {
             resourcePanel.hide();
-            state.popover = initPopoverCalendar(x, y, date, target);
+            state.popover = initPopover(x, y, "", target, "", 'calendar');
             state.popover.$promise.then(state.popover.show);
         }
 
@@ -163,55 +201,20 @@ angular.module('Pundit2.ResourcePanel')
         return state.resourcePromise.promise;
     };
 
-
-    /*
-     *
-     * RESOURCE PANEL POPOVER METHOD
-     *
-     *
-     */
-
-    // create div literalAnchor where literal append popover
-    angular.element("[data-ng-app='Pundit2']")
-        .prepend("<div class='pnd-reousrce-panel-popover-rpAnchor' style='position: absolute; left: -500px; top: -500px;'><div>");
-    state.resourcePanelAnchor = angular.element('.pnd-calendar-popover-calendarAnchor');
-
-    state.popoverResourcePanel = null;
-
-    // initialize calendar popover
-    var initPopoverResourcePanel = function(x, y, target, pageItems, myItems, properties){
-
-        // move literalAnchor to correct position
-        state.resourcePanelAnchor.css({
-            left: x,
-            top: y
-        });
-        state.popoverOptions.scope.pageItems = pageItems;
-        state.popoverOptions.scope.myItems = myItems;
-        state.popoverOptions.scope.properties = properties;
-        // handle save a new popoverLiteral
-        state.popoverOptions.scope.save = function(elem) {
-            resourcePanel.hide();
-            state.resourcePromise.resolve(elem);
-        };
-
-        // close popoverLiteral popover without saving
-        state.popoverOptions.scope.cancel = function() {
-            resourcePanel.hide();
-        };
-
-        state.popoverOptions.placement = state.defaultPlacement;
-        state.popoverOptions.template = 'src/ResourcePanel/popoverResourcePanel.tmpl.html';
-        state.popover = $popover(state.resourcePanelAnchor, state.popoverOptions);
-        state.popover.clickTarget = target;
-        return state.popover;
-    };
-
+    // show popover resource panel
+    // x,y --> coordinate where popover will be shown
+    // date --> date to show in calendar
+    // pageItems -->  page items to show
+    // myItems -->  my items to show
+    // properties -->  properties to show
     var showPopoverResourcePanel = function(x, y, target, pageItems, myItems, properties){
-
+        var content = {};
+        content.pageItems = pageItems;
+        content.myItems = myItems;
+        content.properties = properties;
         // if no popover is shown, just show it
         if (state.popover === null) {
-            state.popover = initPopoverResourcePanel(x, y, target, pageItems, myItems, properties);
+            state.popover = initPopover(x, y, content, target, "", 'resourcePanel');
             state.popover.$promise.then(state.popover.show);
         }
 
@@ -223,7 +226,7 @@ angular.module('Pundit2.ResourcePanel')
         // if click a different popover, hide the shown popover and show the clicked one
         else if (state.popover !== null && state.popover.clickTarget !== target) {
             resourcePanel.hide();
-            state.popover = initPopoverResourcePanel(x, y, target, pageItems, myItems, properties);
+            state.popover = initPopover(x, y, content, target, "", 'resourcePanel');
             state.popover.$promise.then(state.popover.show);
         }
 
