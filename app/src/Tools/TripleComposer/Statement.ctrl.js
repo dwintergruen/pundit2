@@ -1,5 +1,5 @@
 angular.module('Pundit2.TripleComposer')
-.controller('StatementCtrl', function($scope, TypesHelper, ResourcePanel) {
+.controller('StatementCtrl', function($scope, $element, TypesHelper, ResourcePanel) {
 
     $scope.subjectLabel = '';
     $scope.subjectTypeLabel = '';
@@ -19,6 +19,13 @@ angular.module('Pundit2.TripleComposer')
     $scope.objectIcon = 'pnd-icon-search'; //'pnd-icon-times'
 
     $scope.wipeStatement = function(){
+
+        if ($scope.statements.length > 1) {
+            angular.element($element[0]).remove();
+            // TODO destroy scope
+            // TODO remove element from parent scope
+        }        
+
         $scope.subjectLabel = '';
         $scope.subjectTypeLabel = '';
         $scope.subjectFound = false;

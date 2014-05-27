@@ -8,8 +8,9 @@
 
 <div class="pnd-panel-tab-content-content pnd-inner-scrollable">
 
-    <statement></statement>
-    <statement></statement>
+    <div ng-repeat="s in statements">
+        <statement></statement>
+    </div>
     
 </div> <!-- end pnd-panel-tab-content-content -->
 
@@ -17,7 +18,7 @@
 
 <div class="pnd-panel-tab-content-footer">
     
-    <button class="btn btn-success btn-sm">Add blank Statement</button>
+    <button class="btn btn-success btn-sm" ng-click="onClickAddStatement()">Add blank Statement</button>
     
     <button class="btn btn-success btn-sm">Save all Statements to Server</button>
     
