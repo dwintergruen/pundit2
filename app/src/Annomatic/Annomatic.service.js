@@ -433,8 +433,13 @@ angular.module('Pundit2.Annomatic')
     annomatic.currAnn = 0;
     annomatic.reviewNext = function(from) {
 
+        if (annomatic.annotationNumber === 0) {
+            annomatic.log('No annotation to review....');
+            return;
+        }
+
         if (annomatic.ann.byState.waiting.length === 0) {
-            // console.log('All reviewed!');
+            annomatic.log('All reviewed!');
             return;
         }
         

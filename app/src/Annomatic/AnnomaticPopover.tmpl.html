@@ -1,8 +1,22 @@
-<div class="popover" ng-controller="AnnomaticPopoverCtrl">
+<div class="pnd-annomatic-popover popover" ng-controller="AnnomaticPopoverCtrl">
     <div class="arrow"></div>
+
+    <h4 class="popover-title" ng-click="showDetails = !showDetails">
+        <span ng-show="!showDetails" class="pnd-icon pnd-icon-search"></span>
+        <span ng-show="showDetails" class="pnd-icon pnd-icon-times"></span>
+
+        {{ann.byNum[num].title}}
+    </h4>
+
     <div class="popover-content">
-        ({{num}}) {{ann.byNum[num].title}}
-        <br>
+
+        <div ng-show="showDetails">
+            <p>
+                <img ng-if="ann.byNum[num].image.thumbnail" ng-src="{{ann.byNum[num].image.thumbnail}}">
+                {{ann.byNum[num].abstract}}
+            </p>
+        </div>
+
 
         <div>
             <button class="btn btn-sm btn-success" ng-click="setOk()">Accept</button>
