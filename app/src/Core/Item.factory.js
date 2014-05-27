@@ -143,9 +143,7 @@ angular.module('Pundit2.Core')
 
     ItemFactory.prototype.getIcon = function() {
 
-        if (typeof(this) === "undefined" || this === null) {
-            return itemComponent.options.iconDefault;
-        } else if (this.isImage() || this.isImageFragment()) {
+        if (this.isImage() || this.isImageFragment()) {
             return itemComponent.options.iconImage;
         } else if (this.isTextFragment()) {
             return itemComponent.options.iconText;
@@ -160,9 +158,7 @@ angular.module('Pundit2.Core')
 
     ItemFactory.prototype.getClass = function() {
 
-        if (typeof(this) === "undefined" || this === null) {
-            return itemComponent.options.classDefault;
-        } else if (this.isImage() || this.isImageFragment()) {
+        if (this.isImage() || this.isImageFragment()) {
             return itemComponent.options.classImage;
         } else if (this.isTextFragment()) {
             return itemComponent.options.classText;
