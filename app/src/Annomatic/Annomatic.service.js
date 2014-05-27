@@ -10,9 +10,17 @@ angular.module('Pundit2.Annomatic')
     var annomatic = new BaseComponent('Annomatic', ANNOMATICDEFAULTS);
 
     annomatic.ann = {
-        // The annotations, by number
+        // The annotations, by Item uri
+        byUri: {},
+        // The annotations, by number: we need it to go the next/prev
         byNum: [],
-        // list of numbers for the given id
+
+        // Maps to go back and forth from annotation number to URI.
+        // numToUri has num as index, uri as value
+        numToUriMap: {},
+        uriToNumMap: {},
+
+        // list of numbers for the given id (same entity for multiple fragments)
         byId: {},
         // scopes for the popovers, indexed by num
         autoAnnScopes: [],
@@ -256,11 +264,11 @@ angular.module('Pundit2.Annomatic')
 
             annomatic.ann.byState[ann.state].push(l);
         } // for l
-        
+
         for (l=annomatic.ann.typesOptions.length; l--;) {
             var op = annomatic.ann.typesOptions[l],
                 uri = op.value;
-                
+
             op.label = op.label + "("+ byType[uri].length+")";
         }
         
@@ -326,12 +334,16 @@ angular.module('Pundit2.Annomatic')
                 annomatic.currAnn = 0;
 
                 for (var l=validAnnotations.length, i=0; i<l; i++) {
-                    annomatic.ann.byNum.push(validAnnotations[i].annotation);
                     item = TextFragmentHandler.createItemFromRange(validAnnotations[i].range);
+                    annomatic.ann.byNum[i] = validAnnotations[i].annotation;
+                    annomatic.ann.numToUriMap[i] = item.uri;
+                    annomatic.ann.uriToNumMap[item.uri] = i;
+                    annomatic.ann.byUri[item.uri] = validAnnotations[i].annotation;
                     ItemsExchange.addItemToContainer(item, annomatic.options.container);
                 }
 
                 analyze();
+                console.log('Analyze done: ', annomatic.ann);
                 promise.resolve();
 
             },
