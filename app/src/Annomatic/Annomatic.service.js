@@ -1,6 +1,7 @@
 angular.module('Pundit2.Annomatic')
 .constant('ANNOMATICDEFAULTS', {
-    container: 'annomatic'
+    container: 'annomatic',
+    cMenuType: 'annomatic'
 })
 .service('Annomatic', function(ANNOMATICDEFAULTS, BaseComponent, DataTXTResource, XpointersHelper,
                                ItemsExchange, TextFragmentHandler, TypesHelper,

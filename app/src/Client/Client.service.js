@@ -192,7 +192,7 @@ angular.module('Pundit2.Client')
     .service('Client', function(CLIENTDEFAULTS, BaseComponent, Config, MyPundit,
                                 ImageFragmentAnnotator, TextFragmentAnnotator, Consolidation,
                                 AnnotationsExchange, Item, ItemsExchange, Annotation, MyItems,
-                                TextFragmentHandler, Toolbar,
+                                TextFragmentHandler, Toolbar, Annomatic,
                                 $injector, $templateCache, $rootScope) {
 
         var client = new BaseComponent('Client', CLIENTDEFAULTS),
@@ -229,11 +229,12 @@ angular.module('Pundit2.Client')
                 }
 
                 // A reference to the module we need to read .options from
-                var mod = $injector.get(name);
+                var tmpl,
+                    mod = $injector.get(name);
 
                 // First case: append to Pundit2's root node
                 if ("clientDomTemplate" in mod.options) {
-                    var tmpl = $templateCache.get(mod.options.clientDomTemplate);
+                    tmpl = $templateCache.get(mod.options.clientDomTemplate);
 
                     if (typeof(tmpl) === "undefined") {
                         client.err('Can not bootstrap module '+mod.name+', template not found: '+mod.options.clientDomTemplate);
@@ -251,7 +252,7 @@ angular.module('Pundit2.Client')
                     "clientDashboardTabTitle" in mod.options &&
                     Config.isModuleActive("Dashboard")) {
 
-                    var tmpl = $templateCache.get(mod.options.clientDashboardTemplate);
+                    tmpl = $templateCache.get(mod.options.clientDashboardTemplate);
 
                     if (typeof(tmpl) === "undefined") {
                         client.err('Can not bootstrap module '+mod.name+', template not found: '+mod.options.clientDashboardTemplate);

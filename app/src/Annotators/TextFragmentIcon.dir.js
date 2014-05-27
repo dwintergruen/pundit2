@@ -1,5 +1,6 @@
 angular.module('Pundit2.Annotators')
-.directive('textFragmentIcon', function(TextFragmentAnnotator, ContextualMenu, XpointersHelper) {
+.directive('textFragmentIcon', function(TextFragmentAnnotator, ContextualMenu,
+                                        XpointersHelper, Config, ItemsExchange) {
     return {
         restrict: 'E',
         scope: {
@@ -16,6 +17,26 @@ angular.module('Pundit2.Annotators')
             scope.element = element;
             TextFragmentAnnotator.addFragmentIcon(scope);
 
+            // To see what kind of item is it, check which container it belongs to
+            var amContainer = Config.modules.Annomatic.container,
+                piContainer = Config.modules.PageItemsContainer.container,
+                miContainer = Config.modules.MyItems.container;
+
+            if (ItemsExchange.isItemInContainer(scope.item, amContainer)) {
+                scope.iconClass = TextFragmentAnnotator.options.suggestionIconClass;
+                scope.kind = 'annomatic';
+
+            } else if (ItemsExchange.isItemInContainer(scope.item, miContainer) &&
+                !ItemsExchange.isItemInContainer(scope.item, piContainer)) {
+
+                scope.iconClass = TextFragmentAnnotator.options.myItemsIconClass;
+                scope.kind = "myitem";
+            } else {
+                scope.iconClass = TextFragmentAnnotator.options.annotationIconClass;
+                scope.kind = "annotation";
+            }
+
+
             // TODO: move this to its own controller?
             scope.mouseoverHandler = function() {
                 TextFragmentAnnotator.highlightById(scope.fragment);
@@ -26,7 +47,11 @@ angular.module('Pundit2.Annotators')
             };
 
             scope.clickHandler = function(event) {
-                ContextualMenu.show(event.pageX, event.pageY, scope.item, TextFragmentAnnotator.options.cMenuType);
+                if (scope.kind === 'annomatic') {
+                    console.log('Annomatic .. ');
+                } else {
+                    ContextualMenu.show(event.pageX, event.pageY, scope.item, TextFragmentAnnotator.options.cMenuType);
+                }
             };
 
         }

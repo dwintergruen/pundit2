@@ -11,7 +11,8 @@ angular.module('Pundit2.Annotators')
 
     // Class to get the consolidated icon: normal consolidated fragment
     annotationIconClass: "pnd-icon-tag",
-    myItemsIconClass: "pnd-icon-certificate"
+    myItemsIconClass: "pnd-icon-certificate",
+    suggestionIconClass: "pnd-icon-edit"
 
 })
 
@@ -170,12 +171,22 @@ angular.module('Pundit2.Annotators')
     // to the given fragment
     var placeIcons = function() {
         var n = 0;
+            // To see what kind of fragment item is it, check which container it belongs to
+            amContainer = Config.modules.Annomatic.container;
+
         for (var c in fragmentIds) {
             var id = fragmentIds[c],
-                lastBit = angular.element('.'+ id).last();
+                lastBit = angular.element('.'+ id).last(),
+                // TODO: put this name in .options ?
+                directive = "text-fragment-icon";
 
-            tfa.log('Placing icon '+ n++, id, lastBit.attr('fragments'));
-            lastBit.after('<text-fragment-icon fragment="'+id+'"></text-fragment-icon>');
+            if (ItemsExchange.isItemInContainer(fragmentById[id].item, amContainer)) {
+                // TODO: put this name in .options, in Annomatic ?
+                directive = "suggestion-fragment-icon";
+            }
+
+            tfa.log('Placing fragment icon '+ n++, id, lastBit.attr('fragments'));
+            lastBit.after('<'+ directive +' fragment="'+id+'"></'+ directive +'>');
         }
     };
 
@@ -188,7 +199,7 @@ angular.module('Pundit2.Annotators')
         var consolidated = angular.element('.pnd-cons');
         $compile(consolidated)($rootScope);
 
-        var icons = angular.element('text-fragment-icon');
+        var icons = angular.element('text-fragment-icon, suggestion-fragment-icon');
         $compile(icons)($rootScope);
 
         $rootScope.$$phase || $rootScope.$digest();
@@ -226,20 +237,7 @@ angular.module('Pundit2.Annotators')
         fragmentById[icon.fragment].icon = icon;
         icon.item = fragmentById[icon.fragment].item;
 
-
-        var item = fragmentById[icon.fragment].item,
-            piContainer = Config.modules.PageItemsContainer.container,
-            miContainer = Config.modules.MyItems.container;
-        if (ItemsExchange.isItemInContainer(item, miContainer) &&
-            !ItemsExchange.isItemInContainer(item, piContainer)) {
-
-            icon.iconClass = tfa.options.myItemsIconClass;
-
-        } else {
-            icon.iconClass = tfa.options.annotationIconClass;
-        }
-
-        tfa.log('Adding text fragment icon for fragment id='+ icon.fragment);
+        tfa.log('Adding fragment icon for fragment id='+ icon.fragment);
     };
 
     // Called by TextFragmentBit directives: they will wrap every bit of annotated content
