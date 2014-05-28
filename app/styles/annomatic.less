@@ -1,14 +1,15 @@
 .ann-auto {
     &.ann-hidden {
         background-color: inherit !important;
+        color: inherit !important;
     }
     &:not(.ann-hidden) {
         &.ann-waiting {
-            background-color: @brand-info;
+            background-color: @text-fragment-color;
             color: #fff;
         }
         &.ann-active {
-            background-color: @brand-warning;
+            background-color: @brand-info;
             color: #fff;
         }
         &.ann-ok {
@@ -23,7 +24,13 @@
     }
 
 }
+
+.pnd-text-fragment-icon.ann-hidden {
+    display: none;
+}
+
 .pnd-annomatic-popover {
+    width: 290px;
     img {
         max-width: 100px;
         border:  1px solid #555;

@@ -6,9 +6,17 @@ angular.module('Pundit2.Annomatic')
     $scope.num = parseInt($scope.content, 10);
     $scope.ann = Annomatic.ann;
 
+    // Automatically open the details on popover open?
+    $scope.showDetails = true;
+
     // Number of times this same suggestion occurs among all the suggestions.
     // Will be used to show the button to accept all of them at once
     $scope.instances = $scope.ann.byId[$scope.ann.byNum[$scope.num].id].length;
+
+    $scope.hide = function() {
+        $scope.$hide();
+        Annomatic.setLastState($scope.num);
+    };
 
     $scope.setOk = function() {
         $scope.$hide();

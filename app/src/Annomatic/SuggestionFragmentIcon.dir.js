@@ -1,5 +1,6 @@
 angular.module('Pundit2.Annomatic')
-.directive('suggestionFragmentIcon', function(TextFragmentAnnotator, Annomatic, $popover) {
+.directive('suggestionFragmentIcon', function(TextFragmentAnnotator, XpointersHelper,
+                                              Annomatic, $popover) {
     return {
         restrict: 'E',
         scope: {
@@ -12,7 +13,7 @@ angular.module('Pundit2.Annomatic')
         link: function(scope, element) {
 
             // Common for all icons
-            scope.textFragmentIconClass = TextFragmentAnnotator.options.annotationIconClass;
+            scope.textFragmentIconClass = XpointersHelper.options.textFragmentIconClass;
 
             // For suggestions fragments
             scope.iconClass = TextFragmentAnnotator.options.suggestionIconClass;
@@ -94,8 +95,16 @@ angular.module('Pundit2.Annomatic')
                 // Set the state class on every bit belonging to this fragment
                 angular.element('.'+scope.fragment).removeClass(from + ' ann-active');
                 angular.element('.'+scope.fragment).addClass(to);
+
+                if (from === Annomatic.stateClassMap.hidden) {
+                    element.removeClass('ann-hidden');
+                } else if (to === Annomatic.stateClassMap.hidden) {
+                    element.addClass('ann-hidden');
+                }
+
             };
 
+            scope.setStateClass('', Annomatic.stateClassMap.waiting);
 
         } // link()
     };
