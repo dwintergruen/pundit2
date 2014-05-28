@@ -27,6 +27,25 @@ angular.module('Pundit2.TripleComposer')
         object: null
     };
 
+    var buildUrisArray = function(){
+        var res = [];
+        if (triple.subject!==null) {
+            res.push(triple.subject.uri);
+        } else {
+            res.push('');
+        }
+        if (triple.predicate!==null) {
+            res.push(triple.predicate.uri);
+        } else {
+            res.push('');
+        }
+        if (triple.object!==null) {
+            res.push(triple.object.uri);
+        } else {
+            res.push('');
+        }
+    };
+
     // remove statement directive
     $scope.remove = function() {
         $scope.tripleComposerCtrl.removeStatement($scope.id);
@@ -109,7 +128,7 @@ angular.module('Pundit2.TripleComposer')
 
 
     $scope.onClickSubject = function($event){
-        ResourcePanel.showItemsForSubject($event.pageX, $event.pageY, [], $event.target).then(function(item){
+        ResourcePanel.showItemsForSubject(buildUrisArray(), $event.target, '').then(function(item){
             $scope.subjectLabel = item.label;
             $scope.subjectTypeLabel = TypesHelper.getLabel(item.type[0]);
             $scope.subjectFound = true;
@@ -118,7 +137,7 @@ angular.module('Pundit2.TripleComposer')
     };
 
     $scope.onClickPredicate = function($event){
-        ResourcePanel.showProperties($event.pageX, $event.pageY, [], $event.target).then(function(item){
+        ResourcePanel.showProperties(buildUrisArray(), $event.target, '').then(function(item){
             $scope.predicateLabel = item.label;
             $scope.predicateFound = true;
             triple.predicate = item;
@@ -126,7 +145,7 @@ angular.module('Pundit2.TripleComposer')
     };
 
     $scope.onClickObject = function($event){
-        ResourcePanel.showItemsForObject($event.pageX, $event.pageY, [], $event.target).then(function(item){
+        ResourcePanel.showItemsForObject(buildUrisArray(), $event.target, '').then(function(item){
             $scope.objectLabel = item.label;
             $scope.objectTypeLabel = TypesHelper.getLabel(item.type[0]);
             $scope.objectFound = true;
@@ -135,13 +154,13 @@ angular.module('Pundit2.TripleComposer')
     };
 
     $scope.onClickObjectCalendar = function($event){
-        ResourcePanel.showPopoverCalendar($event.pageX, $event.pageY, undefined, $event.target).then(function(date){
+        ResourcePanel.showPopoverCalendar(undefined, $event.target).then(function(date){
             // TODO need to convert date, new Item(date)
         });
     };
 
     $scope.onClickObjectLiteral = function($event){
-        ResourcePanel.showPopoverLiteral($event.pageX, $event.pageY, '', $event.target).then(function(text){
+        ResourcePanel.showPopoverLiteral('', $event.target).then(function(text){
             $scope.objectFound = true;
             $scope.objectLabel = text;
             $scope.objectTypeLabel = TypesHelper.getLabel(NameSpace.rdfs.literal);
