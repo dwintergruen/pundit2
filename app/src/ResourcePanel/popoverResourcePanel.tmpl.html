@@ -1,23 +1,26 @@
 <div class="popover">
     <div class="arrow"></div>
-    <div ng-show = "myItems.length>0"> My items ({{myItems.length}})
-        <ul>
-            <li ng-repeat="mi in myItems" ng-click="save(mi)">{{mi.label}}</li>
-        </ul>
-    </div>
-    <div ng-show = "pageItems.length>0"> Page Items ({{pageItems.length}})
-        <ul>
-            <li ng-repeat="pi in pageItems" ng-click="save(pi)">{{pi.label}}</li>
-        </ul>
-    </div>
-    <div ng-show = "properties.length>0"> Properties ({{properties.length}})
-        <ul>
-            <li ng-repeat="pr in properties" ng-click="save(pr)">{{pr.label}}</li>
-        </ul>
-    </div>
-    <div ng-show = "properties.length == 0 && myItems.length == 0">
-        <ul>
-            <li>No match found</li>
-        </ul>
+    <h3 class="popover-title">Choose your...</h3>
+    <div class="popover-content">
+	    <div ng-show = "myItems.length>0"> My items ({{myItems.length}})
+	        <ul>
+	            <li ng-repeat="mi in myItems" ng-click="save(mi)">{{mi.label}}</li>
+	        </ul>
+	    </div>
+	    <div ng-show = "pageItems.length>0"> Page Items ({{pageItems.length}})
+	        <ul>
+	            <li ng-repeat="pi in pageItems" ng-click="save(pi)">{{pi.label}}</li>
+	        </ul>
+	    </div>
+	    <div ng-show = "properties.length>0"> Properties ({{properties.length}})
+	        <ul>
+	            <li ng-repeat="pr in properties" ng-click="save(pr)">{{pr.label}}</li>
+	        </ul>
+	    </div>
+	    <div ng-show = "properties.length == 0 && myItems.length == 0">
+	        <ul>
+	            <li>No match found</li>
+	        </ul>
+	    </div>
     </div>
 </div>
