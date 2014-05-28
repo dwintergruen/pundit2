@@ -24,7 +24,7 @@
                                              Annotation) {
 
         // var toLoad = ["385c1647"],
-        var toLoad = ["8fd05a49", "65286186", "385c1647"],
+        var toLoad = ["8fd05a49", "65286186", "385c1647", "01347808"],
         proms = [];
 
         for (var l=toLoad.length; l--;) {
@@ -34,6 +34,7 @@
         $scope.annotations1 = [];
         $q.all(proms).then(function(annos) {
             $scope.annotations = annos;
+            $scope.tempann = JSON.stringify(annos, null, "  ");
             // console.log('Annotations: ', annos);
         });
     }
@@ -41,6 +42,8 @@
 
 <div data-ng-app="Pundit2" class="pnd-wrp" ng-controller="AnnotationDetailsDemoCtrl">
     <!-- <annotation-details id="385c1647"></annotation-details> -->
+
+    <!-- <pre>{{tempann}}</pre> -->
 
    <div ng-repeat="ann in annotations">
         <annotation-details id="{{ann.id}}"></annotation-details>

@@ -1,35 +1,61 @@
 <div class="pnd-annotation-details">
-    <div class="pnd-annotation-details-header" ng-show="!isAnnotationExpanded">
-        <div style="display: inline" class="{{annotationClass}}">
-                <span class="{{annotationIcon}}"></span>
-                <span>{{annotationLabel}}</span>    
+    <div class="pnd-annotation-details-header" ng-show="!annotation.expanded">
+        <div style="display: inline" class="{{annotation.mainItem.class}}">
+                <span class="{{annotation.mainItem.icon}}"></span>
+                <span>{{annotation.mainItem.label}}</span>    
         </div>
 
         <button 
-            ng-click="isAnnotationExpanded = !isAnnotationExpanded" 
-            type="button" class="btn">
-            >
+            ng-click="toggleAnnotation()" 
+            type="button" class="btn btn-primary">
+            <span class="pnd-icon-chevron-right"></span>
         </button>
     </div>
 
-    <div ng-show="isAnnotationExpanded">
+    <div ng-show="annotation.expanded">
 
-        <!-- Header -->
+
         <div class="pnd-annotation-details-header">
-            <button type="button" class="btn">Info</button>
-            <button type="button" class="btn">Reply</button>
-            <button type="button" class="btn">Share</button>
+            <button type="button" class="btn btn-primary">
+                <span class="pnd-icon-exclamation-circle"></span>
+                Info
+            </button>
+            <button type="button" class="btn btn-primary">
+                <span class="pnd-icon-mail-forward"></span>
+                Reply
+            </button>
+            <button type="button" class="btn btn-primary">
+                <span class="pnd-icon-share-square-o"></span>
+                Share
+            </button>
 
             <button 
-                ng-click="isAnnotationExpanded = !isAnnotationExpanded" 
+                ng-click="toggleAnnotation()" 
                 type="button" class="btn">
-                ^
+                <span class="pnd-icon-chevron-down"></span>
             </button>
         </div>
 
-        <!-- Content -->
+
         <div class="pnd-annotation-details-content" style="padding: 10px">
-            <div ng-repeat="item in items">
+            <div ng-repeat="item in annotation.itemsArray">
+                <div class="pnd-annotation-details-subject">
+                    <span class="{{item.subject.icon}}"></span>
+                    {{item.subject.label}} ({{item.subject.typeLabel}})
+                </div>
+
+                <div class="pnd-annotation-details-predicate" style="margin-left: 25px">
+                    {{item.predicate.label}}
+                </div>
+
+                <div ng-repeat="object in item.objects" style="margin-left: 50px">
+                    <div class="pnd-annotation-details-object">
+                        {{object.label}}
+                    </div>
+                </div>
+            </div>    
+
+            <!-- <div ng-repeat="item in items">
                 <div style="display: inline" class="{{item.class}}">
                         <span class="{{item.icon}}"></span>
                         <span ng-click="itemInfo = !itemInfo">
@@ -49,16 +75,13 @@
                             </span>
                         </span>    
                 </div>
-            </div>
+            </div> -->
         </div>
 
-        <!-- Footer -->
+
         <div class="pnd-annotation-details-footer">
             <button type="button" class="btn">Edit</button>
             <button type="button" class="btn">Delete</button>
         </div>
-
-        <!-- <div>Created by: {{annotation.creatorName}}</div>  -->
-        <!-- <div>On: {{annotation.created | date : 'MMM d, y H:mm a'}}</div> -->
     </div>
 </div>
