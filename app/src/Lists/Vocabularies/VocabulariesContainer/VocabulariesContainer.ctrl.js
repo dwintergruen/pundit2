@@ -26,7 +26,7 @@ angular.module('Pundit2.Vocabularies')
     // es: FreebaseSelector, MurucaSelector, KorboBasketSelector
     SelectorsManager.init();
 
-    $scope.dropdownTemplate = "src/Toolbar/dropdown.tmpl.html";
+    $scope.dropdownTemplate = "src/ContextualMenu/dropdown.tmpl.html";
 
     $scope.message = {
         flag: true,

@@ -83,7 +83,7 @@ var ContextualMenuDemoCtrl = function($scope, $rootScope, $window, $dropdown, $t
                 options.scope.content = submenuContent;
                 // remove submenu inside submenu
                 options.placement = ContextualMenu.getSubMenuPlacement();
-                options.template = 'src/Toolbar/dropdown.tmpl.html';
+                options.template = 'src/ContextualMenu/dropdown.tmpl.html';
                 // build menu
                 submenu = $dropdown(angular.element('.dropdown-submenu'), options);
                 submenu.$promise.then(function(){

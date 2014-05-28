@@ -1,7 +1,7 @@
 angular.module('Pundit2.PageItemsContainer')
 .controller('PageItemsContainerCtrl', function($scope, PageItemsContainer, ItemsExchange, Preview, TypesHelper) {
 
-    $scope.dropdownTemplate = "src/Toolbar/dropdown.tmpl.html";
+    $scope.dropdownTemplate = "src/ContextualMenu/dropdown.tmpl.html";
 
     // read by <item> directive (in PageItemsContainer/items.tmpl.html)
     // will trigger this contextual menu type clicking on the contextual item icon

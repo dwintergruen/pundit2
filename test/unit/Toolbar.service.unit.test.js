@@ -13,8 +13,7 @@ describe('Toolbar service', function() {
     beforeEach(module('Pundit2'));
 
     beforeEach(module(
-        'src/Toolbar/Toolbar.dir.tmpl.html',
-        'src/Toolbar/dropdown.tmpl.html'
+        'src/Toolbar/Toolbar.dir.tmpl.html'
     ));
 
     beforeEach(inject(function($injector, _$rootScope_, _$compile_){

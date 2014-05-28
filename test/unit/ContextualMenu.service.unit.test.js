@@ -9,7 +9,7 @@ describe('ContextualMenu service', function() {
 
     beforeEach(module('Pundit2'));
 
-    beforeEach(module('src/Toolbar/dropdown.tmpl.html'));
+    beforeEach(module('src/ContextualMenu/dropdown.tmpl.html'));
 
     beforeEach(function(){
         // used by service to append dropdown anchor

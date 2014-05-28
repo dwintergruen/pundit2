@@ -6,7 +6,7 @@ angular.module('Pundit2.MyItemsContainer')
     $scope.itemMenuType = MyItemsContainer.options.cMenuType;
 
     // This is the centralized template to dropdown
-    $scope.dropdownTemplate = "src/Toolbar/dropdown.tmpl.html";
+    $scope.dropdownTemplate = "src/ContextualMenu/dropdown.tmpl.html";
 
     // showed when the items list is empty
     $scope.message = {

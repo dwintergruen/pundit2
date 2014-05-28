@@ -1,7 +1,0 @@
-<ul class="dropdown-menu pnd-ignore" role="menu">
-    <li role="presentation" ng-class="{divider: item.divider, 'disabled': item.disable, 'dropdown-header': item.header}" ng-repeat="item in content">
-        <span ng-if="item.header" ng-bind="item.text"></span>
-        <a role="menuitem" tabindex="-1" ng-href="{{item.href}}" ng-if="!item.divider && item.href" ng-bind="item.text"></a>
-        <a role="menuitem" tabindex="-1" href="javascript:void(0)" ng-if="!item.divider && item.click" ng-click="$eval(item.click);$hide()" ng-bind="item.text"></a>
-    </li>
-</ul>
