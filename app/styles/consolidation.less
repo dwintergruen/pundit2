@@ -1,18 +1,14 @@
 .pnd-cons {
-	background-color: @text-fragment-color !important;
-	padding-left: 0.3em;
-	padding-right: 0.3em;
-	padding: 0.2em;
+	background-color: @text-fragment-color;
+	padding: 0.2em 0.3em;
 	color: darken(@brand-warning, 25%); 
 	line-height: 1.8em;	
-	}
-
-a .pnd-cons {
-	color: darken(@brand-warning, 60%); 
-	text-decoration: none;
-	cursor: pointer;
-	}
 	
+	&.pnd-textfragment-highlight {
+		background-color: lighten(@brand-warning, 10%);
+		color: darken(@brand-warning, 35%);
+		}
+	}
 	
 .pnd-text-fragment-icon {
 	font-size: 12px;
@@ -20,26 +16,40 @@ a .pnd-cons {
 	cursor: context-menu;
 	color: @brand-warning;
 	vertical-align: baseline;
-	text-decoration: none !important;
+	text-decoration: none;
 		
 	&:hover {
 		color: darken(@brand-warning, 12%);
-		text-decoration: none !important;
-		}		
+		text-decoration: none;
+		}
 	
+	&.pnd-icon-bookmark {
+		color: @brand-success;
+		
+		&:hover {
+			color: darken(@brand-success, 12%);
+			text-decoration: none;
+			}
+		
+		}			
 }
 
-
 a {
+
+	& .pnd-cons {
+		color: darken(@brand-warning, 60%);
+		text-decoration: none;
+		cursor: pointer;
+		}
+	
 	.pnd-text-fragment-icon {
 		text-decoration: none;
 		color: @brand-warning; 
 			
 		&:hover {
-			text-decoration: none !important;
+			text-decoration: none;
 			}
-		}
-		
+		}		
 }
 		
 sup {
@@ -49,5 +59,4 @@ sup {
 		position: absolute;
 		top: 0.3em;
 		}
-
 }

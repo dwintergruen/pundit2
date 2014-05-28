@@ -11,8 +11,8 @@ angular.module('Pundit2.Annotators')
 
     // Class to get the consolidated icon: normal consolidated fragment
     annotationIconClass: "pnd-icon-tag",
-    myItemsIconClass: "pnd-icon-certificate",
-    suggestionIconClass: "pnd-icon-edit"
+    myItemsIconClass: "pnd-icon-bookmark",
+    suggestionIconClass: "pnd-icon-pencil"
 
 })
 

@@ -5,22 +5,27 @@
     &:not(.ann-hidden) {
         cursor: pointer;
         &:hover {
-            border-bottom: 1px solid red;
+            
         }
         &.ann-waiting {
-            background-color: #fc0;
+            background-color: @brand-info;
+            color: #fff;
         }
         &.ann-active {
-            background-color: #4bd;
+            background-color: @brand-warning;
+            color: #fff;
         }
         &.ann-ok {
-            background-color: #3f3;
+            background-color: @brand-success;
+            color: #fff;
         }
         &.ann-removed {
-            background-color: inherit;
-            border: 1px dashed red;
+            background-color: @brand-danger;
+            color: #fff;
+            padding: 0.2em 0.3em;
         }
     }
+
 }
 .pnd-annomatic-popover {
     img {
@@ -39,5 +44,20 @@ annomatic-panel.fixed > header {
 }
 
 .selecting-ancestor {
-    outline: 4px solid rgba(0, 255, 0, 0.5);
+    outline: 3px solid lighten(@brand-warning, 12%);
+}
+
+
+.pnd-icon-tag {
+	font-size: 12px;
+	margin-left: 0.5em;
+	cursor: context-menu;
+	color: @brand-warning;
+	vertical-align: baseline;
+	text-decoration: none;
+
+		&:hover {
+			color: darken(@brand-warning, 12%);
+			text-decoration: none;
+			}	
 }
