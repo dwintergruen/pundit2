@@ -82,9 +82,26 @@ angular.module('Pundit2.Annomatic')
                     .replace(/(?:(?:^|\n)\s+|\s+(?:$|\n))/g, '')
                     .replace(/\s+/g, ' ');
 
-                // Super empty text node, just skip it
+                var trimmedContent = trim(currentNode.textContent);
+
+                // Empty text nodes: they just contain spaces and/or \r\n
                 if (trimmedContent.length === 0) {
-                    annomatic.log('Skipping empty text node.');
+
+                    // All of the first multiple spaces will get fully trimmed, ignore them
+                    if (currentOffset === 0) {
+                        annomatic.log('Skipping FIRST empty text node.');
+                    } else {
+                        // If it's not the first text node, trim() will just collapse double spaces
+                        // and \n into a single space. In that case we need to correct the
+                        // currentOffset by 1
+                        if (trimDoubleSpaces(currentNode.textContent).length === 1) {
+                            annomatic.log('Skipping intermediate empty text node, correcting offset by 1');
+                            currentOffset += 1;
+                        } else {
+                            annomatic.log('OUCH! trimDoubleSpaces fail?!!? --'+trimDoubleSpaces(currentNode.textContent)+'--');
+                        }
+                    }
+
                 } else {
 
                     // Cycle over annotations, until the current annotation .end
@@ -106,6 +123,8 @@ angular.module('Pundit2.Annomatic')
 
                         // There might be no spaces at all .. check it out!
                         spacesLen.push(0);
+                        spacesLen.push(1);
+                        spacesLen.push(2);
 
                         // For each number of spaces found, try to match the content
                         for (var l = spacesLen.length; l--;) {
@@ -160,10 +179,9 @@ angular.module('Pundit2.Annomatic')
 
                     } // while currentAnnotation.end .. annotation should be in this text node
 
-                    // Let's move on to the next node, update current offset +1, since DataTXT
-                    // inserts a \n at the end of tags.. just because why not ..... :|
-                    // TODO: might not be because of DataTXT but because there was a \n after the nodes .. ??
-                    currentOffset += trimmedContent.length + 1;
+                    // Let's move on to the next node, update current offset with the length of
+                    // the node we just finished with
+                    currentOffset += trimmedContent.length;
                     annomatic.log('Moving to next node with current offset = '+ currentOffset);
 
                 } // if trimmedContentLength
@@ -174,6 +192,20 @@ angular.module('Pundit2.Annomatic')
         annomatic.log('Dance finished, found '+foundAnnotations.length+' annotations: ', foundAnnotations);
         return foundAnnotations;
     }; // findAnnotations()
+
+    // Trims initial spaces, ending spaces, double spaces
+    var trim = function(string) {
+        return string
+            .replace(/[\r\n]/g, " ")
+            .replace(/(?:(?:^|\n)\s+|\s+(?:$|\n))/g, '')
+            .replace(/\s+/g, ' ');
+    };
+
+    var trimDoubleSpaces = function(string) {
+        return string
+            .replace(/[\r\n]/g, " ")
+            .replace(/\s+/g, ' ');
+    };
 
     // Returns an array of every multiple space found in the string, like ["  ", "    "]
     var multipleSpacesInContent = function(string) {
@@ -336,10 +368,7 @@ angular.module('Pundit2.Annomatic')
 
         // If we're not passing the HTML but just the text, we strip out extra spaces at beginning
         // and end, and multiple spaces in the middle of the text
-        content = content
-            .replace(/[\r\n]/g, " ")
-            .replace(/(?:(?:^|\n)\s+|\s+(?:$|\n))/g, '')
-            .replace(/\s+/g, ' ');
+        content = trim(content);
 
         annomatic.log('Querying DataTXT for annotations on content: ', content);
 
