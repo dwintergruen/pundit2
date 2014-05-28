@@ -1,11 +1,53 @@
-.pnd-text-fragment-icon {
-	font-size: 12px;
-	margin-left: 5px;
+.pnd-cons {
+	background-color: @text-fragment-color !important;
+	padding-left: 0.3em;
+	padding-right: 0.3em;
+	padding: 0.2em;
+	color: darken(@brand-warning, 25%); 
+	line-height: 1.8em;	
+	}
+
+a .pnd-cons {
+	color: darken(@brand-warning, 60%); 
+	text-decoration: none;
 	cursor: pointer;
-	color: @gray;
-	
-	&:hover {
-		color: @brand-success;
 	}
 	
+	
+.pnd-text-fragment-icon {
+	font-size: 12px;
+	margin-left: 0.5em;
+	cursor: context-menu;
+	color: @brand-warning;
+	vertical-align: baseline;
+	text-decoration: none !important;
+		
+	&:hover {
+		color: darken(@brand-warning, 12%);
+		text-decoration: none !important;
+		}		
+	
+}
+
+
+a {
+	.pnd-text-fragment-icon {
+		text-decoration: none;
+		color: @brand-warning; 
+			
+		&:hover {
+			text-decoration: none !important;
+			}
+		}
+		
+}
+		
+sup {
+
+	.pnd-text-fragment-icon {
+		font-size: 12px;
+		position: absolute;
+		top: 0.3em;
+		}
+
 }
