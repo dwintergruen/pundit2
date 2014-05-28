@@ -20,33 +20,38 @@ angular.module('Pundit2.TripleComposer')
     $scope.objectIcon = 'pnd-icon-search'; //'pnd-icon-times'
     $scope.objectLiteral = false;
 
+    // reference to the items used inside this statement
     var triple = {
         subject: null,
         predicate: null,
         object: null
     };
 
-    // remove directive
+    // remove statement directive
     $scope.remove = function() {
         $scope.tripleComposerCtrl.removeStatement($scope.id);
     };
 
-    // make a copy of this statement
-    // TODO if it's empty ???
+    // make a copy of this statement (TODO if it's empty ???)
+    // and add it to the statements array inside triple composer
     $scope.duplicate = function(){
         $scope.tripleComposerCtrl.duplicateStatement($scope.id);
     };
 
+    // copy the actual triple (invoked inside link function)
     $scope.copy = function(){
         return angular.copy(triple);
     };
 
+    // read the duplicated property inside scope (this property is owned by the statement tha born by duplication)
+    // then add the label value to the relative scope properties
+    // this function should be invoked only one time (in the link function)
+    // when you duplicate a statement, elsewhere probably is an error
     $scope.init = function(){
-        console.log('This messagge should appear only one time when you duplicate a statement, otherwise probably is an error');
+        
         triple = $scope.duplicated;
         delete $scope.duplicated;
 
-        console.log(triple)
         if (triple.subject !== null) {
             $scope.subjectLabel = triple.subject.label;
             $scope.subjectTypeLabel = TypesHelper.getLabel(triple.subject.type[0]);
@@ -64,7 +69,7 @@ angular.module('Pundit2.TripleComposer')
         
     };
 
-    // reset state to default
+    // reset scope to default
     $scope.wipe = function(){ 
         $scope.wipeSubject();
         $scope.wipePredicate(); 
@@ -77,6 +82,7 @@ angular.module('Pundit2.TripleComposer')
         $scope.subjectFound = false;
         $scope.subjectSearch = "search subject";
         $scope.subjectIcon = 'pnd-icon-search';
+        triple.subject = null;
     };
 
     $scope.wipePredicate = function(){
@@ -84,6 +90,7 @@ angular.module('Pundit2.TripleComposer')
         $scope.predicateFound = false;
         $scope.predicateSearch = "search predicate";
         $scope.predicateIcon = 'pnd-icon-search';
+        triple.predicate = null;
     };
 
     $scope.wipeObject = function(){
@@ -92,7 +99,8 @@ angular.module('Pundit2.TripleComposer')
         $scope.objectFound = false;
         $scope.objectSearch = "search object";
         $scope.objectIcon = 'pnd-icon-search';
-        $scope.objectLiteral = false; 
+        $scope.objectLiteral = false;
+        triple.object = null; 
     };
 
 
