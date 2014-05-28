@@ -1,5 +1,5 @@
 angular.module('Pundit2.TripleComposer')
-.controller('StatementCtrl', function($scope, $element, TypesHelper, ResourcePanel) {
+.controller('StatementCtrl', function($scope, $element, TypesHelper, ResourcePanel, NameSpace) {
 
     // default values
     $scope.subjectLabel = '';
@@ -18,6 +18,7 @@ angular.module('Pundit2.TripleComposer')
     $scope.objectFound = false;
     $scope.objectSearch = "search object";
     $scope.objectIcon = 'pnd-icon-search'; //'pnd-icon-times'
+    $scope.objectLiteral = false;
 
     // remove directive
     $scope.remove = function() {
@@ -25,23 +26,34 @@ angular.module('Pundit2.TripleComposer')
     };
 
     // reset state to default
-    $scope.wipe = function(){
+    $scope.wipe = function(){ 
+        $scope.wipeSubject();
+        $scope.wipePredicate(); 
+        $scope.wipeObject();
+    };
+
+    $scope.wipeSubject = function(){
         $scope.subjectLabel = '';
         $scope.subjectTypeLabel = '';
         $scope.subjectFound = false;
         $scope.subjectSearch = "search subject";
-        $scope.subjectIcon = 'pnd-icon-search'; 
+        $scope.subjectIcon = 'pnd-icon-search';
+    };
 
+    $scope.wipePredicate = function(){
         $scope.predicateLabel = '';
         $scope.predicateFound = false;
         $scope.predicateSearch = "search predicate";
-        $scope.predicateIcon = 'pnd-icon-search'; 
+        $scope.predicateIcon = 'pnd-icon-search';
+    };
 
+    $scope.wipeObject = function(){
         $scope.objectLabel = '';
         $scope.objectTypeLabel = '';
         $scope.objectFound = false;
         $scope.objectSearch = "search object";
-        $scope.objectIcon = 'pnd-icon-search'; 
+        $scope.objectIcon = 'pnd-icon-search';
+        $scope.objectLiteral = false; 
     };
 
 
@@ -78,8 +90,8 @@ angular.module('Pundit2.TripleComposer')
         ResourcePanel.showPopoverLiteral($event.pageX, $event.pageY, '', $event.target).then(function(text){
             $scope.objectFound = true;
             $scope.objectLabel = text;
-            // TODO find type with typesHelper
-            $scope.objectTypeLabel = 'literal';
+            $scope.objectTypeLabel = TypesHelper.getLabel(NameSpace.rdfs.literal);
+            $scope.objectLiteral = true;
         });
     };
 
