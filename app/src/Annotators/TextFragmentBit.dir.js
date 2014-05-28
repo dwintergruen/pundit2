@@ -12,13 +12,10 @@ angular.module('Pundit2.Annotators')
 
             scope.isHigh = false;
             scope.high = function() {
-                scope.isHigh = true;
-                // TODO: use a class instead
-                element.css('background', '#ff931e');
+                element.addClass('pnd-textfragment-highlight');
             };
             scope.reset = function() {
-                scope.isHigh = false;
-                element.css('background', '');
+                element.removeClass('pnd-textfragment-highlight');
             };
 
         }
