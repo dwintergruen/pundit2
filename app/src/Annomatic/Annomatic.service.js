@@ -77,11 +77,6 @@ angular.module('Pundit2.Annomatic')
                 // Trimmed content: DataTXT strips multiple spaces (more than allowed in HTML)
                 // to return a nice looking text only string. We strip the content of the
                 // current text node, hopefully to get the very same result as DataTXT
-                var trimmedContent = currentNode.textContent
-                    .replace(/[\r\n]/g, " ")
-                    .replace(/(?:(?:^|\n)\s+|\s+(?:$|\n))/g, '')
-                    .replace(/\s+/g, ' ');
-
                 var trimmedContent = trim(currentNode.textContent);
 
                 // Empty text nodes: they just contain spaces and/or \r\n
@@ -123,8 +118,6 @@ angular.module('Pundit2.Annomatic')
 
                         // There might be no spaces at all .. check it out!
                         spacesLen.push(0);
-                        spacesLen.push(1);
-                        spacesLen.push(2);
 
                         // For each number of spaces found, try to match the content
                         for (var l = spacesLen.length; l--;) {
@@ -179,9 +172,19 @@ angular.module('Pundit2.Annomatic')
 
                     } // while currentAnnotation.end .. annotation should be in this text node
 
+
                     // Let's move on to the next node, update current offset with the length of
-                    // the node we just finished with
-                    currentOffset += trimmedContent.length;
+                    // the node we just finished with.
+                    // If the current offset is still 0, we need to pay attention to any leading
+                    // spaces and trim them off. They got trimmed by trim(), not by
+                    // trimDoubleSpaces()
+                    var doubleSpaceTrimmed = trimDoubleSpaces(currentNode.textContent);
+                    if (currentOffset === 0 && doubleSpaceTrimmed.match(/^\s\s*/)) {
+                            currentOffset += doubleSpaceTrimmed.length - 1;
+                    } else {
+                        currentOffset += doubleSpaceTrimmed.length;
+                    }
+
                     annomatic.log('Moving to next node with current offset = '+ currentOffset);
 
                 } // if trimmedContentLength
