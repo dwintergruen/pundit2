@@ -35,4 +35,9 @@ angular.module('Pundit2.TripleComposer')
         $scope.statements.push({id: nextId});
     };
 
+    $scope.saveAnnotation = function(){
+
+    };
+
+
 });

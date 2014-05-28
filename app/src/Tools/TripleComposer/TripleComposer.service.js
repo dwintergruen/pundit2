@@ -1,7 +1,17 @@
 angular.module('Pundit2.TripleComposer')
-.service('TripleComposer', function(BaseComponent) {
+.constant('TRIPLECOMPOSERDEFAULTS', {
 
-    var tripleComposer = new BaseComponent('TripleComposer');
+    // The Client will append the content of this template to the DOM to bootstrap
+    // this component
+    clientDashboardTemplate: "src/Tools/TripleComposer/ClientTripleComposer.tmpl.html",
+    clientDashboardPanel: "tools",
+    clientDashboardTabTitle: "Statements Composer",
+
+    debug: false
+})
+.service('TripleComposer', function(BaseComponent, TRIPLECOMPOSERDEFAULTS) {
+
+    var tripleComposer = new BaseComponent('TripleComposer', TRIPLECOMPOSERDEFAULTS);
 
     tripleComposer.removeStatement = function(id, arr){
         // at least one statetement must be present

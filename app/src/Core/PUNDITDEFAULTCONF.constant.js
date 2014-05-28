@@ -74,6 +74,9 @@ angular.module('Pundit2.Core')
             SelectorsManager: {
                 active: true
             },
+            TripleComposer: {
+                active: true
+            },
 
             selectors: {
                 'Freebase': {
