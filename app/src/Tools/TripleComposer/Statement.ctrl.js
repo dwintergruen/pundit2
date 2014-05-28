@@ -1,6 +1,7 @@
 angular.module('Pundit2.TripleComposer')
 .controller('StatementCtrl', function($scope, $element, TypesHelper, ResourcePanel) {
 
+    // default values
     $scope.subjectLabel = '';
     $scope.subjectTypeLabel = '';
     $scope.subjectFound = false;
@@ -18,14 +19,13 @@ angular.module('Pundit2.TripleComposer')
     $scope.objectSearch = "search object";
     $scope.objectIcon = 'pnd-icon-search'; //'pnd-icon-times'
 
-    $scope.wipeStatement = function(){
+    // remove directive
+    $scope.remove = function() {
+        $scope.tripleComposerCtrl.removeStatement($scope.id);
+    };
 
-        if ($scope.statements.length > 1) {
-            angular.element($element[0]).remove();
-            // TODO destroy scope
-            // TODO remove element from parent scope
-        }        
-
+    // reset state to default
+    $scope.wipe = function(){
         $scope.subjectLabel = '';
         $scope.subjectTypeLabel = '';
         $scope.subjectFound = false;
@@ -43,6 +43,7 @@ angular.module('Pundit2.TripleComposer')
         $scope.objectSearch = "search object";
         $scope.objectIcon = 'pnd-icon-search'; 
     };
+
 
     $scope.onClickSubject = function($event){
         ResourcePanel.showItemsForSubject($event.pageX, $event.pageY, [], $event.target).then(function(item){
@@ -77,6 +78,7 @@ angular.module('Pundit2.TripleComposer')
         ResourcePanel.showPopoverLiteral($event.pageX, $event.pageY, '', $event.target).then(function(text){
             $scope.objectFound = true;
             $scope.objectLabel = text;
+            // TODO find type with typesHelper
             $scope.objectTypeLabel = 'literal';
         });
     };

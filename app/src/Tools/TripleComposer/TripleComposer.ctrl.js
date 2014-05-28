@@ -1,14 +1,30 @@
 angular.module('Pundit2.TripleComposer')
-.controller('TripleComposerCtrl', function($scope) {
+.controller('TripleComposerCtrl', function($scope, TripleComposer) {
 
-    $scope.statements = [{}];
+    // statements objects are extend by this.addStatementScope()
+    // the function is called in the statement directive link function
+    var nextId = 1;
+    $scope.statements = [{
+        id: nextId
+    }];
 
-    this.getStatement = function(){
-        return $scope.statements;
+    this.removeStatement = function(id){
+        var index = -1;
+        id = parseInt(id, 10);
+
+        TripleComposer.removeStatement(id, $scope.statements);     
+    };
+
+    this.addStatementScope = function(id, scope) {
+        var index = -1;
+        id = parseInt(id, 10);
+        
+        TripleComposer.addStatementScope(id, scope, $scope.statements);
     };
 
     $scope.onClickAddStatement = function(){
-        $scope.statements.push({});
+        nextId = nextId + 1;
+        $scope.statements.push({id: nextId});
     };
 
 });
