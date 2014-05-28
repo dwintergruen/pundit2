@@ -1,5 +1,6 @@
 <div class="popover">
     <div class="arrow"></div>
+
     <h3 class="popover-title">Choose your...</h3>
     <div class="popover-content">
 	    <div ng-show = "myItems.length>0"> My items ({{myItems.length}})
@@ -17,10 +18,12 @@
 	            <li ng-repeat="pr in properties" ng-click="save(pr)">{{pr.label}}</li>
 	        </ul>
 	    </div>
-	    <div ng-show = "properties.length == 0 && myItems.length == 0">
+	    <div ng-show = "properties.length == 0 || (pageItems.length == 0 && myItems.length == 0)">
 	        <ul>
 	            <li>No match found</li>
 	        </ul>
 	    </div>
+
     </div>
+
 </div>

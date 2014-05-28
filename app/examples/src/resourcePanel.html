@@ -112,7 +112,7 @@
 
         $scope.triple = ["", "", ""];
 
-        $scope.$watch('predicate', function(pr){
+        $scope.$watch('predicateUri', function(pr){
             $scope.triple[1] = pr;
         });
 
@@ -149,46 +149,105 @@
 
 
         $scope.testLiteral = function(elementID, $event) {
-            ResourcePanel.showPopoverLiteral($event.pageX, $event.pageY, "Default content", $event.target).then(function(value){
+            ResourcePanel.showPopoverLiteral("Default content", $event.target).then(function(value){
                 angular.element('#'+elementID).text(value);
             });
         };
 
         $scope.testCalendar = function(elementID, $event){
-            ResourcePanel.showPopoverCalendar($event.pageX, $event.pageY, "Default content", $event.target).then(function(value){
+            ResourcePanel.showPopoverCalendar("Default content", $event.target).then(function(value){
                 angular.element('#'+elementID).text(value);
             });
         };
 
-        $scope.testEntity = function(elementID, $event){
-            ResourcePanel.showItemsForSubject($event.pageX, $event.pageY, $scope.triple, $event.target).then(function(value){
+        $scope.testSubject = function(elementID, $event){
+
+            ResourcePanel.showItemsForSubject($scope.triple, $event.target, $scope.subject).then(function(value){
                 angular.element('#'+elementID).text(value.label);
-                $scope.subject = value;
+                $scope.subject = value.label;
                 $scope.subjectUri = value.uri;
+                $scope.subjectType = value.type;
             });
         };
 
         $scope.testProperties = function(elementID, $event){
-            ResourcePanel.showProperties($event.pageX, $event.pageY, $scope.triple, $event.target).then(function(value){
+            ResourcePanel.showProperties($scope.triple, $event.target, $scope.predicate).then(function(value){
                 angular.element('#'+elementID).text(value.label);
-                $scope.predicate = value.uri;
+                $scope.predicate = value.label;
+                $scope.predicateUri = value.uri;
                 $scope.predicateDomain = value.domain;
                 $scope.predicateRange = value.range;
             });
         };
 
         $scope.testObject = function(elementID, $event){
-            ResourcePanel.showItemsForObject($event.pageX, $event.pageY, $scope.triple, $event.target).then(function(value){
+            console.log($scope.object);
+            ResourcePanel.showItemsForObject($scope.triple, $event.target, $scope.object).then(function(value){
                 if(typeof(value.label) === 'undefined'){
                     angular.element('#'+elementID).text(value);
+                    $scope.object = value;
                 } else {
                     angular.element('#'+elementID).text(value.label);
+                    $scope.object = value.label;
                 }
 
-                $scope.object = value;
                 $scope.objectUri = value.uri;
+                $scope.objectType = value.type;
             });
         };
+
+        $scope.setLabelToSearchSubject = function($event, elementID){
+            ResourcePanel.showItemsForSubject($scope.triple, $event.target, $scope.subject).then(function(value){
+                angular.element('#'+elementID).text(value.label);
+                $scope.subject = value.label;
+                $scope.subjectUri = value.uri;
+                $scope.subjectType = value.type;
+            });
+
+        };
+
+        $scope.setLabelToSearchObject = function($event, elementID){
+            ResourcePanel.showItemsForObject($scope.triple, $event.target, $scope.object).then(function(value){
+                if(typeof(value.label) === 'undefined'){
+                    angular.element('#'+elementID).text(value);
+                    $scope.object = value;
+                } else {
+                    angular.element('#'+elementID).text(value.label);
+                    $scope.object = value.label;
+                }
+
+                $scope.objectUri = value.uri;
+                $scope.objectType = value.type;
+            });
+
+        };
+
+        $scope.setLabelToSearchPredicate = function($event, elementID){
+            ResourcePanel.showProperties($scope.triple, $event.target, $scope.predicate).then(function(value){
+                angular.element('#'+elementID).text(value.label);
+                $scope.predicate = value.label;
+                $scope.predicateUri = value.uri;
+                $scope.predicateDomain = value.domain;
+                $scope.predicateRange = value.range;
+            });
+
+        };
+
+        $scope.clearAll = function() {
+            $scope.subject = "";
+            $scope.object = "";
+            $scope.predicate = "";
+            $scope.objectUri = "";
+            $scope.objectType = "";
+            $scope.subjectUri = "";
+            $scope.subjectType = "";
+            $scope.predicateUri = "";
+            $scope.predicateDomain = "";
+            $scope.predicateRange = "";
+            angular.element('#test5').text("");
+            angular.element('#test6').text("");
+            angular.element('#test7').text("");
+        }
 
     };
 </script>
@@ -201,36 +260,24 @@
             <div>
                 <ul>
                     <li style="display:inline-block;">
-                        <button class="btn btn-warning" ng-click="testLiteral('test1', $event)">Open literal</button>
+                        <input type="text" placeholder="subject..." ng-model="subject" ng-keyup="setLabelToSearchSubject($event, 'test5')" ng-click="testSubject('test5', $event)">
                     </li>
                     <li style="display:inline-block;">
-                        <button class="btn btn-warning" ng-click="testLiteral('test2', $event)">Open literal2</button>
-
+                        <input type="text" placeholder="predicate..." ng-model="predicate" ng-keyup="setLabelToSearchPredicate($event, 'test6')" ng-click="testProperties('test6', $event)">
                     </li>
                     <li style="display:inline-block;">
-                        <button class="btn btn-warning" ng-click="testCalendar('test3', $event)">Open Calendar</button>
-
+                        <input type="text" placeholder="object..." ng-model="object" ng-keyup="setLabelToSearchObject($event, 'test7')" ng-click="testObject('test7', $event)">
                     </li>
                     <li style="display:inline-block;">
-                        <button class="btn btn-warning" ng-click="testEntity('test5', $event)">Show Subjects</button>
-
-                    </li>
-                    <li style="display:inline-block;">
-                        <button class="btn btn-warning" ng-click="testProperties('test6', $event)">Show Properties</button>
-                    </li>
-                    <li style="display:inline-block;">
-                        <button class="btn btn-warning" ng-click="testObject('test7', $event)">Show Object</button>
+                        <button class="btn btn-xs btn-warning" ng-click="clearAll()">Clear</button>
                     </li>
 
                 </ul>
             </div>
             <pre class="col-lg-6">
-            <div>Literal 1: <span id="test1"></span></div>
-            <div>Literal 2: <span id="test2"></span></div>
-            <div>Date selected: <span id="test3"></span></div>
             <div>Subject selected: <span id="test5"></span>
                 <ul>
-                    <li ng-repeat="type in subject.type">{{type}}</li>
+                    <li ng-repeat="type in subjectType">{{type}}</li>
                 </ul>
             </div>
             <div>Propertie selected: <span id="test6"></span>
@@ -245,7 +292,7 @@
             </div>
             <div>Object selected: <span id="test7"></span>
                 <ul>
-                    <li ng-repeat="type in object.type">{{type}}</li>
+                    <li ng-repeat="type in objectType">{{type}}</li>
                 </ul>
             </div>
             </pre>

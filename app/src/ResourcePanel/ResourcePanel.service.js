@@ -2,7 +2,8 @@ angular.module('Pundit2.ResourcePanel')
 .constant('RESOURCEPANELDEFAULTS', {
 
 })
-.service('ResourcePanel', function(BaseComponent, RESOURCEPANELDEFAULTS, $rootScope, $popover, $q, ItemsExchange, MyItems, PageItemsContainer, Client, NameSpace) {
+
+.service('ResourcePanel', function(BaseComponent, RESOURCEPANELDEFAULTS, $rootScope, $popover, $q, ItemsExchange, MyItems, PageItemsContainer, Client, NameSpace, $filter) {
 
     var resourcePanel = new BaseComponent('ResourcePanel', RESOURCEPANELDEFAULTS);
 
@@ -44,8 +45,10 @@ angular.module('Pundit2.ResourcePanel')
     state.popoverOptions = {scope: $rootScope.$new()};
 
     // initialize a popover
-    var initPopover = function(x, y, content, target, placement, type){
+    var initPopover = function(content, target, placement, type){
         var popoverAnchor;
+        var x = (angular.element(target))[0].getBoundingClientRect().left + (parseInt(angular.element(target).css('width'), 10)/2);
+        var y = (angular.element(target))[0].getBoundingClientRect().top + parseInt(angular.element(target).css('height'), 10);
 
         // initialize a calendar popover
         if(type === 'calendar') {
@@ -112,11 +115,17 @@ angular.module('Pundit2.ResourcePanel')
                 left: x,
                 top: y
             });
-
             popoverAnchor = state.resourcePanelAnchor;
+            state.popoverOptions.scope.originalContent = angular.copy(content);
+            state.popoverOptions.scope.type = content.type;
             state.popoverOptions.scope.pageItems = content.pageItems;
             state.popoverOptions.scope.myItems = content.myItems;
             state.popoverOptions.scope.properties = content.properties;
+            if(content.label !== '' && typeof(content.label) !== 'undefined'){
+                setLabelToSearch(content.label);
+            } else {
+                state.popoverOptions.scope.label = content.label;
+            }
 
             // handle save a new popoverLiteral
             state.popoverOptions.scope.save = function(elem) {
@@ -142,12 +151,25 @@ angular.module('Pundit2.ResourcePanel')
         return state.popover;
     };
 
+    var setLabelToSearch = function(val) {
+        state.popoverOptions.scope.label = val;
+        if(state.popoverOptions.scope.type === 'obj' || state.popoverOptions.scope.type === 'sub') {
+            state.popoverOptions.scope.myItems = $filter('filterByLabel')(state.popoverOptions.scope.originalContent.myItems, val);
+            state.popoverOptions.scope.pageItems = $filter('filterByLabel')(state.popoverOptions.scope.originalContent.pageItems, val);
+        }
+        if(state.popoverOptions.scope.type === 'pr') {
+            state.popoverOptions.scope.properties = $filter('filterByLabel')(state.popoverOptions.scope.originalContent.properties, val);
+        }
+
+
+    };
+
 
     // show popover literal
     // x,y --> coordinate where popover will be shown
     // text --> text to show in textarea
     // target -->  targer element clicked
-    resourcePanel.showPopoverLiteral = function(x, y, text, target){
+    resourcePanel.showPopoverLiteral = function(text, target){
         var content = {};
         content.literalText = text;
         // if click the same popover, hide it
@@ -158,13 +180,13 @@ angular.module('Pundit2.ResourcePanel')
         // if click a different popover, hide the shown popover and show the clicked one
         else if (state.popover !== null && state.popover.clickTarget !== target) {
             resourcePanel.hide();
-            state.popover = initPopover(x, y, content, target, "", 'literal');
+            state.popover = initPopover(content, target, "", 'literal');
             state.popover.$promise.then(state.popover.show);
         }
 
         // if no popover is shown, just show it
         else if (state.popover === null) {
-            state.popover = initPopover(x, y, content, target, "", 'literal');
+            state.popover = initPopover(content, target, "", 'literal');
             state.popover.$promise.then(state.popover.show);
          }
 
@@ -176,12 +198,12 @@ angular.module('Pundit2.ResourcePanel')
     // x,y --> coordinate where popover will be shown
     // date --> date to show in calendar
     // target -->  targer element clicked
-    resourcePanel.showPopoverCalendar = function(x, y, date, target){
+    resourcePanel.showPopoverCalendar = function(date, target){
         var content = {};
         content.date = date;
         // if no popover is shown, just show it
         if (state.popover === null) {
-            state.popover = initPopover(x, y, content, target, "", 'calendar');
+            state.popover = initPopover(content, target, "", 'calendar');
             state.popover.$promise.then(state.popover.show);
         }
 
@@ -193,7 +215,7 @@ angular.module('Pundit2.ResourcePanel')
         // if click a different popover, hide the shown popover and show the clicked one
         else if (state.popover !== null && state.popover.clickTarget !== target) {
             resourcePanel.hide();
-            state.popover = initPopover(x, y, "", target, "", 'calendar');
+            state.popover = initPopover( "", target, "", 'calendar');
             state.popover.$promise.then(state.popover.show);
         }
 
@@ -202,31 +224,35 @@ angular.module('Pundit2.ResourcePanel')
     };
 
     // show popover resource panel
-    // x,y --> coordinate where popover will be shown
     // date --> date to show in calendar
     // pageItems -->  page items to show
     // myItems -->  my items to show
     // properties -->  properties to show
-    var showPopoverResourcePanel = function(x, y, target, pageItems, myItems, properties){
+    var showPopoverResourcePanel = function(target, pageItems, myItems, properties, label, type){
         var content = {};
-        content.pageItems = pageItems;
-        content.myItems = myItems;
-        content.properties = properties;
-        // if no popover is shown, just show it
-        if (state.popover === null) {
-            state.popover = initPopover(x, y, content, target, "", 'resourcePanel');
-            state.popover.$promise.then(state.popover.show);
+        content.type = type;
+        if(type === 'sub' || type === 'obj'){
+            content.pageItems = pageItems;
+            content.myItems = myItems;
+            content.properties = null;
+        }
+        if (type === 'pr') {
+            content.properties = properties;
+            content.pageItems = null;
+            content.myItems = null;
         }
 
-        // if click the same popover, toggle it
-        else if (state.popover !== null && state.popover.clickTarget === target) {
-            resourcePanel.hide();
+        content.label = label;
+        // if no popover is shown, just show it
+        if (state.popover === null) {
+            state.popover = initPopover(content, target, "", 'resourcePanel');
+            state.popover.$promise.then(state.popover.show);
         }
 
         // if click a different popover, hide the shown popover and show the clicked one
         else if (state.popover !== null && state.popover.clickTarget !== target) {
             resourcePanel.hide();
-            state.popover = initPopover(x, y, content, target, "", 'resourcePanel');
+            state.popover = initPopover(content, target, "", 'resourcePanel');
             state.popover.$promise.then(state.popover.show);
         }
 
@@ -234,59 +260,64 @@ angular.module('Pundit2.ResourcePanel')
 
     // triple is an array of URI [subject, predicate, object]
     // show all items compatibile as subject
-    resourcePanel.showItemsForSubject = function(x, y, triple, target) {
+    resourcePanel.showItemsForSubject = function(triple, target, label) {
 
-        var myItemsContainer = MyItems.options.container;
-        var pageItemsContainer = PageItemsContainer.options.container;
-        var myItems, pageItems;
+        if(state.popover !== null && state.popover.clickTarget === target && state.popoverOptions.scope.label !== label){
+            setLabelToSearch(label);
 
-        if(typeof(triple) !== 'undefined'){
+        } else {
+            resourcePanel.hide();
+            var myItemsContainer = MyItems.options.container;
+            var pageItemsContainer = PageItemsContainer.options.container;
+            var myItems, pageItems;
 
-            // predicate is the second element of the triple
-            var predicate = triple[1];
+            if(typeof(triple) !== 'undefined') {
 
-            // if predicate is not defined
-            if( typeof(predicate) === 'undefined' || predicate === "") {
-                // all items are good
-                myItems = ItemsExchange.getItemsByContainer(myItemsContainer);
-                pageItems = ItemsExchange.getItemsByContainer(pageItemsContainer);
+                // predicate is the second element of the triple
+                var predicate = triple[1];
 
-            // if predicate is a valid uri
-            } else {
-                // get item predicate and check his domain
-                var itemPredicate = ItemsExchange.getItemByUri(predicate);
-                // predicate with empty domain
-                if(typeof(itemPredicate.domain) === 'undefined' || itemPredicate.domain.length === 0 || itemPredicate.domain[0] === ""){
+                // if predicate is not defined
+                if(typeof(predicate) === 'undefined' || predicate === "") {
                     // all items are good
                     myItems = ItemsExchange.getItemsByContainer(myItemsContainer);
                     pageItems = ItemsExchange.getItemsByContainer(pageItemsContainer);
+
+                    // if predicate is a valid uri
                 } else {
-                    // predicate with a valid domain
-                    var domain = itemPredicate.domain;
+                    // get item predicate and check his domain
+                    var itemPredicate = ItemsExchange.getItemByUri(predicate);
+                    // predicate with empty domain
+                    if(typeof(itemPredicate) === 'undefined' || typeof(itemPredicate.domain) === 'undefined' || itemPredicate.domain.length === 0 || itemPredicate.domain[0] === "") {
+                        // all items are good
+                        myItems = ItemsExchange.getItemsByContainer(myItemsContainer);
+                        pageItems = ItemsExchange.getItemsByContainer(pageItemsContainer);
+                    } else {
+                        // predicate with a valid domain
+                        var domain = itemPredicate.domain;
 
-                    // get only items matching with predicate domain
-                    var filter = function(item) {
+                        // get only items matching with predicate domain
+                        var filter = function(item) {
 
-                      for(var i=0; i<domain.length; i++){
-                          for (var j=0; j<item.type.length; j++){
-                              if(domain[i] === item.type[j]) {
-                                  return true;
-                              }
-                          }
-                      }
-                        return false;
-                    };
+                            for(var i = 0; i < domain.length; i++) {
+                                for(var j = 0; j < item.type.length; j++) {
+                                    if(domain[i] === item.type[j]) {
+                                        return true;
+                                    }
+                                }
+                            }
+                            return false;
+                        };
 
-                    myItems = ItemsExchange.getItemsFromContainerByFilter(myItemsContainer, filter);
-                    pageItems = ItemsExchange.getItemsFromContainerByFilter(pageItemsContainer, filter);
-                } // end else domain defined
+                        myItems = ItemsExchange.getItemsFromContainerByFilter(myItemsContainer, filter);
+                        pageItems = ItemsExchange.getItemsFromContainerByFilter(pageItemsContainer, filter);
+                    } // end else domain defined
 
-            } // end else predicate valid uri
+                } // end else predicate valid uri
 
-        } // end if triple undefined
+            } // end if triple undefined
 
-        showPopoverResourcePanel(x, y, target, pageItems, myItems, "");
-
+            showPopoverResourcePanel(target, pageItems, myItems, "", label, 'sub');
+        }
         state.resourcePromise = $q.defer();
         return state.resourcePromise.promise;
 
@@ -294,8 +325,13 @@ angular.module('Pundit2.ResourcePanel')
 
     // triple is an array of URI [subject, predicate, object]
     // show all items compatibile as object
-    resourcePanel.showItemsForObject = function(x, y, triple, target) {
+    resourcePanel.showItemsForObject = function(triple, target, label) {
 
+        if(state.popover !== null && state.popover.clickTarget === target && state.popoverOptions.scope.label !== label){
+            setLabelToSearch(label);
+
+        } else {
+        resourcePanel.hide();
         var myItemsContainer = MyItems.options.container;
         var pageItemsContainer = PageItemsContainer.options.container;
         var myItems, pageItems;
@@ -310,25 +346,25 @@ angular.module('Pundit2.ResourcePanel')
                 // all items are good
                 myItems = ItemsExchange.getItemsByContainer(myItemsContainer);
                 pageItems = ItemsExchange.getItemsByContainer(pageItemsContainer);
-                showPopoverResourcePanel(x, y, target, pageItems, myItems, "");
+                showPopoverResourcePanel(target, pageItems, myItems, "", label, 'obj');
 
             } else {
                 // get item predicate and check his domain
                 var itemPredicate = ItemsExchange.getItemByUri(predicate);
                 // predicate with empty domain
-                if(typeof(itemPredicate.range) === 'undefined' || itemPredicate.range.length === 0 || itemPredicate.range[0] === ""){
+                if(typeof(itemPredicate) === 'undefined' || typeof(itemPredicate.range) === 'undefined' || itemPredicate.range.length === 0 || itemPredicate.range[0] === ""){
                     // all items are good
                     myItems = ItemsExchange.getItemsByContainer(myItemsContainer);
                     pageItems = ItemsExchange.getItemsByContainer(pageItemsContainer);
-                    showPopoverResourcePanel(x, y, target, pageItems, myItems, "");
+                    showPopoverResourcePanel(target, pageItems, myItems, "", label, 'obj');
 
                 // if predicate is literal, show popover literal
                 } else if(itemPredicate.range.length === 1 && itemPredicate.range[0] === NameSpace.rdfs.literal){
-                    resourcePanel.showPopoverLiteral(x, y, "", target);
+                    resourcePanel.showPopoverLiteral( "", target);
 
                 // if predicate is dateTime, show popover calendar
                 } else if(itemPredicate.range.length === 1 && itemPredicate.range[0] === NameSpace.dateTime){
-                    resourcePanel.showPopoverCalendar(x, y, "", target);
+                    resourcePanel.showPopoverCalendar("", target);
 
                 } else {
                     // predicate with a valid domain
@@ -349,15 +385,18 @@ angular.module('Pundit2.ResourcePanel')
 
                     myItems = ItemsExchange.getItemsFromContainerByFilter(myItemsContainer, filter);
                     pageItems = ItemsExchange.getItemsFromContainerByFilter(pageItemsContainer, filter);
-                    showPopoverResourcePanel(x, y, target, pageItems, myItems, "");
+                    showPopoverResourcePanel(target, pageItems, myItems, "", label, 'obj');
                 }
 
             } // end else predicate !== undefined
 
         } // end if triple !== undefined
 
+    }
         state.resourcePromise = $q.defer();
         return state.resourcePromise.promise;
+
+
     };
 
     var objTypes,
@@ -365,92 +404,99 @@ angular.module('Pundit2.ResourcePanel')
 
     // show only properties
     // will be executed for predicates
-    resourcePanel.showProperties = function(x, y, triple, target) {
-        var propertiesContainer = Client.options.relationsContainer;
-        var properties;
+    resourcePanel.showProperties = function(triple, target, label) {
 
-        if(typeof(triple) !== 'undefined'){
-            // subject is the first element of the triple
-            var subject = triple[0];
-            // object is the third element of the triple
-            var object = triple[2];
+        if(state.popover !== null && state.popover.clickTarget === target && state.popoverOptions.scope.label !== label){
+            setLabelToSearch(label);
 
-            // if subject and object are both not defined
-            if( (typeof(subject) === 'undefined' || subject === "") && (typeof(object) === 'undefined' || object === "")) {
-                // all properties are good
-                properties = ItemsExchange.getItemsByContainer(propertiesContainer);
-                showPopoverResourcePanel(x, y, target, "", "", properties);
+        } else {
+            resourcePanel.hide();
+            var propertiesContainer = Client.options.relationsContainer;
+            var properties;
 
-            // if only subject is defined
-            } else if( (typeof(subject) !== 'undefined' && subject !== "") && (typeof(object) === 'undefined' || object === "")) {
+            if(typeof(triple) !== 'undefined') {
 
-                // get subject item
-                var itemSubject = ItemsExchange.getItemByUri(subject);
-                // if subject item has no type
-                if(typeof(itemSubject.type) === 'undefined' || itemSubject.type.length === 0 || itemSubject.type[0] === ""){
+                // subject is the first element of the triple
+                var subject = triple[0];
+                // object is the third element of the triple
+                var object = triple[2];
+
+                // if subject and object are both not defined
+                if((typeof(subject) === 'undefined' || subject === "") && (typeof(object) === 'undefined' || object === "")) {
                     // all properties are good
                     properties = ItemsExchange.getItemsByContainer(propertiesContainer);
-                    showPopoverResourcePanel(x, y, target, "", "", properties);
-                } else {
-                    // predicate with a valid domain
-                    subTypes = itemSubject.type;
-                    properties = ItemsExchange.getItemsFromContainerByFilter(propertiesContainer, filterByDomain);
-                    showPopoverResourcePanel(x, y, target, "", "", properties);
-                }
+                    showPopoverResourcePanel(target, "", "", properties, label, 'pr');
 
-            // if only object is defined
-            } else if( (typeof(object) !== 'undefined' && object !== "") && (typeof(subject) === 'undefined' || subject === "")) {
-                // get object item
-                var itemObject = ItemsExchange.getItemByUri(object);
-                // if oject has no type
-                if(typeof(itemObject.type) === 'undefined' || itemObject.type.length === 0 || itemObject.type[0] === ""){
-                    // all properties are good
-                    properties = ItemsExchange.getItemsByContainer(propertiesContainer);
-                    showPopoverResourcePanel(x, y, target, "", "", properties);
-                } else {
-                    objTypes = itemObject.type;
-                    properties = ItemsExchange.getItemsFromContainerByFilter(propertiesContainer, filterByRange);
-                    showPopoverResourcePanel(x, y, target, "", "", properties);
-                }
+                    // if only subject is defined
+                } else if((typeof(subject) !== 'undefined' && subject !== "") && (typeof(object) === 'undefined' || object === "")) {
 
-            // subject and object are both defined
-            } else if( (typeof(object) !== 'undefined' && object !== "") && (typeof(subject) !== 'undefined' || subject !== "")) {
-                var itemObject = ItemsExchange.getItemByUri(object);
-                var itemSubject = ItemsExchange.getItemByUri(subject);
+                    // get subject item
+                    var itemSubject = ItemsExchange.getItemByUri(subject);
+                    // if subject item has no type
+                    if(typeof(itemSubject.type) === 'undefined' || itemSubject.type.length === 0 || itemSubject.type[0] === "") {
+                        // all properties are good
+                        properties = ItemsExchange.getItemsByContainer(propertiesContainer);
+                        showPopoverResourcePanel(target, "", "", properties, label, 'pr');
+                    } else {
+                        // predicate with a valid domain
+                        subTypes = itemSubject.type;
+                        properties = ItemsExchange.getItemsFromContainerByFilter(propertiesContainer, filterByDomain);
+                        showPopoverResourcePanel(target, "", "", properties, label, 'pr');
+                    }
 
-                // both subject and object have empty types
-                if((typeof(itemSubject.type) === 'undefined' || itemSubject.type.length === 0 || itemSubject.type[0] === "") && (typeof(itemObject.type) === 'undefined' || itemObject.type.length === 0 || itemObject.type[0] === "")){
-                    // all items are good
-                    properties = ItemsExchange.getItemsByContainer(propertiesContainer);
-                    showPopoverResourcePanel(x, y, target, "", "", properties);
-                }
+                    // if only object is defined
+                } else if((typeof(object) !== 'undefined' && object !== "") && (typeof(subject) === 'undefined' || subject === "")) {
+                    // get object item
+                    var itemObject = ItemsExchange.getItemByUri(object);
+                    // if oject has no type
+                    if(typeof(itemObject.type) === 'undefined' || itemObject.type.length === 0 || itemObject.type[0] === "") {
+                        // all properties are good
+                        properties = ItemsExchange.getItemsByContainer(propertiesContainer);
+                        showPopoverResourcePanel(target, "", "", properties, label, 'pr');
+                    } else {
+                        objTypes = itemObject.type;
+                        properties = ItemsExchange.getItemsFromContainerByFilter(propertiesContainer, filterByRange);
+                        showPopoverResourcePanel(target, "", "", properties, label, 'pr');
+                    }
 
-                // subjecy has no type, object has valid types --> filterByRange
-                else if((typeof(itemSubject.type) === 'undefined' || itemSubject.type.length === 0 || itemSubject.type[0] === "") && (typeof(itemObject.type) !== 'undefined' && itemObject.type[0] !== "")){
-                    objTypes = itemObject.type;
-                    properties = ItemsExchange.getItemsFromContainerByFilter(propertiesContainer, filterByRange);
-                    showPopoverResourcePanel(x, y, target, "", "", properties);
-                }
+                    // subject and object are both defined
+                } else if((typeof(object) !== 'undefined' && object !== "") && (typeof(subject) !== 'undefined' || subject !== "")) {
+                    var itemObject = ItemsExchange.getItemByUri(object);
+                    var itemSubject = ItemsExchange.getItemByUri(subject);
 
-                // object has no type, subject has valid types --> filterByDomain
-                else if((typeof(itemSubject.type) !== 'undefined' && itemSubject.type[0] !== "") && (typeof(itemObject.type) === 'undefined' || itemObject.type.length === 0 || itemObject.type[0] === "")){
-                    subTypes = itemSubject.type;
-                    properties = ItemsExchange.getItemsFromContainerByFilter(propertiesContainer, filterByDomain);
-                    showPopoverResourcePanel(x, y, target, "", "", properties);
-                }
+                    // both subject and object have empty types
+                    if((typeof(itemSubject.type) === 'undefined' || itemSubject.type.length === 0 || itemSubject.type[0] === "") && (typeof(itemObject.type) === 'undefined' || itemObject.type.length === 0 || itemObject.type[0] === "")) {
+                        // all items are good
+                        properties = ItemsExchange.getItemsByContainer(propertiesContainer);
+                        showPopoverResourcePanel(target, "", "", properties, label, 'pr');
+                    }
 
-                // both object and subject have valid types --> filterByDomainAndRange
-                else if((typeof(itemSubject.type) !== 'undefined' && itemSubject.type[0] !== "") && (typeof(itemObject.type) !== 'undefined' && itemObject.type[0] !== "")){
-                    subTypes = itemSubject.type;
-                    objTypes = itemObject.type;
-                    properties = ItemsExchange.getItemsFromContainerByFilter(propertiesContainer, filterByRangeAndDomain);
-                    showPopoverResourcePanel(x, y, target, "", "", properties);
-                }
+                    // subjecy has no type, object has valid types --> filterByRange
+                    else if((typeof(itemSubject.type) === 'undefined' || itemSubject.type.length === 0 || itemSubject.type[0] === "") && (typeof(itemObject.type) !== 'undefined' && itemObject.type[0] !== "")) {
+                        objTypes = itemObject.type;
+                        properties = ItemsExchange.getItemsFromContainerByFilter(propertiesContainer, filterByRange);
+                        showPopoverResourcePanel(target, "", "", properties, label, 'pr');
+                    }
 
-            } // end else both subject and object are defined
+                    // object has no type, subject has valid types --> filterByDomain
+                    else if((typeof(itemSubject.type) !== 'undefined' && itemSubject.type[0] !== "") && (typeof(itemObject.type) === 'undefined' || itemObject.type.length === 0 || itemObject.type[0] === "")) {
+                        subTypes = itemSubject.type;
+                        properties = ItemsExchange.getItemsFromContainerByFilter(propertiesContainer, filterByDomain);
+                        showPopoverResourcePanel(target, "", "", properties, label, 'pr');
+                    }
 
-        } // end triple !== undefined
+                    // both object and subject have valid types --> filterByDomainAndRange
+                    else if((typeof(itemSubject.type) !== 'undefined' && itemSubject.type[0] !== "") && (typeof(itemObject.type) !== 'undefined' && itemObject.type[0] !== "")) {
+                        subTypes = itemSubject.type;
+                        objTypes = itemObject.type;
+                        properties = ItemsExchange.getItemsFromContainerByFilter(propertiesContainer, filterByRangeAndDomain);
+                        showPopoverResourcePanel(target, "", "", properties, label, 'pr');
+                    }
 
+                } // end else both subject and object are defined
+
+            } // end triple !== undefined
+        }
         state.resourcePromise = $q.defer();
         return state.resourcePromise.promise;
     };
@@ -494,4 +540,28 @@ angular.module('Pundit2.ResourcePanel')
     };
 
     return resourcePanel;
-});
+})
+    .filter('filterByLabel', function() {
+        return function(input, search) {
+            var results = [];
+            if(typeof(search) !== 'undefined' && search !== ''){
+                angular.forEach(input, function (item) {
+                    var label = item.label;
+                    var str = search.toLowerCase().replace(/\s+/g, ' '),
+                        strParts = str.split(' '),
+                        reg = new RegExp(strParts.join('.*'));
+
+                    if (label.toLowerCase().match(reg) !== null) {
+                        results.push(item);
+                        return;
+                    }
+
+                });
+            } else {
+                results = input;
+            }
+
+            return results;
+
+        };
+    });
