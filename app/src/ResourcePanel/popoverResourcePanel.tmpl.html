@@ -18,6 +18,11 @@
 	            <li ng-repeat="pr in properties" ng-click="save(pr)">{{pr.label}}</li>
 	        </ul>
 	    </div>
+        <div ng-repeat="s in selectors" ng-show = "vocab[s].length>0"> {{s}} ({{s.length}})
+            <ul>
+                <li ng-repeat = "item in vocab[s]" ng-click="save(item)">{{item.label}}</li>
+            </ul>
+        </div>
 	    <div ng-show = "properties.length == 0 || (pageItems.length == 0 && myItems.length == 0)">
 	        <ul>
 	            <li>No match found</li>

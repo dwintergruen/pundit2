@@ -10,7 +10,6 @@ angular.module('Pundit2.ResourcePanel')
     var state = {};
 
     state.popover = null;
-    state.selectors = ['freebase', 'dbpedia', 'korbo'];
     state.defaultPlacement = 'bottom';
     state.resourcePromise = null;
 
@@ -275,6 +274,7 @@ angular.module('Pundit2.ResourcePanel')
     // triple is an array of URI [subject, predicate, object]
     // show all items compatibile as subject
     resourcePanel.showItemsForSubject = function(triple, target, label) {
+        state.popoverOptions.scope.vocab = [];
 
         if(state.popover !== null && state.popover.clickTarget === target && state.popoverOptions.scope.label !== label){
             setLabelToSearch(label);
@@ -341,8 +341,37 @@ angular.module('Pundit2.ResourcePanel')
     // show all items compatibile as object
     resourcePanel.showItemsForObject = function(triple, target, label) {
 
+        var selectors = SelectorsManager.getActiveSelectors();
+        state.popoverOptions.scope.selectors = [];
+        var vocab = [];
+
+        angular.forEach(selectors, function(sel){
+            state.popoverOptions.scope.selectors.push(sel.config.container);
+        });
+
+        if(typeof(label) !== 'undefined' && label !== ''){
+            SelectorsManager.getItems(label);
+            angular.forEach(selectors, function(sel){
+                vocab[sel.config.container] = ItemsExchange.getItemsByContainer(sel.config.container);
+            });
+            state.popoverOptions.scope.vocab = vocab;
+        }
+
         if(state.popover !== null && state.popover.clickTarget === target && state.popoverOptions.scope.label !== label){
             setLabelToSearch(label);
+
+
+            if(label === ''){
+                vocab = [];
+            } else {
+                SelectorsManager.getItems(label);
+
+                angular.forEach(selectors, function(sel){
+                    vocab[sel.config.container] = ItemsExchange.getItemsByContainer(sel.config.container);
+                });
+            }
+            state.popoverOptions.scope.vocab = vocab;
+
 
         } else {
         resourcePanel.hide();
@@ -419,6 +448,7 @@ angular.module('Pundit2.ResourcePanel')
     // show only properties
     // will be executed for predicates
     resourcePanel.showProperties = function(triple, target, label) {
+        state.popoverOptions.scope.vocab = [];
 
         if(state.popover !== null && state.popover.clickTarget === target && state.popoverOptions.scope.label !== label){
             setLabelToSearch(label);
