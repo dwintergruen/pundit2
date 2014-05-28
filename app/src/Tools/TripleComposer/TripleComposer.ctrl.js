@@ -22,6 +22,14 @@ angular.module('Pundit2.TripleComposer')
         TripleComposer.addStatementScope(id, scope, $scope.statements);
     };
 
+    this.duplicateStatement = function(id){
+        var index = -1;
+        id = parseInt(id, 10);
+        nextId = nextId + 1;
+        
+        TripleComposer.duplicateStatement(id, $scope.statements, nextId);
+    };
+
     $scope.onClickAddStatement = function(){
         nextId = nextId + 1;
         $scope.statements.push({id: nextId});

@@ -35,6 +35,25 @@ angular.module('Pundit2.TripleComposer')
         }
     };
 
+    tripleComposer.duplicateStatement = function(id, arr, newId){
+        arr.some(function(s, i){
+            if (s.id === id) {
+                index = i;
+                return true;
+            }
+        });
+        
+        if (index > -1) {
+            arr.push({
+                id: newId,
+                scope: {
+                    duplicated: arr[index].scope.copy()
+                }
+            });
+        }
+        console.log(arr[index].scope.copy());
+    };
+
     return tripleComposer;
 
 });

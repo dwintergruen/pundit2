@@ -3,14 +3,23 @@ angular.module('Pundit2.TripleComposer')
     return {
         restrict: 'E',
         scope: {
-            id: "@"
+            id: "@",
+            duplicated: "="
         },
         templateUrl: "src/Tools/TripleComposer/Statement.dir.tmpl.html",
         controller: "StatementCtrl",
         require: '^tripleComposer',
         link: function(scope, elem, attrs, controllerInstance) {
-          scope.tripleComposerCtrl = controllerInstance;
-          controllerInstance.addStatementScope(scope.id, scope);
+            scope.tripleComposerCtrl = controllerInstance;
+          
+            scope.$watch('duplicated', function(duplicated) {
+                if (typeof(duplicated)!=='undefined') {
+                    scope.init();
+                }
+            });
+          
+            controllerInstance.addStatementScope(scope.id, scope);          
+
         }
     };
 });

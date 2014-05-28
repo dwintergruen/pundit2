@@ -20,9 +20,48 @@ angular.module('Pundit2.TripleComposer')
     $scope.objectIcon = 'pnd-icon-search'; //'pnd-icon-times'
     $scope.objectLiteral = false;
 
+    var triple = {
+        subject: null,
+        predicate: null,
+        object: null
+    };
+
     // remove directive
     $scope.remove = function() {
         $scope.tripleComposerCtrl.removeStatement($scope.id);
+    };
+
+    // make a copy of this statement
+    // TODO if it's empty ???
+    $scope.duplicate = function(){
+        $scope.tripleComposerCtrl.duplicateStatement($scope.id);
+    };
+
+    $scope.copy = function(){
+        return angular.copy(triple);
+    };
+
+    $scope.init = function(){
+        console.log('This messagge should appear only one time when you duplicate a statement, otherwise probably is an error');
+        triple = $scope.duplicated;
+        delete $scope.duplicated;
+
+        console.log(triple)
+        if (triple.subject !== null) {
+            $scope.subjectLabel = triple.subject.label;
+            $scope.subjectTypeLabel = TypesHelper.getLabel(triple.subject.type[0]);
+            $scope.subjectFound = true;
+        }
+        if (triple.predicate !== null) {
+            $scope.predicateLabel = triple.predicate.label;
+            $scope.predicateFound = true;
+        }
+        if (triple.object !== null) {
+            $scope.objectLabel = triple.object.label;
+            $scope.objectTypeLabel = TypesHelper.getLabel(triple.object.type[0]);
+            $scope.objectFound = true;
+        }
+        
     };
 
     // reset state to default
@@ -59,30 +98,33 @@ angular.module('Pundit2.TripleComposer')
 
     $scope.onClickSubject = function($event){
         ResourcePanel.showItemsForSubject($event.pageX, $event.pageY, [], $event.target).then(function(item){
-            $scope.subjectFound = true;
             $scope.subjectLabel = item.label;
             $scope.subjectTypeLabel = TypesHelper.getLabel(item.type[0]);
+            $scope.subjectFound = true;
+            triple.subject = item;
         });
     };
 
     $scope.onClickPredicate = function($event){
         ResourcePanel.showProperties($event.pageX, $event.pageY, [], $event.target).then(function(item){
-            $scope.predicateFound = true;
             $scope.predicateLabel = item.label;
+            $scope.predicateFound = true;
+            triple.predicate = item;
         });
     };
 
     $scope.onClickObject = function($event){
         ResourcePanel.showItemsForObject($event.pageX, $event.pageY, [], $event.target).then(function(item){
-            $scope.objectFound = true;
             $scope.objectLabel = item.label;
             $scope.objectTypeLabel = TypesHelper.getLabel(item.type[0]);
+            $scope.objectFound = true;
+            triple.object = item;
         });
     };
 
     $scope.onClickObjectCalendar = function($event){
         ResourcePanel.showPopoverCalendar($event.pageX, $event.pageY, undefined, $event.target).then(function(date){
-
+            // TODO need to convert date, new Item(date)
         });
     };
 
@@ -92,6 +134,7 @@ angular.module('Pundit2.TripleComposer')
             $scope.objectLabel = text;
             $scope.objectTypeLabel = TypesHelper.getLabel(NameSpace.rdfs.literal);
             $scope.objectLiteral = true;
+            // TODO need to convert literal, new Item(text)
         });
     };
 
