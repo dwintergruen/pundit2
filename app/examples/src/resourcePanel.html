@@ -108,8 +108,9 @@
             }
         }
     }
-    var ResourcePanelDemoCtrl = function($scope, ResourcePanel, Annotation, MyItems, MyPundit, Client, Item, ItemsExchange, Preview) {
+    var ResourcePanelDemoCtrl = function($scope, ResourcePanel, Annotation, MyItems, MyPundit, Client, Item, ItemsExchange, SelectorsManager, FreebaseSelector, MurucaSelector, KorboBasketSelector) {
 
+        SelectorsManager.init();
         $scope.triple = ["", "", ""];
 
         $scope.$watch('predicateUri', function(pr){

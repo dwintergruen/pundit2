@@ -2,13 +2,11 @@ angular.module('Pundit2.ResourcePanel')
 .constant('RESOURCEPANELDEFAULTS', {
 
 })
-
 .service('ResourcePanel', function(BaseComponent, RESOURCEPANELDEFAULTS,
-                                   ItemsExchange, MyItems, PageItemsContainer, Client, NameSpace,
+                                   ItemsExchange, MyItems, PageItemsContainer, Client, NameSpace, SelectorsManager,
                                    $filter, $rootScope, $popover, $q, $timeout) {
 
     var resourcePanel = new BaseComponent('ResourcePanel', RESOURCEPANELDEFAULTS);
-
     var state = {};
 
     state.popover = null;
