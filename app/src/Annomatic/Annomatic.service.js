@@ -49,7 +49,8 @@ angular.module('Pundit2.Annomatic')
             currentAnnotationNum = 0,
             currentAnnotation = annotations[currentAnnotationNum],
             sub, start, end, addedSpaces, currentNode, found,
-            foundAnnotations = [];
+            foundAnnotations = [],
+            correctedEmtpyNode = false;
 
         // Cycle over the nodes in the stack: depth first. We start from the given node
         while ((currentNode = stack.pop()) && currentAnnotationNum < annotations.length) {
@@ -92,6 +93,7 @@ angular.module('Pundit2.Annomatic')
                         if (trimDoubleSpaces(currentNode.textContent).length === 1) {
                             annomatic.log('Skipping intermediate empty text node, correcting offset by 1');
                             currentOffset += 1;
+                            correctedEmtpyNode = true;
                         } else {
                             annomatic.log('OUCH! trimDoubleSpaces fail?!!? --'+trimDoubleSpaces(currentNode.textContent)+'--');
                         }
@@ -179,13 +181,14 @@ angular.module('Pundit2.Annomatic')
                     // spaces and trim them off. They got trimmed by trim(), not by
                     // trimDoubleSpaces()
                     var doubleSpaceTrimmed = trimDoubleSpaces(currentNode.textContent);
-                    if (currentOffset === 0 && doubleSpaceTrimmed.match(/^\s\s*/)) {
-                            currentOffset += doubleSpaceTrimmed.length - 1;
+                    if (doubleSpaceTrimmed.match(/^\s\s*/) && (correctedEmtpyNode || currentOffset === 0)) {
+                        currentOffset += doubleSpaceTrimmed.length - 1;
+                        annomatic.log('Moving to next node (corrected by leading space) with current offset = '+ currentOffset);
                     } else {
                         currentOffset += doubleSpaceTrimmed.length;
+                        annomatic.log('Moving to next node with current offset = '+ currentOffset);
                     }
-
-                    annomatic.log('Moving to next node with current offset = '+ currentOffset);
+                    correctedEmtpyNode = false;
 
                 } // if trimmedContentLength
             } // if isTextNode()
@@ -241,7 +244,7 @@ angular.module('Pundit2.Annomatic')
         var ret = [],
             seen = {};
         for (var i=0; i<len; i++) {
-            var current = doubleSpaces[i].length -1;
+            var current = doubleSpaces[i].length - 1;
             if (typeof(seen[current]) === "undefined") {
                 seen[current] = true;
                 ret.push(current);
