@@ -7,6 +7,9 @@
     pre {
         float: left;
     }
+    .temp-container{
+        width: 400px;
+    }
 </style>
 
 <script type="text/javascript">
@@ -37,6 +40,11 @@
             $scope.tempann = JSON.stringify(annos, null, "  ");
             // console.log('Annotations: ', annos);
         });
+
+        $scope.open = function(id) {
+            AnnotationDetails.openAnnotationView(id);
+        };
+
     }
 </script>
 
@@ -45,9 +53,14 @@
 
     <!-- <pre>{{tempann}}</pre> -->
 
-   <div ng-repeat="ann in annotations">
-        <annotation-details id="{{ann.id}}"></annotation-details>
-    </div>  
+    <div class="temp-container">
+        <div ng-repeat="ann in annotations">
+            <annotation-details id="{{ann.id}}"></annotation-details>
+        </div>  
+    </div>
+
+    <br />
+    <button ng-click="open('8fd05a49')">Open annotation 8fd05a49</button>
 
 </div>
 

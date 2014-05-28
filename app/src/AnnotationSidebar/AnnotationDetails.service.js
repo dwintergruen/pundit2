@@ -17,6 +17,7 @@ angular.module('Pundit2.AnnotationSidebar')
         var result = {
             uri: currentUri,
             label: currentItem.label,
+            description: currentItem.description,
             class: currentItem.getClass(),
             icon: currentItem.getIcon(),
             typeLabel: TypesHelper.getLabel(currentItem.type[0])
@@ -52,9 +53,10 @@ angular.module('Pundit2.AnnotationSidebar')
                 results.push(
                     {
                         label: objectValue,
+                        description: objectValue,
                         class: null, // TODO: valutare
                         icon: null,
-                        typeLabel: null
+                        typeLabel: objectType
                     }
                 );
             }
@@ -101,7 +103,21 @@ angular.module('Pundit2.AnnotationSidebar')
         }
     };
 
+    var closeOtherAnnotation = function(skipId) {
+        for (var id in state.annotations){
+            if (id !== skipId){
+                state.annotations[id].expanded = false;
+            }
+        }
+    };
+
+    annotationDetails.openAnnotationView = function(currentId) {
+        closeOtherAnnotation(currentId);
+        state.annotations[currentId].expanded = true;
+    };
+
     annotationDetails.toggleAnnotationView = function(currentId) {
+        closeOtherAnnotation(currentId);
         state.annotations[currentId].expanded = !state.annotations[currentId].expanded;
     };
 

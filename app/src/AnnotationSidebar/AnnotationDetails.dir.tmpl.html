@@ -1,83 +1,80 @@
 <div class="pnd-annotation-details">
-    <div class="pnd-annotation-details-header" ng-show="!annotation.expanded">
-        <div style="display: inline" class="{{annotation.mainItem.class}}">
+    <div 
+        class="pnd-annotation-details-header pnd-annotation-details-top" 
+        ng-show="!annotation.expanded"
+        ng-click="toggleAnnotation()">
+        <div class="{{annotation.mainItem.class}}">
                 <span class="{{annotation.mainItem.icon}}"></span>
                 <span>{{annotation.mainItem.label}}</span>    
+                <button type="button" class="btn btn-primary pull-right">
+                    <span class="pnd-icon-chevron-right"></span>
+                </button>
         </div>
-
-        <button 
-            ng-click="toggleAnnotation()" 
-            type="button" class="btn btn-primary">
-            <span class="pnd-icon-chevron-right"></span>
-        </button>
     </div>
 
-    <div ng-show="annotation.expanded">
-
+    <div class="pnd-annotation-details-container" ng-show="annotation.expanded">
 
         <div class="pnd-annotation-details-header">
-            <button type="button" class="btn btn-primary">
-                <span class="pnd-icon-exclamation-circle"></span>
-                Info
-            </button>
-            <button type="button" class="btn btn-primary">
-                <span class="pnd-icon-mail-forward"></span>
-                Reply
-            </button>
-            <button type="button" class="btn btn-primary">
-                <span class="pnd-icon-share-square-o"></span>
-                Share
-            </button>
+            <div class="{{annotation.mainItem.class}}">
+                <button type="button" class="btn btn-primary">
+                    <span class="pnd-icon-exclamation-circle"></span>
+                    Info
+                </button>
+                <button type="button" class="btn btn-primary">
+                    <span class="pnd-icon-mail-forward"></span>
+                    Reply
+                </button>
+                <button type="button" class="btn btn-primary">
+                    <span class="pnd-icon-share-square-o"></span>
+                    Share
+                </button>
 
-            <button 
-                ng-click="toggleAnnotation()" 
-                type="button" class="btn">
-                <span class="pnd-icon-chevron-down"></span>
-            </button>
+                <button 
+                    ng-click="toggleAnnotation()" 
+                    type="button" class="btn pull-right">
+                    <span class="pnd-icon-chevron-down"></span>
+                </button>
+            </div>
         </div>
 
 
         <div class="pnd-annotation-details-content" style="padding: 10px">
-            <div ng-repeat="item in annotation.itemsArray">
-                <div class="pnd-annotation-details-subject">
+            <div class="pnd-annotation-detains-item" ng-repeat="item in annotation.itemsArray">
+                <div class="pnd-annotation-details-subject" ng-click="subInfo = !subInfo">
                     <span class="{{item.subject.icon}}"></span>
                     {{item.subject.label}} ({{item.subject.typeLabel}})
+                    <div ng-show="subInfo">
+                        <span ng-show="item.subject.description.length>0">
+                            <strong>Description:</strong> 
+                            {{item.subject.description}}
+                        </span>
+                    </div>
                 </div>
 
-                <div class="pnd-annotation-details-predicate" style="margin-left: 25px">
+                <div class="pnd-annotation-details-predicate" ng-click="preInfo = !preInfo">
                     {{item.predicate.label}}
+                    <div ng-show="preInfo">
+                        <span ng-show="item.predicate.description.length>0">
+                            <strong>Description:</strong> 
+                            {{item.predicate.description}}
+                        </span>
+                    </div>
                 </div>
 
-                <div ng-repeat="object in item.objects" style="margin-left: 50px">
-                    <div class="pnd-annotation-details-object">
-                        {{object.label}}
+                <div ng-repeat="object in item.objects">
+                    <div class="pnd-annotation-details-object" ng-click="objInfo = !objInfo">
+                        <span class="{{object.icon}}"></span>
+                        <span>{{object.label}}</span>
+                        <div ng-show="objInfo">
+                            <span ng-show="object.description.length>0">
+                                <strong>Description:</strong> 
+                                {{object.description}}
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>    
-
-            <!-- <div ng-repeat="item in items">
-                <div style="display: inline" class="{{item.class}}">
-                        <span class="{{item.icon}}"></span>
-                        <span ng-click="itemInfo = !itemInfo">
-                            {{item.label}} 
-                            <strong>({{item.type}})</strong>
-                            <span ng-show="itemInfo">
-                                <ul>
-                                    <li ng-repeat="typ in item.types" class="ng-scope ng-binding">
-                                        {{typ}}
-                                    </li>
-                                </ul>
-                                <span ng-show="item.description.length>0">
-                                    <strong>Description:</strong> 
-                                    {{item.description}}
-                                </span>
-                                <br /><br />
-                            </span>
-                        </span>    
-                </div>
-            </div> -->
         </div>
-
 
         <div class="pnd-annotation-details-footer">
             <button type="button" class="btn">Edit</button>
