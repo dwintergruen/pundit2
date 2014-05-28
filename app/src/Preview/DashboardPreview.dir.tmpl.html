@@ -14,22 +14,8 @@
     <div class="pnd-panel-tab-content-content pnd-inner-scrollable">
         <span class="pnd-dashboard-preview-welcome" ng-if="isItemEmpty()">{{getWelcomeBodyMessage()}}</span>
 
-        <!-- Image -->
-        <div ng-if="hasImage" class="pnd-preview-item-image">
-            <img ng-src="{{itemDashboardPreview.image}}" />
-        </div>
+        <item-preview ng-if="!isItemEmpty()" uri="{{itemDashboardPreview.uri}}"></item-preview>
 
-        <!-- Description -->
-        <div class="pnd-dashboard-preview-item-description">
-            <p>{{itemDashboardPreview.description}}</p>
-        </div>
-
-        <!-- Types -->
-        <div class="pnd-dashboard-preview-item-types">
-            <ul>
-                <li ng-repeat="type in itemDashboardPreview.type">{{getLabelType(type)}}</li>
-            </ul>
-        </div>
     </div> <!-- end pnd-panel-tab-content-content -->
 
     <!-- FOOTER -->

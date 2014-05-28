@@ -113,6 +113,8 @@
     <script src="../src/Preview/Preview.dir.js"></script>
     <script src="../src/Preview/Preview.ctrl.js"></script>
     <script src="../src/Preview/Preview.service.js"></script>
+    <script src="../src/Preview/ItemPreview.dir.js"></script>
+    <script src="../src/Preview/ItemPreview.ctrl.js"></script>
 
     <script src="../src/ResourcePanel/ResourcePanel.js"></script>
     <script src="../src/ResourcePanel/ResourcePanel.service.js"></script>
