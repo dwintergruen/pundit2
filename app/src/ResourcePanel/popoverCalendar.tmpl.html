@@ -4,7 +4,9 @@
     <div class="popover-content">
          <div class="form-group">
             <label class="control-label"><i class="fa fa-calendar"></i> Date </label>
-            <input type="text" class="form-control pnd-input-calendar" ng-model="selectedDate" name="date" bs-datepicker autoclose="true">
+            <input type="text" ng-model="selectedDate"
+                   class="form-control pnd-input-calendar"
+                   trigger="focus" autoclose="false" bs-datepicker>
         </div>
 
     <button class="btn btn-sm btn-success"  ng-click="save()">Save</button>

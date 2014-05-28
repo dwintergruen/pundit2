@@ -3,7 +3,9 @@ angular.module('Pundit2.ResourcePanel')
 
 })
 
-.service('ResourcePanel', function(BaseComponent, RESOURCEPANELDEFAULTS, $rootScope, $popover, $q, ItemsExchange, MyItems, PageItemsContainer, Client, NameSpace, $filter) {
+.service('ResourcePanel', function(BaseComponent, RESOURCEPANELDEFAULTS,
+                                   ItemsExchange, MyItems, PageItemsContainer, Client, NameSpace,
+                                   $filter, $rootScope, $popover, $q, $timeout) {
 
     var resourcePanel = new BaseComponent('ResourcePanel', RESOURCEPANELDEFAULTS);
 
@@ -147,6 +149,20 @@ angular.module('Pundit2.ResourcePanel')
         }
 
         state.popover = $popover(popoverAnchor, state.popoverOptions);
+
+        // Open the calendar automatically
+        if (type === 'calendar') {
+            // Since it's a directive inside another directive, there's a couple of $digest()
+            // cycles we need to wait for everything to be up and running, promises, templates
+            // to get fetched, rendered etc...... using a timeout :|
+            $timeout(function() {
+                angular.element(state.popover.$element)
+                    .find('.pnd-input-calendar')
+                    .triggerHandler('focus');
+            }, 1);
+        }
+
+
         state.popover.clickTarget = target;
         return state.popover;
     };
