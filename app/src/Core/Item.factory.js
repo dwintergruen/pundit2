@@ -133,7 +133,11 @@ angular.module('Pundit2.Core')
     };
 
     ItemFactory.prototype.toRdf = function() {
-        // TODO
+        // TODO types?
+        return {
+            uri: this.uri,
+            types: this.type
+        };
     };
 
 

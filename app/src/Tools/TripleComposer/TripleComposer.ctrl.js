@@ -35,8 +35,33 @@ angular.module('Pundit2.TripleComposer')
         $scope.statements.push({id: nextId});
     };
 
-    $scope.saveAnnotation = function(){
+    var buildItems = function(){
+        var res = {};
+        
+        $scope.statements.forEach(function(el, index){
+            var triple = el.scope.get();
 
+            if (triple.subject!==null && triple.predicate!==null && triple.object!==null) {
+                res[triple.subject.uri] = triple.subject.toRdf();
+                res[triple.predicate.uri] = triple.predicate.toRdf();
+                res[triple.object.uri] = triple.object.toRdf();
+            }
+            
+        });
+
+        return res;
+    };
+
+    $scope.saveAnnotation = function(){
+        console.log( {
+            items: buildItems(),
+            metadata: {
+
+            },
+            graph: {
+
+            }
+        } );
     };
 
 

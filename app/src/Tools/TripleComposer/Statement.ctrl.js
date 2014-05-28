@@ -43,6 +43,10 @@ angular.module('Pundit2.TripleComposer')
         return angular.copy(triple);
     };
 
+    $scope.get = function(){
+        return triple;
+    };
+
     // read the duplicated property inside scope (this property is owned by the statement tha born by duplication)
     // then add the label value to the relative scope properties
     // this function should be invoked only one time (in the link function)
