@@ -29,6 +29,7 @@ angular.module('Pundit2.TripleComposer')
 
     var buildUrisArray = function(){
         var res = [];
+
         if (triple.subject!==null) {
             res.push(triple.subject.uri);
         } else {
@@ -44,6 +45,8 @@ angular.module('Pundit2.TripleComposer')
         } else {
             res.push('');
         }
+
+        return res;
     };
 
     // remove statement directive
@@ -145,6 +148,7 @@ angular.module('Pundit2.TripleComposer')
     };
 
     $scope.onClickObject = function($event){
+        
         ResourcePanel.showItemsForObject(buildUrisArray(), $event.target, '').then(function(item){
             $scope.objectLabel = item.label;
             $scope.objectTypeLabel = TypesHelper.getLabel(item.type[0]);
