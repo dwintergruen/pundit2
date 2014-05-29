@@ -99,8 +99,11 @@
                             <div class="pnd-annotation-details-object-header">
                                 <span class="{{object.icon}}"></span>
                                 <span ng-bind-html="object.label">{{object.label}}</span>
-                                <button type="button" class="btn">
-                                    <span ng-class="{true:'pnd-icon-chevron-down', false:'pnd-icon-chevron-right'}[objInfo]"></span>
+                                <button 
+                                    type="button" 
+                                    class="btn" 
+                                    ng-if="object.typeClass=='uri'">
+                                        <span ng-class="{true:'pnd-icon-chevron-down', false:'pnd-icon-chevron-right'}[objInfo]"></span>
                                 </button>
                             </div>
                             <div ng-show="objInfo">
