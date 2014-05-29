@@ -81,8 +81,22 @@ angular.module('Pundit2.TripleComposer')
     var buildObject = function(item){
         return {type: 'uri', value: item.uri}
     };
-    var buildPredicate = function(item){
 
+    var buildTargets = function(){
+        var res = [];
+
+        $scope.statements.forEach(function(el){
+            var triple = el.scope.get();
+
+            for ( var key in triple) {
+                if (triple[key].isTextFragment() || triple[key].isImage() || triple[key].isImageFragment() ){
+                    res.push(triple[key].uri);
+                }
+            }            
+
+        });
+
+        return res;
     };
 
     var buildGraph = function(){
@@ -127,10 +141,7 @@ angular.module('Pundit2.TripleComposer')
     };
 
     $scope.saveAnnotation = function(){
-        console.log({
-            items: buildItems(),
-            graph: buildGraph()
-        });
+        console.log(buildTargets());
     };
 
     $scope.fireHttp = function(){
@@ -144,7 +155,7 @@ angular.module('Pundit2.TripleComposer')
             url: NameSpace.get('asNB')+"/b81c0aa3",
             params: {
                 context: angular.toJson({
-                    targets: ["http://t1.com", "http://t1.com", "http://t1.com"],
+                    targets: buildTargets(),
                     pageContext: XpointersHelper.getSafePageContext()
                 })
             },
