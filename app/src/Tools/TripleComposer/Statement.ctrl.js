@@ -5,12 +5,12 @@ angular.module('Pundit2.TripleComposer')
     $scope.subjectLabel = '';
     $scope.subjectTypeLabel = '';
     $scope.subjectFound = false;
-    $scope.subjectSearch = "search subject";
+    $scope.subjectSearch = "";
     $scope.subjectIcon = 'pnd-icon-search'; //'pnd-icon-times'
 
     $scope.predicateLabel = '';
     $scope.predicateFound = false;
-    $scope.predicateSearch = "search predicate";
+    $scope.predicateSearch = "";
     $scope.predicateIcon = 'pnd-icon-search'; //'pnd-icon-times'
 
     $scope.objectLabel = '';
@@ -150,10 +150,18 @@ angular.module('Pundit2.TripleComposer')
     $scope.onClickObject = function($event){
         
         ResourcePanel.showItemsForObject(buildUrisArray(), $event.target, '').then(function(item){
-            $scope.objectLabel = item.label;
-            $scope.objectTypeLabel = TypesHelper.getLabel(item.type[0]);
+
             $scope.objectFound = true;
             triple.object = item;
+            if (typeof(item) === 'string') {
+                $scope.objectLabel = item;
+                $scope.objectTypeLabel = TypesHelper.getLabel(NameSpace.rdfs.literal);
+                $scope.objectLiteral = true;
+            } else {
+                $scope.objectLabel = item.label;
+                $scope.objectTypeLabel = TypesHelper.getLabel(item.type[0]);
+            }
+            
         });
     };
 
@@ -169,7 +177,8 @@ angular.module('Pundit2.TripleComposer')
             $scope.objectLabel = text;
             $scope.objectTypeLabel = TypesHelper.getLabel(NameSpace.rdfs.literal);
             $scope.objectLiteral = true;
-            // TODO need to convert literal, new Item(text)
+            // TODO need to support literal as item
+            triple.object = text;
         });
     };
 

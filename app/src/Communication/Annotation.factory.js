@@ -121,7 +121,6 @@ angular.module('Pundit2.Communication')
             }
         }
 
-        console.log(ann, annData);
         // .target is always an array
         if (ns.target in annData) {
             ann.target = [];

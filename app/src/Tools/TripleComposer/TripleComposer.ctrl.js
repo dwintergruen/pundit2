@@ -144,6 +144,7 @@ angular.module('Pundit2.TripleComposer')
         console.log(buildTargets());
     };
 
+    // TODO need to support item literal and item date
     $scope.fireHttp = function(){
 
         // test with notebook "b81c0aa3"
