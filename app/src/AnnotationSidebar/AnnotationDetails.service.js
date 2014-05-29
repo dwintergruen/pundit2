@@ -23,7 +23,8 @@ angular.module('Pundit2.AnnotationSidebar')
             image: (typeof currentItem.image !== 'undefined' ? currentItem.image : null),
             class: currentItem.getClass(),
             icon: currentItem.getIcon(),
-            typeLabel: TypesHelper.getLabel(currentItem.type[0])
+            typeLabel: TypesHelper.getLabel(currentItem.type[0]),
+            typeClass: 'uri'
         };
         return result;
     };
@@ -61,7 +62,8 @@ angular.module('Pundit2.AnnotationSidebar')
                         image: null,
                         class: null, // TODO: valutare
                         icon: null,
-                        typeLabel: objectType
+                        typeLabel: objectType,
+                        typeClass: objectType
                     }
                 );
             }
