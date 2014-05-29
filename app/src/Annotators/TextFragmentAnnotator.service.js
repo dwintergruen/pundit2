@@ -268,7 +268,6 @@ angular.module('Pundit2.Annotators')
             tfa.log('Not highlighting given URI: fragment id not found');
             return;
         }
-
         tfa.highlightById(fragmentIds[uri][0]);
     };
 
@@ -285,7 +284,6 @@ angular.module('Pundit2.Annotators')
             tfa.log('Not clearing highlight on given URI: fragment id not found');
             return;
         }
-
         tfa.clearHighlightById(fragmentIds[uri]);
     };
 
@@ -294,6 +292,28 @@ angular.module('Pundit2.Annotators')
             fragmentById[id].bits[l].clear();
         }
         tfa.log('Clear highlight on fragment id='+ id +', # bits: '+ fragmentById[id].bits.length);
+    };
+
+    tfa.showByUri = function(uri) {
+        if (typeof(fragmentIds[uri]) === "undefined") {
+            tfa.log('Not showing fragment for given URI: fragment id not found');
+            return;
+        }
+        var id = fragmentIds[uri];
+        for (var l=fragmentById[id].bits.length; l--;) {
+            fragmentById[id].bits[l].show();
+        }
+    };
+
+    tfa.hideByUri = function(uri) {
+        if (typeof(fragmentIds[uri]) === "undefined") {
+            tfa.log('Not hiding fragment for given URI: fragment id not found');
+            return;
+        }
+        var id = fragmentIds[uri];
+        for (var l=fragmentById[id].bits.length; l--;) {
+            fragmentById[id].bits[l].show();
+        }
     };
 
     tfa.log("Component up and running");
