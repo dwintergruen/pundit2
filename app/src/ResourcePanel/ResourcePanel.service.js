@@ -149,13 +149,8 @@ angular.module('Pundit2.ResourcePanel')
     resourcePanel.showPopoverLiteral = function(text, target){
         var content = {};
         content.literalText = text;
-        // if click the same popover, hide it
-        if (state.popover !== null && state.popover.clickTarget === target) {
-            resourcePanel.hide();
-        }
 
-        // if click a different popover, hide the shown popover and show the clicked one
-        else if (state.popover !== null && state.popover.clickTarget !== target) {
+        if (state.popover !== null && state.popover.clickTarget !== target) {
             resourcePanel.hide();
             state.popover = initPopover(content, target, "", 'literal');
             state.popover.$promise.then(state.popover.show);
@@ -182,11 +177,6 @@ angular.module('Pundit2.ResourcePanel')
         if (state.popover === null) {
             state.popover = initPopover(content, target, "", 'calendar');
             state.popover.$promise.then(state.popover.show);
-        }
-
-        // if click the same popover, toggle it
-        else if (state.popover !== null && state.popover.clickTarget === target) {
-            resourcePanel.hide();
         }
 
         // if click a different popover, hide the shown popover and show the clicked one

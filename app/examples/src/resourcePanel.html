@@ -260,7 +260,19 @@
             angular.element('#test5').text("");
             angular.element('#test6').text("");
             angular.element('#test7').text("");
-        }
+        };
+
+        $scope.openCalendar = function($event, elementID) {
+            ResourcePanel.showPopoverCalendar("", $event.target).then(function(date){
+                angular.element('#'+elementID).text(date);
+            });
+        };
+
+        $scope.openLiteral = function($event, elementID) {
+            ResourcePanel.showPopoverLiteral("", $event.target).then(function(text){
+                angular.element('#'+elementID).text(text);
+            });
+        };
 
     };
 </script>
@@ -284,10 +296,18 @@
                     <li style="display:inline-block;">
                         <button class="btn btn-xs btn-warning" ng-click="clearAll()">Clear</button>
                     </li>
+                    <li style="display:inline-block;">
+                        <button class="btn btn-xs btn-warning" ng-click="openLiteral($event, 'test3')">Show Literal</button>
+                    </li>
+                    <li style="display:inline-block;">
+                        <button class="btn btn-xs btn-warning" ng-click="openCalendar($event, 'test4')">Show Calendar</button>
+                    </li>
 
                 </ul>
             </div>
             <pre class="col-lg-6">
+            <div>Literal: <span id="test3"></span></div>
+            <div>Date: <span id="test4"></span></div>
             <div>Subject selected: <span id="test5"></span>
                 <ul>
                     <li ng-repeat="type in subjectType">{{type}}</li>
