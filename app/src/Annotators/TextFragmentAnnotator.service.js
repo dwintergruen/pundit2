@@ -291,7 +291,7 @@ angular.module('Pundit2.Annotators')
 
     tfa.clearHighlightById  = function(id) {
         for (var l=fragmentById[id].bits.length; l--;) {
-            fragmentById[id].bits[l].reset();
+            fragmentById[id].bits[l].clear();
         }
         tfa.log('Clear highlight on fragment id='+ id +', # bits: '+ fragmentById[id].bits.length);
     };

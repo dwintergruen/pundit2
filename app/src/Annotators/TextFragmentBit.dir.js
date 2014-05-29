@@ -14,10 +14,17 @@ angular.module('Pundit2.Annotators')
             scope.high = function() {
                 element.addClass('pnd-textfragment-highlight');
             };
-            scope.reset = function() {
+            scope.clear = function() {
                 element.removeClass('pnd-textfragment-highlight');
             };
 
-        }
+            scope.hide = function() {
+                element.addClass('pnd-textfragment-hidden');
+            };
+            scope.show = function() {
+                element.removeClass('pnd-textfragment-hidden');
+            };
+
+        } // link()
     };
 });
