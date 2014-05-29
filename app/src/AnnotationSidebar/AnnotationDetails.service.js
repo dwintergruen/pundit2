@@ -25,7 +25,6 @@ angular.module('Pundit2.AnnotationSidebar')
             icon: currentItem.getIcon(),
             typeLabel: TypesHelper.getLabel(currentItem.type[0])
         };
-        // console.log("lab"+)
         return result;
     };
 
@@ -99,6 +98,7 @@ angular.module('Pundit2.AnnotationSidebar')
             creator: currentAnnotation.creator,
             creatorName: currentAnnotation.creatorName,
             created: currentAnnotation.created,
+            notebookId: currentAnnotation.isIncludedIn,
             scopeReference: scope,
             mainItem: buildMainItem(currentAnnotation),
             itemsArray: buildItemsArray(currentAnnotation),
@@ -129,6 +129,10 @@ angular.module('Pundit2.AnnotationSidebar')
         annotationDetails.closeAllAnnotationView(currentId);
         state.annotations[currentId].expanded = !state.annotations[currentId].expanded;
     };
+
+    annotationDetails.isAnnotationUser = function(creator) {
+        return creator === state.userData.uri;
+    };    
 
     annotationDetails.isUserToolShowed = function(creator) {
         return state.isUserLogged === true && creator === state.userData.uri;
