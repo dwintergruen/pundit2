@@ -10,6 +10,8 @@ angular.module('Pundit2.Annotators')
         replace: true,
         link: function(scope, element /*, attrs */) {
 
+            // TODO: move this to its own controller !
+
             scope.textFragmentIconClass = XpointersHelper.options.textFragmentIconClass;
 
             // Will use the icon to calculate this fragment height with respect to
@@ -18,22 +20,15 @@ angular.module('Pundit2.Annotators')
             TextFragmentAnnotator.addFragmentIcon(scope);
 
             // To see what kind of item is it, check which container it belongs to
-            var amContainer = Config.modules.Annomatic.container,
-                piContainer = Config.modules.PageItemsContainer.container,
+            var piContainer = Config.modules.PageItemsContainer.container,
                 miContainer = Config.modules.MyItems.container;
 
-            if (ItemsExchange.isItemInContainer(scope.item, amContainer)) {
-                scope.iconClass = TextFragmentAnnotator.options.suggestionIconClass;
-                scope.kind = 'annomatic';
-
-            } else if (ItemsExchange.isItemInContainer(scope.item, miContainer) &&
+            if (ItemsExchange.isItemInContainer(scope.item, miContainer) &&
                 !ItemsExchange.isItemInContainer(scope.item, piContainer)) {
 
                 scope.iconClass = TextFragmentAnnotator.options.myItemsIconClass;
-                scope.kind = "myitem";
             } else {
                 scope.iconClass = TextFragmentAnnotator.options.annotationIconClass;
-                scope.kind = "annotation";
             }
 
 
@@ -47,13 +42,9 @@ angular.module('Pundit2.Annotators')
             };
 
             scope.clickHandler = function(event) {
-                if (scope.kind === 'annomatic') {
-                    console.log('Annomatic .. ');
-                } else {
-                    ContextualMenu.show(event.pageX, event.pageY, scope.item, TextFragmentAnnotator.options.cMenuType);
-                }
+                ContextualMenu.show(event.pageX, event.pageY, scope.item, TextFragmentAnnotator.options.cMenuType);
             };
 
-        }
+        } // link()
     };
 });
