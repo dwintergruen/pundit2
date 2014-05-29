@@ -91,12 +91,32 @@ angular.module('Pundit2.TripleComposer')
         $scope.statements.forEach(function(el){
             var triple = el.scope.get();
             
+            // subject uri not exist (happy it's easy)
             if (typeof(res[triple.subject.uri]) === 'undefined' ) {
-                // subject uri not exist
                 res[triple.subject.uri] = {};
                 // predicate uri not exist
                 res[triple.subject.uri][triple.predicate.uri] = [buildObject(triple.object)];
             } else {
+                // subject uri already exists
+
+                // predicate uri not exist (happy it's easy)
+                if (typeof(res[triple.subject.uri][triple.predicate.uri]) === 'undefined') {
+                    res[triple.subject.uri][triple.predicate.uri] = [buildObject(triple.object)];
+                } else {
+                    // predicate uri already exists
+
+                    var u = triple.object.uri,
+                        arr = res[triple.subject.uri][triple.predicate.uri];
+
+                    var found = arr.some(function(o){
+                        return angular.equals(o.value, u);
+                    });
+                    // object not eqaul (happy it's easy)
+                    if (!found) {
+                        arr.push(buildObject(triple.object));
+                    }
+
+                }
                 
             }
 
