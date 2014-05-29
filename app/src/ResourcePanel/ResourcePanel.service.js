@@ -333,17 +333,23 @@ angular.module('Pundit2.ResourcePanel')
 
     var searchOnVocab = function(label, selectors) {
         state.popoverOptions.scope.vocabStatus = 'loading';
+        var vocabResultEmpty = true;
         if(label === ''){
             state.popoverOptions.scope.vocabStatus = 'done';
             state.popoverOptions.scope.vocab = [];
         } else {
             var res = [];
+
             SelectorsManager.getItems(label).then(function() {
                 angular.forEach(selectors, function(sel){
                     res[sel.config.container] = ItemsExchange.getItemsByContainer(sel.config.container);
+                    if(res[sel.config.container].length >0){
+                        vocabResultEmpty = false;
+                    }
                 });
                 state.popoverOptions.scope.vocabStatus = 'done';
                 state.popoverOptions.scope.vocab = res;
+                state.popoverOptions.scope.vocabResultEmpty = vocabResultEmpty;
             });
 
 

@@ -31,7 +31,7 @@
                 <li class="list-group-item" ng-repeat = "item in vocab[s]" ng-click="save(item)">{{item.label}}</li>
             </ul>
         </div>
-	    <div ng-show = "properties.length == 0 || (pageItems.length == 0 && myItems.length == 0)">
+	    <div ng-show = "(properties.length == 0 || (pageItems.length == 0 && myItems.length == 0)) && vocabResultEmpty">
 	        <ul>
 	            <li>No match found</li>
 	        </ul>
