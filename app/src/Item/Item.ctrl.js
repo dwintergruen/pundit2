@@ -18,18 +18,24 @@ angular.module('Pundit2.Item')
         return Preview.isStickyItem($scope.item);
     };
 
-    $scope.onClickSticky = function(){
+    $scope.onClickSticky = function(evt){
         if (Preview.isStickyItem($scope.item)) {
             Preview.clearItemDashboardSticky();
         } else {
             Preview.setItemDashboardSticky($scope.item);
         }
+        evt.preventDefault();
+        evt.stopPropagation();
+        return false;
     };
     
-    $scope.onClickMenu = function($event){
+    $scope.onClickMenu = function(evt){
         // show menu on item, the action is added by MyItemsContainer or PageItemsContainer service
         // the type of menu to show is relative to pageItems or myItems
-        ContextualMenu.show($event.pageX, $event.pageY, $scope.item, $scope.menuType);
+        ContextualMenu.show(evt.pageX, evt.pageY, $scope.item, $scope.menuType);
+        evt.preventDefault();
+        evt.stopPropagation();
+        return false;
     };
 
 });
