@@ -1,5 +1,5 @@
 angular.module('Pundit2.TripleComposer')
-.controller('TripleComposerCtrl', function($scope, TripleComposer, NameSpace, TypesHelper) {
+.controller('TripleComposerCtrl', function($scope, $http, TripleComposer, NameSpace, TypesHelper) {
 
     // statements objects are extend by this.addStatementScope()
     // the function is called in the statement directive link function
@@ -49,13 +49,13 @@ angular.module('Pundit2.TripleComposer')
                 
 
                 triple.subject.type.forEach(function(e, i){
-                    res[triple.subject.type[i]] = {type: TypesHelper.getLabel(e), value: e};
+                    res[triple.subject.type[i]] = {type: 'uri', value: e};
                 });
                 triple.predicate.type.forEach(function(e, i){
-                    res[triple.predicate.type[i]] = {type: TypesHelper.getLabel(e), value: e};
+                    res[triple.predicate.type[i]] = {type: 'uri', value: e};
                 });
                 triple.object.type.forEach(function(e, i){
-                    res[triple.object.type[i]] = {type: TypesHelper.getLabel(e), value: e};
+                    res[triple.object.type[i]] = {type: 'uri', value: e};
                 });
 
             }
@@ -81,20 +81,67 @@ angular.module('Pundit2.TripleComposer')
 
         console.log(NameSpace.get('asNBCurrent'));
 
-        /*$http({
+        // susanna 'http://172.20.0.47:8081/annotationserver/'
+
+        $http({
             headers: { 'Content-Type': 'application/json' },
             method: 'POST',
             url: NameSpace.get('asNBCurrent'),
+            params: {
+                context: angular.toJson({
+                    targets: ["http://t1.com", "http://t1.com", "http://t1.com"],
+                    pageContext: "http://mypagecontex.com"
+                })
+            },
             withCredentials: true,
-            data: {
+            data: angular.toJson({
                 // obj to send, need to convert to json string?
-            }        
+                "graph": {
+                    "http://it.wikipedia.org/wiki/Roma": {
+                        "http://www.holygoat.co.uk/owl/redwood/0.1/tags/hasTag": [
+                        {
+                            "value": "Capital City",
+                            "type": "literal"
+                        },
+                        {
+                            "value": "Italy",
+                            "type": "literal"
+                        },
+                        ],
+                        "http://www.w3.org/2000/01/rdf-schema#comment": [
+                        {
+                            "value": "Wikipedia's page dedicate to Rome, the capital city of Italy.",
+                            "type": "literal"
+                        }
+                        ]
+                    }
+                },
+                "items": {
+                    "http://example.org/items1": {
+                        "http://www.w3.org/2000/01/rdf-schema#label": [
+                        {
+                            "value": "Test Label Items 1",
+                            "type": "literal"
+                        }
+                        ]
+                    },
+                    "http://example.org/items2": {
+                        "http://www.w3.org/2000/01/rdf-schema#label": [
+                        {
+                            "value": "Test Label Items 2",
+                            "type": "literal"
+                        }
+                        ]
+                    }
+                }
+                
+            })       
         }).success(function(data) {
             
 
         }).error(function(msg) {
             
-        });*/
+        });
 
     };
 
