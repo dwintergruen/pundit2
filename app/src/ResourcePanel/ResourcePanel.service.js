@@ -1,6 +1,7 @@
 angular.module('Pundit2.ResourcePanel')
 .constant('RESOURCEPANELDEFAULTS', {
-    vocabSearchTimer: 1000
+    vocabSearchTimer: 1000,
+    initialCalendarDate: '1900-1-01'
 })
 .service('ResourcePanel', function(BaseComponent, RESOURCEPANELDEFAULTS,
                                    ItemsExchange, MyItems, PageItemsContainer, Client, NameSpace, SelectorsManager,
@@ -19,6 +20,7 @@ angular.module('Pundit2.ResourcePanel')
         if(state.popover === null){
             return;
         }
+        state.popoverOptions.scope.vocab = [];
         state.popover.hide();
         state.popover.destroy();
         state.popover = null;
@@ -36,8 +38,14 @@ angular.module('Pundit2.ResourcePanel')
 
             state.popoverOptions.template = 'src/ResourcePanel/popoverCalendar.tmpl.html';
 
-            if(typeof(content.date) === 'undefined') {
-                state.popoverOptions.scope.selectedDate = '';
+            if(typeof(content.date) === 'undefined' || content.date === '') {
+
+                if(typeof(resourcePanel.options.initialCalendarDate) === 'undefined' || resourcePanel.options.initialCalendarDate === ''){
+                    state.popoverOptions.scope.selectedDate = '';
+                } else {
+                    state.popoverOptions.scope.selectedDate = resourcePanel.options.initialCalendarDate;
+                }
+
             } else {
                 state.popoverOptions.scope.selectedDate = content.date;
             }
@@ -153,13 +161,19 @@ angular.module('Pundit2.ResourcePanel')
         if (state.popover !== null && state.popover.clickTarget !== target) {
             resourcePanel.hide();
             state.popover = initPopover(content, target, "", 'literal');
-            state.popover.$promise.then(state.popover.show);
+            state.popover.$promise.then(function() {
+                state.popover.show();
+                angular.element('textarea.pnd-popover-literal-textarea')[0].focus();
+            });
         }
 
         // if no popover is shown, just show it
         else if (state.popover === null) {
             state.popover = initPopover(content, target, "", 'literal');
-            state.popover.$promise.then(state.popover.show);
+            state.popover.$promise.then(function() {
+                state.popover.show();
+                angular.element('textarea.pnd-popover-literal-textarea')[0].focus();
+            });
          }
 
         state.resourcePromise = $q.defer();
@@ -176,14 +190,20 @@ angular.module('Pundit2.ResourcePanel')
         // if no popover is shown, just show it
         if (state.popover === null) {
             state.popover = initPopover(content, target, "", 'calendar');
-            state.popover.$promise.then(state.popover.show);
+            state.popover.$promise.then(function() {
+                state.popover.show();
+                angular.element('input.pnd-input-calendar')[0].focus();
+            });
         }
 
         // if click a different popover, hide the shown popover and show the clicked one
         else if (state.popover !== null && state.popover.clickTarget !== target) {
             resourcePanel.hide();
             state.popover = initPopover( "", target, "", 'calendar');
-            state.popover.$promise.then(state.popover.show);
+            state.popover.$promise.then(function() {
+                state.popover.show();
+                angular.element('input.pnd-input-calendar')[0].focus();
+            });
         }
 
         state.resourcePromise = $q.defer();
@@ -226,15 +246,34 @@ angular.module('Pundit2.ResourcePanel')
 
     };
 
+        var searchTimer;
+
     // triple is an array of URI [subject, predicate, object]
     // show all items compatibile as subject
     resourcePanel.showItemsForSubject = function(triple, target, label) {
-        state.popoverOptions.scope.vocab = [];
+        var selectors = SelectorsManager.getActiveSelectors();
+        state.popoverOptions.scope.selectors = [];
+
+        // initialize selectors list
+        angular.forEach(selectors, function(sel){
+            state.popoverOptions.scope.selectors.push(sel.config.container);
+        });
 
         if(state.popover !== null && state.popover.clickTarget === target && state.popoverOptions.scope.label !== label){
+            $timeout.cancel(searchTimer);
             setLabelToSearch(label);
+            searchTimer = $timeout(function(){
+                searchOnVocab(label, selectors);
+            }, resourcePanel.options.vocabSearchTimer);
 
         } else {
+
+            if(typeof(label) !== 'undefined' && label !== '' && state.popoverOptions.scope.label !== label){
+                $timeout.cancel(searchTimer);
+                searchTimer = $timeout(function(){
+                    searchOnVocab(label, selectors);
+                }, resourcePanel.options.vocabSearchTimer);
+            }
 
             var myItemsContainer = MyItems.options.container;
             var pageItemsContainer = PageItemsContainer.options.container;
@@ -293,17 +332,22 @@ angular.module('Pundit2.ResourcePanel')
     };
 
     var searchOnVocab = function(label, selectors) {
-        var res = [];
+        state.popoverOptions.scope.vocabStatus = 'loading';
         if(label === ''){
-            return [];
+            state.popoverOptions.scope.vocabStatus = 'done';
+            state.popoverOptions.scope.vocab = [];
         } else {
-            SelectorsManager.getItems(label);
-
-            angular.forEach(selectors, function(sel){
-                res[sel.config.container] = ItemsExchange.getItemsByContainer(sel.config.container);
+            var res = [];
+            SelectorsManager.getItems(label).then(function() {
+                angular.forEach(selectors, function(sel){
+                    res[sel.config.container] = ItemsExchange.getItemsByContainer(sel.config.container);
+                });
+                state.popoverOptions.scope.vocabStatus = 'done';
+                state.popoverOptions.scope.vocab = res;
             });
 
-            return res;
+
+
         }
 
     }
@@ -311,8 +355,6 @@ angular.module('Pundit2.ResourcePanel')
     // triple is an array of URI [subject, predicate, object]
     // show all items compatibile as object
     resourcePanel.showItemsForObject = function(triple, target, label) {
-        var searchTimer;
-
 
         var selectors = SelectorsManager.getActiveSelectors();
         state.popoverOptions.scope.selectors = [];
@@ -323,22 +365,21 @@ angular.module('Pundit2.ResourcePanel')
         });
 
         if(state.popover !== null && state.popover.clickTarget === target && state.popoverOptions.scope.label !== label){
-            setLabelToSearch(label);
             $timeout.cancel(searchTimer);
+            setLabelToSearch(label);
             searchTimer = $timeout(function(){
-                state.popoverOptions.scope.vocab = searchOnVocab(label, selectors);
+                searchOnVocab(label, selectors);
             }, resourcePanel.options.vocabSearchTimer);
-            // set in the popover scope results
 
         } else {
 
             if(typeof(label) !== 'undefined' && label !== '' && state.popoverOptions.scope.label !== label){
                 $timeout.cancel(searchTimer);
                 searchTimer = $timeout(function(){
-                    state.popoverOptions.scope.vocab = searchOnVocab(label, selectors);
+                   searchOnVocab(label, selectors);
                 }, resourcePanel.options.vocabSearchTimer);
             }
-        resourcePanel.hide();
+
         var myItemsContainer = MyItems.options.container;
         var pageItemsContainer = PageItemsContainer.options.container;
         var myItems, pageItems;

@@ -114,10 +114,13 @@
             },
             "KorboBasketSelector": {
                 limit: 30
+            },
+            "ResourcePanel": {
+                initialCalendarDate: '2014-5-25'
             }
         }
     }
-    var ResourcePanelDemoCtrl = function($scope, ResourcePanel, Annotation, MyItems, MyPundit, Client, Item, ItemsExchange, SelectorsManager, FreebaseSelector, MurucaSelector, KorboBasketSelector) {
+    var ResourcePanelDemoCtrl = function($scope, ResourcePanel, Annotation, MyItems, MyPundit, Client, Item, ItemsExchange, SelectorsManager, FreebaseSelector, MurucaSelector, KorboBasketSelector, $filter) {
 
         SelectorsManager.init();
         $scope.triple = ["", "", ""];
@@ -194,11 +197,12 @@
         };
 
         $scope.testObject = function(elementID, $event){
-            console.log($scope.object);
+
             ResourcePanel.showItemsForObject($scope.triple, $event.target, $scope.object).then(function(value){
+
                 if(typeof(value.label) === 'undefined'){
                     angular.element('#'+elementID).text(value);
-                    $scope.object = value;
+                    $scope.object = $filter('date')(value, 'dd/MM/yyyy');
                 } else {
                     angular.element('#'+elementID).text(value.label);
                     $scope.object = value.label;
@@ -257,13 +261,17 @@
             $scope.predicateUri = "";
             $scope.predicateDomain = "";
             $scope.predicateRange = "";
+            angular.element('#test3').text("");
+            angular.element('#test4').text("");
             angular.element('#test5').text("");
             angular.element('#test6').text("");
             angular.element('#test7').text("");
         };
 
         $scope.openCalendar = function($event, elementID) {
-            ResourcePanel.showPopoverCalendar("", $event.target).then(function(date){
+            //var date = "Fri Aug 08 2014 00:00:00 GMT+0200 (CEST)";
+            var date = new Date('1983-12-23');
+            ResourcePanel.showPopoverCalendar(date, $event.target).then(function(date){
                 angular.element('#'+elementID).text(date);
             });
         };
