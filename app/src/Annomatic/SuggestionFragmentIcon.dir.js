@@ -44,7 +44,8 @@ angular.module('Pundit2.Annomatic')
                         content: ""+scope.num,
                         placement: 'bottom',
                         template: 'src/Annomatic/AnnomaticPopover.tmpl.html',
-                        trigger: 'manual'
+                        trigger: 'manual',
+                        container: "[data-ng-app='Pundit2']"
                     }// init()
                 );
 

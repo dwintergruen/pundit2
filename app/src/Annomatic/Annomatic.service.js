@@ -86,6 +86,8 @@ angular.module('Pundit2.Annomatic')
                     // All of the first multiple spaces will get fully trimmed, ignore them
                     if (currentOffset === 0) {
                         annomatic.log('Skipping FIRST empty text node.');
+                    } else if (correctedEmtpyNode) {
+                        annomatic.log('Skipping Consecutive empty text node, without correcting again.');
                     } else {
                         // If it's not the first text node, trim() will just collapse double spaces
                         // and \n into a single space. In that case we need to correct the
@@ -181,6 +183,7 @@ angular.module('Pundit2.Annomatic')
                     // spaces and trim them off. They got trimmed by trim(), not by
                     // trimDoubleSpaces()
                     var doubleSpaceTrimmed = trimDoubleSpaces(currentNode.textContent);
+
                     if (doubleSpaceTrimmed.match(/^\s\s*/) && (correctedEmtpyNode || currentOffset === 0)) {
                         currentOffset += doubleSpaceTrimmed.length - 1;
                         annomatic.log('Moving to next node (corrected by leading space) with current offset = '+ currentOffset);
@@ -424,8 +427,6 @@ angular.module('Pundit2.Annomatic')
 
                 analyze(oldAnnotationNumber, annomatic.annotationNumber);
                 promise.resolve();
-
-                console.log('Items ', ItemsExchange.getItemsByContainer(annomatic.options.container));
 
             },
             function(msg) {
