@@ -1,5 +1,5 @@
 angular.module('Pundit2.TripleComposer')
-.controller('TripleComposerCtrl', function($scope, TripleComposer) {
+.controller('TripleComposerCtrl', function($scope, TripleComposer, NameSpace, TypesHelper) {
 
     // statements objects are extend by this.addStatementScope()
     // the function is called in the statement directive link function
@@ -42,9 +42,22 @@ angular.module('Pundit2.TripleComposer')
             var triple = el.scope.get();
 
             if (triple.subject!==null && triple.predicate!==null && triple.object!==null) {
+
                 res[triple.subject.uri] = triple.subject.toRdf();
                 res[triple.predicate.uri] = triple.predicate.toRdf();
                 res[triple.object.uri] = triple.object.toRdf();
+                
+
+                triple.subject.type.forEach(function(e, i){
+                    res[triple.subject.type[i]] = {type: TypesHelper.getLabel(e), value: e};
+                });
+                triple.predicate.type.forEach(function(e, i){
+                    res[triple.predicate.type[i]] = {type: TypesHelper.getLabel(e), value: e};
+                });
+                triple.object.type.forEach(function(e, i){
+                    res[triple.object.type[i]] = {type: TypesHelper.getLabel(e), value: e};
+                });
+
             }
             
         });
@@ -62,6 +75,27 @@ angular.module('Pundit2.TripleComposer')
 
             }
         } );
+    };
+
+    $scope.fireHttp = function(){
+
+        console.log(NameSpace.get('asNBCurrent'));
+
+        /*$http({
+            headers: { 'Content-Type': 'application/json' },
+            method: 'POST',
+            url: NameSpace.get('asNBCurrent'),
+            withCredentials: true,
+            data: {
+                // obj to send, need to convert to json string?
+            }        
+        }).success(function(data) {
+            
+
+        }).error(function(msg) {
+            
+        });*/
+
     };
 
 

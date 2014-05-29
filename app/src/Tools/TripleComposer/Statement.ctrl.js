@@ -16,7 +16,7 @@ angular.module('Pundit2.TripleComposer')
     $scope.objectLabel = '';
     $scope.objectTypeLabel = '';
     $scope.objectFound = false;
-    $scope.objectSearch = "search object";
+    $scope.objectSearch = "";
     $scope.objectIcon = 'pnd-icon-search'; //'pnd-icon-times'
     $scope.objectLiteral = false;
 

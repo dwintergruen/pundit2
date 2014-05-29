@@ -133,11 +133,25 @@ angular.module('Pundit2.Core')
     };
 
     ItemFactory.prototype.toRdf = function() {
-        // TODO types?
-        return {
-            uri: this.uri,
-            types: this.type
-        };
+        // All item properties are encoded by their uri
+        console.log(this);
+
+        var i = { };
+        // properties always present
+        i[NameSpace.item.label] = this.label;
+        i[NameSpace.item.type] = this.type;
+
+        if (typeof(i[NameSpace.item.description]) !== 'undefined'){
+            i[NameSpace.item.description] = this.description;
+        }        
+
+        if (typeof(i[NameSpace.item.altLabel]) !== 'undefined'){
+            i[NameSpace.item.altLabel] = this.altLabel;
+        }        
+
+        // TODO image, partOf, pageContext
+
+        return i;
     };
 
 

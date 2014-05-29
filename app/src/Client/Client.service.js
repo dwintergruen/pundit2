@@ -45,7 +45,7 @@ angular.module('Pundit2.Client')
                 "uri": "http://xmlns.com/foaf/0.1/depicts"
             },
             {
-                "rdftype": ["http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"],
+                "type": ["http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"],
                 "label": "is similar to",
                 "description": "The selected fragment (text or image fragment) is similar to another fragment (of the same or of different types)",
                 "domain": [

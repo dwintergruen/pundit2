@@ -191,6 +191,7 @@ angular.module("Pundit2.Core")
 
     ns.asNB                = ns.as + "api/notebooks";
     ns.asNBOwned           = ns.as + "api/notebooks/owned";
+    ns.asNBCurrent         = ns.as + "api/notebooks/current";
     ns.asNBMeta            = ns.as + "api/notebooks/{{id}}/metadata";
     ns.asOpenNBMeta        = ns.as + "api/open/notebooks/{{id}}/metadata";
     ns.asOpenNBAnnMeta     = ns.as + "api/open/notebooks/{{id}}/annotations/metadata";
