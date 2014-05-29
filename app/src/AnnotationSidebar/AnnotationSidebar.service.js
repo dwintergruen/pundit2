@@ -366,8 +366,8 @@ angular.module('Pundit2.AnnotationSidebar')
             $timeout.cancel(timeoutPromise);
         }
         timeoutPromise = $timeout(function() {
-            state.allAnnotations = annotations;
-            setFilterElements(annotations);
+            state.allAnnotations = angular.copy(annotations);
+            setFilterElements(state.allAnnotations);
         }, annotationSidebar.options.annotationsRefresh);
     }, true);
 
