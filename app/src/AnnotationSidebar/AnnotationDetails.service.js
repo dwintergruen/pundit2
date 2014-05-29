@@ -20,10 +20,12 @@ angular.module('Pundit2.AnnotationSidebar')
             uri: currentUri,
             label: currentItem.label,
             description: currentItem.description,
+            image: (typeof currentItem.image !== 'undefined' ? currentItem.image : null),
             class: currentItem.getClass(),
             icon: currentItem.getIcon(),
             typeLabel: TypesHelper.getLabel(currentItem.type[0])
         };
+        // console.log("lab"+)
         return result;
     };
 
@@ -54,8 +56,10 @@ angular.module('Pundit2.AnnotationSidebar')
             } else {
                 results.push(
                     {
+                        uri: null,
                         label: objectValue,
                         description: objectValue,
+                        image: null,
                         class: null, // TODO: valutare
                         icon: null,
                         typeLabel: objectType
@@ -91,8 +95,10 @@ angular.module('Pundit2.AnnotationSidebar')
         var currentAnnotation = AnnotationsExchange.getAnnotationById(currentId);
 
         state.annotations[currentId] = {
-            id: currentId, 
+            id: currentId,
             creator: currentAnnotation.creator,
+            creatorName: currentAnnotation.creatorName,
+            created: currentAnnotation.created,
             scopeReference: scope,
             mainItem: buildMainItem(currentAnnotation),
             itemsArray: buildItemsArray(currentAnnotation),

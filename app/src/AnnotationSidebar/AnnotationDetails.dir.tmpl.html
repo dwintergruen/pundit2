@@ -16,7 +16,7 @@
 
         <div class="pnd-annotation-details-header">
             <div class="{{annotation.mainItem.class}}">
-                <button type="button" class="btn btn-primary">
+                <button type="button" class="btn btn-primary" ng-click="metaInfo = !metaInfo">
                     <span class="pnd-icon-exclamation-circle"></span>
                     Info
                 </button>
@@ -37,27 +37,26 @@
             </div>
         </div>
 
+        <div class="pnd-annotation-details-info" ng-show="metaInfo">
+            <span>Created by: {{annotation.creatorName}}</span>
+            <span>On: {{annotation.created | date : 'MMM d, y H:mm a'}}</span>       
+        </div>
 
-        <div class="pnd-annotation-details-content" style="padding: 10px">
+
+        <div class="pnd-annotation-details-content">
             <div class="pnd-annotation-detains-item" ng-repeat="item in annotation.itemsArray">
                 <div class="pnd-annotation-details-subject" ng-click="subInfo = !subInfo">
                     <span class="{{item.subject.icon}}"></span>
                     {{item.subject.label}} ({{item.subject.typeLabel}})
                     <div ng-show="subInfo">
-                        <span ng-show="item.subject.description.length>0">
-                            <strong>Description:</strong> 
-                            {{item.subject.description}}
-                        </span>
+                        <item-preview uri="{{item.subject.uri}}"></item-preview>
                     </div>
                 </div>
 
                 <div class="pnd-annotation-details-predicate" ng-click="preInfo = !preInfo">
                     {{item.predicate.label}}
                     <div ng-show="preInfo">
-                        <span ng-show="item.predicate.description.length>0">
-                            <strong>Description:</strong> 
-                            {{item.predicate.description}}
-                        </span>
+                        <item-preview uri="{{item.predicate.uri}}"></item-preview>
                     </div>
                 </div>
 
@@ -66,10 +65,7 @@
                         <span class="{{object.icon}}"></span>
                         <span>{{object.label}}</span>
                         <div ng-show="objInfo">
-                            <span ng-show="object.description.length>0">
-                                <strong>Description:</strong> 
-                                {{object.description}}
-                            </span>
+                            <item-preview uri="{{object.uri}}"></item-preview>
                         </div>
                     </div>
                 </div>
