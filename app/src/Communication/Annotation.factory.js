@@ -121,14 +121,15 @@ angular.module('Pundit2.Communication')
             }
         }
 
+        console.log(ann, annData);
         // .target is always an array
         if (ns.target in annData) {
-            ann.target = [ann.target];
-            if (annData[ns.target].length > 1) {
-                for (var target = 1; t < annData[ns.target].length; t++) {
-                    ann.target.push(annData[ns.target][target].value);
-                }
+            ann.target = [];
+            
+            for (var t = 0; t < annData[ns.target].length; t++) {
+                ann.target.push(annData[ns.target][t].value);
             }
+            
         }
 
         // Extract all of the entities and items involved in this annotation:
