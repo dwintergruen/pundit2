@@ -4,12 +4,14 @@ angular.module('Pundit2.AnnotationSidebar')
 .constant('ANNOTATIONDETAILSDEFAULTS', {
     debug: false
 })
-.service('AnnotationDetails', function($rootScope, $filter, BaseComponent, AnnotationsExchange, ItemsExchange, TypesHelper, ANNOTATIONDETAILSDEFAULTS) {
+.service('AnnotationDetails', function($rootScope, $filter, BaseComponent, AnnotationsExchange, ItemsExchange, MyPundit, TypesHelper, ANNOTATIONDETAILSDEFAULTS) {
     
     var annotationDetails = new BaseComponent('AnnotationDetails', ANNOTATIONDETAILSDEFAULTS);
 
     var state = {
-        annotations: []
+        annotations: [],
+        isUserLogged: false,
+        userData: {}
     };
 
     var buildItemDetails = function(currentUri) {
@@ -90,6 +92,7 @@ angular.module('Pundit2.AnnotationSidebar')
 
         state.annotations[currentId] = {
             id: currentId, 
+            creator: currentAnnotation.creator,
             scopeReference: scope,
             mainItem: buildMainItem(currentAnnotation),
             itemsArray: buildItemsArray(currentAnnotation),
@@ -103,7 +106,7 @@ angular.module('Pundit2.AnnotationSidebar')
         }
     };
 
-    var closeOtherAnnotation = function(skipId) {
+    annotationDetails.closeAllAnnotationView = function(skipId) {
         for (var id in state.annotations){
             if (id !== skipId){
                 state.annotations[id].expanded = false;
@@ -112,14 +115,25 @@ angular.module('Pundit2.AnnotationSidebar')
     };
 
     annotationDetails.openAnnotationView = function(currentId) {
-        closeOtherAnnotation(currentId);
+        annotationDetails.closeAllAnnotationView(currentId);
         state.annotations[currentId].expanded = true;
     };
 
     annotationDetails.toggleAnnotationView = function(currentId) {
-        closeOtherAnnotation(currentId);
+        annotationDetails.closeAllAnnotationView(currentId);
         state.annotations[currentId].expanded = !state.annotations[currentId].expanded;
     };
+
+    annotationDetails.isUserToolShowed = function(creator) {
+        return state.isUserLogged === true && creator === state.userData.uri;
+    };
+
+    $rootScope.$watch(function() {
+        return MyPundit.isUserLogged(); 
+    }, function(newStatus) {
+        state.isUserLogged = newStatus;
+        state.userData = MyPundit.getUserData();
+    });
 
     annotationDetails.log('Component running');
     return annotationDetails;

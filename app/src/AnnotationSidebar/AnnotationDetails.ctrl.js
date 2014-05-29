@@ -13,5 +13,9 @@ angular.module('Pundit2.AnnotationSidebar')
         AnnotationDetails.toggleAnnotationView(currentId);
     };
 
+    $scope.isUserToolShowed = function() {
+        return AnnotationDetails.isUserToolShowed($scope.annotation.creator);
+    };
+
     AnnotationDetails.log('Controller Details Run');
 });
