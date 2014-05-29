@@ -22,9 +22,9 @@ angular.module('Pundit2.Toolbar')
      * URL to Ask the Pundit shown when user is not logged in
      *
      * Default value:
-     * <pre> askLinkDefault: "http://ask.thepund.it/" </pre>
+     * <pre> askLinkDefault: "http://demo-cloud.ask.thepund.it/" </pre>
      */
-    askLinkDefault: "http://ask.thepund.it/",
+    askLinkDefault: "http://demo-cloud.ask.thepund.it/",
     /**
      * @ngdoc property
      * @name Configuration#modules.Toolbar.askLinkUser
@@ -35,9 +35,9 @@ angular.module('Pundit2.Toolbar')
      * URL to Ask the Pundit logged in user page
      *
      * Default value:
-     * <pre> askLinkUser: "http://ask.thepund.it/#/myAsk/" </pre>
+     * <pre> askLinkUser: "http://demo-cloud.ask.thepund.it/#/myAsk/" </pre>
      */
-    askLinkUser: "http://ask.thepund.it/#/myAsk/",
+    askLinkUser: "http://demo-cloud.ask.thepund.it/#/myAsk/",
     /**
      * @ngdoc property
      * @name Configuration#modules.Toolbar.bodyClass
