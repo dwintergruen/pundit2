@@ -1,5 +1,5 @@
 angular.module('Pundit2.TripleComposer')
-.controller('TripleComposerCtrl', function($scope, $http, TripleComposer, NameSpace, TypesHelper) {
+.controller('TripleComposerCtrl', function($scope, $http, Annotation, TripleComposer, NameSpace, TypesHelper, XpointersHelper) {
 
     // statements objects are extend by this.addStatementScope()
     // the function is called in the statement directive link function
@@ -38,24 +38,37 @@ angular.module('Pundit2.TripleComposer')
     var buildItems = function(){
         var res = {};
         
-        $scope.statements.forEach(function(el, index){
+        $scope.statements.forEach(function(el){
+            // get triple
             var triple = el.scope.get();
 
+            // only comple triples can be saved
             if (triple.subject!==null && triple.predicate!==null && triple.object!==null) {
 
+                // rdf properties
                 res[triple.subject.uri] = triple.subject.toRdf();
-                res[triple.predicate.uri] = triple.predicate.toRdf();
-                res[triple.object.uri] = triple.object.toRdf();
-                
 
+                res[triple.predicate.uri] = triple.predicate.toRdf();
+
+                res[triple.object.uri] = triple.object.toRdf();                
+
+                // types inside typeUri
                 triple.subject.type.forEach(function(e, i){
-                    res[triple.subject.type[i]] = {type: 'uri', value: e};
+                    var type = triple.subject.type[i];
+                    res[type] = { };
+                    res[type][NameSpace.rdfs.label] = [{type: 'literal', value: TypesHelper.getLabel(e)}];
                 });
+
                 triple.predicate.type.forEach(function(e, i){
-                    res[triple.predicate.type[i]] = {type: 'uri', value: e};
+                    var type = triple.predicate.type[i];
+                    res[type] = { };
+                    res[type][NameSpace.rdfs.label] = [{type: 'literal', value: TypesHelper.getLabel(e)}];
                 });
+
                 triple.object.type.forEach(function(e, i){
-                    res[triple.object.type[i]] = {type: 'uri', value: e};
+                    var type = triple.object.type[i];
+                    res[type] = { };
+                    res[type][NameSpace.rdfs.label] = [{type: 'literal', value: TypesHelper.getLabel(e)}];
                 });
 
             }
@@ -65,23 +78,75 @@ angular.module('Pundit2.TripleComposer')
         return res;
     };
 
-    $scope.saveAnnotation = function(){
-        console.log( {
-            items: buildItems(),
-            metadata: {
+    var buildObject = function(item){
+        return {type: 'uri', value: item.uri}
+    };
+    var buildPredicate = function(item){
 
-            },
-            graph: {
+    };
 
+    var buildGraph = function(){
+        var res = {};
+
+        $scope.statements.forEach(function(el){
+            var triple = el.scope.get();
+            
+            if (typeof(res[triple.subject.uri]) === 'undefined' ) {
+                // subject uri not exist
+                res[triple.subject.uri] = {};
+                // predicate uri not exist
+                res[triple.subject.uri][triple.predicate.uri] = [buildObject(triple.object)];
+            } else {
+                
             }
-        } );
+
+        });
+
+
+        return res;
+    };
+
+    $scope.saveAnnotation = function(){
+        console.log({
+            items: buildItems(),
+            graph: buildGraph()
+        });
     };
 
     $scope.fireHttp = function(){
 
-        console.log(NameSpace.get('asNBCurrent'));
+        // test with notebook "b81c0aa3"
+        // need to use NameSpace.get('asNBCurrent')
 
-        // susanna 'http://172.20.0.47:8081/annotationserver/'
+        $http({
+            headers: { 'Content-Type': 'application/json' },
+            method: 'POST',
+            url: NameSpace.get('asNB')+"/b81c0aa3",
+            params: {
+                context: angular.toJson({
+                    targets: ["http://t1.com", "http://t1.com", "http://t1.com"],
+                    pageContext: XpointersHelper.getSafePageContext()
+                })
+            },
+            withCredentials: true,
+            cache: false,
+            data: {
+                "graph": buildGraph(),
+                "items": buildItems()               
+            }
+        }).success(function(data) {
+           console.log(data);
+           new Annotation(data.AnnotationID).then(function(ann){
+                console.log(ann);
+           });
+        }).error(function(msg) {
+            console.log(msg);
+        });
+
+    };
+
+
+    /* tested with susanna at 'http://172.20.0.47:8081/annotationserver/'
 
         $http({
             headers: { 'Content-Type': 'application/json' },
@@ -143,7 +208,7 @@ angular.module('Pundit2.TripleComposer')
             
         });
 
-    };
+        */
 
 
 });

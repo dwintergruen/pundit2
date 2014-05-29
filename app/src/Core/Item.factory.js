@@ -138,18 +138,32 @@ angular.module('Pundit2.Core')
 
         var i = { };
         // properties always present
-        i[NameSpace.item.label] = this.label;
-        i[NameSpace.item.type] = this.type;
+        i[NameSpace.item.label] = [{ type:'literal', value: this.label}];
+        i[NameSpace.item.type] = [];
 
-        if (typeof(i[NameSpace.item.description]) !== 'undefined'){
-            i[NameSpace.item.description] = this.description;
-        }        
+        this.type.forEach(function(typeUri){
+            i[NameSpace.item.type].push({ type:'uri', value: typeUri})
+        })
 
-        if (typeof(i[NameSpace.item.altLabel]) !== 'undefined'){
-            i[NameSpace.item.altLabel] = this.altLabel;
-        }        
+        if (typeof(this.altLabel) !== 'undefined'){
+            i[NameSpace.item.altLabel] = [{ type:'literal', value: this.altLabel}];
+        }
 
-        // TODO image, partOf, pageContext
+        if (typeof(this.description) !== 'undefined'){
+            i[NameSpace.item.description] = [{ type:'literal', value: this.description}];
+        }
+
+        if (typeof(this.image) !== 'undefined'){
+            i[NameSpace.item.image] = [{type:'literal', value: this.image}];
+        }
+
+        if (typeof(this.pageContext) !== 'undefined'){
+            i[NameSpace.item.pageContext] = [{ type:'uri', value: this.pageContext}];
+        }
+
+        if (typeof(this.isPartOf) !== 'undefined'){
+            i[NameSpace.item.isPartOf] = [{ type:'uri', value: this.isPartOf}];
+        }
 
         return i;
     };
