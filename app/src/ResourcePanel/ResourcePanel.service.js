@@ -1,6 +1,6 @@
 angular.module('Pundit2.ResourcePanel')
 .constant('RESOURCEPANELDEFAULTS', {
-
+    vocabSearchTimer: 1000
 })
 .service('ResourcePanel', function(BaseComponent, RESOURCEPANELDEFAULTS,
                                    ItemsExchange, MyItems, PageItemsContainer, Client, NameSpace, SelectorsManager,
@@ -12,22 +12,6 @@ angular.module('Pundit2.ResourcePanel')
     state.popover = null;
     state.defaultPlacement = 'bottom';
     state.resourcePromise = null;
-
-    // create div  where resource panel append popover
-    angular.element("[data-ng-app='Pundit2']")
-        .prepend("<div class='pnd-resource-panel-popover-rpAnchor' style='position: absolute; left: -500px; top: -500px;'><div>");
-    state.resourcePanelAnchor = angular.element('.pnd-resource-panel-popover-rpAnchor');
-
-    // create div literalAnchor where literal append popover
-    angular.element("[data-ng-app='Pundit2']")
-        .prepend("<div class='pnd-literal-popover-literalAnchor' style='position: absolute; left: -500px; top: -500px;'><div>");
-    state.literalAnchor = angular.element('.pnd-literal-popover-literalAnchor');
-
-
-    // create div literalAnchor where calendar append popover
-    angular.element("[data-ng-app='Pundit2']")
-        .prepend("<div class='pnd-calendar-popover-calendarAnchor' style='position: absolute; left: -500px; top: -500px;'><div>");
-    state.calendarAnchor = angular.element('.pnd-calendar-popover-calendarAnchor');
 
     // hide and destroy a popover
     resourcePanel.hide = function(){
@@ -42,24 +26,15 @@ angular.module('Pundit2.ResourcePanel')
 
     // scope needed to instantiate a new popover using $popover provider
     state.popoverOptions = {scope: $rootScope.$new()};
+    state.popoverOptions.trigger = "manual";
 
     // initialize a popover
     var initPopover = function(content, target, placement, type){
-        var popoverAnchor;
-        var x = (angular.element(target))[0].getBoundingClientRect().left + (parseInt(angular.element(target).css('width'), 10)/2);
-        var y = (angular.element(target))[0].getBoundingClientRect().top + parseInt(angular.element(target).css('height'), 10);
 
         // initialize a calendar popover
         if(type === 'calendar') {
 
             state.popoverOptions.template = 'src/ResourcePanel/popoverCalendar.tmpl.html';
-            // move literalAnchor to correct position
-            state.calendarAnchor.css({
-                left: x,
-                top: y
-            });
-
-            popoverAnchor = state.calendarAnchor;
 
             if(typeof(content.date) === 'undefined') {
                 state.popoverOptions.scope.selectedDate = '';
@@ -81,12 +56,6 @@ angular.module('Pundit2.ResourcePanel')
         } else if(type === 'literal'){
 
             state.popoverOptions.template = 'src/ResourcePanel/popoverLiteralText.tmpl.html';
-            state.literalAnchor.css({
-                left: x,
-                top: y
-            });
-
-            popoverAnchor = state.literalAnchor;
 
             if(typeof(content.literalText) === 'undefined') {
                 state.popoverOptions.scope.literalText = '';
@@ -109,12 +78,7 @@ angular.module('Pundit2.ResourcePanel')
         } else if(type === 'resourcePanel'){
 
             state.popoverOptions.template = 'src/ResourcePanel/popoverResourcePanel.tmpl.html';
-            // move literalAnchor to correct position
-            state.resourcePanelAnchor.css({
-                left: x,
-                top: y
-            });
-            popoverAnchor = state.resourcePanelAnchor;
+
             state.popoverOptions.scope.originalContent = angular.copy(content);
             state.popoverOptions.scope.type = content.type;
             state.popoverOptions.scope.pageItems = content.pageItems;
@@ -145,7 +109,7 @@ angular.module('Pundit2.ResourcePanel')
             state.popoverOptions.placement = placement;
         }
 
-        state.popover = $popover(popoverAnchor, state.popoverOptions);
+        state.popover = $popover(angular.element(target), state.popoverOptions);
 
         // Open the calendar automatically
         if (type === 'calendar') {
@@ -267,7 +231,8 @@ angular.module('Pundit2.ResourcePanel')
             resourcePanel.hide();
             state.popover = initPopover(content, target, "", 'resourcePanel');
             state.popover.$promise.then(state.popover.show);
-        }
+        } // if click a different popover, hide the shown popover and show the clicked one
+
 
     };
 
@@ -280,7 +245,7 @@ angular.module('Pundit2.ResourcePanel')
             setLabelToSearch(label);
 
         } else {
-            resourcePanel.hide();
+
             var myItemsContainer = MyItems.options.container;
             var pageItemsContainer = PageItemsContainer.options.container;
             var myItems, pageItems;
@@ -337,43 +302,52 @@ angular.module('Pundit2.ResourcePanel')
 
     };
 
+    var searchOnVocab = function(label, selectors) {
+        var res = [];
+        if(label === ''){
+            return [];
+        } else {
+            SelectorsManager.getItems(label);
+
+            angular.forEach(selectors, function(sel){
+                res[sel.config.container] = ItemsExchange.getItemsByContainer(sel.config.container);
+            });
+
+            return res;
+        }
+
+    }
+
     // triple is an array of URI [subject, predicate, object]
     // show all items compatibile as object
     resourcePanel.showItemsForObject = function(triple, target, label) {
+        var searchTimer;
+
 
         var selectors = SelectorsManager.getActiveSelectors();
         state.popoverOptions.scope.selectors = [];
-        var vocab = [];
 
+        // initialize selectors list
         angular.forEach(selectors, function(sel){
             state.popoverOptions.scope.selectors.push(sel.config.container);
         });
 
-        if(typeof(label) !== 'undefined' && label !== ''){
-            SelectorsManager.getItems(label);
-            angular.forEach(selectors, function(sel){
-                vocab[sel.config.container] = ItemsExchange.getItemsByContainer(sel.config.container);
-            });
-            state.popoverOptions.scope.vocab = vocab;
-        }
-
         if(state.popover !== null && state.popover.clickTarget === target && state.popoverOptions.scope.label !== label){
             setLabelToSearch(label);
-
-
-            if(label === ''){
-                vocab = [];
-            } else {
-                SelectorsManager.getItems(label);
-
-                angular.forEach(selectors, function(sel){
-                    vocab[sel.config.container] = ItemsExchange.getItemsByContainer(sel.config.container);
-                });
-            }
-            state.popoverOptions.scope.vocab = vocab;
-
+            $timeout.cancel(searchTimer);
+            searchTimer = $timeout(function(){
+                state.popoverOptions.scope.vocab = searchOnVocab(label, selectors);
+            }, resourcePanel.options.vocabSearchTimer);
+            // set in the popover scope results
 
         } else {
+
+            if(typeof(label) !== 'undefined' && label !== '' && state.popoverOptions.scope.label !== label){
+                $timeout.cancel(searchTimer);
+                searchTimer = $timeout(function(){
+                    state.popoverOptions.scope.vocab = searchOnVocab(label, selectors);
+                }, resourcePanel.options.vocabSearchTimer);
+            }
         resourcePanel.hide();
         var myItemsContainer = MyItems.options.container;
         var pageItemsContainer = PageItemsContainer.options.container;

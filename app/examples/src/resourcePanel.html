@@ -29,7 +29,7 @@
                         "uri": "http://xmlns.com/foaf/0.1/depicts"
                     },
                     {
-                        "rdftype": ["http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"],
+                        "type": ["http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"],
                         "label": "is similar to",
                         "description": "The selected fragment (text or image fragment) is similar to another fragment (of the same or of different types)",
                         "domain": [
@@ -105,6 +105,15 @@
                         "uri": "http://purl.org/pundit/ont/oa#isWrittenIn"
                     }
                 ]
+            },
+            "FreebaseSelector": {
+                limit: 30
+            },
+            "MurucaSelector": {
+                limit: 30
+            },
+            "KorboBasketSelector": {
+                limit: 30
             }
         }
     }
@@ -131,9 +140,12 @@
             new Annotation(toLoad[l]);
         }
 
-        MyPundit.login().then(function(value) {
-            console.log("Is logged in is "+value);
-            MyItems.getAllItems();
+        MyPundit.checkLoggedIn().then(function(value) {
+            if(value){
+                console.log("Is logged in is "+value);
+                MyItems.getAllItems();
+            }
+
         }, function() {
             console.log("Error: "+value);
         });

@@ -4,23 +4,30 @@
     <h3 class="popover-title">Choose your...</h3>
     <div class="popover-content">
 	    <div ng-show = "myItems.length>0"> My items ({{myItems.length}})
-	        <ul>
-	            <li ng-repeat="mi in myItems" ng-click="save(mi)">{{mi.label}}</li>
-	        </ul>
+            <ul class="list-group">
+                <li class="list-group-item" ng-repeat="mi in myItems">
+                    <item uri="{{mi.uri}}" ng-click="save(mi)"></item>
+                </li>
+            </ul>
 	    </div>
 	    <div ng-show = "pageItems.length>0"> Page Items ({{pageItems.length}})
-	        <ul>
-	            <li ng-repeat="pi in pageItems" ng-click="save(pi)">{{pi.label}}</li>
-	        </ul>
+            <ul class="list-group">
+                <li class="list-group-item" ng-repeat="pi in pageItems">
+                    <item uri="{{pi.uri}}" ng-click="save(pi)"></item>
+                </li>
+            </ul>
 	    </div>
 	    <div ng-show = "properties.length>0"> Properties ({{properties.length}})
-	        <ul>
-	            <li ng-repeat="pr in properties" ng-click="save(pr)">{{pr.label}}</li>
+	        <ul class="list-group">
+	            <li class="list-group-item" ng-repeat="pr in properties">
+                     <item uri="{{pr.uri}}" ng-click="save(pr)"></item>
+                </li>
 	        </ul>
+
 	    </div>
-        <div ng-repeat="s in selectors" ng-show = "vocab[s].length>0"> {{s}} ({{s.length}})
-            <ul>
-                <li ng-repeat = "item in vocab[s]" ng-click="save(item)">{{item.label}}</li>
+        <div ng-repeat="s in selectors" ng-show = "vocab[s].length>0"> {{s}} ({{vocab[s].length}})
+            <ul class="list-group">
+                <li class="list-group-item" ng-repeat = "item in vocab[s]" ng-click="save(item)">{{item.label}}</li>
             </ul>
         </div>
 	    <div ng-show = "properties.length == 0 || (pageItems.length == 0 && myItems.length == 0)">
