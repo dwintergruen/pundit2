@@ -1,22 +1,38 @@
-<header class="panel panel-danger" ng-controller="AnnomaticPanelCtrl">
-    <div class="panel-heading">
-        <button class="btn" ng-click="getAnnotations()">Get annotations</button>
-        <button class="btn" ng-click="startReview()">Start review ({{Annomatic.currAnn}}/{{Annomatic.annotationNumber}})</button>
+<div ng-controller="AnnomaticPanelCtrl">
+    <div>
 
-        <div>
-            <label>Filter types:&nbsp;</label>
-            <button type="button" class="btn btn-default" ng-model="filteredTypes" data-html="1" data-multiple="1" data-animation="am-flip-x" ng-options="type.value as type.label for type in Annomatic.ann.typesOptions" bs-select>
-              Action <span class="caret"></span>
+        <button ng-disabled="targets.length == 0" class="btn btn-success" ng-click="getSuggestions()">
+            Scan Page <span class="pnd-icon pnd-icon-file-text"></span>
+        </button>
+
+        <button class="btn btn-success" ng-click="selectAreaMode()">
+            Select area <span class="pnd-icon pnd-icon-edit"></span>
+        </button>
+
+        <div ng-show="Annomatic.annotationNumber > 0">
+            <button class="btn btn-danger" ng-click="startReview()">
+                Review ({{Annomatic.currAnn}}/{{Annomatic.annotationNumber}})
+            </button>
+
+            <button
+                class="btn btn-default"
+                ng-model="filteredTypes"
+                placeholder="Filter by suggestion type"
+                data-html="1"
+                data-multiple="1"
+                data-animation="am-flip-x"
+                ng-options="type.value as type.label for type in Annomatic.ann.typesOptions"
+                bs-select>
             </button>
         </div>
     </div>
-    <div class="panel-header">
+    <div>
         Accepted: {{Annomatic.ann.byState['accepted'].join(', ')}}
     </div>
-    <div class="panel-header">
+    <div>
         Removed: {{Annomatic.ann.byState['removed'].join(', ')}}
     </div>
-    <div class="panel-header">
+    <div>
         filteredTypes: {{Annomatic.filteredTypes}}
     </div>
-</header>
+</div>

@@ -1,13 +1,43 @@
 angular.module('Pundit2.Annomatic')
 .controller('AnnomaticPanelCtrl', function($scope, Annomatic, Consolidation, ItemsExchange,
-                                           $window) {
+                                           TextFragmentAnnotator, XpointersHelper,
+                                           $window, $q) {
 
-    // Get ready to use the service
+    $scope.targets = TextFragmentAnnotator.getAvailableTargets(true);
+
     var gotAnnotations = false;
-    $scope.getAnnotations = function() {
+    $scope.getSuggestions = function() {
+
         if (gotAnnotations) { return; }
         gotAnnotations = true;
-        Annomatic.getDataTXTAnnotations(annotationsRootNode).then(function() {
+
+        var nodes = [],
+            namedClasses = XpointersHelper.options.namedContentClasses,
+            selectors = [];
+
+        for (var len=$scope.targets.length; len--;) {
+            selectors.push("[about='"+$scope.targets[len]+"']");
+        }
+        selectors.join(',');
+        angular.forEach(angular.element(selectors.join(',')), function(node){
+            for (var l=namedClasses.length; l--;) {
+                if (angular.element(node).hasClass(namedClasses[l])) {
+                    nodes.push(node);
+                    break;
+                }
+            }
+        });
+
+        Annomatic.log('Asking for annotations on '+nodes.length+' nodes: ', nodes);
+
+        var promises = [];
+        for (var n=nodes.length; n--;) {
+            promises.push(Annomatic.getDataTXTAnnotations(nodes[n]));
+        }
+        // TODO: if one the aggregated promises gets rejected ... all of them gets rejected :|
+        // we can put the consolidation in in the rejected function too, maybe, not in the
+        // finally(), since it only gets called if all of them are resolved.
+        $q.all(promises).then(function() {
             Consolidation.consolidate(ItemsExchange.getItemsByContainer(Annomatic.options.container));
         });
     };
@@ -17,12 +47,12 @@ angular.module('Pundit2.Annomatic')
     };
     
     $scope.Annomatic = Annomatic;
-    
+
+    // Watching changes on the select
     $scope.$watch('filteredTypes', function(filtered, oldFiltered) {
         if (typeof(filtered) === "undefined" && typeof(oldFiltered) === "undefined") { return; }
         Annomatic.setTypeFilter(filtered);
-    });
-
+    }, true);
 
     var annotationsRootNode = angular.element('div.panel-body');
 
@@ -46,8 +76,6 @@ angular.module('Pundit2.Annomatic')
 
     }; // getSelectedRange()
     
-
-
     var ancestor;
     angular.element('body').on('mousedown', function() {
 

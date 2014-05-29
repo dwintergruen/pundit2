@@ -265,21 +265,28 @@ angular.module('Pundit2.Annomatic')
         'removed' : 'ann-removed',
         'hidden'  : 'ann-hidden'
     };
-    
+
+
+    // TODO: do we need to do more stuff to reset everything and start from scratch?
+    annomatic.reset = function() {
+        annomatic.ann.typesOptions = [];
+
+        for (var s in annomatic.stateClassMap) {
+            annomatic.ann.byState[s] = [];
+        }
+    };
+    annomatic.reset();
+
     // Creates various utility indexes and counts stuff around to
     // show various information to the user
-    var analyze = function() {
+    var analyze = function(from, to) {
 
         var byId = annomatic.ann.byId,
             byType = annomatic.ann.byType;
 
-        annomatic.ann.typesOptions = [];
-        
-        for (var s in annomatic.stateClassMap) {
-            annomatic.ann.byState[s] = [];
-        }
-        
-        for (var l=annomatic.annotationNumber; l--;) {
+        annomatic.log('Analyzing from '+from+' to '+to);
+
+        for (var l=from; l<to; l++) {
             var ann = annomatic.ann.byNum[l],
                 id = ann.id,
                 types = ann.types || [];
@@ -297,7 +304,7 @@ angular.module('Pundit2.Annomatic')
                 if (t in byType) {
                     byType[t].push(l);
                 } else {
-                    annomatic.ann.typesOptions.push({value: t, label: TypesHelper.getLabel(t) });
+                    annomatic.ann.typesOptions.push({value: t});
                     byType[t] = [l];
                 }
             }
@@ -309,14 +316,21 @@ angular.module('Pundit2.Annomatic')
             annomatic.ann.byState[ann.state].push(l);
         } // for l
 
+        // Recalculate the number of annotations for each type and update the labels
+        // for the select
         for (l=annomatic.ann.typesOptions.length; l--;) {
             var op = annomatic.ann.typesOptions[l],
                 uri = op.value;
 
-            op.label = op.label + "("+ byType[uri].length+")";
+            op.label = TypesHelper.getLabel(uri) + " ("+ byType[uri].length+")";
         }
+
+        // Sort them from most used to least used
+        annomatic.ann.typesOptions = annomatic.ann.typesOptions.sort(function(a, b){
+            return byType[b.value].length - byType[a.value].length;
+        });
         
-    };
+    }; // analyze()
     
     var updateStates = function(num, from, to) {
         var byState = annomatic.ann.byState,
@@ -389,16 +403,18 @@ angular.module('Pundit2.Annomatic')
 
                 annomatic.log('Received '+data.annotations.length+' annotations from DataTXT');
                 var item,
-                    validAnnotations = findAnnotations(element, data.annotations);
+                    validAnnotations = findAnnotations(element, data.annotations),
+                    oldAnnotationNumber = annomatic.annotationNumber;
 
-                annomatic.annotationNumber = validAnnotations.length;
+                annomatic.annotationNumber += validAnnotations.length;
                 annomatic.currAnn = 0;
 
                 for (var l=validAnnotations.length, i=0; i<l; i++) {
+                    var currentIndex = oldAnnotationNumber + i;
                     item = TextFragmentHandler.createItemFromRange(validAnnotations[i].range);
-                    annomatic.ann.byNum[i] = validAnnotations[i].annotation;
-                    annomatic.ann.numToUriMap[i] = item.uri;
-                    annomatic.ann.uriToNumMap[item.uri] = i;
+                    annomatic.ann.byNum[currentIndex] = validAnnotations[i].annotation;
+                    annomatic.ann.numToUriMap[currentIndex] = item.uri;
+                    annomatic.ann.uriToNumMap[item.uri] = currentIndex;
                     annomatic.ann.byUri[item.uri] = validAnnotations[i].annotation;
                     ItemsExchange.addItemToContainer(item, annomatic.options.container);
 
@@ -406,7 +422,7 @@ angular.module('Pundit2.Annomatic')
                     ItemsExchange.addItemToContainer(item, annomatic.options.container);
                 }
 
-                analyze();
+                analyze(oldAnnotationNumber, annomatic.annotationNumber);
                 promise.resolve();
 
                 console.log('Items ', ItemsExchange.getItemsByContainer(annomatic.options.container));
@@ -468,7 +484,9 @@ angular.module('Pundit2.Annomatic')
         var byType = annomatic.ann.byType,
             byNum = annomatic.ann.byNum,
             toShow = {};
-        
+
+        annomatic.log('Setting type filter to ', types);
+
         // No filters: just show all
         if (types.length === 0) {
             for (var i=byNum.length; i--;) {

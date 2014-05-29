@@ -90,12 +90,14 @@ angular.module('Pundit2.Annotators')
         return true;
     };
 
-    tfa.getAvailableTargets = function() {
+    tfa.getAvailableTargets = function(onlyNamedContents) {
         var ret = [],
             nc = XpointersHelper.options.namedContentClasses;
 
         // The page URL is for xpointers out of named contents
-        ret.push($location.absUrl());
+        if (typeof(onlyNamedContents) === "undefined" || onlyNamedContents !== true) {
+            ret.push($location.absUrl());
+        }
 
         // Look for named content: an element with a class listed in .namedContentClasses
         // then get its about attribute
