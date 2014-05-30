@@ -87,10 +87,6 @@ angular.module('Pundit2.ResourcePanel')
             // initialize a resource panel popover
         } else if(type === 'resourcePanel'){
 
-            if(typeof(target) === 'undefined'){
-                target = state.popoverOptions.scope.clickTarget;
-            }
-
             state.popoverOptions.template = 'src/ResourcePanel/popoverResourcePanel.tmpl.html';
 
             state.popoverOptions.scope.originalContent = angular.copy(content);
@@ -261,6 +257,10 @@ angular.module('Pundit2.ResourcePanel')
     // show all items compatibile as subject
     resourcePanel.showItemsForSubject = function(triple, target, label) {
 
+        if(typeof(target) === 'undefined'){
+            target = state.popover.clickTarget;
+        }        
+
         var selectors = SelectorsManager.getActiveSelectors();
         state.popoverOptions.scope.selectors = [];
 
@@ -393,6 +393,10 @@ angular.module('Pundit2.ResourcePanel')
     // show all items compatibile as object
     resourcePanel.showItemsForObject = function(triple, target, label) {
 
+        if(typeof(target) === 'undefined'){
+            target = state.popover.clickTarget;
+        }
+
         var selectors = SelectorsManager.getActiveSelectors();
         state.popoverOptions.scope.selectors = [];
 
@@ -493,6 +497,10 @@ angular.module('Pundit2.ResourcePanel')
     // show only properties
     // will be executed for predicates
     resourcePanel.showProperties = function(triple, target, label) {
+
+        if(typeof(target) === 'undefined'){
+            target = state.popover.clickTarget;
+        }
 
         $timeout.cancel(searchTimer);
         state.popoverOptions.scope.vocabStatus = '';
