@@ -5,7 +5,7 @@
 
         <div ng-hide="subjectFound">
             <div class="left-inner-icon">
-                <span class="pnd-icon {{subjectIcon}}"></span>
+                <span class="pnd-icon {{subjectIcon}}" ng-click="clearSubjectSearch()"></span>
                 <input type="text" class="input-sm" placeholder="search a subject" ng-model="subjectSearch" ng-click="onClickSubject($event)" ng-keyup="onKeyUpSubject($event)">
             </div>
             <button>NEW</button>
@@ -25,7 +25,7 @@
 
         <div ng-hide="predicateFound">
             <div class="left-inner-icon">
-                <span class="pnd-icon {{predicateIcon}}"></span>
+                <span class="pnd-icon {{predicateIcon}}" ng-click="clearPredicateSearch()"></span>
                 <input type="text" class="input-sm" placeholder="search a predicate" ng-model="predicateSearch" ng-click="onClickPredicate($event)" ng-keyup="onKeyUpPredicate($event)">
             </div>
         </div>
@@ -33,7 +33,7 @@
         <div ng-show="predicateFound" ng-mouseover="subjectOver=true" ng-mouseleave="subjectOver=false">
             <div>{{predicateLabel}}</div>
             <button ng-click="wipePredicate()">D</button>
-        </div>     
+        </div>
 
     </div>
 
@@ -42,7 +42,7 @@
 
         <div ng-hide="objectFound">
             <div class="left-inner-icon">
-                <span class="pnd-icon {{objectIcon}}"></span>
+                <span class="pnd-icon {{objectIcon}}" ng-click="clearObjectSearch()"></span>
                 <input type="text" class="input-sm" placeholder="search an object" ng-model="objectSearch" ng-click="onClickObject($event)" ng-keyup="onKeyUpObject($event)">
             </div>
             <!--Calendar Icon-->

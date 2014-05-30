@@ -1,23 +1,23 @@
 angular.module('Pundit2.TripleComposer')
-.controller('StatementCtrl', function($scope, $element, TypesHelper, ResourcePanel, NameSpace) {
+.controller('StatementCtrl', function($scope, $element, TypesHelper, ResourcePanel, NameSpace, TripleComposer) {
 
     // default values
     $scope.subjectLabel = '';
     $scope.subjectTypeLabel = '';
     $scope.subjectFound = false;
     $scope.subjectSearch = "";
-    $scope.subjectIcon = 'pnd-icon-search'; //'pnd-icon-times'
+    $scope.subjectIcon = TripleComposer.options.inputIconSearch;
 
     $scope.predicateLabel = '';
     $scope.predicateFound = false;
     $scope.predicateSearch = "";
-    $scope.predicateIcon = 'pnd-icon-search'; //'pnd-icon-times'
+    $scope.predicateIcon = TripleComposer.options.inputIconSearch;
 
     $scope.objectLabel = '';
     $scope.objectTypeLabel = '';
     $scope.objectFound = false;
     $scope.objectSearch = "";
-    $scope.objectIcon = 'pnd-icon-search'; //'pnd-icon-times'
+    $scope.objectIcon = TripleComposer.options.inputIconSearch;
     $scope.objectLiteral = false;
 
     // reference to the items used inside this statement
@@ -127,29 +127,77 @@ angular.module('Pundit2.TripleComposer')
         $scope.subjectLabel = '';
         $scope.subjectTypeLabel = '';
         $scope.subjectFound = false;
-        $scope.subjectSearch = "search subject";
-        $scope.subjectIcon = 'pnd-icon-search';
+        $scope.subjectSearch = "";
+        $scope.subjectIcon = TripleComposer.options.inputIconSearch;
         triple.subject = null;
+        ResourcePanel.hide();
+    };
+    $scope.clearSubjectSearch = function(){
+        if ($scope.subjectSearch === "" || typeof($scope.subjectSearch) === 'undefined'){
+            return;
+        }
+        $scope.subjectSearch = "";
     };
 
     $scope.wipePredicate = function(){
         $scope.predicateLabel = '';
         $scope.predicateFound = false;
-        $scope.predicateSearch = "search predicate";
-        $scope.predicateIcon = 'pnd-icon-search';
+        $scope.predicateSearch = "";
+        $scope.predicateIcon = TripleComposer.options.inputIconSearch;
         triple.predicate = null;
+        ResourcePanel.hide();
+    };
+    $scope.clearPredicateSearch = function(){
+        if ($scope.predicateSearch === "" || typeof($scope.predicateSearch) === 'undefined'){
+            return;
+        }
+        $scope.predicateSearch = "";
     };
 
     $scope.wipeObject = function(){
         $scope.objectLabel = '';
         $scope.objectTypeLabel = '';
         $scope.objectFound = false;
-        $scope.objectSearch = "search object";
-        $scope.objectIcon = 'pnd-icon-search';
+        $scope.objectSearch = "";
+        $scope.objectIcon = TripleComposer.options.inputIconSearch;
         $scope.objectLiteral = false;
         triple.object = null; 
+        ResourcePanel.hide();
+    };
+    $scope.clearObjectSearch = function(){
+        if ($scope.objectSearch === "" || typeof($scope.objectSearch) === 'undefined'){
+            return;
+        }
+        $scope.objectSearch = "";
     };
 
+    $scope.$watch(function() {
+        return $scope.subjectSearch;
+    }, function(str) {
+        if (typeof(str) === 'undefined' || str === '') {
+            $scope.subjectIcon = TripleComposer.options.inputIconSearch;
+        } else {
+            $scope.subjectIcon = TripleComposer.options.inputIconClear;
+        }
+    });
+    $scope.$watch(function() {
+        return $scope.predicateSearch;
+    }, function(str) {
+        if (typeof(str) === 'undefined' || str === '') {
+            $scope.predicateIcon = TripleComposer.options.inputIconSearch;
+        } else {
+            $scope.predicateIcon = TripleComposer.options.inputIconClear;
+        }
+    });
+    $scope.$watch(function() {
+        return $scope.objectSearch;
+    }, function(str) {
+        if (typeof(str) === 'undefined' || str === '') {
+            $scope.objectIcon = TripleComposer.options.inputIconSearch;
+        } else {
+            $scope.objectIcon = TripleComposer.options.inputIconClear;
+        }
+    });
 
     var setSubject = function(item){
         $scope.subjectLabel = item.label;

@@ -7,6 +7,10 @@ angular.module('Pundit2.TripleComposer')
     clientDashboardPanel: "tools",
     clientDashboardTabTitle: "Statements Composer",
 
+    // Icons shown in the search input when it's empty and when it has some content
+    inputIconSearch: 'pnd-icon-search',
+    inputIconClear: 'pnd-icon-times',
+
     debug: false
 })
 .service('TripleComposer', function(BaseComponent, TRIPLECOMPOSERDEFAULTS, TypesHelper) {
