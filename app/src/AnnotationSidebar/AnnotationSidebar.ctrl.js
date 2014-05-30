@@ -27,6 +27,8 @@ angular.module('Pundit2.AnnotationSidebar')
 
     $scope.annotationSidebar = AnnotationSidebar;
 
+    $scope.filters = AnnotationSidebar.getFilters();
+
     container.css('height', body.innerHeight() + 'px');
 
     // Start reading the default
@@ -178,11 +180,12 @@ angular.module('Pundit2.AnnotationSidebar')
 
     }, true);
 
-    $scope.$watch(function() {
-        return AnnotationSidebar.getFilters();
-    }, function(currentFiltersList) {
-        $scope.filters = currentFiltersList;
-    }, true);
+    // $scope.$watch(function() {
+    //     return AnnotationSidebar.getFilters();
+    // }, function(currentFiltersList, oldFilterList) {
+    //     // console.log("getFilters watch", angular.equals(currentFiltersList, oldFilterList));
+    //     $scope.filters = currentFiltersList;
+    // }, true);
         
 
     $scope.isFilterLabelShowed = function(currentInputText) {

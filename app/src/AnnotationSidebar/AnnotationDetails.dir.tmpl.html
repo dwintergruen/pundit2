@@ -99,6 +99,7 @@
                             <div class="pnd-annotation-details-object-header">
                                 <span class="{{object.icon}}"></span>
                                 <span ng-bind-html="object.label">{{object.label}}</span>
+                                 ({{object.typeLabel}})
                                 <button 
                                     type="button" 
                                     class="btn" 
@@ -107,7 +108,7 @@
                                 </button>
                             </div>
                             <div ng-show="objInfo">
-                                <item-preview uri="{{object.uri}}"></item-preview>
+                                <item-preview class="pnd-preview clearfix" uri="{{object.uri}}"></item-preview>
                             </div>
                     </div>
                 </div>

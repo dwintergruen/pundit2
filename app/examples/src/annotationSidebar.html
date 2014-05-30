@@ -19,9 +19,9 @@
 
         };
 
-    var AnnotationSidebarDemoCtrl = function($scope, $q, AnnotationSidebar,
+    var AnnotationSidebarDemoCtrl = function($rootScope, $scope, $q, AnnotationSidebar,
                                              AnnotationsExchange, Consolidation, ItemsExchange,
-                                             Annotation) {
+                                             Annotation, TextFragmentAnnotator) {
 
         $scope.toogle = function(){
             AnnotationSidebar.toggle();
@@ -61,6 +61,7 @@
         // TODO: cant search for annotations? OUCH
         });
 
+        $rootScope.$emit('pundit-boot-done');
         // ---
 
     }
