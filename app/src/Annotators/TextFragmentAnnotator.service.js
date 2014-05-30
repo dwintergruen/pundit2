@@ -40,8 +40,12 @@ angular.module('Pundit2.Annotators')
                 return true;
             },
             priority: 10,
-            action: function(uri) {
-                console.log('Consolidated icon click action', uri);
+            action: function(item) {
+                // TODO: ask the ann sidebar to add a filter showing all annotations involving
+                // this item, then let the sidebar call hideAll() and show() on every item
+                // which belongs to filtered annotations
+                tfa.hideAll();
+                tfa.showByUri(item.uri);
             }
         });
 
@@ -54,8 +58,10 @@ angular.module('Pundit2.Annotators')
                 return true;
             },
             priority: 11,
-            action: function(uri) {
-                console.log('Consolidated icon click action', uri);
+            action: function(item) {
+                // TODO: ask the Annotation Sidebar to add a filter hiding this item
+                // .. is this "hide all" action needed?
+                tfa.hideByUri(item.uri);
             }
         });
     };
@@ -294,6 +300,7 @@ angular.module('Pundit2.Annotators')
         tfa.log('Clear highlight on fragment id='+ id +', # bits: '+ fragmentById[id].bits.length);
     };
 
+    // Hides and shows a single fragment (identified by its item's URI)
     tfa.showByUri = function(uri) {
         if (typeof(fragmentIds[uri]) === "undefined") {
             tfa.log('Not showing fragment for given URI: fragment id not found');
@@ -312,7 +319,20 @@ angular.module('Pundit2.Annotators')
         }
         var id = fragmentIds[uri];
         for (var l=fragmentById[id].bits.length; l--;) {
-            fragmentById[id].bits[l].show();
+            fragmentById[id].bits[l].hide();
+        }
+    };
+
+    // Hides and shows every fragment
+    tfa.hideAll = function() {
+        for (var uri in fragmentIds) {
+            tfa.hideByUri(uri);
+        }
+    };
+
+    tfa.showAll = function() {
+        for (var uri in fragmentIds) {
+            tfa.showByUri(uri);
         }
     };
 
