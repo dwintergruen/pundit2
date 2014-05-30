@@ -5,7 +5,7 @@ angular.module('Pundit2.ResourcePanel')
 })
 .service('ResourcePanel', function(BaseComponent, RESOURCEPANELDEFAULTS,
                                    ItemsExchange, MyItems, PageItemsContainer, Client, NameSpace, SelectorsManager,
-                                   $filter, $rootScope, $popover, $q, $timeout) {
+                                   $filter, $rootScope, $popover, $q, $timeout, $datepicker) {
 
     var resourcePanel = new BaseComponent('ResourcePanel', RESOURCEPANELDEFAULTS);
     var state = {};
@@ -87,6 +87,10 @@ angular.module('Pundit2.ResourcePanel')
             // initialize a resource panel popover
         } else if(type === 'resourcePanel'){
 
+            if(typeof(target) === 'undefined'){
+                target = state.popoverOptions.scope.clickTarget;
+            }
+
             state.popoverOptions.template = 'src/ResourcePanel/popoverResourcePanel.tmpl.html';
 
             state.popoverOptions.scope.originalContent = angular.copy(content);
@@ -133,6 +137,7 @@ angular.module('Pundit2.ResourcePanel')
                     .find('.pnd-input-calendar')
                     .triggerHandler('focus');
             }, 1);
+
         }
 
 
@@ -195,6 +200,7 @@ angular.module('Pundit2.ResourcePanel')
             state.popover = initPopover(content, target, "", 'calendar');
             state.popover.$promise.then(function() {
                 state.popover.show();
+                $datepicker.show;
                 angular.element('input.pnd-input-calendar')[0].focus();
             });
         }
@@ -205,6 +211,7 @@ angular.module('Pundit2.ResourcePanel')
             state.popover = initPopover( "", target, "", 'calendar');
             state.popover.$promise.then(function() {
                 state.popover.show();
+                $datepicker.show;
                 angular.element('input.pnd-input-calendar')[0].focus();
             });
         }
@@ -245,7 +252,6 @@ angular.module('Pundit2.ResourcePanel')
             state.popover = initPopover(content, target, "", 'resourcePanel');
             state.popover.$promise.then(state.popover.show);
         } // if click a different popover, hide the shown popover and show the clicked one
-
 
     };
 
