@@ -6,7 +6,7 @@
         <div ng-hide="subjectFound">
             <div class="left-inner-icon">
                 <span class="pnd-icon {{subjectIcon}}"></span>
-                <input type="text" class="input-sm" placeholder="search a subject" ng-model="subjectSearch" ng-click="onClickSubject($event)">
+                <input type="text" class="input-sm" placeholder="search a subject" ng-model="subjectSearch" ng-click="onClickSubject($event)" ng-keyup="onKeyUpSubject($event)">
             </div>
             <button>NEW</button>
         </div>
@@ -26,13 +26,14 @@
         <div ng-hide="predicateFound">
             <div class="left-inner-icon">
                 <span class="pnd-icon {{predicateIcon}}"></span>
-                <input type="text" class="input-sm" placeholder="search a predicate" ng-model="predicateSearch" ng-click="onClickPredicate($event)">
+                <input type="text" class="input-sm" placeholder="search a predicate" ng-model="predicateSearch" ng-click="onClickPredicate($event)" ng-keyup="onKeyUpPredicate($event)">
             </div>
         </div>
 
-        <div ng-show="predicateFound">
+        <div ng-show="predicateFound" ng-mouseover="subjectOver=true" ng-mouseleave="subjectOver=false">
             <div>{{predicateLabel}}</div>
-        </div>        
+            <button ng-click="wipePredicate()">D</button>
+        </div>     
 
     </div>
 
@@ -42,10 +43,10 @@
         <div ng-hide="objectFound">
             <div class="left-inner-icon">
                 <span class="pnd-icon {{objectIcon}}"></span>
-                <input type="text" class="input-sm" placeholder="search an object" ng-model="objectSearch" ng-click="onClickObject($event)">
+                <input type="text" class="input-sm" placeholder="search an object" ng-model="objectSearch" ng-click="onClickObject($event)" ng-keyup="onKeyUpObject($event)">
             </div>
             <!--Calendar Icon-->
-            <button ng-click="onClickObjectCalendar($event)">C</button>
+            <button ng-hide="objectLiteral" ng-click="onClickObjectCalendar($event)">C</button>
             <!--Pen Icon-->
             <button ng-click="onClickObjectLiteral($event)">P</button>
             <button>NEW</button>

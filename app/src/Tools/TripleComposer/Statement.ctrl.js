@@ -151,48 +151,62 @@ angular.module('Pundit2.TripleComposer')
     };
 
 
+    var setSubject = function(item){
+        $scope.subjectLabel = item.label;
+        $scope.subjectTypeLabel = TypesHelper.getLabel(item.type[0]);
+        $scope.subjectFound = true;
+        triple.subject = item;
+    };
     $scope.onClickSubject = function($event){
-        ResourcePanel.showItemsForSubject(buildUrisArray(), $event.target, '').then(function(item){
-            $scope.subjectLabel = item.label;
-            $scope.subjectTypeLabel = TypesHelper.getLabel(item.type[0]);
-            $scope.subjectFound = true;
-            triple.subject = item;
-        });
+        ResourcePanel.showItemsForSubject(buildUrisArray(), $event.target, $scope.subjectSearch).then(setSubject);
+    };
+    $scope.onKeyUpSubject = function($event){
+        ResourcePanel.showItemsForSubject(buildUrisArray(), $event.target, $scope.subjectSearch).then(setSubject);
     };
 
+    var setPredicate = function(item){
+        $scope.predicateLabel = item.label;
+        $scope.predicateFound = true;
+        triple.predicate = item;
+        // triple object must be only literal
+        if(item.range.length === 1 && item.range[0] === NameSpace.rdfs.literal) {
+            $scope.objectLiteral = true;
+        }
+    };
     $scope.onClickPredicate = function($event){
-        ResourcePanel.showProperties(buildUrisArray(), $event.target, '').then(function(item){
-            $scope.predicateLabel = item.label;
-            $scope.predicateFound = true;
-            triple.predicate = item;
-        });
+        ResourcePanel.showProperties(buildUrisArray(), $event.target, $scope.predicateSearch).then(setPredicate);
+    };
+    $scope.onKeyUpPredicate = function($event){
+        ResourcePanel.showProperties(buildUrisArray(), $event.target, $scope.predicateSearch).then(setPredicate);
     };
 
-    $scope.onClickObject = function($event){
+    var setObject = function(item){
+        $scope.objectFound = true;
+        triple.object = item;
         
-        ResourcePanel.showItemsForObject(buildUrisArray(), $event.target, '').then(function(item){
-
-            $scope.objectFound = true;
-            triple.object = item;
-            
-            if (typeof(item) === 'string') {
-                // literal item
-                $scope.objectLabel = item;
-                $scope.objectTypeLabel = TypesHelper.getLabel(NameSpace.rdfs.literal);
-                $scope.objectLiteral = true;
-            } else if( item instanceof Date) {
-                // date item
-                triple.object = item.toString();
-                $scope.objectLabel = triple.object;
-                $scope.objectTypeLabel = TypesHelper.getLabel(NameSpace.dateTime);
-                $scope.objectDate = true;
-            } else {
-                // standard item
-                $scope.objectLabel = item.label;
-                $scope.objectTypeLabel = TypesHelper.getLabel(item.type[0]);
-            }
-            
-        });
+        if (typeof(item) === 'string') {
+            // literal item
+            $scope.objectLabel = item;
+            $scope.objectTypeLabel = TypesHelper.getLabel(NameSpace.rdfs.literal);
+            $scope.objectLiteral = true;
+        } else if( item instanceof Date) {
+            // date item
+            triple.object = item.toString();
+            $scope.objectLabel = triple.object;
+            $scope.objectTypeLabel = TypesHelper.getLabel(NameSpace.dateTime);
+            $scope.objectDate = true;
+        } else {
+            // standard item
+            $scope.objectLabel = item.label;
+            $scope.objectTypeLabel = TypesHelper.getLabel(item.type[0]);
+        }
+        
+    };
+    $scope.onClickObject = function($event){        
+        ResourcePanel.showItemsForObject(buildUrisArray(), $event.target, $scope.objectSearch).then(setObject);
+    };
+    $scope.onKeyUpObject = function($event){
+        ResourcePanel.showItemsForObject(buildUrisArray(), $event.target, $scope.objectSearch).then(setObject);
     };
 
     $scope.onClickObjectCalendar = function($event){

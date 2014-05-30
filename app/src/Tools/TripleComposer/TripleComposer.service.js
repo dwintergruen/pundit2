@@ -13,27 +13,41 @@ angular.module('Pundit2.TripleComposer')
 
     var tripleComposer = new BaseComponent('TripleComposer', TRIPLECOMPOSERDEFAULTS);
 
-    tripleComposer.removeStatement = function(id, arr){
+    var nextId = 1;
+    var statements = [{
+        id: nextId
+    }];
+
+    tripleComposer.getStatements = function(){
+        return statements;
+    };
+
+    tripleComposer.addStatement = function(){
+        nextId = nextId + 1;
+        statements.push({id: nextId});
+    };
+
+    tripleComposer.removeStatement = function(id){
         // at least one statetement must be present
-        if (arr.length === 1) {
-            arr[0].scope.wipe();
+        if (statements.length === 1) {
+            statements[0].scope.wipe();
             return;
         }
         
-        arr.some(function(s, i){
+        statements.some(function(s, i){
             if (s.id === id) {
                 index = i;
                 return true;
             }
         });        
         if (index > -1) {
-            arr.splice(index, 1);
+            statements.splice(index, 1);
         }
     };
 
     // extend arr object with scope property
-    tripleComposer.addStatementScope = function(id, scope, arr){
-        arr.some(function(s, i){
+    tripleComposer.addStatementScope = function(id, scope){
+        statements.some(function(s, i){
             if (s.id === id) {
                 index = i;
                 return true;
@@ -41,12 +55,12 @@ angular.module('Pundit2.TripleComposer')
         });
         
         if (index > -1) {
-            arr[index].scope = scope;
+            statements[index].scope = scope;
         }
     };
 
-    tripleComposer.duplicateStatement = function(id, arr, newId){
-        arr.some(function(s, i){
+    tripleComposer.duplicateStatement = function(id){
+        statements.some(function(s, i){
             if (s.id === id) {
                 index = i;
                 return true;
@@ -54,14 +68,15 @@ angular.module('Pundit2.TripleComposer')
         });
         
         if (index > -1) {
-            arr.push({
-                id: newId,
+            nextId = nextId + 1;
+            statements.push({
+                id: nextId,
                 scope: {
-                    duplicated: arr[index].scope.copy()
+                    duplicated: statements[index].scope.copy()
                 }
             });
         }
-        console.log(arr[index].scope.copy());
+
     };
 
     //TODO to fix
