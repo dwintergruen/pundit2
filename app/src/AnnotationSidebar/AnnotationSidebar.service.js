@@ -25,8 +25,8 @@ angular.module('Pundit2.AnnotationSidebar')
     debug: false
 })
 .service('AnnotationSidebar', function($rootScope, $filter, $timeout,
-                                       BaseComponent, AnnotationsExchange, TypesHelper,
-                                       ANNOTATIONSIDEBARDEFAULTS) {
+                                       BaseComponent, AnnotationsExchange, Consolidation, ItemsExchange,
+                                       TypesHelper, TextFragmentAnnotator, ANNOTATIONSIDEBARDEFAULTS) {
     
     var annotationSidebar = new BaseComponent('AnnotationSidebar', ANNOTATIONSIDEBARDEFAULTS);
 
@@ -175,6 +175,19 @@ angular.module('Pundit2.AnnotationSidebar')
         });
     };
 
+    var setAnnotationInPage = function(annotations) {
+        var currentItem;
+        TextFragmentAnnotator.hideAll();
+        angular.forEach(annotations, function(annotations) {
+            for (var itemUri in annotations.items){
+                currentItem = ItemsExchange.getItemByUri(itemUri);
+                if (Consolidation.isConsolidated(currentItem)){
+                    TextFragmentAnnotator.showByUri(currentItem.uri);
+                }
+            }
+        });
+    };
+
     // Updates the list of filters when new annotations comes
     var setFilterElements = function(annotations) {
         annotationSidebar.filtersCount = {};
@@ -267,6 +280,7 @@ angular.module('Pundit2.AnnotationSidebar')
                 state.filteredAnnotations = $filter(currentFilterName)(state.filteredAnnotations, currentFilterObjExpression);
             }
         });
+        setAnnotationInPage(state.filteredAnnotations);
         // filtersCount(state.filteredAnnotations); 
         return state.filteredAnnotations;
     };
