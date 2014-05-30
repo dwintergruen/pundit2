@@ -1,41 +1,52 @@
-<div class="popover">
+<div class="popover pnd-resource-panel-popover">
     <div class="arrow"></div>
 
-    <h3 class="popover-title">Choose your...<span style="float:right" class="pnd-icon-times" ng-click="cancel()"></span></h3>
+    <h3 class="popover-title pnd-resource-panel-popover-title">Choose your...{{type}}<span style="float:right" class="pnd-icon-times" ng-click="cancel()"></span></h3>
     <div class="popover-content">
-	    <div ng-show = "myItems.length>0"> My items ({{myItems.length}})
+	    <div ng-show = "type != 'pr' && myItems.length>0"> My items ({{myItems.length}})
             <ul class="list-group">
                 <li class="list-group-item" ng-repeat="mi in myItems">
                     <item uri="{{mi.uri}}" ng-click="save(mi)"></item>
                 </li>
             </ul>
 	    </div>
-	    <div ng-show = "pageItems.length>0"> Page Items ({{pageItems.length}})
+	    <div ng-show = "type != 'pr' && pageItems.length>0"> Page Items ({{pageItems.length}})
             <ul class="list-group">
                 <li class="list-group-item" ng-repeat="pi in pageItems">
                     <item uri="{{pi.uri}}" ng-click="save(pi)"></item>
                 </li>
             </ul>
 	    </div>
-	    <div ng-show = "properties.length>0"> Properties ({{properties.length}})
-	        <ul class="list-group">
-	            <li class="list-group-item" ng-repeat="pr in properties">
-                     <item uri="{{pr.uri}}" ng-click="save(pr)"></item>
-                </li>
-	        </ul>
 
-	    </div>
-        <div ng-show="vocabStatus == 'loading'">Searching...</div>
-        <div ng-repeat="s in selectors" ng-show = "vocab[s].length>0"> {{s}} ({{vocab[s].length}})
+        <div ng-show="type == 'obj' && vocabObjStatus == 'loading'">Searching...</div>
+        <div ng-repeat="s in selectors" ng-show="type == 'obj' && vocabObjStatus == 'done' && vocabObjRes[s].length>0"> {{s}} ({{vocabObjRes[s].length}})
             <ul class="list-group">
-                <li class="list-group-item" ng-repeat = "item in vocab[s]" ng-click="save(item)">{{item.label}}</li>
+                <li class="list-group-item" ng-repeat = "item in vocabObjRes[s]">
+                    <item uri="{{item.uri}}" ng-click="save(item)"></item>
+                </li>
             </ul>
         </div>
-	    <div ng-show = "(properties.length == 0 || (pageItems.length == 0 && myItems.length == 0)) && vocabResultEmpty">
-	        <ul>
-	            <li>No match found</li>
-	        </ul>
-	    </div>
+
+        <div ng-show="type == 'sub' && vocabSubStatus == 'loading'">Searching...</div>
+        <div ng-repeat="ss in selectors" ng-show="type == 'sub' && vocabSubStatus == 'done' && vocabSubRes[ss].length>0"> {{ss}} ({{vocabSubRes[ss].length}})
+            <ul class="list-group">
+                <li class="list-group-item" ng-repeat = "subItem in vocabSubRes[ss]">
+                    <item uri="{{subItem.uri}}" ng-click="save(subItem)"></item>
+                </li>
+            </ul>
+        </div>
+
+        <div ng-show = "type == 'pr' && properties.length>0"> Properties ({{properties.length}})
+            <ul class="list-group">
+                <li class="list-group-item" ng-repeat="pr in properties">
+                    <item uri="{{pr.uri}}" ng-click="save(pr)"></item>
+                </li>
+            </ul>
+        </div>
+
+        <div ng-show = "type == 'pr' && properties.length == 0"> No properties match </div>
+        <div ng-show = "type == 'obj' && vocabObjResEmpty && pageItems.length == 0 && myItems.length == 0 && vocabObjStatus == 'done'"> No object match </div>
+        <div ng-show = "type == 'sub' && vocabSubResEmpty && pageItems.length == 0 && myItems.length == 0 && vocabSubStatus == 'done'"> No subject match </div>
 
     </div>
 
