@@ -8,6 +8,9 @@ angular.module('Pundit2.TripleComposer')
         id: nextId
     }];
 
+    //TODO to fix
+    TripleComposer.init($scope.statements);
+
     this.removeStatement = function(id){
         var index = -1;
         id = parseInt(id, 10);
@@ -39,20 +42,28 @@ angular.module('Pundit2.TripleComposer')
         var res = {};
         
         $scope.statements.forEach(function(el){
-            // get triple
             var triple = el.scope.get();
 
             // only comple triples can be saved
             if (triple.subject!==null && triple.predicate!==null && triple.object!==null) {
 
-                // rdf properties
+                // add item and its rdf properties
                 res[triple.subject.uri] = triple.subject.toRdf();
 
                 res[triple.predicate.uri] = triple.predicate.toRdf();
 
-                res[triple.object.uri] = triple.object.toRdf();                
+                // discard literals
+                if (typeof(triple.object.uri) !== 'undefined') {
+                    res[triple.object.uri] = triple.object.toRdf();
 
-                // types inside typeUri
+                    triple.object.type.forEach(function(e, i){
+                        var type = triple.object.type[i];
+                        res[type] = { };
+                        res[type][NameSpace.rdfs.label] = [{type: 'literal', value: TypesHelper.getLabel(e)}];
+                    });
+                }                                
+
+                // add types and its label
                 triple.subject.type.forEach(function(e, i){
                     var type = triple.subject.type[i];
                     res[type] = { };
@@ -63,13 +74,7 @@ angular.module('Pundit2.TripleComposer')
                     var type = triple.predicate.type[i];
                     res[type] = { };
                     res[type][NameSpace.rdfs.label] = [{type: 'literal', value: TypesHelper.getLabel(e)}];
-                });
-
-                triple.object.type.forEach(function(e, i){
-                    var type = triple.object.type[i];
-                    res[type] = { };
-                    res[type][NameSpace.rdfs.label] = [{type: 'literal', value: TypesHelper.getLabel(e)}];
-                });
+                });                
 
             }
             
@@ -79,7 +84,11 @@ angular.module('Pundit2.TripleComposer')
     };
 
     var buildObject = function(item){
-        return {type: 'uri', value: item.uri}
+        if (typeof(item.uri) !== 'undefined') {
+            return {type: 'uri', value: item.uri};
+        } else {
+            return {type: 'literal', value: item};
+        }        
     };
 
     var buildTargets = function(){
@@ -118,7 +127,6 @@ angular.module('Pundit2.TripleComposer')
                     res[triple.subject.uri][triple.predicate.uri] = [buildObject(triple.object)];
                 } else {
                     // predicate uri already exists
-
                     var u = triple.object.uri,
                         arr = res[triple.subject.uri][triple.predicate.uri];
 
@@ -136,19 +144,29 @@ angular.module('Pundit2.TripleComposer')
 
         });
 
-
         return res;
     };
 
-    $scope.saveAnnotation = function(){
-        console.log(buildTargets());
-    };
-
     // TODO need to support item literal and item date
-    $scope.fireHttp = function(){
-
+    $scope.saveAnnotation = function(){
         // test with notebook "b81c0aa3"
         // need to use NameSpace.get('asNBCurrent')
+
+        var abort = false;
+        $scope.statements.forEach(function(el){
+            var triple = el.scope.get();
+
+            // only comple triples can be saved
+            if (triple.subject===null || triple.predicate===null || triple.object===null) {
+                abort = true;
+            }
+        });
+
+        if (abort) {
+            console.log('Try to save incomple statement');
+            return;
+        }
+
 
         $http({
             headers: { 'Content-Type': 'application/json' },
@@ -176,71 +194,5 @@ angular.module('Pundit2.TripleComposer')
         });
 
     };
-
-
-    /* tested with susanna at 'http://172.20.0.47:8081/annotationserver/'
-
-        $http({
-            headers: { 'Content-Type': 'application/json' },
-            method: 'POST',
-            url: NameSpace.get('asNBCurrent'),
-            params: {
-                context: angular.toJson({
-                    targets: ["http://t1.com", "http://t1.com", "http://t1.com"],
-                    pageContext: "http://mypagecontex.com"
-                })
-            },
-            withCredentials: true,
-            data: angular.toJson({
-                // obj to send, need to convert to json string?
-                "graph": {
-                    "http://it.wikipedia.org/wiki/Roma": {
-                        "http://www.holygoat.co.uk/owl/redwood/0.1/tags/hasTag": [
-                        {
-                            "value": "Capital City",
-                            "type": "literal"
-                        },
-                        {
-                            "value": "Italy",
-                            "type": "literal"
-                        },
-                        ],
-                        "http://www.w3.org/2000/01/rdf-schema#comment": [
-                        {
-                            "value": "Wikipedia's page dedicate to Rome, the capital city of Italy.",
-                            "type": "literal"
-                        }
-                        ]
-                    }
-                },
-                "items": {
-                    "http://example.org/items1": {
-                        "http://www.w3.org/2000/01/rdf-schema#label": [
-                        {
-                            "value": "Test Label Items 1",
-                            "type": "literal"
-                        }
-                        ]
-                    },
-                    "http://example.org/items2": {
-                        "http://www.w3.org/2000/01/rdf-schema#label": [
-                        {
-                            "value": "Test Label Items 2",
-                            "type": "literal"
-                        }
-                        ]
-                    }
-                }
-                
-            })       
-        }).success(function(data) {
-            
-
-        }).error(function(msg) {
-            
-        });
-
-        */
-
 
 });

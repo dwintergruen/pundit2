@@ -134,7 +134,6 @@ angular.module('Pundit2.Core')
 
     ItemFactory.prototype.toRdf = function() {
         // All item properties are encoded by their uri
-        console.log(this);
 
         var i = { };
         // properties always present

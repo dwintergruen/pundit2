@@ -9,7 +9,7 @@ angular.module('Pundit2.TripleComposer')
 
     debug: false
 })
-.service('TripleComposer', function(BaseComponent, TRIPLECOMPOSERDEFAULTS) {
+.service('TripleComposer', function(BaseComponent, TRIPLECOMPOSERDEFAULTS, TypesHelper) {
 
     var tripleComposer = new BaseComponent('TripleComposer', TRIPLECOMPOSERDEFAULTS);
 
@@ -62,6 +62,23 @@ angular.module('Pundit2.TripleComposer')
             });
         }
         console.log(arr[index].scope.copy());
+    };
+
+    //TODO to fix
+
+    var localRef = null;
+    tripleComposer.init = function(arr){
+        localRef = arr;
+    };
+
+    tripleComposer.addToSubject = function(item) {
+        if (localRef.length === 1 && localRef[0].scope.get().subject === null) {
+            localRef[0].scope.get().subject = item;
+
+            localRef[0].scope.subjectLabel = item.label;
+            localRef[0].scope.subjectTypeLabel = TypesHelper.getLabel(item.type[0]);
+            localRef[0].scope.subjectFound = true;
+        }
     };
 
     return tripleComposer;
