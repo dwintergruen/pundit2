@@ -137,6 +137,7 @@ angular.module('Pundit2.TripleComposer')
             return;
         }
         $scope.subjectSearch = "";
+        ResourcePanel.showItemsForSubject(buildUrisArray(), undefined, $scope.subjectSearch).then(setSubject);
     };
 
     $scope.wipePredicate = function(){
@@ -152,6 +153,7 @@ angular.module('Pundit2.TripleComposer')
             return;
         }
         $scope.predicateSearch = "";
+        ResourcePanel.showProperties(buildUrisArray(), undefined, $scope.predicateSearch).then(setPredicate);
     };
 
     $scope.wipeObject = function(){
@@ -169,6 +171,7 @@ angular.module('Pundit2.TripleComposer')
             return;
         }
         $scope.objectSearch = "";
+        ResourcePanel.showItemsForObject(buildUrisArray(), undefined, $scope.objectSearch).then(setObject);
     };
 
     $scope.$watch(function() {

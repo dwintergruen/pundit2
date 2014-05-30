@@ -8,6 +8,7 @@
                 <span class="pnd-icon {{subjectIcon}}" ng-click="clearSubjectSearch()"></span>
                 <input type="text" class="input-sm" placeholder="search a subject" ng-model="subjectSearch" ng-click="onClickSubject($event)" ng-keyup="onKeyUpSubject($event)">
             </div>
+            <!--Korbo Icon-->
             <button>NEW</button>
         </div>
 
@@ -17,10 +18,9 @@
             <button ng-show="subjectOver" ng-click="wipeSubject()">D</button>
         </div>
 
-
     </div>
 
-    <!-- Predicate (Relationship) -->
+    <!-- Predicate -->
     <div class="pnd-statement-predicate">
 
         <div ng-hide="predicateFound">
@@ -49,6 +49,7 @@
             <button ng-hide="objectLiteral" ng-click="onClickObjectCalendar($event)">C</button>
             <!--Pen Icon-->
             <button ng-click="onClickObjectLiteral($event)">P</button>
+            <!--Korbo Icon-->
             <button>NEW</button>
         </div>
 
@@ -61,8 +62,11 @@
 
     </div>
 
+    <!-- Footer -->
     <div class="pnd-statement-buttons">
+        <!-- x icon -->
         <button ng-click="remove()">X</button>
+        <!-- copy icon -->
         <button ng-click="duplicate()">[]</button>
     </div>
 
