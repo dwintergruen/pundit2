@@ -10,8 +10,8 @@ angular.module("Pundit2.MyItemsContainer")
     debug: false
 })
 .service("MyItems", function(MYITEMSDEFAULTS, BaseComponent, NameSpace, Item, ItemsExchange,
-                             ContextualMenu, MyPundit, Config,
-                             $http, $rootScope) {
+                             ContextualMenu, MyPundit, Config, Consolidation, Toolbar,
+                             $http, $rootScope, $q) {
 
     var myItems = new BaseComponent("MyItems", MYITEMSDEFAULTS);
 
@@ -42,12 +42,13 @@ angular.module("Pundit2.MyItemsContainer")
                     !ItemsExchange.isItemInContainer(item, myItems.options.container);
             },
             action: function(item) {
-                myItems.addItem(item);
+                myItems.addItem(item).then(function() {
+                    Consolidation.consolidateAll();
+                });
                 return true;
             }
         });
 
-        cMenuTypes.push()
         ContextualMenu.addAction({
             name: 'removeFromMyItems',
             type: cMenuTypes,
@@ -58,7 +59,9 @@ angular.module("Pundit2.MyItemsContainer")
                     ItemsExchange.isItemInContainer(item, myItems.options.container);
             },
             action: function(item) {
-                myItems.deleteItem(item);
+                myItems.deleteItem(item).then(function() {
+                    Consolidation.consolidateAll();
+                });
                 return true;
             }
         });
@@ -161,14 +164,17 @@ angular.module("Pundit2.MyItemsContainer")
 
     myItems.deleteItem = function(value){
 
-        var currentTime = new Date();
-
         // get all my items (inside app)
-        var items = ItemsExchange.getItemsByContainer(myItems.options.container);
-        var index = items.indexOf(value);
-        var copiedItems = angular.copy(items);
+        var currentTime = new Date(),
+            items = ItemsExchange.getItemsByContainer(myItems.options.container),
+            index = items.indexOf(value),
+            copiedItems = angular.copy(items),
+            promise = $q.defer();
+
         // remove item from the copied array
-        copiedItems.splice(index, 1);       
+        copiedItems.splice(index, 1);
+
+        Toolbar.setLoading(true);
 
         // update to server the new my items 
         // the new my items format is different from pundit1 item format
@@ -189,23 +195,32 @@ angular.module("Pundit2.MyItemsContainer")
             // remove value from my items
             // controller watch now update the view
             ItemsExchange.removeItemFromContainer(value, myItems.options.container);
+            promise.resolve();
+            Toolbar.setLoading(false);
 
             myItems.log('Deleted from my item: '+ value.label);
 
         }).error(function(msg) {
+            promise.reject();
+            Toolbar.setLoading(false);
             myItems.err('Cant delete a my item on the server: ', msg);
         });
+
+        return promise.promise;
     };
 
     // add one item to my items on pundit server
     myItems.addItem = function(value){
 
-        var currentTime = new Date();
-       
-        // get all my items and make a copy
-        var items = angular.copy(ItemsExchange.getItemsByContainer(myItems.options.container));
+        var currentTime = new Date(),
+            // get all my items and make a copy
+            items = angular.copy(ItemsExchange.getItemsByContainer(myItems.options.container)),
+            promise = $q.defer();
+
         // add new item to the copied array
         items.push(value);
+
+        Toolbar.setLoading(true);
 
         // update to server the new my items
         // the new my items format is different from pundit1 item format
@@ -226,13 +241,19 @@ angular.module("Pundit2.MyItemsContainer")
             // add value to my items
             // controller watch now update the view
             ItemsExchange.addItemToContainer(value, myItems.options.container);
+            promise.resolve();
+            Toolbar.setLoading(false);
 
             myItems.log('Added item to my items: '+ value.label);
 
         }).error(function(msg) {
+            promise.reject();
+            Toolbar.setLoading(false);
+
             myItems.err('Cant add item to my items on the server: ', msg);
         });
 
+        return promise.promise;
     };
 
     return myItems;

@@ -1,7 +1,8 @@
 angular.module('Pundit2.Core')
     .constant('CONSOLIDATIONDEFAULTS', {
     })
-    .service('Consolidation', function(CONSOLIDATIONDEFAULTS, BaseComponent, NameSpace, Item) {
+    .service('Consolidation', function(CONSOLIDATIONDEFAULTS, BaseComponent, NameSpace, Config,
+                                       Item, ItemsExchange) {
 
         var cc = new BaseComponent('Consolidation', CONSOLIDATIONDEFAULTS),
             state = {};
@@ -61,6 +62,17 @@ angular.module('Pundit2.Core')
 
                 cc.log("Added item: " + item.label + " (" + fragmentType + ")");
             }
+        };
+
+
+        // Will consolidate every possible item found in the ItemsExchange
+        cc.consolidateAll = function() {
+            var pageItems = ItemsExchange.getItemsByContainer(Config.modules.PageItemsContainer.container),
+                myItems = ItemsExchange.getItemsByContainer(Config.modules.MyItems.container),
+                allItems = pageItems.concat(myItems);
+
+            cc.log('Consolidating ALL items');
+            cc.consolidate(allItems);
         };
 
         // TODO: pass an element and consolidate just that element? or a named content?

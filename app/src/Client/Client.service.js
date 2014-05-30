@@ -308,12 +308,7 @@ angular.module('Pundit2.Client')
                         if (settled === annPromises.length) {
                             client.log('All promises settled, consolidating');
 
-                            var pageItems = ItemsExchange.getItemsByContainer(Config.modules.PageItemsContainer.container),
-                                myItems = ItemsExchange.getItemsByContainer(Config.modules.MyItems.container),
-                                allItems = pageItems.concat(myItems);
-
-                            Consolidation.consolidate(allItems);
-
+                            Consolidation.consolidateAll();
                             Toolbar.setLoading(false);
                         }
                     });
