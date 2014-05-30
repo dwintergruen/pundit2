@@ -18,7 +18,7 @@ angular.module('Pundit2.Annotators')
 
 .service('TextFragmentAnnotator',
     function(TEXTFRAGMENTANNOTATORDEFAULTS, NameSpace, BaseComponent, Consolidation,
-             XpointersHelper, ContextualMenu, ItemsExchange, Config,
+             XpointersHelper, ContextualMenu, ItemsExchange, Config, TripleComposer,
              $compile, $rootScope, $location) {
 
     // Create the component and declare what we deal with: text
@@ -32,6 +32,26 @@ angular.module('Pundit2.Annotators')
 
     // Contextual Menu actions for text fragments??
     var initContextualMenu = function() {
+
+        // TODO: move this to TripleComposer !!!
+        ContextualMenu.addAction({
+            type: [
+                tfa.options.cMenuType,
+                Config.modules.TextFragmentHandler.cMenuType,
+                Config.modules.PageItemsContainer.cMenuType,
+                Config.modules.MyItemsContainer.cMenuType
+            ],
+            name: 'addToSubject',
+            label: 'Annotate this text fragment',
+            showIf: function(item) {
+                return item.isTextFragment();
+            },
+            priority: 20,
+            action: function(item) {
+                TripleComposer.addToSubject(item);
+            }
+        });
+
         ContextualMenu.addAction({
             type: [tfa.options.cMenuType],
             name: 'showAllAnnotations',
@@ -64,11 +84,16 @@ angular.module('Pundit2.Annotators')
                 tfa.hideByUri(item.uri);
             }
         });
-    };
 
-    if (tfa.options.initContextualMenu) {
-        initContextualMenu();
-    }
+    }; // initContextualMenu()
+
+    // When all modules have been initialized, services are up, Config are setup etc..
+    $rootScope.$on('pundit-boot-done', function() {
+        if (tfa.options.initContextualMenu) {
+            initContextualMenu();
+        }
+    });
+
 
     tfa.isConsolidable = function(item) {
         if (!angular.isArray(item.type)) {
