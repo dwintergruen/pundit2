@@ -98,9 +98,13 @@ angular.module('Pundit2.TripleComposer')
             var triple = el.scope.get();
 
             for ( var key in triple) {
-                if (triple[key].isTextFragment() || triple[key].isImage() || triple[key].isImageFragment() ){
-                    res.push(triple[key].uri);
+
+                if(typeof(triple[key]) === 'object'){
+                    if (triple[key].isTextFragment() || triple[key].isImage() || triple[key].isImageFragment() ){
+                        res.push(triple[key].uri);
+                    }
                 }
+                
             }            
 
         });

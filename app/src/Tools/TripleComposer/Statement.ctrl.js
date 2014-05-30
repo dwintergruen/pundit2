@@ -153,6 +153,7 @@ angular.module('Pundit2.TripleComposer')
 
             $scope.objectFound = true;
             triple.object = item;
+            // literal item
             if (typeof(item) === 'string') {
                 $scope.objectLabel = item;
                 $scope.objectTypeLabel = TypesHelper.getLabel(NameSpace.rdfs.literal);
@@ -177,7 +178,6 @@ angular.module('Pundit2.TripleComposer')
             $scope.objectLabel = text;
             $scope.objectTypeLabel = TypesHelper.getLabel(NameSpace.rdfs.literal);
             $scope.objectLiteral = true;
-            // TODO need to support literal as item
             triple.object = text;
         });
     };
