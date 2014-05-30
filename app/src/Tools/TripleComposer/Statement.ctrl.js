@@ -62,7 +62,14 @@ angular.module('Pundit2.TripleComposer')
 
     // copy the actual triple (invoked inside link function)
     $scope.copy = function(){
-        return angular.copy(triple);
+        var res = angular.copy(triple);
+        if ($scope.objectDate) {
+            res.isDate = true;
+        }
+        if ($scope.objectLiteral) {
+            res.isLiteral = true;
+        }
+        return res;
     };
 
     $scope.get = function(){
@@ -88,9 +95,23 @@ angular.module('Pundit2.TripleComposer')
             $scope.predicateFound = true;
         }
         if (triple.object !== null) {
-            $scope.objectLabel = triple.object.label;
-            $scope.objectTypeLabel = TypesHelper.getLabel(triple.object.type[0]);
+            if (typeof(triple.object) === 'string'){
+                // date or literal item
+                $scope.objectLabel = triple.object;
+                if (triple.isDate) {
+                    $scope.objectTypeLabel = TypesHelper.getLabel(NameSpace.dateTime);
+                }
+                if (triple.isLiteral){
+                    $scope.objectTypeLabel = TypesHelper.getLabel(NameSpace.rdfs.literal);
+                }
+                                
+            } else {
+                // standard item
+                $scope.objectLabel = triple.object.label;
+                $scope.objectTypeLabel = TypesHelper.getLabel(triple.object.type[0]);
+            }
             $scope.objectFound = true;
+            
         }
         
     };
@@ -153,12 +174,20 @@ angular.module('Pundit2.TripleComposer')
 
             $scope.objectFound = true;
             triple.object = item;
-            // literal item
+            
             if (typeof(item) === 'string') {
+                // literal item
                 $scope.objectLabel = item;
                 $scope.objectTypeLabel = TypesHelper.getLabel(NameSpace.rdfs.literal);
                 $scope.objectLiteral = true;
+            } else if( item instanceof Date) {
+                // date item
+                triple.object = item.toString();
+                $scope.objectLabel = triple.object;
+                $scope.objectTypeLabel = TypesHelper.getLabel(NameSpace.dateTime);
+                $scope.objectDate = true;
             } else {
+                // standard item
                 $scope.objectLabel = item.label;
                 $scope.objectTypeLabel = TypesHelper.getLabel(item.type[0]);
             }
@@ -168,7 +197,11 @@ angular.module('Pundit2.TripleComposer')
 
     $scope.onClickObjectCalendar = function($event){
         ResourcePanel.showPopoverCalendar(undefined, $event.target).then(function(date){
-            // TODO need to convert date, new Item(date)
+            triple.object = date.toString();
+            $scope.objectLabel = triple.object;
+            $scope.objectTypeLabel = TypesHelper.getLabel(NameSpace.dateTime);
+            $scope.objectDate = true;
+            $scope.objectFound = true;
         });
     };
 

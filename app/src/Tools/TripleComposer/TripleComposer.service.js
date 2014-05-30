@@ -78,6 +78,8 @@ angular.module('Pundit2.TripleComposer')
             localRef[0].scope.subjectLabel = item.label;
             localRef[0].scope.subjectTypeLabel = TypesHelper.getLabel(item.type[0]);
             localRef[0].scope.subjectFound = true;
+        } else {
+            // add blank statement then insert subject
         }
     };
 

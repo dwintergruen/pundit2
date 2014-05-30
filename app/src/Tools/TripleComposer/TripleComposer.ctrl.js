@@ -1,5 +1,5 @@
 angular.module('Pundit2.TripleComposer')
-.controller('TripleComposerCtrl', function($scope, $http, Annotation, TripleComposer, NameSpace, TypesHelper, XpointersHelper) {
+.controller('TripleComposerCtrl', function($scope, $http, Annotation, TripleComposer, NameSpace, TypesHelper, XpointersHelper, MyPundit) {
 
     // statements objects are extend by this.addStatementScope()
     // the function is called in the statement directive link function
@@ -88,7 +88,8 @@ angular.module('Pundit2.TripleComposer')
             return {type: 'uri', value: item.uri};
         } else {
             return {type: 'literal', value: item};
-        }        
+        }
+        // TODO check date
     };
 
     var buildTargets = function(){
@@ -97,16 +98,18 @@ angular.module('Pundit2.TripleComposer')
         $scope.statements.forEach(function(el){
             var triple = el.scope.get();
 
-            for ( var key in triple) {
+            if (triple.subject.isTextFragment() || triple.subject.isImage() || triple.subject.isImageFragment() ){
+                res.push(triple.subject.uri);
+            }
+            if (triple.predicate.isTextFragment() || triple.predicate.isImage() || triple.predicate.isImageFragment() ){
+                res.push(triple.predicate.uri);
+            }
 
-                if(typeof(triple[key]) === 'object'){
-                    if (triple[key].isTextFragment() || triple[key].isImage() || triple[key].isImageFragment() ){
-                        res.push(triple[key].uri);
-                    }
+            if (typeof(triple.object) !== 'string') {
+                if (triple.object.isTextFragment() || triple.object.isImage() || triple.object.isImageFragment() ){
+                    res.push(triple.object.uri);
                 }
-                
-            }            
-
+            }
         });
 
         return res;
@@ -118,22 +121,23 @@ angular.module('Pundit2.TripleComposer')
         $scope.statements.forEach(function(el){
             var triple = el.scope.get();
             
-            // subject uri not exist (happy it's easy)
             if (typeof(res[triple.subject.uri]) === 'undefined' ) {
+                // subject uri not exist (happy it's easy)
                 res[triple.subject.uri] = {};
                 // predicate uri not exist
                 res[triple.subject.uri][triple.predicate.uri] = [buildObject(triple.object)];
             } else {
                 // subject uri already exists
 
-                // predicate uri not exist (happy it's easy)
                 if (typeof(res[triple.subject.uri][triple.predicate.uri]) === 'undefined') {
+                    // predicate uri not exist (happy it's easy)
                     res[triple.subject.uri][triple.predicate.uri] = [buildObject(triple.object)];
                 } else {
+
                     // predicate uri already exists
                     var u = triple.object.uri,
                         arr = res[triple.subject.uri][triple.predicate.uri];
-
+                    // search object
                     var found = arr.some(function(o){
                         return angular.equals(o.value, u);
                     });
@@ -151,52 +155,59 @@ angular.module('Pundit2.TripleComposer')
         return res;
     };
 
-    // TODO need to support item literal and item date
     $scope.saveAnnotation = function(){
         // test with notebook "b81c0aa3"
         // need to use NameSpace.get('asNBCurrent')
 
-        var abort = false;
-        $scope.statements.forEach(function(el){
-            var triple = el.scope.get();
+        MyPundit.login().then(function(logged) {
+            
+            if (logged) {
+                var abort = $scope.statements.some(function(el){
+                    var t = el.scope.get();
+                    // only comple triples can be saved
+                    if (t.subject===null || t.predicate===null || t.object===null) {
+                        return true;
+                    }
+                });
 
-            // only comple triples can be saved
-            if (triple.subject===null || triple.predicate===null || triple.object===null) {
-                abort = true;
-            }
-        });
+                if (abort) {
+                    console.log('Try to save incomplete statement');
+                    return;
+                }
 
-        if (abort) {
-            console.log('Try to save incomple statement');
-            return;
-        }
+                $http({
+                    headers: { 'Content-Type': 'application/json' },
+                    method: 'POST',
+                    url: NameSpace.get('asNBCurrent'),
+                    params: {
+                        context: angular.toJson({
+                            targets: buildTargets(),
+                            pageContext: XpointersHelper.getSafePageContext()
+                        })
+                    },
+                    withCredentials: true,
+                    data: {
+                        "graph": buildGraph(),
+                        "items": buildItems()               
+                    }
+                }).success(function(data) {
+                   // TODO add annnotation to annotationExchange then consolidate all
 
+                   // TODO how do the interface?
 
-        $http({
-            headers: { 'Content-Type': 'application/json' },
-            method: 'POST',
-            url: NameSpace.get('asNB')+"/b81c0aa3",
-            params: {
-                context: angular.toJson({
-                    targets: buildTargets(),
-                    pageContext: XpointersHelper.getSafePageContext()
-                })
-            },
-            withCredentials: true,
-            cache: false,
-            data: {
-                "graph": buildGraph(),
-                "items": buildItems()               
-            }
-        }).success(function(data) {
-           console.log(data);
-           new Annotation(data.AnnotationID).then(function(ann){
-                console.log(ann);
-           });
-        }).error(function(msg) {
-            console.log(msg);
-        });
+                   // TODO remove new Annotation (this load annotation from server)
+                   new Annotation(data.AnnotationID).then(function(ann){
+                        console.log(ann);
+                   });
+                }).error(function(msg) {
+                    // TODO
+                    console.log(msg);
+                });
 
-    };
+            } //end if logged
+
+        }); // end my pundit login       
+
+    }; // end save function
 
 });
