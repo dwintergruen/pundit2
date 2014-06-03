@@ -165,6 +165,7 @@
 
 
         $scope.testLiteral = function(elementID, $event) {
+            console.log($event.target);
             ResourcePanel.showPopoverLiteral("Default content", $event.target).then(function(value){
                 angular.element('#'+elementID).text(value);
             });

@@ -159,6 +159,7 @@ angular.module('Pundit2.ResourcePanel')
     // text --> text to show in textarea
     // target -->  targer element clicked
     resourcePanel.showPopoverLiteral = function(text, target){
+
         var content = {};
         content.literalText = text;
 

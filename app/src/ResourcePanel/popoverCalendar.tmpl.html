@@ -1,4 +1,4 @@
-<div class="popover popover-datepicker">
+<div class="popover popover-datepicker pnd-popover-calendar">
     <div class="arrow"></div>
     <h3 class="popover-title">Calendar</h3>
     <div class="popover-content">
@@ -6,7 +6,7 @@
             <label class="control-label"><i class="fa fa-calendar"></i> Date </label>
             <input type="text" ng-model="selectedDate"
                    class="form-control pnd-input-calendar"
-                   trigger="focus" autoclose="false" data-date-format="dd/MM/yyyy" bs-datepicker>
+                   trigger="focus" autoclose="false" data-date-format="dd/MM/yyyy" template="src/ResourcePanel/datepicker.tmpl.html" bs-datepicker>
         </div>
 
     <button class="btn btn-sm btn-success"  ng-click="save()">Save</button>
