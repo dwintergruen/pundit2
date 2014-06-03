@@ -24,7 +24,7 @@ angular.module('Pundit2.Vocabularies')
         }
     ],    
 
-    debug: false
+    debug: true
 
 })
 .factory('MurucaSelector', function(BaseComponent, MURUCASELECTORDEFAULTS, Item, ItemsExchange, SelectorsManager, $http, $q) {
@@ -67,9 +67,10 @@ angular.module('Pundit2.Vocabularies')
 
                 if (data.result.length === 0) {
                     murucaSelector.log('Empty Response');
+                    promise.resolve();
+                } else {
+                    self.getItemsDetails(data.result, promise);
                 }
-
-                self.getItemsDetails(data.result, promise);
 
             });
 

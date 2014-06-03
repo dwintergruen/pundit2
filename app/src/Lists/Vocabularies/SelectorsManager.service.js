@@ -56,6 +56,7 @@ angular.module('Pundit2.Vocabularies')
 
         // TODO need to instance only one time
         // then extend selectorInstance in the futures calls
+        // or we must be sure that it is called only once (eg: inside client)
         selectorInstances = [];
 
         for (var key in selectors) {
