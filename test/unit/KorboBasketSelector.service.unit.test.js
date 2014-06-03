@@ -2,14 +2,12 @@ describe('KorboBasketSelector service', function() {
 
     var KorboBasketSelector,
     $httpBackend,
-    SelectorsManager,
     KORBOBASKETSELECTORDEFAULTS,
     ItemsExchange;
 
     beforeEach(module('Pundit2'));
 
-    beforeEach(inject(function(_SelectorsManager_, _KORBOBASKETSELECTORDEFAULTS_, _KorboBasketSelector_, _$httpBackend_, _ItemsExchange_){
-        SelectorsManager = _SelectorsManager_;
+    beforeEach(inject(function(_KORBOBASKETSELECTORDEFAULTS_, _KorboBasketSelector_, _$httpBackend_, _ItemsExchange_){
         KORBOBASKETSELECTORDEFAULTS = _KORBOBASKETSELECTORDEFAULTS_;
         KorboBasketSelector = _KorboBasketSelector_;
         $httpBackend = _$httpBackend_;
@@ -43,11 +41,6 @@ describe('KorboBasketSelector service', function() {
             rdftype: ["http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"]
         }
     };
-
-    it('should be added to the selectorsManager when injected', function(){
-        SelectorsManager.init();
-        expect(SelectorsManager.getActiveSelectors().length).toBe(1);
-    });
 
     it('should correctly initialize a selector instance', function(){
         var conf = KORBOBASKETSELECTORDEFAULTS.instances[0],

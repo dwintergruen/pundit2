@@ -2,14 +2,12 @@ describe('MurucaSelector service', function() {
 
     var MurucaSelector,
     $httpBackend,
-    SelectorsManager,
     MURUCASELECTORDEFAULTS,
     ItemsExchange;
 
     beforeEach(module('Pundit2'));
 
-    beforeEach(inject(function(_SelectorsManager_, _MURUCASELECTORDEFAULTS_, _MurucaSelector_, _$httpBackend_, _ItemsExchange_){
-        SelectorsManager = _SelectorsManager_;
+    beforeEach(inject(function(_MURUCASELECTORDEFAULTS_, _MurucaSelector_, _$httpBackend_, _ItemsExchange_){
         MURUCASELECTORDEFAULTS = _MURUCASELECTORDEFAULTS_;
         MurucaSelector = _MurucaSelector_;
         $httpBackend = _$httpBackend_;
@@ -44,11 +42,6 @@ describe('MurucaSelector service', function() {
             }
         ]
     };
-
-    it('should be added to the selectorsManager when injected', function(){
-        SelectorsManager.init();
-        expect(SelectorsManager.getActiveSelectors().length).toBe(1);
-    });
 
     it('should correctly initialize a selector instance', function(){
         var conf = MURUCASELECTORDEFAULTS.instances[0],
