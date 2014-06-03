@@ -82,7 +82,6 @@ angular.module('Pundit2.Vocabularies')
                 var item = {
                     label: data.result[i].name,
                     mid: data.result[i].mid,
-                    // freebaseId: data.result[i].id,
                     image: freebaseSelector.options.freebaseImagesBaseURL + data.result[i].mid,
                     description: -1,
                     uri: -1
@@ -108,24 +107,24 @@ angular.module('Pundit2.Vocabularies')
 
         var error = 0;
 
-        // get TOPIC
+        // get MQL
         $http({
             method: 'GET',
             url: freebaseSelector.options.freebaseMQLReadURL,
             params: {
                 key: freebaseSelector.options.freebaseAPIKey,
-                query: angular.toJson({
+                query: {
                     "id": null,
                     "mid": item.mid,
                     "type": [{}],
-                })
+                }
             }    
         }).success(function(data) {
 
             item.uri = freebaseSelector.options.freebaseItemsBaseURL + data.result.mid;
             item.type = [];
 
-            freebaseSelector.log('Http success, get TOPIC from freebase' + item.uri);
+            freebaseSelector.log('Http success, get MQL from freebase' + item.uri);
 
             // Take the types labels
             for (var l=data.result.type.length; l--;) {
@@ -137,7 +136,7 @@ angular.module('Pundit2.Vocabularies')
 
             // Value != -1: this call is the last one, we're done
             if (item.description !== -1) {
-                freebaseSelector.log('TOPIC was last, complete for item ' + item.uri);
+                freebaseSelector.log('MQL was last, complete for item ' + item.uri);
                 delete item.mid;
                 var add = new Item(item.uri, item);
                 ItemsExchange.addItemToContainer(add, self.config.container);
@@ -145,14 +144,14 @@ angular.module('Pundit2.Vocabularies')
             }
 
         }).error(function(msg) {
-            freebaseSelector.err('Cant get TOPIC from freebase: ', msg);
+            freebaseSelector.err('Cant get MQL from freebase: ', msg);
             if (item.description !== -1 || error>0) {
                 self.checkEnd(promise);
             }
             error++;
         });
 
-        // get MQL
+        // get TOPIC
         $http({
             method: 'GET',
             url: freebaseSelector.options.freebaseTopicURL + item.mid,
@@ -162,7 +161,7 @@ angular.module('Pundit2.Vocabularies')
             }    
         }).success(function(data) {
 
-            freebaseSelector.log('Http success, get MQL from freebase' + item.uri);
+            freebaseSelector.log('Http success, get TOPIC from freebase' + item.uri);
 
             if (typeof(data.property) !== 'undefined' && data.property['/common/topic/description'].values.length > 0)
                 item.description = data.property['/common/topic/description'].values[0].value;
@@ -171,7 +170,7 @@ angular.module('Pundit2.Vocabularies')
 
             // Description is not -1: this call is the last one, we're done
             if (item.uri !== -1) {
-                freebaseSelector.log('MQL was last, complete http for item ' + item.uri);
+                freebaseSelector.log('TOPIC was last, complete http for item ' + item.uri);
                 delete item.mid;
                 var add = new Item(item.uri, item);
                 ItemsExchange.addItemToContainer(add, self.config.container);
@@ -179,7 +178,7 @@ angular.module('Pundit2.Vocabularies')
             }
 
         }).error(function(msg) {
-            freebaseSelector.err('Cant get MQL from freebase: ', msg);
+            freebaseSelector.err('Cant get TOPIC from freebase: ', msg);
             if (item.uri !== -1 || error>0) {
                 self.checkEnd(promise);
             }
