@@ -23,6 +23,7 @@ angular.module('Pundit2.ResourcePanel')
 
         state.popoverOptions.scope.vocabObjRes = [];
         state.popoverOptions.scope.vocabSubRes = [];
+        state.popoverOptions.scope.label = "";
         state.popover.hide();
         state.popover.destroy();
         state.popover = null;
@@ -257,7 +258,7 @@ angular.module('Pundit2.ResourcePanel')
     // triple is an array of URI [subject, predicate, object]
     // show all items compatibile as subject
     resourcePanel.showItemsForSubject = function(triple, target, label) {
-
+        console.log("oppure qui", label);
         if(typeof(target) === 'undefined'){
             target = state.popover.clickTarget;
         }        
@@ -281,7 +282,7 @@ angular.module('Pundit2.ResourcePanel')
 
         } else {
             // if open a new popover and label is not empty, get a search on vocab
-            if(typeof(label) !== 'undefined' && label !== '' && state.popoverOptions.scope.label !== label){
+            if(typeof(label) !== 'undefined' && label !== '' && state.popoverOptions.scope.label !== label){console.log("sono qui");
                 state.popoverOptions.scope.vocabSubStatus = 'loading';
                 $timeout.cancel(searchTimer);
                 searchTimer = $timeout(function(){
