@@ -2,7 +2,8 @@
 
 <script>
 
-    var TripleComposerDemoCtrl = function(Annotation, Client, ItemsExchange, Item) {
+    var TripleComposerDemoCtrl = function(Annotation, Client, ItemsExchange, Item,
+                                            SelectorsManager, FreebaseSelector, MurucaSelector) {
         var toLoad = ["8fd05a49", "65286186", "385c1647"];
 
         for (var l=toLoad.length; l--;) {
@@ -18,6 +19,8 @@
             }
             Client.log('Loaded '+num+' basic relations');
         }();
+
+        SelectorsManager.init();
 
     };
 

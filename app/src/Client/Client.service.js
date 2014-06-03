@@ -194,6 +194,7 @@ angular.module('Pundit2.Client')
                                 ImageFragmentAnnotator, TextFragmentAnnotator, Consolidation,
                                 AnnotationsExchange, Item, ItemsExchange, Annotation, MyItems,
                                 TextFragmentHandler, Toolbar, Annomatic,
+                                SelectorsManager, FreebaseSelector, MurucaSelector, KorboBasketSelector,
                                 $injector, $templateCache, $rootScope) {
 
         var client = new BaseComponent('Client', CLIENTDEFAULTS),
@@ -368,6 +369,12 @@ angular.module('Pundit2.Client')
 
                 MyItems.getAllItems();
             });
+
+            // to add a selector must to inject it in the dependency
+            // otherwise the SelectorsManager.addSelector() is never called
+            // and the selector manager can't show the selector
+            // es: FreebaseSelector, MurucaSelector, KorboBasketSelector
+            SelectorsManager.init();
 
             addComponents();
 

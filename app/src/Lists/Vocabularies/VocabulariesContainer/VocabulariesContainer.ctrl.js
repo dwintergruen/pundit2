@@ -15,16 +15,11 @@ angular.module('Pundit2.Vocabularies')
     debug: false
 })
 .controller('VocabulariesContainerCtrl', function($scope, $timeout, $injector, BaseComponent, VOCABULARIESCONTAINERDEFAULTS,
-                                                    SelectorsManager, ItemsExchange, TypesHelper,
-                                                    FreebaseSelector, MurucaSelector, KorboBasketSelector) {
+                                                    SelectorsManager, ItemsExchange, TypesHelper) {
 
     var vocabulariesContainer = new BaseComponent('VocabulariesContainer', VOCABULARIESCONTAINERDEFAULTS);
 
-    // to add a selector must to inject it in the controller dependency
-    // otherwise the SelectorsManager.addSelector() is never called
-    // and the selector manager can't show the selector
-    // es: FreebaseSelector, MurucaSelector, KorboBasketSelector
-    SelectorsManager.init();
+    // SelectorsManager is initialized inside client.boot()
 
     $scope.dropdownTemplate = "src/ContextualMenu/dropdown.tmpl.html";
 
