@@ -99,8 +99,9 @@ describe("Item", function(){
 
         var el = compileDirective(item1);
         var scope = el.isolateScope();
+        var evt = {preventDefault: function(){;}, stopPropagation: function(){;}}
 
-        scope.onClickSticky();
+        scope.onClickSticky(evt);
 
         expect(scope.isSticky()).toBe(true);
 

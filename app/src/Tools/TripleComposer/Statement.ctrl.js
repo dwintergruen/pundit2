@@ -27,6 +27,8 @@ angular.module('Pundit2.TripleComposer')
         object: null
     };
 
+    // build an array that represent the triple
+    // this array is passed to resource panel
     var buildUrisArray = function(){
         var res = [];
 
@@ -174,6 +176,7 @@ angular.module('Pundit2.TripleComposer')
         ResourcePanel.showItemsForObject(buildUrisArray(), undefined, $scope.objectSearch).then(setObject);
     };
 
+    // update input icons when text is present
     $scope.$watch(function() {
         return $scope.subjectSearch;
     }, function(str) {
@@ -279,6 +282,5 @@ angular.module('Pundit2.TripleComposer')
             triple.object = text;
         });
     };
-
 
 });

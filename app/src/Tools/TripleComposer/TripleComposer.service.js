@@ -63,6 +63,9 @@ angular.module('Pundit2.TripleComposer')
         }
     };
 
+    // duplicate a statement and add it to the statements array
+    // this produce the view update and a new <statement> directive
+    // is added to the triple composer directive
     tripleComposer.duplicateStatement = function(id){
         statements.some(function(s, i){
             if (s.id === id) {
@@ -83,20 +86,14 @@ angular.module('Pundit2.TripleComposer')
 
     };
 
-    //TODO to fix
-
-    var localRef = null;
-    tripleComposer.init = function(arr){
-        localRef = arr;
-    };
-
+    // TODO to fix (used to add a subject from outside of triple composer)
     tripleComposer.addToSubject = function(item) {
-        if (localRef.length === 1 && localRef[0].scope.get().subject === null) {
-            localRef[0].scope.get().subject = item;
+        if (statements.length === 1 && statements[0].scope.get().subject === null) {
+            statements[0].scope.get().subject = item;
 
-            localRef[0].scope.subjectLabel = item.label;
-            localRef[0].scope.subjectTypeLabel = TypesHelper.getLabel(item.type[0]);
-            localRef[0].scope.subjectFound = true;
+            statements[0].scope.subjectLabel = item.label;
+            statements[0].scope.subjectTypeLabel = TypesHelper.getLabel(item.type[0]);
+            statements[0].scope.subjectFound = true;
         } else {
             // add blank statement then insert subject
         }

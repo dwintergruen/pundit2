@@ -80,7 +80,12 @@ describe('Dashboard service', function() {
         for (var i in DASHBOARDDEFAULTS.panels) {
             minWidth += DASHBOARDDEFAULTS.panels[i].minWidth;
         }
-        var bw = Math.max(angular.element($window).innerWidth(), minWidth);
+        var body = angular.element('body'),
+            marginLeft = parseInt(body.css('margin-left'), 10),
+            marginRight = parseInt(body.css('margin-right'), 10),
+            width = angular.element($window).innerWidth() - marginRight - marginLeft,
+            bw = Math.max(width, minWidth);
+
         expect(Dashboard.getContainerWidth()).toBe(bw);
     });
 
