@@ -53,10 +53,10 @@ angular.module('Pundit2.Vocabularies')
 
         var config = {
             params: {
-                query: angular.toJson({
+                query: {
                     query: term,
                     limit: korboBasketSelector.options.limit
-                })
+                }
             },
             withCredentials: true
         };

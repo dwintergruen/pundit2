@@ -49,12 +49,12 @@ angular.module('Pundit2.Vocabularies')
 
         var config = {
             params: {
-                query: angular.toJson({
+                query: {
                     query: term,
                     type: self.config.queryType,
                     properties: murucaSelector.options.queryProperties,
                     limit: murucaSelector.options.limit
-                })
+                }
             }
         };
 
