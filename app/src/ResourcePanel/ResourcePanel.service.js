@@ -304,7 +304,6 @@ angular.module('Pundit2.ResourcePanel')
                     // all items are good
                     myItems = ItemsExchange.getItemsByContainer(myItemsContainer);
                     pageItems = ItemsExchange.getItemsByContainer(pageItemsContainer);
-
                     // if predicate is a valid uri
                 } else {
                     // get item predicate and check his domain
