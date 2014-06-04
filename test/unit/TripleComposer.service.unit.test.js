@@ -2,14 +2,30 @@ describe('TripleComposer service', function() {
 
     var TripleComposer,
         TRIPLECOMPOSERDEFAULTS,
+        Item,
+        NameSpace,
         $rootScope,
         $compile;
 
+    var item = {
+        uri: "http://rdf.freebase.com/ns/m/05qmj",
+        label: "Plato",
+        type: ["http://www.freebase.com/schema/common/topic", "http://www.freebase.com/schema/people/person"]
+    };
+
+    var predicateItem = {
+        uri: "http://purl.org/pundit/vocab#similarTo", 
+        label: "is similar to",
+        type: ["http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"]
+    };
+
     beforeEach(module('Pundit2'));
 
-    beforeEach(inject(function(_TRIPLECOMPOSERDEFAULTS_, _TripleComposer_, _$rootScope_, _$compile_){
+    beforeEach(inject(function(_TRIPLECOMPOSERDEFAULTS_, _TripleComposer_, _Item_, _NameSpace_, _$rootScope_, _$compile_){
         TRIPLECOMPOSERDEFAULTS = _TRIPLECOMPOSERDEFAULTS_;
         TripleComposer = _TripleComposer_;
+        Item = _Item_;
+        NameSpace = _NameSpace_;
         $rootScope = _$rootScope_;
         $compile = _$compile_;
     }));
@@ -42,6 +58,11 @@ describe('TripleComposer service', function() {
         expect(s.length).toBe(1);
         expect(s[0].id).toBe(1);
 
+        // at least one statement must be present
+        s[0].scope = { wipe: function(){ return; } };
+        TripleComposer.removeStatement(1);
+        expect(s.length).toBe(1);
+
     });
 
     it('should correctly reset statements array', function(){
@@ -62,6 +83,173 @@ describe('TripleComposer service', function() {
         TripleComposer.addStatementScope(s[0].id, {});
         expect(s[0].scope).toBeDefined();
         expect(typeof(s[0].scope)).toEqual('object');
+    });
+
+    it('should correctly build object', function(){
+        var o = TripleComposer.buildObject(item);
+        expect(o.type).toEqual('uri');
+        expect(o.value).toEqual(item.uri);
+
+        var l = TripleComposer.buildObject('literalText');
+        expect(l.type).toEqual('literal');
+        expect(l.value).toEqual('literalText');
+    });
+
+    it('should correctly build items object', function(){
+        var s = TripleComposer.getStatements();
+        
+        TripleComposer.addStatementScope(s[0].id, {
+            get: function(){
+                return {
+                    subject: new Item(item.uri, item),
+                    predicate: new Item(predicateItem.uri, predicateItem),
+                    object: new Item(item.uri, item)
+                }
+            }
+        });
+        
+        var items = TripleComposer.buildItems(),
+            t0 = item.type[0],
+            t1 = item.type[1],
+            t2 = predicateItem.type[0],
+            label = NameSpace.rdfs.label;
+
+        // first level properties
+        expect(items[item.uri]).toBeDefined();
+        expect(items[predicateItem.uri]).toBeDefined();
+        expect(typeof(items[item.uri])).toEqual('object');
+        expect(typeof(items[predicateItem.uri])).toEqual('object');
+
+        expect(typeof(items[t0])).toEqual('object');
+        expect(typeof(items[t1])).toEqual('object');
+        expect(typeof(items[t2])).toEqual('object');
+
+        // second level properties
+        expect(items[t0][label] instanceof Array).toBe(true);
+        expect(items[t1][label] instanceof Array).toBe(true);
+        
+        // third level properties
+        expect(items[t0][label][0].value).toBeDefined();
+        expect(items[t0][label][0].type).toBeDefined();
+
+    });
+
+    it('should correctly build target object', function(){
+        var s = TripleComposer.getStatements();
+        
+        TripleComposer.addStatementScope(s[0].id, {
+            get: function(){
+                return {
+                    subject: {uri: 'testUri1', isTextFragment: function(){ return true;}},
+                    predicate: {uri: 'testUri2', isTextFragment: function(){ return true;}},
+                    object: {uri: 'testUri3', isTextFragment: function(){ return true;}}
+                }
+            }
+        });
+        
+        var target = TripleComposer.buildTargets();
+
+        expect(target.length).toBe(3);
+        expect(target.indexOf('testUri1')).toBeGreaterThan(-1);
+        expect(target.indexOf('testUri2')).toBeGreaterThan(-1);
+        expect(target.indexOf('testUri3')).toBeGreaterThan(-1);
+
+    });
+
+    it('should correctly build simple graph object', function(){
+        var s = TripleComposer.getStatements();
+        
+        TripleComposer.addStatementScope(s[0].id, {
+            get: function(){
+                return {
+                    subject: {uri: 'subUri'},
+                    predicate: {uri: 'predUri'},
+                    object: {uri: 'objUri'}
+                }
+            }
+        });
+
+        var graph = TripleComposer.buildGraph();
+
+        expect(typeof(graph)).toEqual('object');
+        expect(typeof(graph.subUri)).toEqual('object');
+        expect(graph.subUri.predUri instanceof Array).toBe(true);
+        expect(typeof(graph.subUri.predUri[0])).toEqual('object');
+
+    });
+
+    it('should correctly build graph object with the subject in common', function(){
+        var s = TripleComposer.getStatements();
+        
+        TripleComposer.addStatementScope(s[0].id, {
+            get: function(){
+                return {
+                    subject: {uri: 'subUri'},
+                    predicate: {uri: 'predUri'},
+                    object: {uri: 'objUri'}
+                }
+            }
+        });
+
+        TripleComposer.addStatement();
+        TripleComposer.addStatementScope(s[1].id, {
+            get: function(){
+                return {
+                    subject: {uri: 'subUri'},
+                    predicate: {uri: 'predUri2'},
+                    object: {uri: 'objUri'}
+                }
+            }
+        });
+        
+        var graph = TripleComposer.buildGraph();
+
+        expect(typeof(graph)).toEqual('object');
+        expect(typeof(graph.subUri)).toEqual('object');
+        expect(graph.subUri.predUri instanceof Array).toBe(true);
+        expect(graph.subUri.predUri2 instanceof Array).toBe(true);
+        expect(typeof(graph.subUri.predUri[0])).toEqual('object');
+        expect(typeof(graph.subUri.predUri2[0])).toEqual('object');
+
+    });
+
+    it('should correctly build graph object with subject and predicate in common', function(){
+        var s = TripleComposer.getStatements();
+        
+        TripleComposer.addStatementScope(s[0].id, {
+            get: function(){
+                return {
+                    subject: {uri: 'subUri'},
+                    predicate: {uri: 'predUri'},
+                    object: {uri: 'objUri1'}
+                }
+            }
+        });
+
+        TripleComposer.addStatement();
+        TripleComposer.addStatementScope(s[1].id, {
+            get: function(){
+                return {
+                    subject: {uri: 'subUri'},
+                    predicate: {uri: 'predUri'},
+                    object: {uri: 'objUri2'}
+                }
+            }
+        });
+        
+        var graph = TripleComposer.buildGraph();
+
+        // first level property
+        expect(typeof(graph)).toEqual('object');
+        expect(typeof(graph.subUri)).toEqual('object');
+        expect(Object.keys(graph.subUri).length).toBe(1);
+        // second level property
+        expect(Object.keys(graph.subUri)[0]).toEqual('predUri');
+        // third level property
+        expect(graph.subUri.predUri instanceof Array).toBe(true);
+        expect(graph.subUri.predUri.length).toBe(2);
+        
+
     });
 
     it('should correctly compile statement directive', function(){
