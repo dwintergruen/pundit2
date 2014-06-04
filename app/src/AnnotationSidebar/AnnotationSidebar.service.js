@@ -376,6 +376,7 @@ angular.module('Pundit2.AnnotationSidebar')
     $rootScope.$watch(function() {
         return AnnotationsExchange.getAnnotations();
     }, function(annotations) {
+        // console.log(annotations);
         if (timeoutPromise) {
             $timeout.cancel(timeoutPromise);
         }
