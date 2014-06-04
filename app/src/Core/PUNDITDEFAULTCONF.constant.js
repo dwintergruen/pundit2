@@ -72,19 +72,14 @@ angular.module('Pundit2.Core')
                 active: true
             },
             SelectorsManager: {
+                // when selector manager is activated by default all selectors are active
+                // to turn off each selector is necessary to add an object with the active property to false
+                // in the same way to configure multiple instances of the same selector
+                // you need to add an object here (see vocabularies.html example)
                 active: true
             },
             TripleComposer: {
                 active: true
-            },
-
-            selectors: {
-                'Freebase': {
-                    label: 'Freebase', active: true
-                },
-                'DBPedia': {
-                    label: 'DBPedia', active: false
-                }
             },
 
             'pundit.AnalyticsHelper': {

@@ -54,27 +54,25 @@ angular.module('Pundit2.Vocabularies')
     // when the init run others factory must to be call the "addSelector" method
     selectorsManager.init = function(){
 
-        // TODO need to instance only one time
-        // then extend selectorInstance in the futures calls
-        // or we must be sure that it is called only once (eg: inside client)
         selectorInstances = [];
 
         for (var key in selectors) {
 
-            // selector factory
+            // selector factory constructor
             var Factory = $injector.get(selectors[key].name);
 
+            // initialize one selector instance
+            // for each element in the array
             for (var j in selectors[key].options.instances) {
-                // selector instance
                 var sel = new Factory(selectors[key].options.instances[j]);
                 selectorInstances.push(sel);
             }
         }
-        selectorsManager.log('Init, add selector instances', selectorInstances);
+        selectorsManager.log('Init, add selectors instances', selectorInstances);
     };
 
     // when the selector factory is load run this method
-    // another component should inject the singles selector factory 
+    // another component (client) should inject the singles selector factory 
     // to start the initialization process
     selectorsManager.addSelector = function(selector){
         selectors[selector.name] = selector;
