@@ -7,6 +7,7 @@ describe('AnnotationSidebar service', function() {
         $compile,
         $log,
         $httpBackend,
+        $rootScope,
         ANNOTATIONSIDEBARDEFAULTS,
         Annotation,
         NameSpace;
@@ -14,7 +15,7 @@ describe('AnnotationSidebar service', function() {
     beforeEach(module('Pundit2'));
     
     beforeEach(function() {
-        inject(function($injector, _$window_, _$log_, _$timeout_, _$compile_, _$httpBackend_, _ANNOTATIONSIDEBARDEFAULTS_) {
+        inject(function($injector, _$window_, _$log_, _$timeout_, _$compile_, _$httpBackend_, _$rootScope_, _ANNOTATIONSIDEBARDEFAULTS_) {
             AnnotationSidebar = $injector.get('AnnotationSidebar');
             Annotation = $injector.get('Annotation');
             NameSpace = $injector.get('NameSpace');
@@ -24,6 +25,7 @@ describe('AnnotationSidebar service', function() {
             $timeout = _$timeout_;
             $compile = _$compile_;
             $httpBackend = _$httpBackend_;
+            $rootScope = _$rootScope_;
             ANNOTATIONSIDEBARDEFAULTS = _ANNOTATIONSIDEBARDEFAULTS_;
         });
     });
@@ -147,8 +149,7 @@ describe('AnnotationSidebar service', function() {
 
         AnnotationSidebar.setFilter('authors', 'http://fakeuri.it/testAuthor');
         expect(AnnotationSidebar.needToFilter()).toEqual(false);
+        AnnotationSidebar.removeFilter('authors', 'http://fakeuri.it/testAuthor');
     });
-
-
 
 });
