@@ -125,4 +125,30 @@ describe('AnnotationSidebar service', function() {
         expect(myAnnotation.length).toEqual(1);
     });
 
+    it('should filter be applied to the list of filtered annotations', function(){
+        AnnotationSidebar.filters['authors'].expression.push('http://fakeuri.it/test');
+        var currentFilters = AnnotationSidebar.getFilters();
+        var myAnnotationFiltered = AnnotationSidebar.getAllAnnotationsFiltered(currentFilters);
+
+        expect(myAnnotationFiltered.length).toEqual(0);
+    });
+
+    it('should service know if some filters are active', function(){
+        AnnotationSidebar.resetFilters();
+        expect(AnnotationSidebar.needToFilter()).toEqual(false);
+
+        AnnotationSidebar.filters['authors'].expression.push('http://fakeuri.it/test');
+        expect(AnnotationSidebar.needToFilter()).toEqual(true);
+    });
+
+    it('should setFilters works only if element exists in the current annotations', function(){
+        AnnotationSidebar.resetFilters();
+        expect(AnnotationSidebar.needToFilter()).toEqual(false);
+
+        AnnotationSidebar.setFilter('authors', 'http://fakeuri.it/testAuthor');
+        expect(AnnotationSidebar.needToFilter()).toEqual(false);
+    });
+
+
+
 });

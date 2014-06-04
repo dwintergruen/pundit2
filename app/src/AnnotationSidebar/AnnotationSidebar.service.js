@@ -336,8 +336,9 @@ angular.module('Pundit2.AnnotationSidebar')
             annotationSidebar.filters[filterKey].expression = uriValue;
         } else if (typeof(currentFilter) === 'object'){
             currentIndex = annotationSidebar.filters[filterKey].expression.indexOf(uriValue);
-            if (currentIndex === -1){
-                elementsList[filterKey][uriValue].active = true;
+            currentElementInList = elementsList[filterKey][uriValue];
+            if (currentIndex === -1 && typeof(currentElementInList) !== 'undefined'){
+                currentElementInList.active = true;
                 annotationSidebar.filters[filterKey].expression.push(uriValue);
             }
         }
