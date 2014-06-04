@@ -31,25 +31,6 @@ angular.module('Pundit2.TripleComposer')
         statements.push({id: nextId});
     };
 
-    tripleComposer.reset = function(){
-        nextId = 1;
-        statements = [{
-            id: nextId
-        }];
-        return statements;
-    };
-
-    tripleComposer.isAnnotationComplete = function(){
-        var complete = true;
-        statements.some(function(s){
-            if (!s.scope.isStatementComplete()) {
-                complete = false;
-                return true;
-            }
-        });
-        return complete;
-    };
-
     tripleComposer.removeStatement = function(id){
         // at least one statetement must be present
         if (statements.length === 1) {
@@ -66,6 +47,14 @@ angular.module('Pundit2.TripleComposer')
         if (index > -1) {
             statements.splice(index, 1);
         }
+    };
+
+    tripleComposer.reset = function(){
+        nextId = 1;
+        statements = [{
+            id: nextId
+        }];
+        return statements;
     };
 
     // extend arr object with scope property
@@ -116,6 +105,17 @@ angular.module('Pundit2.TripleComposer')
         } else {
             // add blank statement then insert subject
         }
+    };
+
+    tripleComposer.isAnnotationComplete = function(){
+        var complete = true;
+        statements.some(function(s){
+            if (!s.scope.isStatementComplete()) {
+                complete = false;
+                return true;
+            }
+        });
+        return complete;
     };
 
     // build the items object used inside http call
