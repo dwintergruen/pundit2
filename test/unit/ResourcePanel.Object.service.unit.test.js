@@ -1,4 +1,4 @@
-describe('Subject Popover Resource Panel service', function() {
+describe('Object Popover Resource Panel service', function() {
 
     var ResourcePanel,
         $rootScope,
@@ -68,7 +68,6 @@ describe('Subject Popover Resource Panel service', function() {
     beforeEach(function() {
         window.punditConfig = testPunditConfig;
         module('Pundit2');
-
     });
 
 
@@ -137,16 +136,15 @@ describe('Subject Popover Resource Panel service', function() {
         var label = "";
 
         // open a resource panel popover
-        ResourcePanel.showItemsForSubject(triple, anchor, label);
+        ResourcePanel.showItemsForObject(triple, anchor, label);
         $rootScope.$digest();
-
         // at this time popover should be open
         var rp = angular.element.find('.pnd-resource-panel-popover');
         expect(angular.element(rp).length).toBe(1);
         // and his scope should be defined
         var scope = getPopoverResourcePanelScope();
         expect(scope).toBeDefined();
-        expect(scope.type).toBe('sub');
+        expect(scope.type).toBe('obj');
         // should be loaded all page items
         expect(scope.pageItems.length).toBe(3);
         expect(scope.pageItems[0]).toBe(item1);
@@ -188,7 +186,7 @@ describe('Subject Popover Resource Panel service', function() {
         var label = "";
 
         // open a resource panel popover
-        ResourcePanel.showItemsForSubject(triple, anchor, label);
+        ResourcePanel.showItemsForObject(triple, anchor, label);
         $rootScope.$digest();
 
         // at this time popover should be open
@@ -197,7 +195,7 @@ describe('Subject Popover Resource Panel service', function() {
         // and his scope should be defined
         var scope = getPopoverResourcePanelScope();
         expect(scope).toBeDefined();
-        expect(scope.type).toBe('sub');
+        expect(scope.type).toBe('obj');
         // should be loaded all page items
         expect(scope.pageItems.length).toBe(3);
         expect(scope.pageItems[0]).toBe(item1);
@@ -224,27 +222,28 @@ describe('Subject Popover Resource Panel service', function() {
         var label = "";
 
         // open a resource panel popover
-        ResourcePanel.showItemsForSubject(triple, anchor, label);
+        ResourcePanel.showItemsForObject(triple, anchor, label);
         $rootScope.$digest();
         var scope = getPopoverResourcePanelScope();
+        expect(scope.type).toBe('obj');
         expect(scope.pageItems.length).toBe(2);
         expect(scope.pageItems[0]).toBe(item1);
         expect(scope.pageItems[1]).toBe(item2);
 
     });
 
-    it("should load all page items if item predicate has empty domain", function() {
+    it("should load all page items if item predicate has empty range", function() {
 
-        var emptyDomainPred = {
+        var emptyRangePred = {
             "type": ["http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"],
             "label": "empty domain",
             "description": "The selected text fragment is a Person, a Work, a Place or a well defined Entity",
-            "domain": "",
+            "range": "",
             "uri": "http://purl.org/pundit/ont/oa#identifies"
         };
 
-        var predicate = new Item(emptyDomainPred.uri, emptyDomainPred);
-        ItemsExchange.addItemToContainer(predicate, Client.options.relationsContainer);
+        var predicate = new Item(emptyRangePred.uri, emptyRangePred);
+        ItemsExchange.addItemToContainer(predicate, Client.options.container);
 
         // add some page items
         var item1 = new Item("http://item1-uri", propFragmentText);
@@ -255,11 +254,11 @@ describe('Subject Popover Resource Panel service', function() {
 
         var anchor = angular.element('.pnd-anchor');
         // undefined triple
-        var triple = ["", emptyDomainPred.uri, ""];
+        var triple = ["", emptyRangePred.uri, ""];
         var label = "";
 
         // open a resource panel popover
-        ResourcePanel.showItemsForSubject(triple, anchor, label);
+        ResourcePanel.showItemsForObject(triple, anchor, label);
         $rootScope.$digest();
         var scope = getPopoverResourcePanelScope();
         expect(scope.pageItems.length).toBe(2);
@@ -283,7 +282,7 @@ describe('Subject Popover Resource Panel service', function() {
         ItemsExchange.addItemToContainer(myItem2, MyItems.options.container);
 
         // open a resource panel popover
-        ResourcePanel.showItemsForSubject(triple, anchor, label);
+        ResourcePanel.showItemsForObject(triple, anchor, label);
         $rootScope.$digest();
         expect(scope.pageItems.length).toBe(2);
         expect(scope.pageItems[0]).toBe(item1);
@@ -294,17 +293,17 @@ describe('Subject Popover Resource Panel service', function() {
 
     });
 
-    it("should load all page items if item predicate has undefined domain", function() {
+    it("should load all page items if item predicate has undefined range", function() {
 
-        var undefDomainPred = {
+        var undefRangePred = {
             "type": ["http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"],
             "label": "undefined domain",
             "description": "The selected text fragment is the translation of another text fragment",
-            "range": ["http://purl.org/pundit/ont/ao#fragment-text"],
+            "domain": ["http://purl.org/pundit/ont/ao#fragment-text"],
             "uri": "http://purl.org/pundit/ont/oa#isTranslationOf"
         };
 
-        var predicate = new Item(undefDomainPred.uri, undefDomainPred);
+        var predicate = new Item(undefRangePred.uri, undefRangePred);
         ItemsExchange.addItemToContainer(predicate, Client.options.relationsContainer);
 
         // add some page items
@@ -315,12 +314,11 @@ describe('Subject Popover Resource Panel service', function() {
         ItemsExchange.addItemToContainer(item2, PageItemsContainer.options.container);
 
         var anchor = angular.element('.pnd-anchor');
-        // undefined triple
-        var triple = ["", undefDomainPred.uri, ""];
+        var triple = ["", undefRangePred.uri, ""];
         var label = "";
 
         // open a resource panel popover
-        ResourcePanel.showItemsForSubject(triple, anchor, label);
+        ResourcePanel.showItemsForObject(triple, anchor, label);
         $rootScope.$digest();
         var scope = getPopoverResourcePanelScope();
         expect(scope.pageItems.length).toBe(2);
@@ -329,60 +327,68 @@ describe('Subject Popover Resource Panel service', function() {
         expect(scope.myItems.length).toBe(0);
     });
 
-    it("should load only image and fragment image items", function() {
-
-        // get login
-        $httpBackend.whenGET(NameSpace.get('asUsersCurrent')).respond(userLoggedIn);
-
-        MyPundit.login();
-
-        $rootScope.$digest();
-        $httpBackend.flush();
-
-        var ImagePred = {
+    it("should open calendar if predicate is date ", function() {
+        var dateRangePred = {
             "type": ["http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"],
-            "label": "depicts",
-            "description": "An image or part of an image depicts something",
-            "domain": [
-                "http://xmlns.com/foaf/0.1/Image",
-                "http://purl.org/pundit/ont/ao#fragment-image"
-            ],
-            "range": [],
-            "uri": "http://xmlns.com/foaf/0.1/depicts"
+            "label": "period of dates ends at",
+            "description": "The selected text fragment corresponds to the specified date period which ends at the specified Date",
+            "domain": ["http://purl.org/pundit/ont/ao#fragment-text"],
+            "range": ["http://www.w3.org/2001/XMLSchema#dateTime"],
+            "uri": "http://purl.org/pundit/ont/oa#periodEndDate"
         };
 
-        var predicate = new Item(ImagePred.uri, ImagePred);
+        var predicate = new Item(dateRangePred.uri, dateRangePred);
         ItemsExchange.addItemToContainer(predicate, Client.options.relationsContainer);
 
-        // add some page items
-        var item1 = new Item("http://item1-uri", propFragmentText);
-        var item2 = new Item("http://item2-uri", propFragImage);
-        var item3 = new Item("http://item3-uri", propImage);
-
-        ItemsExchange.addItemToContainer(item1, PageItemsContainer.options.container);
-        ItemsExchange.addItemToContainer(item2, PageItemsContainer.options.container);
-        ItemsExchange.addItemToContainer(item3, PageItemsContainer.options.container);
-
-        // add some my items
-        var myItem1 = new Item("http://my-item2-uri", propFragImage);
-        var myItem2 = new Item("http://my-item3-uri", propCommonTopic);
-        ItemsExchange.addItemToContainer(myItem1, MyItems.options.container);
-        ItemsExchange.addItemToContainer(myItem2, MyItems.options.container);
-
         var anchor = angular.element('.pnd-anchor');
-        // undefined triple
-        var triple = ["", ImagePred.uri, ""];
+        var triple = ["", dateRangePred.uri, ""];
         var label = "";
 
-        // open a resource panel popover
-        ResourcePanel.showItemsForSubject(triple, anchor, label);
+        ResourcePanel.showItemsForObject(triple, anchor, label);
         $rootScope.$digest();
-        var scope = getPopoverResourcePanelScope();
-        expect(scope.pageItems.length).toBe(2);
-        expect(scope.pageItems[0]).toBe(item2);
-        expect(scope.pageItems[1]).toBe(item3);
-        expect(scope.myItems.length).toBe(1);
-        expect(scope.myItems[0]).toBe(myItem1);
+
+        // no resource panel should be open
+        var rp = angular.element.find('.pnd-resource-panel-popover');
+        expect(angular.element(rp).length).toBe(0);
+
+        // but should be open a calendar popover
+        var popoverCalendar = angular.element.find('.pnd-popover-calendar');
+        expect(angular.element(popoverCalendar).length).toBe(1);
+
+    });
+
+    it("should open literal popover if predicate is text ", function() {
+        var textRangePred = {
+            "type": ["http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"],
+            "label": "has comment (free text)",
+            "description": "Any comment related to the selected fragment of text or image",
+            "domain": [
+                "http://purl.org/pundit/ont/ao#fragment-image",
+                "http://purl.org/pundit/ont/ao#fragment-text",
+                "http://xmlns.com/foaf/0.1/Image"
+            ],
+            "range": ["http://www.w3.org/2000/01/rdf-schema#Literal"],
+            "uri": "http://schema.org/comment"
+        };
+
+        var predicate = new Item(textRangePred.uri, textRangePred);
+        ItemsExchange.addItemToContainer(predicate, Client.options.relationsContainer);
+
+        var anchor = angular.element('.pnd-anchor');
+        var triple = ["", textRangePred.uri, ""];
+        var label = "";
+
+        ResourcePanel.showItemsForObject(triple, anchor, label);
+        $rootScope.$digest();
+
+        // no resource panel should be open
+        var rp = angular.element.find('.pnd-resource-panel-popover');
+        expect(angular.element(rp).length).toBe(0);
+
+        // but should be open a calendar popover
+        var popoverLiteral = angular.element.find('.pnd-popover-literal');
+        expect(angular.element(popoverLiteral).length).toBe(1);
+
     });
 
     it("should load only fragment text items", function() {
@@ -396,14 +402,7 @@ describe('Subject Popover Resource Panel service', function() {
             "type": ["http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"],
             "label": "quotes",
             "description": "The selected text fragment is a sentence from a Person or a Work, usually enclosed by quotations (eg: '')",
-            "domain": ["http://purl.org/pundit/ont/ao#fragment-text"],
-            "range": [
-                "http://www.freebase.com/schema/people/person",
-                "http://xmlns.com/foaf/0.1/Person",
-                "http://dbpedia.org/ontology/Person",
-                "http://www.freebase.com/schema/book/written_work",
-                "http://www.freebase.com/schema/book/book"
-            ],
+            "range": ["http://purl.org/pundit/ont/ao#fragment-text"],
             "uri": "http://purl.org/spar/cito/includesQuotationFrom"
         };
 
@@ -430,7 +429,7 @@ describe('Subject Popover Resource Panel service', function() {
         var label = "";
 
         // open a resource panel popover
-        ResourcePanel.showItemsForSubject(triple, anchor, label);
+        ResourcePanel.showItemsForObject(triple, anchor, label);
         $rootScope.$digest();
         var scope = getPopoverResourcePanelScope();
         expect(scope.pageItems.length).toBe(1);
@@ -439,79 +438,71 @@ describe('Subject Popover Resource Panel service', function() {
 
     });
 
-    it("should close popover calling cancel method", function() {
+    it("should load only image items", function() {
+        // get login
+        $httpBackend.whenGET(NameSpace.get('asUsersCurrent')).respond(userLoggedIn);
+        MyPundit.login();
+        $rootScope.$digest();
+        $httpBackend.flush();
+
+        var ImgPred = {
+            "type": ["http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"],
+            "label": "quotes",
+            "description": "The selected text fragment is a sentence from a Person or a Work, usually enclosed by quotations (eg: '')",
+            "range": ["http://purl.org/pundit/ont/ao#fragment-image", "http://xmlns.com/foaf/0.1/Image"],
+            "uri": "http://purl.org/spar/cito/includesQuotationFrom"
+        };
+
+        var predicate = new Item(ImgPred.uri, ImgPred);
+        ItemsExchange.addItemToContainer(predicate, Client.options.relationsContainer);
+
+        // add some page items
+        var item1 = new Item("http://item1-uri", propFragmentText);
+        var item2 = new Item("http://item2-uri", propFragImage);
+        var item3 = new Item("http://item3-uri", propImage);
+
+        ItemsExchange.addItemToContainer(item1, PageItemsContainer.options.container);
+        ItemsExchange.addItemToContainer(item2, PageItemsContainer.options.container);
+        ItemsExchange.addItemToContainer(item3, PageItemsContainer.options.container);
+
+        // add some my items
+        var myItem1 = new Item("http://my-item2-uri", propFragImage);
+        var myItem2 = new Item("http://my-item3-uri", propCommonTopic);
+        ItemsExchange.addItemToContainer(myItem1, MyItems.options.container);
+        ItemsExchange.addItemToContainer(myItem2, MyItems.options.container);
+
         var anchor = angular.element('.pnd-anchor');
-        var triple = ["", "", ""];
+        var triple = ["", ImgPred.uri, ""];
         var label = "";
 
         // open a resource panel popover
-        ResourcePanel.showItemsForSubject(triple, anchor, label);
+        ResourcePanel.showItemsForObject(triple, anchor, label);
         $rootScope.$digest();
         var scope = getPopoverResourcePanelScope();
-        scope.cancel();
+        expect(scope.pageItems.length).toBe(2);
+        expect(scope.pageItems[0]).toBe(item2);
+        expect(scope.pageItems[1]).toBe(item3);
+        expect(scope.myItems.length).toBe(1);
+        expect(scope.myItems[0]).toBe(myItem1);
 
-        $rootScope.$digest();
-
-        var popover = angular.element.find('div.pnd-resource-panel-popover');
-        expect(popover.length).toBe(0);
     });
 
-    it("should resolve a promise when save an item", function() {
-        var item = new Item("http://item1-uri", propFragmentText);
-        ItemsExchange.addItemToContainer(item, PageItemsContainer.options.container);
+    it("should not start searching label in vocab when input is empty", function() {
+
         var anchor = angular.element('.pnd-anchor');
         var triple = ["", "", ""];
         var label = "";
 
-        // open a resource panel popover
-        var promise = ResourcePanel.showItemsForSubject(triple, anchor, label);
+        ResourcePanel.showItemsForObject(triple, anchor, label);
         $rootScope.$digest();
+
         var scope = getPopoverResourcePanelScope();
-        scope.save(item);
-        $rootScope.$digest();
 
-        promise.then(function(value){
-            expect(value).toBe(item);
-            var popover = angular.element.find('div.pnd-resource-panel-popover');
-            expect(popover.length).toBe(0);
-        });
+        $timeout.flush();
 
-    });
-
-    it("should be open only one popover at time", function() {
-
-        var anchor = angular.element('.pnd-anchor');
-        var triple = ["", "", ""];
-        var label = "";
-
-        // open a resource panel popover
-        ResourcePanel.showItemsForSubject(triple, anchor, label);
-        $rootScope.$digest();
-
-        var popover = angular.element.find('div.pnd-resource-panel-popover');
-        expect(popover.length).toBe(1);
-
-        ResourcePanel.showItemsForSubject(triple, anchor, label);
-        $rootScope.$digest();
-
-        popover = angular.element.find('div.pnd-resource-panel-popover');
-        expect(popover.length).toBe(1);
-
-        // create a new anchor for another popover
-        angular.element("[data-ng-app='Pundit2']")
-            .prepend("<div class='pnd-anchor-two' style='position: absolute; left: -500px; top: -500px;'><div>");
-
-        var anchorTwo = angular.element('.pnd-anchor-two');
-
-        ResourcePanel.showItemsForSubject(triple, anchorTwo, label);
-        $rootScope.$digest();
-
-        popover = angular.element.find('div.pnd-resource-panel-popover');
-        expect(popover.length).toBe(1);
-
-        // remove calendar anchor from DOM
-        var body = $document.find('body');
-        body.find('.pnd-anchor-two').remove();
+        expect(scope.vocabObjStatus).toBeUndefined();
+        expect(scope.vocabObjRes).toBeUndefined();
+        expect(scope.vocabObjResEmpty).toBeUndefined();
 
     });
 
@@ -547,11 +538,11 @@ describe('Subject Popover Resource Panel service', function() {
         $rootScope.$digest();
         $httpBackend.whenJSONP(url).respond(realResult);
 
-        ResourcePanel.showItemsForSubject(triple, anchor, label);
+        ResourcePanel.showItemsForObject(triple, anchor, label);
         $rootScope.$digest();
 
         var scope = getPopoverResourcePanelScope();
-        expect(scope.vocabSubStatus).toBe('loading');
+        expect(scope.vocabObjStatus).toBe('loading');
 
         $timeout.flush();
         $httpBackend.flush();
@@ -559,26 +550,26 @@ describe('Subject Popover Resource Panel service', function() {
         var selectors = SelectorsManager.getActiveSelectors();
         var selContainer = selectors[0].config.container;
 
-        expect(scope.vocabSubStatus).toBe('done');
-        expect(scope.vocabSubRes[selContainer].length).toBe(realResult.result.length);
-        expect(scope.vocabSubRes[selContainer][0].uri).toBe(realResult.result[0].resource_url);
-        expect(scope.vocabSubRes[selContainer][1].uri).toBe(realResult.result[1].resource_url);
+        expect(scope.vocabObjStatus).toBe('done');
+        expect(scope.vocabObjRes[selContainer].length).toBe(realResult.result.length);
+        expect(scope.vocabObjRes[selContainer][0].uri).toBe(realResult.result[0].resource_url);
+        expect(scope.vocabObjRes[selContainer][1].uri).toBe(realResult.result[1].resource_url);
 
-        expect(scope.vocabSubResEmpty).toBe(false);
+        expect(scope.vocabObjResEmpty).toBe(false);
 
         // open same popover, from same target and same label
-        ResourcePanel.showItemsForSubject(triple, anchor, label);
+        ResourcePanel.showItemsForObject(triple, anchor, label);
         $rootScope.$digest();
         $timeout.flush();
         // no http request shold be start
         $httpBackend.verifyNoOutstandingRequest();
 
         // open same popover, from same target and empty label
-        ResourcePanel.showItemsForSubject(triple, anchor, "");
+        ResourcePanel.showItemsForObject(triple, anchor, "");
         $rootScope.$digest();
         $timeout.flush();
         // result should be empty
-        expect(scope.vocabSubRes.length).toBe(0);
+        expect(scope.vocabObjRes.length).toBe(0);
 
         // in the same resource panel, search a new label
         var otherLabel = "gio";
@@ -597,38 +588,15 @@ describe('Subject Popover Resource Panel service', function() {
         };
 
         $httpBackend.whenJSONP(otherUrl).respond(otherResult);
-        ResourcePanel.showItemsForSubject(triple, anchor, otherLabel);
+        ResourcePanel.showItemsForObject(triple, anchor, otherLabel);
         $rootScope.$digest();
         $timeout.flush();
         $httpBackend.flush();
 
-        expect(scope.vocabSubStatus).toBe('done');
-        expect(scope.vocabSubRes[selContainer].length).toBe(otherResult.result.length);
-        expect(scope.vocabSubRes[selContainer][0].uri).toBe(otherResult.result[0].resource_url);
-        expect(scope.vocabSubResEmpty).toBe(false)
+        expect(scope.vocabObjStatus).toBe('done');
+        expect(scope.vocabObjRes[selContainer].length).toBe(otherResult.result.length);
+        expect(scope.vocabObjRes[selContainer][0].uri).toBe(otherResult.result[0].resource_url);
+        expect(scope.vocabObjResEmpty).toBe(false)
     });
-
-    it("should not start searching label in vocab when input is empty", function() {
-
-        var anchor = angular.element('.pnd-anchor');
-        var triple = ["", "", ""];
-        var label = "";
-
-        ResourcePanel.showItemsForSubject(triple, anchor, label);
-        $rootScope.$digest();
-
-        var scope = getPopoverResourcePanelScope();
-
-        $timeout.flush();
-
-        expect(scope.vocabSubStatus).toBeUndefined();
-        expect(scope.vocabSubRes).toBeUndefined();
-        expect(scope.vocabSubResEmpty).toBeUndefined();
-
-
-    });
-
-
-
 
 });

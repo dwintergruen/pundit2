@@ -5,7 +5,8 @@ describe('ContextualMenu service', function() {
         $rootScope,
         CONTEXTUALMENUDEFAULTS,
         state,
-        $log;
+        $log,
+        $document;
 
     beforeEach(module('Pundit2'));
 
@@ -18,7 +19,7 @@ describe('ContextualMenu service', function() {
         angular.element("body").append("<div data-ng-app='Pundit2'></div>");
     });    
 
-    beforeEach(inject(function(_$rootScope_, _$window_, _$animate_, _CONTEXTUALMENUDEFAULTS_,  _ContextualMenu_, _$log_){
+    beforeEach(inject(function(_$rootScope_, _$window_, _$animate_, _CONTEXTUALMENUDEFAULTS_,  _ContextualMenu_, _$log_, _$document_){
         $rootScope = _$rootScope_;
         $window = _$window_;
         $log = _$log_;
@@ -30,7 +31,14 @@ describe('ContextualMenu service', function() {
         state.menuElements = [];
         state.content = null;
         ContextualMenu.hide();
+        $document = _$document_;
     }));
+
+    afterEach(function(){
+        var body = $document.find('body');
+        body.find("[data-ng-app='Pundit2']").remove();
+        $rootScope.$digest();
+    });
 
     var clickTest = false;
 

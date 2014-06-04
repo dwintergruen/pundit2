@@ -3,7 +3,8 @@ describe('Dashboard service', function() {
     var $window,
         $rootScope,
         $compile,
-        $templateCache;
+        $templateCache,
+        $document;
 
     var contentTemplate1 = "This is the content of the template 1",
         contentTemplate2 = "This is the content of the template 2";
@@ -14,11 +15,12 @@ describe('Dashboard service', function() {
         'src/Dashboard/pndTabs.dir.tmpl.html'
     ));
 
-    beforeEach(inject(function(_$window_, _$rootScope_, _$compile_, _$templateCache_){
+    beforeEach(inject(function(_$window_, _$rootScope_, _$compile_, _$templateCache_, _$document_){
         $window = _$window_;
         $rootScope = _$rootScope_;
         $compile = _$compile_;
         $templateCache = _$templateCache_;
+        $document = _$document_;
     }));
 
     beforeEach(function() {
@@ -28,6 +30,9 @@ describe('Dashboard service', function() {
 
     afterEach(function() {
         $rootScope.tabs = [];
+        var body = $document.find('body');
+        body.find("[data-ng-app='Pundit2']").remove();
+        $rootScope.$digest();
     });
 
     beforeEach(function() {
