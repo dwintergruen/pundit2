@@ -26,8 +26,10 @@ angular.module('Pundit2.Toolbar')
      */
     askLinkDefault: "http://demo-cloud.ask.thepund.it/",
     /**
+     * @module punditConf
      * @ngdoc property
-     * @name Configuration#modules.Toolbar.askLinkUser
+     * @name modules#Toolbar.askLinkUser
+     *
      *
      * @description
      * `string`
@@ -39,8 +41,9 @@ angular.module('Pundit2.Toolbar')
      */
     askLinkUser: "http://demo-cloud.ask.thepund.it/#/myAsk/",
     /**
+     * @module punditConf
      * @ngdoc property
-     * @name Configuration#modules.Toolbar.bodyClass
+     * @name modules#Toolbar.bodyClass
      *
      * @description
      * `string`
@@ -52,8 +55,9 @@ angular.module('Pundit2.Toolbar')
      */
     bodyClass: "pnd-toolbar-active",
     /**
+     * @module punditConf
      * @ngdoc property
-     * @name Configuration#modules.Toolbar.clientDomTemplate
+     * @name modules#Toolbar.clientDomTemplate
      *
      * @description
      * `string`
@@ -65,8 +69,9 @@ angular.module('Pundit2.Toolbar')
      */
     clientDomTemplate: "src/Toolbar/ClientToolbar.tmpl.html",
     /**
+     * @module punditConf
      * @ngdoc property
-     * @name Configuration#modules.Toolbar.debug
+     * @name modules#Toolbar.debug
      *
      * @description
      * `boolean`
