@@ -11,17 +11,17 @@ describe("The contextualMenu module", function() {
             p.actions().mouseMove(element, {x:100, y:20}).click().perform();
         });
 
-        p.findElements(protractor.By.css('.pnd-context-menu')).then(function(elements) {
+        p.findElements(protractor.By.css('.dropdown-menu')).then(function(elements) {
             expect(elements.length).toBe(1);
         });
 
-        p.findElements(protractor.By.css('.pnd-context-menu > li')).then(function(elements) {
+        p.findElements(protractor.By.css('.dropdown-menu > li')).then(function(elements) {
             expect(elements.length).toBe(4);
         });
 
         p.actions().mouseMove({x:-50, y:0}).click().perform();
 
-        p.findElements(protractor.By.css('.pnd-context-menu')).then(function(elements) {
+        p.findElements(protractor.By.css('.dropdown-menu')).then(function(elements) {
             expect(elements.length).toBe(1);
         });
 
@@ -35,7 +35,7 @@ describe("The contextualMenu module", function() {
 
         p.findElement(protractor.By.css('.pnd-contexMenu-show2-btn')).click();
 
-        p.findElement(protractor.By.css('.pnd-context-menu')).then(function(element) {
+        p.findElement(protractor.By.css('.dropdown-menu')).then(function(element) {
             expect(element.getCssValue('left')).toBe('400px');
             expect(element.getCssValue('top')).toBe('200px');
         });
@@ -50,11 +50,11 @@ describe("The contextualMenu module", function() {
 
         p.findElement(protractor.By.css('.pnd-contexMenu-show1-btn')).click();
 
-        p.findElements(protractor.By.css('.pnd-context-menu')).then(function(elements) {
+        p.findElements(protractor.By.css('.dropdown-menu')).then(function(elements) {
             expect(elements.length).toBe(1);
         });
 
-        p.findElements(protractor.By.css('.pnd-context-menu > li > a')).then(function(elements) {
+        p.findElements(protractor.By.css('.dropdown-menu > li > a')).then(function(elements) {
             expect(elements.length).toBe(4);
             elements[0].getInnerHtml().then(function(innerHtml){
                 expect(innerHtml.indexOf('type1')).toBeGreaterThan(-1);
@@ -122,37 +122,12 @@ describe("The contextualMenu module", function() {
 
         p.findElement(protractor.By.css('.pnd-contexMenu-show1-btn')).click();
 
-        p.findElement(protractor.By.css('.pnd-context-menu > li')).click();
+        p.findElement(protractor.By.css('.dropdown-menu > li')).click();
 
         // action produce output inside a div element
         p.findElement(protractor.By.css('.pnd-contexMenu-output')).then(function(element) {
             element.getInnerHtml().then(function(innerHtml){
                 expect(innerHtml.indexOf('exe action')).toBeGreaterThan(-1);
-            });
-        });
-
-    });
-
-    it('should correctly position menu and not exceeds window dimension', function() {
-
-        p.get('app/examples/contextualMenu.html');
-
-        p.waitForAngular();
-
-        p.findElement(protractor.By.css('.pnd-contexMenu-addAll-btn')).click();
-
-        p.findElement(protractor.By.css('.contexMenu-example-div')).then(function(container) {
-            container.getSize().then(function(size){
-                // go on bottom right of the container
-                p.actions().mouseMove(container, {x:size.width-20, y:size.height-20}).click().perform();
-                // check if menu show on top left
-                p.findElement(protractor.By.css('.pnd-context-menu')).then(function(menu) {
-                    menu.getLocation().then(function(loc){
-                        expect(loc.x).toBeLessThan(size.width-20);
-                        expect(loc.y).toBeLessThan(size.height-20);
-                    });
-                });
-                
             });
         });
 
