@@ -1,27 +1,167 @@
 angular.module('Pundit2.MyItemsContainer')
 .constant('MYITEMSCONTAINERDEFAULTS', {
 
-    initialActiveTab: 0,
+    /**
+     * @module punditConf
+     * @ngdoc property
+     * @name modules#MyIyemsContainer
+     *
+     * @description
+     * `object`
+     *
+     * Configuration for MyIyemsContainer module
+     */
 
-    // The Client will append the content of this template to the DOM to bootstrap
-    // this component
+     /**
+     * @module punditConf
+     * @ngdoc property
+     * @name modules#MyIyemsContainer.clientDashboardTemplate
+     *
+     * @description
+     * `string`
+     *
+     * Path of template containing myItemsContainer directive, client will append the content of this template 
+     * to the DOM (inside dashboard directive) to bootstrap this component
+     *
+     * Default value:
+     * <pre> clientDashboardTemplate: "src/Lists/MyItemsContainer/ClientMyItemsContainer.tmpl.html" </pre>
+     */
     clientDashboardTemplate: "src/Lists/MyItemsContainer/ClientMyItemsContainer.tmpl.html",
+
+    /**
+     * @module punditConf
+     * @ngdoc property
+     * @name modules#MyIyemsContainer.clientDashboardPanel
+     *
+     * @description
+     * `string`
+     *
+     * Name of the panel where append the directive
+     *
+     * Default value:
+     * <pre> clientDashboardPanel: "lists" </pre>
+     */
     clientDashboardPanel: "lists",
+
+    /**
+     * @module punditConf
+     * @ngdoc property
+     * @name modules#MyIyemsContainer.clientDashboardTabTitle
+     *
+     * @description
+     * `string`
+     *
+     * Tab title inside panel dashboard tabs
+     *
+     * Default value:
+     * <pre> clientDashboardTabTitle: "My Items" </pre>
+     */
     clientDashboardTabTitle: "My Items",
 
-    // my items contextual menu type
+    /**
+     * @module punditConf
+     * @ngdoc property
+     * @name modules#MyIyemsContainer.initialActiveTab
+     *
+     * @description
+     * `number`
+     *
+     * Default displayed tab
+     *
+     * Default value:
+     * <pre> initialActiveTab: 0 </pre>
+     */
+    initialActiveTab: 0,
+
+    /**
+     * @module punditConf
+     * @ngdoc property
+     * @name modules#MyIyemsContainer.cMenuType
+     *
+     * @description
+     * `string`
+     *
+     * Contextual menu type showed by items contained inside directive
+     *
+     * Default value:
+     * <pre> cMenuType: 'myItems' </pre>
+     */
     cMenuType: 'myItems',
 
-    // items property used to compare
+    /**
+     * @module punditConf
+     * @ngdoc property
+     * @name modules#MyIyemsContainer.order
+     *
+     * @description
+     * `string`
+     *
+     * Default items property used to sort items list inside directive (legal value are: 'label' and 'type')
+     *
+     * Default value:
+     * <pre> order: 'label' </pre>
+     */
     order: 'label',
-    // how order items (true ascending, false descending)
+
+    /**
+     * @module punditConf
+     * @ngdoc property
+     * @name modules#MyIyemsContainer.reverse
+     *
+     * @description
+     * `boolean`
+     *
+     * Default items ordering inside directive (true: ascending, false: descending)
+     *
+     * Default value:
+     * <pre> reverse: false </pre>
+     */
     reverse: false,
 
-    // Icons shown in the search input when it's empty and when it has some content
+    /**
+     * @module punditConf
+     * @ngdoc property
+     * @name modules#MyIyemsContainer.inputIconSearch
+     *
+     * @description
+     * `string`
+     *
+     * Icon shown in the search input when it's empty
+     *
+     * Default value:
+     * <pre> inputIconSearch: 'pnd-icon-search' </pre>
+     */
     inputIconSearch: 'pnd-icon-search',
+
+    /**
+     * @module punditConf
+     * @ngdoc property
+     * @name modules#MyIyemsContainer.inputIconClear
+     *
+     * @description
+     * `string`
+     *
+     * Icon shown in the search input when it has some content
+     *
+     * Default value:
+     * <pre> inputIconClear: 'pnd-icon-times' </pre>
+     */
     inputIconClear: 'pnd-icon-times',
 
+    /**
+     * @ngdoc property
+     * @name modules#MyIyemsContainer.debug
+     *
+     * @description
+     * `boolean`
+     *
+     * Active debug log
+     *
+     * Default value:
+     * <pre> debug: false </pre>
+     */
     debug: false
+    
 })
 .service('MyItemsContainer', function(MYITEMSCONTAINERDEFAULTS, BaseComponent, TypesHelper, ContextualMenu, MyItems, MyPundit) {
 
