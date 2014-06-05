@@ -12,7 +12,7 @@ angular.module('Pundit2.Vocabularies')
     // enable or disable all muruca selectors instances
     active: true,
     // max number of items
-    limit: 5,
+    limit: 30,
 
     // singles instances configuration
     instances: [
@@ -66,16 +66,16 @@ angular.module('Pundit2.Vocabularies')
 
                 korboBasketSelector.log('Http success, get items '+self.config.label, data);
 
-                ItemsExchange.wipeContainer(self.config.container);
-
                 if (data.result.length === 0) {
-                    korboBasketSelector.log('Empty response');
+                    korboBasketSelector.log('Http success, but empty response');
                     promise.resolve();
                     return;
                 }
 
                 self.pendingRequest = data.result.length;
-
+                var promiseArr = [];
+                var deferArr = [];
+                var itemsArr = [];
                 for (var i=0; i<data.result.length; i++) {
                     var current = data.result[i];
 
@@ -84,9 +84,27 @@ angular.module('Pundit2.Vocabularies')
                         uri: current.resource_url,
                         type: []
                     };
+                    itemsArr.push(item);
 
-                    self.getItemDetails(item, promise);
+                    var itemPromise = $q.defer();
+                    promiseArr.push(itemPromise.promise);
+                    deferArr.push(itemPromise);
 
+                }
+
+                $q.all(promiseArr).then(function(){
+                    korboBasketSelector.log('Completed all items http request');
+                    // when all http request are completed we can wipe itemsExchange
+                    // and put new items inside relative container
+                    ItemsExchange.wipeContainer(self.config.container);
+                    for (i=0; i<itemsArr.length; i++) {
+                        ItemsExchange.addItemToContainer(new Item(itemsArr[i].uri, itemsArr[i]), self.config.container);
+                    }
+                    promise.resolve();
+                });
+
+                for (i=0; i<data.result.length; i++) {
+                    self.getItemDetails(itemsArr[i], deferArr[i]);
                 }
 
             });
@@ -95,7 +113,7 @@ angular.module('Pundit2.Vocabularies')
 
     };
 
-    KorboBasketFactory.prototype.getItemDetails = function(item, promise){
+    KorboBasketFactory.prototype.getItemDetails = function(item, itemPromise){
 
         var self = this;
 
@@ -113,6 +131,7 @@ angular.module('Pundit2.Vocabularies')
 
                 korboBasketSelector.log('Http item details success, get item', data);
 
+                // extend existing item with details propeties
                 var o = data.result;
 
                 if ('image' in o) {
@@ -129,19 +148,13 @@ angular.module('Pundit2.Vocabularies')
                             item.type.push(o.rdftype[j]);
                         }
                         else {
-                            self.log('ERROR: Weird type is weird? '+typeof(o.rdftype[j])+': '+o.rdftype[j]);
+                            korboBasketSelector.log('ERROR: Weird type is weird? '+typeof(o.rdftype[j])+': '+o.rdftype[j]);
                         }
                     }
                 }
 
-                var added = new Item(item.uri, item);
-                ItemsExchange.addItemToContainer(added, self.config.container);
-
-                self.pendingRequest--;
-                if (self.pendingRequest <= 0) {
-                    korboBasketSelector.log('Items complete parsing');
-                    promise.resolve();
-                }
+                // resolve item promise
+                itemPromise.resolve();
 
             });
 

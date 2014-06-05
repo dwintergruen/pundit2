@@ -14,11 +14,8 @@ describe('KorboBasketSelector service', function() {
         ItemsExchange = _ItemsExchange_;
     }));
 
-    // TODO need to find a work around to skip query param
-    // and use only the url contained inside defaults
-    // in case of error inside http use whenJSONP('')
-    // with empty string all httpBackend respond to all jsonp calls
-    var url = "http://manager.korbo.org/api.php/basket/reconcile/16?jsonp=JSON_CALLBACK&query=%7B%22query%22:%22term%22,%22limit%22:5%7D",
+    // TODO best way?
+    var url = "http://manager.korbo.org/api.php/basket/reconcile/16?jsonp=JSON_CALLBACK&query=%7B%22query%22:%22term%22,%22limit%22:30%7D",
         detailsUrl = "http://manager.korbo.org/16?jsonp=JSON_CALLBACK&url=http:%2F%2Fpurl.org%2Fnet7%2Fkorbo%2Fitem%2F76108";
 
     var emptyResult = {
@@ -86,14 +83,12 @@ describe('KorboBasketSelector service', function() {
         // items http
         $httpBackend.flush(1);
         expect(called).toBe(false);
-        expect(sel.pendingRequest).toBe(1);
 
         // all details http calls
         $httpBackend.whenJSONP(url).respond(item1Details);
         $httpBackend.flush();        
-
+        // promise is resolved when all http are completed
         expect(called).toBe(true);
-        expect(sel.pendingRequest).toBe(0);
 
         var all = ItemsExchange.getAll(),
             container = conf.container;
