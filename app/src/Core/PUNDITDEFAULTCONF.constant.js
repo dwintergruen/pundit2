@@ -38,6 +38,10 @@ angular.module('Pundit2.Core')
          *     Preview: {
          *         welcomeHeaderMessage: "Welcome in Pundit 2",
          *         welcomeBodyMessage: "Enjoy it"
+         *     },
+         *     Dashboard: {
+         *         isDashboardVisible: false,
+         *         debug: false
          *     }
          * }</pre>
          */

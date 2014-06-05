@@ -1,41 +1,238 @@
 angular.module('Pundit2.Dashboard')
 .constant('DASHBOARDDEFAULTS', {
 
+    /**
+     * @module punditConf
+     * @ngdoc property
+     * @name modules#Dashboard
+     *
+     * @description
+     * `object`
+     *
+     * Configuration for Dashboard module
+     */
+
+    /**
+     * @module punditConf
+     * @ngdoc property
+     * @name modules#Dashboard.clientDomTemplate
+     *
+     * @description
+     * `string`
+     *
+     * Path of template containing dashboard directive, client will append the content of this template 
+     * to the DOM to bootstrap this component
+     *
+     * Default value:
+     * <pre> clientDomTemplate: "src/Dashboard/ClientDashboard.tmpl.html" </pre>
+     */
+    clientDomTemplate: "src/Dashboard/ClientDashboard.tmpl.html",
+
+    /**
+     * @ngdoc property
+     * @name modules#Dashboard.debug
+     *
+     * @description
+     * `boolean`
+     *
+     * Active debug log
+     *
+     * Default value:
+     * <pre> debug: false </pre>
+     */
+    debug: false,
+
+    /**
+     * @module punditConf
+     * @ngdoc property
+     * @name modules#Dashboard.isDashboardVisible
+     *
+     * @description
+     * `boolean`
+     *
+     * True to automatically open the dashboard after initialization, false otherwise
+     *
+     * Default value:
+     * <pre> isDashboardVisible: false </pre>
+     */
     isDashboardVisible: false,
 
-    // dashboard container
+    /**
+     * @module punditConf
+     * @ngdoc property
+     * @name modules#Dashboard.containerMinHeight
+     *
+     * @description
+     * `number`
+     *
+     * Dashboard minimum height
+     *
+     * Default value:
+     * <pre> containerMinHeight: 200 </pre>
+     */
     containerMinHeight: 200,
+
+    /**
+     * @module punditConf
+     * @ngdoc property
+     * @name modules#Dashboard.containerMaxHeight
+     *
+     * @description
+     * `number`
+     *
+     * Dashboard maximum height
+     *
+     * Default value:
+     * <pre> containerMaxHeight: 800 </pre>
+     */
     containerMaxHeight: 800,
+
+    /**
+     * @module punditConf
+     * @ngdoc property
+     * @name modules#Dashboard.containerHeight
+     *
+     * @description
+     * `number`
+     *
+     * Dashboard default height
+     *
+     * Default value:
+     * <pre> containerHeight: 300 </pre>
+     */
     containerHeight: 300,
 
+    /**
+     * @module punditConf
+     * @ngdoc property
+     * @name modules#Dashboard.footerHeight
+     *
+     * @description
+     * `number`
+     *
+     * Dashboard footer height
+     *
+     * Default value:
+     * <pre> footerHeight: 20 </pre>
+     */
+    footerHeight: 20,
+
+    /**
+     * @module punditConf
+     * @ngdoc property
+     * @name modules#Dashboard.separatorWidth
+     *
+     * @description
+     * `number`
+     *
+     * Width in px of the separators (draggable columns between panels),
+     * must be kept in sync with the defined css
+     *
+     * Default value:
+     * <pre> separatorWidth: 8 </pre>
+     */
+    separatorWidth: 8,
+
+    /**
+     * @module punditConf
+     * @ngdoc property
+     * @name modules#Dashboard.panels
+     *
+     * @description
+     * `object`
+     *
+     * Panels minimum width
+     *
+     * Default value:
+     * <pre> panels: {
+     *      lists: { minWidth: 243 },
+     *      tools: { minWidth: 478 },
+     *      details: { minWidth: 239 }
+     * } </pre>
+     */
     panels: {
         lists: { minWidth: 243 },
         tools: { minWidth: 478 },
         details: { minWidth: 239 }
     },
 
-    // panel collapsed width (collapse button width + separator width)
+    /**
+     * @module punditConf
+     * @ngdoc property
+     * @name modules#Dashboard.panelCollapsedWidth
+     *
+     * @description
+     * `number`
+     *
+     * Panels width when are collapsed (include separetor width)
+     *
+     * Default value:
+     * <pre> panelCollapsedWidth: 28 </pre>
+     */
     panelCollapsedWidth: 28,
-
-    // footer height
-    footerHeight: 20,
 
     // Panels elements heights: used to fix scrollable elements height inside
     // panels controllers. In pixels, included margins, borders and everything!
+    /**
+     * @module punditConf
+     * @ngdoc property
+     * @name modules#Dashboard.panelTabsHeight
+     *
+     * @description
+     * `number`
+     *
+     * Panel title tabs height
+     *
+     * Default value:
+     * <pre> panelTabsHeight: 27 </pre>
+     */
     panelTabsHeight: 27,
+
+    /**
+     * @module punditConf
+     * @ngdoc property
+     * @name modules#Dashboard.panelContentHeaderHeight
+     *
+     * @description
+     * `number`
+     *
+     * Panel content header height
+     *
+     * Default value:
+     * <pre> panelContentHeaderHeight: 43 </pre>
+     */
     panelContentHeaderHeight: 43,
+
+    /**
+     * @module punditConf
+     * @ngdoc property
+     * @name modules#Dashboard.panelInnerTabsHeight
+     *
+     * @description
+     * `number`
+     *
+     * Panel inner tabs height
+     *
+     * Default value:
+     * <pre> panelInnerTabsHeight: 31 </pre>
+     */
     panelInnerTabsHeight: 31,
-    panelFooterHeight: 40,
 
-    // The Client will append the content of this template to the DOM to bootstrap
-    // this component
-    clientDomTemplate: "src/Dashboard/ClientDashboard.tmpl.html",
+    /**
+     * @module punditConf
+     * @ngdoc property
+     * @name modules#Dashboard.panelFooterHeight
+     *
+     * @description
+     * `number`
+     *
+     * Panel footer height
+     *
+     * Default value:
+     * <pre> panelFooterHeight: 40 </pre>
+     */
+    panelFooterHeight: 40
 
-    // Width in px of the separators (draggable columns between panels). Must be kept in sync
-    // with the defined css
-    separatorWidth: 8,
-
-    debug: false
 })
 .service('Dashboard', function(BaseComponent, DASHBOARDDEFAULTS, $window, $rootScope) {
 
