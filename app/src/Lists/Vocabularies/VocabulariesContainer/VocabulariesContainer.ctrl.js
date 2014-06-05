@@ -117,7 +117,7 @@ angular.module('Pundit2.Vocabularies')
     });
 
     var updateMessage = function(){
-        vocabulariesContainer.log('All selectors end http calls', ItemsExchange.getAll());
+        vocabulariesContainer.log('All selectors end http calls'/*, ItemsExchange.getAll()*/);
         if ($scope.displayedItems.length === 0) {
             $scope.message.text = "No item found to: "+$scope.search.term;
         }
@@ -132,16 +132,18 @@ angular.module('Pundit2.Vocabularies')
     }, function(newItems) {
         // update all items array and display new items
         $scope.displayedItems = newItems;
-    }, true);
-
-    $scope.$watch(function() {
-        return $scope.displayedItems.length;
-    }, function(len) {
-        if (len === 0){
+        if ($scope.displayedItems.length === 0) {
             $scope.message.flag = true;
         } else {
             $scope.message.flag = false;
         }
+    }, true);
+
+    $scope.$watch(function() {
+        return $scope.tabs.activeTab;
+    }, function(newActive, oldActive) {
+        if (newActive !== oldActive)
+            updateMessage();
     });
 
 });

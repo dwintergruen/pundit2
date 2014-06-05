@@ -22,20 +22,16 @@ angular.module('Pundit2.Vocabularies')
     var selectors = {};
     // active selectors factory instances
     var selectorInstances = [];
-    // number of pending incomplete http request
-    var pendingRequest;
-    // a promise resolved when all selectors complete
-    // the http query request
-    var promise = null;
 
     selectorsManager.getItems = function(term){
         
-        pendingRequest = 0;
-        promise = $q.defer();
+        // a promise resolved when all selectors complete
+        // the http query request
+        var promise = $q.defer(),
+            pendingRequest = selectorInstances.length;
 
         // get items from actives selectors
         for (var j in selectorInstances) {
-            pendingRequest++;
             selectorInstances[j].getItems(term).then(function(){
                 pendingRequest--;
                 if (pendingRequest <= 0 && promise!== null) {
