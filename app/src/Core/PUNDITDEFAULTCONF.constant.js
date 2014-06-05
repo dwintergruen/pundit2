@@ -84,24 +84,7 @@ angular.module('Pundit2.Core')
             },
             TripleComposer: {
                 active: true
-            },
-
-            'pundit.AnalyticsHelper': {
-                active: true
-            },
-            'pundit.XpointersHelper': {
-                // Node name and class used to wrap our annotated content
-                wrapNodeName: 'span',
-                wrapNodeClass: 'cons',
-
-                // Class used on a container to indicate it's a named content: xpointers
-                // will start from that node
-                contentClasses: ['pundit-content'],
-
-                // Nodes with these classes will be ignored when building xpointers
-                // and consolidating annotations
-                ignoreClasses: ['cons', 'pundit-icon-annotation']
             }
-        }
+      }
 
     });
