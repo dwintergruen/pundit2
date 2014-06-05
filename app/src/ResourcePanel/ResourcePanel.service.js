@@ -550,7 +550,7 @@ angular.module('Pundit2.ResourcePanel')
                     // get object item
                     var itemObject = ItemsExchange.getItemByUri(object);
                     // if oject has no type
-                    if(typeof(itemObject.type) === 'undefined' || itemObject.type.length === 0 || itemObject.type[0] === "") {
+                    if(typeof(itemObject) === 'undefined' || typeof(itemObject.type) === 'undefined' || itemObject.type.length === 0 || itemObject.type[0] === "") {
                         // all properties are good
                         properties = ItemsExchange.getItemsByContainer(propertiesContainer);
                         showPopoverResourcePanel(target, "", "", properties, label, 'pr');
@@ -561,7 +561,7 @@ angular.module('Pundit2.ResourcePanel')
                     }
 
                     // subject and object are both defined
-                } else if((typeof(object) !== 'undefined' && object !== "") && (typeof(subject) !== 'undefined' || subject !== "")) {
+                } else if((typeof(object) !== 'undefined' && object !== "") && (typeof(subject) !== 'undefined' && subject !== "")) {
                     var itemObject = ItemsExchange.getItemByUri(object);
                     var itemSubject = ItemsExchange.getItemByUri(subject);
 

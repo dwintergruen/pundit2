@@ -22,6 +22,7 @@ describe('Subject Popover Resource Panel service', function() {
         type: ["http://purl.org/pundit/ont/ao#fragment-text"]
     };
 
+
     var propFragImage = {
         label: "item fragment image",
         description: "item description",
@@ -34,23 +35,23 @@ describe('Subject Popover Resource Panel service', function() {
         type: ["http://xmlns.com/foaf/0.1/Image"]
     };
 
+    var propNoType = {
+        label: "item image",
+        description: "item description",
+        type: [""]
+    };
+
+    var propUndefType = {
+        label: "item image",
+        description: "item description"
+    };
+
     var propCommonTopic = {
         label: "item common topic",
         description: "item description",
         type: ["http://www.freebase.com/schema/common/topic", "http://www.freebase.com/schema/interests/collection_category", "http://www.freebase.com/schema/base/popstra/product"]
     };
 
-    var userLoggedIn = {
-        loginStatus: 1,
-        id: "myFakeId",
-        uri: "http://myUri.fake",
-        openid: "http://myOpenId.fake",
-        firstName: "Mario",
-        lastName: "Rossi",
-        fullName: "Mario Rossi",
-        email: "mario@rossi.it",
-        loginServer: "http:\/\/demo-cloud.as.thepund.it:8080\/annotationserver\/login.jsp"
-    };
 
     var testPunditConfig = {
         modules: {
@@ -63,6 +64,8 @@ describe('Subject Popover Resource Panel service', function() {
         }
     };
 
+    // predicates
+    var hasComment, similarTo, depicts, dates, talksAbout;
 
     beforeEach(module('Pundit2'));
     beforeEach(function() {
@@ -91,6 +94,24 @@ describe('Subject Popover Resource Panel service', function() {
         $window = _$window_;
     }));
 
+    var initPredicate = function() {
+        // add some predicates
+        var hasComment = new Item(testPredicates.hasComment.uri, testPredicates.hasComment);
+        ItemsExchange.addItemToContainer(hasComment, Client.options.relationsContainer);
+
+        similarTo = new Item(testPredicates.similarTo.uri, testPredicates.similarTo);
+        ItemsExchange.addItemToContainer(similarTo, Client.options.relationsContainer);
+
+        depicts = new Item(testPredicates.depicts.uri, testPredicates.depicts);
+        ItemsExchange.addItemToContainer(depicts, Client.options.relationsContainer);
+
+        dates = new Item(testPredicates.dates.uri, testPredicates.dates);
+        ItemsExchange.addItemToContainer(dates, Client.options.relationsContainer);
+
+        talksAbout = new Item(testPredicates.talksAbout.uri, testPredicates.talksAbout);
+        ItemsExchange.addItemToContainer(talksAbout, Client.options.relationsContainer);
+    };
+
     beforeEach(function(){
         // used by service to append dropdown anchor
         // if not exist the service cannot pass element to $drodown serive
@@ -99,72 +120,281 @@ describe('Subject Popover Resource Panel service', function() {
         angular.element("[data-ng-app='Pundit2']")
             .prepend("<div class='pnd-anchor' style='position: absolute; left: -500px; top: -500px;'><div>");
 
+        initPredicate();
+
     });
 
     afterEach(function(){
 
+        // remove from DOM
         var body = $document.find('body');
         body.find('.pnd-anchor').remove();
         $rootScope.$digest();
         body.find("[data-ng-app='Pundit2']").remove();
         $rootScope.$digest();
+        // wipe all items in ItemsExchange
         ItemsExchange.wipe();
+        // delete configuration
         delete window.punditConfig;
 
     });
 
-    // get the modal scope
+    // get the popover scope
     var getPopoverResourcePanelScope = function(){
         var popoverResPanel = angular.element.find('.pnd-resource-panel-popover');
         var scope = angular.element(popoverResPanel).scope();
         return scope;
     };
 
-    it("should load all predicates where no predicates and objects are defined", function() {
-
-        // add some predicates
-        var predicate1 = new Item(testPredicates.pred1.uri, testPredicates.pred1);
-        ItemsExchange.addItemToContainer(predicate1, Client.options.relationsContainer);
-
-        var predicate2 = new Item(testPredicates.pred2.uri, testPredicates.pred2);
-        ItemsExchange.addItemToContainer(predicate2, Client.options.relationsContainer);
-
-        var predicate3 = new Item(testPredicates.pred3.uri, testPredicates.pred3);
-        ItemsExchange.addItemToContainer(predicate3, Client.options.relationsContainer);
-
-        var predicate4 = new Item(testPredicates.pred4.uri, testPredicates.pred4);
-        ItemsExchange.addItemToContainer(predicate4, Client.options.relationsContainer);
-        $rootScope.$digest();
+    it("should load all predicates when no predicates and objects are defined", function() {
 
         var anchor = angular.element('.pnd-anchor');
+
         // undefined triple
         var triple = ["", "", ""];
-        var label = "";
 
         // open a resource panel popover
-        ResourcePanel.showProperties(triple, anchor, label);
+        ResourcePanel.showProperties(triple, anchor, "");
         $rootScope.$digest();
 
         // at this time popover should be open
         var rp = angular.element.find('.pnd-resource-panel-popover');
-
         expect(angular.element(rp).length).toBe(1);
+
         // and his scope should be defined
         var scope = getPopoverResourcePanelScope();
         expect(scope).toBeDefined();
         expect(scope.type).toBe('pr');
+
         // should be loaded all properties
-        expect(scope.properties.length).toBe(4);
-        expect(scope.properties[0].uri).toBe(testPredicates.pred1.uri);
-        expect(scope.properties[1].uri).toBe(testPredicates.pred2.uri);
-        expect(scope.properties[2].uri).toBe(testPredicates.pred3.uri);
-        expect(scope.properties[3].uri).toBe(testPredicates.pred4.uri);
-        // my items should be undefined
+        expect(scope.properties.length).toBe(5);
+        expect(scope.properties[0].uri).toBe(testPredicates.hasComment.uri);
+        expect(scope.properties[1].uri).toBe(testPredicates.similarTo.uri);
+        expect(scope.properties[2].uri).toBe(testPredicates.depicts.uri);
+        expect(scope.properties[3].uri).toBe(testPredicates.dates.uri);
+        expect(scope.properties[4].uri).toBe(testPredicates.talksAbout.uri);
 
     });
 
+    it("should show right predicates when only subjects is defined", function() {
 
+        // add a subject with fragment-image type
+        var item = new Item("http://item1-uri", propFragImage);
+        ItemsExchange.addItemToContainer(item, PageItemsContainer.options.container);
 
+        var anchor = angular.element('.pnd-anchor');
+        var triple = ["http://item1-uri", "", ""];
 
+        // open a resource panel popover
+        ResourcePanel.showProperties(triple, anchor, "");
+        $rootScope.$digest();
+
+        // at this time popover scope should be defined
+        var scope = getPopoverResourcePanelScope();
+
+        // should load only predicates with domain containing image-fragment type
+        // in this case, only depicts, hasComment and similarTo
+        expect(scope.properties.length).toBe(3);
+        expect(scope.properties[0].uri).toBe(testPredicates.hasComment.uri);
+        expect(scope.properties[1].uri).toBe(testPredicates.similarTo.uri);
+        expect(scope.properties[2].uri).toBe(testPredicates.depicts.uri);
+    });
+
+    it("should show all predicates when item subjects is undefined", function() {
+
+        var anchor = angular.element('.pnd-anchor');
+        var triple = ["http://item1-uri", "", ""];
+
+        // open a resource panel popover
+        ResourcePanel.showProperties(triple, anchor, "");
+        $rootScope.$digest();
+
+        var scope = getPopoverResourcePanelScope();
+
+        // should load all predicates
+        expect(scope.properties.length).toBe(5);
+
+    });
+
+    it("should show right predicates when only object is defined", function() {
+
+        // add a subject with fragment-image type
+        var item = new Item("http://item1-uri", propFragmentText);
+        ItemsExchange.addItemToContainer(item, PageItemsContainer.options.container);
+
+        var anchor = angular.element('.pnd-anchor');
+        var triple = ["", "", "http://item1-uri"];
+
+        // open a resource panel popover
+        ResourcePanel.showProperties(triple, anchor, "");
+        $rootScope.$digest();
+
+        var scope = getPopoverResourcePanelScope();
+
+        // should load only predicates with domain containing image-fragment type
+        // in this case, only similarTo
+        expect(scope.properties.length).toBe(1);
+        expect(scope.properties[0].uri).toBe(testPredicates.similarTo.uri);
+
+    });
+
+    it("should show all predicates when item object is undefined", function() {
+
+        var anchor = angular.element('.pnd-anchor');
+        var triple = ["", "", "http://item1-uri"];
+
+        // open a resource panel popover
+        ResourcePanel.showProperties(triple, anchor, "");
+        $rootScope.$digest();
+
+        var scope = getPopoverResourcePanelScope();
+
+        // should load all predicates
+        expect(scope.properties.length).toBe(5);
+
+    });
+
+    it("should show right predicates when both subject and object are defined", function() {
+
+        var anchor = angular.element('.pnd-anchor');
+
+        // add an object item
+        var object = new Item("http://object-uri", propFragmentText);
+        ItemsExchange.addItemToContainer(object, PageItemsContainer.options.container);
+
+        // add a subject item
+        var subject = new Item("http://subject-uri", propFragImage);
+        ItemsExchange.addItemToContainer(subject, PageItemsContainer.options.container);
+
+        var triple = ["http://object-uri", "", "http://subject-uri"];
+
+        // open a resource panel popover
+        ResourcePanel.showProperties(triple, anchor, "");
+        $rootScope.$digest();
+
+        var scope = getPopoverResourcePanelScope();
+
+        // should load only predicates matching with both object and subject
+        // in this case, only depicts and similarTo
+        expect(scope.properties.length).toBe(1)
+        expect(scope.properties[0].uri).toBe(testPredicates.similarTo.uri);
+
+    });
+
+    it("should show no predicates when there are no match", function() {
+
+        var anchor = angular.element('.pnd-anchor');
+
+        // add an item
+        var item = new Item("http://item-uri", propCommonTopic);
+        ItemsExchange.addItemToContainer(item, PageItemsContainer.options.container);
+
+        var triple = ["http://item-uri", "", ""];
+
+        // open a resource panel popover
+        ResourcePanel.showProperties(triple, anchor, "");
+        $rootScope.$digest();
+
+        var scope = getPopoverResourcePanelScope();
+        // in this case, no properties match with item
+        expect(scope.properties.length).toBe(0);
+    });
+
+    it("should show all predicates when subject and object have no types", function() {
+        var anchor = angular.element('.pnd-anchor');
+
+        // add a subject item with type undefined
+        var sub = new Item("http://sub-uri", propUndefType);
+        ItemsExchange.addItemToContainer(sub, PageItemsContainer.options.container);
+
+        // add an object item with empty type
+        var obj = new Item("http://obj-uri", propNoType);
+        ItemsExchange.addItemToContainer(obj, PageItemsContainer.options.container);
+
+        var triple = ["http://sub-uri", "", "http://obj-uri"];
+
+        // open a resource panel popover
+        ResourcePanel.showProperties(triple, anchor, "");
+        $rootScope.$digest();
+
+        var scope = getPopoverResourcePanelScope();
+        // should show all properties
+        expect(scope.properties.length).toBe(5);
+    });
+
+    it("should show right predicates when subject has valid types and object has no types", function() {
+        var anchor = angular.element('.pnd-anchor');
+
+        // add a subject item with valid type
+        var sub = new Item("http://sub-uri", propImage);
+        ItemsExchange.addItemToContainer(sub, PageItemsContainer.options.container);
+
+        // add an object item with empty type
+        var obj = new Item("http://obj-uri", propNoType);
+        ItemsExchange.addItemToContainer(obj, PageItemsContainer.options.container);
+
+        var triple = ["http://sub-uri", "", "http://obj-uri"];
+
+        // open a resource panel popover
+        ResourcePanel.showProperties(triple, anchor, "");
+        $rootScope.$digest();
+
+        var scope = getPopoverResourcePanelScope();
+        // should load only properties matching with subject types
+        expect(scope.properties.length).toBe(3);
+        expect(scope.properties[0].uri).toBe(testPredicates.hasComment.uri);
+        expect(scope.properties[1].uri).toBe(testPredicates.similarTo.uri);
+        expect(scope.properties[2].uri).toBe(testPredicates.depicts.uri);
+
+    });
+
+    it("should show right predicates when subject has no types and object has valid types", function() {
+        var anchor = angular.element('.pnd-anchor');
+
+        // add a subject item with empty type
+        var sub = new Item("http://sub-uri", propNoType)
+        ItemsExchange.addItemToContainer(sub, PageItemsContainer.options.container);
+
+        // add an object item with valid type
+        var obj = new Item("http://obj-uri", propFragmentText);
+        ItemsExchange.addItemToContainer(obj, PageItemsContainer.options.container);
+
+        var triple = ["http://sub-uri", "", "http://obj-uri"];
+
+        // open a resource panel popover
+        ResourcePanel.showProperties(triple, anchor, "");
+        $rootScope.$digest();
+
+        var scope = getPopoverResourcePanelScope();
+        // should load only properties matching with object types
+        expect(scope.properties.length).toBe(1);
+        expect(scope.properties[0].uri).toBe(testPredicates.similarTo.uri);
+
+    });
+
+    it("should filter properties labels", function() {
+
+        var anchor = angular.element('.pnd-anchor');
+        var triple = ["", "", ""];
+
+        // open a resource panel popover without label
+        ResourcePanel.showProperties(triple, anchor, "");
+        $rootScope.$digest();
+
+        var scope = getPopoverResourcePanelScope();
+
+        // should show all properties
+        expect(scope.properties.length).toBe(5);
+
+        // open same popover passing a label
+        ResourcePanel.showProperties(triple, anchor, "tal");
+        $rootScope.$digest();
+
+        // should filter properties and show only properties matching with 'tal'
+        // in this case should be only one: talksAbout
+        expect(scope.properties.length).toBe(1);
+        expect(scope.properties[0].uri).toBe(testPredicates.talksAbout.uri);
+
+    });
 
 });
