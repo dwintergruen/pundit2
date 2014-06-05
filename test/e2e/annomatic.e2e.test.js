@@ -6,10 +6,10 @@ describe("The annomatic module", function() {
     it('should load some 25 annotations from datatxt', function() {
         p.get('/app/examples/annomatic.html');
 
-        p.findElement(protractor.By.css('header button')).click().then(function(){
+        p.findElement(protractor.By.css('.pnd-button-suggestion')).click().then(function(){
             p.waitForAngular();
             p.findElements(protractor.By.css('.ann-auto')).then(function(elements) {
-                expect(elements.length).toBe(25);
+                expect(elements.length).toBe(88);
             });
         });
     });
@@ -18,28 +18,36 @@ describe("The annomatic module", function() {
         p.get('/app/examples/annomatic.html');
 
         // Get annotations
-        p.findElement(protractor.By.css('header button')).click();
+        p.findElement(protractor.By.css('.pnd-button-suggestion')).click();
         
-        // No accepted annotations
+        // At this time there are no accepted annotations
         p.findElements(protractor.By.css('.ann-ok')).then(function(elements) {
             expect(elements.length).toBe(0);
         });
-        
-        p.findElement(protractor.By.css('.ann-auto')).click();
-        p.findElement(protractor.By.css('.popover-content button.btn-success')).click();
 
-        // 1 accepted annotation
-        p.findElements(protractor.By.css('.ann-ok')).then(function(elements) {
-            expect(elements.length).toBe(1);
-        });
-        
-        p.findElement(protractor.By.css('.ann-auto.ann-ok')).click();
-        p.findElement(protractor.By.css('.popover-content button.btn-danger')).click();
+        // find all suggested annotation, should be 88
+        p.findElements(protractor.By.css('.pnd-text-fragment-icon')).then(function(elements) {
+            expect(elements.length).toBe(88);
 
-        // No accepted annotations
-        p.findElements(protractor.By.css('.ann-ok')).then(function(elements) {
-            expect(elements.length).toBe(0);
+            // click first icon to open preview and menu suggested annotation
+            elements[0].click();
+            // accept the suggested annotation
+            p.findElement(protractor.By.css('.popover-content .pnd-button-set-ok')).click();
+            // now there is 1 accepted annonation
+            p.findElements(protractor.By.css('.ann-ok')).then(function(elements) {
+                expect(elements.length).toBe(1);
+            });
+            // click again first icon to open preview and menu suggested annotation
+            elements[0].click();
+            // remove accepted annotation
+            p.findElement(protractor.By.css('.popover-content .pnd-button-set-ko')).click();
+            // now there are none accepted annotation
+            p.findElements(protractor.By.css('.ann-ok')).then(function(elements) {
+                expect(elements.length).toBe(0);
+            });
+
         });
+
 
     });
 

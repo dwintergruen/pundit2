@@ -1,21 +1,21 @@
 <div ng-controller="AnnomaticPanelCtrl">
     <div>
 
-        <button ng-disabled="targets.length == 0" class="btn btn-success" ng-click="getSuggestions()">
+        <button ng-disabled="targets.length == 0" class="btn btn-success pnd-button-suggestion" ng-click="getSuggestions()">
             Scan Page <span class="pnd-icon pnd-icon-file-text"></span>
         </button>
 
-        <button class="btn btn-success" ng-click="selectAreaMode()">
+        <button class="btn btn-success pnd-button-select-area" ng-click="selectAreaMode()">
             Select area <span class="pnd-icon pnd-icon-edit"></span>
         </button>
 
         <div ng-show="Annomatic.annotationNumber > 0">
-            <button class="btn btn-danger" ng-click="startReview()">
+            <button class="btn btn-danger pnd-button-start-review" ng-click="startReview()">
                 Review ({{Annomatic.currAnn}}/{{Annomatic.annotationNumber}})
             </button>
 
             <button
-                class="btn btn-default"
+                class="btn btn-default pnd-button-filter-suggestion"
                 ng-model="filteredTypes"
                 placeholder="Filter by suggestion type"
                 data-html="1"
