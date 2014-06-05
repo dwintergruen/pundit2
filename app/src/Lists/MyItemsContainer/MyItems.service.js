@@ -1,13 +1,61 @@
 angular.module("Pundit2.MyItemsContainer")
 .constant('MYITEMSDEFAULTS', {
 
-    // Key used for the /services/preferences/ server API to store the my items object
+    /**
+     * @module punditConf
+     * @ngdoc property
+     * @name modules#MyItems
+     *
+     * @description
+     * `object`
+     *
+     * Configuration for MyItems service
+     */
+
+    /**
+     * @module punditConf
+     * @ngdoc property
+     * @name modules#MyItems.apiPreferencesKey
+     *
+     * @description
+     * `string`
+     *
+     * My items pundit server API
+     *
+     * Default value:
+     * <pre> apiPreferencesKey: 'favorites' </pre>
+     */
     apiPreferencesKey: 'favorites',
 
-    // Container used to store the my items in the itemsExchange
+    /**
+     * @module punditConf
+     * @ngdoc property
+     * @name modules#MyItems.container
+     *
+     * @description
+     * `string`
+     *
+     * Name of the container used to store the my items in the itemsExchange (TODO link)
+     *
+     * Default value:
+     * <pre> container: 'myItems' </pre>
+     */
     container: 'myItems',
 
+    /**
+     * @ngdoc property
+     * @name modules#MyItems.debug
+     *
+     * @description
+     * `boolean`
+     *
+     * Active debug log
+     *
+     * Default value:
+     * <pre> debug: false </pre>
+     */
     debug: false
+
 })
 .service("MyItems", function(MYITEMSDEFAULTS, BaseComponent, NameSpace, Item, ItemsExchange,
                              ContextualMenu, MyPundit, Config, Consolidation, Toolbar,

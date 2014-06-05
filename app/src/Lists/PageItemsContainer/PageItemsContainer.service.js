@@ -1,30 +1,182 @@
 angular.module('Pundit2.PageItemsContainer')
 .constant('PAGEITEMSCONTAINERDEFAULTS', {
 
-    initialActiveTab: 0,
+    /**
+     * @module punditConf
+     * @ngdoc property
+     * @name modules#PageItemsContainer
+     *
+     * @description
+     * `object`
+     *
+     * Configuration for PageItemsContainer module
+     */
 
-    // The Client will append the content of this template to the DOM to bootstrap
-    // this component
+     /**
+     * @module punditConf
+     * @ngdoc property
+     * @name modules#PageItemsContainer.clientDashboardTemplate
+     *
+     * @description
+     * `string`
+     *
+     * Path of template containing myItemsContainer directive, client will append the content of this template 
+     * to the DOM (inside dashboard directive) to bootstrap this component
+     *
+     * Default value:
+     * <pre> clientDashboardTemplate: "src/Lists/PageItemsContainer/ClientPageItemsContainer.tmpl.html" </pre>
+     */
     clientDashboardTemplate: "src/Lists/PageItemsContainer/ClientPageItemsContainer.tmpl.html",
+
+    /**
+     * @module punditConf
+     * @ngdoc property
+     * @name modules#PageItemsContainer.clientDashboardPanel
+     *
+     * @description
+     * `string`
+     *
+     * Name of the panel where append the directive
+     *
+     * Default value:
+     * <pre> clientDashboardPanel: "lists" </pre>
+     */
     clientDashboardPanel: "lists",
+
+    /**
+     * @module punditConf
+     * @ngdoc property
+     * @name modules#PageItemsContainer.clientDashboardTabTitle
+     *
+     * @description
+     * `string`
+     *
+     * Tab title inside panel dashboard tabs
+     *
+     * Default value:
+     * <pre> clientDashboardTabTitle: "Page Items" </pre>
+     */
     clientDashboardTabTitle: "Page Items",
 
-    // page items contextual menu type
+    /**
+     * @module punditConf
+     * @ngdoc property
+     * @name modules#PageItemsContainer.initialActiveTab
+     *
+     * @description
+     * `number`
+     *
+     * Default displayed tab
+     *
+     * Default value:
+     * <pre> initialActiveTab: 0 </pre>
+     */
+    initialActiveTab: 0,
+
+    /**
+     * @module punditConf
+     * @ngdoc property
+     * @name modules#PageItemsContainer.cMenuType
+     *
+     * @description
+     * `string`
+     *
+     * Contextual menu type showed by items contained inside directive
+     *
+     * Default value:
+     * <pre> cMenuType: 'pageItems' </pre>
+     */
     cMenuType: 'pageItems',
 
-    // items property used to compare
+    /**
+     * @module punditConf
+     * @ngdoc property
+     * @name modules#PageItemsContainer.order
+     *
+     * @description
+     * `string`
+     *
+     * Default items property used to sort items list inside directive (legal value are: 'label' and 'type')
+     *
+     * Default value:
+     * <pre> order: 'label' </pre>
+     */
     order: 'label',
-    // how order items (true ascending, false descending)
+
+    /**
+     * @module punditConf
+     * @ngdoc property
+     * @name modules#PageItemsContainer.reverse
+     *
+     * @description
+     * `boolean`
+     *
+     * Default items ordering inside directive (true: ascending, false: descending)
+     *
+     * Default value:
+     * <pre> reverse: false </pre>
+     */
     reverse: false,
 
-    // Container used to store the page items in the itemsExchange
+    /**
+     * @module punditConf
+     * @ngdoc property
+     * @name modules#PageItemsContainer.container
+     *
+     * @description
+     * `string`
+     *
+     * Name of the container used to store the page items in the itemsExchange (TODO link)
+     *
+     * Default value:
+     * <pre> container: 'myItems' </pre>
+     */
     container: 'pageItems',
 
-    // Icons shown in the search input when it's empty and when it has some content
+    /**
+     * @module punditConf
+     * @ngdoc property
+     * @name modules#PageItemsContainer.inputIconSearch
+     *
+     * @description
+     * `string`
+     *
+     * Icon shown in the search input when it's empty
+     *
+     * Default value:
+     * <pre> inputIconSearch: 'pnd-icon-search' </pre>
+     */
     inputIconSearch: 'pnd-icon-search',
+
+    /**
+     * @module punditConf
+     * @ngdoc property
+     * @name modules#PageItemsContainer.inputIconClear
+     *
+     * @description
+     * `string`
+     *
+     * Icon shown in the search input when it has some content
+     *
+     * Default value:
+     * <pre> inputIconClear: 'pnd-icon-times' </pre>
+     */
     inputIconClear: 'pnd-icon-times',
 
+    /**
+     * @ngdoc property
+     * @name modules#PageItemsContainer.debug
+     *
+     * @description
+     * `boolean`
+     *
+     * Active debug log
+     *
+     * Default value:
+     * <pre> debug: false </pre>
+     */
     debug: false
+    
 })
 .service('PageItemsContainer', function(PAGEITEMSCONTAINERDEFAULTS, BaseComponent, TypesHelper,
                                         ContextualMenu, MyPundit, ItemsExchange) {
