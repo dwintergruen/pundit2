@@ -12,7 +12,7 @@ angular.module('Pundit2.Vocabularies')
     // enable or disable all muruca selectors instances
     active: true,
     // max number of items
-    limit: 30,
+    limit: 15,
 
     // singles instances configuration
     instances: [
@@ -44,7 +44,6 @@ angular.module('Pundit2.Vocabularies')
     // selector instance constructor
     var KorboBasketFactory = function(config){
         this.config = config;
-        this.pendingRequest = 0;
     };
 
     KorboBasketFactory.prototype.getItems = function(term){
@@ -68,11 +67,11 @@ angular.module('Pundit2.Vocabularies')
 
                 if (data.result.length === 0) {
                     korboBasketSelector.log('Http success, but empty response');
+                    ItemsExchange.wipeContainer(self.config.container);
                     promise.resolve();
                     return;
                 }
 
-                self.pendingRequest = data.result.length;
                 var promiseArr = [];
                 var deferArr = [];
                 var itemsArr = [];

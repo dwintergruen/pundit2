@@ -15,7 +15,7 @@ describe('KorboBasketSelector service', function() {
     }));
 
     // TODO best way?
-    var url = "http://manager.korbo.org/api.php/basket/reconcile/16?jsonp=JSON_CALLBACK&query=%7B%22query%22:%22term%22,%22limit%22:30%7D",
+    var url = "http://manager.korbo.org/api.php/basket/reconcile/16?jsonp=JSON_CALLBACK&query=%7B%22query%22:%22term%22,%22limit%22:15%7D",
         detailsUrl = "http://manager.korbo.org/16?jsonp=JSON_CALLBACK&url=http:%2F%2Fpurl.org%2Fnet7%2Fkorbo%2Fitem%2F76108";
 
     var emptyResult = {

@@ -14,7 +14,7 @@ describe('FreebaseSelector service', function() {
         ItemsExchange = _ItemsExchange_;
     }));
 
-    var url = "https://www.googleapis.com/freebase/v1/search?key=AIzaSyCJjAj7Nd2wKsZ8d7XQ9ZvUwN5SF0tZBsE&limit=5&query=term",
+    var url = "https://www.googleapis.com/freebase/v1/search?key=AIzaSyCJjAj7Nd2wKsZ8d7XQ9ZvUwN5SF0tZBsE&limit=15&query=term",
         mqlUrl = "https://www.googleapis.com/freebase/v1/mqlread?key=AIzaSyCJjAj7Nd2wKsZ8d7XQ9ZvUwN5SF0tZBsE&query=%7B%22id%22:null,%22mid%22:%22%2Fm%2F02qtppz%22,%22type%22:%5B%7B%7D%5D%7D",
         topicUrl = "https://www.googleapis.com/freebase/v1/topic/m/02qtppz?filter=%2Fcommon%2Ftopic%2Fdescription&key=AIzaSyCJjAj7Nd2wKsZ8d7XQ9ZvUwN5SF0tZBsE";
 
@@ -92,19 +92,16 @@ describe('FreebaseSelector service', function() {
         $httpBackend.flush(1);
         // resolved only when all http request are completed
         expect(called).toBe(false);
-        expect(sel.pendingRequest).toBe(1);
 
         // get item mql info
         $httpBackend.flush(1);
         // resolved only when all http request are completed
         expect(called).toBe(false);
-        expect(sel.pendingRequest).toBe(1);
 
         // get item topic info
         $httpBackend.flush(1);
         // now all http request are completed
         expect(called).toBe(true);
-        expect(sel.pendingRequest).toBe(0);
 
         var all = ItemsExchange.getAll(),
             container = conf.container,
@@ -139,7 +136,6 @@ describe('FreebaseSelector service', function() {
 
         // resolved only when all http request are completed
         expect(called).toBe(true);
-        expect(sel.pendingRequest).toBe(0);
         
     });
 
@@ -164,7 +160,6 @@ describe('FreebaseSelector service', function() {
 
         // resolved only when all http request are completed
         expect(called).toBe(true);
-        expect(sel.pendingRequest).toBe(0);
         
     });
 
@@ -185,7 +180,6 @@ describe('FreebaseSelector service', function() {
 
         // resolved only when all http request are completed
         expect(called).toBe(true);
-        expect(sel.pendingRequest).toBe(0);
         
     });
 

@@ -12,7 +12,7 @@ angular.module('Pundit2.Vocabularies')
     // enable or disable all selectors instances
     active: true,
     // max number of items
-    limit: 5,
+    limit: 15,
 
     instances: [
         {
@@ -44,7 +44,6 @@ angular.module('Pundit2.Vocabularies')
     // selector instance constructor
     var FreebaseFactory = function(config){
         this.config = config;
-        this.pendingRequest = 0;
     };
 
     FreebaseFactory.prototype.getItems = function(term){
@@ -64,17 +63,16 @@ angular.module('Pundit2.Vocabularies')
 
             freebaseSelector.log('Http success, get items from freebase', data);
 
-            // TODO need to cache item then wipe when all http calls ends ?
-            ItemsExchange.wipeContainer(self.config.container);
-
             if (data.result.length === 0) {
-                freebaseSelector.log('Empry result');
+                freebaseSelector.log('Http success, but get empty result');
+                ItemsExchange.wipeContainer(self.config.container);
                 promise.resolve();
                 return;
             }
 
-            self.pendingRequest = data.result.length;
-
+            var promiseArr = [],
+                deferArr = [],
+                itemsArr = [];
             for (var i in data.result) {
 
                 // The item borns as half empty, will get filled up
@@ -86,9 +84,27 @@ angular.module('Pundit2.Vocabularies')
                     description: -1,
                     uri: -1
                 };
+                itemsArr.push(item);
 
-                self.getItemDetails(item, promise);
+                var itemPromise = $q.defer();
+                promiseArr.push(itemPromise.promise);
+                deferArr.push(itemPromise);
 
+            }
+
+            $q.all(promiseArr).then(function(){
+                freebaseSelector.log('Completed all items http request (topic and mql)');
+                // when all http request are completed we can wipe itemsExchange
+                // and put new items inside relative container
+                ItemsExchange.wipeContainer(self.config.container);
+                for (i=0; i<itemsArr.length; i++) {
+                    ItemsExchange.addItemToContainer(new Item(itemsArr[i].uri, itemsArr[i]), self.config.container);
+                }
+                promise.resolve();
+            });
+
+            for (i=0; i<itemsArr.length; i++) {
+                self.getItemDetails(itemsArr[i], deferArr[i]);
             }
 
         }).error(function(msg) {
@@ -101,11 +117,10 @@ angular.module('Pundit2.Vocabularies')
     };
 
 
-    FreebaseFactory.prototype.getItemDetails = function(item, promise){
+    FreebaseFactory.prototype.getItemDetails = function(item, itemPromise){
 
-        var self = this;
-
-        var error = 0;
+        var self = this,
+            error = 0;
 
         // get MQL
         $http({
@@ -134,19 +149,17 @@ angular.module('Pundit2.Vocabularies')
                 TypesHelper.add(uri, o.name);
             }
 
-            // Value != -1: this call is the last one, we're done
+            // Description != -1: this call is the last one, we're done
             if (item.description !== -1) {
                 freebaseSelector.log('MQL was last, complete for item ' + item.uri);
                 delete item.mid;
-                var add = new Item(item.uri, item);
-                ItemsExchange.addItemToContainer(add, self.config.container);
-                self.checkEnd(promise);
+                itemPromise.resolve();
             }
 
         }).error(function(msg) {
             freebaseSelector.err('Cant get MQL from freebase: ', msg);
             if (item.description !== -1 || error>0) {
-                self.checkEnd(promise);
+                itemPromise.resolve();
             }
             error++;
         });
@@ -168,32 +181,21 @@ angular.module('Pundit2.Vocabularies')
             else
                 item.description = item.label;
 
-            // Description is not -1: this call is the last one, we're done
+            // Uri != -1: this call is the last one, we're done
             if (item.uri !== -1) {
                 freebaseSelector.log('TOPIC was last, complete http for item ' + item.uri);
                 delete item.mid;
-                var add = new Item(item.uri, item);
-                ItemsExchange.addItemToContainer(add, self.config.container);
-                self.checkEnd(promise);
+                itemPromise.resolve();
             }
 
         }).error(function(msg) {
             freebaseSelector.err('Cant get TOPIC from freebase: ', msg);
             if (item.uri !== -1 || error>0) {
-                self.checkEnd(promise);
+                itemPromise.resolve();
             }
             error++;
         });
 
-    };
-
-    FreebaseFactory.prototype.checkEnd = function(promise){
-        this.pendingRequest--;
-        if (this.pendingRequest <= 0) {
-            freebaseSelector.log('Complete item parsing');
-            promise.resolve();
-        }
-        
     };
 
     freebaseSelector.log('Factory init');
