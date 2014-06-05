@@ -118,13 +118,18 @@ angular.module('Pundit2.Vocabularies')
 
     var updateMessage = function(){
         vocabulariesContainer.log('All selectors end http calls'/*, ItemsExchange.getAll()*/);
-        if ($scope.displayedItems.length === 0) {
+        if ($scope.displayedItems.length === 0 && $scope.search.term!=='' && typeof($scope.search.term)!=='undefined') {
             $scope.message.text = "No item found to: "+$scope.search.term;
         }
     };
 
     var querySelectors = function(){
-        SelectorsManager.getItems($scope.search.term).then(updateMessage, updateMessage);
+        SelectorsManager.getItems($scope.search.term).then(
+            function(){
+                updateMessage();
+            }, function(){
+                updateMessage();
+            });
     };
 
     $scope.$watch(function() {
