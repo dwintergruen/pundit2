@@ -1,16 +1,91 @@
 angular.module('Pundit2.Vocabularies')
 .constant('SELECTORMANAGERDEFAULTS', {
 
-    // The Client will append the content of this template to the DOM to bootstrap
-    // this component
+    /**
+     * @module punditConf
+     * @ngdoc property
+     * @name modules#SelectorsManager
+     *
+     * @description
+     * `object`
+     *
+     * Configuration for SelectorsManager service
+     */
+
+
+    /**
+     * @module punditConf
+     * @ngdoc property
+     * @name modules#SelectorsManager.clientDashboardTemplate
+     *
+     * @description
+     * `string`
+     *
+     * Path of template containing myItemsContainer directive, client will append the content of this template 
+     * to the DOM (inside dashboard directive) to bootstrap this component
+     *
+     * Default value:
+     * <pre> clientDashboardTemplate: "src/Lists/Vocabularies/VocabulariesContainer/ClientVocabulariesContainer.tmpl.html" </pre>
+     */
     clientDashboardTemplate: "src/Lists/Vocabularies/VocabulariesContainer/ClientVocabulariesContainer.tmpl.html",
+    
+    /**
+     * @module punditConf
+     * @ngdoc property
+     * @name modules#SelectorsManager.clientDashboardPanel
+     *
+     * @description
+     * `string`
+     *
+     * Name of the panel where append the directive
+     *
+     * Default value:
+     * <pre> clientDashboardPanel: "lists" </pre>
+     */
     clientDashboardPanel: "lists",
+    
+    /**
+     * @module punditConf
+     * @ngdoc property
+     * @name modules#SelectorsManager.clientDashboardTabTitle
+     *
+     * @description
+     * `string`
+     *
+     * Tab title inside panel dashboard tabs
+     *
+     * Default value:
+     * <pre> clientDashboardTabTitle: "Vocab" </pre>
+     */
     clientDashboardTabTitle: "Vocab",
 
-    // vocabulary items contextual menu type
-    // valid to all items obtaine by selectors
+    /**
+     * @module punditConf
+     * @ngdoc property
+     * @name modules#SelectorsManager.cMenuType
+     *
+     * @description
+     * `string`
+     *
+     * Contextual menu type showed by items contained inside directive
+     *
+     * Default value:
+     * <pre> cMenuType: 'vocabItems' </pre>
+     */
     cMenuType: 'vocabItems',
 
+    /**
+     * @ngdoc property
+     * @name modules#SelectorsManager.debug
+     *
+     * @description
+     * `boolean`
+     *
+     * Active debug log
+     *
+     * Default value:
+     * <pre> debug: false </pre>
+     */
     debug: false
 
 })

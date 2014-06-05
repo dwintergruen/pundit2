@@ -1,18 +1,106 @@
 angular.module('Pundit2.Vocabularies')
 .constant('VOCABULARIESCONTAINERDEFAULTS', {
 
-    initialActiveTab: 0,
+    /**
+     * @module punditConf
+     * @ngdoc property
+     * @name modules#VocabulariesContainer
+     *
+     * @description
+     * `object`
+     *
+     * Configuration for VocabulariesContainer module
+     */
 
-    // items property used to compare
+    /**
+     * @module punditConf
+     * @ngdoc property
+     * @name modules#VocabulariesContainer.order
+     *
+     * @description
+     * `string`
+     *
+     * Default items property used to sort items list inside directive (legal value are: 'label' and 'type')
+     *
+     * Default value:
+     * <pre> order: 'label' </pre>
+     */
     order: 'label',
-    // how order items (true ascending, false descending)
+
+    /**
+     * @module punditConf
+     * @ngdoc property
+     * @name modules#VocabulariesContainer.reverse
+     *
+     * @description
+     * `boolean`
+     *
+     * Default items ordering inside directive (true: ascending, false: descending)
+     *
+     * Default value:
+     * <pre> reverse: false </pre>
+     */
     reverse: false,
 
-    // Icons shown in the search input when it's empty and when it has some content
+    /**
+     * @module punditConf
+     * @ngdoc property
+     * @name modules#VocabulariesContainer.initialActiveTab
+     *
+     * @description
+     * `number`
+     *
+     * Default displayed tab
+     *
+     * Default value:
+     * <pre> initialActiveTab: 0 </pre>
+     */
+    initialActiveTab: 0,
+
+    /**
+     * @module punditConf
+     * @ngdoc property
+     * @name modules#VocabulariesContainer.inputIconSearch
+     *
+     * @description
+     * `string`
+     *
+     * Icon shown in the search input when it's empty
+     *
+     * Default value:
+     * <pre> inputIconSearch: 'pnd-icon-search' </pre>
+     */
     inputIconSearch: 'pnd-icon-search',
+
+    /**
+     * @module punditConf
+     * @ngdoc property
+     * @name modules#VocabulariesContainer.inputIconClear
+     *
+     * @description
+     * `string`
+     *
+     * Icon shown in the search input when it has some content
+     *
+     * Default value:
+     * <pre> inputIconClear: 'pnd-icon-times' </pre>
+     */
     inputIconClear: 'pnd-icon-times',
 
+    /**
+     * @ngdoc property
+     * @name modules#PageItemsContainer.debug
+     *
+     * @description
+     * `boolean`
+     *
+     * Active debug log
+     *
+     * Default value:
+     * <pre> debug: false </pre>
+     */
     debug: false
+    
 })
 .controller('VocabulariesContainerCtrl', function($scope, $timeout, $injector, BaseComponent, VOCABULARIESCONTAINERDEFAULTS,
                                                     SelectorsManager, ItemsExchange, TypesHelper) {
@@ -28,7 +116,7 @@ angular.module('Pundit2.Vocabularies')
         text: "I'm a welcome message"
     };
 
-    // read by <item> directive (in PageItemsContainer/items.tmpl.html)
+    // read by <item> directive (in Lists/itemList.tmpl.html)
     // will trigger this contextual menu type clicking on the contextual item icon
     $scope.itemMenuType = SelectorsManager.options.cMenuType;
     
