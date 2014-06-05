@@ -23,7 +23,8 @@ angular.module('Pundit2.AnnotationSidebar')
             image: (typeof currentItem.image !== 'undefined' ? currentItem.image : null),
             class: currentItem.getClass(),
             icon: currentItem.getIcon(),
-            typeLabel: TypesHelper.getLabel(currentItem.type[0]),
+            typeLabel: (typeof currentItem.type[0] !== 'undefined' ? TypesHelper.getLabel(currentItem.type[0]) : null),
+            // typeLabel: TypesHelper.getLabel(currentItem.type[0]),
             typeClass: 'uri'
         };
         return result;
@@ -112,6 +113,10 @@ angular.module('Pundit2.AnnotationSidebar')
         if (currentId in state.annotations) {
             return state.annotations[currentId];
         }
+    };
+
+    annotationDetails.getAnnotationViewStatus = function(currentId) {
+        return state.annotations[currentId].expanded;
     };
 
     annotationDetails.closeAllAnnotationView = function(skipId) {

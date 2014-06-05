@@ -129,7 +129,7 @@ describe('AnnotationSidebar service', function() {
 
     it('should filter be applied to the list of filtered annotations', function(){
         AnnotationSidebar.filters['authors'].expression.push('http://fakeuri.it/test');
-        var currentFilters = AnnotationSidebar.getFilters();
+        var currentFilters = AnnotationSidebar.filters;
         var myAnnotationFiltered = AnnotationSidebar.getAllAnnotationsFiltered(currentFilters);
 
         expect(myAnnotationFiltered.length).toEqual(0);
