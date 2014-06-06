@@ -12,6 +12,10 @@ describe('AnnotationSidebar service', function() {
         Annotation,
         NameSpace;
 
+    var fakeScope = {
+        id: 'foo'
+    };
+
     beforeEach(module('Pundit2'));
     
     beforeEach(function() {
@@ -28,6 +32,22 @@ describe('AnnotationSidebar service', function() {
             $rootScope = _$rootScope_;
             ANNOTATIONSIDEBARDEFAULTS = _ANNOTATIONSIDEBARDEFAULTS_;
         });
+
+        var myAnnotation;
+        var testId = fakeScope.id;
+        $httpBackend
+            .when('GET', NameSpace.get('asOpenAnn', {id: testId}))
+            .respond(testAnnotations.simple2);
+        var ann,
+            promise = new Annotation(testId);
+        waitsFor(function() { return ann; }, 2000);
+        // runs(function() {
+        //     expect(ann.id).toEqual(testId);
+        // });
+        promise.then(function(ret) {
+            ann = ret;
+        });
+        $httpBackend.flush();
     });
 
     afterEach(function() {
@@ -95,7 +115,6 @@ describe('AnnotationSidebar service', function() {
     });
 
     it('should reset the filters', function(){
-
         AnnotationSidebar.filters['authors'].expression.push('http://fakeuri.it/test');
         var elementsList = AnnotationSidebar.getFilters();
         AnnotationSidebar.resetFilters();
@@ -108,24 +127,14 @@ describe('AnnotationSidebar service', function() {
         });
     });
 
+    // TODO: mockkare più di un'annotazione con i valori delle date e completare il test
+    it('should return the correct range of minimum and maximum dates', function(){
+        $timeout.flush(AnnotationSidebar.options.annotationsRefresh);
+        AnnotationSidebar.getMinDate();
+        AnnotationSidebar.getMaxDate();
+    });
 
     it('should sidebar get annotation after timeout refresh', function(){
-        var myAnnotation;
-        var testId = 'foo';
-        $httpBackend
-            .when('GET', NameSpace.get('asOpenAnn', {id: testId}))
-            .respond(testAnnotations.simple2);
-        var ann,
-            promise = new Annotation(testId);
-        waitsFor(function() { return ann; }, 2000);
-        // runs(function() {
-        //     expect(ann.id).toEqual(testId);
-        // });
-        promise.then(function(ret) {
-            ann = ret;
-        });
-        $httpBackend.flush();
-
         $timeout.flush(AnnotationSidebar.options.annotationsRefresh - epsilon);
         myAnnotation = AnnotationSidebar.getAllAnnotations();
         expect(myAnnotation.length).toEqual(0);
