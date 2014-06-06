@@ -154,4 +154,50 @@ describe('ItemsExchange service', function() {
         expect(ItemsExchange.getItemsByContainer('fakeContainer').length).toBe(0);
     });
 
+    it('should corectly get items by filter', function(){
+
+        var textItem = testItems.completeFragmentTextItem,
+            imageItem = testItems.completeFragmentImageItem,
+            freebaseItem = testItems.completeFreebaseItem;
+
+        ItemsExchange.addItem(textItem);
+        ItemsExchange.addItem(imageItem);
+        ItemsExchange.addItem(freebaseItem);
+
+        var itemList = ItemsExchange.getItemsBy(function(item){
+            if (item.uri === textItem.uri) {
+                return true;
+            } else {
+                return false;
+            }
+        });
+
+        expect(itemList.length).toBe(1);
+        expect(itemList.indexOf(textItem)).toBeGreaterThan(-1);
+    });
+
+    it('should corectly get items by filter from container', function(){
+
+        var textItem = testItems.completeFragmentTextItem,
+            imageItem = testItems.completeFragmentImageItem,
+            freebaseItem = testItems.completeFreebaseItem;
+
+        ItemsExchange.addItem(textItem, 'myTestContainer');
+        ItemsExchange.addItem(imageItem, 'myTestContainer');
+        ItemsExchange.addItem(freebaseItem);
+
+        var itemList = ItemsExchange.getItemsFromContainerByFilter('myTestContainer', function(item){
+            if (item.uri === textItem.uri || item.uri === freebaseItem.uri) {
+                return true;
+            } else {
+                return false;
+            }
+        });
+
+        expect(itemList.length).toBe(1);
+        expect(itemList.indexOf(textItem)).toBeGreaterThan(-1);
+        expect(itemList.indexOf(freebaseItem)).toBe(-1);
+    });
+
+
 });
