@@ -46,11 +46,11 @@ angular.module('Pundit2.Core')
             itemListByContainer[container].forEach(function(item){
                 // remove container from itemContainers object array
                 itemContainers[item.uri].splice(itemContainers[item.uri].indexOf(container), 1);
-                // if we have only the default container must remove item everywhere
-                if (itemContainers[item.uri].length === 1 && itemContainers[item.uri][0] === 'default') {
+                // if we have zero container must remove item everywhere
+                if (itemContainers[item.uri].length === 0) {
                     delete itemContainers[item.uri];
                     delete itemListByURI[item.uri];
-                    itemListByContainer['default'].splice(itemListByContainer['default'].indexOf(item), 1);
+                    // TODO remove from itemList ?
                 }
             });
             // empty container list
@@ -175,6 +175,12 @@ angular.module('Pundit2.Core')
             // remove container from itemContainers
             var containerIndex = itemContainers[item.uri].indexOf(container);
             itemContainers[item.uri].splice(containerIndex, 1);
+            // if we have zero container must remove item everywhere
+            if (itemContainers[item.uri].length === 0) {
+                delete itemContainers[item.uri];
+                delete itemListByURI[item.uri];
+                // TODO remove from itemList ?
+            }
 
             itemsExchange.log("Item "+ item.label +" removed from container "+ container);
         };

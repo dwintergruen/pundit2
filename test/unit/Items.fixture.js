@@ -65,3 +65,11 @@ testItems.completeFragmentImageItem = {
     type: ["http://purl.org/pundit/ont/ao#fragment-image"],
     isProperty: function() { return false; }
 };
+
+testItems.completeFreebaseItem = {
+    uri: "completeFreebaseItem",
+    label: "item common topic",
+    description: "item description",
+    type: ["http://www.freebase.com/schema/common/topic", "http://www.freebase.com/schema/interests/collection_category", "http://www.freebase.com/schema/base/popstra/product"],
+    isProperty: function() { return false; }
+};
