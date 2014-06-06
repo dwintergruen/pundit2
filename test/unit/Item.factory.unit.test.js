@@ -4,16 +4,20 @@ describe('Item Factory', function() {
         NameSpace,
         ItemsExchange,
         $log,
-        ITEMDEFAULTS;
+        ITEMDEFAULTS,
+        $httpBackend,
+        Annotation;
 
     beforeEach(module('Pundit2'));
 
-    beforeEach(inject(function($injector, _Item_, _ItemsExchange_, _$log_, _ITEMDEFAULTS_){
+    beforeEach(inject(function($injector, _Item_, _ItemsExchange_, _$log_, _ITEMDEFAULTS_, _$httpBackend_, _Annotation_){
         Item = _Item_;
         NameSpace = $injector.get('NameSpace');
         ItemsExchange = _ItemsExchange_;
         $log = _$log_;
         ITEMDEFAULTS = _ITEMDEFAULTS_;
+        $httpBackend = _$httpBackend_;
+        Annotation = _Annotation_;
     }));
 
     afterEach(function(){
@@ -164,6 +168,71 @@ describe('Item Factory', function() {
         // should encode isPartOf as uri
         expect(rdfObj[NameSpace.item.isPartOf][0].type).toBe('uri');
         expect(rdfObj[NameSpace.item.isPartOf][0].value).toBe(testItems.allPropItem.isPartOf);
+
+    });
+
+    it('should create an item from an annotation RDF', function(){
+
+        var label ="label from anntotionRDF";
+        var description = "description from anntotionRDF";
+        var uriType = "http://purl.org/pundit/ont/ao#fragment-image";
+        var altLabel = "alt label from anntotionRDF";
+
+        var annotationRDF = {
+          'http://img-uri': {
+
+              // LABEL
+              'http://www.w3.org/2000/01/rdf-schema#label': [{
+                  type: "literal",
+                  value: label
+              }],
+
+              // TYPE
+              'http://www.w3.org/1999/02/22-rdf-syntax-ns#type': [{
+                  type: "uri",
+                  value: uriType
+              }],
+
+              // DESCRIPTION
+              'http://purl.org/dc/elements/1.1/description': [{
+                  type: "literal",
+                  value: description
+              }],
+
+              // ALT LABEL
+              'http://www.w3.org/2004/02/skos/core#altLabel': [{
+                  type: "literal",
+                  value: altLabel
+              }],
+
+              // IMAGE
+              'http://xmlns.com/foaf/0.1/depiction': [{
+                  type: "literal",
+                  value: "http://depic-uri"
+              }],
+
+              // PAGE CONTEXT
+              'http://purl.org/pundit/ont/ao#hasPageContext': [{
+                  type: "uri",
+                  value: "http://page-context-uri"
+              }],
+
+              // IS PART OF
+              'http://purl.org/dc/terms/isPartOf': [{
+                  type: "uri",
+                  value: "http://part-of-uri"
+              }]
+          }
+        };
+
+        var item = new Item("http://img-uri");
+        item.fromAnnotationRdf(annotationRDF);
+
+        expect(item.label).toBe(label);
+        expect(item.description).toBe(description);
+        expect(item.type.length).toBe(1);
+        expect(item.type[0]).toBe(uriType);
+        expect(item.altLabel).toBe(altLabel);
 
     });
 

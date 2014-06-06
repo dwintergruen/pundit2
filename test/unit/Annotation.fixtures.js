@@ -51,5 +51,5 @@ testAnnotations.simple2 = {
         }
       ]
     }
-  },
+  }
 };

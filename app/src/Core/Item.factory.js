@@ -69,6 +69,7 @@ angular.module('Pundit2.Core')
         var ns = NameSpace.item,
             itemRDF = annotationRDF[this.uri];
 
+
         // Cant find any rdf for this item?? Where is it?!1?
         if (typeof(itemRDF) === "undefined") {
             itemComponent.log('Error? No RDF for this item? ', this.uri);
@@ -86,6 +87,7 @@ angular.module('Pundit2.Core')
             }
         }
 
+
         // Extract types as an array of URI, someone else will
         // take care of adding them to TypesHelper
         var types = itemRDF[NameSpace.rdf.type];
@@ -97,10 +99,9 @@ angular.module('Pundit2.Core')
         }
 
         // Special item type: image fragment
-        if (this.type.indexOf(NameSpace.fragments.image) !== -1) {
+        if (this.type.indexOf(NameSpace.fragments.imagePart) !== -1) {
 
             this.selector = [];
-
             // If there's a selector property in this item's RDF, cycle over
             // all of them, check if they're in the annotation RDF and extract
             // their value and append it to the item
