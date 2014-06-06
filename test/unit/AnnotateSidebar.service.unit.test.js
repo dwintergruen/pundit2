@@ -42,6 +42,14 @@ describe('AnnotationSidebar service', function() {
         return elem;
     };
 
+    it('should be initialized the variables of detas', function(){
+        var sidebarScope = compileAnnotationSidebarDirective().isolateScope();
+        expect(sidebarScope.fromMinDate).not.toEqual('undefined');
+        expect(sidebarScope.toMinDate).not.toEqual('undefined');
+        expect(sidebarScope.fromMaxDate).not.toEqual('undefined');
+        expect(sidebarScope.fromToDate).not.toEqual('undefined');
+    });
+
     it('should change the expanded state', function(){
         var beforeToggleState = AnnotationSidebar.isAnnotationSidebarExpanded();
         expect(AnnotationSidebar.isAnnotationSidebarExpanded()).toEqual(beforeToggleState);

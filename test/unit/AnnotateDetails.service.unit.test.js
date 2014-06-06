@@ -25,6 +25,10 @@ describe('AnnotationDetails service', function() {
         loginServer: "http:\/\/demo-cloud.as.thepund.it:8080\/annotationserver\/login.jsp"
     };
 
+    var fakeScope = {
+        id: 'foo'
+    };
+
     beforeEach(module('Pundit2'));
     
     beforeEach(function() {
@@ -45,7 +49,7 @@ describe('AnnotationDetails service', function() {
 
         var promiseValue;
         var myAnnotation;
-        var testId = 'foo';
+        var testId = fakeScope.id;
 
         $httpBackend.whenGET(NameSpace.get('asUsersCurrent')).respond(userLoggedIn);
 
@@ -87,25 +91,37 @@ describe('AnnotationDetails service', function() {
 
 
     it('should load correctly the annotations in the model', function(){
-    
-        var fakeScope = {
-            id: 'foo'
-        };
         AnnotationDetails.addAnnotationReference(fakeScope);
 
-        var currentAnnotationDetails = AnnotationDetails.getAnnotationDetails('foo');
-        expect(currentAnnotationDetails.id).toEqual('foo');
+        var currentAnnotationDetails = AnnotationDetails.getAnnotationDetails(fakeScope.id);
+        expect(currentAnnotationDetails.id).toEqual(fakeScope.id);
     });
 
-    it('shoud ...', function(){
-        // var fakeScope = {
-        //     id: 'foo'
-        // };
-        // AnnotationDetails.addAnnotationReference(fakeScope);
-        // console.log(AnnotationDetails.getAnnotationViewStatus('foo'));
+    it('should read default expanded status', function(){
+        AnnotationDetails.addAnnotationReference(fakeScope);
+        expect(AnnotationDetails.getAnnotationViewStatus(fakeScope.id)).toEqual(ANNOTATIONDETAILSDEFAULTS.defaultExpanded);
+    });
+
+    it('should open annotation view', function(){
+        AnnotationDetails.addAnnotationReference(fakeScope);
+        expect(AnnotationDetails.getAnnotationViewStatus(fakeScope.id)).toEqual(ANNOTATIONDETAILSDEFAULTS.defaultExpanded);
+        AnnotationDetails.openAnnotationView(fakeScope.id);
+        expect(AnnotationDetails.getAnnotationViewStatus(fakeScope.id)).toEqual(true);
+    });
+
+    it('should toggle annotation view', function(){
+        AnnotationDetails.addAnnotationReference(fakeScope);
+        expect(AnnotationDetails.getAnnotationViewStatus(fakeScope.id)).toEqual(ANNOTATIONDETAILSDEFAULTS.defaultExpanded);
+        AnnotationDetails.toggleAnnotationView(fakeScope.id);
+        expect(AnnotationDetails.getAnnotationViewStatus(fakeScope.id)).not.toEqual(ANNOTATIONDETAILSDEFAULTS.defaultExpanded);
+    });
+
+    it('should close all annotation view', function(){
+        AnnotationDetails.addAnnotationReference(fakeScope);
+        expect(AnnotationDetails.getAnnotationViewStatus(fakeScope.id)).toEqual(ANNOTATIONDETAILSDEFAULTS.defaultExpanded);
+        AnnotationDetails.openAnnotationView(fakeScope.id);
+        AnnotationDetails.closeAllAnnotationView();
+        expect(AnnotationDetails.getAnnotationViewStatus(fakeScope.id)).toEqual(false);
     });
     
-
-    
-
 });

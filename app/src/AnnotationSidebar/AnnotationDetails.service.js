@@ -2,6 +2,7 @@
 
 angular.module('Pundit2.AnnotationSidebar')
 .constant('ANNOTATIONDETAILSDEFAULTS', {
+    defaultExpanded: false,
     debug: false
 })
 .service('AnnotationDetails', function($rootScope, $filter, BaseComponent, AnnotationsExchange, ItemsExchange, MyPundit, TypesHelper, ANNOTATIONDETAILSDEFAULTS) {
@@ -10,6 +11,7 @@ angular.module('Pundit2.AnnotationSidebar')
 
     var state = {
         annotations: [],
+        defaultExpanded: annotationDetails.options.defaultExpanded,
         isUserLogged: false,
         userData: {}
     };
@@ -105,7 +107,7 @@ angular.module('Pundit2.AnnotationSidebar')
             scopeReference: scope,
             mainItem: buildMainItem(currentAnnotation),
             itemsArray: buildItemsArray(currentAnnotation),
-            expanded: false
+            expanded: state.defaultExpanded
         };
     };
 
