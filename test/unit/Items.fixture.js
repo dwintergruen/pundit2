@@ -27,3 +27,19 @@ testItems.propCommonTopic = {
     description: "item description",
     type: ["http://www.freebase.com/schema/common/topic", "http://www.freebase.com/schema/interests/collection_category", "http://www.freebase.com/schema/base/popstra/product"]
 };
+
+testItems.completeFragmentTextItem = {
+    uri: "completeFragmentTextItem",
+    label: "item fragment text",
+    description: "item description",
+    type: ["http://purl.org/pundit/ont/ao#fragment-text"],
+    isProperty: function() { return false; }
+};
+
+testItems.completeFragmentImageItem = {
+    uri: "completeFragmentImageItem",
+    label: "item fragment image",
+    description: "item description",
+    type: ["http://purl.org/pundit/ont/ao#fragment-image"],
+    isProperty: function() { return false; }
+};
