@@ -1,17 +1,19 @@
-ddescribe('Item Factory', function() {
+describe('Item Factory', function() {
 
     var Item,
         NameSpace,
         ItemsExchange,
-        $log;
+        $log,
+        ITEMDEFAULTS;
 
     beforeEach(module('Pundit2'));
 
-    beforeEach(inject(function($injector, _Item_, _ItemsExchange_, _$log_){
+    beforeEach(inject(function($injector, _Item_, _ItemsExchange_, _$log_, _ITEMDEFAULTS_){
         Item = _Item_;
         NameSpace = $injector.get('NameSpace');
         ItemsExchange = _ItemsExchange_;
         $log = _$log_;
+        ITEMDEFAULTS = _ITEMDEFAULTS_;
     }));
 
     afterEach(function(){
@@ -80,36 +82,48 @@ ddescribe('Item Factory', function() {
 
         var item = new Item("http://img-uri", testItems.propImage);
         expect(item.isImage()).toBe(true);
+        expect(item.getIcon()).toBe(ITEMDEFAULTS.iconImage);
+        expect(item.getClass()).toBe(ITEMDEFAULTS.classImage);
     });
 
     it('should recognized an item as image fragment', function(){
 
         var item = new Item("http://uri", testItems.propFragImage);
         expect(item.isImageFragment()).toBe(true);
+        expect(item.getIcon()).toBe(ITEMDEFAULTS.iconImage);
+        expect(item.getClass()).toBe(ITEMDEFAULTS.classImage);
     });
 
     it('should recognized an item as text fragment', function(){
 
         var item = new Item("http://uri", testItems.propFragmentText);
         expect(item.isTextFragment()).toBe(true);
+        expect(item.getIcon()).toBe(ITEMDEFAULTS.iconText);
+        expect(item.getClass()).toBe(ITEMDEFAULTS.classText);
     });
 
     it('should recognized an item as entity', function(){
 
         var item = new Item("http://uri", testItems.propCommonTopic);
         expect(item.isEntity()).toBe(true);
+        expect(item.getIcon()).toBe(ITEMDEFAULTS.iconEntity);
+        expect(item.getClass()).toBe(ITEMDEFAULTS.classEntity);
     });
 
     it('should recognized an item as web page', function(){
 
         var item = new Item("http://uri", testItems.propWebPage);
         expect(item.isWebPage()).toBe(true);
+        expect(item.getIcon()).toBe(ITEMDEFAULTS.iconWebPage);
+        expect(item.getClass()).toBe(ITEMDEFAULTS.classWebPage);
     });
 
     it('should recognized an item as web page', function(){
 
         var item = new Item("http://uri", testItems.propProperty);
         expect(item.isProperty()).toBe(true);
+        expect(item.getIcon()).toBe(ITEMDEFAULTS.iconDefault);
+        expect(item.getClass()).toBe(ITEMDEFAULTS.classDefault);
     });
 
 
