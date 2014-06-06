@@ -28,6 +28,18 @@ testItems.propCommonTopic = {
     type: ["http://www.freebase.com/schema/common/topic", "http://www.freebase.com/schema/interests/collection_category", "http://www.freebase.com/schema/base/popstra/product"]
 };
 
+testItems.propWebPage = {
+    label: "item web page",
+    description: "item description",
+    type: ["http://schema.org/WebPage"]
+};
+
+testItems.propProperty = {
+    label: "item property",
+    description: "item description",
+    type: ["http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"]
+};
+
 testItems.completeFragmentTextItem = {
     uri: "completeFragmentTextItem",
     label: "item fragment text",
