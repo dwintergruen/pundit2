@@ -253,7 +253,7 @@ describe('TripleComposer service', function() {
     });
 
     it('should correctly compile statement directive', function(){
-        var tripleComposerScope = compileDirective().isolateScope();
+        compileDirective();
         var s = TripleComposer.getStatements();
         
         var scope = s[0].scope;
@@ -268,7 +268,7 @@ describe('TripleComposer service', function() {
     });
 
     it('should correctly compile duplicated statement directive', function(){
-        var tripleComposerScope = compileDirective().isolateScope();
+        compileDirective();
         var s = TripleComposer.getStatements();       
         
         var triple = s[0].scope.get();
