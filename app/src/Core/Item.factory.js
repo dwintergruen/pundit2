@@ -152,6 +152,7 @@ angular.module('Pundit2.Core')
             i[NameSpace.item.description] = [{ type:'literal', value: this.description}];
         }
 
+        // TODO: CHECK IMAGE TYPE.....LITERAL OR URI ?
         if (typeof(this.image) !== 'undefined'){
             i[NameSpace.item.image] = [{type:'literal', value: this.image}];
         }

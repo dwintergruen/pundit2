@@ -118,12 +118,53 @@ describe('Item Factory', function() {
         expect(item.getClass()).toBe(ITEMDEFAULTS.classWebPage);
     });
 
-    it('should recognized an item as web page', function(){
+    it('should recognized an item as property', function(){
 
         var item = new Item("http://uri", testItems.propProperty);
         expect(item.isProperty()).toBe(true);
         expect(item.getIcon()).toBe(ITEMDEFAULTS.iconDefault);
         expect(item.getClass()).toBe(ITEMDEFAULTS.classDefault);
+    });
+
+    it('should return an rdf object', function(){
+
+        var item = new Item("http://uri", testItems.allPropItem);
+        var rdfObj = item.toRdf();
+
+        // an obj rdf should be defined
+        expect(rdfObj).toBeDefined();
+
+        // should encode label as literal
+        expect(rdfObj[NameSpace.item.label][0].type).toBe('literal');
+        expect(rdfObj[NameSpace.item.label][0].value).toBe(testItems.allPropItem.label);
+
+        // should encode types as uri
+        expect(rdfObj[NameSpace.item.type].length).toBe(testItems.allPropItem.type.length);
+        expect(rdfObj[NameSpace.item.type][0].type).toBe('uri');
+        expect(rdfObj[NameSpace.item.type][0].value).toBe(testItems.allPropItem.type[0]);
+        expect(rdfObj[NameSpace.item.type][1].type).toBe('uri');
+        expect(rdfObj[NameSpace.item.type][1].value).toBe(testItems.allPropItem.type[1]);
+
+        // should encode altLabel as literal
+        expect(rdfObj[NameSpace.item.altLabel][0].type).toBe('literal');
+        expect(rdfObj[NameSpace.item.altLabel][0].value).toBe(testItems.allPropItem.altLabel);
+
+        // should encode description as literal
+        expect(rdfObj[NameSpace.item.description][0].type).toBe('literal');
+        expect(rdfObj[NameSpace.item.description][0].value).toBe(testItems.allPropItem.description);
+
+        // should encode image as literal
+        expect(rdfObj[NameSpace.item.image][0].type).toBe('literal');
+        expect(rdfObj[NameSpace.item.image][0].value).toBe(testItems.allPropItem.image);
+
+        // should encode pageContext as uri
+        expect(rdfObj[NameSpace.item.pageContext][0].type).toBe('uri');
+        expect(rdfObj[NameSpace.item.pageContext][0].value).toBe(testItems.allPropItem.pageContext);
+
+        // should encode isPartOf as uri
+        expect(rdfObj[NameSpace.item.isPartOf][0].type).toBe('uri');
+        expect(rdfObj[NameSpace.item.isPartOf][0].value).toBe(testItems.allPropItem.isPartOf);
+
     });
 
 

@@ -8,7 +8,7 @@ testItems.propFragmentText = {
         label: "item fragment text",
         description: "item description",
         type: ["http://purl.org/pundit/ont/ao#fragment-text"]
-    };
+};
 
 testItems.propFragImage = {
     label: "item fragment image",
@@ -38,6 +38,16 @@ testItems.propProperty = {
     label: "item property",
     description: "item description",
     type: ["http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"]
+};
+
+testItems.allPropItem = {
+    label: "item",
+    altLabel: "item alt label",
+    description: "item description",
+    image: "http://img-uri",
+    type: ["http://dbpedia.org/class/yago/ItalianSoldiers", "http://xmlns.com/foaf/0.1/Person"],
+    pageContext: "http://page-context-uri",
+    isPartOf: "http://part-of-uri"
 };
 
 testItems.completeFragmentTextItem = {
