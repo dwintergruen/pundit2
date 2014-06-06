@@ -2,7 +2,20 @@
 
 <script>
 
-    var previewDemoCtrl = function($scope, MyPundit, Annotation, ItemsExchange, Preview) {
+    var punditConfig = {
+        modules: {
+
+            "Dashboard": {
+                isDashboardVisible: true
+            }
+        }
+
+    };
+
+    var previewDemoCtrl = function($scope, MyPundit, Annotation, ItemsExchange, Preview, Dashboard, $templateCache) {
+
+        $templateCache.get(Preview.options.clientDashboardTemplate);
+        Dashboard.addContent(Preview.options.clientDashboardPanel, Preview.options.clientDashboardTabTitle, Preview.options.clientDashboardTemplate);
 
         var p = new Annotation("da128c73");
         p.then(function() {
@@ -32,21 +45,20 @@
 </script>
 
 <div data-ng-app="Pundit2" class="pnd-wrp">
+    <dashboard></dashboard>
 
     <div ng-controller="previewDemoCtrl" class="container clearfix">
 
         <div class="row">
             <div class="col-lg-6">
                 <h2>Items</h2>
-                <ul class="list-group">
+                <ul class="list-group" style="overflow: hidden">
                     <li class="list-group-item" ng-repeat="item in items" ng-mouseover="getPreview(item)" ng-mouseleave="hidePreview()">
-                        <span>{{item.label}}</span> <span style="float: right" class="pnd-icon-thumb-tack button-sticky" ng-click="setSticky(item)" ng-show="!isStickyItem(item)"></span>
+                        <item uri="{{item.uri}}"></item>
                     </li>
                 </ul>
             </div>
 
-
-            <preview></preview>
         </div>
 
     </div>
