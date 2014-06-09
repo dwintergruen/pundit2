@@ -25,10 +25,14 @@ angular.module('Pundit2.Core')
          *
          * @description
          * `object`
-         * This is the list of modules requires in Pundit 2 and its own configuration.
-         * Each module has a configuration object describe below.
          *
-         * Example:
+         * This is the list of modules available in Pundit2.
+         *
+         * Each module has a configuration object, described below, which contains
+         * the default configuration. This configuration can be extended and / or overwritten, 
+         * the specified properties override the default values while the properties that are not defined assume the default values.
+         *
+         * Modules configuration example:
          *
          * <pre>modules: {
          *     Toolbar: {
@@ -44,6 +48,9 @@ angular.module('Pundit2.Core')
          *         debug: false
          *     }
          * }</pre>
+         *
+         * For a complete example go {@link #!/api/punditConfig here}. 
+         *
          */
         modules: {
 
