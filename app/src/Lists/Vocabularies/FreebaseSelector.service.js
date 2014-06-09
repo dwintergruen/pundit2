@@ -1,31 +1,202 @@
 angular.module('Pundit2.Vocabularies')
 .constant('FREEBASESELECTORDEFAULTS', {
 
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#FreebaseSelector
+     *
+     * @description
+     * `object`
+     *
+     * Configuration for FreebaseSelector module
+     */
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#FreebaseSelector.freebaseSearchURL
+     *
+     * @description
+     * `string`
+     *
+     * Freebase search url, used in the first http call to get item list.
+     *
+     * Default value:
+     * <pre> freebaseSearchURL: 'https://www.googleapis.com/freebase/v1/search' </pre>
+     */
     freebaseSearchURL: 'https://www.googleapis.com/freebase/v1/search',
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#FreebaseSelector.freebaseSchemaBaseURL
+     *
+     * @description
+     * `string`
+     *
+     * Freebase base type url, used to set item type property.
+     *
+     * Default value:
+     * <pre> freebaseSchemaBaseURL: 'http://www.freebase.com/schema' </pre>
+     */
     freebaseSchemaBaseURL: 'http://www.freebase.com/schema',
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#FreebaseSelector.freebaseImagesBaseURL
+     *
+     * @description
+     * `string`
+     *
+     * Freebase base image url, used in the items to set image property.
+     *
+     * Default value:
+     * <pre> freebaseImagesBaseURL: 'https://usercontent.googleapis.com/freebase/v1/image' </pre>
+     */
     freebaseImagesBaseURL: 'https://usercontent.googleapis.com/freebase/v1/image',
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#FreebaseSelector.freebaseTopicURL
+     *
+     * @description
+     * `string`
+     *
+     * Freebase topic url, used in on of the details http calls as 'url' param to get item description info.
+     *
+     * Default value:
+     * <pre> freebaseTopicURL: 'https://www.googleapis.com/freebase/v1/topic' </pre>
+     */
     freebaseTopicURL: 'https://www.googleapis.com/freebase/v1/topic',
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#FreebaseSelector.freebaseMQLReadURL
+     *
+     * @description
+     * `string`
+     *
+     * Freebase metadata url, used in on of the details http calls as 'url' param to get item type info.
+     *
+     * Default value:
+     * <pre> freebaseMQLReadURL: 'https://www.googleapis.com/freebase/v1/mqlread' </pre>
+     */
     freebaseMQLReadURL: 'https://www.googleapis.com/freebase/v1/mqlread',
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#FreebaseSelector.freebaseItemsBaseURL
+     *
+     * @description
+     * `string`
+     *
+     * Freebase uri base url, used to set item uri property.
+     *
+     * Default value:
+     * <pre> freebaseItemsBaseURL: 'http://www.freebase.com' </pre>
+     */
     freebaseItemsBaseURL: 'http://www.freebase.com',
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#FreebaseSelector.freebaseAPIKey
+     *
+     * @description
+     * `string`
+     *
+     * Freebase API key, used in all http call as params.
+     *
+     * Default value:
+     * <pre> freebaseAPIKey: 'AIzaSyCJjAj7Nd2wKsZ8d7XQ9ZvUwN5SF0tZBsE' </pre>
+     */
     freebaseAPIKey: 'AIzaSyCJjAj7Nd2wKsZ8d7XQ9ZvUwN5SF0tZBsE',
 
-    // enable or disable all selectors instances
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#FreebaseSelector.active
+     *
+     * @description
+     * `boolean`
+     *
+     * Enable or disable all freebase selectors instances. Only active vocabularies are added to selectorsManager
+     * and can query the relative database (setting active to false vocabulary is also removed from the interface).
+     *
+     * Default value:
+     * <pre> active: true </pre>
+     */
     active: true,
-    // max number of items
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#FreebaseSelector.limit
+     *
+     * @description
+     * `number`
+     *
+     * Maximum number of items taken from the vocabulary inside search http call.
+     *
+     * Default value:
+     * <pre> limit: 15 </pre>
+     */
     limit: 15,
 
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#FreebaseSelector.instances
+     *
+     * @description
+     * `Array of object`
+     *
+     * Array of freebase instances, each object in the array allows you to add and configure 
+     * an instance of the vocabulary. By default, the vocabulary has only one instance.
+     * Each instance has its own tab in the interface, with its list of items.
+     * 
+     *
+     * Default value:
+     * <pre> instances: [
+     *   {
+     *       // where items is stored inside itemsExchange service
+     *       container: 'freebase',
+     *       // instance label tab title
+     *       label: 'Freebase',
+     *       // enable or disable the instance
+     *       active: true
+     *   }
+     * ] </pre>
+     */
     instances: [
         {
-            // where put items inside items exchange
+            // where items is stored inside itemsExchange service
             container: 'freebase',
-            // used how tab title
+            // instance tab title
             label: 'Freebase',
-            // true if this instace do the query
+            // enable or disable the instance
             active: true
         }
-
     ],
 
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#FreebaseSelector.debug
+     *
+     * @description
+     * `number`
+     *
+     * Active debug log for this module
+     *
+     * Default value:
+     * <pre> debug: false </pre>
+     */
     debug: false
 
 })

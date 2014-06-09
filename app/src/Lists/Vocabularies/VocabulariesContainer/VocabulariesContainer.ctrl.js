@@ -90,7 +90,7 @@ angular.module('Pundit2.Vocabularies')
     /**
      * @module punditConfig
      * @ngdoc property
-     * @name modules#PageItemsContainer.debug
+     * @name modules#VocabulariesContainer.debug
      *
      * @description
      * `boolean`

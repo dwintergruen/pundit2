@@ -164,6 +164,7 @@ angular.module('Pundit2.PageItemsContainer')
     inputIconClear: 'pnd-icon-times',
 
     /**
+     * @module punditConfig
      * @ngdoc property
      * @name modules#PageItemsContainer.debug
      *
