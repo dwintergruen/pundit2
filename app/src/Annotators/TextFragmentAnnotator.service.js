@@ -1,17 +1,91 @@
 angular.module('Pundit2.Annotators')
 
 .constant('TEXTFRAGMENTANNOTATORDEFAULTS', {
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#TextFragmentAnnotator
+     *
+     * @description
+     * `object`
+     *
+     * Configuration for Text Fragment Annotator module
+     */
 
-    // Type of the contextual menu to trigger on text fragments icons clicks.
-    // Will be used by icons/bits etc
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#TextFragmentAnnotator.cMenuType
+     *
+     * @description
+     * `string`
+     *
+     * Type of the contextual menu to trigger on text fragments icons clicks.
+     *
+     * Default value:
+     * <pre> cMenuType: 'annotatedTextFragment' </pre>
+     */
     cMenuType: 'annotatedTextFragment',
 
-    // Add elements to the contextual menu?
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#TextFragmentAnnotator.initContextualMenu
+     *
+     * @description
+     * `boolean`
+     *
+     * Set to true to initialize a contextual menu for text fragment annotation
+     *
+     * Default value:
+     * <pre> initContextualMenu: true </pre>
+     */
     initContextualMenu: true,
 
     // Class to get the consolidated icon: normal consolidated fragment
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#TextFragmentAnnotator.annotationIconClass
+     *
+     * @description
+     * `string`
+     *
+     * Icon shown for annotation
+     *
+     * Default value:
+     * <pre> annotationIconClass: 'pnd-icon-tag' </pre>
+     */
     annotationIconClass: "pnd-icon-tag",
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#TextFragmentAnnotator.myItemsIconClass
+     *
+     * @description
+     * `string`
+     *
+     * Icon shown for my items
+     *
+     * Default value:
+     * <pre> myItemsIconClass: 'pnd-icon-bookmark' </pre>
+     */
     myItemsIconClass: "pnd-icon-bookmark",
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#TextFragmentAnnotator.suggestionIconClass
+     *
+     * @description
+     * `string`
+     *
+     * Icon shown for annotation suggestion
+     *
+     * Default value:
+     * <pre> suggestionIconClass: 'pnd-icon-pencil' </pre>
+     */
     suggestionIconClass: "pnd-icon-pencil"
 
 })

@@ -1,22 +1,98 @@
 angular.module('Pundit2.Annotators')
     .constant('TEXTFRAGMENTHANDLERDEFAULTS', {
+        /**
+         * @module punditConfig
+         * @ngdoc property
+         * @name modules#TextFragmentHandler
+         *
+         * @description
+         * `object`
+         *
+         * Configuration for Text Fragment Handler module
+         */
 
-        // Any content classed with any of these class will get ignored by the handler:
-        // if the selection starts, ends or contains them nothing will happen.
+        /**
+         * @module punditConfig
+         * @ngdoc property
+         * @name modules#TextFragmentHandler.ignoreClasses
+         *
+         * @description
+         * `array of string`
+         *
+         * List of classes added to content to ignore it and not annotate it.
+         * Any content classed with any of these class will get ignored by the handler.
+         * If selection to annotate start, ends or contains one of those classes, nothing will happen
+         *
+         * Default value:
+         * <pre> ignoreClasses: ['pnd-ignore'] </pre>
+         */
+
         ignoreClasses: ['pnd-ignore'],
 
         // If true, when the user selects something which starts, ends or contains ignored
         // stuff (see ignoreClasses) the selected text will get reseted
+
+        /**
+         * @module punditConfig
+         * @ngdoc property
+         * @name modules#TextFragmentHandler.removeSelectionOnAbort
+         *
+         * @description
+         * `boolean`
+         *
+         * If true, whet user select some content classed as ignored (see ignoreClasses), selected content will get reseted.
+         *
+         * Default value:
+         * <pre> removeSelectionOnAbort: true </pre>
+         */
         removeSelectionOnAbort: true,
 
-        // Container for the ItemsExchange
+        /**
+         * @module punditConfig
+         * @ngdoc property
+         * @name modules#TextFragmentHandler.container
+         *
+         * @description
+         * `string`
+         *
+         * Name of the container used to store the text fragment in the itemsExchange
+         *
+         * Default value:
+         * <pre> container: 'createdTextFragments' </pre>
+         */
         container: "createdTextFragments",
 
         // Contextual menu type triggered by the text fragment handler. An Item will
         // be passed as resource
+
+        /**
+         * @module punditConfig
+         * @ngdoc property
+         * @name modules#TextFragmentHandler.cMenuType
+         *
+         * @description
+         * `string`
+         *
+         * Contextual menu type shown by the text fragment handler
+         *
+         * Default value:
+         * <pre> cMenuType: 'textFragmentHandlerItem' </pre>
+         */
         cMenuType: "textFragmentHandlerItem",
 
-        // Label max characters number, will be cut from the selected text
+        /**
+         * @module punditConfig
+         * @ngdoc property
+         * @name modules#TextFragmentHandler.labelMaxLength
+         *
+         * @description
+         * `number`
+         *
+         * Maximum characters number of selected text used to create the label for annotation.
+         *
+         * Default value:
+         * <pre> labelMaxLength: 40 </pre>
+         */
         labelMaxLength: 40
 
     })

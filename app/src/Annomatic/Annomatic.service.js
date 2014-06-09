@@ -1,6 +1,44 @@
 angular.module('Pundit2.Annomatic')
 .constant('ANNOMATICDEFAULTS', {
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#Annomatic
+     *
+     * @description
+     * `object`
+     *
+     * Configuration for Annomatic module
+     */
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#Annomatic.container
+     *
+     * @description
+     * `string`
+     *
+     * Container in which will be saved items created by automatic annotation
+     *
+     * Default value:
+     * <pre> container: 'annomatic' </pre>
+     */
     container: 'annomatic',
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#Annomatic.cMenuType
+     *
+     * @description
+     * `string`
+     *
+     * Contextual menu type showed by items contained inside directive
+     *
+     * Default value:
+     * <pre> cMenuType: 'annomatic' </pre>
+     */
     cMenuType: 'annomatic'
 })
 .service('Annomatic', function(ANNOMATICDEFAULTS, BaseComponent, DataTXTResource, XpointersHelper,
