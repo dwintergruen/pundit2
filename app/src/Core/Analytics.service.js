@@ -4,7 +4,7 @@ angular.module('Pundit2.Core')
     /**
      * @module punditConfig
      * @ngdoc property
-     * @name modules#Core
+     * @name modules#Analytics
      *
      * @description
      * `object`
