@@ -9,7 +9,9 @@ angular.module('Pundit2.MyItemsContainer')
      * @description
      * `object`
      *
-     * Configuration for MyIyemsContainer module
+     * Configuration for MyIyemsContainer module. Defines: at which panel add the 
+     * MyIyemsContainer directive, the type of the context menu opened on items, 
+     * the directive template path and a lot of others parameters of the directive.
      */
 
      /**
@@ -36,7 +38,7 @@ angular.module('Pundit2.MyItemsContainer')
      * @description
      * `string`
      *
-     * Name of the panel where append the directive
+     * Name of the panel where append the directive (legal value to default are: 'lists', 'tools' and 'details')
      *
      * Default value:
      * <pre> clientDashboardPanel: "lists" </pre>

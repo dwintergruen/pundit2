@@ -141,7 +141,7 @@ angular.module('Pundit2.Dashboard')
      * @description
      * `object`
      *
-     * Panels minimum width
+     * Panels minimum width, from left to right lists, tools and details.
      *
      * Default value:
      * <pre> panels: {

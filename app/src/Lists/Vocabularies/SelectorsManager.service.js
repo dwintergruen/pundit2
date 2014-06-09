@@ -9,9 +9,10 @@ angular.module('Pundit2.Vocabularies')
      * @description
      * `object`
      *
-     * Configuration for SelectorsManager service
+     * Configuration for SelectorsManager service. This object contains the part of the configuration
+     * common to all vocabularies, defines: at which panel add the VocabulariesContainer directive,
+     * the type of the context menu opened on items and the directive template path.
      */
-
 
     /**
      * @module punditConfig
@@ -37,7 +38,7 @@ angular.module('Pundit2.Vocabularies')
      * @description
      * `string`
      *
-     * Name of the panel where append the directive
+     * Name of the panel where append the directive (legal value to default are: 'lists', 'tools' and 'details')
      *
      * Default value:
      * <pre> clientDashboardPanel: "lists" </pre>

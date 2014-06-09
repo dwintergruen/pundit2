@@ -9,7 +9,9 @@ angular.module('Pundit2.PageItemsContainer')
      * @description
      * `object`
      *
-     * Configuration for PageItemsContainer module
+     * Configuration for PageItemsContainer module. Defines: at which panel add the 
+     * PageItemsContainer directive, the type of the context menu opened on items, 
+     * the directive template path and a lot of others parameters of the directive.
      */
 
      /**
@@ -36,7 +38,7 @@ angular.module('Pundit2.PageItemsContainer')
      * @description
      * `string`
      *
-     * Name of the panel where append the directive
+     * Name of the panel where append the directive (legal value to default are: 'lists', 'tools' and 'details')
      *
      * Default value:
      * <pre> clientDashboardPanel: "lists" </pre>
