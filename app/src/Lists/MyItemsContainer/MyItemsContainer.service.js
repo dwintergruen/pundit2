@@ -9,7 +9,7 @@ angular.module('Pundit2.MyItemsContainer')
      * @description
      * `object`
      *
-     * Configuration for MyIyemsContainer module. Defines: at which panel add the 
+     * Configuration for MyIyemsContainer module. Defines: at which dashboard panel add the 
      * MyIyemsContainer directive, the type of the context menu opened on items, 
      * the directive template path and a lot of others parameters of the directive.
      */

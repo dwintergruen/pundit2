@@ -9,7 +9,8 @@ angular.module('Pundit2.Dashboard')
      * @description
      * `object`
      *
-     * Configuration for Dashboard module
+     * Configuration for Dashboard module. Defines the path of the template appended to the DOM 
+     * by the Client, the default size of the dashboard, panels and elements contained in it.
      */
 
     /**

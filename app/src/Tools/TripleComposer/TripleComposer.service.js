@@ -1,17 +1,109 @@
 angular.module('Pundit2.TripleComposer')
 .constant('TRIPLECOMPOSERDEFAULTS', {
 
-    // The Client will append the content of this template to the DOM to bootstrap
-    // this component
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#TripleComposer
+     *
+     * @description
+     * `object`
+     *
+     * Configuration for TripleComposer module. Defines: at which panel add the 
+     * MyIyemsContainer directive.
+     */
+
+     /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#TripleComposer.clientDashboardTemplate
+     *
+     * @description
+     * `string`
+     *
+     * Path of template containing tripleComposer directive, client will append the content of this template 
+     * to the DOM (inside dashboard directive) to bootstrap this component.
+     *
+     * Default value:
+     * <pre> clientDashboardTemplate: "src/Tools/TripleComposer/ClientTripleComposer.tmpl.html" </pre>
+     */
     clientDashboardTemplate: "src/Tools/TripleComposer/ClientTripleComposer.tmpl.html",
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#TripleComposer.clientDashboardPanel
+     *
+     * @description
+     * `string`
+     *
+     * Name of the panel where append the directive (legal value to default are: 'lists', 'tools' and 'details').
+     *
+     * Default value:
+     * <pre> clientDashboardPanel: "tools" </pre>
+     */
     clientDashboardPanel: "tools",
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#TripleComposer.clientDashboardTabTitle
+     *
+     * @description
+     * `string`
+     *
+     * Tab title inside panel dashboard tabs.
+     *
+     * Default value:
+     * <pre> clientDashboardTabTitle: "Statements Composer" </pre>
+     */
     clientDashboardTabTitle: "Statements Composer",
 
-    // Icons shown in the search input when it's empty and when it has some content
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#TripleComposer.inputIconSearch
+     *
+     * @description
+     * `string`
+     *
+     * Icon shown in the search input when it's empty
+     *
+     * Default value:
+     * <pre> inputIconSearch: 'pnd-icon-search' </pre>
+     */
     inputIconSearch: 'pnd-icon-search',
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#TripleComposer.inputIconClear
+     *
+     * @description
+     * `string`
+     *
+     * Icon shown in the search input when it has some content
+     *
+     * Default value:
+     * <pre> inputIconClear: 'pnd-icon-times' </pre>
+     */
     inputIconClear: 'pnd-icon-times',
 
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#TripleComposer.debug
+     *
+     * @description
+     * `boolean`
+     *
+     * Active debug log
+     *
+     * Default value:
+     * <pre> debug: false </pre>
+     */
     debug: false
+    
 })
 .service('TripleComposer', function(BaseComponent, TRIPLECOMPOSERDEFAULTS, TypesHelper, NameSpace) {
 

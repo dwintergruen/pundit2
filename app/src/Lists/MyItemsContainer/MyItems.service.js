@@ -9,7 +9,8 @@ angular.module("Pundit2.MyItemsContainer")
      * @description
      * `object`
      *
-     * Configuration for MyItems service
+     * Configuration for MyItems service. Defines the pundit server API used to get the my items
+     * and the container name used to store the my items inside ItemsExchange.
      */
 
     /**
