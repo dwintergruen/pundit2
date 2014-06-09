@@ -56,6 +56,8 @@ angular.module('punditConfig');
  *  - Preview
  *  - ResourcePanel
  *  - SelectorsManager
+ *  - TextFragmentAnnotator
+ *  - TextFragmentHandler
  *  - Toolbar
  *  - TripleComposer
  *  - VocabulariesContainer
