@@ -1,6 +1,49 @@
 angular.module('Pundit2.Core')
 .constant('MYPUNDITDEFAULTS', {
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#MyPundit
+     *
+     * @description
+     * `object`
+     *
+     * Configuration for MyPundit module
+     */
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#MyPundit.loginPollTimerMS
+     *
+     * @description
+     * `number`
+     *
+     * Time interval for checking if user is logged in or not.
+     * Time is expressed in milliseconds.
+     * When login modal is open and user is getting log in, each <loginPollTimerMS> milliseconds server check if user is logged in or not
+     *
+     * Default value:
+     * <pre> loginPollTimerMS: 1000 </pre>
+     */
     loginPollTimerMS: 1000,
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#MyPundit.loginModalCloseTimer
+     *
+     * @description
+     * `number`
+     *
+     * Time interval for closing login modal, after user has logged in correctly.
+     * Time is expressed in milliseconds.
+     * When user is logged in, if modal isn't close by user clicking Close button, after <loginModalCloseTimer> millisecond,
+     * modal will close automatically
+     *
+     * Default value:
+     * <pre> loginModalCloseTimer: 1000 </pre>
+     */
     loginModalCloseTimer: 1000
 })
 .service('MyPundit', function(BaseComponent, MYPUNDITDEFAULTS, NameSpace, $http, $q, $timeout, $modal, $window) {

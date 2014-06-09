@@ -1,6 +1,38 @@
 angular.module('Pundit2.ResourcePanel')
 .constant('RESOURCEPANELDEFAULTS', {
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#ResourcePanel
+     *
+     * @description
+     * `object`
+     *
+     * Configuration for Resource Panel module
+     */
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#ResourcePanel.vocabSearchTimer
+     *
+     * @description
+     * `number`
+     *
+     * Time delay between insert label to search and vocabularies start searching that label.
+     */
     vocabSearchTimer: 1000,
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#ResourcePanel.initialCalendarDate
+     *
+     * @description
+     * `number`
+     *
+     * Initial date showing in calendar popover.
+     */
     initialCalendarDate: '1900-1-01'
 })
 .service('ResourcePanel', function(BaseComponent, RESOURCEPANELDEFAULTS,

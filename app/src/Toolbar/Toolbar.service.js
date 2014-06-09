@@ -1,18 +1,18 @@
 angular.module('Pundit2.Toolbar')
 .constant('TOOLBARDEFAULTS', {
-        /**
-         * @module punditConf
-         * @ngdoc property
-         * @name modules#Toolbar
-         *
-         * @description
-         * `object`
-         *
-         * Configuration for Toolbar module
-         */
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#Toolbar
+     *
+     * @description
+     * `object`
+     *
+     * Configuration for Toolbar module
+     */
 
     /**
-     * @module punditConf
+     * @module punditConfig
      * @ngdoc property
      * @name modules#Toolbar.askLinkDefault
      *
@@ -26,7 +26,7 @@ angular.module('Pundit2.Toolbar')
      */
     askLinkDefault: "http://demo-cloud.ask.thepund.it/",
     /**
-     * @module punditConf
+     * @module punditConfig
      * @ngdoc property
      * @name modules#Toolbar.askLinkUser
      *
@@ -34,34 +34,36 @@ angular.module('Pundit2.Toolbar')
      * @description
      * `string`
      *
-     * URL to Ask the Pundit logged in user page
+     * URL to Ask the Pundit user's page
      *
      * Default value:
      * <pre> askLinkUser: "http://demo-cloud.ask.thepund.it/#/myAsk/" </pre>
      */
     askLinkUser: "http://demo-cloud.ask.thepund.it/#/myAsk/",
     /**
-     * @module punditConf
+     * @module punditConfig
      * @ngdoc property
      * @name modules#Toolbar.bodyClass
      *
      * @description
      * `string`
      *
-     * Class added to the body element as soon as the directive is rendered. It will push down body with some css magic
+     * Class added to the body element as soon as the directive is rendered. It will push down body of the current web page.
+     * In this way pundit toolbar and his components are always visibile.
      *
      * Default value:
      * <pre> bodyClass: "pnd-toolbar-active" </pre>
      */
     bodyClass: "pnd-toolbar-active",
     /**
-     * @module punditConf
+     * @module punditConfig
      * @ngdoc property
      * @name modules#Toolbar.clientDomTemplate
      *
      * @description
      * `string`
      *
+     * Path of template containing toolbar directive
      * The Client will append the content of this template to the DOM to bootstrap this component
      *
      * Default value:
@@ -69,7 +71,7 @@ angular.module('Pundit2.Toolbar')
      */
     clientDomTemplate: "src/Toolbar/ClientToolbar.tmpl.html",
     /**
-     * @module punditConf
+     * @module punditConfig
      * @ngdoc property
      * @name modules#Toolbar.debug
      *
