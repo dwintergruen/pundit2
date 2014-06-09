@@ -90,8 +90,18 @@ angular.module('Pundit2.Preview')
     var state;
     state = {
         itemDashboardPreview: null,
-        itemDashboardSticky: null
+        itemDashboardSticky: null,
+        heigthTypesDiv: null
         };
+
+
+    preview.setheigthTypesDiv = function(height) {
+        return preview.options.heigthTypesDiv = height;
+    };
+
+    preview.getheigthTypesDiv = function() {
+        return preview.options.heigthTypesDiv;
+    };
 
     preview.getWelcomeHeaderMessage = function() {
         return preview.options.welcomeHeaderMessage;
@@ -103,7 +113,6 @@ angular.module('Pundit2.Preview')
 
     // show item preview in dashboard panel
     preview.showDashboardPreview = function(item) {
-        //checkIfItemIsImage(item);
         state.itemDashboardPreview = item;
     };
 

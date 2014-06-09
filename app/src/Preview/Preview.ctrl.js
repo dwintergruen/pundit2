@@ -1,22 +1,37 @@
 angular.module('Pundit2.Preview')
-.controller('PreviewCtrl', function($scope, Preview, TypesHelper, $window) {
+.controller('PreviewCtrl', function($scope, Preview, TypesHelper, $window, $element) {
 
     $scope.itemDashboardPreview = null;
 
 
+        $scope.$watch('itemDashboardPreview', function() {
+
+            // get <li> elements
+            var liList = angular.element($element).find('li.pnd-preview-single-type');
+            // get height (with margin) of single <li> element
+            var heightLiSingle = angular.element(liList[0]).outerHeight(true);
+            var div = angular.element('div.pnd-preview-item-types');
+            div.css({
+                'height' : 40
+            });
+            Preview.setheigthTypesDiv(40);
+        });
+
     // check where a new item is selected to get a preview
     $scope.$watch(function() { return Preview.getItemDashboardPreview(); }, function(newItem) {
-        $scope.itemDashboardPreview = newItem;
 
+        $scope.itemDashboardPreview = newItem;
         // check if item has an image to show
         if(newItem === null) {
             $scope.hasImage = false;
             $scope.itemIsAnImage = false;
+
         } else {
+
             $scope.hasImage = (typeof(newItem.image) !== 'undefined');
             $scope.itemIsAnImage = $scope.itemDashboardPreview.isImage() || $scope.itemDashboardPreview.isImageFragment();
-        }
 
+        }
     });
 
     $scope.getWelcomeHeaderMessage = function() {
@@ -48,6 +63,7 @@ angular.module('Pundit2.Preview')
 
     // get label of a type from his uri
     $scope.getLabelType = function(uri) {
+        //var labelType = TypesHelper.getLabel(uri);
         return TypesHelper.getLabel(uri);
     };
 
@@ -67,5 +83,7 @@ angular.module('Pundit2.Preview')
             return $scope.itemDashboardPreview.getClass();
         }
     };
+//console.log((angular.element.find('.pnd-preview-item-types-ul')).css('width'));
+
 
 });

@@ -1,13 +1,14 @@
+<div class="pnd-preview-item-types">
+    <ul class="pnd-preview-item-types-ul">
+        <li class="pnd-preview-single-type" ng-repeat="type in item.type">{{getTypeLabel(type)}}</li>
+    </ul>
+    <div class="caret" ng-click="showAlltypes()"></div>
+</div>
+
 <div ng-if="item.image" class="pnd-preview-item-image">
     <img ng-src="{{item.image}}" />
 </div>
 
 <div class="pnd-preview-item-description">
     <p>{{item.description}}</p>
-</div>
-
-<div class="pnd-preview-item-types">
-    <ul>
-        <li ng-repeat="type in item.type">{{getTypeLabel(type)}}</li>
-    </ul>
 </div>
