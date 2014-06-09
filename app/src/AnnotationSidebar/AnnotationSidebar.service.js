@@ -2,26 +2,226 @@
 
 angular.module('Pundit2.AnnotationSidebar')
 .constant('ANNOTATIONSIDEBARDEFAULTS', {
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#AnnotationSidebar
+     *
+     * @description
+     * `object`
+     *
+     * Configuration for AnnotationSidebar module
+     */
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#AnnotationSidebar.isAnnotationSidebarExpanded
+     *
+     * @description
+     * `boolean`
+     *
+     * Initial state of the sidebar, expanded or collapsed
+     *
+     * Default value:
+     * <pre> isAnnotationSidebarExpanded: 'false' </pre>
+     */
     isAnnotationSidebarExpanded: false,
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#AnnotationSidebar.isFiltersShowed
+     *
+     * @description
+     * `boolean`
+     *
+     * Initial state of the list of the filers, shown or hidden
+     *
+     * Default value:
+     * <pre> isFiltersShowed: 'false' </pre>
+     */
     isFiltersShowed: false,
-    annotationsRefresh: 300, //ms 
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#AnnotationSidebar.annotationsRefresh
+     *
+     * @description
+     * `number`
+     *
+     * Delay in ms for the refresh of the annotations
+     *
+     * Default value:
+     * <pre> annotationsRefresh: 300 </pre>
+     */
+    annotationsRefresh: 300,
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#AnnotationSidebar.bodyClass
+     *
+     * @description
+     * `string`
+     *
+     * Class added to the body when there is the sidebar in the page
+     *
+     * Default value:
+     * <pre> bodyClass: 'pnd-annotation-sidebar-active' </pre>
+     */
     bodyClass: 'pnd-annotation-sidebar-active',
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#AnnotationSidebar.bodyExpandedClass
+     *
+     * @description
+     * `string`
+     *
+     * Class added to the body when the sidebar is expanded
+     *
+     * Default value:
+     * <pre> bodyExpandedClass: 'pnd-annotation-sidebar-expanded' </pre>
+     */
     bodyExpandedClass: 'pnd-annotation-sidebar-expanded',
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#AnnotationSidebar.bodyCollapsedClass
+     *
+     * @description
+     * `string`
+     *
+     * Class added to the body when the sidebar is collpsed
+     *
+     * Default value:
+     * <pre> bodyCollapsedClass: 'pnd-annotation-sidebar-collapsed' </pre>
+     */
     bodyCollapsedClass: 'pnd-annotation-sidebar-collapsed',
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#AnnotationSidebar.sidebarExpandedClass
+     *
+     * @description
+     * `string`
+     *
+     * Class added to the sidebar when it is expanded
+     *
+     * Default value:
+     * <pre> sidebarExpandedClass: pnd-annotation-sidebar-expanded' </pre>
+     */
     sidebarExpandedClass: 'pnd-annotation-sidebar-expanded',
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#AnnotationSidebar.sidebarCollapsedClass
+     *
+     * @description
+     * `string`
+     *
+     * Class added to the sidebar when it is collapsed
+     *
+     * Default value:
+     * <pre> sidebarCollapsedClass: 'pnd-annotation-sidebar-collapsed' </pre>
+     */
     sidebarCollapsedClass: 'pnd-annotation-sidebar-collapsed',
 
-    // The Client will append the content of this template to the DOM to bootstrap
-    // this component
-    clientDomTemplate: 'src/AnnotationSidebar/ClientAnnotationSidebar.tmpl.html',
-
-    // What panel is active by default when opening the sidebar
-    annotationsPanelActive: true,
-    suggestionsPanelActive: false,
-
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#AnnotationSidebar.inputIconSearch
+     *
+     * @description
+     * `string`
+     *
+     * Icon shown in the search input when it's empty
+     *
+     * Default value:
+     * <pre> inputIconSearch: 'pnd-icon-search' </pre>
+     */
     inputIconSearch: 'pnd-icon-search',
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#AnnotationSidebar.inputIconClear
+     *
+     * @description
+     * `string`
+     *
+     * Icon shown in the search input when it has some content
+     *
+     * Default value:
+     * <pre> inputIconClear: 'pnd-icon-times' </pre>
+     */
     inputIconClear: 'pnd-icon-times',
 
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#AnnotationSidebar.annotationsPanelActive
+     *
+     * @description
+     * `boolean`
+     *
+     * Panel active by default when opening the sidebar
+     *
+     * Default value:
+     * <pre> annotationsPanelActive: 'true' </pre>
+     */
+    annotationsPanelActive: true,
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#AnnotationSidebar.suggestionsPanelActive
+     *
+     * @description
+     * `boolean`
+     *
+     * Panel active by default when opening the sidebar
+     *
+     * Default value:
+     * <pre> suggestionsPanelActive: 'false' </pre>
+     */
+    suggestionsPanelActive: false,
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#AnnotationSidebar.clientDomTemplate
+     *
+     * @description
+     * `string`
+     *
+     * The Client will append the content of this template to the DOM to bootstrap this component
+     *
+     * Default value:
+     * <pre> clientDomTemplate: 'src/AnnotationSidebar/ClientAnnotationSidebar.tmpl.html' </pre>
+     */
+    clientDomTemplate: 'src/AnnotationSidebar/ClientAnnotationSidebar.tmpl.html',
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#AnnotationSidebar.debug
+     *
+     * @description
+     * `boolean`
+     *
+     * Active debug log
+     *
+     * Default value:
+     * <pre> debug: false </pre>
+     */
     debug: false
 })
 .service('AnnotationSidebar', function($rootScope, $filter, $timeout,

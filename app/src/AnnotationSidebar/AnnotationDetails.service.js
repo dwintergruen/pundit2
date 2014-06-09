@@ -2,7 +2,45 @@
 
 angular.module('Pundit2.AnnotationSidebar')
 .constant('ANNOTATIONDETAILSDEFAULTS', {
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#AnnotationDetails
+     *
+     * @description
+     * `object`
+     *
+     * Configuration for AnnotationDetails
+     */
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#AnnotationDetails.defaultExpanded
+     *
+     * @description
+     * `boolean`
+     *
+     * Initial state of the single annotation, expanded or collapsed
+     *
+     * Default value:
+     * <pre> defaultExpanded: false </pre>
+     */
     defaultExpanded: false,
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#AnnotationDetails.debug
+     *
+     * @description
+     * `boolean`
+     *
+     * Active debug log
+     *
+     * Default value:
+     * <pre> debug: false </pre>
+     */
     debug: false
 })
 .service('AnnotationDetails', function($rootScope, $filter, BaseComponent, AnnotationsExchange, ItemsExchange, MyPundit, TypesHelper, ANNOTATIONDETAILSDEFAULTS) {

@@ -1,10 +1,105 @@
 angular.module('Pundit2.Core')
 .constant('ANALYTICSDEFAULTS', {
+    
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#Core
+     *
+     * @description
+     * `object`
+     *
+     * Configuration for Analytics
+     */
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#Analytics.trackingCode
+     *
+     * @description
+     * `string`
+     *
+     * Web Property ID for the Google Web Property you wish to track
+     *
+     * Default value:
+     * <pre> trackingCode: 'UA-XXXX-Y' </pre>
+     */
     trackingCode: 'UA-50437894-1',
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#Analytics.globalTracker
+     *
+     * @description
+     * `string`
+     *
+     * Custom name for the global variable of Analytics
+     *
+     * Default value:
+     * <pre> globalTracker: '__gaPndtTracker' </pre>
+     */
     globalTracker: '__gaPndtTracker',
-    maxHits: 20, //Each web property starts with 20 hits that are replenished at a rate of 2 hit per second.
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#Analytics.maxHits
+     *
+     * @description
+     * `number`
+     *
+     * Each web property starts with 20 hits that are replenished at a rate of 2 hit per second.
+     *
+     * Default value:
+     * <pre> maxHits: 20 </pre>
+     */
+    maxHits: 20,
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#Analytics.bufferDelay
+     *
+     * @description
+     * `number`
+     *
+     * Delay in ms for the refresh of the buffer
+     *
+     * Default value:
+     * <pre> bufferDelay: 1000 </pre>
+     */
     bufferDelay: 1000,
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#Analytics.doTracking
+     *
+     * @description
+     * `boolean`
+     *
+     * Enable / Disable the tracking
+     *
+     * Default value:
+     * <pre> doTracking: false </pre>
+     */
     doTracking: true,
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#Analytics.debug
+     *
+     * @description
+     * `boolean`
+     *
+     * Active debug log
+     *
+     * Default value:
+     * <pre> debug: false </pre>
+     */
     debug: false
 })
 .service('Analytics', function(BaseComponent, $window, $document, $interval, $timeout, ANALYTICSDEFAULTS) {
