@@ -1,29 +1,120 @@
 angular.module('Pundit2.Vocabularies')
 .constant('MURUCASELECTORDEFAULTS', {
 
-    // common configuration
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#MurucaSelector
+     *
+     * @description
+     * `object`
+     *
+     * Configuration for MurucaSelector module
+     */
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#MurucaSelector.murucaReconURL
+     *
+     * @description
+     * `string`
+     *
+     * Muruca search url, used in the http call to get item.
+     *
+     * Default value:
+     * <pre> murucaReconURL: 'http://demo2.galassiaariosto.netseven.it/backend.php/reconcile' </pre>
+     */
     murucaReconURL: 'http://demo2.galassiaariosto.netseven.it/backend.php/reconcile',
     // 'http://demo2.galassiaariosto.netseven.it/reconcile',
+
+    // TODO doc
     queryProperties: {},
-    // enable or disable all muruca selectors instances
+    
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#MurucaSelector.active
+     *
+     * @description
+     * `boolean`
+     *
+     * Enable or disable all muruca selectors instances. Only active vocabularies are added to selectorsManager
+     * and can query the relative database (setting active to false vocabulary is also removed from the interface).
+     *
+     * Default value:
+     * <pre> active: true </pre>
+     */
     active: true,
-    // max number of items
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#MurucaSelector.limit
+     *
+     * @description
+     * `number`
+     *
+     * Maximum number of items taken from the vocabulary inside search http call.
+     *
+     * Default value:
+     * <pre> limit: 5 </pre>
+     */
     limit: 5,
 
-    // singles instances configuration
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#MurucaSelector.instances
+     *
+     * @description
+     * `Array of object`
+     *
+     * Array of muruca instances, each object in the array allows you to add and configure 
+     * an instance of the vocabulary. By default, the vocabulary has only one instance.
+     * Each instance has its own tab in the interface, with its list of items.
+     * 
+     *
+     * Default value:
+     * <pre> instances: [
+     *   {
+     *       // query type (legal value are: Azione, Scena, Influenza, Ecphrasis, ecc..)
+     *       queryType: 'http://purl.org/galassiariosto/types/Azione', 
+     *       // where items is stored inside itemsExchange service
+     *       container: 'muruca',
+     *       // instance label tab title
+     *       label: 'Muruca',
+     *       // enable or disable the instance
+     *       active: true
+     *   }
+     * ] </pre>
+     */
     instances: [
         {
-            // query type
-            queryType: 'http://purl.org/galassiariosto/types/Azione', //Scena, Influenza, Ecphrasis, RappresentazioneOriginale, ecc.. 
-            // where put items inside items exchange
+            // query type (legal value are: Azione, Scena, Influenza, Ecphrasis, ecc..)
+            queryType: 'http://purl.org/galassiariosto/types/Azione', 
+            // where items is stored inside itemsExchange service
             container: 'muruca',
-            // used how tab title
+            // instance label tab title
             label: 'Muruca',
-            // true if this instace do the query
+            // enable or disable the instance
             active: true
         }
     ],    
 
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#MurucaSelector.debug
+     *
+     * @description
+     * `number`
+     *
+     * Active debug log for this module
+     *
+     * Default value:
+     * <pre> debug: false </pre>
+     */
     debug: false
 
 })

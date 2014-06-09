@@ -50,7 +50,7 @@ angular.module('Pundit2.Vocabularies')
      * @description
      * `string`
      *
-     * Freebase base image url, used in the items to set image property.
+     * Freebase base image url, used to set image property.
      *
      * Default value:
      * <pre> freebaseImagesBaseURL: 'https://usercontent.googleapis.com/freebase/v1/image' </pre>
@@ -65,7 +65,7 @@ angular.module('Pundit2.Vocabularies')
      * @description
      * `string`
      *
-     * Freebase topic url, used in on of the details http calls as 'url' param to get item description info.
+     * Freebase topic url, used in one of the details http calls as 'url' param to get item description info.
      *
      * Default value:
      * <pre> freebaseTopicURL: 'https://www.googleapis.com/freebase/v1/topic' </pre>
@@ -80,7 +80,7 @@ angular.module('Pundit2.Vocabularies')
      * @description
      * `string`
      *
-     * Freebase metadata url, used in on of the details http calls as 'url' param to get item type info.
+     * Freebase metadata url, used in one of the details http calls as 'url' param to get item type info.
      *
      * Default value:
      * <pre> freebaseMQLReadURL: 'https://www.googleapis.com/freebase/v1/mqlread' </pre>
@@ -95,7 +95,7 @@ angular.module('Pundit2.Vocabularies')
      * @description
      * `string`
      *
-     * Freebase uri base url, used to set item uri property.
+     * Freebase base uri url, used to set item uri property.
      *
      * Default value:
      * <pre> freebaseItemsBaseURL: 'http://www.freebase.com' </pre>
@@ -110,7 +110,7 @@ angular.module('Pundit2.Vocabularies')
      * @description
      * `string`
      *
-     * Freebase API key, used in all http call as params.
+     * Freebase API key, used in all http call as params 'key'.
      *
      * Default value:
      * <pre> freebaseAPIKey: 'AIzaSyCJjAj7Nd2wKsZ8d7XQ9ZvUwN5SF0tZBsE' </pre>
