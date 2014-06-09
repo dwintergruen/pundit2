@@ -1,7 +1,7 @@
-angular.module('punditConf');
+angular.module('punditConfig');
 /**
  * @ngdoc module
- * @name punditConf
- * @module punditConf
+ * @name punditConfig
+ * @module punditConfig
  * @description Something interesting..
  **/

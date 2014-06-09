@@ -2,7 +2,7 @@ angular.module('Pundit2.Dashboard')
 .constant('DASHBOARDDEFAULTS', {
 
     /**
-     * @module punditConf
+     * @module punditConfig
      * @ngdoc property
      * @name modules#Dashboard
      *
@@ -13,7 +13,7 @@ angular.module('Pundit2.Dashboard')
      */
 
     /**
-     * @module punditConf
+     * @module punditConfig
      * @ngdoc property
      * @name modules#Dashboard.clientDomTemplate
      *
@@ -43,7 +43,7 @@ angular.module('Pundit2.Dashboard')
     debug: false,
 
     /**
-     * @module punditConf
+     * @module punditConfig
      * @ngdoc property
      * @name modules#Dashboard.isDashboardVisible
      *
@@ -58,7 +58,7 @@ angular.module('Pundit2.Dashboard')
     isDashboardVisible: false,
 
     /**
-     * @module punditConf
+     * @module punditConfig
      * @ngdoc property
      * @name modules#Dashboard.containerMinHeight
      *
@@ -73,7 +73,7 @@ angular.module('Pundit2.Dashboard')
     containerMinHeight: 200,
 
     /**
-     * @module punditConf
+     * @module punditConfig
      * @ngdoc property
      * @name modules#Dashboard.containerMaxHeight
      *
@@ -88,7 +88,7 @@ angular.module('Pundit2.Dashboard')
     containerMaxHeight: 800,
 
     /**
-     * @module punditConf
+     * @module punditConfig
      * @ngdoc property
      * @name modules#Dashboard.containerHeight
      *
@@ -103,7 +103,7 @@ angular.module('Pundit2.Dashboard')
     containerHeight: 300,
 
     /**
-     * @module punditConf
+     * @module punditConfig
      * @ngdoc property
      * @name modules#Dashboard.footerHeight
      *
@@ -118,7 +118,7 @@ angular.module('Pundit2.Dashboard')
     footerHeight: 20,
 
     /**
-     * @module punditConf
+     * @module punditConfig
      * @ngdoc property
      * @name modules#Dashboard.separatorWidth
      *
@@ -134,7 +134,7 @@ angular.module('Pundit2.Dashboard')
     separatorWidth: 8,
 
     /**
-     * @module punditConf
+     * @module punditConfig
      * @ngdoc property
      * @name modules#Dashboard.panels
      *
@@ -150,6 +150,7 @@ angular.module('Pundit2.Dashboard')
      *      details: { minWidth: 239 }
      * } </pre>
      */
+    // TODO: if you need to configure at least three panels this object must be an array
     panels: {
         lists: { minWidth: 243 },
         tools: { minWidth: 478 },
@@ -157,7 +158,7 @@ angular.module('Pundit2.Dashboard')
     },
 
     /**
-     * @module punditConf
+     * @module punditConfig
      * @ngdoc property
      * @name modules#Dashboard.panelCollapsedWidth
      *
@@ -174,7 +175,7 @@ angular.module('Pundit2.Dashboard')
     // Panels elements heights: used to fix scrollable elements height inside
     // panels controllers. In pixels, included margins, borders and everything!
     /**
-     * @module punditConf
+     * @module punditConfig
      * @ngdoc property
      * @name modules#Dashboard.panelTabsHeight
      *
@@ -189,7 +190,7 @@ angular.module('Pundit2.Dashboard')
     panelTabsHeight: 27,
 
     /**
-     * @module punditConf
+     * @module punditConfig
      * @ngdoc property
      * @name modules#Dashboard.panelContentHeaderHeight
      *
@@ -204,7 +205,7 @@ angular.module('Pundit2.Dashboard')
     panelContentHeaderHeight: 43,
 
     /**
-     * @module punditConf
+     * @module punditConfig
      * @ngdoc property
      * @name modules#Dashboard.panelInnerTabsHeight
      *
@@ -219,7 +220,7 @@ angular.module('Pundit2.Dashboard')
     panelInnerTabsHeight: 31,
 
     /**
-     * @module punditConf
+     * @module punditConfig
      * @ngdoc property
      * @name modules#Dashboard.panelFooterHeight
      *

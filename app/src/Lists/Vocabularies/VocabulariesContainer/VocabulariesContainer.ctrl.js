@@ -2,7 +2,7 @@ angular.module('Pundit2.Vocabularies')
 .constant('VOCABULARIESCONTAINERDEFAULTS', {
 
     /**
-     * @module punditConf
+     * @module punditConfig
      * @ngdoc property
      * @name modules#VocabulariesContainer
      *
@@ -13,7 +13,7 @@ angular.module('Pundit2.Vocabularies')
      */
 
     /**
-     * @module punditConf
+     * @module punditConfig
      * @ngdoc property
      * @name modules#VocabulariesContainer.order
      *
@@ -28,7 +28,7 @@ angular.module('Pundit2.Vocabularies')
     order: 'label',
 
     /**
-     * @module punditConf
+     * @module punditConfig
      * @ngdoc property
      * @name modules#VocabulariesContainer.reverse
      *
@@ -43,7 +43,7 @@ angular.module('Pundit2.Vocabularies')
     reverse: false,
 
     /**
-     * @module punditConf
+     * @module punditConfig
      * @ngdoc property
      * @name modules#VocabulariesContainer.initialActiveTab
      *
@@ -58,7 +58,7 @@ angular.module('Pundit2.Vocabularies')
     initialActiveTab: 0,
 
     /**
-     * @module punditConf
+     * @module punditConfig
      * @ngdoc property
      * @name modules#VocabulariesContainer.inputIconSearch
      *
@@ -73,7 +73,7 @@ angular.module('Pundit2.Vocabularies')
     inputIconSearch: 'pnd-icon-search',
 
     /**
-     * @module punditConf
+     * @module punditConfig
      * @ngdoc property
      * @name modules#VocabulariesContainer.inputIconClear
      *
@@ -88,6 +88,7 @@ angular.module('Pundit2.Vocabularies')
     inputIconClear: 'pnd-icon-times',
 
     /**
+     * @module punditConfig
      * @ngdoc property
      * @name modules#PageItemsContainer.debug
      *

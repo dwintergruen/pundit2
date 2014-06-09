@@ -2,7 +2,7 @@ angular.module('Pundit2.Vocabularies')
 .constant('SELECTORMANAGERDEFAULTS', {
 
     /**
-     * @module punditConf
+     * @module punditConfig
      * @ngdoc property
      * @name modules#SelectorsManager
      *
@@ -14,7 +14,7 @@ angular.module('Pundit2.Vocabularies')
 
 
     /**
-     * @module punditConf
+     * @module punditConfig
      * @ngdoc property
      * @name modules#SelectorsManager.clientDashboardTemplate
      *
@@ -30,7 +30,7 @@ angular.module('Pundit2.Vocabularies')
     clientDashboardTemplate: "src/Lists/Vocabularies/VocabulariesContainer/ClientVocabulariesContainer.tmpl.html",
     
     /**
-     * @module punditConf
+     * @module punditConfig
      * @ngdoc property
      * @name modules#SelectorsManager.clientDashboardPanel
      *
@@ -45,7 +45,7 @@ angular.module('Pundit2.Vocabularies')
     clientDashboardPanel: "lists",
     
     /**
-     * @module punditConf
+     * @module punditConfig
      * @ngdoc property
      * @name modules#SelectorsManager.clientDashboardTabTitle
      *
@@ -60,7 +60,7 @@ angular.module('Pundit2.Vocabularies')
     clientDashboardTabTitle: "Vocab",
 
     /**
-     * @module punditConf
+     * @module punditConfig
      * @ngdoc property
      * @name modules#SelectorsManager.cMenuType
      *
@@ -75,6 +75,7 @@ angular.module('Pundit2.Vocabularies')
     cMenuType: 'vocabItems',
 
     /**
+     * @module punditConfig
      * @ngdoc property
      * @name modules#SelectorsManager.debug
      *

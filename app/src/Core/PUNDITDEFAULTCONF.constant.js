@@ -1,7 +1,7 @@
 angular.module('Pundit2.Core')
     .constant('PUNDITDEFAULTCONF', {
         /**
-         * @module punditConf
+         * @module punditConfig
          * @ngdoc object
          * @name annotationServerBaseURL
          * @description
@@ -19,7 +19,7 @@ angular.module('Pundit2.Core')
         // Modules active by default are activated here with active=true
         /**
          *
-         * @module punditConf
+         * @module punditConfig
          * @ngdoc object
          * @name modules
          *

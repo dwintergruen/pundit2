@@ -2,7 +2,7 @@ angular.module('Pundit2.MyItemsContainer')
 .constant('MYITEMSCONTAINERDEFAULTS', {
 
     /**
-     * @module punditConf
+     * @module punditConfig
      * @ngdoc property
      * @name modules#MyIyemsContainer
      *
@@ -13,7 +13,7 @@ angular.module('Pundit2.MyItemsContainer')
      */
 
      /**
-     * @module punditConf
+     * @module punditConfig
      * @ngdoc property
      * @name modules#MyIyemsContainer.clientDashboardTemplate
      *
@@ -29,7 +29,7 @@ angular.module('Pundit2.MyItemsContainer')
     clientDashboardTemplate: "src/Lists/MyItemsContainer/ClientMyItemsContainer.tmpl.html",
 
     /**
-     * @module punditConf
+     * @module punditConfig
      * @ngdoc property
      * @name modules#MyIyemsContainer.clientDashboardPanel
      *
@@ -44,7 +44,7 @@ angular.module('Pundit2.MyItemsContainer')
     clientDashboardPanel: "lists",
 
     /**
-     * @module punditConf
+     * @module punditConfig
      * @ngdoc property
      * @name modules#MyIyemsContainer.clientDashboardTabTitle
      *
@@ -59,7 +59,7 @@ angular.module('Pundit2.MyItemsContainer')
     clientDashboardTabTitle: "My Items",
 
     /**
-     * @module punditConf
+     * @module punditConfig
      * @ngdoc property
      * @name modules#MyIyemsContainer.initialActiveTab
      *
@@ -74,7 +74,7 @@ angular.module('Pundit2.MyItemsContainer')
     initialActiveTab: 0,
 
     /**
-     * @module punditConf
+     * @module punditConfig
      * @ngdoc property
      * @name modules#MyIyemsContainer.cMenuType
      *
@@ -89,7 +89,7 @@ angular.module('Pundit2.MyItemsContainer')
     cMenuType: 'myItems',
 
     /**
-     * @module punditConf
+     * @module punditConfig
      * @ngdoc property
      * @name modules#MyIyemsContainer.order
      *
@@ -104,7 +104,7 @@ angular.module('Pundit2.MyItemsContainer')
     order: 'label',
 
     /**
-     * @module punditConf
+     * @module punditConfig
      * @ngdoc property
      * @name modules#MyIyemsContainer.reverse
      *
@@ -119,7 +119,7 @@ angular.module('Pundit2.MyItemsContainer')
     reverse: false,
 
     /**
-     * @module punditConf
+     * @module punditConfig
      * @ngdoc property
      * @name modules#MyIyemsContainer.inputIconSearch
      *
@@ -134,7 +134,7 @@ angular.module('Pundit2.MyItemsContainer')
     inputIconSearch: 'pnd-icon-search',
 
     /**
-     * @module punditConf
+     * @module punditConfig
      * @ngdoc property
      * @name modules#MyIyemsContainer.inputIconClear
      *
@@ -149,6 +149,7 @@ angular.module('Pundit2.MyItemsContainer')
     inputIconClear: 'pnd-icon-times',
 
     /**
+     * @module punditConfig
      * @ngdoc property
      * @name modules#MyIyemsContainer.debug
      *

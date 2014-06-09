@@ -2,7 +2,7 @@ angular.module('Pundit2.PageItemsContainer')
 .constant('PAGEITEMSCONTAINERDEFAULTS', {
 
     /**
-     * @module punditConf
+     * @module punditConfig
      * @ngdoc property
      * @name modules#PageItemsContainer
      *
@@ -13,7 +13,7 @@ angular.module('Pundit2.PageItemsContainer')
      */
 
      /**
-     * @module punditConf
+     * @module punditConfig
      * @ngdoc property
      * @name modules#PageItemsContainer.clientDashboardTemplate
      *
@@ -29,7 +29,7 @@ angular.module('Pundit2.PageItemsContainer')
     clientDashboardTemplate: "src/Lists/PageItemsContainer/ClientPageItemsContainer.tmpl.html",
 
     /**
-     * @module punditConf
+     * @module punditConfig
      * @ngdoc property
      * @name modules#PageItemsContainer.clientDashboardPanel
      *
@@ -44,7 +44,7 @@ angular.module('Pundit2.PageItemsContainer')
     clientDashboardPanel: "lists",
 
     /**
-     * @module punditConf
+     * @module punditConfig
      * @ngdoc property
      * @name modules#PageItemsContainer.clientDashboardTabTitle
      *
@@ -59,7 +59,7 @@ angular.module('Pundit2.PageItemsContainer')
     clientDashboardTabTitle: "Page Items",
 
     /**
-     * @module punditConf
+     * @module punditConfig
      * @ngdoc property
      * @name modules#PageItemsContainer.initialActiveTab
      *
@@ -74,7 +74,7 @@ angular.module('Pundit2.PageItemsContainer')
     initialActiveTab: 0,
 
     /**
-     * @module punditConf
+     * @module punditConfig
      * @ngdoc property
      * @name modules#PageItemsContainer.cMenuType
      *
@@ -89,7 +89,7 @@ angular.module('Pundit2.PageItemsContainer')
     cMenuType: 'pageItems',
 
     /**
-     * @module punditConf
+     * @module punditConfig
      * @ngdoc property
      * @name modules#PageItemsContainer.order
      *
@@ -104,7 +104,7 @@ angular.module('Pundit2.PageItemsContainer')
     order: 'label',
 
     /**
-     * @module punditConf
+     * @module punditConfig
      * @ngdoc property
      * @name modules#PageItemsContainer.reverse
      *
@@ -119,7 +119,7 @@ angular.module('Pundit2.PageItemsContainer')
     reverse: false,
 
     /**
-     * @module punditConf
+     * @module punditConfig
      * @ngdoc property
      * @name modules#PageItemsContainer.container
      *
@@ -134,7 +134,7 @@ angular.module('Pundit2.PageItemsContainer')
     container: 'pageItems',
 
     /**
-     * @module punditConf
+     * @module punditConfig
      * @ngdoc property
      * @name modules#PageItemsContainer.inputIconSearch
      *
@@ -149,7 +149,7 @@ angular.module('Pundit2.PageItemsContainer')
     inputIconSearch: 'pnd-icon-search',
 
     /**
-     * @module punditConf
+     * @module punditConfig
      * @ngdoc property
      * @name modules#PageItemsContainer.inputIconClear
      *

@@ -2,7 +2,7 @@ angular.module("Pundit2.MyItemsContainer")
 .constant('MYITEMSDEFAULTS', {
 
     /**
-     * @module punditConf
+     * @module punditConfig
      * @ngdoc property
      * @name modules#MyItems
      *
@@ -13,7 +13,7 @@ angular.module("Pundit2.MyItemsContainer")
      */
 
     /**
-     * @module punditConf
+     * @module punditConfig
      * @ngdoc property
      * @name modules#MyItems.apiPreferencesKey
      *
@@ -28,7 +28,7 @@ angular.module("Pundit2.MyItemsContainer")
     apiPreferencesKey: 'favorites',
 
     /**
-     * @module punditConf
+     * @module punditConfig
      * @ngdoc property
      * @name modules#MyItems.container
      *
@@ -43,6 +43,7 @@ angular.module("Pundit2.MyItemsContainer")
     container: 'myItems',
 
     /**
+     * @module punditConfig
      * @ngdoc property
      * @name modules#MyItems.debug
      *
