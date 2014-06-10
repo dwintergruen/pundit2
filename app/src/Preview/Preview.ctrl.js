@@ -4,18 +4,51 @@ angular.module('Pundit2.Preview')
     $scope.itemDashboardPreview = null;
 
 
-        $scope.$watch('itemDashboardPreview', function() {
+    $scope.$watch('itemDashboardPreview', function() {
 
-            // get <li> elements
-            var liList = angular.element($element).find('li.pnd-preview-single-type');
-            // get height (with margin) of single <li> element
-            var heightLiSingle = angular.element(liList[0]).outerHeight(true);
-            var div = angular.element('div.pnd-preview-item-types');
-            div.css({
-                'height' : 40
-            });
-            Preview.setheigthTypesDiv(40);
+        // get <li> elements
+        var liList = angular.element($element).find('li.pnd-preview-single-type');
+
+        var luWidth = parseInt(angular.element('.pnd-preview-item-types-ul').css('width'), 10);
+
+        // get height (with margin) of single <li> element
+        var heightLiSingle = angular.element(liList[0]).outerHeight(true);
+
+        // check if there are types to hide or are all visibile
+        checkFitTypes(liList, luWidth);
+
+        // get div where types are shown
+        var divTypes = angular.element('div.pnd-preview-item-types');
+
+        // get padding div below type. It need to calculate the right height for div where types are shown
+        var divPrev = parseInt(angular.element('.pnd-preview-item-image').css('padding-top'), 10);
+
+        // set div types height
+        var h = heightLiSingle + divPrev;
+        divTypes.css({
+            'height' : h
         });
+        Preview.setheigthTypesDiv(h);
+    });
+
+        var checkFitTypes = function(typeList, ulWidth) {
+            var tmpWidth = 0,
+                offset = 30,
+                widthToFit = ulWidth - offset,
+                w;
+
+            for(var i = 0; i < typeList.length; i++){
+                w = parseInt(angular.element(typeList[i]).css('width'), 10) + tmpWidth;
+                if(w > widthToFit){
+                    Preview.setTypeHiddenPresent(true);
+                    return true;
+                } else {
+                    tmpWidth = w;
+                }
+            }
+            Preview.setTypeHiddenPresent(false);
+            return false;
+        };
 
     // check where a new item is selected to get a preview
     $scope.$watch(function() { return Preview.getItemDashboardPreview(); }, function(newItem) {

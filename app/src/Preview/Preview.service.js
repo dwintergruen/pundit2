@@ -91,9 +91,17 @@ angular.module('Pundit2.Preview')
     state = {
         itemDashboardPreview: null,
         itemDashboardSticky: null,
-        heigthTypesDiv: null
+        heigthTypesDiv: null,
+        typesHidden: null
         };
 
+    preview.setTypeHiddenPresent = function(val) {
+        return preview.options.typesHidden = val;
+    };
+
+    preview.getTypeHiddenPresent = function() {
+        return preview.options.typesHidden;
+    };
 
     preview.setheigthTypesDiv = function(height) {
         return preview.options.heigthTypesDiv = height;
