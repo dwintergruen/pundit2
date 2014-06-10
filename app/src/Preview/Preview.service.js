@@ -84,7 +84,7 @@ angular.module('Pundit2.Preview')
     clientDashboardTabTitle: "Preview"
 
 })
-.service('Preview', function(BaseComponent, PREVIEWDEFAULTS, NameSpace) {
+.service('Preview', function(BaseComponent, PREVIEWDEFAULTS) {
 
     var preview = new BaseComponent('Preview', PREVIEWDEFAULTS);
     var state;
@@ -94,22 +94,6 @@ angular.module('Pundit2.Preview')
         heigthTypesDiv: null,
         typesHidden: null
         };
-
-    preview.setTypeHiddenPresent = function(val) {
-        return preview.options.typesHidden = val;
-    };
-
-    preview.getTypeHiddenPresent = function() {
-        return preview.options.typesHidden;
-    };
-
-    preview.setheigthTypesDiv = function(height) {
-        return preview.options.heigthTypesDiv = height;
-    };
-
-    preview.getheigthTypesDiv = function() {
-        return preview.options.heigthTypesDiv;
-    };
 
     preview.getWelcomeHeaderMessage = function() {
         return preview.options.welcomeHeaderMessage;

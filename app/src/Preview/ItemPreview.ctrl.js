@@ -1,5 +1,5 @@
 angular.module('Pundit2.Preview')
-    .controller('ItemPreviewCtrl', function($scope, TypesHelper, ItemsExchange, Preview) {
+    .controller('ItemPreviewCtrl', function($scope, TypesHelper, ItemsExchange) {
 
         // get the label of a type from his uri
         $scope.getTypeLabel = function(uri) {
@@ -12,27 +12,32 @@ angular.module('Pundit2.Preview')
             $scope.item = ItemsExchange.getItemByUri($scope.uri);
         });
 
-        $scope.$watch(function() { return Preview.getTypeHiddenPresent()}, function(val) {
-            $scope.showCaret = val;
-        });
-
         $scope.typeHidden = true;
 
         $scope.showAlltypes = function() {
-            var h = Preview.getheigthTypesDiv();
+            // get div where types list is shown
             var div = angular.element('div.pnd-preview-item-types');
+
+            // get current height of div where types list is shown
             var divHeight = angular.element('div.pnd-preview-item-types').height();
-            if(divHeight === h){
+
+            // toggle types visibility
+
+            // set height to auto to show all types
+            // and set flag typeHidden to show right caret icon
+            if(divHeight === $scope.heigthTypesDiv){
                 $scope.typeHidden = false;
                 div.css({
                     'height' : 'auto'
                 });
             } else {
+                // set height to fixed height, in this way show only few types
+                // and set flag typeHidden to show right caret icon
                 $scope.typeHidden = true;
                 div.css({
-                    'height' : h
+                    'height' : $scope.heigthTypesDiv
                 });
             }
-        }
+        };
 
     });

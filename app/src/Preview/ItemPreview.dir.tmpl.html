@@ -2,7 +2,7 @@
     <ul class="pnd-preview-item-types-ul">
         <li class="pnd-preview-single-type" ng-repeat="type in item.type">{{getTypeLabel(type)}}</li>
     </ul>
-    <div ng-show="showCaret" ng-class="{'pnd-icon-chevron-down': typeHidden, 'pnd-icon-chevron-up': !typeHidden}" class="pnd-preview-item-caret" ng-click="showAlltypes()"></div>
+    <div ng-show="typeHiddenPresent" ng-class="{'pnd-icon-chevron-down': typeHidden, 'pnd-icon-chevron-up': !typeHidden}" class="pnd-preview-item-caret" ng-click="showAlltypes()"></div>
 </div>
 
 <div ng-if="item.image" class="pnd-preview-item-image">
