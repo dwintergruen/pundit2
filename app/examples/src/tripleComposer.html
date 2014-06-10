@@ -2,9 +2,9 @@
 
 <script>
 
-    var TripleComposerDemoCtrl = function(Annotation, Client, ItemsExchange, Item,
+    var TripleComposerDemoCtrl = function($scope, $http, NameSpace, Annotation, Client, ItemsExchange, Item,
                                             SelectorsManager, FreebaseSelector, MurucaSelector) {
-        var toLoad = ["8fd05a49", "65286186", "385c1647"];
+        var toLoad = ["da128c73"];
 
         for (var l=toLoad.length; l--;) {
             new Annotation(toLoad[l]);
@@ -22,12 +22,26 @@
 
         SelectorsManager.init();
 
+        $scope.deleteNotebook = function(){
+            $http({
+                    headers: { 'Content-Type': 'application/json' },
+                    method: 'DELETE',
+                    url: NameSpace.get('asNB')+"/b81c0aa3",
+                    withCredentials: true
+                }).success(function(data) {
+                    console.log(data);
+                }).error(function(msg) {
+                    console.log(msg)
+                });
+        };
+
     };
 
 </script>
 
 <div data-ng-app="Pundit2" class="pnd-wrp" ng-controller="TripleComposerDemoCtrl">
     <triple-composer></triple-composer>
+    <!--<button ng-click="deleteNotebook()">Delete Notebook</button>-->
 </div>
 
 <!-- buildexamples:section footer --><!-- /buildexamples -->

@@ -66,6 +66,9 @@ angular.module('Pundit2.TripleComposer')
                     return;
                 }
 
+                // disable save button
+                angular.element('.pnd-triplecomposer-save').addClass('disabled');
+                // init save process showing saving message
                 $scope.textMessage = TripleComposer.options.savingMsg;
                 promiseResolved = false;
                 savePromise = $timeout(function(){ promiseResolved = true; }, TripleComposer.options.savingMsgTime);
@@ -90,8 +93,6 @@ angular.module('Pundit2.TripleComposer')
 
                     // reset triple composer state
                     $scope.statements = TripleComposer.reset();
-                    // disable save button
-                    angular.element('.pnd-triplecomposer-save').addClass('disabled');
                     // if you have gone at least 500ms
                     if (promiseResolved) {
                         updateMessagge(TripleComposer.options.notificationSuccessMsg, TripleComposer.options.notificationMsgTime);
@@ -99,8 +100,7 @@ angular.module('Pundit2.TripleComposer')
                         savePromise.then(function(){
                             updateMessagge(TripleComposer.options.notificationSuccessMsg, TripleComposer.options.notificationMsgTime);
                         });
-                    }
-                    
+                    }                    
 
                     // TODO add annnotation to annotationExchange then consolidate all
                     // TODO remove new Annotation (this load annotation from server)
