@@ -1,9 +1,10 @@
 .pnd-statement-row {
+	margin-left:10px;
 
     .pnd-statement-subject,
     .pnd-statement-object,
     .pnd-statement-predicate {
-        padding: 2px;
+        //padding: 2px;
         display: inline;
         width: 30%;
         float: left;
@@ -11,16 +12,91 @@
     .pnd-statement-buttons {
         float: left;
         display: inline;
-        width: 20px;
+        //width: 20px;
     }
 
     .pnd-statement-subject,
     .pnd-statement-object {
-        background-color: #0071BC;
+        
     }
     .pnd-statement-predicate {
-        background-color: #e07400;
     }
+    
+
+// ROW - BUTTONS
+
+    .pnd-row-button-subject, 
+    .pnd-row-button-predicate,
+	.pnd-row-button-object  {
+        margin: 5px 5px 0px 0px;
+        padding: 3px 0px;
+        min-height: 25px;
+        }
+    
+    .pnd-row-button-subject {
+        background-color: @subject-color;
+
+        }
+
+    .pnd-row-button-predicate {
+        background-color: @predicate-color;
+        }
+
+    .pnd-row-button-object {
+        background-color: @object-color;
+        }
+
+
+.pnd-btn-statement  {
+        //width: 26px;
+        height: 26px;
+        }
+
+
+
+// INPUT AND ICON
+
+	.left-inner-icon {
+	    position: relative;
+	    padding-right: 5px;
+	    }
+	
+	.left-inner-icon input {
+	    padding-right: 20px;
+	    font-weight: normal;   
+	    }
+	    
+	.left-inner-icon .pnd-icon {
+	    position: absolute;
+	    color: @gray-light;
+	    right: 12px;
+	    top: 0px;
+	    padding: 7px;
+	    -moz-box-sizing: border-box;
+	    -webkit-box-sizing: border-box;
+	    box-sizing: border-box;
+	    }
+
+    // .pnd-icon-times is configured in *ItemsContainer.service.js defaults with
+    // inputIconClear: 'pnd-icon-times'
+    .left-inner-icon .pnd-icon.pnd-icon-times:hover {
+        color:  @brand-success;
+        cursor: pointer;
+        }
+
+
+// WHITE BUTTONS
+
+	.btn-link {
+	    color: #fff;
+	    	
+	    	&:hover {
+		    color: #fff;
+		    }
+	    
+	    }
 
 
 }
+
+

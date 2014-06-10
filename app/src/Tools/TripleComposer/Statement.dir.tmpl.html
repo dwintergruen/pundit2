@@ -9,13 +9,13 @@
             <!-- Subject Input div -->
             <div class="left-inner-icon">
                 <span class="pnd-icon {{subjectIcon}}" ng-click="clearSubjectSearch()"></span>
-                <input type="text" class="input-sm" placeholder="search a subject" ng-model="subjectSearch" ng-click="onClickSubject($event)" ng-keyup="onKeyUpSubject($event)">
+                <input type="text" class="input-sm form-control" placeholder="search a subject" ng-model="subjectSearch" ng-click="onClickSubject($event)" ng-keyup="onKeyUpSubject($event)">
             </div>
 
             <!-- Subject Buttons div -->
-            <div>
+            <div class="pnd-row-button-subject">
                 <!--Korbo Icon-->
-                <button>NEW</button>
+                <button type="button" class="btn btn-xs btn-link"><span class="pnd-icon pnd-icon-plus"></span></button>
             </div>
 
         </div>
@@ -38,11 +38,11 @@
             <!-- Predicate Input div -->
             <div class="left-inner-icon">
                 <span class="pnd-icon {{predicateIcon}}" ng-click="clearPredicateSearch()"></span>
-                <input type="text" class="input-sm" placeholder="search a predicate" ng-model="predicateSearch" ng-click="onClickPredicate($event)" ng-keyup="onKeyUpPredicate($event)">
+                <input type="text" class="input-sm form-control" placeholder="search a predicate" ng-model="predicateSearch" ng-click="onClickPredicate($event)" ng-keyup="onKeyUpPredicate($event)">
             </div>
 
             <!-- Predicate Buttons div-->
-            <div></div>
+            <div class="pnd-row-button-predicate"></div>
 
         </div>
 
@@ -63,17 +63,17 @@
             <!-- Object Input div -->
             <div class="left-inner-icon">
                 <span class="pnd-icon {{objectIcon}}" ng-click="clearObjectSearch()"></span>
-                <input type="text" class="input-sm" placeholder="search an object" ng-model="objectSearch" ng-click="onClickObject($event)" ng-keyup="onKeyUpObject($event)">
+                <input type="text" class="input-sm form-control" placeholder="search an object" ng-model="objectSearch" ng-click="onClickObject($event)" ng-keyup="onKeyUpObject($event)">
             </div>
 
             <!-- Object Buttons div -->
-            <div>
-                <!--Calendar Icon-->
-                <button ng-hide="objectLiteral" ng-click="onClickObjectCalendar($event)">C</button>
-                <!--Pen Icon-->
-                <button ng-click="onClickObjectLiteral($event)">P</button>
+            <div class="pnd-row-button-object">
                 <!--Korbo Icon-->
-                <button>NEW</button>
+                <button type="button" class="btn btn-xs btn-link"><span class="pnd-icon pnd-icon-plus"></span></button>
+                <!--Calendar Icon-->
+                <button type="button" class="btn btn-xs btn-link" ng-hide="objectLiteral" ng-click="onClickObjectCalendar($event)"><span class="pnd-icon pnd-icon-table"></span></button>
+                <!--Pen Icon-->
+                <button type="button" class="btn btn-xs btn-link" ng-click="onClickObjectLiteral($event)"><span class="pnd-icon pnd-icon-pencil"></span></button>
             </div>
 
         </div>
@@ -91,9 +91,9 @@
     <!-- Right buttons -->
     <div class="pnd-statement-buttons">
         <!-- close icon -->
-        <button ng-click="remove()">X</button>
+        <button type="button" class="btn btn-xs btn-danger pnd-btn-statement" ng-click="remove()"><span class="pnd-icon pnd-icon-trash-o"></span></button>
         <!-- copy icon -->
-        <button ng-click="duplicate()">[]</button>
+        <button type="button" class="btn btn-xs btn-success pnd-btn-statement" ng-click="duplicate()"><span class="pnd-icon pnd-icon-copy"></span></button>
     </div>
 
 </div>
