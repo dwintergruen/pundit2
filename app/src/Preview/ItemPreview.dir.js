@@ -7,13 +7,10 @@ angular.module('Pundit2.Preview')
             },
             templateUrl: "src/Preview/ItemPreview.dir.tmpl.html",
             controller: 'ItemPreviewCtrl',
-            require: '^preview',
-            link: function(scope, elem, attrs, controllerInstance) {
-                scope.previewCtrl = controllerInstance;
 
-                // add previewItem scope to parent directive
-                controllerInstance.addScope(scope);
+              link: function postLink(scope, elem, attrs) {
+                  scope.a = angular.element(elem).find('li.pnd-preview-single-type');
+              }
 
-            }
         };
     });
