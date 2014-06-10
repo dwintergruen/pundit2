@@ -8,7 +8,12 @@
 
 <div class="pnd-panel-tab-content-content pnd-inner-scrollable">
 
-    <statement ng-repeat="s in statements" id="{{s.id}}" duplicated="s.scope.duplicated"></statement>
+    <div class="pnd-triplecomposer-statements-container" ng-hide="saving">
+        <statement ng-repeat="s in statements" id="{{s.id}}" duplicated="s.scope.duplicated"></statement>
+    </div>
+    <div class="pnd-triplecomposer-text-content" ng-show="saving">
+        {{textMessage}}
+    </div>
     
 </div> <!-- end pnd-panel-tab-content-content -->
 

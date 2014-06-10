@@ -5,6 +5,12 @@ angular.module('Pundit2.TripleComposer')
     // the function is called in the statement directive link function
     $scope.statements = TripleComposer.getStatements();
 
+    $scope.saving = false;
+    var savingMsg = "We are saving your annotation",
+        successMsg = "Your annotation has been saved successfully",
+        errorMsg = "";
+    $scope.textMessage = savingMsg;
+
     this.removeStatement = function(id){
         id = parseInt(id, 10);
         TripleComposer.removeStatement(id);
@@ -36,7 +42,6 @@ angular.module('Pundit2.TripleComposer')
 
     $scope.saveAnnotation = function(){
         // test with notebook "b81c0aa3"
-        // need to use NameSpace.get('asNBCurrent')
 
         MyPundit.login().then(function(logged) {
             
@@ -53,6 +58,9 @@ angular.module('Pundit2.TripleComposer')
                     console.log('Try to save incomplete statement');
                     return;
                 }
+
+                //$scope.textMessage = savingMsg;
+                $scope.saving = true;
 
                 $http({
                     headers: { 'Content-Type': 'application/json' },
@@ -71,7 +79,9 @@ angular.module('Pundit2.TripleComposer')
                     }
                 }).success(function(data) {
 
+                   $scope.saving = false;
                    $scope.statements = TripleComposer.reset();
+                   angular.element('.pnd-triplecomposer-save').addClass('disabled');
 
                    // TODO add annnotation to annotationExchange then consolidate all
                    // TODO remove new Annotation (this load annotation from server)
@@ -80,8 +90,10 @@ angular.module('Pundit2.TripleComposer')
                    });
                 }).error(function(msg) {
                     // TODO
+                    $scope.saving = false;
                     console.log(msg);
                 });
+
 
             } //end if logged
 
