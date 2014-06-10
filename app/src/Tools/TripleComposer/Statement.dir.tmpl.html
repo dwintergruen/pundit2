@@ -3,15 +3,24 @@
     <!-- Subject -->
     <div class="pnd-statement-subject">
 
+        <!-- Incomplete Subject -->
         <div ng-hide="subjectFound">
+
+            <!-- Subject Input div -->
             <div class="left-inner-icon">
                 <span class="pnd-icon {{subjectIcon}}" ng-click="clearSubjectSearch()"></span>
                 <input type="text" class="input-sm" placeholder="search a subject" ng-model="subjectSearch" ng-click="onClickSubject($event)" ng-keyup="onKeyUpSubject($event)">
             </div>
-            <!--Korbo Icon-->
-            <button>NEW</button>
+
+            <!-- Subject Buttons div -->
+            <div>
+                <!--Korbo Icon-->
+                <button>NEW</button>
+            </div>
+
         </div>
 
+        <!-- Complete Subject -->
         <div ng-show="subjectFound" ng-mouseover="subjectOver=true" ng-mouseleave="subjectOver=false">
             <div>{{subjectLabel}}</div>
             <div ng-hide="subjectOver">{{subjectTypeLabel}}</div>
@@ -23,13 +32,21 @@
     <!-- Predicate -->
     <div class="pnd-statement-predicate">
 
+        <!-- Incomplete Predicate -->
         <div ng-hide="predicateFound">
+
+            <!-- Predicate Input div -->
             <div class="left-inner-icon">
                 <span class="pnd-icon {{predicateIcon}}" ng-click="clearPredicateSearch()"></span>
                 <input type="text" class="input-sm" placeholder="search a predicate" ng-model="predicateSearch" ng-click="onClickPredicate($event)" ng-keyup="onKeyUpPredicate($event)">
             </div>
+
+            <!-- Predicate Buttons div-->
+            <div></div>
+
         </div>
 
+        <!-- Complete Predicate -->
         <div ng-show="predicateFound" ng-mouseover="subjectOver=true" ng-mouseleave="subjectOver=false">
             <div>{{predicateLabel}}</div>
             <button ng-click="wipePredicate()">D</button>
@@ -40,19 +57,28 @@
     <!-- Object -->
     <div class="pnd-statement-object">
 
+        <!-- Incomplete Object -->
         <div ng-hide="objectFound">
+
+            <!-- Object Input div -->
             <div class="left-inner-icon">
                 <span class="pnd-icon {{objectIcon}}" ng-click="clearObjectSearch()"></span>
                 <input type="text" class="input-sm" placeholder="search an object" ng-model="objectSearch" ng-click="onClickObject($event)" ng-keyup="onKeyUpObject($event)">
             </div>
-            <!--Calendar Icon-->
-            <button ng-hide="objectLiteral" ng-click="onClickObjectCalendar($event)">C</button>
-            <!--Pen Icon-->
-            <button ng-click="onClickObjectLiteral($event)">P</button>
-            <!--Korbo Icon-->
-            <button>NEW</button>
+
+            <!-- Object Buttons div -->
+            <div>
+                <!--Calendar Icon-->
+                <button ng-hide="objectLiteral" ng-click="onClickObjectCalendar($event)">C</button>
+                <!--Pen Icon-->
+                <button ng-click="onClickObjectLiteral($event)">P</button>
+                <!--Korbo Icon-->
+                <button>NEW</button>
+            </div>
+
         </div>
 
+        <!-- Complete Object -->
         <div ng-show="objectFound" ng-mouseover="objectOver=true" ng-mouseleave="objectOver=false">
             <div>{{objectLabel}}</div>
             <div ng-hide="objectOver">{{objectTypeLabel}}</div>
