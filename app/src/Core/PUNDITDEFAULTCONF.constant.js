@@ -8,11 +8,37 @@ angular.module('Pundit2.Core')
          * `string`
          * Pundit server base URL.
          *
-         * Default: `http://demo-cloud.as.thepund.it:8080/annotationserver/`
+         * Default:
+         * <pre>
+         * annotationServerBaseURL: 'http://demo-cloud.as.thepund.it:8080/annotationserver/'
+         * </pre>
          */
         annotationServerBaseURL: 'http://demo-cloud.as.thepund.it:8080/annotationserver/',
+
+        /**
+         * @module punditConfig
+         * @ngdoc object
+         * @name debugAllModules
+         * @description
+         * `boolean`
+         * Pundit server base URL.
+         *
+         * Default:
+         * <pre> debugAllModules: false </pre>
+         */
         debugAllModules: false,
         vocabularies: [],
+        /**
+         * @module punditConfig
+         * @ngdoc object
+         * @name useBasicRelations
+         * @description
+         * `boolean`
+         * Load basic relations configured in Client module.
+         *
+         * Default:
+         * <pre> useBasicRelations: true </pre>
+         */
         useBasicRelations: true,
 
 
@@ -25,16 +51,18 @@ angular.module('Pundit2.Core')
          *
          * @description
          * `object`
+         * List of all modules available in Pundit2 and their default configuration.
          *
-         * This is the list of modules available in Pundit2.
-         *
-         * Each module has a configuration object, described below, which contains
-         * the default configuration. This configuration can be extended and / or overwritten, 
+         * Each "modules" properties is the name of a Pundit2 module and contain the default relative configuration object.
+         * This configuration can be extended and / or overwritten, 
          * the specified properties override the default values while the properties that are not defined assume the default values.
          *
          * Modules configuration example:
          *
          * <pre>modules: {
+         *     Annomatic: {
+         *        container: 'annomaticConfiguredContainer'
+         *     },
          *     Toolbar: {
          *        askLinkDefault: "http://ask.thepund.it/",
          *        debug: false
