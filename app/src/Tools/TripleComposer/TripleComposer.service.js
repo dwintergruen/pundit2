@@ -88,7 +88,7 @@ angular.module('Pundit2.TripleComposer')
      * Default value:
      * <pre> savingMsgTime: 500 </pre>
      */
-    savingMsgTime: 500,
+    savingMsgTime: 1250,
 
     /**
      * @module punditConfig
@@ -132,7 +132,7 @@ angular.module('Pundit2.TripleComposer')
      * Default value:
      * <pre> notificationMsgTime: 1000 </pre>
      */
-    notificationMsgTime: 1000,
+    notificationMsgTime: 1500,
 
     /**
      * @module punditConfig

@@ -27,7 +27,9 @@ angular.module('Pundit2.Core')
          * <pre> debugAllModules: false </pre>
          */
         debugAllModules: false,
+
         vocabularies: [],
+
         /**
          * @module punditConfig
          * @ngdoc object
@@ -53,9 +55,9 @@ angular.module('Pundit2.Core')
          * `object`
          * List of all modules available in Pundit2 and their default configuration.
          *
-         * Each "modules" properties is the name of a Pundit2 module and contain the default relative configuration object.
-         * This configuration can be extended and / or overwritten, 
-         * the specified properties override the default values while the properties that are not defined assume the default values.
+         * Each "modules" properties is the name of a Pundit2 module and contain the default configuration of the module.
+         * This configuration can be extended and/or overwritten, 
+         * the defined properties override the default values while the properties that are not defined assume the default values.
          *
          * Modules configuration example:
          *
@@ -93,6 +95,19 @@ angular.module('Pundit2.Core')
             },
 
             Dashboard: {
+                /**
+                 * @ngdoc property
+                 * @name modules#Dashboard.active
+                 *
+                 * @description
+                 * `boolean`
+                 *
+                 * Default state of the dashboard module, if it is set to true 
+                 * the client adds to the DOM the dashboard directive in the boot phase.
+                 *
+                 * Default value:
+                 * <pre> active: true </pre>
+                 */
                 active: true
             },
             Toolbar: {
@@ -105,19 +120,71 @@ angular.module('Pundit2.Core')
                 active: true
             },
             PageItemsContainer: {
+                /**
+                 * @ngdoc property
+                 * @name modules#PageItemsContainer.active
+                 *
+                 * @description
+                 * `boolean`
+                 *
+                 * Default state of the PageItemsContainer module, if it is set to true 
+                 * the client adds to the DOM (inside dashboard) the PageItemsContainer directive in the boot phase.
+                 *
+                 * Default value:
+                 * <pre> active: true </pre>
+                 */
                 active: true
             },
             MyItemsContainer: {
+                /**
+                 * @ngdoc property
+                 * @name modules#MyItemsContainer.active
+                 *
+                 * @description
+                 * `boolean`
+                 *
+                 * Default state of the MyItemsContainer module, if it is set to true 
+                 * the client adds to the DOM (inside dashboard) the MyItemsContainer directive in the boot phase.
+                 *
+                 * Default value:
+                 * <pre> active: true </pre>
+                 */
                 active: true
             },
             SelectorsManager: {
-                // when selector manager is activated by default all selectors are active
-                // to turn off each selector is necessary to add an object with the active property to false
-                // in the same way to configure multiple instances of the same selector
-                // you need to add an object here (see vocabularies.html example)
+                /**
+                 * @ngdoc property
+                 * @name modules#SelectorsManager.active
+                 *
+                 * @description
+                 * `boolean`
+                 *
+                 * Default state of the SelectorsManager module, if it is set to true 
+                 * the client adds to the DOM (inside dashboard) the VocabulariesContainer directive in the boot phase.
+                 *
+                 * When selector manager is activated by default all selectors are active (Freebase, Korbo, ...),
+                 * to turn off a specific selector is necessary to set to false the active property
+                 * in the configuration object of the specific selector.
+                 *
+                 * Default value:
+                 * <pre> active: true </pre>
+                 */
                 active: true
             },
             TripleComposer: {
+                /**
+                 * @ngdoc property
+                 * @name modules#TripleComposer.active
+                 *
+                 * @description
+                 * `boolean`
+                 *
+                 * Default state of the TripleComposer module, if it is set to true 
+                 * the client adds to the DOM (inside dashboard) the TripleComposer directive in the boot phase.
+                 *
+                 * Default value:
+                 * <pre> active: true </pre>
+                 */
                 active: true
             }
       }
