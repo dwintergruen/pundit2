@@ -9,8 +9,8 @@ angular.module("Pundit2.MyItemsContainer")
      * @description
      * `object`
      *
-     * Configuration for MyItems service. Defines the pundit server API used to get the my items
-     * and the container name used to store the my items inside ItemsExchange.
+     * Configuration object for MyItems service. This service is used to get the my items
+     * from server.
      */
 
     /**
@@ -21,7 +21,7 @@ angular.module("Pundit2.MyItemsContainer")
      * @description
      * `string`
      *
-     * My items pundit server API
+     * My items pundit server API.
      *
      * Default value:
      * <pre> apiPreferencesKey: 'favorites' </pre>
@@ -36,7 +36,7 @@ angular.module("Pundit2.MyItemsContainer")
      * @description
      * `string`
      *
-     * Name of the container used to store the my items in the itemsExchange (TODO link)
+     * Name of the container used to store the my items in the itemsExchange.
      *
      * Default value:
      * <pre> container: 'myItems' </pre>
@@ -51,7 +51,7 @@ angular.module("Pundit2.MyItemsContainer")
      * @description
      * `boolean`
      *
-     * Active debug log
+     * Active debug log.
      *
      * Default value:
      * <pre> debug: false </pre>

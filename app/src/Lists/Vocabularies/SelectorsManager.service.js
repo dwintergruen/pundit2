@@ -9,9 +9,11 @@ angular.module('Pundit2.Vocabularies')
      * @description
      * `object`
      *
-     * Configuration for SelectorsManager service. This object contains the part of the configuration
-     * common to all vocabularies, defines: at which dashboard panel add the VocabulariesContainer directive,
-     * the type of the context menu opened on items and the directive template path.
+     * Configuration object for SelectorsManager service. This object contains the part of the configuration
+     * common to all selectors and defines: at which dashboard panel add the VocabulariesContainer directive,
+     * the type of the context menu opened on items, the directive template path and a some others properties.
+     *
+     * All selectors shown its items by VocabulariesContainer directive.
      */
 
     /**
@@ -38,7 +40,7 @@ angular.module('Pundit2.Vocabularies')
      * @description
      * `string`
      *
-     * Name of the panel where append the directive (legal value to default are: 'lists', 'tools' and 'details')
+     * Name of the panel where append the VocabulariesContainer directive (legal value to default are: 'lists', 'tools' and 'details')
      *
      * Default value:
      * <pre> clientDashboardPanel: "lists" </pre>
@@ -53,7 +55,7 @@ angular.module('Pundit2.Vocabularies')
      * @description
      * `string`
      *
-     * Tab title inside panel dashboard tabs
+     * Tab title inside panel dashboard tabs.
      *
      * Default value:
      * <pre> clientDashboardTabTitle: "Vocab" </pre>
@@ -68,7 +70,7 @@ angular.module('Pundit2.Vocabularies')
      * @description
      * `string`
      *
-     * Contextual menu type showed by items contained inside directive
+     * Contextual menu type showed by items contained inside VocabulariesContainer directive.
      *
      * Default value:
      * <pre> cMenuType: 'vocabItems' </pre>
@@ -83,12 +85,87 @@ angular.module('Pundit2.Vocabularies')
      * @description
      * `boolean`
      *
-     * Active debug log
+     * Active debug log.
      *
      * Default value:
      * <pre> debug: false </pre>
      */
-    debug: false
+    debug: false,
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#SelectorsManager.order
+     *
+     * @description
+     * `string`
+     *
+     * Default items property used to sort items list inside VocabulariesContainer directive (legal value are: 'label' and 'type').
+     *
+     * Default value:
+     * <pre> order: 'label' </pre>
+     */
+    order: 'label',
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#SelectorsManager.reverse
+     *
+     * @description
+     * `boolean`
+     *
+     * Default items ordering inside VocabulariesContainer directive (true: ascending, false: descending).
+     *
+     * Default value:
+     * <pre> reverse: false </pre>
+     */
+    reverse: false,
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#SelectorsManager.initialActiveTab
+     *
+     * @description
+     * `number`
+     *
+     * Default displayed tab
+     *
+     * Default value:
+     * <pre> initialActiveTab: 0 </pre>
+     */
+    initialActiveTab: 0,
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#SelectorsManager.inputIconSearch
+     *
+     * @description
+     * `string`
+     *
+     * Icon shown in the search input when it's empty.
+     *
+     * Default value:
+     * <pre> inputIconSearch: 'pnd-icon-search' </pre>
+     */
+    inputIconSearch: 'pnd-icon-search',
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#SelectorsManager.inputIconClear
+     *
+     * @description
+     * `string`
+     *
+     * Icon shown in the search input when it has some content.
+     *
+     * Default value:
+     * <pre> inputIconClear: 'pnd-icon-times' </pre>
+     */
+    inputIconClear: 'pnd-icon-times'
 
 })
 .service('SelectorsManager', function(BaseComponent, SELECTORMANAGERDEFAULTS, $injector, $q) {

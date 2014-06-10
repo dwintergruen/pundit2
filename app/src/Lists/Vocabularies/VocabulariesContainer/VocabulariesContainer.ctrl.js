@@ -1,112 +1,6 @@
 angular.module('Pundit2.Vocabularies')
-.constant('VOCABULARIESCONTAINERDEFAULTS', {
-
-    /**
-     * @module punditConfig
-     * @ngdoc property
-     * @name modules#VocabulariesContainer
-     *
-     * @description
-     * `object`
-     *
-     * Configuration for VocabulariesContainer module
-     */
-
-    /**
-     * @module punditConfig
-     * @ngdoc property
-     * @name modules#VocabulariesContainer.order
-     *
-     * @description
-     * `string`
-     *
-     * Default items property used to sort items list inside directive (legal value are: 'label' and 'type')
-     *
-     * Default value:
-     * <pre> order: 'label' </pre>
-     */
-    order: 'label',
-
-    /**
-     * @module punditConfig
-     * @ngdoc property
-     * @name modules#VocabulariesContainer.reverse
-     *
-     * @description
-     * `boolean`
-     *
-     * Default items ordering inside directive (true: ascending, false: descending)
-     *
-     * Default value:
-     * <pre> reverse: false </pre>
-     */
-    reverse: false,
-
-    /**
-     * @module punditConfig
-     * @ngdoc property
-     * @name modules#VocabulariesContainer.initialActiveTab
-     *
-     * @description
-     * `number`
-     *
-     * Default displayed tab
-     *
-     * Default value:
-     * <pre> initialActiveTab: 0 </pre>
-     */
-    initialActiveTab: 0,
-
-    /**
-     * @module punditConfig
-     * @ngdoc property
-     * @name modules#VocabulariesContainer.inputIconSearch
-     *
-     * @description
-     * `string`
-     *
-     * Icon shown in the search input when it's empty
-     *
-     * Default value:
-     * <pre> inputIconSearch: 'pnd-icon-search' </pre>
-     */
-    inputIconSearch: 'pnd-icon-search',
-
-    /**
-     * @module punditConfig
-     * @ngdoc property
-     * @name modules#VocabulariesContainer.inputIconClear
-     *
-     * @description
-     * `string`
-     *
-     * Icon shown in the search input when it has some content
-     *
-     * Default value:
-     * <pre> inputIconClear: 'pnd-icon-times' </pre>
-     */
-    inputIconClear: 'pnd-icon-times',
-
-    /**
-     * @module punditConfig
-     * @ngdoc property
-     * @name modules#VocabulariesContainer.debug
-     *
-     * @description
-     * `boolean`
-     *
-     * Active debug log
-     *
-     * Default value:
-     * <pre> debug: false </pre>
-     */
-    debug: false
-    
-})
-.controller('VocabulariesContainerCtrl', function($scope, $timeout, $injector, BaseComponent, VOCABULARIESCONTAINERDEFAULTS,
+.controller('VocabulariesContainerCtrl', function($scope, $timeout, $injector, BaseComponent,
                                                     SelectorsManager, ItemsExchange, TypesHelper) {
-
-    var vocabulariesContainer = new BaseComponent('VocabulariesContainer', VOCABULARIESCONTAINERDEFAULTS);
 
     // SelectorsManager is initialized inside client.boot()
 
@@ -123,10 +17,10 @@ angular.module('Pundit2.Vocabularies')
     
     // items property used to compare
     // legal value are: 'type' and 'label'
-    var order = vocabulariesContainer.options.order;
+    var order = SelectorsManager.options.order;
 
     // how order items, true is ascending, false is descending
-    $scope.reverse = vocabulariesContainer.options.reverse;
+    $scope.reverse = SelectorsManager.options.reverse;
 
     // build tabs by reading active selectors inside selectors manager
     $scope.tabs = [];
@@ -140,7 +34,7 @@ angular.module('Pundit2.Vocabularies')
     }
 
     // index of the active tab (the tab that actualy show it content) 
-    $scope.tabs.activeTab = vocabulariesContainer.options.initialActiveTab;
+    $scope.tabs.activeTab = SelectorsManager.options.initialActiveTab;
 
     // sort button dropdown content
     $scope.dropdownOrdering = [
@@ -179,7 +73,7 @@ angular.module('Pundit2.Vocabularies')
     };
 
     $scope.search = {
-        icon: vocabulariesContainer.options.inputIconSearch,
+        icon: SelectorsManager.options.inputIconSearch,
         term: ''
     };
     var promise;
@@ -190,11 +84,11 @@ angular.module('Pundit2.Vocabularies')
         // this happens when the user deletes last char in the <input>
         if (typeof(str) === 'undefined' || str === '') {
             str = '';
-            $scope.search.icon = vocabulariesContainer.options.inputIconSearch;
+            $scope.search.icon = SelectorsManager.options.inputIconSearch;
             $timeout.cancel(promise);
             return;
         } else {
-            $scope.search.icon = vocabulariesContainer.options.inputIconClear;
+            $scope.search.icon = SelectorsManager.options.inputIconClear;
         }
 
         // need to query vocab then update showed items
@@ -206,7 +100,6 @@ angular.module('Pundit2.Vocabularies')
     });
 
     var updateMessage = function(){
-        vocabulariesContainer.log('All selectors end http calls'/*, ItemsExchange.getAll()*/);
         if ($scope.displayedItems.length === 0 && $scope.search.term!=='' && typeof($scope.search.term)!=='undefined') {
             $scope.message.text = "No item found to: "+$scope.search.term;
         }

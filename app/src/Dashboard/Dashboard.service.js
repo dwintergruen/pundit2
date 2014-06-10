@@ -9,8 +9,9 @@ angular.module('Pundit2.Dashboard')
      * @description
      * `object`
      *
-     * Configuration for Dashboard module. Defines the path of the template appended to the DOM 
-     * by the Client, the default size of the dashboard, panels and elements contained in it.
+     * Configuration object for Dashboard module. By default, Dashboard directive is located below the toolbar, 
+     * is composed of three panels that can be resized and collapsed. 
+     * Each panel has its own minimum width and its contents are added dynamically by the client service.
      */
 
     /**

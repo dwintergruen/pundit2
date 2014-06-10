@@ -9,8 +9,9 @@ angular.module('Pundit2.TripleComposer')
      * @description
      * `object`
      *
-     * Configuration for TripleComposer module. Defines: at which panel add the 
-     * MyIyemsContainer directive.
+     * Configuration for TripleComposer module. This module allows you to create annotations
+     * consist of one or more triple and save on server.
+     * By default the TripleComposer directive is contained in the central panel (tools) of the dashboard.
      */
 
      /**
@@ -59,11 +60,78 @@ angular.module('Pundit2.TripleComposer')
      */
     clientDashboardTabTitle: "Statements Composer",
 
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#TripleComposer.savingMsg
+     *
+     * @description
+     * `string`
+     *
+     * Message shown at the beginning of the process of saving the annotation.
+     *
+     * Default value:
+     * <pre> savingMsg: "We are saving your annotation" </pre>
+     */
     savingMsg: "We are saving your annotation",
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#TripleComposer.savingMsgTime
+     *
+     * @description
+     * `string`
+     *
+     * Time for which the saving message is displayed (in milliseconds).
+     *
+     * Default value:
+     * <pre> savingMsgTime: 500 </pre>
+     */
     savingMsgTime: 500,
 
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#TripleComposer.notificationSuccessMsg
+     *
+     * @description
+     * `string`
+     *
+     * Message shown after an annotation has been saved successfully.
+     *
+     * Default value:
+     * <pre> notificationSuccessMsg: "Your annotation has been saved successfully" </pre>
+     */
     notificationSuccessMsg: "Your annotation has been saved successfully",
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#TripleComposer.notificationErrorMsg
+     *
+     * @description
+     * `string`
+     *
+     * Message shown after an annotation was not saved properly.
+     *
+     * Default value:
+     * <pre> notificationErrorMsg: "We were unable to save your annotation" </pre>
+     */
     notificationErrorMsg: "We were unable to save your annotation",
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#TripleComposer.notificationMsgTime
+     *
+     * @description
+     * `string`
+     *
+     * Time for which the notification message is displayed (in milliseconds).
+     *
+     * Default value:
+     * <pre> notificationMsgTime: 1000 </pre>
+     */
     notificationMsgTime: 1000,
 
     /**

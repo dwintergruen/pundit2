@@ -9,9 +9,8 @@ angular.module('Pundit2.PageItemsContainer')
      * @description
      * `object`
      *
-     * Configuration for PageItemsContainer module. Defines: at which dashboard panel add the 
-     * PageItemsContainer directive, the type of the context menu opened on items, 
-     * the directive template path and a lot of others parameters of the directive.
+     * Configuration object for PageItemsContainer module. By default, PageItemsContainer directive is located
+     * in the first panel of the dashboard (lists) and allows you to display the list of page items.
      */
 
      /**

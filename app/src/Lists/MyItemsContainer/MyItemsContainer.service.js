@@ -9,9 +9,9 @@ angular.module('Pundit2.MyItemsContainer')
      * @description
      * `object`
      *
-     * Configuration for MyIyemsContainer module. Defines: at which dashboard panel add the 
-     * MyIyemsContainer directive, the type of the context menu opened on items, 
-     * the directive template path and a lot of others parameters of the directive.
+     * Configuration object for MyIyemsContainer module. By default, MyIyemsContainer directive is located
+     * in the first panel of the dashboard (lists) and allows you to display the list of my items,
+     * remove them or filter them.
      */
 
      /**
@@ -23,7 +23,7 @@ angular.module('Pundit2.MyItemsContainer')
      * `string`
      *
      * Path of template containing myItemsContainer directive, client will append the content of this template 
-     * to the DOM (inside dashboard directive) to bootstrap this component
+     * to the DOM (inside dashboard directive) to bootstrap this component.
      *
      * Default value:
      * <pre> clientDashboardTemplate: "src/Lists/MyItemsContainer/ClientMyItemsContainer.tmpl.html" </pre>
@@ -38,7 +38,7 @@ angular.module('Pundit2.MyItemsContainer')
      * @description
      * `string`
      *
-     * Name of the panel where append the directive (legal value to default are: 'lists', 'tools' and 'details')
+     * Name of the panel where append the directive (legal value to default are: 'lists', 'tools' and 'details').
      *
      * Default value:
      * <pre> clientDashboardPanel: "lists" </pre>
