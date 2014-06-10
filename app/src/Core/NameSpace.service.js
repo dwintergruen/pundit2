@@ -33,110 +33,56 @@ angular.module("Pundit2.Core")
 
     // Item properties
     ns.item = {
-        /** 
-            Short label (usually 30-40 chars or so), see rdfs.label
-            @const items.label 
-        **/
+        // Short label (usually 30-40 chars or so), see rdfs.label
         label: ns.rdfs.label,
 
-        /**
-            Alternative labels
-            @const items.altLabel
-        **/
+        // Alternative labels
         altLabel: _skos + "altLabel",
 
-        /** 
-            Long description or content of a text fragment
-            @const items.description 
-        **/
+        // Long description or content of a text fragment
         description: _dce + "description",
 
-        /** 
-            Image contained in the text fragment, or associated with the item
-            @const items.image 
-        **/
+        // Image contained in the text fragment, or associated with the item
         image: "http://xmlns.com/foaf/0.1/depiction",
 
         // TODO: the items have an rdfType field which contains the types, call
         //       this rdfTypes as well?
-        /** 
-            Used for item types, see rdf.type
-            @const items.type 
-        **/
+        // Used for item types, see rdf.type
         type: ns.rdf.type,
 
-        /** 
-            Web URL where the item has been created
-            @const items.pageContext 
-        **/
+        // Web URL where the item has been created
         pageContext: _pnd + "hasPageContext",
 
-        /** 
-            Closest named content or container for this item
-            @const items.isPartOf 
-        **/
+        // Closest named content or container for this item
         isPartOf: _dct + "isPartOf",
         
-        /** 
-            TODO
-            @const items.selector 
-        **/
         selector: "http://www.w3.org/ns/openannotation/core/hasSelector",
-        /** 
-            TODO
-            @const items.parentItemXP 
-        **/
+        
         parentItemXP: _pnd + "parentItemXP"
     };
 
     // Notebook properties
     ns.notebook = {
-        /** 
-            Name of the notebook
-            @const notebooks.label
-        **/
+        // Name of the notebook
         label: ns.rdfs.label,
 
-        /** 
-            Can be public or private
-            @const notebooks.visibility
-        **/
+        // Can be public or private
         visibility: "http://open.vocab.org/terms/visibility",
 
-        /** 
-            TODO
-            @const notebooks.created
-        **/
         created: _dct + "created",
 
-        /** 
-            Creator and owner of the notebook
-            @const notebooks.creator 
-        **/
         creator: _dct + "creator",
 
-        /** 
-            Name of the creator and owner of the notebook
-            @const notebooks.creatorName 
-        **/
+        // Name of the creator and owner of the notebook
         creatorName: _dce + "creator",
 
-        /** 
-            Notebook's id
-            @const notebooks.id
-        **/
+        //Notebook's id
         id: _pnd + "id",
 
-        /** 
-            Annotations this notebook includes
-            @const notebooks.includes
-        **/
+        // Annotations this notebook includes
         includes: _pnd + "includes",
 
-        /** 
-            Rdf type of the notebook, see rdf_type
-            @const notebooks.type
-        **/
+        //Rdf type of the notebook, see rdf_type
         type: ns.rdf.type
     };
 
