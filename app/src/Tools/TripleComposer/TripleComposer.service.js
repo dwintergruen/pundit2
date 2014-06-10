@@ -59,6 +59,13 @@ angular.module('Pundit2.TripleComposer')
      */
     clientDashboardTabTitle: "Statements Composer",
 
+    savingMsg: "We are saving your annotation",
+    savingMsgTime: 500,
+
+    notificationSuccessMsg: "Your annotation has been saved successfully",
+    notificationErrorMsg: "We were unable to save your annotation",
+    notificationMsgTime: 1000,
+
     /**
      * @module punditConfig
      * @ngdoc property

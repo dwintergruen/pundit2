@@ -1,15 +1,12 @@
 angular.module('Pundit2.TripleComposer')
-.controller('TripleComposerCtrl', function($scope, $http, Annotation, TripleComposer, NameSpace, TypesHelper, XpointersHelper, MyPundit) {
+.controller('TripleComposerCtrl', function($scope, $http, $timeout, Annotation, TripleComposer, NameSpace, TypesHelper, XpointersHelper, MyPundit) {
 
     // statements objects are extend by this.addStatementScope()
     // the function is called in the statement directive link function
     $scope.statements = TripleComposer.getStatements();
 
     $scope.saving = false;
-    var savingMsg = "We are saving your annotation",
-        successMsg = "Your annotation has been saved successfully",
-        errorMsg = "";
-    $scope.textMessage = savingMsg;
+    $scope.textMessage = TripleComposer.options.savingMsg;
 
     this.removeStatement = function(id){
         id = parseInt(id, 10);
@@ -40,6 +37,16 @@ angular.module('Pundit2.TripleComposer')
         TripleComposer.addStatement();
     };
 
+    // update triple composer messagge then after "time" (ms)
+    // restore default template content
+    var updateMessagge = function(msg, time){
+        $scope.textMessage = msg;
+        $timeout(function(){
+            $scope.saving = false;  
+        }, time);
+    };
+
+    var savePromise, promiseResolved;
     $scope.saveAnnotation = function(){
         // test with notebook "b81c0aa3"
 
@@ -59,7 +66,9 @@ angular.module('Pundit2.TripleComposer')
                     return;
                 }
 
-                //$scope.textMessage = savingMsg;
+                $scope.textMessage = TripleComposer.options.savingMsg;
+                promiseResolved = false;
+                savePromise = $timeout(function(){ promiseResolved = true; }, TripleComposer.options.savingMsgTime);
                 $scope.saving = true;
 
                 $http({
@@ -79,19 +88,36 @@ angular.module('Pundit2.TripleComposer')
                     }
                 }).success(function(data) {
 
-                   $scope.saving = false;
-                   $scope.statements = TripleComposer.reset();
-                   angular.element('.pnd-triplecomposer-save').addClass('disabled');
+                    // reset triple composer state
+                    $scope.statements = TripleComposer.reset();
+                    // disable save button
+                    angular.element('.pnd-triplecomposer-save').addClass('disabled');
+                    // if you have gone at least 500ms
+                    if (promiseResolved) {
+                        updateMessagge(TripleComposer.options.notificationSuccessMsg, TripleComposer.options.notificationMsgTime);
+                    } else {
+                        savePromise.then(function(){
+                            updateMessagge(TripleComposer.options.notificationSuccessMsg, TripleComposer.options.notificationMsgTime);
+                        });
+                    }
+                    
 
-                   // TODO add annnotation to annotationExchange then consolidate all
-                   // TODO remove new Annotation (this load annotation from server)
-                   new Annotation(data.AnnotationID).then(function(ann){
+                    // TODO add annnotation to annotationExchange then consolidate all
+                    // TODO remove new Annotation (this load annotation from server)
+                    new Annotation(data.AnnotationID).then(function(ann){
                         console.log(ann);
-                   });
+                    });
                 }).error(function(msg) {
                     // TODO
-                    $scope.saving = false;
                     console.log(msg);
+                    // if you have gone at least 500ms
+                    if (promiseResolved) {
+                        updateMessagge(TripleComposer.options.notificationErrorMsg, TripleComposer.options.notificationMsgTime);
+                    } else {
+                        savePromise.then(function(){
+                            updateMessagge(TripleComposer.options.notificationErrorMsg, TripleComposer.options.notificationMsgTime);
+                        });
+                    }
                 });
 
 
