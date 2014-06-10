@@ -42,25 +42,25 @@ angular.module('punditConfig');
  *
  * The "modules" property allows you to configure the various modules of Pundit2, 
  * a full list of modules is available here:
- *  - AnnotationDetails
- *  - AnnotationSidebar
- *  - Analytics
- *  - Dashboard
- *  - FreebaseSelector
- *  - KorboBasketSelector
- *  - MyPundit
- *  - MyItems
- *  - MyIyemsContainer
- *  - MurucaSelector
- *  - PageItemsContainer
- *  - Preview
- *  - ResourcePanel
- *  - SelectorsManager
- *  - TextFragmentAnnotator
- *  - TextFragmentHandler
- *  - Toolbar
- *  - TripleComposer
- *  - VocabulariesContainer
+ *  - {@link punditConfig.modules#AnnotationDetails AnnotationDetails}
+ *  - {@link punditConfig.modules#AnnotationSidebar AnnotationSidebar}
+ *  - {@link punditConfig.modules#Analytics Analytics}
+ *  - {@link punditConfig.modules#Dashboard Dashboard}
+ *  - {@link punditConfig.modules#FreebaseSelector FreebaseSelector}
+ *  - {@link punditConfig.modules#KorboBasketSelector KorboBasketSelector}
+ *  - {@link punditConfig.modules#MyPundit MyPundit}
+ *  - {@link punditConfig.modules#MyItems MyItems}
+ *  - {@link punditConfig.modules#MyIyemsContainer MyIyemsContainer}
+ *  - {@link punditConfig.modules#MurucaSelector MurucaSelector}
+ *  - {@link punditConfig.modules#PageItemsContainer PageItemsContainer}
+ *  - {@link punditConfig.modules#Preview Preview}
+ *  - {@link punditConfig.modules#ResourcePanel ResourcePanel}
+ *  - {@link punditConfig.modules#SelectorsManager SelectorsManager}
+ *  - {@link punditConfig.modules#TextFragmentAnnotator TextFragmentAnnotator}
+ *  - {@link punditConfig.modules#TextFragmentHandler TextFragmentHandler}
+ *  - {@link punditConfig.modules#Toolbar Toolbar}
+ *  - {@link punditConfig.modules#TripleComposer TripleComposer}
+ *  - {@link punditConfig.modules#VocabulariesContainer VocabulariesContainer}
  *
  * All the configurable properties of the modules are available within {@link #!/api/punditConfig/object/modules modules}. 
  **/
