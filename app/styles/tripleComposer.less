@@ -23,10 +23,11 @@
     }
     
     .pnd-statement-label  {
-    white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-    }
+    	white-space: nowrap;
+    	overflow: hidden;
+    	text-overflow: ellipsis;
+    	height: 26px;
+    	}
 
 
 //
@@ -40,6 +41,8 @@
         margin: 5px 5px 0px 0px;
         padding: 3px 0px;
         min-height: 25px;
+        color: #fff;
+        overflow: hidden;
         }
     
     .pnd-row-button-subject {
@@ -56,11 +59,68 @@
         }
 
 
-.pnd-btn-statement  {
-        //width: 26px;
+    .pnd-btn-statement  {
         height: 26px;
         }
+        
+//
+// Item rollover
+// --------------------------------------------------
 
+.pnd-row-button-object {
+        	
+        .pnd-item {
+	    	margin-left: -50px;
+	    	}
+	 }
+
+
+	.pnd-item {
+		    white-space: nowrap;
+	    	overflow: hidden;
+	    	text-overflow: ellipsis;
+	    	transition: margin-left 250ms 150ms linear;
+	    	margin: 0px;
+	    	margin-left: -20px;
+	    	padding: 0px;
+	    	border-bottom: 0px;
+	    	     	   	
+	    	     	   	
+		    &:hover {
+		    	transition: margin-left 250ms 150ms linear;
+		    	margin-left: 0px; 
+		    	background-color: transparent;
+		    	
+		    	    .pnd-item-typeLabel {
+			    	   // background-color: #fff;
+			    	    }
+		    	}
+	    	
+	    .pnd-item-buttons {
+		 	margin-right: 2px;
+		 	display: inline;
+		 	float: left;
+		    }
+		
+	
+	    .pnd-item-text {
+		    display: inline;
+	    }
+	
+	    .pnd-item-label {
+		    display: inline;
+		    font-weight: bold;
+	    	}
+	
+	    .pnd-item-typeLabel {
+			display: inline-block;
+			background-color: @gray-lighter;
+			padding: 2px 5px 3px 5px;
+			//width: 9em;
+			}
+	
+	}
+	
 
 //
 // Input and icon
@@ -80,7 +140,7 @@
 	.left-inner-icon .pnd-icon {
 	    position: absolute;
 	    color: @gray-light;
-	    right: 12px;
+	    right: 5px;
 	    top: 0px;
 	    padding: 7px;
 	    -moz-box-sizing: border-box;

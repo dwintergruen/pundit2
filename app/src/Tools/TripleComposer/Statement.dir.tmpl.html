@@ -23,8 +23,16 @@
         <!-- Complete Subject -->
         <div ng-show="subjectFound" ng-mouseover="subjectOver=true" ng-mouseleave="subjectOver=false">
             <div class="pnd-statement-label">{{subjectLabel}}</div>
-            <div ng-hide="subjectOver">{{subjectTypeLabel}}</div>
-            <button ng-show="subjectOver" ng-click="wipeSubject()">D</button>
+            <!-- Subject buttons -->
+            <div class="pnd-row-button-subject">
+            	<div class="pnd-item">
+		            <div class="pnd-item-buttons">
+		            <button type="button" class="btn btn-xs btn-link" title="delete" ng-click="wipeSubject()"><span class="pnd-icon pnd-icon-trash-o"></span></button>
+		            </div>
+		            <div class="pnd-item-text"> {{subjectTypeLabel}}</div>
+	            </div>
+            </div>
+            <!-- // end Subject buttons -->
         </div>
 
     </div>
@@ -48,8 +56,12 @@
 
         <!-- Complete Predicate -->
         <div ng-show="predicateFound" ng-mouseover="subjectOver=true" ng-mouseleave="subjectOver=false">
-            <div class="pnd-statement-label">{{predicateLabel}}</div>
-            <button ng-click="wipePredicate()">D</button>
+	        <div class="pnd-statement-label">{{predicateLabel}}</div>
+	        <!-- Predicate buttons -->
+	        <div class="pnd-row-button-predicate">
+	            <button type="button" class="btn btn-xs btn-link" title="delete"  ng-click="wipePredicate()"><span class="pnd-icon pnd-icon-trash-o"></span></button>
+            </div>
+            <!-- // end Predicate buttons -->            
         </div>
 
     </div>
@@ -80,10 +92,20 @@
 
         <!-- Complete Object -->
         <div ng-show="objectFound" ng-mouseover="objectOver=true" ng-mouseleave="objectOver=false">
-            <div class="pnd-statement-label">{{objectLabel}}</div>
-            <div ng-hide="objectOver">{{objectTypeLabel}}</div>
-            <button ng-show="objectOver" ng-click="wipeObject()">D</button>
-            <button ng-show="objectOver && objectLiteral" ng-click="onClickObjectLiteral($event)">P</button>
+	        <div class="pnd-statement-label">{{objectLabel}}</div>
+	        
+	        <!-- Object buttons -->
+            <div class="pnd-row-button-object">
+            	<div class="pnd-item">  
+		            <div class="pnd-item-buttons">
+		            <button type="button" class="btn btn-xs btn-link" title="delete" ng-click="wipeObject()"><span class="pnd-icon pnd-icon-trash-o"></span></button>
+		            <button type="button" class="btn btn-xs btn-link" title="text" ng-click="onClickObjectLiteral($event)"><span class="pnd-icon pnd-icon-pencil"></span></button>   
+		            </div>
+		            <div class="pnd-item-text"> {{objectTypeLabel}} e alla fine è da vedere che succede</div>
+	            </div>
+            </div>
+            <!-- // end Object buttons -->
+	        
         </div>
 
     </div>
