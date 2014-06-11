@@ -8,7 +8,11 @@ angular.module('Pundit2.Preview')
      * @description
      * `object`
      *
-     * Configuration for Preview module
+     * Configuration for Preview module.
+     * Preview panel is that component where is possible to see a preview of some item's details(like label, descriptio, types,...) .
+     * It is shown in a panel in the dashboard. As default, it is shown in 'details' panel, but it is possible to configure it.
+     * When preview panel is empty, a welcome message will be shown.
+     *
      */
 
     /**

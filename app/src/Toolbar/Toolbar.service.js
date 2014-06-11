@@ -8,7 +8,9 @@ angular.module('Pundit2.Toolbar')
      * @description
      * `object`
      *
-     * Configuration for Toolbar module
+     * Configuration for Toolbar module.
+     * Toolbar is always visible and positioned at the top of the page
+     * and push content of the page down by the CSS bodyClass. It is possible to configure the link to Ask Page.
      */
 
     /**
@@ -34,7 +36,7 @@ angular.module('Pundit2.Toolbar')
      * @description
      * `string`
      *
-     * URL to Ask the Pundit user's page
+     * URL to Ask the Pundit shown where user is logged in. By default it link to myAsk user's page
      *
      * Default value:
      * <pre> askLinkUser: "http://demo-cloud.ask.thepund.it/#/myAsk/" </pre>

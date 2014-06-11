@@ -8,7 +8,10 @@ angular.module('Pundit2.ResourcePanel')
      * @description
      * `object`
      *
-     * Configuration for Resource Panel module
+     * Configuration for Resource Panel module.
+     * Resource Panel is that component where are shown subject, predicates or object to add in the triple composer statement.
+     * It is possible to select an item shown in the panel, or search an item in the active selectors.
+     * In case of date type, will be shown a calendar popover initialized with a specific date. This date is configurable.
      */
 
     /**
@@ -19,7 +22,7 @@ angular.module('Pundit2.ResourcePanel')
      * @description
      * `number`
      *
-     * Time delay between insert label to search and vocabularies start searching that label.
+     * Time delay between insert label to search and selectors start searching that label.
      */
     vocabSearchTimer: 1000,
 
