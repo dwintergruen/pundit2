@@ -6,4 +6,5 @@
     <!-- buildexamples:process -->
         <%= conf.examplesLinks %>
     <!-- endbuild -->
+    |<a href="../../build/docs" target="_blank"> Docs </a>
 </header>
