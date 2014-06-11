@@ -1,5 +1,6 @@
 angular.module('Pundit2.Preview')
     .controller('ItemPreviewCtrl', function($scope, TypesHelper, ItemsExchange, $element, Preview) {
+        $scope.typeHidden = true;
 
         // get the label of a type from his uri
         $scope.getTypeLabel = function(uri) {
@@ -22,20 +23,18 @@ angular.module('Pundit2.Preview')
         $scope.$watch(function() {
             return angular.element($element).find('li.pnd-preview-single-type').css('width');
         }, function() {
-
+            $scope.typeHidden = true;
             var liList;
 
+            // if preview sticky item,
             if($scope.isSticky){
-
                 $scope.typeHiddenPresent = $scope.prev;
 
             }else{
 
-                //liList = angular.element('ul.pnd-preview-item-types-ul li:not(.pnd-is-sticky)');
                 liList = angular.element($element).find('div.pnd-preview-item-types').children('ul.pnd-preview-item-types-ul').children('li:not(.pnd-is-sticky)');
 
                 // get <ul> width containing types
-                //var luWidth = parseInt(angular.element('.pnd-preview-item-types-ul').css('width'), 10);
                 var luWidth = parseInt(angular.element($element).find('div.pnd-preview-item-types').children('ul.pnd-preview-item-types-ul').css('width'), 10);
 
                 // get height (with margin) of single <li> element
@@ -50,9 +49,8 @@ angular.module('Pundit2.Preview')
                     prevDivPadding = parseInt(angular.element('.pnd-preview-item-image').css('padding-top'), 10);
                 } else if(angular.element('.pnd-preview-item-description').length > 0){
                     prevDivPadding = parseInt(angular.element('.pnd-preview-item-description').css('padding-top'), 10);
-                    console.log(prevDivPadding);
+
                 }
-        //angular.element($element).find('div.pnd-preview-item-types').children('.pnd-preview-item-image')
 
                 // set div types height
                 var h = heightLiSingle + prevDivPadding;
@@ -63,15 +61,26 @@ angular.module('Pundit2.Preview')
                 $scope.heigthTypesDiv = h;
                 checkFitTypes(liList, luWidth);
 
-                var li = angular.element('li.pnd-preview-single-type');
-
             }
+
+        });
+
+        // when change width panel where preview is shown...
+        $scope.$watch(function() {
+            return angular.element('div.pnd-preview').width();
+        }, function() {
+            // ... update types visible and not
+            var liList = angular.element($element).find('div.pnd-preview-item-types').children('ul.pnd-preview-item-types-ul').children('li');
+            var luWidth = angular.element($element).find('div.pnd-preview-item-types').children('ul.pnd-preview-item-types-ul').width();
+            checkFitTypes(liList, luWidth);
+
 
         });
 
         // check if there is at least a type that doesn't fit in <ul> width
         // set a flag in itemPreview scope
         var checkFitTypes = function(typeList, ulWidth) {
+            // store current state. It is used when show types of sticky element
             $scope.prev = $scope.typeHiddenPresent;
             var tmpWidth = 0,
             // offset for caret icon
@@ -97,8 +106,8 @@ angular.module('Pundit2.Preview')
             return false;
         };
 
-        $scope.typeHidden = true;
 
+        // hide/show types
         $scope.showAlltypes = function() {
             // get div where types list is shown
             var div = angular.element('div.pnd-preview-item-types');
