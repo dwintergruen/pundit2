@@ -12,10 +12,17 @@
 
 
 .pnd-panel-tab-content-header{
-	min-height: 32px;
+	min-height: 35px;
 	border-bottom: 1px solid @gray-light;
 	padding: 0px 0px 0px 10px;
     margin: 10px 0px 10px 0px;
+    
+    
+    &.pnd-panel-tab-content-header-no-border {
+    	min-height: 34px;
+		margin: 10px 10px 0px 0px;
+		border-bottom: 0px; 
+	    }
          
 	.left-inner-icon {
 	    position: relative;
@@ -141,7 +148,10 @@
 	
 }
 
-	// Footer
+//
+// Footer
+// --------------------------------------------------
+
 	
 	.pnd-panel-tab-content-footer{
 		display: block;
