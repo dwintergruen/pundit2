@@ -22,7 +22,7 @@
 
         <!-- Complete Subject -->
         <div ng-show="subjectFound" ng-mouseover="subjectOver=true" ng-mouseleave="subjectOver=false">
-            <div>{{subjectLabel}}</div>
+            <div class="pnd-statement-label">{{subjectLabel}}</div>
             <div ng-hide="subjectOver">{{subjectTypeLabel}}</div>
             <button ng-show="subjectOver" ng-click="wipeSubject()">D</button>
         </div>
@@ -48,7 +48,7 @@
 
         <!-- Complete Predicate -->
         <div ng-show="predicateFound" ng-mouseover="subjectOver=true" ng-mouseleave="subjectOver=false">
-            <div>{{predicateLabel}}</div>
+            <div class="pnd-statement-label">{{predicateLabel}}</div>
             <button ng-click="wipePredicate()">D</button>
         </div>
 
@@ -80,7 +80,7 @@
 
         <!-- Complete Object -->
         <div ng-show="objectFound" ng-mouseover="objectOver=true" ng-mouseleave="objectOver=false">
-            <div>{{objectLabel}}</div>
+            <div class="pnd-statement-label">{{objectLabel}}</div>
             <div ng-hide="objectOver">{{objectTypeLabel}}</div>
             <button ng-show="objectOver" ng-click="wipeObject()">D</button>
             <button ng-show="objectOver && objectLiteral" ng-click="onClickObjectLiteral($event)">P</button>
