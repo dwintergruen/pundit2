@@ -45,8 +45,10 @@ angular.module('punditConfig');
  *  - {@link #!/api/punditConfig/object/modules#AnnotationDetails AnnotationDetails}
  *  - {@link #!/api/punditConfig/object/modules#AnnotationSidebar AnnotationSidebar}
  *  - {@link #!/api/punditConfig/object/modules#Analytics Analytics}
+ *  - {@link #!/api/punditConfig/object/modules#Client Client}
  *  - {@link #!/api/punditConfig/object/modules#Dashboard Dashboard}
  *  - {@link #!/api/punditConfig/object/modules#FreebaseSelector FreebaseSelector}
+ *  - {@link #!/api/punditConfig/object/modules#Item Item}
  *  - {@link #!/api/punditConfig/object/modules#KorboBasketSelector KorboBasketSelector}
  *  - {@link #!/api/punditConfig/object/modules#MyPundit MyPundit}
  *  - {@link #!/api/punditConfig/object/modules#MyItems MyItems}

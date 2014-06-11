@@ -1,9 +1,90 @@
 angular.module('Pundit2.Core')
 .constant('ITEMDEFAULTS', {
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#Item
+     *
+     * @description
+     * `object`
+     *
+     * Configuration object for Item module. This factory is used to instantiate new item.
+     */
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#Item.iconDefault
+     *
+     * @description
+     * `string`
+     *
+     * Icon used for item by default.
+     *
+     * Default value:
+     * <pre> iconDefault: 'pnd-icon pnd-icon-eye' </pre>
+     */
     iconDefault: 'pnd-icon pnd-icon-eye',
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#Item.iconImage
+     *
+     * @description
+     * `string`
+     *
+     * Icon used for image item.
+     *
+     * Default value:
+     * <pre> iconImage: 'pnd-icon pnd-icon-camera' </pre>
+     */
     iconImage: 'pnd-icon pnd-icon-camera',
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#Item.iconText
+     *
+     * @description
+     * `string`
+     *
+     * Icon used for text item.
+     *
+     * Default value:
+     * <pre> iconText: 'pnd-icon pnd-icon-align-center' </pre>
+     */
     iconText: 'pnd-icon pnd-icon-align-center',
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#Item.iconWebPage
+     *
+     * @description
+     * `string`
+     *
+     * Icon used for web page item.
+     *
+     * Default value:
+     * <pre> iconWebPage: 'pnd-icon-file-text' </pre>
+     */
     iconWebPage: 'pnd-icon-file-text',
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#Item.iconEntity
+     *
+     * @description
+     * `string`
+     *
+     * Icon used for entity item.
+     *
+     * Default value:
+     * <pre> iconEntity: 'pnd-icon pnd-icon-code-fork' </pre>
+     */
     iconEntity: 'pnd-icon pnd-icon-code-fork',
 
     classDefault: 'pnd-item-default',

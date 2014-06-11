@@ -13,13 +13,87 @@ angular.module('Pundit2.Client')
     })
 
     .constant('CLIENTDEFAULTS', {
+
+        /**
+         * @module punditConfig
+         * @ngdoc property
+         * @name modules#Client
+         *
+         * @description
+         * `object`
+         *
+         * Configuration object for Client module. Client service has the task of managing the boot process:
+         * loading the basic relationships (from "basicRelations"), downloading from the server user annotations and
+         * adding to the DOM modules configured "bootModules".
+         */
+
+        /**
+         * @ngdoc property
+         * @name modules#Client.debug
+         *
+         * @description
+         * `boolean`
+         *
+         * Active debug log
+         *
+         * Default value:
+         * <pre> debug: false </pre>
+         */
         debug: false,
+
+        /**
+         * @module punditConfig
+         * @ngdoc property
+         * @name modules#Client.relationsContainer
+         *
+         * @description
+         * `string`
+         *
+         * Name of the container used to store the configured relations in the itemsExchange.
+         *
+         * Default value:
+         * <pre> relationsContainer: "usableRelations" </pre>
+         */
         relationsContainer: "usableRelations",
+
+        /**
+         * @module punditConfig
+         * @ngdoc property
+         * @name modules#Client.bootModules
+         *
+         * @description
+         * `Array`
+         *
+         * Boot Modules name list. 
+         *
+         * Default value:
+         * <pre> bootModules: [
+         *      'Toolbar', 'Dashboard', 'AnnotationSidebar',
+         *      'Preview', 'SelectorsManager', 'PageItemsContainer',
+         *      'MyItemsContainer','TripleComposer'
+         * ] </pre>
+         */
         bootModules: [
             'Toolbar', 'Dashboard', 'AnnotationSidebar', 'Preview',
             'SelectorsManager', 'PageItemsContainer', 'MyItemsContainer',
             'TripleComposer'
         ],
+
+        /**
+         * @module punditConfig
+         * @ngdoc property
+         * @name modules#Client.basicRelations
+         *
+         * @description
+         * `Array`
+         *
+         * Basic Relations list, this items are loaded at boot
+         * and are used as predicates in the construction of the annotations.
+         *
+         * Default value:
+         *
+         * TODO extern link (array is very large)
+         */
         basicRelations: [
             {
                 "type": ["http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"],

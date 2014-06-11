@@ -21,7 +21,7 @@ angular.module('Pundit2.Core')
          * @name debugAllModules
          * @description
          * `boolean`
-         * Pundit server base URL.
+         * Active debug log for all modules.
          *
          * Default:
          * <pre> debugAllModules: false </pre>

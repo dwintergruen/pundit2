@@ -9,7 +9,7 @@ angular.module('Pundit2.Annotators')
      * @description
      * `object`
      *
-     * Configuration for Text Fragment Annotator module
+     * Configuration object for Text Fragment Annotator module.
      */
 
     /**
