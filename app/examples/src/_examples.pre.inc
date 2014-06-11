@@ -6,5 +6,6 @@
     <!-- buildexamples:process -->
         <%= conf.examplesLinks %>
     <!-- endbuild -->
+    <!-- link per accedere alla doc da demo-cloud, non funziona per accedere localmente -->
     |<a href="../build/docs" target="_blank"> Docs </a>
 </header>
