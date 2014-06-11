@@ -15,7 +15,7 @@
             <!-- Subject Buttons div -->
             <div class="pnd-row-button-subject">
                 <!--Korbo Icon-->
-                <button type="button" class="btn btn-xs btn-link"><span class="pnd-icon pnd-icon-plus"></span></button>
+                <button type="button" class="btn btn-xs btn-link" title="add"><span class="pnd-icon pnd-icon-plus"></span></button>
             </div>
 
         </div>
@@ -69,11 +69,11 @@
             <!-- Object Buttons div -->
             <div class="pnd-row-button-object">
                 <!--Korbo Icon-->
-                <button type="button" class="btn btn-xs btn-link"><span class="pnd-icon pnd-icon-plus"></span></button>
+                <button type="button" class="btn btn-xs btn-link"  title="add"><span class="pnd-icon pnd-icon-plus"></span></button>
                 <!--Calendar Icon-->
-                <button type="button" class="btn btn-xs btn-link" ng-hide="objectLiteral" ng-click="onClickObjectCalendar($event)"><span class="pnd-icon pnd-icon-table"></span></button>
+                <button type="button" class="btn btn-xs btn-link" ng-hide="objectLiteral" ng-click="onClickObjectCalendar($event)"  title="calendar"><span class="pnd-icon pnd-icon-table"></span></button>
                 <!--Pen Icon-->
-                <button type="button" class="btn btn-xs btn-link" ng-click="onClickObjectLiteral($event)"><span class="pnd-icon pnd-icon-pencil"></span></button>
+                <button type="button" class="btn btn-xs btn-link" ng-click="onClickObjectLiteral($event)"  title="text"><span class="pnd-icon pnd-icon-pencil"></span></button>
             </div>
 
         </div>
@@ -91,9 +91,9 @@
     <!-- Right buttons -->
     <div class="pnd-statement-buttons">
         <!-- close icon -->
-        <button type="button" class="btn btn-xs btn-danger pnd-btn-statement" ng-click="remove()"><span class="pnd-icon pnd-icon-trash-o"></span></button>
+        <button type="button" class="btn btn-xs btn-danger pnd-btn-statement" ng-click="remove()"  title="delete"><span class="pnd-icon pnd-icon-trash-o"></span></button>
         <!-- copy icon -->
-        <button type="button" class="btn btn-xs btn-success pnd-btn-statement" ng-click="duplicate()"><span class="pnd-icon pnd-icon-copy"></span></button>
+        <button type="button" class="btn btn-xs btn-success pnd-btn-statement" ng-click="duplicate()"  title="copy"><span class="pnd-icon pnd-icon-copy"></span></button>
     </div>
 
 </div>
