@@ -45,7 +45,7 @@ angular.module('Pundit2.Dashboard')
         var resized,
             deltaX = evt.pageX - lastPageX;
         if (deltaX === 0) { return; }
-        resized = Dashboard.tryToResizeCouples($scope.index, deltaX);        
+        resized = Dashboard.tryToResizeCouples($scope.index, deltaX);
         if (resized) {
             lastPageX = evt.pageX;
         }
@@ -59,14 +59,14 @@ angular.module('Pundit2.Dashboard')
         evt.preventDefault();
         lastPageX = evt.pageX;
         $document.on('mousemove', moveHandler);
-        $document.on('mouseup', upHandler);  
+        $document.on('mouseup', upHandler);
     };
 
     // When the panel height gets resized, we must set some tab-content height to make it
     // scrollable properly
     $scope.$watch(function() {
         return Dashboard.getContainerHeight();
-    }, function(newValue, oldValue) {
+    }, function() {
         $scope.setTabContentHeight();
     });
 

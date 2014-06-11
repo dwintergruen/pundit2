@@ -49,7 +49,7 @@ angular.module('Pundit2.ContextualMenu')
             options.placement = placement;
         } else {
             options.placement = contextualMenu.options.position;
-        }        
+        }
         options.template = 'src/ContextualMenu/dropdown.tmpl.html';
 
         return $dropdown(state.anchor, options);
@@ -70,7 +70,7 @@ angular.module('Pundit2.ContextualMenu')
 
         // filter by type
         var filteredActions = state.menuElements.filter(function(element){
-            return element.type.indexOf(state.menuType) > -1; 
+            return element.type.indexOf(state.menuType) > -1;
         });
 
         // ordering by action priority descending (big > small)
@@ -100,7 +100,7 @@ angular.module('Pundit2.ContextualMenu')
                 // by a real action element
                 content.push({
                         divider: true
-                    });             
+                    });
 
             } else {
                 // standard content
@@ -252,7 +252,7 @@ angular.module('Pundit2.ContextualMenu')
     // add submenu element to menu
     contextualMenu.addSubMenu = function(subMenuObj){
 
-        var found = state.menuElements.some(function(el, index, array){
+        var found = state.menuElements.some(function(el){
             return angular.equals(subMenuObj.name, el.name);
         });
 
@@ -260,7 +260,7 @@ angular.module('Pundit2.ContextualMenu')
             var e = angular.copy(subMenuObj);
             e.submenu = true;
             state.menuElements.push(e);
-            return true;     
+            return true;
         } else {
             contextualMenu.err('Try to add duplicated submenu element');
             return false;

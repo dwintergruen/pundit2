@@ -166,7 +166,7 @@ angular.module('Pundit2.MyItemsContainer')
     debug: false
     
 })
-.service('MyItemsContainer', function(MYITEMSCONTAINERDEFAULTS, BaseComponent, TypesHelper, ContextualMenu, MyItems, MyPundit) {
+.service('MyItemsContainer', function(MYITEMSCONTAINERDEFAULTS, BaseComponent) {
 
     var myItemsContainer = new BaseComponent('MyItemsContainer', MYITEMSCONTAINERDEFAULTS);
 

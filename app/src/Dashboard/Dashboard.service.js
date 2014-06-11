@@ -374,7 +374,7 @@ angular.module('Pundit2.Dashboard')
             configuredPanelsLen++;
         }
         if (panels.length === configuredPanelsLen) {
-            dashboard.resizeAll();    
+            dashboard.resizeAll();
         }
         
         $rootScope.$$phase || $rootScope.$digest();
@@ -413,8 +413,9 @@ angular.module('Pundit2.Dashboard')
         var currentTotal = expanded.reduce(function(total, panel, index){
 
             // TODO: Getting back from a collapse, set to min width?
-            if (panel.width < panel.minWidth)
+            if (panel.width < panel.minWidth){
                 panel.width = panel.minWidth;
+            }
 
             if (panel.index in skip) {
                 return total;
@@ -444,7 +445,7 @@ angular.module('Pundit2.Dashboard')
                 // check if after dispense delta the panel go under to min-width
                 if (newWidth < panels[i].minWidth){
                     delta = delta + (newWidth - panels[i].minWidth);
-                    panels[i].width = panels[i].minWidth;             
+                    panels[i].width = panels[i].minWidth;
                 } else {
                     panels[i].width = newWidth;
                     resizable.push(panels[i]);
@@ -475,7 +476,7 @@ angular.module('Pundit2.Dashboard')
                 if (newWidth < resizable[i].minWidth){
                     newDelta = newDelta + (newWidth - resizable[i].minWidth);
                     resizable[i].width = resizable[i].minWidth;
-                    resizable.splice(i, 1);               
+                    resizable.splice(i, 1);
                 } else {
                     resizable[i].width = newWidth;
                 }

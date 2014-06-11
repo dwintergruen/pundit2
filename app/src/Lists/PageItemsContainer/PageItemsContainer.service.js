@@ -180,8 +180,7 @@ angular.module('Pundit2.PageItemsContainer')
     debug: false
     
 })
-.service('PageItemsContainer', function(PAGEITEMSCONTAINERDEFAULTS, BaseComponent, TypesHelper,
-                                        ContextualMenu, MyPundit, ItemsExchange) {
+.service('PageItemsContainer', function(PAGEITEMSCONTAINERDEFAULTS, BaseComponent) {
 
     var pageItemsContainer = new BaseComponent('PageItemsContainer', PAGEITEMSCONTAINERDEFAULTS);
 

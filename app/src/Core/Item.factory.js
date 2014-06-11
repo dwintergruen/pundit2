@@ -223,8 +223,8 @@ angular.module('Pundit2.Core')
         i[NameSpace.item.type] = [];
 
         this.type.forEach(function(typeUri){
-            i[NameSpace.item.type].push({ type:'uri', value: typeUri})
-        })
+            i[NameSpace.item.type].push({ type:'uri', value: typeUri});
+        });
 
         if (typeof(this.altLabel) !== 'undefined'){
             i[NameSpace.item.altLabel] = [{ type:'literal', value: this.altLabel}];

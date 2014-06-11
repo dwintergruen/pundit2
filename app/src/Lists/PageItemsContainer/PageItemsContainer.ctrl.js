@@ -109,7 +109,7 @@ angular.module('Pundit2.PageItemsContainer')
     var filterItems = function(str){
 
         str = str.toLowerCase().replace(/\s+/g, ' ');
-        var strParts = str.split(' ');
+        var strParts = str.split(' '),
             reg = new RegExp(strParts.join('.*'));
 
         $scope.displayedItems = PageItemsContainer.getItemsArrays()[$scope.tabs.activeTab].filter(function(items){

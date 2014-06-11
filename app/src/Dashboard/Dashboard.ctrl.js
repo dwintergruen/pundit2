@@ -55,13 +55,13 @@ angular.module('Pundit2.Dashboard')
 
     $scope.$watch(function() {
         return Dashboard.getContainerHeight();
-    }, function(newHeight, oldHeight) {
+    }, function(newHeight) {
         jqElement.container.css({
             'height' : newHeight
         });
 
         // Push the body element down too
-        var top = parseInt(jqElement.container.css('top'));
+        var top = parseInt(jqElement.container.css('top'), 10);
         jqElement.body.css({
             'marginTop': top + newHeight
         });
@@ -69,7 +69,7 @@ angular.module('Pundit2.Dashboard')
 
     $scope.$watch(function() {
         return Dashboard.getContainerWidth();
-    }, function(newWidth, oldWidth) {
+    }, function(newWidth) {
         jqElement.container.css({
             'width' : newWidth
         });
@@ -85,7 +85,7 @@ angular.module('Pundit2.Dashboard')
         // If we are really toggling, set the new top: toolbar height if we
         // are collapsed, else add our height too
         if (typeof(newVis) !== "undefined" && typeof(oldVis) !== "undefined") {
-            var currentTop = parseInt(jqElement.container.css('top')),
+            var currentTop = parseInt(jqElement.container.css('top'), 10),
                 newTop = newVis ? currentTop + Dashboard.getContainerHeight() : currentTop;
             jqElement.body.css({
                 'marginTop': newTop
@@ -111,7 +111,7 @@ angular.module('Pundit2.Dashboard')
 
     $scope.footerMouseDownHandler = function(event) {
         if ( event.which === 1 ) {
-            event.preventDefault();        
+            event.preventDefault();
             $document.on('mouseup', footerMouseUpHandler);
             $document.on('mousemove', footerMouseMoveHandler);
 
