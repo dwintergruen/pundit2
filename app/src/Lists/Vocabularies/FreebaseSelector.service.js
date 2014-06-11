@@ -9,7 +9,8 @@ angular.module('Pundit2.Vocabularies')
      * @description
      * `object`
      *
-     * Configuration for FreebaseSelector module
+     * Configuration object for FreebaseSelector module. This factory can be instantiate
+     * more times and query items from Freebase.
      */
 
     /**

@@ -9,7 +9,8 @@ angular.module('Pundit2.Vocabularies')
      * @description
      * `object`
      *
-     * Configuration for MurucaSelector module
+     * Configuration object for MurucaSelector module. This factory can be instantiate
+     * more times and query items from Galassia Ariosto.
      */
 
     /**

@@ -9,7 +9,8 @@ angular.module('Pundit2.Vocabularies')
      * @description
      * `object`
      *
-     * Configuration for KorboBasketSelector module
+     * Configuration object for KorboBasketSelector module. This factory can be instantiate
+     * more times and query items from korbo.
      */
 
     /**
