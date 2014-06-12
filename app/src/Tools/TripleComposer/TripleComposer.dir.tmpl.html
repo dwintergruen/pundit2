@@ -6,9 +6,9 @@
 
 <!-- CONTENT -->
 
-<div class="pnd-panel-tab-content-content pnd-inner-scrollable">
+<div class="pnd-panel-tab-content-content">
 
-    <div class="pnd-triplecomposer-statements-container" ng-hide="saving">
+    <div class="pnd-triplecomposer-statements-container pnd-inner-scrollable" ng-hide="saving">
         <statement ng-repeat="s in statements" id="{{s.id}}" duplicated="s.scope.duplicated"></statement>
     </div>
     <div class="pnd-triplecomposer-text-content" ng-show="saving">
