@@ -52,6 +52,25 @@ describe('Annotation', function() {
         });
     });
 
+    it("should reject promise and raise an error when GET fail", function() {
+        var testId = 'foo';
+        $log.reset();
+        $httpBackend
+            .when('GET', NameSpace.get('asOpenAnn', {id: testId}))
+            .respond(500, 'error msg');
+
+        var promise = new Annotation(testId);
+
+        // promise is rejected after flush
+        promise.then(function(){ }, function(ret) {
+            expect(ret.indexOf("500")).toBeGreaterThan(-1);
+            expect($log.error.logs.length).toBe(1);
+        });
+
+        $httpBackend.flush();
+        
+    });
+
     it("should resolve a promise when the server has responded", function() {
         var testId = 'foo';
         $httpBackend
