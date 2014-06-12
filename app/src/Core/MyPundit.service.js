@@ -46,6 +46,19 @@ angular.module('Pundit2.Core')
      */
     loginModalCloseTimer: 1000
 })
+
+/**
+ * @ngdoc service
+ * @name MyPundit
+ * @module Pundit2.Core
+ * @description
+ *
+ * Handles the authentication workflow and stores informations about the logged-in user, like username, notebooks and other useful stuff.
+ *
+ * Checks if the user is logged in at startup, and request him to log in if needed.
+ *
+ *
+ */
 .service('MyPundit', function(BaseComponent, MYPUNDITDEFAULTS, NameSpace, $http, $q, $timeout, $modal, $window) {
     
     var myPundit = new BaseComponent('MyPundit', MYPUNDITDEFAULTS);
@@ -54,27 +67,81 @@ angular.module('Pundit2.Core')
     var loginServer,
         loginStatus,
         userData = {};
-    
-    // return the current login status
+
+    /**
+     * @ngdoc method
+     * @name MyPundit#getLoginStatus
+     * @module Pundit2.Core
+     * @function
+     *
+     * @description
+     * Return the current login status.
+     *
+     * @return {string} current login status, that could be
+     * * `loggedIn`: if user is correctly logged in
+     * * `loggedOff`: if user is not logged in
+     * * `waitingForLogIn`: when authentication workflow is running but user is not logged in yet
+     *
+    */
     myPundit.getLoginStatus = function() {
         return loginStatus;
     };
-    
-    // get if user is logged or not 
+
+    /**
+     * @ngdoc method
+     * @name MyPundit#isUserLogged
+     * @module Pundit2.Core
+     * @function
+     *
+     * @description
+     * Get if user is logged or not
+     *
+     * @return {boolean} true if user is logged in, false otherwise
+     *
+    */
     myPundit.isUserLogged = function() {
         return isUserLogged;
     };
-    
-    // get if user is logged or not 
+
+    /**
+     * @ngdoc method
+     * @name MyPundit#getUserData
+     * @module Pundit2.Core
+     * @function
+     *
+     * @description
+     * Return all information about logged-in user
+     *
+     * @return {object} object contain the following properties:
+     * * `loginStatus`: must be 1 where user is logged in
+     * * `id`: userID
+     * * `uri`: user's profile uri
+     * * `openid`: user's openid uri used to get login
+     * * `firstName`: user's first name
+     * * `lastName`: user's last name
+     * * `fullName`: user's full name
+     * * `email`: user's email
+     * * `loginServer`: url to server login page
+     *
+     */
     myPundit.getUserData = function(){
         if(userData !== '' && typeof(userData) !== 'undefined') {
             return userData;
         }
     };
 
-    // check if the user is logged in or not 
-    // return a promise, resolved as true if user is logged in
-    // false otherwise
+    /**
+     * @ngdoc method
+     * @name MyPundit#checkLoggedIn
+     * @module Pundit2.Core
+     * @function
+     *
+     * @description
+     * Check if user is logged in or not.
+     *
+     * @returns {Promise} the promise will be resolved as true if is logged in, false otherwise
+     *
+     */
     myPundit.checkLoggedIn = function() {
 
         var promise = $q.defer(),
@@ -108,8 +175,24 @@ angular.module('Pundit2.Core')
         return promise.promise;
     };
     
-    // check if user is not logged in, then open login modal
+
     var loginPromise;
+
+    /**
+     * @ngdoc method
+     * @name MyPundit#login
+     * @module Pundit2.Core
+     * @function
+     *
+     * @description
+     * Check if user is logged in or not and:
+     *
+     * * if user is logged in, resolve the login promise as true
+     * * if user is not logged in, will be open the login modal to continue authentication
+     *
+     * @returns {Promise} the promise will be resolved as true when user has finished authentication and is logged in correctly, false otherwise
+     *
+     */
     myPundit.login = function() {
 
         loginPromise = $q.defer();
@@ -130,11 +213,22 @@ angular.module('Pundit2.Core')
     
     var loginPollTimer;
 
-    // start login workflow:
-    // get login url
-    // open popup to get login
-    // polls for login happened
-    // return promise, resolved as true when user is logged in
+    /**
+     * @ngdoc method
+     * @name MyPundit#openLoginPopUp
+     * @module Pundit2.Core
+     * @function
+     *
+     * @description
+     * Open the OpenID login popup where user can get login authentication
+     *
+     * When popup is opened, start a polling that check if login is happened or not
+     *
+     * When user is logged in correctly, promise will be resolves as true
+     *
+     * If user close modal login, promise will be resolved as false
+     *
+     */
     myPundit.openLoginPopUp = function(){
 
         if (typeof(loginPromise) === 'undefined') {
@@ -174,6 +268,19 @@ angular.module('Pundit2.Core')
     };
     
     // logout
+
+    /**
+     * @ngdoc method
+     * @name MyPundit#logout
+     * @module Pundit2.Core
+     * @function
+     *
+     * @description
+     * Get user logout
+     *
+     * @returns {Promise} the promise will be resolved as true when user is logged out
+     *
+     */
     myPundit.logout = function(){
         
         var logoutPromise = $q.defer(),
@@ -211,14 +318,37 @@ angular.module('Pundit2.Core')
         // promise is needed to open modal when template is ready
         loginModal.$promise.then(loginModal.show);
     };
-    
-    // close modal and cancel timeout 
+
+    /**
+     * @ngdoc method
+     * @name MyPundit#closeLoginModal
+     * @module Pundit2.Core
+     * @function
+     *
+     * @description
+     * Close login modal and cancel polling timeout
+     *
+     * Login promise will not be resolved
+     *
+     */
     myPundit.closeLoginModal = function(){
         loginModal.hide();
         $timeout.cancel(loginPollTimer);
     };
     
     // close modal, cancel timeout and resolve loginPromise
+    /**
+     * @ngdoc method
+     * @name MyPundit#closeLoginModal
+     * @module Pundit2.Core
+     * @function
+     *
+     * @description
+     * Close login modal and cancel polling timeout
+     *
+     * In this case, authentication process will be interrupted and login promise will be resolved as true
+     *
+     */
     myPundit.cancelLoginModal = function(){
         loginModal.hide();
         loginPromise.resolve(false);
