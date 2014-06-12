@@ -1,15 +1,18 @@
 describe('Annotation', function() {
 
     var $httpBackend, $log,
-        Annotation, NameSpace;
+        Annotation, NameSpace, ItemsExchange,
+        PAGEITEMSCONTAINERDEFAULTS;
 
     beforeEach(module('Pundit2'));
     beforeEach(function() {
-        inject(function($injector, _$httpBackend_, _$log_) {
+        inject(function($injector, _$httpBackend_, _$log_, _ItemsExchange_, _PAGEITEMSCONTAINERDEFAULTS_) {
             $httpBackend = _$httpBackend_;
             $log = _$log_;
             Annotation = $injector.get('Annotation');
             NameSpace = $injector.get('NameSpace');
+            ItemsExchange = $injector.get('ItemsExchange');
+            PAGEITEMSCONTAINERDEFAULTS = $injector.get('PAGEITEMSCONTAINERDEFAULTS');
         });
     });
 
@@ -66,6 +69,92 @@ describe('Annotation', function() {
         });
         $httpBackend.flush();
 
+    });
+
+    it("should correctly add entities, predicates and items uri to annotation", function() {
+        var testId = 'foo';
+        $httpBackend
+            .when('GET', NameSpace.get('asOpenAnn', {id: testId}))
+            .respond(testAnnotations.simple2);
+
+        var ann,
+            promise = new Annotation(testId);
+        waitsFor(function() { return ann; }, 2000);
+        runs(function() {
+            var subUri = Object.keys(testAnnotations.simple2.graph)[0],
+                predUri = Object.keys(testAnnotations.simple2.graph[subUri])[0],
+                objUri = testAnnotations.simple2.graph[subUri][predUri][0].value;
+
+            expect(ann.id).toBe(testId);
+
+            expect(ann.entities[0]).toBe(subUri);
+            expect(typeof(ann.items[subUri])).toBe('object');
+
+            expect(ann.predicates[0]).toBe(predUri);
+            expect(typeof(ann.items[predUri])).toBe('object');
+
+            expect(ann.entities[1]).toBe(objUri);
+            expect(typeof(ann.items[objUri])).toBe('object');
+
+        });
+        promise.then(function(ret) {
+            ann = ret;
+        });
+        $httpBackend.flush();
+    });
+
+    it("should correctly add annotation items to itemsExchange", function() {
+        var testId = 'foo';
+        $httpBackend
+            .when('GET', NameSpace.get('asOpenAnn', {id: testId}))
+            .respond(testAnnotations.simple2);
+
+        var ann,
+            promise = new Annotation(testId);
+        waitsFor(function() { return ann; }, 2000);
+        runs(function() {
+            var subUri = Object.keys(testAnnotations.simple2.graph)[0],
+                predUri = Object.keys(testAnnotations.simple2.graph[subUri])[0],
+                objUri = testAnnotations.simple2.graph[subUri][predUri][0].value;
+
+            var subject = ItemsExchange.getItemByUri(subUri),
+                predicate = ItemsExchange.getItemByUri(predUri),
+                object = ItemsExchange.getItemByUri(objUri);
+
+            expect(typeof(subject)).toBe('object');
+            expect(typeof(predicate)).toBe('object');
+            expect(typeof(object)).toBe('object');
+
+            // items is added to page items container (not predicate)
+            expect(ItemsExchange.getItemsByContainer(PAGEITEMSCONTAINERDEFAULTS.container).length).toBe(2);
+        });
+        promise.then(function(ret) {
+            ann = ret;
+        });
+        $httpBackend.flush();
+    });
+
+    it("should correctly add annotation metadata", function() {
+        var testId = 'foo';
+        $httpBackend
+            .when('GET', NameSpace.get('asOpenAnn', {id: testId}))
+            .respond(testAnnotations.simple2);
+
+        var ann,
+            promise = new Annotation(testId);
+        waitsFor(function() { return ann; }, 2000);
+        runs(function() {
+            var notebookId = 'e39af478';
+            // TODO take it from fixture file
+            var targetValue = 'http://metasound.dibet.univpm.it/exmaple';
+            expect(ann.uri).toBe(Object.keys(testAnnotations.simple2.metadata)[0]);
+            expect(ann.isIncludedIn).toEqual(notebookId);
+            expect(ann.target[0]).toEqual(targetValue);
+        });
+        promise.then(function(ret) {
+            ann = ret;
+        });
+        $httpBackend.flush();
     });
     
 });
