@@ -1,6 +1,5 @@
 .pnd-statement-row {
-	margin-left:10px;
-	margin-right: 10px;
+	margin: 0px 10px 15px 10px;
 	position: relative;
 
 	.pnd-statement-widget {
@@ -42,11 +41,16 @@
 
 
     .pnd-statement-buttons {
-        //float: left;
         float: right;
         display: inline;
         width: 20px;
-    }
+        
+        .pnd-btn-statement  {
+	        height: 25px;
+	        width: 25px;
+	        margin-bottom: 3px;
+	        }
+        }
 
 
 //
@@ -77,10 +81,6 @@
         background-color: @object-color;
         }
 
-
-    .pnd-btn-statement  {
-        // height: 26px;
-        }
         
 //
 // Item rollover
@@ -111,7 +111,6 @@
 		    	background-color: transparent;
 		    	
 		    	    .pnd-item-typeLabel {
-			    	   // background-color: #fff;
 			    	    }
 		    	}
 	    	
@@ -135,7 +134,6 @@
 			display: inline-block;
 			background-color: @gray-lighter;
 			padding: 2px 5px 3px 5px;
-			//width: 9em;
 			}
 	
 	}
@@ -182,9 +180,15 @@
 	.btn-link {
 	    color: #fff;
 	    	
-	    	&:hover {
+	    	&:hover,
+	    	&:focus,
+	    	&:active,
+	    	&.active   {
 		    color: #fff;
+		    outline: 0;
+		    box-shadow: none;
 		    }
 	    }
 }
+
 

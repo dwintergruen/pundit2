@@ -2,6 +2,8 @@
 // Buttons
 // --------------------------------------------------
 
+
+
 // Common styles
 .btn-default,
 .btn-primary,
@@ -37,22 +39,28 @@
   .reset-filter(); // Disable gradients for IE9 because filter bleeds through rounded corners
   background-repeat: repeat-x;
   //border-color: darken(@btn-color, 14%);
+  outline: 0 !important;
+  box-shadow: none;
 
   &:hover,
   &:focus  {
     background-color: darken(@btn-color, 12%);
     background-position: 0 -15px;
+    outline: 0;
   }
 
   &:active,
   &.active {
     background-color: darken(@btn-color, 12%);
     border-color: darken(@btn-color, 14%);
+    outline: 0;
   }
 }
 
 // Common styles
 .btn {
+  outline: 0 !important;
+  box-shadow: none;
 
   // Remove the gradient for the pressed/active state
   &:active,
