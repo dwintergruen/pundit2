@@ -454,6 +454,10 @@ iframe.example {
   background:#999;
 }
 
+.type-hint-promise {
+    background:#999;
+}
+
 .type-hint-array {
   background:#F90;;
 }
