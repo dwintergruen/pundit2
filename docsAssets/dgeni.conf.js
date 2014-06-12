@@ -30,6 +30,10 @@ module.exports = function(config) {
       pattern: 'docsAssets/fakeSrc/*.js',
       basePath: path.resolve(__dirname, '..')
     },
+   {
+      pattern: 'docsAssets/*.js',
+      basePath: path.resolve(__dirname, '..')
+   },
     {
       pattern: 'app/src/**/*.js',
       basePath: path.resolve(__dirname, '..')

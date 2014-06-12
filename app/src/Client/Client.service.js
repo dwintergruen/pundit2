@@ -1,9 +1,4 @@
-/**
- * @ngdoc module
- * @name Pundit2
- * @module Pundit2.Client
- * @description Something ..
-**/
+
 angular.module('Pundit2.Client')
 
     .run(function(Config, Client) {
