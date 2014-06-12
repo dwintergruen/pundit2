@@ -1,4 +1,5 @@
 <div class="pnd-statement-row clearfix">
+<div class="pnd-statement-widget">
 
     <!-- Subject -->
     <div class="pnd-statement-subject">
@@ -29,7 +30,7 @@
 		            <div class="pnd-item-buttons">
 		            <button type="button" class="btn btn-xs btn-link" title="delete" ng-click="wipeSubject()"><span class="pnd-icon pnd-icon-trash-o"></span></button>
 		            </div>
-		            <div class="pnd-item-text"> {{subjectTypeLabel}}</div>
+		            <div class="pnd-item-text">&raquo; {{subjectTypeLabel}}</div>
 	            </div>
             </div>
             <!-- // end Subject buttons -->
@@ -59,7 +60,12 @@
 	        <div class="pnd-statement-label">{{predicateLabel}}</div>
 	        <!-- Predicate buttons -->
 	        <div class="pnd-row-button-predicate">
+	            <div class="pnd-item">  
+		            <div class="pnd-item-buttons">
 	            <button type="button" class="btn btn-xs btn-link" title="delete"  ng-click="wipePredicate()"><span class="pnd-icon pnd-icon-trash-o"></span></button>
+		            </div>
+		            <div class="pnd-item-text">&raquo; Predicate</div>
+	            </div>
             </div>
             <!-- // end Predicate buttons -->            
         </div>
@@ -101,7 +107,7 @@
 		            <button type="button" class="btn btn-xs btn-link" title="delete" ng-click="wipeObject()"><span class="pnd-icon pnd-icon-trash-o"></span></button>
 		            <button type="button" class="btn btn-xs btn-link" title="text" ng-click="onClickObjectLiteral($event)"><span class="pnd-icon pnd-icon-pencil"></span></button>   
 		            </div>
-		            <div class="pnd-item-text"> {{objectTypeLabel}} e alla fine è da vedere che succede</div>
+		            <div class="pnd-item-text">&raquo; {{objectTypeLabel}}</div>
 	            </div>
             </div>
             <!-- // end Object buttons -->
@@ -109,6 +115,7 @@
         </div>
 
     </div>
+</div><!-- // end widget -->
 
     <!-- Right buttons -->
     <div class="pnd-statement-buttons">

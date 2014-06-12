@@ -1,26 +1,33 @@
 .pnd-statement-row {
 	margin-left:10px;
+	margin-right: 10px;
+	position: relative;
 
+	.pnd-statement-widget {
+		position: absolute;
+		right: 25px;
+		left: 0px;
+		padding: 0px;
+		background-color: transparent;
+		overflow: hidden;
+		}
+		
     .pnd-statement-subject,
     .pnd-statement-object,
     .pnd-statement-predicate {
-        //padding: 2px;
+        padding: 5px;
         display: inline;
-        width: 30%;
+        width: 33.3%;
         float: left;
-    }
-    .pnd-statement-buttons {
-        float: left;
-        display: inline;
-        //width: 20px;
-    }
+        background-color: @gray-lighter;
+        }
 
     .pnd-statement-subject,
-    .pnd-statement-object {
-        
-    }
+    .pnd-statement-object {   
+    	}
+    	
     .pnd-statement-predicate {
-    }
+    	}
     
     .pnd-statement-label  {
     	white-space: nowrap;
@@ -28,6 +35,18 @@
     	text-overflow: ellipsis;
     	height: 26px;
     	}
+    	
+//
+// Right buttons
+// --------------------------------------------------
+
+
+    .pnd-statement-buttons {
+        //float: left;
+        float: right;
+        display: inline;
+        width: 20px;
+    }
 
 
 //
@@ -38,7 +57,7 @@
     .pnd-row-button-subject, 
     .pnd-row-button-predicate,
 	.pnd-row-button-object  {
-        margin: 5px 5px 0px 0px;
+        margin: 5px 0px 0px 0px;
         padding: 3px 0px;
         min-height: 25px;
         color: #fff;
@@ -60,7 +79,7 @@
 
 
     .pnd-btn-statement  {
-        height: 26px;
+        // height: 26px;
         }
         
 //
@@ -129,7 +148,7 @@
 
 	.left-inner-icon {
 	    position: relative;
-	    padding-right: 5px;
+	    padding: 0px;
 	    }
 	
 	.left-inner-icon input {
