@@ -13,13 +13,8 @@
     </div>
     <!-- message-->
     <div class="pnd-triplecomposer-saving-content" ng-show="saving">
-        <!-- <span class="{{savingIcon}}"></span> -->
-        <span class="pnd-icon pnd-icon-refresh pnd-icon-3x pnd-icon-spin"></span>
-        <span class="pnd-icon pnd-icon-check-circle pnd-icon-3x"></span>
-        <span class="pnd-icon pnd-icon-exclamation-circle pnd-icon-3x"></span>
-        <span class="pnd-message">{{shortMessagge}}</span>
-        <span class="pnd-message-success">{{shortMessagge}}</span>
-        <span class="pnd-message-warning">{{shortMessagge}}</span>
+        <span class="pnd-icon {{savingIcon}} pnd-icon-3x"></span>
+        <span class="{{shortMessageClass}}">{{shortMessagge}}</span>
         {{textMessage}}
     </div>
     <!-- // end message-->

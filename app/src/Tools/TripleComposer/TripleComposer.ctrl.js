@@ -5,9 +5,24 @@ angular.module('Pundit2.TripleComposer')
     // the function is called in the statement directive link function
     $scope.statements = TripleComposer.getStatements();
 
-    $scope.saving = true;
+    $scope.saving = false;
     $scope.textMessage = TripleComposer.options.savingMsg;
-    $scope.shortMessagge = "Loading then Saved or Warning";
+
+    var loadShortMsg = "Loading",
+        successShortMsg = "Saved",
+        warnShortMsg = "Warning!";
+
+    var loadIcon = "pnd-icon-refresh pnd-icon-spin",
+        successIcon = "pnd-icon-check-circle",
+        warnIcon = "pnd-icon-exclamation-circle";
+
+    var loadMessageClass = "pnd-message",
+        successMessageClass = "pnd-message-success",
+        warnMessageClass = "pnd-message-warning";
+
+    $scope.shortMessagge = loadShortMsg;
+    $scope.savingIcon = loadIcon;
+    $scope.shortMessageClass = loadMessageClass;
 
     this.removeStatement = function(id){
         id = parseInt(id, 10);
@@ -40,8 +55,19 @@ angular.module('Pundit2.TripleComposer')
 
     // update triple composer messagge then after "time" (ms)
     // restore default template content
-    var updateMessagge = function(msg, time){
+    var updateMessagge = function(msg, time, err){
         $scope.textMessage = msg;
+
+        if (err) {
+            $scope.shortMessagge = warnShortMsg;
+            $scope.savingIcon = warnIcon;
+            $scope.shortMessageClass = warnMessageClass;
+        } else {
+            $scope.shortMessagge = successShortMsg;
+            $scope.savingIcon = successIcon;
+            $scope.shortMessageClass = successMessageClass;
+        }
+        
         $timeout(function(){
             $scope.saving = false;  
         }, time);
@@ -69,8 +95,13 @@ angular.module('Pundit2.TripleComposer')
 
                 // disable save button
                 angular.element('.pnd-triplecomposer-save').addClass('disabled');
+
                 // init save process showing saving message
                 $scope.textMessage = TripleComposer.options.savingMsg;
+                $scope.shortMessagge = loadShortMsg;
+                $scope.savingIcon = loadIcon;
+                $scope.shortMessageClass = loadMessageClass;
+
                 promiseResolved = false;
                 savePromise = $timeout(function(){ promiseResolved = true; }, TripleComposer.options.savingMsgTime);
                 $scope.saving = true;
@@ -96,10 +127,10 @@ angular.module('Pundit2.TripleComposer')
                     $scope.statements = TripleComposer.reset();
                     // if you have gone at least 500ms
                     if (promiseResolved) {
-                        updateMessagge(TripleComposer.options.notificationSuccessMsg, TripleComposer.options.notificationMsgTime);
+                        updateMessagge(TripleComposer.options.notificationSuccessMsg, TripleComposer.options.notificationMsgTime, false);
                     } else {
                         savePromise.then(function(){
-                            updateMessagge(TripleComposer.options.notificationSuccessMsg, TripleComposer.options.notificationMsgTime);
+                            updateMessagge(TripleComposer.options.notificationSuccessMsg, TripleComposer.options.notificationMsgTime, false);
                         });
                     }                    
 
@@ -113,10 +144,10 @@ angular.module('Pundit2.TripleComposer')
                     console.log(msg);
                     // if you have gone at least 500ms
                     if (promiseResolved) {
-                        updateMessagge(TripleComposer.options.notificationErrorMsg, TripleComposer.options.notificationMsgTime);
+                        updateMessagge(TripleComposer.options.notificationErrorMsg, TripleComposer.options.notificationMsgTime, true);
                     } else {
                         savePromise.then(function(){
-                            updateMessagge(TripleComposer.options.notificationErrorMsg, TripleComposer.options.notificationMsgTime);
+                            updateMessagge(TripleComposer.options.notificationErrorMsg, TripleComposer.options.notificationMsgTime, true);
                         });
                     }
                 });
