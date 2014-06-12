@@ -7,6 +7,7 @@ angular.module('Pundit2.TripleComposer')
 
     $scope.saving = false;
     $scope.textMessage = TripleComposer.options.savingMsg;
+    $scope.shortMessagge = "Loading then Saved or Warning";
 
     this.removeStatement = function(id){
         id = parseInt(id, 10);
