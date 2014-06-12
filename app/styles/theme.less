@@ -25,10 +25,12 @@
 
 .btn-xs   {   
 	line-height: normal;
+	
 .pnd-icon {
     font-size: 14px;
     //line-height: inherit;
     }
+    
     }
     
 
@@ -112,6 +114,70 @@
 }
 
 
+//
+// Icons
+// --------------------------------------------------
+
+
+.pnd-icon-spin {
+	-webkit-animation: spin 2s infinite linear;
+	-moz-animation: spin 2s infinite linear;
+	-o-animation: spin 2s infinite linear;
+	animation: spin 2s infinite linear;
+    }
+    
+		@-moz-keyframes spin {
+		  0% {
+		    -moz-transform: rotate(0deg);
+		  }
+		  100% {
+		    -moz-transform: rotate(359deg);
+		  }
+		}
+		@-webkit-keyframes spin {
+		  0% {
+		    -webkit-transform: rotate(0deg);
+		  }
+		  100% {
+		    -webkit-transform: rotate(359deg);
+		  }
+		}
+		@-o-keyframes spin {
+		  0% {
+		    -o-transform: rotate(0deg);
+		  }
+		  100% {
+		    -o-transform: rotate(359deg);
+		  }
+		}
+		@keyframes spin {
+		  0% {
+		    -webkit-transform: rotate(0deg);
+		    transform: rotate(0deg);
+		  }
+		  100% {
+		    -webkit-transform: rotate(359deg);
+		    transform: rotate(359deg);
+		  }
+		}
+
+.pnd-icon-4x {
+	font-size: 4em;
+	}
+	
+.pnd-icon-3x {
+	font-size: 3em;
+	}
+	
+.pnd-icon-2x {
+	font-size: 2em;
+	}
+	
+.pnd-icon-lg {
+	font-size: 1.33333333em;
+	line-height: 0.75em;
+	vertical-align: -15%;
+	}
 
 //
 // Images

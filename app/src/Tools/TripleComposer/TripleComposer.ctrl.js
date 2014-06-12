@@ -5,7 +5,7 @@ angular.module('Pundit2.TripleComposer')
     // the function is called in the statement directive link function
     $scope.statements = TripleComposer.getStatements();
 
-    $scope.saving = false;
+    $scope.saving = true;
     $scope.textMessage = TripleComposer.options.savingMsg;
     $scope.shortMessagge = "Loading then Saved or Warning";
 

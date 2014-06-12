@@ -11,13 +11,18 @@
     <div class="pnd-triplecomposer-statements-container pnd-inner-scrollable" ng-hide="saving">
         <statement ng-repeat="s in statements" id="{{s.id}}" duplicated="s.scope.duplicated"></statement>
     </div>
+    <!-- message-->
     <div class="pnd-triplecomposer-saving-content" ng-show="saving">
-        <span class="{{savingIcon}}"></span>
-        {{shortMessagge}}
-        <br>
+        <!-- <span class="{{savingIcon}}"></span> -->
+        <span class="pnd-icon pnd-icon-refresh pnd-icon-3x pnd-icon-spin"></span>
+        <span class="pnd-icon pnd-icon-check-circle pnd-icon-3x"></span>
+        <span class="pnd-icon pnd-icon-exclamation-circle pnd-icon-3x"></span>
+        <span class="pnd-message">{{shortMessagge}}</span>
+        <span class="pnd-message-success">{{shortMessagge}}</span>
+        <span class="pnd-message-warning">{{shortMessagge}}</span>
         {{textMessage}}
     </div>
-    
+    <!-- // end message-->
 </div> <!-- end pnd-panel-tab-content-content -->
 
 <!-- FOOTER -->
