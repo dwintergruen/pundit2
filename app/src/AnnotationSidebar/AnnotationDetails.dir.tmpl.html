@@ -56,9 +56,10 @@
             <div class="pnd-annotation-detains-item" ng-repeat="item in annotation.itemsArray">
                 <div 
                     class="pnd-annotation-details-subject" 
-                    ng-click="subInfo = !subInfo" 
                     ng-init="subInfo = false">
-                        <div class="pnd-annotation-details-subject-header">
+                        <div 
+                            class="pnd-annotation-details-item-header"
+                            ng-click="subInfo = !subInfo">
                             <span class="{{item.subject.icon}}"></span>
                             <span ng-bind-html="item.subject.label">
                                 {{item.subject.label}}
@@ -75,9 +76,10 @@
 
                 <div 
                     class="pnd-annotation-details-predicate" 
-                    ng-click="preInfo = !preInfo"
                     ng-init="preInfo = false">
-                    <div class="pnd-annotation-details-predicate-header">
+                    <div 
+                        class="pnd-annotation-details-item-header"
+                        ng-click="preInfo = !preInfo">
                         <span ng-bind-html="item.predicate.label">{{item.predicate.label}}</span>
 
                         <button type="button" class="btn">
@@ -94,9 +96,10 @@
                     <div 
                         class="pnd-annotation-details-object" 
                         ng-class="{'pnd-annotation-details-deactive': object.typeClass!='uri'}"
-                        ng-click="objInfo = toggleObjectInfo(object.typeClass, objInfo)"
                         ng-init="objInfo = false">
-                            <div class="pnd-annotation-details-object-header">
+                            <div 
+                                class="pnd-annotation-details-item-header"
+                                ng-click="objInfo = toggleObjectInfo(object.typeClass, objInfo)">
                                 <span class="{{object.icon}}"></span>
                                 <span ng-bind-html="object.label">{{object.label}}</span>
                                  ({{object.typeLabel}})
