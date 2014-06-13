@@ -176,8 +176,29 @@ angular.module('Pundit2.ResourcePanel')
         }
 
         //TODO: è stato aggiunto per visualizzare il popover in modo che rimanga sempre visibile in tutta la pagina (altrimenti una parte è nascosta nella dashboard)
-        //state.popoverOptions.container = "[data-ng-app='Pundit2']";
-        state.popover = $popover(angular.element(target), state.popoverOptions);
+        state.popoverOptions.container = "[data-ng-app='Pundit2']";
+
+        // get target top and left position
+        var left = angular.element(target).offset().left;
+        var top = angular.element(target).offset().top;
+
+        // get target width and height, including padding
+        var h = angular.element(target).outerHeight();
+        var w = angular.element(target).outerWidth();
+
+        // create div anchor (the element bound with angular strap menu reference)
+        angular.element("[data-ng-app='Pundit2']")
+            .prepend("<div class='pnd-popover-anchor' style='position: absolute; left: -500px; top: -500px;'><div>");
+
+        state.anchor = angular.element('.pnd-popover-anchor');
+
+        state.anchor.css({
+            left: left + (w/2),
+            top: top + h
+        });
+
+        //state.popover = $popover(angular.element(target), state.popoverOptions);
+        state.popover = $popover(state.anchor, state.popoverOptions);
 
         // Open the calendar automatically
         if (type === 'calendar') {
