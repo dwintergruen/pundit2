@@ -1,5 +1,5 @@
 angular.module('Pundit2.Dashboard')
-.controller('DashboardCtrl', function($document, $window, $scope, $compile, Dashboard) {
+.controller('DashboardCtrl', function($document, $window, $rootScope, $scope, $compile, Dashboard) {
 
     var jqElement = {
         container : angular.element('.pnd-dashboard-container'),
@@ -25,6 +25,7 @@ angular.module('Pundit2.Dashboard')
 
         if (width !== Dashboard.getContainerWidth()) {
             Dashboard.setContainerWidth(width);
+            $rootScope.$$phase || $scope.$digest();
         }
     };
 
@@ -107,6 +108,7 @@ angular.module('Pundit2.Dashboard')
         if ( Dashboard.increaseContainerHeight(dy) ) {
             lastPageY = event.pageY;
         }
+        $rootScope.$$phase || $scope.$digest();
     };
 
     $scope.footerMouseDownHandler = function(event) {

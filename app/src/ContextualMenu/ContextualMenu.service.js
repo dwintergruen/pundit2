@@ -174,7 +174,11 @@ angular.module('Pundit2.ContextualMenu')
      *
      * @description
      * Show contextual menu (asynchronous).
-     * TODO param
+     *
+     * @param {Number} x 
+     * @param {Number} y
+     * @param {Object} resource
+     * @param {String} type
     */
     contextualMenu.show = function(x, y, resource, type){
         

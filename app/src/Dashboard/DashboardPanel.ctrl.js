@@ -1,5 +1,5 @@
 angular.module('Pundit2.Dashboard')
-.controller('DashboardPanelCtrl', function($document, $window, $scope, $element, $timeout, Dashboard) {
+.controller('DashboardPanelCtrl', function($document, $window, $scope, $rootScope, $element, $timeout, Dashboard) {
 
     // readed from default (not change)
     $scope.collapsedWidth = Dashboard.options.panelCollapseWidth;
@@ -113,5 +113,6 @@ angular.module('Pundit2.Dashboard')
     };
 
     Dashboard.addPanel($scope);
+    $rootScope.$$phase || $scope.$digest();
     Dashboard.log('Panel '+$scope.title+' Controller Run');
 });

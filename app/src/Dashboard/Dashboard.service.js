@@ -309,7 +309,7 @@ angular.module('Pundit2.Dashboard')
         } else {
             state.containerHeight = newHeight;
         }
-        $rootScope.$apply();
+        
         return true;
     };
 
@@ -328,7 +328,6 @@ angular.module('Pundit2.Dashboard')
             // resize panels to min-width
             dashboard.resizeAll();
 
-            $rootScope.$$phase || $rootScope.$digest();
             dashboard.log('Dashboard is at min-width');
             return;
         }
@@ -336,8 +335,6 @@ angular.module('Pundit2.Dashboard')
         state.containerWidth = width;
 
         dashboard.resizeAll();
-
-        $rootScope.$$phase || $rootScope.$digest();
     };
 
 
@@ -377,7 +374,6 @@ angular.module('Pundit2.Dashboard')
             dashboard.resizeAll();
         }
         
-        $rootScope.$$phase || $rootScope.$digest();
     };
 
     dashboard.resizeAll = function(skip) {
@@ -489,7 +485,6 @@ angular.module('Pundit2.Dashboard')
 
             delta = newDelta;
         }
-
 
         $rootScope.$$phase || $rootScope.$digest();
     };
