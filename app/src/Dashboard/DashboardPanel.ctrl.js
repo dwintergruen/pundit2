@@ -1,5 +1,5 @@
 angular.module('Pundit2.Dashboard')
-.controller('DashboardPanelCtrl', function($document, $window, $scope, $element, Dashboard) {
+.controller('DashboardPanelCtrl', function($document, $window, $scope, $element, $timeout, Dashboard) {
 
     // readed from default (not change)
     $scope.collapsedWidth = Dashboard.options.panelCollapseWidth;
@@ -17,6 +17,15 @@ angular.module('Pundit2.Dashboard')
 
     // tabs
     $scope.tabs = [];
+
+    // TODO fix flickering and use better implementation
+    $scope.$watch(function() {
+        return $scope.tabs.activeTab;
+    }, function(active, oldActive) {
+        $timeout(function(){
+            $scope.setTabContentHeight();
+        }, 30);
+    });
 
     $scope.toggleCollapse = function() {
 

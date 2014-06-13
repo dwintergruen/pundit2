@@ -32,7 +32,7 @@ angular.module('Pundit2.Dashboard')
     // event on window, to be sure to intercept both window resize and scrollbars
     // show and hide events
     $scope.$watch(function() {
-        return angular.element('body').innerWidth();
+        return jqElement.body.innerWidth();
     }, resizeContainer);
 
     angular.element($window).resize(resizeContainer);

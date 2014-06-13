@@ -7,5 +7,5 @@
     </li>
 </ul>
 <div class="tab-content pnd-tab-content">
-    <div ng-repeat="pane in panes" class="tab-pane" ng-class="[$index == active ? 'active' : '']" ng-include="pane.template"></div>
+    <div ng-repeat="pane in panes" class="tab-pane" ng-class="[$index == active ? 'active' : '']" ng-include="pane.template" ng-if="$index == active"></div>
 </div>
