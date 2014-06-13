@@ -76,18 +76,21 @@ angular.module('Pundit2.AnnotationSidebar')
 
     // Watch dashboard height for top of sidebar
     $scope.$watch(function() {
-        return {
-            dashboardHeight: Dashboard.getContainerHeight(),
-            dashboardVisibility: Dashboard.isDashboardVisible()   
-        };
-    }, function(dashboardValue) {
-        if (dashboardValue.dashboardVisibility){
-            state.newMarginTopSidebar = state.toolbarHeight + dashboardValue.dashboardHeight;
+        return Dashboard.getContainerHeight();
+    }, function(dashboardHeight) {
+        state.newMarginTopSidebar = state.toolbarHeight + dashboardHeight;
+        container.css('top', state.newMarginTopSidebar + 'px');
+    });
+    $scope.$watch(function() {
+        return Dashboard.isDashboardVisible();
+    }, function(dashboardVisibility) {
+        if (dashboardVisibility){
+            state.newMarginTopSidebar = state.toolbarHeight + Dashboard.getContainerHeight();
             container.css('top', state.newMarginTopSidebar + 'px');
         } else {
             container.css('top', state.toolbarHeight + 'px');
         }
-    }, true);
+    });
 
     // Annotation sidebar height
     var resizeSidebarHeight = function(bodyHeight, windowHeight, contentHeight) {
@@ -98,13 +101,15 @@ angular.module('Pundit2.AnnotationSidebar')
         }
     };
     $scope.$watch(function() {
-        return {
-            bodyHeight: body.innerHeight(),
-            contentHeight: content.innerHeight()
-        };
+        return body.innerHeight();
     }, function(heightValue) {
-        resizeSidebarHeight(heightValue.bodyHeight, $window.innerHeight, heightValue.contentHeight);
-    }, true);
+        resizeSidebarHeight(heightValue, $window.innerHeight, content.innerHeight());
+    });
+    $scope.$watch(function() {
+        return content.innerHeight();
+    }, function(heightValue) {
+        resizeSidebarHeight(body.innerHeight(), $window.innerHeight, heightValue);
+    });
     angular.element($window).bind('resize', function () {
         resizeSidebarHeight(body.innerHeight(), $window.innerHeight, content.innerHeight());
     });
@@ -177,7 +182,6 @@ angular.module('Pundit2.AnnotationSidebar')
     $scope.$watch('annotationSidebar.filters', function(currentFilters) {
         // TODO: individuare un modo migliore per rilevare i singoli filtri attivi
         $scope.annotations = AnnotationSidebar.getAllAnnotationsFiltered(currentFilters);
-
     }, true);
 
     // $scope.$watch(function() {

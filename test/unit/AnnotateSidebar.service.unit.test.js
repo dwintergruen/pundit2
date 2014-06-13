@@ -100,7 +100,7 @@ describe('AnnotationSidebar service', function() {
         AnnotationSidebar.activateAnnotationsPanel();
 
         expect(AnnotationSidebar.isAnnotationsPanelActive()).toEqual(true);
-        expect(AnnotationSidebar.isSuggestionsPanelActive()).toEqual(false);     
+        expect(AnnotationSidebar.isSuggestionsPanelActive()).toEqual(false);
     });
 
     it('should change the suggestions panel view', function(){
@@ -111,7 +111,7 @@ describe('AnnotationSidebar service', function() {
         AnnotationSidebar.activateSuggestionsPanel();
 
         expect(AnnotationSidebar.isAnnotationsPanelActive()).toEqual(false);
-        expect(AnnotationSidebar.isSuggestionsPanelActive()).toEqual(true);     
+        expect(AnnotationSidebar.isSuggestionsPanelActive()).toEqual(true);
     });
 
     it('should reset the filters', function(){
