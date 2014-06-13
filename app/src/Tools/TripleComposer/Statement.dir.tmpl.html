@@ -89,7 +89,7 @@
                 <!--Korbo Icon-->
                 <button type="button" class="btn btn-xs btn-link" title="add"><span class="pnd-icon pnd-icon-plus"></span></button>
                 <!--Calendar Icon-->
-                <button type="button" class="btn btn-xs btn-link" ng-hide="objectLiteral" ng-click="onClickObjectCalendar($event)"  title="calendar"><span class="pnd-icon pnd-icon-table"></span></button>
+                <button type="button" class="btn btn-xs btn-link" ng-click="onClickObjectCalendar($event)"  title="calendar"><span class="pnd-icon pnd-icon-table"></span></button>
                 <!--Pen Icon-->
                 <button type="button" class="btn btn-xs btn-link" ng-click="onClickObjectLiteral($event)"  title="text"><span class="pnd-icon pnd-icon-pencil"></span></button>
             </div>
@@ -105,6 +105,10 @@
             	<div class="pnd-item">  
 		            <div class="pnd-item-buttons">
 		            <button type="button" class="btn btn-xs btn-link" title="delete" ng-click="wipeObject()"><span class="pnd-icon pnd-icon-trash-o"></span></button>
+                    <!--Calendar Icon-->
+                    <button type="button" class="btn btn-xs btn-link" ng-show="objectDate" ng-click="onClickObjectCalendar($event)"  title="calendar"><span class="pnd-icon pnd-icon-table"></span></button>
+                    <!--Pen Icon-->
+                    <button type="button" class="btn btn-xs btn-link" ng-show="objectLiteral" ng-click="onClickObjectLiteral($event)"  title="text"><span class="pnd-icon pnd-icon-pencil"></span></button>
 		            </div>
 		            <div class="pnd-item-text">&raquo; {{objectTypeLabel}}</div>
 	            </div>

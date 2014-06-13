@@ -175,6 +175,7 @@ angular.module('Pundit2.TripleComposer')
         $scope.objectSearch = "";
         $scope.objectIcon = TripleComposer.options.inputIconSearch;
         $scope.objectLiteral = false;
+        $scope.objectDate = false;
         triple.object = null; 
         ResourcePanel.hide();
         angular.element('.pnd-triplecomposer-save').addClass('disabled');
