@@ -41,6 +41,7 @@ angular.module('Pundit2.Dashboard')
         $scope.$watch(
         function() {
             //return angular.element($element).find('ul.pnd-tab-header>li').length;
+            // TODO not watch DOM element, other solution is possible ?
             return angular.element($element).children('ul.pnd-tab-header').children('li:not(.pull-right)').length;
         },
         function(liLength) {
@@ -54,10 +55,11 @@ angular.module('Pundit2.Dashboard')
     var panesWidth = 0;
 
     // when <ul> is ready, check is executed
+    var el = angular.element($element).children('ul.pnd-tab-header')
     $scope.$watch(
         function() {
             //return angular.element($element).find('ul.pnd-tab-header').css('width');
-            return angular.element($element).children('ul.pnd-tab-header').css('width');
+            return el.width();
         },
         function(newWidth) {
             panesWidth = parseInt(newWidth, 10);
