@@ -452,7 +452,7 @@ describe('Dashboard service', function() {
         expect(content.html()).toBe('mytestcontent');
     });
 
-    it("should add content as expected when dashboard is not yet ready", function(){
+    xit("should add content as expected when dashboard is not yet ready", function(){
 
         $templateCache.put('templateId.html', '<div class="testClass">mytestcontent</div>');
         $templateCache.put('secondtemplateId.html', '<div class="testClass">mytestcontent</div>');

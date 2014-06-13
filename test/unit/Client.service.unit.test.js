@@ -1,13 +1,12 @@
 describe('Client service', function() {
     
     var Client, NameSpace, SelectorsManager, ItemsExchange,
-        $rootScope,
-        $httpBackend;
+        $rootScope, $httpBackend, $templateCache, $compile;
 
     var testPunditConfig = {
         modules: {
             "Client": {
-                bootModules: ['Toolbar', 'Dashboard', 'DisabledModule'],
+                bootModules: ['Toolbar', 'Dashboard', 'DisabledModule', 'Preview'],
                 basicRelations: [
                     {
                         "type": ["http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"],
@@ -25,6 +24,10 @@ describe('Client service', function() {
             },
             "DisabledModule": {
                 active: false
+            },
+            "Preview": {
+                clientDashboardTemplate: 'templateClientId.html',
+                clientDashboardPanel: "tools"
             }
         }
     };
@@ -39,16 +42,19 @@ describe('Client service', function() {
         $httpBackend
             .when('GET', NameSpace.get('asOpenAnn', {id: 'foo'}))
             .respond({});
+        $httpBackend.whenGET(NameSpace.get('asOpenAnnMetaSearch')+"?query=%7B%22resources%22:%5B%22http:%2F%2Fserver%2F%22%5D%7D&scope=all").respond({});
+        $httpBackend.whenGET(NameSpace.get('asPref')).respond({});
+    };
+
+    var compileDirective = function(name){
+        var elem = $compile('<'+name+'></'+name+'>')($rootScope);
+        angular.element(name).remove();
+        angular.element("[data-ng-app='Pundit2']").append(elem);
+        $rootScope.$digest();
+        return elem;
     };
 
     beforeEach(module('Pundit2'));
-
-    /*
-    beforeEach(module(
-        'src/Dashboard/Dashboard.dir.tmpl.html',
-        'src/Dashboard/DashboardPanel.dir.tmpl.html',
-        'src/Toolbar/Toolbar.dir.tmpl.html'
-    ));*/
 
     beforeEach(function(){
         // extend default config
@@ -56,11 +62,13 @@ describe('Client service', function() {
         module('Pundit2');
     });
 
-    beforeEach(inject(function( _$rootScope_, _$httpBackend_,
+    beforeEach(inject(function( _$rootScope_, _$httpBackend_, _$templateCache_, _$compile_,
         _Client_, _NameSpace_, _SelectorsManager_, _ItemsExchange_ ){
 
         $rootScope = _$rootScope_;
         $httpBackend = _$httpBackend_;
+        $templateCache = _$templateCache_;
+        $compile = _$compile_;
         Client = _Client_;
         NameSpace = _NameSpace_;
         SelectorsManager = _SelectorsManager_;
@@ -103,6 +111,27 @@ describe('Client service', function() {
         expect(rootNode.find('toolbar').length).toBe(1);
     });
 
+    it('should add to the dom active modules inside dashboard panel', function(){
+
+        $templateCache.put('templateClientId.html', '<div class="testClassToFindTmpl">TestContent</div>');
+        addAllWhenHttp();
+        
+        Client.boot();
+
+        var rootNode = angular.element("[data-ng-app='Pundit2']"),
+            bootModules = rootNode.children();
+
+        // add only configured modules
+        expect(bootModules.length).toBe(2);
+        expect(rootNode.find('dashboard').length).toBe(1);
+        expect(rootNode.find('toolbar').length).toBe(1);
+
+        compileDirective('dashboard');
+        var el = angular.element.find("[title='tools'] .testClassToFindTmpl");
+        expect(el.length).toBe(1);
+        expect(el[0].innerHTML.indexOf("TestContent")).toBeGreaterThan(-1);
+    });
+
     it('should load basic relations inside itemsExchange', function(){
         
         Client.boot();
@@ -114,10 +143,12 @@ describe('Client service', function() {
         expect(relations[0].uri).toEqual(testPunditConfig.modules.Client.basicRelations[0].uri);
     });
 
-    /*it('http', function(){
+    // TODO test consolidation process
+    it('http', function(){
         addAllWhenHttp();
         Client.boot();
         $httpBackend.flush();
-    });*/
+        $rootScope.$digest();
+    });
 
 });
