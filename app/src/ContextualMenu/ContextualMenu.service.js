@@ -5,6 +5,15 @@ angular.module('Pundit2.ContextualMenu')
 
     debug: false
 })
+/**
+ * @ngdoc service
+ * @name ContextualMenu
+ * @module Pundit2.ContextualMenu
+ * @description
+ *
+ * Somethings...
+ *
+ */
 .service('ContextualMenu', function($rootScope, BaseComponent, CONTEXTUALMENUDEFAULTS, $dropdown, $window) {
 
     var contextualMenu = new BaseComponent('ContextualMenu', CONTEXTUALMENUDEFAULTS);
@@ -157,7 +166,16 @@ angular.module('Pundit2.ContextualMenu')
         
     };
 
-    // initialize the menu and show when it is ready
+    /**
+     * @ngdoc method
+     * @name ContextualMenu#show
+     * @module Pundit2.ContextualMenu
+     * @function
+     *
+     * @description
+     * Show contextual menu (asynchronous).
+     * TODO param
+    */
     contextualMenu.show = function(x, y, resource, type){
         
         // show only one menu
@@ -221,7 +239,15 @@ angular.module('Pundit2.ContextualMenu')
 
     });
 
-    // hides and destroys the shown menu
+    /**
+     * @ngdoc method
+     * @name ContextualMenu#hide
+     * @module Pundit2.ContextualMenu
+     * @function
+     *
+     * @description
+     * Hide contextual menu.
+    */
     contextualMenu.hide = function(){
         if ( state.menu === null ) {
             return;
@@ -232,7 +258,28 @@ angular.module('Pundit2.ContextualMenu')
         state.menu = null;
     };
 
-    // add passed action (use name as key to avoid duplicates)
+    /**
+     * @ngdoc method
+     * @name ContextualMenu#addAction
+     * @module Pundit2.ContextualMenu
+     * @function
+     *
+     * @description
+     * Add action to contextual menu.
+     *
+     * @param {Object} action Action to add to the menu.
+     * * `name` - `{string}` : action name, used as key to not duplicate the menu actions.
+     * * `label` - `{string}` : action label displayed inside menu.
+     * * `type` - `{Array of string}` : types of menus in which the action is shown.
+     * * `priority` - `{number}` : determines the order of the actions inside menu.
+     * * `showIf` - `{function(res)}` : if returns true, the action is shown in the menu,
+     * receives as a parameter the resource passed in the "show()".
+     * * `action` - `{function(res)}` : function that is executed when you click on the action,
+     * receives as a parameter the resource passed in the "show()".
+     *
+     * @return {boolean} true if the action was successfully added, false otherwise (duplicated action).
+     *
+    */
     contextualMenu.addAction = function(actionObj){
 
         var found = state.menuElements.some(function(el){
