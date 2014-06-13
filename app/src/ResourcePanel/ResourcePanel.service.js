@@ -156,7 +156,7 @@ angular.module('Pundit2.ResourcePanel')
         }
 
         //TODO: è stato aggiunto per visualizzare il popover in modo che rimanga sempre visibile in tutta la pagina (altrimenti una parte è nascosta nella dashboard)
-        state.popoverOptions.container = "[data-ng-app='Pundit2']";
+        //state.popoverOptions.container = "[data-ng-app='Pundit2']";
         state.popover = $popover(angular.element(target), state.popoverOptions);
 
         // Open the calendar automatically

@@ -113,15 +113,15 @@ angular.module('Pundit2.Core')
      * Return all information about logged-in user
      *
      * @return {object} object contain the following properties:
-     * * `loginStatus`: must be 1 where user is logged in
-     * * `id`: userID
-     * * `uri`: user's profile uri
-     * * `openid`: user's openid uri used to get login
-     * * `firstName`: user's first name
-     * * `lastName`: user's last name
-     * * `fullName`: user's full name
-     * * `email`: user's email
-     * * `loginServer`: url to server login page
+     * * `loginStatus` - `{number}`: must be 1 where user is logged in
+     * * `id` - `{string}`: userID
+     * * `uri` - `{string}`: user's profile uri
+     * * `openid` - `{string}`: user's openid uri used to get login
+     * * `firstName` - `{string}`: user's first name
+     * * `lastName` - `{string}`: user's last name
+     * * `fullName` - `{string}`: user's full name
+     * * `email` - `{string}`: user's email
+     * * `loginServer` - `{string}`: url to server login page
      *
      */
     myPundit.getUserData = function(){
