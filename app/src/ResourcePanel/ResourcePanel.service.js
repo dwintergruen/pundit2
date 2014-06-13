@@ -38,6 +38,26 @@ angular.module('Pundit2.ResourcePanel')
      */
     initialCalendarDate: '1900-1-01'
 })
+
+/**
+ * @ngdoc service
+ * @name ResourcePanel
+ * @module Pundit2.ResourcePanel
+ * @description
+ *
+ * Handle the resource panel visualization and its content.
+ *
+ * Given a triple (complete or not), il will be show the list of items from their provenience ('Page Items', 'My Items', 'Vocabularies')
+ *
+ * A triple is an array of URI, where:
+ * * in the first position there is the Subject URI
+ * * in the second position there is the Predicate URI
+ * * in the third position there is the Object URI
+ *
+ * A triple is defined as complete when all URI are defined, incomplete otherwise.
+ *
+ *
+ */
 .service('ResourcePanel', function(BaseComponent, RESOURCEPANELDEFAULTS,
                                    ItemsExchange, MyItems, PageItemsContainer, Client, NameSpace, SelectorsManager,
                                    $filter, $rootScope, $popover, $q, $timeout, $datepicker) {
@@ -189,11 +209,22 @@ angular.module('Pundit2.ResourcePanel')
 
     };
 
-
-    // show popover literal
-    // x,y --> coordinate where popover will be shown
-    // text --> text to show in textarea
-    // target -->  targer element clicked
+    /**
+     * @ngdoc method
+     * @name ResourcePanel#showPopoverLiteral
+     * @module Pundit2.ResourcePanel
+     * @function
+     *
+     * @description
+     * Open a popover containing a textarea where is possible to insert a literal.
+     *
+     * Popover has two buttons: `Save` that resolve a promise and `Cancel` that close the popover.
+     *
+     * @param {string} text Text to visualize into textarea. By default, textarea will be show empty
+     * @param {DOMElement} target DOM Element where to append the popover
+     * @return {Promise} when Save button is clicked, promise will be resolved with value entered in textarea
+     *
+     */
     resourcePanel.showPopoverLiteral = function(text, target){
 
         var content = {};
@@ -221,10 +252,22 @@ angular.module('Pundit2.ResourcePanel')
         return state.resourcePromise.promise;
     };
 
-    // show popover calendar
-    // x,y --> coordinate where popover will be shown
-    // date --> date to show in calendar
-    // target -->  targer element clicked
+    /**
+     * @ngdoc method
+     * @name ResourcePanel#showPopoverCalendar
+     * @module Pundit2.ResourcePanel
+     * @function
+     *
+     * @description
+     * Open a popover containing a calendar.
+     *
+     * Popover has two buttons: `Save` that resolve a promise and `Cancel` that close the popover.
+     *
+     * @param {date} date Date selected when calendar is shown. If no date is specified, will be show the date set as default in configuration (See {@link #!/api/punditConfig/object/modules#ResourcePanel.initialCalendarDate here} for details).
+     * @param {DOMElement} target DOM Element where to append the popover
+     * @return {Promise} when Save button is clicked, promise will be resolved with the selected date
+     *
+     */
     resourcePanel.showPopoverCalendar = function(date, target){
         var content = {};
         content.date = date;
@@ -254,7 +297,6 @@ angular.module('Pundit2.ResourcePanel')
     };
 
     // show popover resource panel
-    // date --> date to show in calendar
     // pageItems -->  page items to show
     // myItems -->  my items to show
     // properties -->  properties to show
@@ -290,8 +332,28 @@ angular.module('Pundit2.ResourcePanel')
 
         var searchTimer;
 
-    // triple is an array of URI [subject, predicate, object]
-    // show all items compatibile as subject
+
+    /**
+     * @ngdoc method
+     * @name ResourcePanel#showItemsForSubject
+     * @module Pundit2.ResourcePanel
+     * @function
+     *
+     * @description
+     * Open a popover where subject items are shown grouped according from their provenance ('Page items', 'My items', 'Vocabularies').
+     * If URI predicate is not defined in the triple, all items will be shown.
+     * If URI predicate is defined in the triple, will be shown only items whose types are compatible with predicate domain
+     *
+     * My items are visible only if user is logged in.
+     *
+     * It is possible to insert a label to filter shown items and start a searching of new items in the vocabularies.
+     *
+     * @param {Array} triple Array of URI (for details content of this array, see {@link #!/api/Pundit2.ResourcePanel/service/ResourcePanel here})
+     * @param {DOMElement} target DOM Element where to append the popover
+     * @param {string} label label used to search subject in the vocabularies and filter shown Page Items and My Items
+     * @return {Promise} return a promise that will be resolved when a subject is selected
+     *
+     */
     resourcePanel.showItemsForSubject = function(triple, target, label) {
 
         if(typeof(target) === 'undefined'){
@@ -425,8 +487,27 @@ angular.module('Pundit2.ResourcePanel')
 
     }
 
-    // triple is an array of URI [subject, predicate, object]
-    // show all items compatibile as object
+    /**
+     * @ngdoc method
+     * @name ResourcePanel#showItemsForObject
+     * @module Pundit2.ResourcePanel
+     * @function
+     *
+     * @description
+     * Open a popover where object items are shown grouped according from their provenance ('Page items', 'My items', 'Vocabularies').
+     * If URI predicate is not defined in the triple, all items will be shown.
+     * If URI predicate is defined in the triple, will be shown only items whose types are compatible with predicate range
+     *
+     * My items are visible only if user is logged in.
+     *
+     * It is possible to insert a label to filter shown items and start a searching of new items in the vocabularies.
+     *
+     * @param {Array} triple Array of URI (for details content of this array, see {@link #!/api/Pundit2.ResourcePanel/service/ResourcePanel here})
+     * @param {DOMElement} target DOM Element where to append the popover
+     * @param {string} label label used to search subject in the vocabularies and filter shown Page Items and My Items
+     * @return {Promise} return a promise that will be resolved when a subject is selected
+     *
+     */
     resourcePanel.showItemsForObject = function(triple, target, label) {
 
         if(typeof(target) === 'undefined'){
@@ -530,8 +611,28 @@ angular.module('Pundit2.ResourcePanel')
     var objTypes,
         subTypes;
 
-    // show only properties
-    // will be executed for predicates
+    /**
+     * @ngdoc method
+     * @name ResourcePanel#showProperties
+     * @module Pundit2.ResourcePanel
+     * @function
+     *
+     * @description
+     * Open a popover where predicate items are shown.
+     * If URI subject and object are both not defined in the triple, all predicates will be shown.
+     * If only URI subject is defined in the triple, will be shown only predicates whose domain is compatible with subject types
+     * If only URI object is defined in the triple, will be shown only predicates whose range is compatible with subject types
+     *
+     * My items are visible only if user is logged in.
+     *
+     * It is possible to insert a label to filter shown predicates.
+     *
+     * @param {Array} triple Array of URI (for details content of this array, see {@link #!/api/Pundit2.ResourcePanel/service/ResourcePanel here})
+     * @param {DOMElement} target DOM Element where to append the popover
+     * @param {string} label label used to search subject in the vocabularies and filter shown Page Items and My Items
+     * @return {Promise} return a promise that will be resolved when a subject is selected
+     *
+     */
     resourcePanel.showProperties = function(triple, target, label) {
 
         if(typeof(target) === 'undefined'){

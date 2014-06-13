@@ -266,7 +266,7 @@ angular.module('Pundit2.Preview')
      *
      * In this way, if there is not a current item shown in preview, the panel in dashboard will not be empty but the sticky item will be shown on it.
      *
-     * @param {Object} Item to check if it is the sticky item.
+     * @param {Object} Item item to check if it is the sticky item.
      * @return {boolean} `true` if the passed item is the current sticky item, `false` otherwise
      *
      */
