@@ -378,11 +378,13 @@ angular.module('Pundit2.AnnotationSidebar')
     var setAnnotationInPage = function(annotations) {
         var currentItem;
         TextFragmentAnnotator.hideAll();
-        angular.forEach(annotations, function(annotations) {
-            for (var itemUri in annotations.items){
-                currentItem = ItemsExchange.getItemByUri(itemUri);
-                if (Consolidation.isConsolidated(currentItem)){
-                    TextFragmentAnnotator.showByUri(currentItem.uri);
+        angular.forEach(annotations, function(annotation) {
+            for (var itemUri in annotation.items){
+                if(annotation.predicates.indexOf(itemUri) === -1){
+                    currentItem = ItemsExchange.getItemByUri(itemUri);
+                    if (Consolidation.isConsolidated(currentItem)){
+                        TextFragmentAnnotator.showByUri(currentItem.uri);
+                    }
                 }
             }
         });
@@ -577,7 +579,6 @@ angular.module('Pundit2.AnnotationSidebar')
     $rootScope.$watch(function() {
         return AnnotationsExchange.getAnnotations();
     }, function(annotations) {
-        // console.log(annotations);
         if (timeoutPromise) {
             $timeout.cancel(timeoutPromise);
         }
