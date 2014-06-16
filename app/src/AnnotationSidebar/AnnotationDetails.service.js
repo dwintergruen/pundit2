@@ -43,7 +43,7 @@ angular.module('Pundit2.AnnotationSidebar')
      */
     debug: false
 })
-.service('AnnotationDetails', function($rootScope, $filter, BaseComponent, AnnotationsExchange, ItemsExchange, MyPundit, TypesHelper, ANNOTATIONDETAILSDEFAULTS) {
+.service('AnnotationDetails', function($rootScope, $filter, BaseComponent, AnnotationsExchange, Consolidation, ItemsExchange, MyPundit, TypesHelper, ANNOTATIONDETAILSDEFAULTS) {
     
     var annotationDetails = new BaseComponent('AnnotationDetails', ANNOTATIONDETAILSDEFAULTS);
 
@@ -132,6 +132,21 @@ angular.module('Pundit2.AnnotationSidebar')
         return results;
     };
 
+    var isAnnotationBroken = function(currentAnnotation) {
+        var annotation = currentAnnotation;
+        var graph = annotation.graph;
+        var currentItem;
+
+        // for (var subjectUri in graph){
+        //     currentItem = ItemsExchange.getItemByUri(subjectUri);
+
+        //     if (!Consolidation.isConsolidated(currentItem))
+        //         console.log("notConsolidate-> ",currentItem);
+        // }
+
+        return false;
+    };
+
     annotationDetails.addAnnotationReference = function(scope) {
         var currentId = scope.id;
         var currentAnnotation = AnnotationsExchange.getAnnotationById(currentId);
@@ -145,6 +160,7 @@ angular.module('Pundit2.AnnotationSidebar')
             scopeReference: scope,
             mainItem: buildMainItem(currentAnnotation),
             itemsArray: buildItemsArray(currentAnnotation),
+            broken: isAnnotationBroken(currentAnnotation),
             expanded: state.defaultExpanded
         };
     };

@@ -1,13 +1,12 @@
 <div class="pnd-annotation-details">
     <div 
         class="pnd-annotation-details-header pnd-annotation-details-top" 
-        ng-show="!annotation.expanded"
         ng-click="toggleAnnotation()">
         <div class="{{annotation.mainItem.class}}">
                 <span class="{{annotation.mainItem.icon}}"></span>
                 <span>{{annotation.mainItem.label}}</span>    
                 <button type="button" class="btn btn-primary pull-right">
-                    <span class="pnd-icon-chevron-right"></span>
+                    <span ng-class="{true:'pnd-icon-chevron-down', false:'pnd-icon-chevron-right'}[annotation.expanded]"></span>
                 </button>
         </div>
     </div>
@@ -27,12 +26,6 @@
                 <button type="button" class="btn btn-primary">
                     <span class="pnd-icon-share-square-o"></span>
                     Share
-                </button>
-
-                <button 
-                    ng-click="toggleAnnotation()" 
-                    type="button" class="btn pull-right">
-                    <span class="pnd-icon-chevron-down"></span>
                 </button>
             </div>
         </div>
