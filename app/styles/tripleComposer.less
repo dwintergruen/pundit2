@@ -76,12 +76,17 @@
 	        padding: 3px 0px;
 	        min-height: 25px;
 	        color: #fff;
-	        overflow: hidden;
+	        white-space: nowrap;
+		    overflow: hidden;
+		    text-overflow: ellipsis;
+		    
+		    	button {
+			    	vertical-align: bottom;
+	        		}
 	        }
 	    
 	    .pnd-row-button-subject {
 	        background-color: @subject-color;
-	
 	        }
 	
 	    .pnd-row-button-predicate {
@@ -91,63 +96,7 @@
 	    .pnd-row-button-object {
 	        background-color: @object-color;
 	        }
-	
-	        
-	//
-	// Item rollover
-	// --------------------------------------------------
-	
-	.pnd-row-button-object {
-	        	
-	        .pnd-item {
-		    	margin-left: -50px;
-		    	}
-		 }
-	
-	
-		.pnd-item {
-			    white-space: nowrap;
-		    	overflow: hidden;
-		    	text-overflow: ellipsis;
-		    	transition: margin-left 250ms 150ms linear;
-		    	margin: 0px;
-		    	margin-left: -20px;
-		    	padding: 0px;
-		    	border-bottom: 0px;
-		    	     	   	
-		    	     	   	
-			    &:hover {
-			    	transition: margin-left 250ms 150ms linear;
-			    	margin-left: 0px; 
-			    	background-color: transparent;
-			    	
-			    	    .pnd-item-typeLabel {
-				    	    }
-			    	}
-		    	
-		    .pnd-item-buttons {
-			 	margin-right: 2px;
-			 	display: inline;
-			 	float: left;
-			    }
-			
-		
-		    .pnd-item-text {
-			    display: inline;
-		    }
-		
-		    .pnd-item-label {
-			    display: inline;
-			    font-weight: bold;
-		    	}
-		
-		    .pnd-item-typeLabel {
-				display: inline-block;
-				background-color: @gray-lighter;
-				padding: 2px 5px 3px 5px;
-				}
-		
-		}
+
 		
 	
 	//
