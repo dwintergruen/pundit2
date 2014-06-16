@@ -2,51 +2,54 @@
 
 <script>
 
-    var TripleComposerDemoCtrl = function($scope, $http, NameSpace, Annotation, Client, ItemsExchange, Item,
-                                            SelectorsManager, FreebaseSelector, MurucaSelector) {
-        var toLoad = ["da128c73"];
-
-        for (var l=toLoad.length; l--;) {
-            new Annotation(toLoad[l]);
-        }
+    var TripleComposerDemoCtrl = function($scope, $http, NameSpace, ItemsExchange, Item, CLIENTDEFAULTS, PAGEITEMSCONTAINERDEFAULTS) {
 
         var loadBasicRelations = function() {
-            var num = 0,
-                    relations = Client.options.basicRelations;
+            var num = 0, relations = CLIENTDEFAULTS.basicRelations;
             for (var p in relations) {
                 var item = new Item(relations[p].uri, relations[p]);
-                ItemsExchange.addItemToContainer(item, Client.options.relationsContainer);
+                ItemsExchange.addItemToContainer(item, CLIENTDEFAULTS.relationsContainer);
             }
-            Client.log('Loaded '+num+' basic relations');
         }();
 
-        SelectorsManager.init();
-
-        $scope.deleteNotebook = function(){
+        var items = [
+            { 
+                uri: "item1",
+                label: "item1Label",
+                type: ["http://purl.org/pundit/ont/ao#fragment-text"]
+            }
+        ];
+        var loadMockedItems = function(){
+            for (var j in items) {
+                var item = new Item(items[j].uri, items[j]);
+                ItemsExchange.addItemToContainer(item, PAGEITEMSCONTAINERDEFAULTS.container);
+            }
+        }();
+        
+        /*$scope.deleteNotebook = function(){
             $http({
-                    headers: { 'Content-Type': 'application/json' },
-                    method: 'DELETE',
-                    url: NameSpace.get('asNB')+"/0667c48c",
-                    withCredentials: true
-                }).success(function(data) {
-                    console.log(data);
-                }).error(function(msg) {
-                    console.log(msg)
-                });
+                headers: { 'Content-Type': 'application/json' },
+                method: 'DELETE',
+                url: NameSpace.get('asNB')+"/0667c48c",
+                withCredentials: true
+            }).success(function(data) {
+                console.log(data);
+            }).error(function(msg) {
+                console.log(msg)
+            });
         };
-
         $scope.setCurrentNotebook = function(){
             $http({
-                    headers: { 'Content-Type': 'application/json' },
-                    method: 'PUT',
-                    url: NameSpace.get('asNBCurrent')+"/ef8b0ac9",
-                    withCredentials: true
-                }).success(function(data) {
-                    console.log(data);
-                }).error(function(msg) {
-                    console.log(msg)
-                });
-        };
+                headers: { 'Content-Type': 'application/json' },
+                method: 'PUT',
+                url: NameSpace.get('asNBCurrent')+"/ef8b0ac9",
+                withCredentials: true
+            }).success(function(data) {
+                console.log(data);
+            }).error(function(msg) {
+                console.log(msg)
+            });
+        };*/
 
     };
 

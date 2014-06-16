@@ -12,7 +12,7 @@
         <statement ng-repeat="s in statements" id="{{s.id}}" duplicated="s.scope.duplicated"></statement>
     </div>
     <!-- message-->
-    <div class="pnd-triplecomposer-saving-content" ng-show="saving">
+    <div class="pnd-triplecomposer-saving-content" ng-if="saving">
         <span class="pnd-icon {{savingIcon}} pnd-icon-3x"></span>
         <span class="{{shortMessageClass}}">{{shortMessagge}}</span>
         {{textMessage}}
