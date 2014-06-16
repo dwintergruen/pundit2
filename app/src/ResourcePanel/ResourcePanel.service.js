@@ -179,8 +179,8 @@ angular.module('Pundit2.ResourcePanel')
         state.popoverOptions.container = "[data-ng-app='Pundit2']";
 
         // get target top and left position
-        var left = angular.element(target).offset().left;
-        var top = angular.element(target).offset().top;
+        var left = target.getBoundingClientRect().left;
+        var top = target.getBoundingClientRect().top;
 
         // get target width and height, including padding
         var h = angular.element(target).outerHeight();
