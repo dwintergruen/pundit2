@@ -1,17 +1,21 @@
-<div class="popover pnd-resource-panel-popover">
+<div class="popover pnd-resource-panel-popover" ng-controller="ResourcePanelCtrl">
     <div class="arrow"></div>
 
     <h3 class="popover-title pnd-resource-panel-popover-title">Choose your...<span style="float:right" class="pnd-icon-times" ng-click="cancel()"></span></h3>
-    <div class="popover-content pnd-resource-panel-popover-content">
+    <div class="popover-content pnd-resource-panel-popover-content panel-group" id="accordion">
+
 	    <div ng-show = "type != 'pr' && myItems.length>0"> My items ({{myItems.length}})
-            <ul class="list-group">
+            <span class="pull-left"><i ng-class="{'pnd-icon-caret-down': showMyItems, 'pnd-icon-caret-right': !showMyItems}"ng-click="toggleMyItems()"></i></span>
+            <ul class="list-group panel-collapse collapse in" id="collapseMyItems">
                 <li class="list-group-item" ng-repeat="mi in myItems">
                     <item uri="{{mi.uri}}" ng-click="save(mi)"></item>
                 </li>
             </ul>
 	    </div>
+
 	    <div ng-show = "type != 'pr' && pageItems.length>0"> Page Items ({{pageItems.length}})
-            <ul class="list-group">
+            <span class="pull-left"><i ng-class="{'pnd-icon-caret-down': showPageItems, 'pnd-icon-caret-right': !showPageItems}"ng-click="togglePageItems()"></i></span>
+            <ul class="list-group panel-collapse collapse" id ="collapsePageItems">
                 <li class="list-group-item" ng-repeat="pi in pageItems">
                     <item uri="{{pi.uri}}" ng-click="save(pi)"></item>
                 </li>
@@ -20,7 +24,8 @@
 
         <div ng-show="type == 'obj' && vocabObjStatus == 'loading'">Searching...</div>
         <div ng-repeat="s in selectors" ng-show="type == 'obj' && vocabObjStatus == 'done' && vocabObjRes[s].length>0"> {{s}} ({{vocabObjRes[s].length}})
-            <ul class="list-group">
+            <span class="pull-left pnd-vocab-{{s}} "><i class="pnd-icon-caret-right" ng-click="toggleVocab(s)"></i></span>
+            <ul class="list-group panel-collapse collapse" id ="{{s}}">
                 <li class="list-group-item" ng-repeat = "item in vocabObjRes[s]">
                     <item uri="{{item.uri}}" ng-click="save(item)"></item>
                 </li>
@@ -49,5 +54,7 @@
         <div ng-show = "type == 'sub' && vocabSubResEmpty && pageItems.length == 0 && myItems.length == 0 && vocabSubStatus == 'done'"> No subject match </div>
 
     </div>
+
+
 
 </div>

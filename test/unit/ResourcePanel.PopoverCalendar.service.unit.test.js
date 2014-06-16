@@ -75,7 +75,7 @@ describe('Calendar Popover Resource Panel service', function() {
 
     it("should open a calendar popover with a given date", function() {
 
-        var date = "1983-12-23";
+        var date = new Date("1983-12-23");
         var anchor = angular.element('.pnd-anchor')[0];
 
         ResourcePanel.showPopoverCalendar(date, anchor);
@@ -110,7 +110,7 @@ describe('Calendar Popover Resource Panel service', function() {
 
     it("should resolve a promise when save a date", function() {
 
-        var date = "1983-12-23";
+        var date = new Date("1983-12-23");
         var anchor = angular.element('.pnd-anchor')[0];
 
         var promise = ResourcePanel.showPopoverCalendar(date, anchor);
@@ -123,7 +123,7 @@ describe('Calendar Popover Resource Panel service', function() {
 
         // after saved text, promise should be resolved with saved text
         promise.then(function(value) {
-            expect(value).toBe(date);
+            expect(value).toEqual(date);
 
             // and popover should be closed
             var popover = angular.element.find('div.pnd-popover-calendar');

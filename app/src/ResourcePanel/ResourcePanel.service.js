@@ -69,7 +69,16 @@ angular.module('Pundit2.ResourcePanel')
     state.defaultPlacement = 'bottom';
     state.resourcePromise = null;
 
-    // hide and destroy a popover
+    /**
+     * @ngdoc method
+     * @name ResourcePanel#hide
+     * @module Pundit2.ResourcePanel
+     * @function
+     *
+     * @description
+     * Close and destroy the popover
+     *
+     */
     resourcePanel.hide = function(){
 
         if(state.popover === null){
@@ -109,7 +118,8 @@ angular.module('Pundit2.ResourcePanel')
             }
 
             state.popoverOptions.scope.save = function() {
-                state.resourcePromise.resolve(this.selectedDate);
+
+                state.resourcePromise.resolve(new Date(this.selectedDate));
                 resourcePanel.hide();
             };
 
@@ -208,7 +218,7 @@ angular.module('Pundit2.ResourcePanel')
             $timeout(function() {
                 angular.element(state.popover.$element)
                     .find('.pnd-input-calendar')
-                    .triggerHandler('focus');
+                    .triggerHandler('click');
             }, 1);
 
         }
@@ -297,7 +307,7 @@ angular.module('Pundit2.ResourcePanel')
             state.popover = initPopover(content, target, "", 'calendar');
             state.popover.$promise.then(function() {
                 state.popover.show();
-                $datepicker.show;
+                //$datepicker.show;
                 angular.element('input.pnd-input-calendar')[0].focus();
             });
         }
@@ -308,7 +318,7 @@ angular.module('Pundit2.ResourcePanel')
             state.popover = initPopover( "", target, "", 'calendar');
             state.popover.$promise.then(function() {
                 state.popover.show();
-                $datepicker.show;
+                //$datepicker.show;
                 angular.element('input.pnd-input-calendar')[0].focus();
             });
         }
@@ -420,6 +430,7 @@ angular.module('Pundit2.ResourcePanel')
                 // if predicate is not defined
                 if(typeof(predicate) === 'undefined' || predicate === "") {
                     // all items are good
+
                     myItems = ItemsExchange.getItemsByContainer(myItemsContainer);
                     pageItems = ItemsExchange.getItemsByContainer(pageItemsContainer);
                     // if predicate is a valid uri
