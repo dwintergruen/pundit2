@@ -14,7 +14,7 @@ describe('MurucaSelector service', function() {
         $httpBackend = _$httpBackend_;
         ItemsExchange = _ItemsExchange_;
 
-        url = new RegExp(MURUCASELECTORDEFAULTS.murucaReconURL+"*");
+        url = new RegExp(MURUCASELECTORDEFAULTS.murucaReconURL);
     }));
 
     var emptyResult = {

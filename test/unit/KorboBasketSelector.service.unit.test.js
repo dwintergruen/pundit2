@@ -15,8 +15,8 @@ describe('KorboBasketSelector service', function() {
         $httpBackend = _$httpBackend_;
         ItemsExchange = _ItemsExchange_;
 
-        url = new RegExp(KORBOBASKETSELECTORDEFAULTS.korboBasketReconURL+"*"),
-        detailsUrl = new RegExp(KORBOBASKETSELECTORDEFAULTS.korboBasketMetadataURL+KORBOBASKETSELECTORDEFAULTS.baskets[0]+"*");
+        url = new RegExp(KORBOBASKETSELECTORDEFAULTS.korboBasketReconURL),
+        detailsUrl = new RegExp(KORBOBASKETSELECTORDEFAULTS.korboBasketMetadataURL+KORBOBASKETSELECTORDEFAULTS.baskets[0]);
 
     }));
 

@@ -6,7 +6,7 @@
         modules: {
             "FreebaseSelector": {
 
-                limit: 3,
+                limit: 15,
 
                 instances: [
                     {
@@ -22,20 +22,14 @@
             },
             "MurucaSelector": {
 
-                limit: 1,
+                limit: 15,
 
                 instances: [
                     { 
                         active: true,
-                        queryType: 'http://purl.org/galassiariosto/types/Scena',
-                        container: 'murucaSc',
-                        label: 'MurucaSc'
-                    },
-                    { 
-                        active: true,
                         queryType: 'http://purl.org/galassiariosto/types/Azione',
                         container: 'murucaAz',
-                        label: 'MurucaAz'
+                        label: 'Muruca (Azione)'
                     }
                 ]
                 
