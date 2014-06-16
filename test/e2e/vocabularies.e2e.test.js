@@ -1,4 +1,4 @@
-ddescribe("Vocabularies interaction", function() {
+describe("Vocabularies interaction", function() {
     var p = protractor.getInstance();
 
     var fs = require('fs'),
