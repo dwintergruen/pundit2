@@ -5,6 +5,8 @@ describe('FreebaseSelector service', function() {
     FREEBASESELECTORDEFAULTS,
     ItemsExchange;
 
+    var url, mqlUrl, topicUrl;
+
     beforeEach(module('Pundit2'));
 
     beforeEach(inject(function(_FREEBASESELECTORDEFAULTS_, _FreebaseSelector_, _$httpBackend_, _ItemsExchange_){
@@ -12,11 +14,11 @@ describe('FreebaseSelector service', function() {
         FreebaseSelector = _FreebaseSelector_;
         $httpBackend = _$httpBackend_;
         ItemsExchange = _ItemsExchange_;
-    }));
 
-    var url = "https://www.googleapis.com/freebase/v1/search?key=AIzaSyCJjAj7Nd2wKsZ8d7XQ9ZvUwN5SF0tZBsE&limit=15&query=term",
-        mqlUrl = "https://www.googleapis.com/freebase/v1/mqlread?key=AIzaSyCJjAj7Nd2wKsZ8d7XQ9ZvUwN5SF0tZBsE&query=%7B%22id%22:null,%22mid%22:%22%2Fm%2F02qtppz%22,%22type%22:%5B%7B%7D%5D%7D",
-        topicUrl = "https://www.googleapis.com/freebase/v1/topic/m/02qtppz?filter=%2Fcommon%2Ftopic%2Fdescription&key=AIzaSyCJjAj7Nd2wKsZ8d7XQ9ZvUwN5SF0tZBsE";
+        url = new RegExp(FREEBASESELECTORDEFAULTS.freebaseSearchURL+"*"),
+        mqlUrl = new RegExp(FREEBASESELECTORDEFAULTS.freebaseMQLReadURL+"*"),
+        topicUrl = new RegExp(FREEBASESELECTORDEFAULTS.freebaseTopicURL+"*");
+    }));
 
     var emptyResult = {
         result: []

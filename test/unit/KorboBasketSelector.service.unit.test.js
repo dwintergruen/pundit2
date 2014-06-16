@@ -5,6 +5,8 @@ describe('KorboBasketSelector service', function() {
     KORBOBASKETSELECTORDEFAULTS,
     ItemsExchange;
 
+    var url, detailsUrl;
+
     beforeEach(module('Pundit2'));
 
     beforeEach(inject(function(_KORBOBASKETSELECTORDEFAULTS_, _KorboBasketSelector_, _$httpBackend_, _ItemsExchange_){
@@ -12,11 +14,11 @@ describe('KorboBasketSelector service', function() {
         KorboBasketSelector = _KorboBasketSelector_;
         $httpBackend = _$httpBackend_;
         ItemsExchange = _ItemsExchange_;
-    }));
 
-    // TODO best way?
-    var url = "http://manager.korbo.org/api.php/basket/reconcile/16?jsonp=JSON_CALLBACK&query=%7B%22query%22:%22term%22,%22limit%22:15%7D",
-        detailsUrl = "http://manager.korbo.org/16?jsonp=JSON_CALLBACK&url=http:%2F%2Fpurl.org%2Fnet7%2Fkorbo%2Fitem%2F76108";
+        url = new RegExp(KORBOBASKETSELECTORDEFAULTS.korboBasketReconURL+"*"),
+        detailsUrl = new RegExp(KORBOBASKETSELECTORDEFAULTS.korboBasketMetadataURL+KORBOBASKETSELECTORDEFAULTS.baskets[0]+"*");
+
+    }));
 
     var emptyResult = {
         result: []

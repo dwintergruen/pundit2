@@ -1,9 +1,10 @@
 describe('MurucaSelector service', function() {
 
     var MurucaSelector,
-    $httpBackend,
-    MURUCASELECTORDEFAULTS,
-    ItemsExchange;
+        $httpBackend,
+        MURUCASELECTORDEFAULTS,
+        ItemsExchange,
+        url;
 
     beforeEach(module('Pundit2'));
 
@@ -12,11 +13,9 @@ describe('MurucaSelector service', function() {
         MurucaSelector = _MurucaSelector_;
         $httpBackend = _$httpBackend_;
         ItemsExchange = _ItemsExchange_;
-    }));
 
-    // TODO use only MURUCASELECTORDEFAULTS.murucaReconURL+"?jsonp=JSON_CALLBACK"
-    // need to find a work around to skip query param
-    var url = "http://demo2.galassiaariosto.netseven.it/backend.php/reconcile?jsonp=JSON_CALLBACK&query=%7B%22query%22:%22term%22,%22type%22:%22http:%2F%2Fpurl.org%2Fgalassiariosto%2Ftypes%2FAzione%22,%22properties%22:%7B%7D,%22limit%22:5%7D";
+        url = new RegExp(MURUCASELECTORDEFAULTS.murucaReconURL+"*");
+    }));
 
     var emptyResult = {
         result: []
