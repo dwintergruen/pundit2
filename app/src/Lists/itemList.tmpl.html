@@ -1,6 +1,6 @@
-<ul class="list-group">
+<ul class="list-group" ng-if="!message.flag">
     <li class="list-group-item" ng-repeat="pndItem in displayedItems | orderBy:getOrderProperty:reverse">
         <item uri="{{pndItem.uri}}" menu-type="{{itemMenuType}}"></item>
     </li>
 </ul>
-<div class="pnd-dashboard-welcome" ng-show="message.flag">{{message.text}}</li>
+<div class="pnd-dashboard-welcome" ng-if="message.flag">{{message.text}}</li>
