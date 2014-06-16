@@ -2,16 +2,26 @@
 
 <script>
 
-    var ItemContainerDemoCtrl = function($scope, $compile, Annotation, ItemsExchange) {
-    
-        var p = new Annotation("da128c73");
-        var item;
-        p.then(function() {
-            item = ItemsExchange.getItems()[0];
-            angular.element('.pnd-wrp').append('<item uri="'+item.uri+'"></item>');
+    var ItemContainerDemoCtrl = function(Item, ItemsExchange, ContextualMenu) {
 
-            var added = angular.element('[data-ng-app="Pundit2"] item');
-            $compile(added)($scope);
+        var item = {
+            uri: "testItemUri",
+            label: "Item Label",
+            type: ["http://purl.org/pundit/ont/ao#fragment-text"]
+        };
+        new Item(item.uri, item);
+
+        ContextualMenu.addAction({
+            name: 'testMenuAction1',
+            type: ["testMenuType"],
+            label: "Menu Action 1",
+            priority: 1,
+            showIf: function(item) {
+                return true;
+            },
+            action: function(item) {
+
+            }
         });
         
     };
@@ -19,7 +29,7 @@
 </script>
 
 <div data-ng-app="Pundit2" class="pnd-wrp" ng-controller="ItemContainerDemoCtrl">
-    
+    <item uri="testItemUri" menu-type="testMenuType"></item>
 </div>
 
 <!-- buildexamples:section footer --><!-- /buildexamples -->
