@@ -51,7 +51,7 @@ describe('Calendar Popover Resource Panel service', function() {
 
     it("should open a calendar with default date if no date is given in input", function() {
 
-        var anchor = angular.element('.pnd-anchor');
+        var anchor = angular.element('.pnd-anchor')[0];
 
         // open popover calendar without date
         ResourcePanel.showPopoverCalendar("", anchor);
@@ -76,7 +76,7 @@ describe('Calendar Popover Resource Panel service', function() {
     it("should open a calendar popover with a given date", function() {
 
         var date = "1983-12-23";
-        var anchor = angular.element('.pnd-anchor');
+        var anchor = angular.element('.pnd-anchor')[0];
 
         ResourcePanel.showPopoverCalendar(date, anchor);
         $rootScope.$digest();
@@ -92,7 +92,7 @@ describe('Calendar Popover Resource Panel service', function() {
 
     it("should close a calendar popover", function() {
 
-        var anchor = angular.element('.pnd-anchor');
+        var anchor = angular.element('.pnd-anchor')[0];
         // open popover calendar
         ResourcePanel.showPopoverCalendar("", anchor);
         $rootScope.$digest();
@@ -111,7 +111,7 @@ describe('Calendar Popover Resource Panel service', function() {
     it("should resolve a promise when save a date", function() {
 
         var date = "1983-12-23";
-        var anchor = angular.element('.pnd-anchor');
+        var anchor = angular.element('.pnd-anchor')[0];
 
         var promise = ResourcePanel.showPopoverCalendar(date, anchor);
         $rootScope.$digest();
@@ -135,7 +135,7 @@ describe('Calendar Popover Resource Panel service', function() {
 
     it("should be open only one calendar popover at time", function() {
 
-        var anchor = angular.element('.pnd-anchor');
+        var anchor = angular.element('.pnd-anchor')[0];
 
         // open a calendar popover
         ResourcePanel.showPopoverCalendar("", anchor);
@@ -157,7 +157,7 @@ describe('Calendar Popover Resource Panel service', function() {
         angular.element("[data-ng-app='Pundit2']")
             .prepend("<div class='pnd-anchor-lit' style='position: absolute; left: -500px; top: -500px;'><div>");
 
-        var anchorLit = angular.element('.pnd-anchor-lit');
+        var anchorLit = angular.element('.pnd-anchor-lit')[0];
 
         // open a literal popover
         ResourcePanel.showPopoverLiteral("", anchorLit);
@@ -181,7 +181,7 @@ describe('Calendar Popover Resource Panel service', function() {
     it("should be close popover calling cancel method", function() {
 
         var date;
-        var anchor = angular.element('.pnd-anchor');
+        var anchor = angular.element('.pnd-anchor')[0];
 
         // open a literal popover
         ResourcePanel.showPopoverCalendar(date, anchor);

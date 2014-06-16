@@ -130,7 +130,7 @@ describe('Object Popover Resource Panel service', function() {
         ItemsExchange.addItemToContainer(item2, PageItemsContainer.options.container);
         ItemsExchange.addItemToContainer(item3, PageItemsContainer.options.container);
 
-        var anchor = angular.element('.pnd-anchor');
+        var anchor = angular.element('.pnd-anchor')[0];
         var triple = ["", "", ""];
 
         // open a resource panel popover
@@ -183,7 +183,7 @@ describe('Object Popover Resource Panel service', function() {
         ItemsExchange.addItemToContainer(myItem1, MyItems.options.container);
         ItemsExchange.addItemToContainer(myItem2, MyItems.options.container);
 
-        var anchor = angular.element('.pnd-anchor');
+        var anchor = angular.element('.pnd-anchor')[0];
         var triple = ["", "", ""];
 
         // open a resource panel popover
@@ -219,7 +219,7 @@ describe('Object Popover Resource Panel service', function() {
         ItemsExchange.addItemToContainer(item1, PageItemsContainer.options.container);
         ItemsExchange.addItemToContainer(item2, PageItemsContainer.options.container);
 
-        var anchor = angular.element('.pnd-anchor');
+        var anchor = angular.element('.pnd-anchor')[0];
         var triple = ["", "http://sss", ""];
 
         // open a resource panel popover
@@ -257,7 +257,7 @@ describe('Object Popover Resource Panel service', function() {
         ItemsExchange.addItemToContainer(item1, PageItemsContainer.options.container);
         ItemsExchange.addItemToContainer(item2, PageItemsContainer.options.container);
 
-        var anchor = angular.element('.pnd-anchor');
+        var anchor = angular.element('.pnd-anchor')[0];
         // undefined triple
         var triple = ["", emptyRangePred.uri, ""];
 
@@ -329,7 +329,7 @@ describe('Object Popover Resource Panel service', function() {
         ItemsExchange.addItemToContainer(item1, PageItemsContainer.options.container);
         ItemsExchange.addItemToContainer(item2, PageItemsContainer.options.container);
 
-        var anchor = angular.element('.pnd-anchor');
+        var anchor = angular.element('.pnd-anchor')[0];
         var triple = ["", undefRangePred.uri, ""];
 
         // open a resource panel popover
@@ -362,7 +362,7 @@ describe('Object Popover Resource Panel service', function() {
         var predicate = new Item(dateRangePred.uri, dateRangePred);
         ItemsExchange.addItemToContainer(predicate, Client.options.relationsContainer);
 
-        var anchor = angular.element('.pnd-anchor');
+        var anchor = angular.element('.pnd-anchor')[0];
         var triple = ["", dateRangePred.uri, ""];
 
         ResourcePanel.showItemsForObject(triple, anchor, "");
@@ -397,7 +397,7 @@ describe('Object Popover Resource Panel service', function() {
         var predicate = new Item(textRangePred.uri, textRangePred);
         ItemsExchange.addItemToContainer(predicate, Client.options.relationsContainer);
 
-        var anchor = angular.element('.pnd-anchor');
+        var anchor = angular.element('.pnd-anchor')[0];
         var triple = ["", textRangePred.uri, ""];
         var label = "";
 
@@ -450,7 +450,7 @@ describe('Object Popover Resource Panel service', function() {
         ItemsExchange.addItemToContainer(myItem1, MyItems.options.container);
         ItemsExchange.addItemToContainer(myItem2, MyItems.options.container);
 
-        var anchor = angular.element('.pnd-anchor');
+        var anchor = angular.element('.pnd-anchor')[0];
         var triple = ["", FragmentTextPred.uri, ""];
 
         // open a resource panel popover
@@ -504,7 +504,7 @@ describe('Object Popover Resource Panel service', function() {
         ItemsExchange.addItemToContainer(myItem1, MyItems.options.container);
         ItemsExchange.addItemToContainer(myItem2, MyItems.options.container);
 
-        var anchor = angular.element('.pnd-anchor');
+        var anchor = angular.element('.pnd-anchor')[0];
         var triple = ["", ImgPred.uri, ""];
 
         // open a resource panel popover
@@ -526,7 +526,7 @@ describe('Object Popover Resource Panel service', function() {
 
     it("should not start searching label in vocab when input is empty", function() {
 
-        var anchor = angular.element('.pnd-anchor');
+        var anchor = angular.element('.pnd-anchor')[0];
         var triple = ["", "", ""];
 
         // open resource panel with an empty label
@@ -547,7 +547,7 @@ describe('Object Popover Resource Panel service', function() {
 
     it("should start searching label in vocab", function() {
 
-        var anchor = angular.element('.pnd-anchor');
+        var anchor = angular.element('.pnd-anchor')[0];
         var triple = ["", "", ""];
         var label = "term";
 

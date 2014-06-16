@@ -148,7 +148,7 @@ describe('Subject Popover Resource Panel service', function() {
 
     it("should load all predicates when no predicates and objects are defined", function() {
 
-        var anchor = angular.element('.pnd-anchor');
+        var anchor = angular.element('.pnd-anchor')[0];
 
         // undefined triple
         var triple = ["", "", ""];
@@ -182,7 +182,7 @@ describe('Subject Popover Resource Panel service', function() {
         var item = new Item("http://item1-uri", propFragImage);
         ItemsExchange.addItemToContainer(item, PageItemsContainer.options.container);
 
-        var anchor = angular.element('.pnd-anchor');
+        var anchor = angular.element('.pnd-anchor')[0];
         var triple = ["http://item1-uri", "", ""];
 
         // open a resource panel popover
@@ -202,7 +202,7 @@ describe('Subject Popover Resource Panel service', function() {
 
     it("should show all predicates when item subjects is undefined", function() {
 
-        var anchor = angular.element('.pnd-anchor');
+        var anchor = angular.element('.pnd-anchor')[0];
         var triple = ["http://item1-uri", "", ""];
 
         // open a resource panel popover
@@ -222,7 +222,7 @@ describe('Subject Popover Resource Panel service', function() {
         var item = new Item("http://item1-uri", propFragmentText);
         ItemsExchange.addItemToContainer(item, PageItemsContainer.options.container);
 
-        var anchor = angular.element('.pnd-anchor');
+        var anchor = angular.element('.pnd-anchor')[0];
         var triple = ["", "", "http://item1-uri"];
 
         // open a resource panel popover
@@ -240,7 +240,7 @@ describe('Subject Popover Resource Panel service', function() {
 
     it("should show all predicates when item object is undefined", function() {
 
-        var anchor = angular.element('.pnd-anchor');
+        var anchor = angular.element('.pnd-anchor')[0];
         var triple = ["", "", "http://item1-uri"];
 
         // open a resource panel popover
@@ -256,7 +256,7 @@ describe('Subject Popover Resource Panel service', function() {
 
     it("should show right predicates when both subject and object are defined", function() {
 
-        var anchor = angular.element('.pnd-anchor');
+        var anchor = angular.element('.pnd-anchor')[0];
 
         // add an object item
         var object = new Item("http://object-uri", propFragmentText);
@@ -283,7 +283,7 @@ describe('Subject Popover Resource Panel service', function() {
 
     it("should show no predicates when there are no match", function() {
 
-        var anchor = angular.element('.pnd-anchor');
+        var anchor = angular.element('.pnd-anchor')[0];
 
         // add an item
         var item = new Item("http://item-uri", propCommonTopic);
@@ -301,7 +301,7 @@ describe('Subject Popover Resource Panel service', function() {
     });
 
     it("should show all predicates when subject and object have no types", function() {
-        var anchor = angular.element('.pnd-anchor');
+        var anchor = angular.element('.pnd-anchor')[0];
 
         // add a subject item with type undefined
         var sub = new Item("http://sub-uri", propUndefType);
@@ -323,7 +323,7 @@ describe('Subject Popover Resource Panel service', function() {
     });
 
     it("should show right predicates when subject has valid types and object has no types", function() {
-        var anchor = angular.element('.pnd-anchor');
+        var anchor = angular.element('.pnd-anchor')[0];
 
         // add a subject item with valid type
         var sub = new Item("http://sub-uri", propImage);
@@ -349,7 +349,7 @@ describe('Subject Popover Resource Panel service', function() {
     });
 
     it("should show right predicates when subject has no types and object has valid types", function() {
-        var anchor = angular.element('.pnd-anchor');
+        var anchor = angular.element('.pnd-anchor')[0];
 
         // add a subject item with empty type
         var sub = new Item("http://sub-uri", propNoType)
@@ -374,7 +374,7 @@ describe('Subject Popover Resource Panel service', function() {
 
     it("should filter properties labels", function() {
 
-        var anchor = angular.element('.pnd-anchor');
+        var anchor = angular.element('.pnd-anchor')[0];
         var triple = ["", "", ""];
 
         // open a resource panel popover without label

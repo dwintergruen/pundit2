@@ -58,7 +58,7 @@ describe('Literal Popover Resource Panel service', function() {
 
     it("should open an empty literal popover", function() {
 
-        var anchor = angular.element('.pnd-anchor');
+        var anchor = angular.element('.pnd-anchor')[0];
 
         ResourcePanel.showPopoverLiteral("", anchor);
         $rootScope.$digest();
@@ -83,7 +83,7 @@ describe('Literal Popover Resource Panel service', function() {
     it("should open a literal popover with a given text", function() {
 
         var text = "My fake test";
-        var anchor = angular.element('.pnd-anchor');
+        var anchor = angular.element('.pnd-anchor')[0];
 
         ResourcePanel.showPopoverLiteral(text, anchor);
         $rootScope.$digest();
@@ -99,7 +99,7 @@ describe('Literal Popover Resource Panel service', function() {
 
     it("should close a literal popover", function() {
 
-        var anchor = angular.element('.pnd-anchor');
+        var anchor = angular.element('.pnd-anchor')[0];
 
         ResourcePanel.showPopoverLiteral("", anchor);
         $rootScope.$digest();
@@ -121,7 +121,7 @@ describe('Literal Popover Resource Panel service', function() {
     it("should resolve a promise when save a literal", function() {
 
         var text = "My custom text";
-        var anchor = angular.element('.pnd-anchor');
+        var anchor = angular.element('.pnd-anchor')[0];
 
         var promise = ResourcePanel.showPopoverLiteral(text, anchor);
         $rootScope.$digest();
@@ -144,7 +144,7 @@ describe('Literal Popover Resource Panel service', function() {
 
     it("should be open only one popover at time", function() {
 
-        var anchor = angular.element('.pnd-anchor');
+        var anchor = angular.element('.pnd-anchor')[0];
 
         // open a literal popover
         ResourcePanel.showPopoverLiteral("", anchor);
@@ -166,7 +166,7 @@ describe('Literal Popover Resource Panel service', function() {
         angular.element("[data-ng-app='Pundit2']")
             .prepend("<div class='pnd-anchor-cal' style='position: absolute; left: -500px; top: -500px;'><div>");
 
-        var anchorCal = angular.element('.pnd-anchor-cal');
+        var anchorCal = angular.element('.pnd-anchor-cal')[0];
 
         // open a calendar popover
         ResourcePanel.showPopoverCalendar("", anchorCal);
@@ -190,7 +190,7 @@ describe('Literal Popover Resource Panel service', function() {
     it("should be close popover calling cancel method", function() {
 
         var text;
-        var anchor = angular.element('.pnd-anchor');
+        var anchor = angular.element('.pnd-anchor')[0];
 
         // open a literal popover
         ResourcePanel.showPopoverLiteral(text, anchor);

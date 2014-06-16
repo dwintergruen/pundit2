@@ -155,7 +155,7 @@ describe('Preview service', function() {
         expect(angular.element(previewPanelHeader).text().trim()).toBe(PREVIEWDEFAULTS.welcomeHeaderMessage);
 
         // welcome body message should be the same set as default
-        var previewPanelBody = angular.element(elem).find('.pnd-dashboard-preview-welcome');
+        var previewPanelBody = angular.element(elem).find('.pnd-dashboard-welcome');
         expect(angular.element(previewPanelBody).text().trim()).toBe(PREVIEWDEFAULTS.welcomeBodyMessage);
 
     });

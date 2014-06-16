@@ -131,7 +131,7 @@ describe('Subject Popover Resource Panel service', function() {
         ItemsExchange.addItemToContainer(item2, PageItemsContainer.options.container);
         ItemsExchange.addItemToContainer(item3, PageItemsContainer.options.container);
 
-        var anchor = angular.element('.pnd-anchor');
+        var anchor = angular.element('.pnd-anchor')[0];
         // undefined triple
         var triple = ["", "", ""];
 
@@ -184,7 +184,7 @@ describe('Subject Popover Resource Panel service', function() {
         ItemsExchange.addItemToContainer(myItem1, MyItems.options.container);
         ItemsExchange.addItemToContainer(myItem2, MyItems.options.container);
 
-        var anchor = angular.element('.pnd-anchor');
+        var anchor = angular.element('.pnd-anchor')[0];
         // undefined triple
         var triple = ["", "", ""];
 
@@ -221,7 +221,7 @@ describe('Subject Popover Resource Panel service', function() {
         ItemsExchange.addItemToContainer(item1, PageItemsContainer.options.container);
         ItemsExchange.addItemToContainer(item2, PageItemsContainer.options.container);
 
-        var anchor = angular.element('.pnd-anchor');
+        var anchor = angular.element('.pnd-anchor')[0];
         var triple = ["", "http://sss", ""];
 
         // open a resource panel popover
@@ -258,7 +258,7 @@ describe('Subject Popover Resource Panel service', function() {
         ItemsExchange.addItemToContainer(item1, PageItemsContainer.options.container);
         ItemsExchange.addItemToContainer(item2, PageItemsContainer.options.container);
 
-        var anchor = angular.element('.pnd-anchor');
+        var anchor = angular.element('.pnd-anchor')[0];
 
         var triple = ["", emptyDomainPred.uri, ""];
 
@@ -330,7 +330,7 @@ describe('Subject Popover Resource Panel service', function() {
         ItemsExchange.addItemToContainer(item1, PageItemsContainer.options.container);
         ItemsExchange.addItemToContainer(item2, PageItemsContainer.options.container);
 
-        var anchor = angular.element('.pnd-anchor');
+        var anchor = angular.element('.pnd-anchor')[0];
         var triple = ["", undefDomainPred.uri, ""];
 
         // open a resource panel popover
@@ -389,7 +389,7 @@ describe('Subject Popover Resource Panel service', function() {
         ItemsExchange.addItemToContainer(myItem1, MyItems.options.container);
         ItemsExchange.addItemToContainer(myItem2, MyItems.options.container);
 
-        var anchor = angular.element('.pnd-anchor');
+        var anchor = angular.element('.pnd-anchor')[0];
         var triple = ["", ImagePred.uri, ""];
 
         // open a resource panel popover
@@ -447,7 +447,7 @@ describe('Subject Popover Resource Panel service', function() {
         ItemsExchange.addItemToContainer(myItem1, MyItems.options.container);
         ItemsExchange.addItemToContainer(myItem2, MyItems.options.container);
 
-        var anchor = angular.element('.pnd-anchor');
+        var anchor = angular.element('.pnd-anchor')[0];
         var triple = ["", FragmentTextPred.uri, ""];
 
         // open a resource panel popover
@@ -464,7 +464,7 @@ describe('Subject Popover Resource Panel service', function() {
     });
 
     it("should close popover calling cancel method", function() {
-        var anchor = angular.element('.pnd-anchor');
+        var anchor = angular.element('.pnd-anchor')[0];
         var triple = ["", "", ""];
 
         // open a resource panel popover
@@ -488,7 +488,7 @@ describe('Subject Popover Resource Panel service', function() {
         var item = new Item("http://item1-uri", propFragmentText);
         ItemsExchange.addItemToContainer(item, PageItemsContainer.options.container);
 
-        var anchor = angular.element('.pnd-anchor');
+        var anchor = angular.element('.pnd-anchor')[0];
         var triple = ["", "", ""];
 
         // open a resource panel popover
@@ -513,7 +513,7 @@ describe('Subject Popover Resource Panel service', function() {
 
     it("should be open only one popover at time", function() {
 
-        var anchor = angular.element('.pnd-anchor');
+        var anchor = angular.element('.pnd-anchor')[0];
         var triple = ["", "", ""];
 
         // open a resource panel popover
@@ -536,7 +536,7 @@ describe('Subject Popover Resource Panel service', function() {
         angular.element("[data-ng-app='Pundit2']")
             .prepend("<div class='pnd-anchor-two' style='position: absolute; left: -500px; top: -500px;'><div>");
 
-        var anchorTwo = angular.element('.pnd-anchor-two');
+        var anchorTwo = angular.element('.pnd-anchor-two')[0];
 
         // open a new popover
         ResourcePanel.showItemsForSubject(triple, anchorTwo, "");
@@ -554,7 +554,7 @@ describe('Subject Popover Resource Panel service', function() {
 
     it("should start searching label in vocab", function() {
 
-        var anchor = angular.element('.pnd-anchor');
+        var anchor = angular.element('.pnd-anchor')[0];
         var triple = ["", "", ""];
         var label = "term";
 
@@ -669,7 +669,7 @@ describe('Subject Popover Resource Panel service', function() {
 
     it("should not start searching label in vocab when input is empty", function() {
 
-        var anchor = angular.element('.pnd-anchor');
+        var anchor = angular.element('.pnd-anchor')[0];
         var triple = ["", "", ""];
 
         // open resource panel without a string to search
