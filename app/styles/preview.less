@@ -33,26 +33,34 @@
 	    	img {
 		         border: 1px solid @gray-extra-light;
 		         padding: 2px;
-		         }
-	    
+		         }   
 	    }
 	    
 	    
 	.pnd-preview-item-description {
 		font-size: 13px;
-    	//overflow: hidden;
-    	//text-overflow: ellipsis;
 		}
 	    
 	.pnd-preview-item-types {
 			clear: both;
             overflow: hidden;
+            position: relative;
             
         .pnd-icon {
 	        font-size: 14px;
 	        cursor: pointer;
-	        display: inline-block;
-	        margin-left: 5px;
+	        position: absolute;
+	        right: 5px;
+	        top: 13px;
+	        border-left: 2px solid #fff;
+	        background-color: @gray-lighter;
+	        padding: 4px 6px;
+	        
+	        &:hover {
+		    color: @brand-success;
+	        background-color: @gray-extra-lighter;
+	        }
+	        
 	        }
 		
 		ul {
