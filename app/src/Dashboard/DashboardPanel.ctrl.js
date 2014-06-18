@@ -105,9 +105,10 @@ angular.module('Pundit2.Dashboard')
             // .pnd-inner .pnd-panel-tab-header height
             h -= Dashboard.options.panelInnerTabsHeight;
 
-            elInner.height(h);
+            elInner.height(h-1);
         } else if (elInnerScrollable.length > 0) {
-            elInnerScrollable.height(h);
+            // TODO why -7 ???
+            elInnerScrollable.height(h-7);
         }
 
     };
