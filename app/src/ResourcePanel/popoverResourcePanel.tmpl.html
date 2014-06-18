@@ -4,10 +4,10 @@
     <h3 class="popover-title pnd-resource-panel-popover-title">Choose your...<span style="float:right" class="pnd-icon-times" ng-click="cancel()"></span></h3>
     <div class="popover-content pnd-resource-panel-popover-content panel-group" id="accordion">
 
-	    <div ng-show = "type != 'pr' && myItems.length>0"> My items ({{myItems.length}})
+	    <div ng-show = "type != 'pr' && myItems.length>0 && userLoggedIn"> My items ({{myItems.length}})
             <span class="pull-left"><i ng-class="{'pnd-icon-caret-down': caretMyItems, 'pnd-icon-caret-right': !caretMyItems}"ng-click="toggleMyItems()"></i></span>
-            <ul class="list-group panel-collapse collapse in" id="collapseMyItems">
-                <li class="list-group-item" ng-repeat="mi in myItems">
+            <ul class="list-group panel-collapse collapse in" ng-class="{'in': userLoggedIn}" id="collapseMyItems">
+                <li class="list-group-item" ng-repeat="mi in myItems | orderBy:getOrderProperty">
                     <item uri="{{mi.uri}}" ng-click="save(mi)"></item>
                 </li>
             </ul>
@@ -15,8 +15,8 @@
 
 	    <div ng-show = "type != 'pr' && pageItems.length>0" class="pnd-page-items-header"> Page Items ({{pageItems.length}})
             <span class="pull-left"><i ng-class="{'pnd-icon-caret-down': caretPageItems, 'pnd-icon-caret-right': !caretPageItems}"ng-click="togglePageItems()"></i></span>
-            <ul class="list-group panel-collapse collapse" id ="collapsePageItems">
-                <li class="list-group-item" ng-repeat="pi in pageItems">
+            <ul class="list-group panel-collapse collapse" ng-class="{'in': !userLoggedIn}" id ="collapsePageItems">
+                <li class="list-group-item" ng-repeat="pi in pageItems | orderBy:getOrderProperty">
                     <item uri="{{pi.uri}}" ng-click="save(pi)"></item>
                 </li>
             </ul>
@@ -26,7 +26,7 @@
         <div ng-repeat="s in selectors" ng-show="type == 'obj' && vocabObjStatus == 'done' && vocabObjRes[s].length>0"> {{s}} ({{vocabObjRes[s].length}})
             <span class="pull-left pnd-vocab-{{s}} "><i class="pnd-icon-caret-right" ng-click="toggleObjVocab(s)"></i></span>
             <ul class="list-group panel-collapse collapse" id ="obj-{{s}}">
-                <li class="list-group-item" ng-repeat = "item in vocabObjRes[s]">
+                <li class="list-group-item" ng-repeat = "item in vocabObjRes[s] | orderBy:getOrderProperty">
                     <item uri="{{item.uri}}" ng-click="save(item)"></item>
                 </li>
             </ul>
@@ -43,9 +43,9 @@
         </div>
 
         <div ng-show = "type == 'pr' && properties.length>0"> Properties ({{properties.length}})
-            <span class="pull-left"><i ng-class="{'pnd-icon-caret-down': caretProperties, 'pnd-icon-caret-right': !caretProperties}"ng-click="toggleProperties()"></i></span>
-            <ul class="list-group panel-collapse collapse" id ="collapseProperties">
-                <li class="list-group-item" ng-repeat="pr in properties">
+            <!--<span class="pull-left"><i ng-class="{'pnd-icon-caret-down': caretProperties, 'pnd-icon-caret-right': !caretProperties}"ng-click="toggleProperties()"></i></span>-->
+            <ul class="list-group" id ="collapseProperties">
+                <li class="list-group-item" ng-repeat="pr in properties | orderBy:getOrderProperty">
                     <item uri="{{pr.uri}}" ng-click="save(pr)"></item>
                 </li>
             </ul>

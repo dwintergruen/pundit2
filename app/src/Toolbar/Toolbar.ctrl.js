@@ -1,13 +1,15 @@
 angular.module('Pundit2.Toolbar')
-.controller('ToolbarCtrl', function($scope, Toolbar, MyPundit, Dashboard, AnnotationSidebar) {
+.controller('ToolbarCtrl', function($scope, Toolbar, MyPundit, Dashboard, AnnotationSidebar, ResourcePanel) {
 
     $scope.dropdownTemplate = "src/ContextualMenu/dropdown.tmpl.html";
     
     var login = function() {
+        ResourcePanel.hide();
         MyPundit.login();
     };
     
     var logout = function() {
+        ResourcePanel.hide();
         MyPundit.logout();
     };
     
@@ -102,10 +104,12 @@ angular.module('Pundit2.Toolbar')
     };
 
     $scope.dashboardClickHandler = function() {
+        ResourcePanel.hide();
         Dashboard.toggle();
     };
 
     $scope.annotationsClickHandler = function() {
+        ResourcePanel.hide();
         AnnotationSidebar.toggle();
     };
 

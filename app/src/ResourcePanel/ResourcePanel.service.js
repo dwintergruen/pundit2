@@ -475,6 +475,7 @@ angular.module('Pundit2.ResourcePanel')
     };
 
     var searchOnVocab = function(label, selectors) {
+
         var vocabObjResultEmpty = true,
             vocabSubResultEmpty = true,
             noFound = true;

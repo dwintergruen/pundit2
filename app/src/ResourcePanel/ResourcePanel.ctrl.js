@@ -1,5 +1,5 @@
 angular.module('Pundit2.ResourcePanel')
-    .controller('ResourcePanelCtrl', function($rootScope, $scope, MyItems, PageItemsContainer, ItemsExchange) {
+    .controller('ResourcePanelCtrl', function($rootScope, $scope, MyItems, PageItemsContainer, ItemsExchange, MyPundit) {
 
         var myItemsContainer = MyItems.options.container;
         var pageItemsContainer = PageItemsContainer.options.container;
@@ -18,10 +18,10 @@ angular.module('Pundit2.ResourcePanel')
             $('#collapsePageItems').toggle();
         };
 
-        $scope.toggleProperties = function(){
+        /*$scope.toggleProperties = function(){
             $scope.caretPageItems = !$scope.caretPageItems;
             $('#collapseProperties').toggle();
-        };
+        };*/
 
         $scope.toggleObjVocab = function(v){
 
@@ -45,6 +45,22 @@ angular.module('Pundit2.ResourcePanel')
             }
 
             $('#sub-'+v).toggle();
+        };
+
+        $rootScope.$watch(function() {
+            return MyPundit.isUserLogged();
+        }, function(newStatus, oldStatus) {
+            $scope.userLoggedIn = newStatus;
+        });
+
+        var removeSpace = function(str){
+            return str.replace(/ /g,'');
+        };
+
+        // getter function used inside template to order items
+        // return the items property value used to order
+        $scope.getOrderProperty = function(item){
+            return removeSpace(item.label);
         };
 
 

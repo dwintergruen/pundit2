@@ -471,6 +471,7 @@ angular.module('Pundit2.Client')
             getAnnotations();
 
             MyItems.getAllItems();
+            loadBasicRelations();
         };
 
         // Called when the user completed the logout process, clicking on logout
@@ -481,6 +482,7 @@ angular.module('Pundit2.Client')
 
             // There might have been private annotations we dont want to show anymore
             getAnnotations();
+            loadBasicRelations();
         };
 
         client.log("Component up and running");
