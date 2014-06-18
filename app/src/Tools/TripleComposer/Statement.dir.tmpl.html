@@ -94,9 +94,9 @@
             <div class="pnd-row-button-object">
 		            <button type="button" class="btn btn-xs btn-link" title="delete" ng-click="wipeObject()"><span class="pnd-icon pnd-icon-trash-o"></span></button>
                     <!--Calendar Icon-->
-                    <button type="button" class="btn btn-xs btn-link" ng-show="objectDate" ng-click="onClickObjectCalendar($event)"  title="calendar"><span class="pnd-icon pnd-icon-table"></span></button>
+                    <button type="button" class="btn btn-xs btn-link" ng-if="objectDate" ng-click="onClickObjectCalendar($event)"  title="calendar"><span class="pnd-icon pnd-icon-table"></span></button>
                     <!--Pen Icon-->
-                    <button type="button" class="btn btn-xs btn-link" ng-show="objectLiteral" ng-click="onClickObjectLiteral($event)"  title="text"><span class="pnd-icon pnd-icon-pencil"></span></button> {{objectTypeLabel}}
+                    <button type="button" class="btn btn-xs btn-link" ng-if="objectLiteral" ng-click="onClickObjectLiteral($event)"  title="text"><span class="pnd-icon pnd-icon-pencil"></span></button> {{objectTypeLabel}}
             </div>
             <!-- // end Object buttons -->
 	        
