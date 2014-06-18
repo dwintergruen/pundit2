@@ -38,7 +38,7 @@ describe("TripleComposer interaction", function() {
         });
 
         // open page items list
-        p.findElement(protractor.By.css(".pnd-resource-panel-popover .pnd-page-items-header .pnd-icon-caret-right")).click();
+        // p.findElement(protractor.By.css(".pnd-resource-panel-popover .pnd-page-items-header .pnd-icon-caret-right")).click();
 
         // add item by click on resource panel item
         p.findElement(protractor.By.css(".pnd-resource-panel-popover .pnd-page-items-header item")).click();
@@ -121,7 +121,7 @@ describe("TripleComposer interaction", function() {
         // open resource panel
         p.findElement(protractor.By.css(".pnd-statement-subject input")).click();
         // open page items list
-        p.findElement(protractor.By.css(".pnd-resource-panel-popover .pnd-page-items-header .pnd-icon-caret-right")).click();
+        //p.findElement(protractor.By.css(".pnd-resource-panel-popover .pnd-page-items-header .pnd-icon-caret-right")).click();
 
         // add item by click on resource panel item
         p.findElement(protractor.By.css(".pnd-resource-panel-popover .pnd-page-items-header item")).click();
@@ -149,7 +149,7 @@ describe("TripleComposer interaction", function() {
         // open resource panel
         p.findElement(protractor.By.css(".pnd-statement-subject input")).click();
         // open page items list
-        p.findElement(protractor.By.css(".pnd-resource-panel-popover .pnd-page-items-header .pnd-icon-caret-right")).click();
+        //p.findElement(protractor.By.css(".pnd-resource-panel-popover .pnd-page-items-header .pnd-icon-caret-right")).click();
         // add item by click on item inside list
         p.findElement(protractor.By.css(".pnd-resource-panel-popover .pnd-page-items-header item")).click();
         // duplicate statement
