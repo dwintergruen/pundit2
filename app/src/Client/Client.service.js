@@ -360,6 +360,11 @@ angular.module('Pundit2.Client')
             annPromise.then(function(ids) {
                 client.log('Found '+ids.length+' annotations on the current page.');
 
+                if (ids.length === 0) {
+                    Toolbar.setLoading(false);
+                    return;
+                }
+
                 var annPromises = [],
                     settled = 0;
                 for (var i=0; i<ids.length; i++) {
