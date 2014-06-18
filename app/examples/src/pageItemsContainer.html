@@ -2,13 +2,27 @@
 
 <script>
 
-    var PageItemsContainerDemoCtrl = function($scope, Annotation) {
+    var PageItemsContainerDemoCtrl = function($scope, Item, ItemsExchange, PAGEITEMSCONTAINERDEFAULTS) {
     
-        var toLoad = ["8fd05a49", "65286186", "385c1647"];
+        var items = [
+            {
+                uri: "textFragmentUri",
+                label: "textFragmentLabel",
+                type: ["http://purl.org/pundit/ont/ao#fragment-text"]
+            },
+            {
+                uri: "imageFragmentUri",
+                label: "imageFragmentLabel",
+                type: ["http://purl.org/pundit/ont/ao#fragment-image"]
+            }
+        ];
 
-        for (var l=toLoad.length; l--;) {
-            new Annotation(toLoad[l]);
-        }
+        var loadMockedItems = function(){
+            for (var j in items) {
+                var item = new Item(items[j].uri, items[j]);
+                ItemsExchange.addItemToContainer(item, PAGEITEMSCONTAINERDEFAULTS.container);
+            }
+        }();
         
     };    
 
