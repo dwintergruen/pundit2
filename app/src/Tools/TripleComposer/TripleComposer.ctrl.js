@@ -1,5 +1,5 @@
 angular.module('Pundit2.TripleComposer')
-.controller('TripleComposerCtrl', function($scope, $http, $timeout, Annotation, TripleComposer, NameSpace, TypesHelper, XpointersHelper, MyPundit) {
+.controller('TripleComposerCtrl', function($scope, $http, $timeout, Annotation, Consolidation, TripleComposer, NameSpace, TypesHelper, XpointersHelper, MyPundit) {
 
     // statements objects are extend by this.addStatementScope()
     // the function is called in the statement directive link function
@@ -75,7 +75,6 @@ angular.module('Pundit2.TripleComposer')
 
     var savePromise, promiseResolved;
     $scope.saveAnnotation = function(){
-        // test with notebook "b81c0aa3"
 
         MyPundit.login().then(function(logged) {
             
@@ -134,10 +133,8 @@ angular.module('Pundit2.TripleComposer')
                         });
                     }                    
 
-                    // TODO add annnotation to annotationExchange then consolidate all
-                    // TODO remove new Annotation (this load annotation from server)
                     new Annotation(data.AnnotationID).then(function(ann){
-                        console.log(ann);
+                        Consolidation.consolidateAll();
                     });
                 }).error(function(msg) {
                     // TODO
