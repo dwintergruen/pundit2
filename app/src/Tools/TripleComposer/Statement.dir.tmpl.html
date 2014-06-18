@@ -10,7 +10,7 @@
             <!-- Subject Input div -->
             <div class="left-inner-icon">
                 <span class="pnd-icon {{subjectIcon}}" ng-click="clearSubjectSearch()"></span>
-                <input type="text" class="input-sm form-control" placeholder="search a subject" ng-model="subjectSearch" ng-click="onClickSubject($event)" ng-keyup="onKeyUpSubject($event)">
+                <input type="text" class="input-sm form-control" placeholder="search a subject" ng-model="$parent.subjectSearch" ng-click="onClickSubject($event)" ng-keyup="onKeyUpSubject($event)">
             </div>
 
             <!-- Subject Buttons div -->
@@ -42,7 +42,7 @@
             <!-- Predicate Input div -->
             <div class="left-inner-icon">
                 <span class="pnd-icon {{predicateIcon}}" ng-click="clearPredicateSearch()"></span>
-                <input type="text" class="input-sm form-control" placeholder="search a predicate" ng-model="predicateSearch" ng-click="onClickPredicate($event)" ng-keyup="onKeyUpPredicate($event)">
+                <input type="text" class="input-sm form-control" placeholder="search a predicate" ng-model="$parent.predicateSearch" ng-click="onClickPredicate($event)" ng-keyup="onKeyUpPredicate($event)">
             </div>
 
             <!-- Predicate Buttons div-->
@@ -71,7 +71,7 @@
             <!-- Object Input div -->
             <div class="left-inner-icon">
                 <span class="pnd-icon {{objectIcon}}" ng-click="clearObjectSearch()"></span>
-                <input type="text" class="input-sm form-control" placeholder="search an object" ng-model="objectSearch" ng-click="onClickObject($event)" ng-keyup="onKeyUpObject($event)">
+                <input type="text" class="input-sm form-control" placeholder="search an object" ng-model="$parent.objectSearch" ng-click="onClickObject($event)" ng-keyup="onKeyUpObject($event)">
             </div>
 
             <!-- Object Buttons div -->
