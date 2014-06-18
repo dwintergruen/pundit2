@@ -61,12 +61,14 @@ angular.module('Pundit2.TripleComposer')
 
     // remove statement directive
     $scope.remove = function() {
+        ResourcePanel.hide();
         $scope.tripleComposerCtrl.removeStatement($scope.id);
     };
 
     // make a copy of this statement (TODO if it's empty ???)
     // and add it to the statements array inside triple composer
     $scope.duplicate = function(){
+        ResourcePanel.hide();
         $scope.tripleComposerCtrl.duplicateStatement($scope.id);
     };
 
