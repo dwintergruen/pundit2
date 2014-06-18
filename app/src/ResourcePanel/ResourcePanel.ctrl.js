@@ -4,8 +4,9 @@ angular.module('Pundit2.ResourcePanel')
         var myItemsContainer = MyItems.options.container;
         var pageItemsContainer = PageItemsContainer.options.container;
 
-        $scope.showMyItems = true;
-        $scope.showMyItems = false;
+        $scope.caretMyItems = true;
+        $scope.caretPageItems = false;
+        $scope.caretProperties = false;
 
         $scope.toggleMyItems = function(){
             $scope.caretMyItems = !$scope.caretMyItems;
@@ -13,11 +14,16 @@ angular.module('Pundit2.ResourcePanel')
         };
 
         $scope.togglePageItems = function(){
-            $scope.caretPageItems = !$scope.caretPageItems;
+            $scope.caretProperties = !$scope.caretProperties;
             $('#collapsePageItems').toggle();
         };
 
-        $scope.toggleVocab = function(v){
+        $scope.toggleProperties = function(){
+            $scope.caretPageItems = !$scope.caretPageItems;
+            $('#collapseProperties').toggle();
+        };
+
+        $scope.toggleObjVocab = function(v){
 
             var elem = angular.element('span.pnd-vocab-'+v+' i');
             if(elem.hasClass('pnd-icon-caret-right')){
@@ -26,7 +32,19 @@ angular.module('Pundit2.ResourcePanel')
                 elem.addClass('pnd-icon-caret-right').removeClass('pnd-icon-caret-down');
             }
 
-            $('#'+v).toggle();
+            $('#obj-'+v).toggle();
+        };
+
+        $scope.toggleSubVocab = function(v){
+
+            var elem = angular.element('span.pnd-sub-vocab-'+v+' i');
+            if(elem.hasClass('pnd-icon-caret-right')){
+                elem.addClass('pnd-icon-caret-down').removeClass('pnd-icon-caret-right');
+            } else {
+                elem.addClass('pnd-icon-caret-right').removeClass('pnd-icon-caret-down');
+            }
+
+            $('#sub-'+v).toggle();
         };
 
 

@@ -5,7 +5,7 @@
     <div class="popover-content pnd-resource-panel-popover-content panel-group" id="accordion">
 
 	    <div ng-show = "type != 'pr' && myItems.length>0"> My items ({{myItems.length}})
-            <span class="pull-left"><i ng-class="{'pnd-icon-caret-down': showMyItems, 'pnd-icon-caret-right': !showMyItems}"ng-click="toggleMyItems()"></i></span>
+            <span class="pull-left"><i ng-class="{'pnd-icon-caret-down': caretMyItems, 'pnd-icon-caret-right': !caretMyItems}"ng-click="toggleMyItems()"></i></span>
             <ul class="list-group panel-collapse collapse in" id="collapseMyItems">
                 <li class="list-group-item" ng-repeat="mi in myItems">
                     <item uri="{{mi.uri}}" ng-click="save(mi)"></item>
@@ -14,7 +14,7 @@
 	    </div>
 
 	    <div ng-show = "type != 'pr' && pageItems.length>0" class="pnd-page-items-header"> Page Items ({{pageItems.length}})
-            <span class="pull-left"><i ng-class="{'pnd-icon-caret-down': showPageItems, 'pnd-icon-caret-right': !showPageItems}"ng-click="togglePageItems()"></i></span>
+            <span class="pull-left"><i ng-class="{'pnd-icon-caret-down': caretPageItems, 'pnd-icon-caret-right': !caretPageItems}"ng-click="togglePageItems()"></i></span>
             <ul class="list-group panel-collapse collapse" id ="collapsePageItems">
                 <li class="list-group-item" ng-repeat="pi in pageItems">
                     <item uri="{{pi.uri}}" ng-click="save(pi)"></item>
@@ -24,8 +24,8 @@
 
         <div ng-show="type == 'obj' && vocabObjStatus == 'loading'">Searching...</div>
         <div ng-repeat="s in selectors" ng-show="type == 'obj' && vocabObjStatus == 'done' && vocabObjRes[s].length>0"> {{s}} ({{vocabObjRes[s].length}})
-            <span class="pull-left pnd-vocab-{{s}} "><i class="pnd-icon-caret-right" ng-click="toggleVocab(s)"></i></span>
-            <ul class="list-group panel-collapse collapse" id ="{{s}}">
+            <span class="pull-left pnd-vocab-{{s}} "><i class="pnd-icon-caret-right" ng-click="toggleObjVocab(s)"></i></span>
+            <ul class="list-group panel-collapse collapse" id ="obj-{{s}}">
                 <li class="list-group-item" ng-repeat = "item in vocabObjRes[s]">
                     <item uri="{{item.uri}}" ng-click="save(item)"></item>
                 </li>
@@ -34,7 +34,8 @@
 
         <div ng-show="type == 'sub' && vocabSubStatus == 'loading'">Searching...</div>
         <div ng-repeat="ss in selectors" ng-show="type == 'sub' && vocabSubStatus == 'done' && vocabSubRes[ss].length>0"> {{ss}} ({{vocabSubRes[ss].length}})
-            <ul class="list-group">
+            <span class="pull-left pnd-sub-vocab-{{ss}} "><i class="pnd-icon-caret-right" ng-click="toggleSubVocab(ss)"></i></span>
+            <ul class="list-group panel-collapse collapse" id ="sub-{{ss}}">
                 <li class="list-group-item" ng-repeat = "subItem in vocabSubRes[ss]">
                     <item uri="{{subItem.uri}}" ng-click="save(subItem)"></item>
                 </li>
@@ -42,7 +43,8 @@
         </div>
 
         <div ng-show = "type == 'pr' && properties.length>0"> Properties ({{properties.length}})
-            <ul class="list-group">
+            <span class="pull-left"><i ng-class="{'pnd-icon-caret-down': caretProperties, 'pnd-icon-caret-right': !caretProperties}"ng-click="toggleProperties()"></i></span>
+            <ul class="list-group panel-collapse collapse" id ="collapseProperties">
                 <li class="list-group-item" ng-repeat="pr in properties">
                     <item uri="{{pr.uri}}" ng-click="save(pr)"></item>
                 </li>
