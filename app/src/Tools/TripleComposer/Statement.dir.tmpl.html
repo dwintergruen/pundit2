@@ -5,7 +5,7 @@
     <div class="pnd-statement-subject">
 
         <!-- Incomplete Subject -->
-        <div ng-hide="subjectFound">
+        <div ng-if="!subjectFound">
 
             <!-- Subject Input div -->
             <div class="left-inner-icon">
@@ -22,7 +22,7 @@
         </div>
 
         <!-- Complete Subject -->
-        <div ng-show="subjectFound" ng-mouseover="subjectOver=true" ng-mouseleave="subjectOver=false">
+        <div ng-if="subjectFound" ng-mouseover="subjectOver=true" ng-mouseleave="subjectOver=false">
             <div class="pnd-statement-label">{{subjectLabel}}</div>
             <!-- Subject buttons -->
             <div class="pnd-row-button-subject">
@@ -37,7 +37,7 @@
     <div class="pnd-statement-predicate">
 
         <!-- Incomplete Predicate -->
-        <div ng-hide="predicateFound">
+        <div ng-if="!predicateFound">
 
             <!-- Predicate Input div -->
             <div class="left-inner-icon">
@@ -51,7 +51,7 @@
         </div>
 
         <!-- Complete Predicate -->
-        <div ng-show="predicateFound" ng-mouseover="subjectOver=true" ng-mouseleave="subjectOver=false">
+        <div ng-if="predicateFound" ng-mouseover="subjectOver=true" ng-mouseleave="subjectOver=false">
 	        <div class="pnd-statement-label">{{predicateLabel}}</div>
 	        <!-- Predicate buttons -->
 	        <div class="pnd-row-button-predicate">
@@ -66,7 +66,7 @@
     <div class="pnd-statement-object">
 
         <!-- Incomplete Object -->
-        <div ng-hide="objectFound">
+        <div ng-if="!objectFound">
 
             <!-- Object Input div -->
             <div class="left-inner-icon">
@@ -87,7 +87,7 @@
         </div>
 
         <!-- Complete Object -->
-        <div ng-show="objectFound" ng-mouseover="objectOver=true" ng-mouseleave="objectOver=false">
+        <div ng-if="objectFound" ng-mouseover="objectOver=true" ng-mouseleave="objectOver=false">
 	        <div class="pnd-statement-label">{{objectLabel}}</div>
 	        
 	        <!-- Object buttons -->
