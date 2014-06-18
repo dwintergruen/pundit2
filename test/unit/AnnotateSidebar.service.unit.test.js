@@ -134,7 +134,7 @@ describe('AnnotationSidebar service', function() {
         AnnotationSidebar.getMaxDate();
     });
 
-    it('should sidebar get annotation after timeout refresh', function(){
+    xit('should sidebar get annotation after timeout refresh', function(){
         $timeout.flush(AnnotationSidebar.options.annotationsRefresh - epsilon);
         myAnnotation = AnnotationSidebar.getAllAnnotations();
         expect(myAnnotation.length).toEqual(0);
