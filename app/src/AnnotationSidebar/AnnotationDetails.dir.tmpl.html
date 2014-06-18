@@ -5,25 +5,23 @@
         <div class="{{annotation.mainItem.class}}">
                 <span class="{{annotation.mainItem.icon}}"></span>
                 <span>{{annotation.mainItem.label}}</span>    
-                <button type="button" class="btn btn-primary pull-right">
-                    <span ng-class="{true:'pnd-icon-chevron-down', false:'pnd-icon-chevron-right'}[annotation.expanded]"></span>
+                <button type="button" class="btn  pull-right">
+                    <span ng-class="{true:'pnd-icon-sort-up', false:'pnd-icon-sort-down'}[annotation.expanded]"></span>
                 </button>
         </div>
     </div>
 
     <div class="pnd-annotation-details-container" ng-if="annotation.expanded">
 
-        <div class="pnd-annotation-details-header">
+        <div class="pnd-annotation-details-menu">
             <div class="{{annotation.mainItem.class}}">
                 <button type="button" class="btn btn-primary" ng-click="metaInfo = !metaInfo">
                     <span class="pnd-icon-exclamation-circle"></span>
                     Meta
-                </button>
-                <button type="button" class="btn btn-primary">
+                </button><button type="button" class="btn btn-primary">
                     <span class="pnd-icon-mail-forward"></span>
                     Reply
-                </button>
-                <button type="button" class="btn btn-primary">
+                </button><button type="button" class="btn btn-primary">
                     <span class="pnd-icon-share-square-o"></span>
                     Share
                 </button>
@@ -47,18 +45,15 @@
 
         <div class="pnd-annotation-details-content">
             <div class="pnd-annotation-detains-item" ng-repeat="item in annotation.itemsArray">
-                <div 
-                    class="pnd-annotation-details-subject" 
-                    ng-init="subInfo = false">
-                        <div 
-                            class="pnd-annotation-details-item-header"
+                <div class="pnd-annotation-details-subject" ng-init="subInfo = false">
+                        <div class="pnd-annotation-details-item-header"
                             ng-click="subInfo = !subInfo">
                             <span class="{{item.subject.icon}}"></span>
                             <span ng-bind-html="item.subject.label">
                                 {{item.subject.label}}
                             </span> ({{item.subject.typeLabel}})
-                            <button type="button" class="btn">
-                                <span ng-class="{true:'pnd-icon-chevron-down', false:'pnd-icon-chevron-right'}[subInfo]"></span>
+                            <button type="button" class="btn pull-right">
+                                <span ng-class="{true:'pnd-icon-sort-up', false:'pnd-icon-sort-down'}[subInfo]"></span>
                             </button>
                         </div>
 
@@ -67,16 +62,12 @@
                         </div>
                 </div>
 
-                <div 
-                    class="pnd-annotation-details-predicate" 
-                    ng-init="preInfo = false">
-                    <div 
-                        class="pnd-annotation-details-item-header"
-                        ng-click="preInfo = !preInfo">
-                        <span ng-bind-html="item.predicate.label">{{item.predicate.label}}</span>
+                <div class="pnd-annotation-details-predicate" ng-init="preInfo = false">
+                    <div class="pnd-annotation-details-item-header" ng-click="preInfo = !preInfo">
+                        <span ng-bind-html="item.predicate.label">{{item.predicate.label}}</span> gnappo
 
-                        <button type="button" class="btn">
-                            <span ng-class="{true:'pnd-icon-chevron-down', false:'pnd-icon-chevron-right'}[preInfo]"></span>
+                        <button type="button" class="btn pull-right">
+                            <span ng-class="{true:'pnd-icon-sort-up', false:'pnd-icon-sort-down'}[preInfo]"></span>
                         </button>
                     </div>
 
@@ -86,21 +77,14 @@
                 </div>
 
                 <div ng-repeat="object in item.objects">
-                    <div 
-                        class="pnd-annotation-details-object" 
-                        ng-class="{'pnd-annotation-details-deactive': object.typeClass!='uri'}"
+                    <div class="pnd-annotation-details-object" ng-class="{'pnd-annotation-details-deactive': object.typeClass!='uri'}"
                         ng-init="objInfo = false">
-                            <div 
-                                class="pnd-annotation-details-item-header"
-                                ng-click="objInfo = toggleObjectInfo(object.typeClass, objInfo)">
+                            <div class="pnd-annotation-details-item-header" ng-click="objInfo = toggleObjectInfo(object.typeClass, objInfo)">
                                 <span class="{{object.icon}}"></span>
                                 <span ng-bind-html="object.label">{{object.label}}</span>
                                  ({{object.typeLabel}})
-                                <button 
-                                    type="button" 
-                                    class="btn" 
-                                    ng-if="object.typeClass=='uri'">
-                                        <span ng-class="{true:'pnd-icon-chevron-down', false:'pnd-icon-chevron-right'}[objInfo]"></span>
+                                <button type="button" class="btn pull-right" ng-if="object.typeClass=='uri'">
+                                        <span ng-class="{true:'pnd-icon-sort-up', false:'pnd-icon-sort-down'}[objInfo]"></span>
                                 </button>
                             </div>
                             <div ng-show="objInfo">
