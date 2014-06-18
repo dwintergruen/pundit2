@@ -136,15 +136,37 @@ angular.module('Pundit2.AnnotationSidebar')
         var annotation = currentAnnotation;
         var graph = annotation.graph;
         var currentItem;
+        var list;
+        var broken = false;
 
-        // for (var subjectUri in graph){
-        //     currentItem = ItemsExchange.getItemByUri(subjectUri);
+        for (var subject in graph){
+            currentItem = ItemsExchange.getItemByUri(subject);
 
-        //     if (!Consolidation.isConsolidated(currentItem))
-        //         console.log("notConsolidate-> ",currentItem);
-        // }
+            if (!Consolidation.isConsolidated(currentItem)){
+                broken = true;
+                annotationDetails.log("notConsolidate subject-> ",currentItem);
+            }
 
-        return false;
+            for (var predicate in graph[subject]){
+
+                list = graph[subject][predicate];
+                for (var object in list){
+                    objectValue = list[object].value;
+                    objectType = list[object].type;
+
+                    if (objectType === 'uri'){
+                        currentItem = ItemsExchange.getItemByUri(objectValue);
+                        if (!Consolidation.isConsolidated(currentItem)){
+                            // TODO: la presenza di un oggetto rotto connota come rotta l'intera annotazione?
+                            // broken = true;
+                            annotationDetails.log("notConsolidate object-> ",currentItem);
+                        }
+                    } 
+                }
+            }
+        }
+
+        return broken;
     };
 
     annotationDetails.addAnnotationReference = function(scope) {

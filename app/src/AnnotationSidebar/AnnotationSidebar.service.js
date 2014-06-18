@@ -575,18 +575,26 @@ angular.module('Pundit2.AnnotationSidebar')
         });
     };
 
-    var timeoutPromise;
-    $rootScope.$watch(function() {
-        return AnnotationsExchange.getAnnotations();
-    }, function(annotations) {
-        if (timeoutPromise) {
-            $timeout.cancel(timeoutPromise);
-        }
-        timeoutPromise = $timeout(function() {
-            state.allAnnotations = angular.copy(annotations);
-            setFilterElements(state.allAnnotations);
-        }, annotationSidebar.options.annotationsRefresh);
-    }, true);
+    // var timeoutPromise;
+    // $rootScope.$watch(function() {
+    //     return AnnotationsExchange.getAnnotations();
+    // }, function(annotations) {
+    //     if (timeoutPromise) {
+    //         $timeout.cancel(timeoutPromise);
+    //     }
+    //     timeoutPromise = $timeout(function() {
+    //         state.allAnnotations = angular.copy(annotations);
+    //         setFilterElements(state.allAnnotations);
+    //     }, annotationSidebar.options.annotationsRefresh);
+    // }, true);
+
+    $rootScope.$on('consolidation-completed', function(e) {
+        annotationSidebar.log('Update annotations in sidebar');
+
+        var annotations = AnnotationsExchange.getAnnotations();
+        state.allAnnotations = angular.copy(annotations);
+        setFilterElements(state.allAnnotations);
+    });
 
 
     annotationSidebar.log('Component running');

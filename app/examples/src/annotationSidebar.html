@@ -53,7 +53,8 @@
             }
             $q.all(annPromises).then(function(ret) {
                 console.log("Retrieved annotations details searching by URIs", ret);
-                Consolidation.consolidate(ItemsExchange.getItems());
+                // Consolidation.consolidate(ItemsExchange.getItems());
+                Consolidation.consolidateAll();
                 $scope.tempannotations = JSON.stringify(ret, null, "  ");
             });
 
