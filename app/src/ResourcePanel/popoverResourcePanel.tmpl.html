@@ -13,7 +13,7 @@
             </ul>
 	    </div>
 
-	    <div ng-show = "type != 'pr' && pageItems.length>0"> Page Items ({{pageItems.length}})
+	    <div ng-show = "type != 'pr' && pageItems.length>0" class="pnd-page-items-header"> Page Items ({{pageItems.length}})
             <span class="pull-left"><i ng-class="{'pnd-icon-caret-down': showPageItems, 'pnd-icon-caret-right': !showPageItems}"ng-click="togglePageItems()"></i></span>
             <ul class="list-group panel-collapse collapse" id ="collapsePageItems">
                 <li class="list-group-item" ng-repeat="pi in pageItems">
