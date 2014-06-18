@@ -486,7 +486,11 @@ angular.module('Pundit2.Dashboard')
             delta = newDelta;
         }
 
-        $rootScope.$$phase || $rootScope.$digest();
+        if(!$rootScope.$$phase) {
+          for(i=0; i<panels.length; i++) {
+            panels[i].$digest();
+          }
+        }
     };
 
     dashboard.tryToResizeCouples = function(index, delta) {
@@ -546,11 +550,19 @@ angular.module('Pundit2.Dashboard')
                     
                 }
 
-                $rootScope.$$phase || $rootScope.$digest();                
+                if(!$rootScope.$$phase) {
+                  for(i=0; i<panels.length; i++) {
+                    panels[i].$digest();
+                  }
+                }                
                 return true;
 
             } else {
-                $rootScope.$$phase || $rootScope.$digest();
+                if(!$rootScope.$$phase) {
+                  for(i=0; i<panels.length; i++) {
+                    panels[i].$digest();
+                  }
+                }
                 return false;
             }
 
@@ -581,12 +593,20 @@ angular.module('Pundit2.Dashboard')
                 next.left = currentLeft;
                 
 
-                $rootScope.$$phase || $rootScope.$digest();
+                if(!$rootScope.$$phase) {
+                  for(i=0; i<panels.length; i++) {
+                    panels[i].$digest();
+                  }
+                }
                 return true;
 
             } else {
 
-                $rootScope.$$phase || $rootScope.$digest();
+                if(!$rootScope.$$phase) {
+                  for(i=0; i<panels.length; i++) {
+                    panels[i].$digest();
+                  }
+                }
                 return false;
             }
 
