@@ -1,5 +1,5 @@
 angular.module('Pundit2.MyNotebooksContainer')
-.controller('MyNotebooksContainerCtrl', function($scope, ItemsExchange) {
+.controller('MyNotebooksContainerCtrl', function($scope, ItemsExchange, MyNotebooksContainer) {
 
     var inputIconSearch = 'pnd-icon-search',
         inputIconClear = 'pnd-icon-times';
@@ -11,7 +11,7 @@ angular.module('Pundit2.MyNotebooksContainer')
 
     // read by <item> directive (in PageItemsContainer/items.tmpl.html)
     // will trigger this contextual menu type clicking on the contextual item icon
-    $scope.itemMenuType = 'notebooks';
+    $scope.itemMenuType = MyNotebooksContainer.options.cMenuType;
 
     $scope.message = {
         flag: true,
@@ -97,7 +97,7 @@ angular.module('Pundit2.MyNotebooksContainer')
     });
 
     $scope.$watch(function() {
-        return ItemsExchange.getItemsByContainer('myNotebooks');
+        return ItemsExchange.getItemsByContainer(MyNotebooksContainer.options.container);
     }, function(newItems) {
         // update all items array and display new items
         allItem = newItems;

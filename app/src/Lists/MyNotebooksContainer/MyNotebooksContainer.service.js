@@ -16,12 +16,80 @@ angular.module('Pundit2.MyNotebooksContainer')
     inputIconClear: 'pnd-icon-times'
     
 })
-.service('MyNotebooksContainer', function(MYNOTEBOOKSCONTAINERDEFAULTS, BaseComponent) {
+.service('MyNotebooksContainer', function($rootScope, MYNOTEBOOKSCONTAINERDEFAULTS, BaseComponent,
+    ContextualMenu, NotebookExchange, ItemsExchange) {
 
     var myNotebooksContainer = new BaseComponent('MyNotebooksContainer', MYNOTEBOOKSCONTAINERDEFAULTS);
 
     // used only to configuration, this service is injected inside client and controller
     // to read the passed configuration
+
+    var initContextualMenu = function() {
+
+        // TODO: sanity checks on Config.modules.* ? Are they active? Think so??
+        var cMenuTypes = [ myNotebooksContainer.options.cMenuType ];
+
+        ContextualMenu.addAction({
+            name: 'setAsPrivate',
+            type: cMenuTypes,
+            label: "Set Notebook as Private",
+            priority: 100,
+            showIf: function(item) {
+                return true;
+            },
+            action: function(item) {
+                
+            }
+        });
+
+        ContextualMenu.addAction({
+            name: 'setAsPublic',
+            type: cMenuTypes,
+            label: "Set Notebook as Public",
+            priority: 100,
+            showIf: function(item) {
+                return true;
+            },
+            action: function(item) {
+                
+            }
+        });
+
+        ContextualMenu.addAction({
+            name: 'setAsCurrent',
+            type: cMenuTypes,
+            label: "Set Notebook as Current",
+            priority: 100,
+            showIf: function(item) {
+                return true;
+            },
+            action: function(item) {
+    
+            }
+        });
+
+        ContextualMenu.addAction({
+            name: 'deleteNotebook',
+            type: cMenuTypes,
+            label: "Delete Notebook",
+            priority: 100,
+            showIf: function(item) {
+                // TODO return false if is current
+                return true;
+            },
+            action: function(item) {
+                NotebookExchange.deleteNotebook(item.id).then(function(){
+                    ItemsExchange.removeItemFromContainer(item, myNotebooksContainer.options.container);
+                });
+            }
+        });
+
+    }; // initContextualMenu()
+
+    // When all modules have been initialized, services are up, Config are setup etc..
+    $rootScope.$on('pundit-boot-done', function() {
+        initContextualMenu();
+    });
 
     return myNotebooksContainer;
 

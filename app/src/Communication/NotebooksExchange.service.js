@@ -1,5 +1,5 @@
 angular.module('Pundit2.Communication')
-    .service('NotebookExchange', function(BaseComponent, NameSpace, Notebook, MyPundit, Analytics, MyNotebooksContainer, ItemsExchange,
+    .service('NotebookExchange', function(BaseComponent, NameSpace, Notebook, MyPundit, Analytics, Config, ItemsExchange,
                                             $http, $q) {
 
         var notebookExchange = new BaseComponent("NotebookExchange");
@@ -38,7 +38,7 @@ angular.module('Pundit2.Communication')
                             // add all my notebooks to my notebooks container inside items exchange
                             // notebooks are treated as item
                             for (l=0; l < notebooks.length; l++) {
-                                ItemsExchange.addItem(notebooks[l], MyNotebooksContainer.options.container);
+                                ItemsExchange.addItem(notebooks[l], Config.modules.MyNotebooksContainer.container);
                             }
                             notebookExchange.log("Retrieved all of my notebooks");
                         }, function() {
@@ -185,6 +185,10 @@ angular.module('Pundit2.Communication')
                 }).success(function(data) {
 
                     if ('NotebookID' in data) {
+                        new Notebook(data.NotebookID).then(function(notebook){
+                            // TODO move this inside new Notebook
+                            ItemsExchange.addItem(notebook, Config.modules.MyNotebooksContainer.container);
+                        });                        
                         promise.resolve(data.NotebookID);
                         notebookExchange.log("Created a new notebook: "+data.NotebookID);
                         Analytics.track('api', 'post', 'notebook create');
