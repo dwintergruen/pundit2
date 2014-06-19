@@ -30,6 +30,8 @@ body.pnd-annotation-sidebar-expanded {
     background-color: @gray-lighter;
 	//-webkit-box-shadow:inset 0 0 4px 0 #424242;
 	//box-shadow:inset 0 0 4px 0 #424242;
+-webkit-box-shadow: -1px 0 3px 0 @gray-light;
+box-shadow: -1px 0 3px 0 @gray-light;
 }
 .pnd-annotation-details{
     padding: 5px;
@@ -211,6 +213,9 @@ body.pnd-annotation-sidebar-expanded {
         cursor: pointer;
         }
         
+        
+        // MENU (meta, reply, share)
+        
         .pnd-annotation-details-menu {
 			background-color: lighten(@gray-extra-light, 10%);
 		
@@ -223,9 +228,13 @@ body.pnd-annotation-sidebar-expanded {
                 width: 33%;
                 padding: 0 8px;
                 margin: 0px;
+                border-bottom: 1px solid #fff;
+                border-top: 1px solid #fff;
                 
                 & ~ .btn { border: 0px;
-                border-left: 1px solid #fff;}
+                	border-left: 1px solid #fff;
+                	border-bottom: 1px solid #fff;
+                	}
                 
                 &:hover {
 	                background-color: @gray-extra-lighter;
@@ -235,10 +244,23 @@ body.pnd-annotation-sidebar-expanded {
 	           &:active,
 	           &:focus {
                 	background-color: @gray-extra-lighter;
+                	color: @brand-success;
 	                } 
 	            }
 		
 		}
+		
+		
+		// INFO / NOTE
+		
+	.pnd-annotation-details-info {
+		background-color: @gray-extra-lighter;
+		border-bottom: 1px solid @gray-extra-light;
+		padding: 10px;
+		}
+    
+    
+		// ANNOTATION HEADER 
     
     .pnd-annotation-details-header {
         padding-left: 7px;
@@ -257,21 +279,21 @@ body.pnd-annotation-sidebar-expanded {
                 width: 24px;
                 padding: 0 8px;
                 
-                &:hover {
-                	color: #fff;
-	                background-color: darken(@subject-color, 10%);  
-	                } 
-	           
-	           &:active,
-	           &:focus {
-                	color: #fff;
-	                } 
+	               &:hover {
+	                	color: #fff;
+		                background-color: darken(@subject-color, 10%);  
+		                } 
+		           
+		           &:active,
+		           &:focus {
+	                	color: #fff;
+		                } 
 	            }
-    }
+	    }
 
     .pnd-annotation-details-container {
         .pnd-annotation-details-content {
-            padding: 10px 0px 0px 0px;
+            padding: 0px 0px 0px 0px;
             background-color: #fff;
 
             .pnd-annotation-detains-item {
@@ -290,6 +312,10 @@ body.pnd-annotation-sidebar-expanded {
                     line-height: 24px;
                     height: 24px;
                     
+                    &:hover button {
+	                    color: @brand-success; 
+                    }
+                    
                         .pnd-annotation-item-header-text {
 	                          white-space: nowrap;
 	                          overflow: hidden;
@@ -305,6 +331,10 @@ body.pnd-annotation-sidebar-expanded {
                 .pnd-annotation-details-object {
                 	background-color: transparent;
                     border-bottom: 1px solid @gray-extra-light;
+                    
+                    	.pnd-sub-info {
+			                	padding: 5px 10px;  
+			                    } 
                     
                         .pnd-annotation-details-item-header {
 	                         
@@ -324,23 +354,23 @@ body.pnd-annotation-sidebar-expanded {
                     
                        .pnd-annotation-details-item-header {
 	                    	padding-left: 7px;
+	                    	
+	                    	.pnd-icon {
+		                    	color: @subject-color;
+		                    	}
 	                        } 
-                    
-                       .pnd-icon {
-	                       color: @subject-color;
-	                       }
-                    
                     }
                     
                 .pnd-annotation-details-predicate {
                     
                         .pnd-annotation-details-item-header {
 	                    	padding-left: 14px;
+	                    	
+	                    	.pnd-icon {
+		                    	color: @predicate-color;
+		                    	}
 	                        } 
                     
-                        .pnd-icon {
-	                       color: @predicate-color;
-	                       }
                     }
                     
                 .pnd-annotation-details-object {
@@ -348,13 +378,11 @@ body.pnd-annotation-sidebar-expanded {
                     
                     .pnd-annotation-details-item-header {
 	                         padding-left: 21px; 
+	                         
+	                         .pnd-icon {
+		                         color: @object-color;
+		                         }
 	                         } 
-                    
-                    
-                         .pnd-icon {
-	                       color: @object-color;
-	                       }
-                    
                     }
                     
                 .pnd-annotation-details-deactive {

@@ -58,7 +58,7 @@
                             </button>
                         </div>
 
-                        <div ng-show="subInfo">
+                        <div ng-show="subInfo" class="pnd-sub-info">
                             <item-preview uri="{{item.subject.uri}}"></item-preview>
                         </div>
                 </div>
@@ -75,7 +75,7 @@
                         </button>
                     </div>
 
-                    <div ng-show="preInfo">
+                    <div ng-show="preInfo"  class="pnd-sub-info">
                         <item-preview uri="{{item.predicate.uri}}"></item-preview>
                     </div>
                 </div>
@@ -95,7 +95,7 @@
                                         <span ng-class="{true:'pnd-icon-sort-up', false:'pnd-icon-sort-down'}[objInfo]"></span>
                                 </button>
                             </div>
-                            <div ng-show="objInfo">
+                            <div ng-show="objInfo" class="pnd-sub-info">
                                 <item-preview class="pnd-preview clearfix" uri="{{object.uri}}"></item-preview>
                             </div>
                     </div>
