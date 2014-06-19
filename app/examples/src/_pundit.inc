@@ -119,4 +119,9 @@
     <script src="../src/ResourcePanel/ResourcePanel.service.js"></script>
     <script src="../src/ResourcePanel/ResourcePanel.ctrl.js"></script>
 
+    <script src="../src/Tools/NotebookComposer/NotebookComposer.js"></script>
+    <script src="../src/Tools/NotebookComposer/NotebookComposer.dir.js"></script>
+    <script src="../src/Tools/NotebookComposer/NotebookComposer.ctrl.js"></script>
+    <script src="../src/Tools/NotebookComposer/NotebookComposer.service.js"></script>
+
     <!-- endbuild -->
