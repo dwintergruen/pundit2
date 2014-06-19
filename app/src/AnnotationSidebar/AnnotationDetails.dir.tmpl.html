@@ -1,7 +1,8 @@
 <div class="pnd-annotation-details">
     <div 
         class="pnd-annotation-details-header pnd-annotation-details-top" 
-        ng-click="toggleAnnotation()">
+        ng-click="toggleAnnotation()"
+        ng-class="{'pnd-annotation-details-broken': annotation.broken}">
         <div class="{{annotation.mainItem.class}}">
                 <span class="{{annotation.mainItem.icon}}"></span>
                 <span>{{annotation.mainItem.label}}</span>    

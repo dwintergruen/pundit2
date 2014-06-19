@@ -126,38 +126,38 @@ angular.module('Pundit2.Annotators')
             }
         });
 
-        ContextualMenu.addAction({
-            type: [tfa.options.cMenuType],
-            name: 'showAllAnnotations',
-            label: 'Show all annotations for this fragment',
-            showIf: function() {
-                return true;
-            },
-            priority: 10,
-            action: function(item) {
-                // TODO: ask the ann sidebar to add a filter showing all annotations involving
-                // this item, then let the sidebar call hideAll() and show() on every item
-                // which belongs to filtered annotations
-                tfa.hideAll();
-                tfa.showByUri(item.uri);
-            }
-        });
+        // ContextualMenu.addAction({
+        //     type: [tfa.options.cMenuType],
+        //     name: 'showAllAnnotations',
+        //     label: 'Show all annotations for this fragment',
+        //     showIf: function() {
+        //         return true;
+        //     },
+        //     priority: 10,
+        //     action: function(item) {
+        //         // TODO: ask the ann sidebar to add a filter showing all annotations involving
+        //         // this item, then let the sidebar call hideAll() and show() on every item
+        //         // which belongs to filtered annotations
+        //         tfa.hideAll();
+        //         tfa.showByUri(item.uri);
+        //     }
+        // });
 
-        ContextualMenu.addAction({
-            type: [tfa.options.cMenuType],
-            name: 'hideAllAnnotations',
-            label: 'Hide all annotations for this fragment',
-            showIf: function() {
-                // TODO: show just if there is some ann open
-                return true;
-            },
-            priority: 11,
-            action: function(item) {
-                // TODO: ask the Annotation Sidebar to add a filter hiding this item
-                // .. is this "hide all" action needed?
-                tfa.hideByUri(item.uri);
-            }
-        });
+        // ContextualMenu.addAction({
+        //     type: [tfa.options.cMenuType],
+        //     name: 'hideAllAnnotations',
+        //     label: 'Hide all annotations for this fragment',
+        //     showIf: function() {
+        //         // TODO: show just if there is some ann open
+        //         return true;
+        //     },
+        //     priority: 11,
+        //     action: function(item) {
+        //         // TODO: ask the Annotation Sidebar to add a filter hiding this item
+        //         // .. is this "hide all" action needed?
+        //         tfa.hideByUri(item.uri);
+        //     }
+        // });
 
     }; // initContextualMenu()
 
