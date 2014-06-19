@@ -12,15 +12,47 @@
 
     };
 
-    var previewDemoCtrl = function($scope, MyPundit, Annotation, ItemsExchange, Preview, Dashboard, $templateCache) {
+    var previewDemoCtrl = function($scope, MyPundit, Annotation, ItemsExchange, Preview, Dashboard, $templateCache, PageItemsContainer, Item) {
 
         $templateCache.get(Preview.options.clientDashboardTemplate);
         Dashboard.addContent(Preview.options.clientDashboardPanel, Preview.options.clientDashboardTabTitle, Preview.options.clientDashboardTemplate);
 
-        var p = new Annotation("da128c73");
+        /*var p = new Annotation("da128c73");
         p.then(function() {
             $scope.items = ItemsExchange.getItemsHash();
-        });
+        });*/
+        var item1 = {
+            uri: "http://testItemUri",
+            label: "Item Label",
+            description: "item description",
+            type: ["http://purl.org/pundit/ont/ao#fragment-text"]
+        };
+
+        var item2 = {
+            uri: "http://testItemUri2",
+            label: "Item Label2",
+            description: "item description2",
+            type: ["http://www.freebase.com/schema/common/topic", "http://www.freebase.com/schema/interests/collection_category", "http://www.freebase.com/schema/base/popstra/product",
+                    "http://xmlns.com/foaf/0.1/MyType1", "http://xmlns.com/foaf/0.1/MyType2"]
+        };
+
+        var item3 = {
+            uri: "http://testItemUri3",
+            label: "Item Label Image",
+            description: "item description image",
+            type: ["http://xmlns.com/foaf/0.1/Image"]
+        };
+
+        var i1 = new Item(item1.uri, item1);
+        ItemsExchange.addItemToContainer(i1, PageItemsContainer.options.container);
+
+        var i2 = new Item(item2.uri, item2);
+        ItemsExchange.addItemToContainer(i2, PageItemsContainer.options.container);
+
+        var i3 = new Item(item3.uri, item3);
+        ItemsExchange.addItemToContainer(i3, PageItemsContainer.options.container);
+
+        $scope.items = ItemsExchange.getItemsByContainer(PageItemsContainer.options.container);
 
     $scope.getPreview = function(item){
         Preview.showDashboardPreview(item);
@@ -52,8 +84,8 @@
         <div class="row">
             <div class="col-lg-6">
                 <h2>Items</h2>
-                <ul class="list-group" style="overflow: hidden">
-                    <li class="list-group-item" ng-repeat="item in items" ng-mouseover="getPreview(item)" ng-mouseleave="hidePreview()">
+                <ul class="list-group pnd-example-ul" style="overflow: hidden">
+                    <li class="list-group-item pnd-example-li" ng-repeat="item in items" ng-mouseover="getPreview(item)" ng-mouseleave="hidePreview()">
                         <item uri="{{item.uri}}"></item>
                     </li>
                 </ul>
