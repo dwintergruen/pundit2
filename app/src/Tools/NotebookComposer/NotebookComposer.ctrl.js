@@ -1,5 +1,5 @@
 angular.module('Pundit2.NotebookComposer')
-    .controller('NotebookComposerCtrl', function($scope, NotebookComposer, NotebookExchange) {
+    .controller('NotebookComposerCtrl', function($scope, NotebookComposer) {
 
         $scope.notebook = {};
         $scope.notebook.visibility = "public";

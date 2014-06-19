@@ -1,5 +1,5 @@
 angular.module('Pundit2.Toolbar')
-.controller('ToolbarCtrl', function($scope, Toolbar, MyPundit, Dashboard, AnnotationSidebar, ResourcePanel) {
+.controller('ToolbarCtrl', function($scope, Toolbar, MyPundit, Dashboard, AnnotationSidebar, ResourcePanel, ItemsExchange, MyNotebooksContainer, NotebookExchange) {
 
     $scope.dropdownTemplate = "src/ContextualMenu/dropdown.tmpl.html";
     
@@ -30,14 +30,33 @@ angular.module('Pundit2.Toolbar')
         { text: 'My template 3', href: '#' }
     ];
     
-    $scope.userNotebooksDropdown = [
-        { text: 'Current notebook', href: '#' },
-        { text: 'My notebook 1', href: '#' },
-        { text: 'My notebook 2', href: '#' },
-        { text: 'My notebook 3', href: '#' }
-    ];
+
     
     $scope.userData = {};
+    $scope.userNotebooksDropdown = [];
+
+    var setCurrentNotebook = function(notebookID){
+        console.log(notebookID);
+    };
+
+    $scope.showMyNotebooks = function(){
+        /*NotebookExchange.getCurrent().then(function(notebookID){
+                console.log("Current Notebook ", notebookID);
+        });*/
+
+        var notebooks = ItemsExchange.getItemsByContainer(MyNotebooksContainer.options.container);
+        console.log(notebooks);
+        for (var i = 0; i<notebooks.length; i++){
+            $scope.userNotebooksDropdown[i] = {text: notebooks[i].label,
+                                                click: function(_i){
+                                                    return function(){
+                                                        console.log("TODO set as current: ",notebooks[_i].id);
+                                                    };
+                                                }(i)
+
+                            }
+        }
+    };
 
     // listener for user status
     // when user is logged in, set flag isUserLogged to true
