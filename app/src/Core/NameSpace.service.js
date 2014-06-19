@@ -94,14 +94,14 @@ angular.module("Pundit2.Core")
         modified: _dct + "modified",
         pageContext: _pnd + "hasPageContext",
         target: "http://www.openannotation.org/ns/hasTarget",
-        isIncludedIn: _pnd + "isIncludedIn",
+        isIncludedIn: _pnd + "isIncludedIn"
     };
 
     // TODO: move to Consolidation.options ??
     // Consolidation use this to know what items are consolidable
     ns.fragments = {
         imagePart: _pnd + "fragment-image",
-        text: _pnd + "fragment-text",
+        text: _pnd + "fragment-text"
     };
 
     // Notable item types: page, full image, named content

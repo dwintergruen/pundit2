@@ -64,7 +64,32 @@ angular.module('Pundit2.Communication')
 
 
         notebookExchange.getCurrent = function() {
-            // TODO
+
+            var promise = $q.defer();
+            notebookExchange.log('Getting current notebook');
+            MyPundit.login().then(function(val) {
+
+                if (val === false) {
+                    promise.reject('Ouch! Login error');
+                } else {
+
+                    $http({
+                        headers: { 'Content-Type': 'application/json' },
+                        method: 'GET',
+                        url: NameSpace.get('asNBCurrent'),
+                        withCredentials: true
+                    }).success(function(id) {
+                        notebookExchange.log(id+' is the current notebook');
+                        promise.resolve(id);
+                    }).error(function(msg) {
+                        notebookExchange.log('Impossible to get the current notebook ');
+                        promise.reject(msg);
+                    });
+                }
+
+            });
+
+            return promise.promise;
         };
 
         notebookExchange.setCurrent = function(id) {
