@@ -32,7 +32,7 @@ body.pnd-annotation-sidebar-expanded {
 	//box-shadow:inset 0 0 4px 0 #424242;
 }
 .pnd-annotation-details{
-    padding: 10px;
+    padding: 5px;
 }
 .pnd-annotation-sidebar-container.pnd-annotation-sidebar-collapsed {
     width: @annotation-sidebar-coll-width;
@@ -205,7 +205,7 @@ body.pnd-annotation-sidebar-expanded {
 // --------------------------------------------------
 
 .pnd-annotation-details {
-		padding: 10px 0px;
+		padding: 5px 0px;
 
     .pnd-annotation-details-top {
         cursor: pointer;
@@ -296,15 +296,35 @@ body.pnd-annotation-sidebar-expanded {
 	                          text-overflow: ellipsis;
 	                          width: 250px;
 	                          display: inline-block;
-	                          background-color: aqua;
 	                       }
 
                     }
                     
-                .pnd-annotation-details-subject {
-                    background-color: transparent;
+                .pnd-annotation-details-subject,
+                .pnd-annotation-details-predicate,
+                .pnd-annotation-details-object {
+                	background-color: transparent;
                     border-bottom: 1px solid @gray-extra-light;
-                    padding-left: 7px;
+                    
+                        .pnd-annotation-details-item-header {
+	                         
+		                	&:hover {
+			                	background-color: @gray-lighter;  
+			                    } 
+			                         
+			                &:active,
+			                &:focus {
+			                    background-color: @gray-lighter; 
+			                    } 
+			             } 
+                    
+	                 }
+                    
+                .pnd-annotation-details-subject {
+                    
+                       .pnd-annotation-details-item-header {
+	                    	padding-left: 7px;
+	                        } 
                     
                        .pnd-icon {
 	                       color: @subject-color;
@@ -313,9 +333,10 @@ body.pnd-annotation-sidebar-expanded {
                     }
                     
                 .pnd-annotation-details-predicate {
-                    background-color: transparent;
-                    border-bottom: 1px solid @gray-extra-light;
-                    padding-left: 14px;
+                    
+                        .pnd-annotation-details-item-header {
+	                    	padding-left: 14px;
+	                        } 
                     
                         .pnd-icon {
 	                       color: @predicate-color;
@@ -323,9 +344,12 @@ body.pnd-annotation-sidebar-expanded {
                     }
                     
                 .pnd-annotation-details-object {
-                    background-color: transparent;
-                    border-bottom: 1px solid @gray-extra-light;
-                    padding-left: 21px;
+                    
+                    
+                    .pnd-annotation-details-item-header {
+	                         padding-left: 21px; 
+	                         } 
+                    
                     
                          .pnd-icon {
 	                       color: @object-color;
