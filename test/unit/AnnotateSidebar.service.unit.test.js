@@ -134,15 +134,13 @@ describe('AnnotationSidebar service', function() {
         AnnotationSidebar.getMaxDate();
     });
 
-    xit('should sidebar get annotation after timeout refresh', function(){
-        $timeout.flush(AnnotationSidebar.options.annotationsRefresh - epsilon);
-        myAnnotation = AnnotationSidebar.getAllAnnotations();
-        expect(myAnnotation.length).toEqual(0);
-
-        $timeout.flush(2 * epsilon);
+    it('should sidebar get annotation after consolidation-completed event', function(){
+        $rootScope.$emit('consolidation-completed');
         myAnnotation = AnnotationSidebar.getAllAnnotations();
         expect(myAnnotation.length).toEqual(1);
     });
+
+    // TODO: testare singolarmente le funzioni per la creazione e il conteggio dei filtri
 
     it('should filter be applied to the list of filtered annotations', function(){
         AnnotationSidebar.filters['authors'].expression.push('http://fakeuri.it/test');
