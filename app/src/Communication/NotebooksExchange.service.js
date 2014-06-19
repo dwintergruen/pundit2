@@ -76,9 +76,9 @@ angular.module('Pundit2.Communication')
                         method: 'PUT',
                         url: NameSpace.get('asNBCurrent')+"/"+id,
                         withCredentials: true
-                    }).success(function(data) {
+                    }).success(function() {
                         notebookExchange.log(id+' is now current');
-                        promise.resolve(data);
+                        promise.resolve();
                     }).error(function(msg) {
                         notebookExchange.log('Impossible to set as current: '+id);
                         promise.reject(msg);
@@ -106,9 +106,9 @@ angular.module('Pundit2.Communication')
                     method: 'PUT',
                     url: NameSpace.get('asNBPublic', { key: id }),
                     withCredentials: true
-                }).success(function(data) {
+                }).success(function() {
                     notebookExchange.log(id+' is now public');
-                    promise.resolve(data);
+                    promise.resolve();
                 }).error(function(msg) {
                     notebookExchange.log('Impossible to set as public: '+id);
                     promise.reject(msg);
@@ -135,9 +135,9 @@ angular.module('Pundit2.Communication')
                     method: 'PUT',
                     url: NameSpace.get('asNBPrivate', { key: id }),
                     withCredentials: true
-                }).success(function(data) {
+                }).success(function() {
                     notebookExchange.log(id+' is now private');
-                    promise.resolve(data);
+                    promise.resolve();
                 }).error(function(msg) {
                     notebookExchange.log('Impossible to set as private: '+id);
                     promise.reject(msg);
@@ -193,6 +193,35 @@ angular.module('Pundit2.Communication')
                     notebookExchange.err("Error from server while retrieving list of my notebooks: "+ statusCode);
                     Analytics.track('api', 'error', 'get notebook owned', statusCode);
                 });
+            });
+
+            return promise.promise;
+        };
+
+        notebookExchange.deleteNotebook = function(id) {
+            var promise = $q.defer();
+            notebookExchange.log('Deleting '+id);
+
+            MyPundit.login().then(function(val) {
+
+                if (val === false) {
+                    promise.reject('Ouch! Login error');
+                    return;
+                }
+
+                $http({
+                    headers: { 'Content-Type': 'application/json' },
+                    method: 'DELETE',
+                    url: NameSpace.get('asNB')+"/"+id,
+                    withCredentials: true
+                }).success(function() {
+                    notebookExchange.log(id+' is removed');
+                    promise.resolve();
+                }).error(function(msg) {
+                    notebookExchange.log('Impossible to remove '+id);
+                    promise.reject(msg);
+                });
+
             });
 
             return promise.promise;
