@@ -100,7 +100,6 @@ angular.module('Pundit2.MyNotebooksContainer')
         return ItemsExchange.getItemsByContainer('myNotebooks');
     }, function(newItems) {
         // update all items array and display new items
-        console.log(newItems)
         allItem = newItems;
         filterItems($scope.search.term);
     }, true);

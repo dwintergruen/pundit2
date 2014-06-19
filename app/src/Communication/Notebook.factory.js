@@ -20,6 +20,11 @@ angular.module('Pundit2.Communication')
 
     }
 
+    // TODO this is a workaround to fix property
+    Notebook.prototype.isProperty = function() {
+        return false;
+    };
+
     // TODO: after login
     Notebook.prototype.create = function() {
         notebookComponent.log('Creating a new Notebook on the server');
@@ -82,7 +87,11 @@ angular.module('Pundit2.Communication')
             var propertyURI = ns[property];
                 
             if (propertyURI in nbData) {
-                nb[property] = nbData[propertyURI][0].value;
+                if(property === 'type'){
+                    nb[property] = [nbData[propertyURI][0].value];
+                } else {
+                    nb[property] = nbData[propertyURI][0].value;
+                }                
             } else {
                 nb[property] = '';
             }

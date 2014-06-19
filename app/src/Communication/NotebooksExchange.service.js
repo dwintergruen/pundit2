@@ -1,5 +1,6 @@
 angular.module('Pundit2.Communication')
-    .service('NotebookExchange', function(BaseComponent, NameSpace, Notebook, MyPundit, Analytics, $http, $q) {
+    .service('NotebookExchange', function(BaseComponent, NameSpace, Notebook, MyPundit, Analytics, MyNotebooksContainer, ItemsExchange,
+                                            $http, $q) {
 
         var notebookExchange = new BaseComponent("NotebookExchange");
 
@@ -34,6 +35,11 @@ angular.module('Pundit2.Communication')
 
                         $q.all(nbs).then(function(notebooks) {
                             promise.resolve(notebooks);
+                            // add all my notebooks to my notebooks container inside items exchange
+                            // notebooks are treated as item
+                            for (l=0; l < notebooks.length; l++) {
+                                ItemsExchange.addItem(notebooks[l], MyNotebooksContainer.options.container);
+                            }
                             notebookExchange.log("Retrieved all of my notebooks");
                         }, function() {
                             console.log('My notebooks all error?! :(');

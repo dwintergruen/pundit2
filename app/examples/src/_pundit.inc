@@ -79,6 +79,7 @@
     <script src="../src/Lists/MyNotebooksContainer/MyNotebooksContainer.js"></script>
     <script src="../src/Lists/MyNotebooksContainer/MyNotebooksContainer.dir.js"></script>
     <script src="../src/Lists/MyNotebooksContainer/MyNotebooksContainer.ctrl.js"></script>
+    <script src="../src/Lists/MyNotebooksContainer/MyNotebooksContainer.service.js"></script>
 
     <script src="../src/Item/Item.js"></script>
     <script src="../src/Item/Item.dir.js"></script>

@@ -135,6 +135,9 @@ angular.module('Pundit2.Core')
                  */
                 active: true
             },
+            MyNotebooksContainer: {
+                active: true
+            },
             MyItemsContainer: {
                 /**
                  * @ngdoc property

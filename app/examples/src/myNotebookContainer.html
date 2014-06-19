@@ -2,27 +2,29 @@
 
 <script>
 
-    var MyNotebooksContainerDemoCtrl = function($scope, Item, ItemsExchange) {
+    var MyNotebooksContainerDemoCtrl = function($scope, Item, ItemsExchange, NotebookExchange, MYNOTEBOOKSCONTAINERDEFAULTS) {
     
         var items = [
             {
-                uri: "N1",
+                uri: "http://purl.org/pundit/demo-cloud-server/notebook/N1",
                 label: "N1 Name",
-                type: []
+                type: ["http://purl.org/pundit/ont/ao#Notebook"]
             },
             {
-                uri: "N2",
+                uri: "http://purl.org/pundit/demo-cloud-server/notebook/N2",
                 label: "N2 Name",
-                type: []
+                type: ["http://purl.org/pundit/ont/ao#Notebook"]
             }
         ];
 
         var loadMockedItems = function(){
             for (var j in items) {
                 var item = new Item(items[j].uri, items[j]);
-                ItemsExchange.addItemToContainer(item, 'myNotebooks');
+                ItemsExchange.addItemToContainer(item, MYNOTEBOOKSCONTAINERDEFAULTS.container);
             }
         }();
+
+        NotebookExchange.getMyNotebooks();
         
     };    
 
