@@ -4,7 +4,9 @@ angular.module('Pundit2.Item')
     // get item by uri (passed as directive uri param)
     $scope.item = ItemsExchange.getItemByUri($scope.uri);
     // get item type label (then show it inside template)
-    $scope.itemTypeLabel = TypesHelper.getLabel($scope.item.type[0]);
+    if ($scope.item.type.length > 0) {
+        $scope.itemTypeLabel = TypesHelper.getLabel($scope.item.type[0]);
+    }    
 
     $scope.onItemMouseOver = function(){
         Preview.showDashboardPreview($scope.item);
