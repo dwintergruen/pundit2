@@ -64,6 +64,24 @@ angular.module('Pundit2.AnnotationSidebar')
         return results;
     };
 })
+.filter('notebooks', function() {
+    return function(input, search) {
+        var results = [];
+        var currentNotebook;
+
+        if (search.length > 0) {
+            angular.forEach(input, function (annotation) {
+                currentNotebook = annotation.isIncludedInUri;
+                if (search.indexOf(currentNotebook) !== -1) {
+                    results.push(annotation);
+                }
+            });
+        } else {
+            results = input;
+        }
+        return results;
+    };
+})
 .filter('predicates', function() {
     return function(input, search) {
         var results = [];

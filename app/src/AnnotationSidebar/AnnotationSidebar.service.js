@@ -225,7 +225,7 @@ angular.module('Pundit2.AnnotationSidebar')
     debug: false
 })
 .service('AnnotationSidebar', function($rootScope, $filter, $timeout,
-                                       BaseComponent, AnnotationsExchange, Consolidation, ItemsExchange,
+                                       BaseComponent, AnnotationsExchange, Consolidation, ItemsExchange, Notebook,
                                        TypesHelper, TextFragmentAnnotator, ANNOTATIONSIDEBARDEFAULTS) {
     
     var annotationSidebar = new BaseComponent('AnnotationSidebar', ANNOTATIONSIDEBARDEFAULTS);
@@ -243,6 +243,7 @@ angular.module('Pundit2.AnnotationSidebar')
     var elementsList = {
         annotationsDate: [],
         authors: {},
+        notebooks: {},
         entities: {},
         predicates: {},
         types: {}
@@ -258,6 +259,11 @@ angular.module('Pundit2.AnnotationSidebar')
         authors: {
             filterName: 'authors',
             filterLabel: 'Author',
+            expression: []
+        },
+        notebooks: {
+            filterName: 'notebooks',
+            filterLabel: 'Notebooks',
             expression: []
         },
         fromDate: {
@@ -347,6 +353,9 @@ angular.module('Pundit2.AnnotationSidebar')
             // Annotation authors
             elementsList.authors[annotation.creator].count = filterCountIncrement(annotation.creator);
 
+            // Notebooks
+            elementsList.notebooks[annotation.isIncludedInUri].count = filterCountIncrement(annotation.isIncludedIn);
+
             // Predicates
             angular.forEach(annotation.predicates, function(predicateUri) {
                 if (typeof(uriList[predicateUri]) === 'undefined'){
@@ -412,6 +421,27 @@ angular.module('Pundit2.AnnotationSidebar')
             if (elementsList.annotationsDate.indexOf(annotation.created) === -1){
                 elementsList.annotationsDate.push(annotation.created);
             }
+
+            // Annotation notebook
+            var notebookId = annotation.isIncludedIn;
+            var notebookUri = annotation.isIncludedInUri;
+            if (typeof(elementsList.notebooks[notebookUri]) === 'undefined'){
+                var notebookRef = new Notebook(notebookId);
+                var notebookName = "";
+                notebookRef.then(function(nb) {
+                    notebookName = nb.label;
+                    elementsList.notebooks[notebookUri].label = notebookName;
+                });
+
+                elementsList.notebooks[notebookUri] = {
+                    uri: notebookUri,
+                    label: notebookName,
+                    notebookId: notebookId, 
+                    active: false,
+                    count: 0
+                };
+            }
+            
 
             // Predicates
             angular.forEach(annotation.predicates, function(predicateUri) {
