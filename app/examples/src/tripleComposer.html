@@ -25,31 +25,6 @@
                 ItemsExchange.addItemToContainer(item, PAGEITEMSCONTAINERDEFAULTS.container);
             }
         }();
-        
-        /*$scope.deleteNotebook = function(){
-            $http({
-                headers: { 'Content-Type': 'application/json' },
-                method: 'DELETE',
-                url: NameSpace.get('asNB')+"/0667c48c",
-                withCredentials: true
-            }).success(function(data) {
-                console.log(data);
-            }).error(function(msg) {
-                console.log(msg)
-            });
-        };
-        $scope.setCurrentNotebook = function(){
-            $http({
-                headers: { 'Content-Type': 'application/json' },
-                method: 'PUT',
-                url: NameSpace.get('asNBCurrent')+"/ef8b0ac9",
-                withCredentials: true
-            }).success(function(data) {
-                console.log(data);
-            }).error(function(msg) {
-                console.log(msg)
-            });
-        };*/
 
     };
 
@@ -57,8 +32,6 @@
 
 <div data-ng-app="Pundit2" class="pnd-wrp" ng-controller="TripleComposerDemoCtrl">
     <triple-composer></triple-composer>
-    <!--<button ng-click="deleteNotebook()">Delete Notebook</button>
-    <button ng-click="setCurrentNotebook()">Set New Current Notebook</button>-->
 </div>
 
 <!-- buildexamples:section footer --><!-- /buildexamples -->

@@ -1,7 +1,6 @@
 angular.module('Pundit2.Communication')
     .service('NotebookExchange', function(BaseComponent, NameSpace, Notebook, MyPundit, Analytics, $http, $q) {
 
-        // TODO: inherit from a Store()? Annotations, items, ...
         var notebookExchange = new BaseComponent("NotebookExchange");
 
         notebookExchange.getMyNotebooks = function() {
@@ -62,7 +61,94 @@ angular.module('Pundit2.Communication')
             // TODO
         };
 
-        notebookExchange.setCurrent = function() {
+        notebookExchange.setCurrent = function(id) {
+            var promise = $q.defer();
+            notebookExchange.log('Setting as current '+id);
+
+            MyPundit.login().then(function(val) {
+
+                if (val === false) {
+                    promise.reject('Ouch! Login error');
+                } else {
+
+                    $http({
+                        headers: { 'Content-Type': 'application/json' },
+                        method: 'PUT',
+                        url: NameSpace.get('asNBCurrent')+"/"+id,
+                        withCredentials: true
+                    }).success(function(data) {
+                        notebookExchange.log(id+' is now current');
+                        promise.resolve(data);
+                    }).error(function(msg) {
+                        notebookExchange.log('Impossible to set as current: '+id);
+                        promise.reject(msg);
+                    });
+                }
+
+            });
+
+            return promise.promise;
+        };
+
+        notebookExchange.setPublic = function(id) {
+            var promise = $q.defer();
+            notebookExchange.log('Setting as public '+id);
+
+            MyPundit.login().then(function(val) {
+
+                if (val === false) {
+                    promise.reject('Ouch! Login error');
+                    return;
+                }
+
+                $http({
+                    headers: { 'Content-Type': 'application/json' },
+                    method: 'PUT',
+                    url: NameSpace.get('asNBPublic', { key: id }),
+                    withCredentials: true
+                }).success(function(data) {
+                    notebookExchange.log(id+' is now public');
+                    promise.resolve(data);
+                }).error(function(msg) {
+                    notebookExchange.log('Impossible to set as public: '+id);
+                    promise.reject(msg);
+                });
+
+            });
+
+            return promise.promise;
+        };
+
+        notebookExchange.setPrivate = function(id) {
+            var promise = $q.defer();
+            notebookExchange.log('Setting as private '+id);
+
+            MyPundit.login().then(function(val) {
+
+                if (val === false) {
+                    promise.reject('Ouch! Login error');
+                    return;
+                }
+
+                $http({
+                    headers: { 'Content-Type': 'application/json' },
+                    method: 'PUT',
+                    url: NameSpace.get('asNBPrivate', { key: id }),
+                    withCredentials: true
+                }).success(function(data) {
+                    notebookExchange.log(id+' is now private');
+                    promise.resolve(data);
+                }).error(function(msg) {
+                    notebookExchange.log('Impossible to set as private: '+id);
+                    promise.reject(msg);
+                });
+
+            });
+
+            return promise.promise;
+        };
+
+        notebookExchange.setActive = function() {
             // TODO
         };
 
@@ -111,8 +197,6 @@ angular.module('Pundit2.Communication')
 
             return promise.promise;
         };
-
-
 
         notebookExchange.log('Component up and running');
 
