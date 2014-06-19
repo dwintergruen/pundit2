@@ -1,6 +1,11 @@
 angular.module('Pundit2.Communication')
-.factory('Notebook', function(BaseComponent, NameSpace, MyPundit, Analytics, $http, $q) {
-    var notebookComponent = new BaseComponent("Notebook");
+.constant('NOTEBOOKDEFAULTS', {
+    iconDefault: 'pnd-icon pnd-icon-eye',
+    classDefault: 'pnd-item-default'
+
+})
+.factory('Notebook', function(BaseComponent, NameSpace, MyPundit, Analytics, $http, $q, NOTEBOOKDEFAULTS) {
+    var notebookComponent = new BaseComponent("Notebook", NOTEBOOKDEFAULTS);
 
     // Creates a new Notebook instance. If an id is passed in
     // then the notebook metadata are loaded, otherwise a new
@@ -23,6 +28,15 @@ angular.module('Pundit2.Communication')
     // TODO this is a workaround to fix property
     Notebook.prototype.isProperty = function() {
         return false;
+    };
+
+
+    Notebook.prototype.getIcon = function() {
+        return notebookComponent.options.iconDefault;
+    };
+
+    Notebook.prototype.getClass = function() {
+        return notebookComponent.options.classDefault;
     };
 
     // TODO: after login

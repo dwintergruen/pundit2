@@ -1,5 +1,5 @@
 angular.module('Pundit2.Preview')
-.controller('PreviewCtrl', function($scope, Preview, TypesHelper, $window, $element) {
+.controller('PreviewCtrl', function($scope, Preview, TypesHelper, $window, $element, Notebook) {
 
     $scope.itemDashboardPreview = null;
 
@@ -10,13 +10,19 @@ angular.module('Pundit2.Preview')
         $scope.itemDashboardPreview = newItem;
         // check if item has an image to show
         if(newItem === null) {
+
             $scope.hasImage = false;
             $scope.itemIsAnImage = false;
 
         } else {
+            if(TypesHelper.getLabel(newItem.type[0]) === 'Notebook'){
+                $scope.hasImage = false;
+                $scope.itemIsAnImage = false;
+            } else {
+                $scope.hasImage = (typeof(newItem.image) !== 'undefined');
+                $scope.itemIsAnImage = $scope.itemDashboardPreview.isImage() || $scope.itemDashboardPreview.isImageFragment();
+            }
 
-            $scope.hasImage = (typeof(newItem.image) !== 'undefined');
-            $scope.itemIsAnImage = $scope.itemDashboardPreview.isImage() || $scope.itemDashboardPreview.isImageFragment();
 
         }
     });
