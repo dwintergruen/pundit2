@@ -43,7 +43,7 @@ angular.module('Pundit2.AnnotationSidebar')
      */
     debug: false
 })
-.service('AnnotationDetails', function($rootScope, $filter, BaseComponent, AnnotationsExchange, Consolidation, ItemsExchange, MyPundit, TypesHelper, ANNOTATIONDETAILSDEFAULTS) {
+.service('AnnotationDetails', function($rootScope, $filter, BaseComponent, Annotation, AnnotationsExchange, Consolidation, ItemsExchange, MyPundit, TextFragmentAnnotator, TypesHelper, ANNOTATIONDETAILSDEFAULTS) {
     
     var annotationDetails = new BaseComponent('AnnotationDetails', ANNOTATIONDETAILSDEFAULTS);
 
@@ -132,46 +132,31 @@ angular.module('Pundit2.AnnotationSidebar')
         return results;
     };
 
-    var isAnnotationBroken = function(currentAnnotation) {
+    var getHeigth = function(currentAnnotation) {
+
         var annotation = currentAnnotation;
         var graph = annotation.graph;
+        var firstSubjectUri;
         var currentItem;
-        var list;
-        var broken = false;
-
-        for (var subject in graph){
-            currentItem = ItemsExchange.getItemByUri(subject);
-
-            if (!Consolidation.isConsolidated(currentItem)){
-                broken = true;
-                annotationDetails.log("notConsolidate subject-> ",currentItem);
-            }
-
-            for (var predicate in graph[subject]){
-
-                list = graph[subject][predicate];
-                for (var object in list){
-                    objectValue = list[object].value;
-                    objectType = list[object].type;
-
-                    if (objectType === 'uri'){
-                        currentItem = ItemsExchange.getItemByUri(objectValue);
-                        if (!Consolidation.isConsolidated(currentItem)){
-                            // TODO: la presenza di un oggetto rotto connota come rotta l'intera annotazione?
-                            // broken = true;
-                            annotationDetails.log("notConsolidate object-> ",currentItem);
-                        }
-                    } 
-                }
-            }
+        
+        for (firstSubjectUri in graph){
+            break;
         }
 
-        return broken;
+        currentItem = ItemsExchange.getItemByUri(firstSubjectUri);
+
+        if (Consolidation.isConsolidated(currentItem)){
+            var id= TextFragmentAnnotator.getFragmentIdByUri(firstSubjectUri);
+            annotationDetails.log("icona",TextFragmentAnnotator.getFragmentIconById(id));
+        }
+
     };
 
     annotationDetails.addAnnotationReference = function(scope) {
         var currentId = scope.id;
         var currentAnnotation = AnnotationsExchange.getAnnotationById(currentId);
+
+        getHeigth(currentAnnotation);
 
         state.annotations[currentId] = {
             id: currentId,
@@ -182,7 +167,7 @@ angular.module('Pundit2.AnnotationSidebar')
             scopeReference: scope,
             mainItem: buildMainItem(currentAnnotation),
             itemsArray: buildItemsArray(currentAnnotation),
-            broken: isAnnotationBroken(currentAnnotation),
+            broken: currentAnnotation.isBroken(),
             expanded: state.defaultExpanded
         };
     };

@@ -368,6 +368,18 @@ angular.module('Pundit2.Annotators')
         tfa.log('Adding consolidated fragment bit', fragments);
     };
 
+    tfa.getFragmentIdByUri = function(uri) {
+        if (typeof(fragmentIds[uri]) !== "undefined") {
+            return fragmentIds[uri];
+        }
+    };
+
+    tfa.getFragmentIconById = function(id) {
+        if (typeof(fragmentById[id]) !== "undefined") {
+            return fragmentById[id].icon;
+        }
+    };
+
     tfa.highlightByUri = function(uri) {
         if (typeof(fragmentIds[uri]) === "undefined") {
             tfa.log('Not highlighting given URI: fragment id not found');

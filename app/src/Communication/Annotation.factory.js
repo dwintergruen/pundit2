@@ -1,6 +1,6 @@
 angular.module('Pundit2.Communication')
 .factory('Annotation', function(BaseComponent, NameSpace, Utils, Item, TypesHelper, Analytics,
-                                AnnotationsExchange, MyPundit, ItemsExchange, PageItemsContainer,
+                                AnnotationsExchange, Consolidation, MyPundit, ItemsExchange, PageItemsContainer,
                                 $http, $q) {
 
     var annotationComponent = new BaseComponent("Annotation");
@@ -67,6 +67,43 @@ angular.module('Pundit2.Communication')
 
         });
         
+    };
+
+    Annotation.prototype.isBroken = function() {
+        var graph = this.graph;
+        var currentItem;
+        var list;
+        var broken = true;
+
+        for (var subject in graph){
+            currentItem = ItemsExchange.getItemByUri(subject);
+
+            if (Consolidation.isConsolidated(currentItem)){
+                broken = false;
+            } else{
+                annotationComponent.log("notConsolidate subject-> ",currentItem);
+            }
+
+            // TODO: per le annotazioni rotte si fa riferimento sia ai subjects che agli objects?
+
+            // for (var predicate in graph[subject]){
+
+            //     list = graph[subject][predicate];
+            //     for (var object in list){
+            //         objectValue = list[object].value;
+            //         objectType = list[object].type;
+
+            //         if (objectType === 'uri'){
+            //             currentItem = ItemsExchange.getItemByUri(objectValue);
+            //             if (!Consolidation.isConsolidated(currentItem)){
+            //                 broken = true;
+            //                 annotationComponent.log("notConsolidate object-> ",currentItem);
+            //             }
+            //         } 
+            //     }
+            // }
+        }
+        return broken;
     };
 
     // Returns true if the annotation has been parsed correctly and entirely
