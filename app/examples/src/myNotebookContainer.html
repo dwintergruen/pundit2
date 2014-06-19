@@ -1,0 +1,37 @@
+<!-- buildexamples:section header --><!-- /buildexamples -->
+
+<script>
+
+    var MyNotebooksContainerDemoCtrl = function($scope, Item, ItemsExchange) {
+    
+        var items = [
+            {
+                uri: "N1",
+                label: "N1 Name",
+                type: []
+            },
+            {
+                uri: "N2",
+                label: "N2 Name",
+                type: []
+            }
+        ];
+
+        var loadMockedItems = function(){
+            for (var j in items) {
+                var item = new Item(items[j].uri, items[j]);
+                ItemsExchange.addItemToContainer(item, 'myNotebooks');
+            }
+        }();
+        
+    };    
+
+</script>
+
+<div data-ng-app="Pundit2" class="pnd-wrp">
+    <div ng-controller="MyNotebooksContainerDemoCtrl">
+        <my-notebooks-container></my-notebooks-container>
+    </div>
+</div>
+
+<!-- buildexamples:section footer --><!-- /buildexamples -->
