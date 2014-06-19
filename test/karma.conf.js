@@ -29,6 +29,7 @@ module.exports = function(config) {
             'app/src/Item/Item.js',
             'app/src/Toolbar/Toolbar.js',
             'app/src/Preview/Preview.js',
+            'app/src/Tools/NotebookComposer/NotebookComposer.js',
             'app/src/ResourcePanel/ResourcePanel.js',
             'app/src/Communication/Communication.js',
             'app/src/**/*.js',

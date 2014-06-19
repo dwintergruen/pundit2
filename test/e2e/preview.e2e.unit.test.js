@@ -35,7 +35,7 @@ describe("Preview interaction", function() {
 
     });
 
-    iit('should show item preview on mouseover', function() {
+    it('should show item preview on mouseover', function() {
 
         p.driver.manage().window().setSize(1200, 960);
         p.get('/app/examples/preview.html');

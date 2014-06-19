@@ -110,7 +110,7 @@ angular.module('Pundit2.Communication')
                 $http({
                     headers: { 'Content-Type': 'application/json' },
                     method: 'PUT',
-                    url: NameSpace.get('asNBPublic', { key: id }),
+                    url: NameSpace.get('asNBPublic', { id: id }),
                     withCredentials: true
                 }).success(function() {
                     notebookExchange.log(id+' is now public');
@@ -139,7 +139,7 @@ angular.module('Pundit2.Communication')
                 $http({
                     headers: { 'Content-Type': 'application/json' },
                     method: 'PUT',
-                    url: NameSpace.get('asNBPrivate', { key: id }),
+                    url: NameSpace.get('asNBPrivate', { id: id }),
                     withCredentials: true
                 }).success(function() {
                     notebookExchange.log(id+' is now private');
