@@ -7,23 +7,17 @@ angular.module('Pundit2.NotebookComposer')
         $scope.notebook.current = false;
 
         $scope.save = function(){
+            // TODO sanity check on notebook name
             NotebookComposer.createNotebook($scope.notebook).then(function(v){
                 console.log("Ho creato il notebook: ", v);
                 $scope.clear();
             });
-        }
+        };
 
         $scope.clear = function(){
             $scope.notebook.name = "";
             $scope.notebook.visibility = "public";
             $scope.notebook.current = "";
-        }
-
-        $scope.cancelAll = function(){
-            var myNotebook = NotebookExchange.getMyNotebooks().then(function(nb){
-                NotebookExchange.deleteNotebook(nb[0].id);
-            });
-
-        }
+        };
 
     });

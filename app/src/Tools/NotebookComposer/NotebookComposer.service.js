@@ -1,7 +1,16 @@
 angular.module('Pundit2.NotebookComposer')
-.service('NotebookComposer', function(BaseComponent, NotebookExchange, $q) {
+.constant('NOTEBOOKCOMPOSERDEFAULTS', {
 
-        var notebookComposer = new BaseComponent("NotebookComposer");
+    clientDashboardTemplate: "src/Tools/NotebookComposer/ClientNotebookComposer.tmpl.html",
+
+    clientDashboardPanel: "tools",
+
+    clientDashboardTabTitle: "Notebooks Composer"
+
+})
+.service('NotebookComposer', function(BaseComponent, NotebookExchange, NOTEBOOKCOMPOSERDEFAULTS, $q) {
+
+        var notebookComposer = new BaseComponent("NotebookComposer", NOTEBOOKCOMPOSERDEFAULTS);
 
         notebookComposer.createNotebook = function(notebook){
             var promise = $q.defer();

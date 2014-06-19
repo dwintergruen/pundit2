@@ -189,6 +189,9 @@ angular.module('Pundit2.Core')
                  * <pre> active: true </pre>
                  */
                 active: true
+            },
+            NotebookComposer: {
+                active: true
             }
       }
 
