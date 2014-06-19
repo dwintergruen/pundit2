@@ -21,8 +21,8 @@
                 <button
                     ng-click="annotationSidebar.toggleFiltersContent()"
                     ng-show="!isFiltersShowed"
-                    class="btn btn-success pnd-annotation-sidebar-btn-show-filter">
-                        Show Filters
+                    class="btn btn-link pnd-annotation-sidebar-btn-show-filter">
+                        <span class="pnd-icon-filter"></span> Show Filters
                 </button><button
                     ng-show="annotationSidebar.needToFilter() && !isFiltersShowed"
                     class="btn btn-warning pnd-annotation-sidebar-btn-remove-filters" ng-click="annotationSidebar.resetFilters()">
@@ -236,7 +236,10 @@
                         </div>
                 </div>
                 <!-- buttons -->
-                <button type="button" class="btn btn-success pnd-annotation-sidebar-btn-close-filters" ng-click="annotationSidebar.toggleFiltersContent()">Close</button><button type="button" class="btn btn-warning pnd-annotation-sidebar-btn-remove-filters" ng-click="annotationSidebar.resetFilters()">Remove all filters</button>
+                <div class="pnd-annotation-footer-sidebar-filter">
+	                <button type="button" class="btn btn-xs btn-success pnd-annotation-sidebar-btn-close-filters" ng-click="annotationSidebar.toggleFiltersContent()">Close</button>
+	                <button type="button" class="btn btn-xs btn-success pnd-annotation-sidebar-btn-remove-filters" ng-click="annotationSidebar.resetFilters()">Remove all filters</button>
+                </div>
                 <!-- // end buttons -->
             </div>
         </div>

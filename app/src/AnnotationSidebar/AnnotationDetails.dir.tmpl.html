@@ -1,11 +1,12 @@
 <div class="pnd-annotation-details">
-    <div 
-        class="pnd-annotation-details-header pnd-annotation-details-top" 
+    <div class="pnd-annotation-details-header pnd-annotation-details-top" 
         ng-click="toggleAnnotation()"
         ng-class="{'pnd-annotation-details-broken': annotation.broken}">
         <div class="{{annotation.mainItem.class}}">
-                <span class="{{annotation.mainItem.icon}}"></span>
-                <span>{{annotation.mainItem.label}}</span>    
+		        <div class="pnd-annotation-item-header-text">
+		                <span class="{{annotation.mainItem.icon}}"></span>
+		                <span>{{annotation.mainItem.label}}</span>
+		        </div>    
                 <button type="button" class="btn  pull-right">
                     <span ng-class="{true:'pnd-icon-sort-up', false:'pnd-icon-sort-down'}[annotation.expanded]"></span>
                 </button>
@@ -52,7 +53,7 @@
                             <!-- <span class="{{item.subject.icon}}"></span> -->
                             <div class="pnd-annotation-item-header-text">
 	                            <span class="pnd-icon pnd-icon-certificate"></span>
-	                            <span ng-bind-html="item.subject.label">{{item.subject.label}}</span> ({{item.subject.typeLabel}}) e questo gatto che fa la vaniglia
+	                            <span ng-bind-html="item.subject.label">{{item.subject.label}}</span> ({{item.subject.typeLabel}})
                             </div>
                             <button type="button" class="btn btn-link pull-right">
                                 <span ng-class="{true:'pnd-icon-sort-up', false:'pnd-icon-sort-down'}[subInfo]"></span>
@@ -104,10 +105,11 @@
              <!-- // end object -->
             </div>    
         </div>
-
+        <!-- footer -->
         <div class="pnd-annotation-details-footer" ng-show="isUserToolShowed()">
-            <button type="button" class="btn">Edit</button>
-            <button type="button" class="btn">Delete</button>
+            <button type="button" class="btn btn-xs btn-success">Edit</button>
+            <button type="button" class="btn btn-xs btn-danger">Delete</button>
         </div>
+        <!-- // end footer -->
     </div>
 </div>
