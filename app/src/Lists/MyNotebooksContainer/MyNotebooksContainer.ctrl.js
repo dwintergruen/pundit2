@@ -1,5 +1,5 @@
 angular.module('Pundit2.MyNotebooksContainer')
-.controller('MyNotebooksContainerCtrl', function($scope, ItemsExchange, MyNotebooksContainer) {
+.controller('MyNotebooksContainerCtrl', function($scope, MyNotebooksContainer, NotebookExchange) {
 
     var inputIconSearch = 'pnd-icon-search',
         inputIconClear = 'pnd-icon-times';
@@ -97,7 +97,7 @@ angular.module('Pundit2.MyNotebooksContainer')
     });
 
     $scope.$watch(function() {
-        return ItemsExchange.getItemsByContainer(MyNotebooksContainer.options.container);
+        return NotebookExchange.getNotebooks();
     }, function(newItems) {
         // update all items array and display new items
         allItem = newItems;

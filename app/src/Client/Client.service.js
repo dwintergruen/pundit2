@@ -262,7 +262,7 @@ angular.module('Pundit2.Client')
     .service('Client', function(CLIENTDEFAULTS, BaseComponent, Config, MyPundit,
                                 ImageFragmentAnnotator, TextFragmentAnnotator, Consolidation,
                                 AnnotationsExchange, Item, ItemsExchange, Annotation, MyItems,
-                                TextFragmentHandler, Toolbar, Annomatic, NotebookExchange,
+                                TextFragmentHandler, Toolbar, Annomatic, NotebookCommunication,
                                 SelectorsManager, FreebaseSelector, MurucaSelector, KorboBasketSelector,
                                 $injector, $templateCache, $rootScope) {
 
@@ -442,7 +442,7 @@ angular.module('Pundit2.Client')
                 });
 
                 MyItems.getAllItems();
-                NotebookExchange.getMyNotebooks();
+                NotebookCommunication.getMyNotebooks();
             });
 
             // to add a selector must to inject it in the dependency
@@ -477,7 +477,7 @@ angular.module('Pundit2.Client')
             getAnnotations();
 
             MyItems.getAllItems();
-            NotebookExchange.getMyNotebooks();
+            NotebookCommunication.getMyNotebooks();
             loadBasicRelations();
         };
 

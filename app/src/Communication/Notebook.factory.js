@@ -4,7 +4,9 @@ angular.module('Pundit2.Communication')
     classDefault: 'pnd-item-default'
 
 })
-.factory('Notebook', function(BaseComponent, NameSpace, MyPundit, Analytics, $http, $q, NOTEBOOKDEFAULTS) {
+.factory('Notebook', function(BaseComponent, NameSpace, MyPundit, Analytics, NotebookExchange, NOTEBOOKDEFAULTS,
+                                $http, $q) {
+
     var notebookComponent = new BaseComponent("Notebook", NOTEBOOKDEFAULTS);
 
     // Creates a new Notebook instance. If an id is passed in
@@ -23,13 +25,14 @@ angular.module('Pundit2.Communication')
             this.create();
         }
 
+        NotebookExchange.addNotebook(this);
+
     }
 
     // TODO this is a workaround to fix property
     Notebook.prototype.isProperty = function() {
         return false;
     };
-
 
     Notebook.prototype.getIcon = function() {
         return notebookComponent.options.iconDefault;
