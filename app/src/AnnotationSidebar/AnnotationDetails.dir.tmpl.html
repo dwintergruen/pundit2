@@ -48,7 +48,10 @@
         <div class="pnd-annotation-details-content">
             <div class="pnd-annotation-detains-item" ng-repeat="item in annotation.itemsArray">
             <!-- subject -->
-                <div class="pnd-annotation-details-subject" ng-init="subInfo = false">
+                <div 
+                    class="pnd-annotation-details-subject" 
+                    ng-init="subInfo = false"
+                    ng-class="{'pnd-annotation-details-sub-open': subInfo}">
                         <div class="pnd-annotation-details-item-header" ng-click="subInfo = !subInfo">
                             <!-- <span class="{{item.subject.icon}}"></span> -->
                             <div class="pnd-annotation-item-header-text">
@@ -66,26 +69,31 @@
                 </div>
              <!-- // end subject -->
              <!-- predicate -->
-                <div class="pnd-annotation-details-predicate" ng-init="preInfo = false">
-                    <div class="pnd-annotation-details-item-header" ng-click="preInfo = !preInfo">
-                    	<div class="pnd-annotation-item-header-text">
-	                    	<span class="pnd-icon pnd-icon-certificate"></span>
-	                    	<span ng-bind-html="item.predicate.label">{{item.predicate.label}}</span>
-                    	</div>
-                        <button type="button" class="btn  btn-link pull-right">
-                            <span ng-class="{true:'pnd-icon-sort-up', false:'pnd-icon-sort-down'}[preInfo]"></span>
-                        </button>
-                    </div>
+                <div 
+                    class="pnd-annotation-details-predicate" 
+                    ng-init="preInfo = false"
+                    ng-class="{'pnd-annotation-details-sub-open': preInfo}">
+                        <div class="pnd-annotation-details-item-header" ng-click="preInfo = !preInfo">
+                        	<div class="pnd-annotation-item-header-text">
+    	                    	<span class="pnd-icon pnd-icon-certificate"></span>
+    	                    	<span ng-bind-html="item.predicate.label">{{item.predicate.label}}</span>
+                        	</div>
+                            <button type="button" class="btn  btn-link pull-right">
+                                <span ng-class="{true:'pnd-icon-sort-up', false:'pnd-icon-sort-down'}[preInfo]"></span>
+                            </button>
+                        </div>
 
-                    <div ng-show="preInfo"  class="pnd-sub-info">
-                        <item-preview uri="{{item.predicate.uri}}"></item-preview>
-                    </div>
+                        <div ng-show="preInfo"  class="pnd-sub-info">
+                            <item-preview uri="{{item.predicate.uri}}"></item-preview>
+                        </div>
                 </div>
              <!-- // end predicate -->
              <!-- // object -->
                 <div ng-repeat="object in item.objects">
-                    <div class="pnd-annotation-details-object" ng-class="{'pnd-annotation-details-deactive': object.typeClass!='uri'}"
-                        ng-init="objInfo = false">
+                    <div 
+                        class="pnd-annotation-details-object"                         
+                        ng-init="objInfo = false"
+                        ng-class="{'pnd-annotation-details-sub-open': objInfo}">
                             <div class="pnd-annotation-details-item-header" ng-click="objInfo = toggleObjectInfo(object.typeClass, objInfo)">
                                 <!-- <span class="{{object.icon}}"></span> -->
                                 <div class="pnd-annotation-item-header-text">
