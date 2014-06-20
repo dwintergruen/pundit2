@@ -1,5 +1,5 @@
 angular.module('Pundit2.Dashboard')
-.controller('pndTabsCtrl', function($document, $window, $scope, Dashboard, $element) {
+.controller('pndTabsCtrl', function($document, $window, $rootScope, $scope, Dashboard, $element) {
 
     var options = {
         animation: 'am-fade',
@@ -194,6 +194,18 @@ angular.module('Pundit2.Dashboard')
     $element.addClass('tabs');
 
     $scope.active = $scope.activePane = 0;
+
+    $rootScope.$on('change-show-tabs', function(evt, title){
+        
+        for (var i=0; i<$scope.panes.length; i++) {
+            if ($scope.panes[i].title === title) {
+                if ($scope.active !== i) {
+                    $scope.setActive(i);
+                }                
+                return;
+            }
+        }
+    });
 
     // set a tab as active
     $scope.setActive = function(index) {

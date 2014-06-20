@@ -122,6 +122,7 @@ angular.module('Pundit2.Annotators')
             },
             priority: 20,
             action: function(item) {
+                $rootScope.$emit('change-show-tabs', TripleComposer.options.clientDashboardTabTitle)
                 TripleComposer.addToSubject(item);
             }
         });
