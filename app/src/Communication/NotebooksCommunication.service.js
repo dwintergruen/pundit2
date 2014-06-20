@@ -248,6 +248,7 @@ angular.module('Pundit2.Communication')
                     withCredentials: true
                 }).success(function() {
                     notebookCommunication.log(id+' is removed');
+                    NotebookExchange.removeNotebook(id);
                     promise.resolve();
                 }).error(function(msg) {
                     notebookCommunication.log('Impossible to remove '+id);

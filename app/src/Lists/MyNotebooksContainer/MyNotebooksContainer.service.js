@@ -17,7 +17,7 @@ angular.module('Pundit2.MyNotebooksContainer')
     
 })
 .service('MyNotebooksContainer', function($rootScope, MYNOTEBOOKSCONTAINERDEFAULTS, BaseComponent,
-    ContextualMenu, NotebookExchange, ItemsExchange) {
+    ContextualMenu, NotebookExchange, ItemsExchange, NotebookCommunication) {
 
     var myNotebooksContainer = new BaseComponent('MyNotebooksContainer', MYNOTEBOOKSCONTAINERDEFAULTS);
 
@@ -77,10 +77,8 @@ angular.module('Pundit2.MyNotebooksContainer')
                 // TODO return false if is current
                 return true;
             },
-            action: function(item) {
-                NotebookExchange.deleteNotebook(item.id).then(function(){
-                    ItemsExchange.removeItemFromContainer(item, myNotebooksContainer.options.container);
-                });
+            action: function(nb) {
+                NotebookCommunication.deleteNotebook(nb.id);
             }
         });
 

@@ -34,6 +34,47 @@ angular.module('Pundit2.Communication')
             }
         };
 
+        notebookExchange.removeNotebook = function(notebookID) {
+
+            var index = -1;
+            // find notebook in notebook list
+            for(var i = 0; i< nsList.length; i++){
+                if(nsList[i].id === notebookID){
+                    index = i;
+                    break;
+                }
+            }
+
+            // if no notebook is found in the notebook list, get error
+            if (index === -1) {
+                notebookExchange.err("Cannot remove notebook "+ns+" from notebook list: notebook is not in notebook list.");
+                return;
+            }
+
+            // remove notebook from notebook list
+            nsList.splice(index, 1);
+
+            // reset index
+            index = -1;
+
+            // find notebook in my notebook list
+            for(var i = 0; i< myNsList.length; i++){
+                if(myNsList[i].id === notebookID){
+                    index = i;
+                    break;
+                }
+            }
+
+            // if no notebook is found in the my notebook list, get error
+            if (index === -1) {
+                notebookExchange.err("Cannot remove notebook "+ns+" from my notebook list: notebook is not in my notebook list.");
+                return;
+            }
+
+            // remove notebook from my notebook list
+            myNsList.splice(index, 1);
+        };
+
         notebookExchange.getNotebookById = function(id) {
             if (id in nsListById) {
                 return nsListById[id];
