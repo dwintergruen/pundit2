@@ -17,7 +17,7 @@ angular.module('Pundit2.MyNotebooksContainer')
     
 })
 .service('MyNotebooksContainer', function($rootScope, MYNOTEBOOKSCONTAINERDEFAULTS, BaseComponent,
-    ContextualMenu, NotebookExchange, ItemsExchange, NotebookCommunication) {
+    ContextualMenu, NotebookExchange, ItemsExchange, NotebookCommunication, Consolidation, Toolbar, AnnotationsExchange) {
 
     var myNotebooksContainer = new BaseComponent('MyNotebooksContainer', MYNOTEBOOKSCONTAINERDEFAULTS);
 
@@ -38,7 +38,10 @@ angular.module('Pundit2.MyNotebooksContainer')
                 return nt.visibility === "public";
             },
             action: function(nt) {
-                NotebookCommunication.setPrivate(nt.id);
+                Toolbar.setLoading(true);
+                NotebookCommunication.setPrivate(nt.id).then(function(){
+                    Toolbar.setLoading(false);
+                });
             }
         });
 
@@ -51,7 +54,10 @@ angular.module('Pundit2.MyNotebooksContainer')
                 return nt.visibility === "private";
             },
             action: function(nt) {
-                NotebookCommunication.setPublic(nt.id);
+                Toolbar.setLoading(true);
+                NotebookCommunication.setPublic(nt.id).then(function(){
+                    Toolbar.setLoading(false);
+                });
             }
         });
 
@@ -64,7 +70,10 @@ angular.module('Pundit2.MyNotebooksContainer')
                 return !nt.isCurrent();
             },
             action: function(nt) {
-                NotebookCommunication.setCurrent(nt.id);
+                Toolbar.setLoading(true);
+                NotebookCommunication.setCurrent(nt.id).then(function(){
+                    Toolbar.setLoading(false);
+                });
             }
         });
 
@@ -77,7 +86,12 @@ angular.module('Pundit2.MyNotebooksContainer')
                 return !nt.isCurrent();
             },
             action: function(nt) {
-                NotebookCommunication.deleteNotebook(nt.id);
+                Toolbar.setLoading(true);
+                NotebookCommunication.deleteNotebook(nt.id).then(function(){
+                    AnnotationsExchange.removeAnnotationByNotebookId(nt.id);
+                    Consolidation.consolidateAll();
+                    Toolbar.setLoading(false);
+               });                
             }
         });
 

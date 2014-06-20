@@ -93,6 +93,19 @@ angular.module('Pundit2.Communication')
             return annListById;
         };
 
+        // remove all annotation contained inside specified notebook
+        annotationExchange.removeAnnotationByNotebookId = function(notebookID){
+            annotationExchange.log("Removing annotation of notebook: "+notebookID);
+            for (var i=0; i<annList.length; i++) {
+                var ann = annList[i];
+                if (ann.isIncludedIn === notebookID) {
+                    annotationExchange.log("Removed annotation "+ann.uri);
+                    delete annListById[ann.id];
+                    annList.splice(i, 1);
+                }
+            }
+        };
+
         annotationExchange.log('Component up and running');
         return annotationExchange;
     });
