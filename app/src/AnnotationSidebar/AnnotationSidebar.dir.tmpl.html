@@ -249,7 +249,11 @@
         </div>
 
         <!-- List of annotations -->
-        <div class="pnd-annotation-sidebar-annotations" ng-show="isAnnotationsPanelActive()">
+        <div 
+            class="pnd-annotation-sidebar-annotations" 
+            ng-show="isAnnotationsPanelActive()"
+            ng-class="{'pnd-annotation-details-opacity': isFiltersShowed}"
+            >
             <div ng-repeat="ann in filtered = (annotations)">
                 <annotation-details id="{{ann.id}}"></annotation-details>
             </div>  
