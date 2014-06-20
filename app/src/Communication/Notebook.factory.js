@@ -50,6 +50,10 @@ angular.module('Pundit2.Communication')
         this.visibility = "public";
     };
 
+    Notebook.prototype.isCurrent = function() {
+        return this.id === NotebookExchange.getCurrentNotebooks().id;
+    };
+
     // TODO: after login
     Notebook.prototype.create = function() {
         notebookComponent.log('Creating a new Notebook on the server');

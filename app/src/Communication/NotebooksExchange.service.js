@@ -7,7 +7,7 @@ angular.module('Pundit2.Communication')
             nsListById = {},
             myNsList = [],
             myNsListById = {},
-            currentNotebook;
+            currentId;
 
         notebookExchange.wipe = function() {
             annotationExchange.log('Wiping every loaded notebooks.');
@@ -91,12 +91,12 @@ angular.module('Pundit2.Communication')
         };
 
         notebookExchange.getCurrentNotebooks = function() {
-            return currentNotebook;
+            return nsListById[currentId];
         };
 
         notebookExchange.setCurrentNotebooks = function(notebookID) {
-            console.log("sto settando come current il seguente notebook: ", notebookID);
-            currentNotebook = notebookID;
+            console.log("set new current as: ", notebookID);
+            currentId = notebookID;
         };
 
         notebookExchange.log('Component up and running');

@@ -443,7 +443,10 @@ angular.module('Pundit2.Client')
 
                 if (value === true) {
                     MyItems.getAllItems();
-                    NotebookCommunication.getMyNotebooks();
+                    NotebookCommunication.getMyNotebooks().then(function(){
+                        NotebookCommunication.getCurrent();
+                    });
+                    
                 }
                 
             });
@@ -482,6 +485,7 @@ angular.module('Pundit2.Client')
 
             MyItems.getAllItems();
             NotebookCommunication.getMyNotebooks();
+            //NotebookCommunication.getCurrent();
             loadBasicRelations();
         };
 

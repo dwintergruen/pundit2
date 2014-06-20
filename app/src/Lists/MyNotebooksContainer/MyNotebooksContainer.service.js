@@ -60,11 +60,11 @@ angular.module('Pundit2.MyNotebooksContainer')
             type: cMenuTypes,
             label: "Set Notebook as Current",
             priority: 100,
-            showIf: function(item) {
-                return true;
+            showIf: function(nt) {
+                return !nt.isCurrent();
             },
-            action: function(item) {
-    
+            action: function(nt) {
+                NotebookCommunication.setCurrent(nt.id);
             }
         });
 
@@ -73,12 +73,11 @@ angular.module('Pundit2.MyNotebooksContainer')
             type: cMenuTypes,
             label: "Delete Notebook",
             priority: 100,
-            showIf: function(item) {
-                // TODO return false if is current
-                return true;
+            showIf: function(nt) {
+                return !nt.isCurrent();
             },
-            action: function(nb) {
-                NotebookCommunication.deleteNotebook(nb.id);
+            action: function(nt) {
+                NotebookCommunication.deleteNotebook(nt.id);
             }
         });
 

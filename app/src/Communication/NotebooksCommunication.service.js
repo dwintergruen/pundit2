@@ -76,9 +76,10 @@ angular.module('Pundit2.Communication')
                         method: 'GET',
                         url: NameSpace.get('asNBCurrent'),
                         withCredentials: true
-                    }).success(function(id) {
-                        notebookCommunication.log(id+' is the current notebook');
-                        promise.resolve(id);
+                    }).success(function(data) {
+                        notebookCommunication.log(data.NotebookID+' is the current notebook');
+                        NotebookExchange.setCurrentNotebooks(data.NotebookID);
+                        promise.resolve(data.NotebookID);
                     }).error(function(msg) {
                         notebookCommunication.log('Impossible to get the current notebook ');
                         promise.reject(msg);
