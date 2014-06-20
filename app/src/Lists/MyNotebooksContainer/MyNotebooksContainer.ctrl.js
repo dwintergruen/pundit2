@@ -4,25 +4,25 @@ angular.module('Pundit2.MyNotebooksContainer')
     var inputIconSearch = 'pnd-icon-search',
         inputIconClear = 'pnd-icon-times';
 
-    var allItem = [];
-    $scope.displayedItems = allItem;
+    var allNotebook = [];
+    $scope.displayedNotebook = allNotebook;
 
     $scope.dropdownTemplate = "src/ContextualMenu/dropdown.tmpl.html";
 
-    // read by <item> directive (in PageItemsContainer/items.tmpl.html)
-    // will trigger this contextual menu type clicking on the contextual item icon
-    $scope.itemMenuType = MyNotebooksContainer.options.cMenuType;
+    // read by <notebook> directive
+    // will trigger this contextual menu type clicking on the contextual notebook icon
+    $scope.notebookMenuType = MyNotebooksContainer.options.cMenuType;
 
     $scope.message = {
         flag: true,
         text: "I'm a welcome message"
     };
 
-    // items property used to compare
+    // notebook property used to compare
     // legal value are: 'type' and 'label'
     var order = 'label';
 
-    // how order items, true is ascending, false is descending
+    // how order notebooks, true is ascending, false is descending
     $scope.reverse = false;
 
     // sort button dropdown content
@@ -41,13 +41,13 @@ angular.module('Pundit2.MyNotebooksContainer')
         return str.replace(/ /g,'');
     };
 
-    // getter function used inside template to order items 
-    // return the items property value used to order
-    $scope.getOrderProperty = function(item){
-        return removeSpace(item.label);
+    // getter function used inside template to order notebooks 
+    // return the notebooks property value used to order
+    $scope.getOrderProperty = function(ns){
+        return removeSpace(ns.label);
     };
 
-    // Filter items which are shown
+    // Filter notebooks which are shown
     // go to lowerCase and replace multiple space with single space, 
     // to make the regexp work properly
     var filterItems = function(str){
@@ -56,8 +56,8 @@ angular.module('Pundit2.MyNotebooksContainer')
         var strParts = str.split(' '),
             reg = new RegExp(strParts.join('.*'));
 
-        $scope.displayedItems = allItem.filter(function(items){
-            return items.label.toLowerCase().match(reg) !== null;
+        $scope.displayedNotebook = allNotebook.filter(function(ns){
+            return ns.label.toLowerCase().match(reg) !== null;
         });
 
         // update text messagge
@@ -80,7 +80,7 @@ angular.module('Pundit2.MyNotebooksContainer')
     }, function(str) {
 
         // All items are shown
-        if (typeof($scope.displayedItems) === 'undefined') {
+        if (typeof($scope.displayedNotebook) === 'undefined') {
             return;
         }
 
@@ -98,14 +98,14 @@ angular.module('Pundit2.MyNotebooksContainer')
 
     $scope.$watch(function() {
         return NotebookExchange.getMyNotebooks();
-    }, function(newItems) {
-        // update all items array and display new items
-        allItem = newItems;
+    }, function(ns) {
+        // update all notebooks array and display new notebook
+        allNotebook = ns;
         filterItems($scope.search.term);
     }, true);
 
     $scope.$watch(function() {
-        return $scope.displayedItems.length;
+        return $scope.displayedNotebook.length;
     }, function(len) {
         // show empty lists messagge
         if (len === 0){

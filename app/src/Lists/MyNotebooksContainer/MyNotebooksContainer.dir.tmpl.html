@@ -12,7 +12,12 @@
     <!-- CONTENT -->
 
     <div class="pnd-panel-tab-content-content pnd-inner">
-        <ng-include src="'src/Lists/itemList.tmpl.html'"></ng-include>
+        <ul class="list-group" ng-if="!message.flag">
+            <li class="list-group-item" ng-repeat="notebook in displayedNotebook | orderBy:getOrderProperty:reverse">
+                <notebook nid="{{notebook.id}}" menu-type="{{notebookMenuType}}"></notebook>
+            </li>
+        </ul>
+<div class="pnd-dashboard-welcome" ng-if="message.flag">{{message.text}}</li>
     </div> <!-- end pnd-panel-tab-content-content -->
 
     <!-- FOOTER -->
