@@ -50,12 +50,7 @@ angular.module('Pundit2.Toolbar')
     $scope.userData = {};
     $scope.userNotebooksDropdown = [];
 
-    var setCurrentNotebook = function(notebookID){
-        console.log(notebookID);
-    };
-
     $scope.showMyNotebooks = function(){
-        console.log("Current notebook: ",currentNotebook);
         var notebooks = myNotebooks;
 
         for (var i = 0; i<notebooks.length; i++){
@@ -63,7 +58,7 @@ angular.module('Pundit2.Toolbar')
                                                 currentNotebook: notebooks[i].id === currentNotebook.id,
                                                 click: function(_i){
                                                     return function(){
-                                                        console.log("TODO set as current: ",notebooks[_i].id);
+                                                        NotebookExchange.setCurrentNotebooks(notebooks[_i].id);
                                                     };
                                                 }(i)
 
