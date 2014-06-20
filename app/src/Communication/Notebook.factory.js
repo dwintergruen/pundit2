@@ -46,6 +46,10 @@ angular.module('Pundit2.Communication')
         this.visibility = "private";
     };
 
+    Notebook.prototype.isPublic = function() {
+        return this.visibility === "public";
+    };
+
     Notebook.prototype.setPublic = function() {
         this.visibility = "public";
     };
