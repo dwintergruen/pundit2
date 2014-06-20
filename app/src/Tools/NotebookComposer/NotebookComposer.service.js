@@ -6,6 +6,7 @@ angular.module('Pundit2.NotebookComposer')
     clientDashboardTabTitle: "Notebooks Composer",
     savingMsg: "We are saving your notebook",
     savingMsgTime: 1250,
+    notificationMsgTime: 1500,
     notificationSuccessMsg: "Your notebook has been saved successfully",
     notificationErrorMsg: "We were unable to save your notebook"
 
