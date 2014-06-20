@@ -81,6 +81,19 @@ angular.module('Pundit2.MyNotebooksContainer')
             }
         });
 
+        ContextualMenu.addAction({
+            name: 'editNotebook',
+            type: cMenuTypes,
+            label: "Edit Notebook",
+            priority: 101,
+            showIf: function(nt) {
+                return true;
+            },
+            action: function(nt) {
+                // TODO expose API on notebooks composer
+            }
+        });
+
     }; // initContextualMenu()
 
     // When all modules have been initialized, services are up, Config are setup etc..
