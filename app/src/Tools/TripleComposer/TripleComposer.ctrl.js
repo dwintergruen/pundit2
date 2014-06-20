@@ -1,5 +1,5 @@
 angular.module('Pundit2.TripleComposer')
-.controller('TripleComposerCtrl', function($scope, $http, $timeout, Annotation, Consolidation, TripleComposer, NameSpace, TypesHelper, XpointersHelper, MyPundit) {
+.controller('TripleComposerCtrl', function($scope, $http, $timeout, Toolbar, Annotation, Consolidation, TripleComposer, NameSpace, TypesHelper, XpointersHelper, MyPundit) {
 
     // statements objects are extend by this.addStatementScope()
     // the function is called in the statement directive link function
@@ -69,7 +69,8 @@ angular.module('Pundit2.TripleComposer')
         }
         
         $timeout(function(){
-            $scope.saving = false;  
+            $scope.saving = false; 
+            Toolbar.setLoading(false); 
         }, time);
     };
 
@@ -104,6 +105,7 @@ angular.module('Pundit2.TripleComposer')
                 promiseResolved = false;
                 savePromise = $timeout(function(){ promiseResolved = true; }, TripleComposer.options.savingMsgTime);
                 $scope.saving = true;
+                Toolbar.setLoading(true);
 
                 $http({
                     headers: { 'Content-Type': 'application/json' },
