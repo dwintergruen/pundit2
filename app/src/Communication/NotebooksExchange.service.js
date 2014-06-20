@@ -11,8 +11,10 @@ angular.module('Pundit2.Communication')
 
         notebookExchange.wipe = function() {
             annotationExchange.log('Wiping every loaded notebooks.');
-            nsList = [];
-            nsListById = {};
+            nsList = [],
+            nsListById = {},
+            myNsList = [],
+            myNsListById = {};
         };
 
         notebookExchange.addNotebook = function(ns, isMyNotebook) {

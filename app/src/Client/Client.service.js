@@ -262,7 +262,7 @@ angular.module('Pundit2.Client')
     .service('Client', function(CLIENTDEFAULTS, BaseComponent, Config, MyPundit,
                                 ImageFragmentAnnotator, TextFragmentAnnotator, Consolidation,
                                 AnnotationsExchange, Item, ItemsExchange, Annotation, MyItems,
-                                TextFragmentHandler, Toolbar, Annomatic, NotebookCommunication,
+                                TextFragmentHandler, Toolbar, Annomatic, NotebookCommunication, NotebookExchange,
                                 SelectorsManager, FreebaseSelector, MurucaSelector, KorboBasketSelector,
                                 $injector, $templateCache, $rootScope) {
 
@@ -441,8 +441,11 @@ angular.module('Pundit2.Client')
                     }
                 });
 
-                MyItems.getAllItems();
-                NotebookCommunication.getMyNotebooks();
+                if (value === true) {
+                    MyItems.getAllItems();
+                    NotebookCommunication.getMyNotebooks();
+                }
+                
             });
 
             // to add a selector must to inject it in the dependency
@@ -470,6 +473,7 @@ angular.module('Pundit2.Client')
         // was already logged in on boot etc
         var onLogin = function() {
 
+            NotebookExchange.wipe();
             ItemsExchange.wipe();
             AnnotationsExchange.wipe();
 
@@ -484,6 +488,7 @@ angular.module('Pundit2.Client')
         // Called when the user completed the logout process, clicking on logout
         var onLogout = function() {
 
+            NotebookExchange.wipe();
             ItemsExchange.wipe();
             AnnotationsExchange.wipe();
 
