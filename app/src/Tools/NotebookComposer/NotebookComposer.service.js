@@ -2,10 +2,12 @@ angular.module('Pundit2.NotebookComposer')
 .constant('NOTEBOOKCOMPOSERDEFAULTS', {
 
     clientDashboardTemplate: "src/Tools/NotebookComposer/ClientNotebookComposer.tmpl.html",
-
     clientDashboardPanel: "tools",
-
-    clientDashboardTabTitle: "Notebooks Composer"
+    clientDashboardTabTitle: "Notebooks Composer",
+    savingMsg: "We are saving your notebook",
+    savingMsgTime: 1250,
+    notificationSuccessMsg: "Your notebook has been saved successfully",
+    notificationErrorMsg: "We were unable to save your notebook"
 
 })
 .service('NotebookComposer', function(BaseComponent, NotebookExchange, NOTEBOOKCOMPOSERDEFAULTS, $q) {

@@ -7,11 +7,9 @@
 <!-- CONTENT -->
 
 <div class="pnd-panel-tab-content-content">
-    <div class="form-group">
-        <input type="text" class="form-control" placeholder="Enter notebook name" ng-model="notebook.name">
-    </div>
 
-    <div class="form-group">
+    <div class="form-group pnd-notebook-composer-container" ng-hide="saving">
+        <input type="text" class="form-control" placeholder="Enter notebook name" ng-model="notebook.name">
         <label>
             <input type="checkbox" ng-model="notebook.current"> Set as current
         </label>
@@ -28,6 +26,14 @@
             </label>
         </div>
     </div>
+
+    <!-- message-->
+    <div class="pnd-notebook-saving-content" ng-if="saving">
+        <span class="pnd-icon {{savingIcon}} pnd-icon-3x"></span>
+        <span class="{{shortMessageClass}}">{{shortMessagge}}</span>
+        {{textMessage}}
+    </div>
+    <!-- // end message-->
 
 </div> <!-- end pnd-panel-tab-content-content -->
 
