@@ -124,6 +124,8 @@
     <script src="../src/Preview/Preview.service.js"></script>
     <script src="../src/Preview/ItemPreview.dir.js"></script>
     <script src="../src/Preview/ItemPreview.ctrl.js"></script>
+    <script src="../src/Preview/NotebookPreview.dir.js"></script>
+    <script src="../src/Preview/NotebookPreview.ctrl.js"></script>
 
     <script src="../src/ResourcePanel/ResourcePanel.js"></script>
     <script src="../src/ResourcePanel/ResourcePanel.service.js"></script>

@@ -1,6 +1,6 @@
 angular.module('Pundit2.Communication')
 .constant('NOTEBOOKDEFAULTS', {
-    iconDefault: 'pnd-icon pnd-icon-eye',
+    iconDefault: 'pnd-icon pnd-icon-book',
     classDefault: 'pnd-item-default'
 
 })

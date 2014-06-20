@@ -40,6 +40,16 @@ angular.module('Pundit2.Preview')
         return $scope.itemDashboardPreview === null;
     };
 
+    // return true if dashboard preview is empty
+    $scope.isNotebook = function() {
+        if($scope.itemDashboardPreview.type[0] === "http://purl.org/pundit/ont/ao#Notebook"){
+            return true;
+        } else {
+            return false;
+        }
+
+    };
+
     // return true if no item is sticky
     $scope.isStickyItemEmpty = function() {
         return  Preview.getItemDashboardSticky() === null;
