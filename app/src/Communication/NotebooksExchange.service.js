@@ -95,7 +95,7 @@ angular.module('Pundit2.Communication')
         };
 
         notebookExchange.setCurrentNotebooks = function(notebookID) {
-            console.log("set new current as: ", notebookID);
+            notebookExchange.log("set new current as: ", notebookID);
             currentId = notebookID;
         };
 
