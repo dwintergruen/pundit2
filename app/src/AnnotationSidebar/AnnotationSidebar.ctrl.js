@@ -1,7 +1,7 @@
 /*jshint strict: false*/
 
 angular.module('Pundit2.AnnotationSidebar')
-.controller('AnnotationSidebarCtrl', function($scope, $filter, $window, AnnotationSidebar, Dashboard) {
+.controller('AnnotationSidebarCtrl', function($scope, $filter, $window, AnnotationSidebar, Dashboard, Toolbar) {
     var bodyClasses = AnnotationSidebar.options.bodyExpandedClass + ' ' + AnnotationSidebar.options.bodyCollapsedClass;
     var sidebarClasses = AnnotationSidebar.options.sidebarExpandedClass + ' ' + AnnotationSidebar.options.sidebarCollapsedClass;
 
@@ -54,6 +54,14 @@ angular.module('Pundit2.AnnotationSidebar')
         AnnotationSidebar.activateAnnotationsPanel();
     };
 
+
+    $scope.$watch(function() {
+        return Toolbar.isLoading();
+    }, function(currentState, oldState) {
+        if (currentState !== oldState) {
+            $scope.isLoading = currentState;
+        }
+    });
 
     // Watch annotation sidebar expanded or collapsed
     $scope.$watch(function() {

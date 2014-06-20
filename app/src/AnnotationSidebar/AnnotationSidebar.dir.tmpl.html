@@ -243,6 +243,9 @@
             </div>
         </div>
 
+        <div class="pnd-annotation-details-opacity" ng-show="isFiltersShowed">
+        </div>
+
         <!-- Suggestions panel -->
         <div class="pnd-annotation-sidebar-annotations" ng-show="isSuggestionsPanelActive()">
             TODO! :)
@@ -251,9 +254,13 @@
         <!-- List of annotations -->
         <div 
             class="pnd-annotation-sidebar-annotations" 
-            ng-show="isAnnotationsPanelActive()"
-            ng-class="{'pnd-annotation-details-opacity': isFiltersShowed}"
-            >
+            ng-show="isAnnotationsPanelActive()">
+
+            <!-- Loading -->
+            <div ng-show="isLoading">
+                Loading!!!
+            </div>
+
             <div ng-repeat="ann in filtered = (annotations)">
                 <annotation-details id="{{ann.id}}"></annotation-details>
             </div>  
