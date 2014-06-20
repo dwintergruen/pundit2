@@ -1,6 +1,6 @@
 angular.module('Pundit2.Communication')
     .service('NotebookCommunication', function(BaseComponent, NameSpace, Notebook, MyPundit, Analytics, Config,
-                                            $http, $q) {
+                                            $http, $q, NotebookExchange) {
 
         // This serive contain the http support to read and write
         // notebooks from server
@@ -107,6 +107,7 @@ angular.module('Pundit2.Communication')
                         withCredentials: true
                     }).success(function() {
                         notebookCommunication.log(id+' is now current');
+                        NotebookExchange.setCurrentNotebooks(id);
                         promise.resolve();
                     }).error(function(msg) {
                         notebookCommunication.log('Impossible to set as current: '+id);

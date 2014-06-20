@@ -40,11 +40,9 @@ angular.module('Pundit2.Toolbar')
     };
 
     $scope.showMyNotebooks = function(){
-        NotebookExchange.getCurrent().then(function(notebookID){
-                console.log("Current Notebook ", notebookID.NotebookID);
-        });
 
-        var notebooks = ItemsExchange.getItemsByContainer(MyNotebooksContainer.options.container);
+        //var notebooks = ItemsExchange.getItemsByContainer(MyNotebooksContainer.options.container);
+        var notebooks = NotebookExchange.getMyNotebooks();
 
         for (var i = 0; i<notebooks.length; i++){
             $scope.userNotebooksDropdown[i] = {text: notebooks[i].label,

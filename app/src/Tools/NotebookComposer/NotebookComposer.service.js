@@ -10,7 +10,7 @@ angular.module('Pundit2.NotebookComposer')
     notificationErrorMsg: "We were unable to save your notebook"
 
 })
-.service('NotebookComposer', function(BaseComponent, NotebookExchange, NOTEBOOKCOMPOSERDEFAULTS, $q) {
+.service('NotebookComposer', function(BaseComponent, NotebookExchange, NOTEBOOKCOMPOSERDEFAULTS, $q, NotebookCommunication) {
 
         var notebookComposer = new BaseComponent("NotebookComposer", NOTEBOOKCOMPOSERDEFAULTS);
 
@@ -19,7 +19,7 @@ angular.module('Pundit2.NotebookComposer')
             var statePromise = {};
 
             // create the notebook
-            NotebookExchange.createNotebook(notebook.name).then(
+            NotebookCommunication.createNotebook(notebook.name).then(
                 function(notebookID){
 
                     statePromise.notebookID = notebookID;
@@ -29,7 +29,7 @@ angular.module('Pundit2.NotebookComposer')
 
                     // notebook private and not current
                     } else if(!notebook.current && notebook.visibility === 'private'){
-                        NotebookExchange.setPrivate(notebookID).then(function(){
+                        NotebookCommunication.setPrivate(notebookID).then(function(){
                             statePromise.setPrivate = true;
                             promise.resolve(statePromise);
 
@@ -40,7 +40,7 @@ angular.module('Pundit2.NotebookComposer')
 
                     // notebook public and current
                     } else if(notebook.current && notebook.visibility !== 'private'){
-                        NotebookExchange.setCurrent(notebookID).then(
+                        NotebookCommunication.setCurrent(notebookID).then(
                             function(){
                                 statePromise.setCurrent = true;
                                 promise.resolve(statePromise);
@@ -52,11 +52,11 @@ angular.module('Pundit2.NotebookComposer')
 
                     // notebook private and current
                     } else if(notebook.current && notebook.visibility === 'private'){
-                        NotebookExchange.setCurrent(notebookID).then(
+                        NotebookCommunication.setCurrent(notebookID).then(
                             function(){
                                 statePromise.setCurrent = true;
 
-                                NotebookExchange.setPrivate(notebookID).then(function(){
+                                NotebookCommunication.setPrivate(notebookID).then(function(){
                                     statePromise.setPrivate = true;
                                     promise.resolve(statePromise);
 
@@ -69,7 +69,7 @@ angular.module('Pundit2.NotebookComposer')
                             function(){
                                 statePromise.setCurrent = false;
 
-                                NotebookExchange.setPrivate(notebookID).then(function(){
+                                NotebookCommunication.setPrivate(notebookID).then(function(){
                                     statePromise.setPrivate = true;
                                     promise.resolve(statePromise);
 
