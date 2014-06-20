@@ -484,8 +484,9 @@ angular.module('Pundit2.Client')
             getAnnotations();
 
             MyItems.getAllItems();
-            NotebookCommunication.getMyNotebooks();
-            //NotebookCommunication.getCurrent();
+            NotebookCommunication.getMyNotebooks().then(function(){
+                NotebookCommunication.getCurrent();
+            });
             loadBasicRelations();
         };
 
