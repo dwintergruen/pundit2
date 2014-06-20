@@ -34,11 +34,11 @@ angular.module('Pundit2.MyNotebooksContainer')
             type: cMenuTypes,
             label: "Set Notebook as Private",
             priority: 100,
-            showIf: function(item) {
-                return true;
+            showIf: function(nt) {
+                return nt.visibility === "public";
             },
-            action: function(item) {
-                
+            action: function(nt) {
+                NotebookCommunication.setPrivate(nt.id);
             }
         });
 
@@ -47,11 +47,11 @@ angular.module('Pundit2.MyNotebooksContainer')
             type: cMenuTypes,
             label: "Set Notebook as Public",
             priority: 100,
-            showIf: function(item) {
-                return true;
+            showIf: function(nt) {
+                return nt.visibility === "private";
             },
-            action: function(item) {
-                
+            action: function(nt) {
+                NotebookCommunication.setPublic(nt.id);
             }
         });
 

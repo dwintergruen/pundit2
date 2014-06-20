@@ -42,6 +42,14 @@ angular.module('Pundit2.Communication')
         return notebookComponent.options.classDefault;
     };
 
+    Notebook.prototype.setPrivate = function() {
+        this.visibility = "private";
+    };
+
+    Notebook.prototype.setPublic = function() {
+        this.visibility = "public";
+    };
+
     // TODO: after login
     Notebook.prototype.create = function() {
         notebookComponent.log('Creating a new Notebook on the server');

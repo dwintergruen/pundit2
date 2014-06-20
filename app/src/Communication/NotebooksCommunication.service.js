@@ -138,6 +138,7 @@ angular.module('Pundit2.Communication')
                     withCredentials: true
                 }).success(function() {
                     notebookCommunication.log(id+' is now public');
+                    NotebookExchange.getNotebookById(id).setPublic();
                     promise.resolve();
                 }).error(function(msg) {
                     notebookCommunication.log('Impossible to set as public: '+id);
@@ -167,6 +168,7 @@ angular.module('Pundit2.Communication')
                     withCredentials: true
                 }).success(function() {
                     notebookCommunication.log(id+' is now private');
+                    NotebookExchange.getNotebookById(id).setPrivate();
                     promise.resolve();
                 }).error(function(msg) {
                     notebookCommunication.log('Impossible to set as private: '+id);
