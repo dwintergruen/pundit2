@@ -16,7 +16,7 @@ angular.module('Pundit2.MyNotebooksContainer')
     $scope.message = {
         flag: true,
         text: "I'm a welcome message"
-    };    
+    };
 
     // items property used to compare
     // legal value are: 'type' and 'label'
@@ -97,7 +97,7 @@ angular.module('Pundit2.MyNotebooksContainer')
     });
 
     $scope.$watch(function() {
-        return NotebookExchange.getNotebooks();
+        return NotebookExchange.getMyNotebooks();
     }, function(newItems) {
         // update all items array and display new items
         allItem = newItems;

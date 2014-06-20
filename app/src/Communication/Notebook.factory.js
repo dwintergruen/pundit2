@@ -12,7 +12,7 @@ angular.module('Pundit2.Communication')
     // Creates a new Notebook instance. If an id is passed in
     // then the notebook metadata are loaded, otherwise a new
     // notebook is created on the server
-    function Notebook(id) {
+    function Notebook(id, isMyNotebook) {
         this._q = $q.defer();
         
         if (typeof(id) !== "undefined") {
@@ -25,7 +25,7 @@ angular.module('Pundit2.Communication')
             this.create();
         }
 
-        NotebookExchange.addNotebook(this);
+        NotebookExchange.addNotebook(this, isMyNotebook);
 
     }
 
@@ -131,8 +131,8 @@ angular.module('Pundit2.Communication')
     // get the notebook using .then(success, error). The notebook 
     // will load its metadata as soon as possible and resolve the 
     // promise.
-    function NotebookFactory(id) {
-        var nb = new Notebook(id);
+    function NotebookFactory(id, isMyNotebook) {
+        var nb = new Notebook(id, isMyNotebook);
         return nb._q.promise;
     }
 

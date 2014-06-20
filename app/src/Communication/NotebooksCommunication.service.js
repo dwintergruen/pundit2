@@ -34,7 +34,7 @@ angular.module('Pundit2.Communication')
 
                         var nbs = [];
                         for (var l=data.NotebookIDs.length; l--;) {
-                            nbs[l] = new Notebook(data.NotebookIDs[l]);
+                            nbs[l] = new Notebook(data.NotebookIDs[l], true);
                         }
 
                         $q.all(nbs).then(function(notebooks) {
@@ -209,7 +209,7 @@ angular.module('Pundit2.Communication')
 
                     if ('NotebookID' in data) {
                         // read metadata from server then add to notebooksExchange
-                        new Notebook(data.NotebookID);                        
+                        new Notebook(data.NotebookID, true);                        
                         promise.resolve(data.NotebookID);
                         notebookCommunication.log("Created a new notebook: "+data.NotebookID);
                         Analytics.track('api', 'post', 'notebook create');
