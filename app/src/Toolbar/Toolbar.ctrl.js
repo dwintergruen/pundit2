@@ -29,8 +29,23 @@ angular.module('Pundit2.Toolbar')
         { text: 'My template 2', href: '#' },
         { text: 'My template 3', href: '#' }
     ];
-    
 
+    var myNotebooks, currentNotebook;
+
+    $scope.$watch(function() {
+        return NotebookExchange.getMyNotebooks();
+    }, function(ns) {
+        // update all notebooks array and display new notebook
+        myNotebooks = ns;
+
+    }, true);
+
+    $scope.$watch(function() {
+        return NotebookExchange.getCurrentNotebooks();
+    }, function(curr) {
+        currentNotebook = curr;
+
+    }, true);
     
     $scope.userData = {};
     $scope.userNotebooksDropdown = [];
@@ -40,12 +55,12 @@ angular.module('Pundit2.Toolbar')
     };
 
     $scope.showMyNotebooks = function(){
-
-        //var notebooks = ItemsExchange.getItemsByContainer(MyNotebooksContainer.options.container);
-        var notebooks = NotebookExchange.getMyNotebooks();
+        console.log("Current notebook: ",currentNotebook);
+        var notebooks = myNotebooks;
 
         for (var i = 0; i<notebooks.length; i++){
             $scope.userNotebooksDropdown[i] = {text: notebooks[i].label,
+                                                currentNotebook: notebooks[i].id === currentNotebook.id,
                                                 click: function(_i){
                                                     return function(){
                                                         console.log("TODO set as current: ",notebooks[_i].id);
