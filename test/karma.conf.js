@@ -32,6 +32,7 @@ module.exports = function(config) {
             'app/src/Tools/NotebookComposer/NotebookComposer.js',
             'app/src/ResourcePanel/ResourcePanel.js',
             'app/src/Communication/Communication.js',
+            'app/src/Notebook/Notebook.js',
             'app/src/**/*.js',
             'test/unit/**/*.js'
         ],
