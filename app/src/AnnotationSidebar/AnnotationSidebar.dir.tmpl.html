@@ -257,8 +257,9 @@
             ng-show="isAnnotationsPanelActive()">
 
             <!-- Loading -->
-            <div ng-show="isLoading">
-                Loading!!!
+            <div ng-show="isLoading" class="pnd-saving-content">
+            	<span class="pnd-icon pnd-icon-refresh pnd-icon-spin pnd-icon-2x"></span>
+                <span class="pnd-message">Loading</span>
             </div>
 
             <div ng-repeat="ann in filtered = (annotations)">

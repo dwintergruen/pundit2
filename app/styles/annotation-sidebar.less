@@ -29,12 +29,6 @@ body.pnd-annotation-sidebar-expanded {
     background-color: @gray-lighter;
 	-webkit-box-shadow: -1px 0 3px 0 @gray-light;
 	box-shadow: -1px 0 3px 0 @gray-light;
-	
-	/*& .pnd-annotation-details-opacity {
-		background-color: #000;
-		opacity: 0.4;
-		}*/
-	
 	}
 
 .pnd-annotation-details{
@@ -52,7 +46,9 @@ body.pnd-annotation-sidebar-expanded {
 }
 
 
-
+.pnd-annotation-sidebar-annotations {
+	margin-top: 26px;
+	}
 
 
 
@@ -140,8 +136,16 @@ body.pnd-annotation-sidebar-expanded {
 	}
 
 .pnd-annotation-details-opacity {
-    opacity: 0.4;
-}
+		-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+		filter: alpha(opacity=50);
+		opacity:0.5;
+		background-color: black;
+		position: absolute;
+		top: 32px;
+		bottom: 0px;
+		left: 0px;
+		right: 0px;
+		}
 	
 .pnd-annotation-sidebar-filter-content {
 		background-color: #fff;
@@ -149,14 +153,9 @@ body.pnd-annotation-sidebar-expanded {
 		position: absolute;
 		left: 0px;
 		right: 0px;
-		//bottom: 0px;
 		top: 30px;
-		//-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
-		//filter: alpha(opacity=50);
-		//opacity:0.5;
-		//-webkit-box-shadow: 0 4px 4px -1px @gray-light;
-		//box-shadow: 0 4px 4px -1px @gray-light;
-
+		//-webkit-box-shadow: 0 1px 3px -1px #000;
+		//box-shadow: 0 1px 3px -1px #000;
         z-index: 99;
 		
 		& ~ button {
