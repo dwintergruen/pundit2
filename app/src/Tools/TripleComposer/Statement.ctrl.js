@@ -20,6 +20,9 @@ angular.module('Pundit2.TripleComposer')
     $scope.objectIcon = TripleComposer.options.inputIconSearch;
     $scope.objectLiteral = false;
 
+    $scope.canBeObjectDate = true;
+    $scope.canBeObjectLiteral = true;
+
     // reference to the items used inside this statement
     var triple = {
         subject: null,
@@ -158,6 +161,8 @@ angular.module('Pundit2.TripleComposer')
         $scope.predicateFound = false;
         $scope.predicateSearch = "";
         $scope.predicateIcon = TripleComposer.options.inputIconSearch;
+        $scope.canBeObjectDate = true;
+        $scope.canBeObjectLiteral = true;
         triple.predicate = null;
         ResourcePanel.hide();
         angular.element('.pnd-triplecomposer-save').addClass('disabled');
@@ -237,9 +242,12 @@ angular.module('Pundit2.TripleComposer')
         $scope.predicateLabel = item.label;
         $scope.predicateFound = true;
         triple.predicate = item;
-        // triple object must be only literal
-        if(item.range.length === 1 && item.range[0] === NameSpace.rdfs.literal) {
-            $scope.objectLiteral = true;
+        // check predicate range
+        if (item.range.indexOf(NameSpace.rdfs.literal) === -1) {
+            $scope.canBeObjectLiteral = false;
+        }
+        if (item.range.indexOf(NameSpace.dateTime) === -1) {
+            $scope.canBeObjectDate = false;
         }
         $scope.tripleComposerCtrl.isAnnotationComplete();
     };

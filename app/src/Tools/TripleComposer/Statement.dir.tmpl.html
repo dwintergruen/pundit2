@@ -79,9 +79,9 @@
                 <!--Korbo Icon-->
                 <button type="button" class="btn btn-xs btn-link" title="add"><span class="pnd-icon pnd-icon-plus"></span></button>
                 <!--Calendar Icon-->
-                <button type="button" class="btn btn-xs btn-link" ng-click="onClickObjectCalendar($event)"  title="calendar"><span class="pnd-icon pnd-icon-table"></span></button>
+                <button type="button" class="btn btn-xs btn-link" ng-if="canBeObjectDate" ng-click="onClickObjectCalendar($event)"  title="calendar"><span class="pnd-icon pnd-icon-table"></span></button>
                 <!--Pen Icon-->
-                <button type="button" class="btn btn-xs btn-link" ng-click="onClickObjectLiteral($event)"  title="text"><span class="pnd-icon pnd-icon-pencil"></span></button>
+                <button type="button" class="btn btn-xs btn-link" ng-if="canBeObjectLiteral" ng-click="onClickObjectLiteral($event)"  title="text"><span class="pnd-icon pnd-icon-pencil"></span></button>
             </div>
 
         </div>
