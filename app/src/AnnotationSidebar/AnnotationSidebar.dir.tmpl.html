@@ -22,11 +22,10 @@
                     ng-click="annotationSidebar.toggleFiltersContent()"
                     ng-show="!isFiltersShowed"
                     class="btn btn-link pnd-annotation-sidebar-btn-show-filter">
-                        <span class="pnd-icon-filter"></span> Show Filters
-                </button><button
-                    ng-show="annotationSidebar.needToFilter() && !isFiltersShowed"
-                    class="btn btn-warning pnd-annotation-sidebar-btn-remove-filters" ng-click="annotationSidebar.resetFilters()">
-                        Remove all filters
+                        <span class="pnd-icon pnd-icon-filter"></span> Show Filters
+                </button><button ng-show="annotationSidebar.needToFilter() && !isFiltersShowed"
+                    class="btn btn-link pnd-annotation-sidebar-btn-remove-filters" ng-click="annotationSidebar.resetFilters()">
+                       <span class="pnd-icon pnd-icon-times"></span> Remove all filters
                 </button>
             </div>
 
