@@ -94,6 +94,7 @@ angular.module('Pundit2.Communication')
         };
 
         // remove all annotation contained inside specified notebook
+        // TODO must to remove items from itemsExchange
         annotationExchange.removeAnnotationByNotebookId = function(notebookID){
             annotationExchange.log("Removing annotation of notebook: "+notebookID);
             for (var i=0; i<annList.length; i++) {
