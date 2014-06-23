@@ -1,10 +1,30 @@
 angular.module('Pundit2.NotebookComposer')
-    .controller('NotebookComposerCtrl', function($scope, NotebookComposer, Toolbar, $timeout) {
+    .controller('NotebookComposerCtrl', function($scope, NotebookComposer, Toolbar, $timeout, NotebookExchange, NotebookCommunication) {
 
         $scope.notebook = {};
         $scope.notebook.visibility = "public";
         $scope.notebook.name = "";
         $scope.notebook.current = false;
+        $scope.editMode = false;
+
+        $scope.$watch(function(){
+            return NotebookComposer.getNotebookToEdit();
+        }, function(nb){
+            if(nb !== null){
+                $scope.notebookToEdit = nb;
+                $scope.notebook.name = nb.label;
+                $scope.notebook.visibility = nb.visibility;
+                $scope.editMode = true;
+                if(NotebookExchange.getCurrentNotebooks().id === nb.id){
+                    $scope.isCurrentNotebook = true;
+                    $scope.notebook.current = true;
+                } else {
+                    $scope.isCurrentNotebook = false;
+                    $scope.notebook.current = false;
+                }
+            }
+
+        });
 
         $scope.saving = false;
         $scope.textMessage = NotebookComposer.options.savingMsg;
@@ -86,10 +106,36 @@ angular.module('Pundit2.NotebookComposer')
             });
         };
 
+        $scope.edit = function(){
+
+          /*if($scope.notebookToEdit.label === $scope.notebook.name){
+              console.log("il nome è lo stesso");
+          } else {
+              NotebookComposer.editNotebook($scope.notebookToEdit.id, $scope.notebook.name).then(function(){
+              });
+          }*/
+
+            if($scope.notebook.current === true){
+                NotebookCommunication.setCurrent($scope.notebookToEdit.id);
+            }
+
+            if($scope.notebookToEdit.visibility !== $scope.notebook.visibility){
+                if($scope.notebook.visibility === 'public'){
+                    NotebookCommunication.setPublic($scope.notebookToEdit.id);
+                } else if($scope.notebook.visibility === 'private'){
+                    NotebookCommunication.setPrivate($scope.notebookToEdit.id);
+                }
+            }
+
+
+
+        };
+
         $scope.clear = function(){
             $scope.notebook.name = "";
             $scope.notebook.visibility = "public";
             $scope.notebook.current = "";
+            $scope.editMode = false;
         };
 
     });

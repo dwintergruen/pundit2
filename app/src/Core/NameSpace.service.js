@@ -136,6 +136,7 @@ angular.module("Pundit2.Core")
     ns.asUsersLogout       = ns.as + "api/users/logout";
 
     ns.asNB                = ns.as + "api/notebooks";
+    ns.asNBEditMeta        = ns.as + "api/notebooks/{{id}}";
     ns.asNBOwned           = ns.as + "api/notebooks/owned";
     ns.asNBCurrent         = ns.as + "api/notebooks/current";
     ns.asNBPrivate         = ns.as + "api/notebooks/private/{{id}}";

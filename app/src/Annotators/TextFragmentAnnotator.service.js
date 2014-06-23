@@ -92,7 +92,7 @@ angular.module('Pundit2.Annotators')
 
 .service('TextFragmentAnnotator',
     function(TEXTFRAGMENTANNOTATORDEFAULTS, NameSpace, BaseComponent, Consolidation,
-             XpointersHelper, ContextualMenu, ItemsExchange, Config, TripleComposer,
+             XpointersHelper, ContextualMenu, ItemsExchange, Config, TripleComposer, Dashboard,
              $compile, $rootScope, $location) {
 
     // Create the component and declare what we deal with: text
@@ -122,6 +122,9 @@ angular.module('Pundit2.Annotators')
             },
             priority: 20,
             action: function(item) {
+                if(!Dashboard.isDashboardVisible()){
+                    Dashboard.toggle();
+                }
                 $rootScope.$emit('change-show-tabs', TripleComposer.options.clientDashboardTabTitle);
                 TripleComposer.addToSubject(item);
             }

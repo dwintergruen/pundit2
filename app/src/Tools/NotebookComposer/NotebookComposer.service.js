@@ -89,11 +89,34 @@ angular.module('Pundit2.NotebookComposer')
                 promise.reject("created failed");
             });
 
-
-
             return promise.promise;
 
        };
+
+        var notebookToEdit = null;
+
+        notebookComposer.editNotebook = function(id, name){
+
+            var promise = $q.defer();
+
+            NotebookCommunication.setName(id, name).then(function(){
+                console.log("YO");
+                promise.resolve();
+            }, function(){
+                promise.reject("edited failed");
+            });
+
+            return promise.promise;
+        };
+
+        notebookComposer.getNotebookToEdit = function(){
+            return notebookToEdit;
+        };
+
+        notebookComposer.setNotebookToEdit = function(notebook){
+            console.log(notebook);
+            notebookToEdit = notebook;
+        };
 
         return notebookComposer;
 

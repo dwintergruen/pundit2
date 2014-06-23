@@ -95,28 +95,28 @@ angular.module('Pundit2.Communication')
             var promise = $q.defer();
             notebookCommunication.log('Setting as current '+id);
 
-            MyPundit.login().then(function(val) {
+            if(MyPundit.isUserLogged){
 
-                if (val === false) {
-                    promise.reject('Ouch! Login error');
-                } else {
+                $http({
+                    headers: { 'Content-Type': 'application/json' },
+                    method: 'PUT',
+                    url: NameSpace.get('asNBCurrent')+"/"+id,
+                    withCredentials: true
+                }).success(function() {
+                    notebookCommunication.log(id+' is now current');
+                    NotebookExchange.setCurrentNotebooks(id);
+                    promise.resolve();
+                }).error(function(msg) {
+                    notebookCommunication.log('Impossible to set as current: '+id);
+                    promise.reject(msg);
+                });
 
-                    $http({
-                        headers: { 'Content-Type': 'application/json' },
-                        method: 'PUT',
-                        url: NameSpace.get('asNBCurrent')+"/"+id,
-                        withCredentials: true
-                    }).success(function() {
-                        notebookCommunication.log(id+' is now current');
-                        NotebookExchange.setCurrentNotebooks(id);
-                        promise.resolve();
-                    }).error(function(msg) {
-                        notebookCommunication.log('Impossible to set as current: '+id);
-                        promise.reject(msg);
-                    });
-                }
+            } else {
+                notebookCommunication.log('Impossible to set as current: you have to be logged in');
+                promise.reject('User not logged in');
+            }
 
-            });
+
 
             return promise.promise;
         };
@@ -125,13 +125,8 @@ angular.module('Pundit2.Communication')
             var promise = $q.defer();
             notebookCommunication.log('Setting as public '+id);
 
-            MyPundit.login().then(function(val) {
 
-                if (val === false) {
-                    promise.reject('Ouch! Login error');
-                    return;
-                }
-
+            if(MyPundit.isUserLogged){
                 $http({
                     headers: { 'Content-Type': 'application/json' },
                     method: 'PUT',
@@ -145,8 +140,10 @@ angular.module('Pundit2.Communication')
                     notebookCommunication.log('Impossible to set as public: '+id);
                     promise.reject(msg);
                 });
-
-            });
+            } else {
+                notebookCommunication.log('Impossible to set as current: you have to be logged in');
+                promise.reject('User not logged in');
+            }
 
             return promise.promise;
         };
@@ -155,13 +152,7 @@ angular.module('Pundit2.Communication')
             var promise = $q.defer();
             notebookCommunication.log('Setting as private '+id);
 
-            MyPundit.login().then(function(val) {
-
-                if (val === false) {
-                    promise.reject('Ouch! Login error');
-                    return;
-                }
-
+            if(MyPundit.isUserLogged){
                 $http({
                     headers: { 'Content-Type': 'application/json' },
                     method: 'PUT',
@@ -176,7 +167,11 @@ angular.module('Pundit2.Communication')
                     promise.reject(msg);
                 });
 
-            });
+            } else {
+                notebookCommunication.log('Impossible to set as current: you have to be logged in');
+                promise.reject('User not logged in');
+            }
+
 
             return promise.promise;
         };
@@ -251,6 +246,39 @@ angular.module('Pundit2.Communication')
                     promise.resolve();
                 }).error(function(msg) {
                     notebookCommunication.log('Impossible to remove '+id);
+                    promise.reject(msg);
+                });
+
+            });
+
+            return promise.promise;
+        };
+
+        notebookCommunication.setName = function(id, name) {
+            var promise = $q.defer();
+            notebookCommunication.log('Edit name of notebook '+id);
+
+            MyPundit.login().then(function(val) {
+
+                if (val === false) {
+                    promise.reject('Ouch! Login error');
+                    return;
+                }
+
+                $http({
+                    headers: { 'Content-Type': 'application/json' },
+                    method: 'PUT',
+                    url: NameSpace.get('asNBEditMeta', { id: id }),
+                    withCredentials: true,
+                    data: {
+                        NotebookName: name
+                    }
+                }).success(function() {
+                    notebookCommunication.log(id+' is now edited');
+                    NotebookExchange.getNotebookById(id).setLabel(name);
+                    promise.resolve();
+                }).error(function(msg) {
+                    notebookCommunication.log('Impossible to edit name of notebook: '+id);
                     promise.reject(msg);
                 });
 

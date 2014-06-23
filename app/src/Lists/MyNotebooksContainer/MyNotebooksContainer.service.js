@@ -17,7 +17,7 @@ angular.module('Pundit2.MyNotebooksContainer')
     
 })
 .service('MyNotebooksContainer', function($rootScope, MYNOTEBOOKSCONTAINERDEFAULTS, BaseComponent,
-    ContextualMenu, NotebookExchange, ItemsExchange, NotebookCommunication, Consolidation, Toolbar, AnnotationsExchange) {
+    ContextualMenu, NotebookExchange, ItemsExchange, NotebookCommunication, Consolidation, Toolbar, AnnotationsExchange, NotebookComposer, Dashboard) {
 
     var myNotebooksContainer = new BaseComponent('MyNotebooksContainer', MYNOTEBOOKSCONTAINERDEFAULTS);
 
@@ -105,6 +105,11 @@ angular.module('Pundit2.MyNotebooksContainer')
             },
             action: function(nt) {
                 // TODO expose API on notebooks composer
+                if(!Dashboard.isDashboardVisible()){
+                    Dashboard.toggle();
+                }
+                $rootScope.$emit('change-show-tabs', NotebookComposer.options.clientDashboardTabTitle);
+                NotebookComposer.setNotebookToEdit(nt);
             }
         });
 

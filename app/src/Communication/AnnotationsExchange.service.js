@@ -5,14 +5,12 @@ angular.module('Pundit2.Communication')
         var annotationExchange = new BaseComponent("AnnotationsExchange");
 
         var annList = [],
-            annListById = {},
-            annListByNotebook = [];
+            annListById = {};
 
         annotationExchange.wipe = function() {
             annotationExchange.log('Wiping every loaded annotation.');
             annList = [];
             annListById = {};
-            annListByNotebook = [];
         };
 
         // Returns a promise which gets resolved by an array of IDS of the annotations found.
@@ -76,11 +74,6 @@ angular.module('Pundit2.Communication')
                 ann._q.promise.then(function(a) {
                     annListById[ann.id] = a;
                     annList.push(a);
-
-                    if(typeof(annListByNotebook[a.isIncludedIn]) === 'undefined' || annListByNotebook[a.isIncludedIn] === null){
-                        annListByNotebook[a.isIncludedIn] = [];
-                    }
-                    annListByNotebook[a.isIncludedIn].push(a);
                 });
             }
         };
@@ -93,17 +86,6 @@ angular.module('Pundit2.Communication')
             if (id in annListById) {
                 return annListById[id];
             }
-            // If the item is not found, it will return undefined
-        };
-
-        annotationExchange.getAnnotationByNotebook = function(notebookID) {
-
-                if(typeof(annListByNotebook[notebookID]) === 'undefined' || annListByNotebook[notebookID] === null){
-                    return;
-                } else {
-                    return annListByNotebook[notebookID];
-                }
-
             // If the item is not found, it will return undefined
         };
 

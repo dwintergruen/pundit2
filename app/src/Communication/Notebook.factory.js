@@ -48,6 +48,10 @@ angular.module('Pundit2.Communication')
         this.visibility = "public";
     };
 
+    Notebook.prototype.setLabel = function(name) {
+        this.label = name;
+    };
+
     Notebook.prototype.isCurrent = function() {
         var current = NotebookExchange.getCurrentNotebooks();
         if (typeof(current) === 'undefined') {
