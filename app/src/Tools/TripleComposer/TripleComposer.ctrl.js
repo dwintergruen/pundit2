@@ -135,7 +135,7 @@ angular.module('Pundit2.TripleComposer')
                         });
                     }                    
 
-                    new Annotation(data.AnnotationID).then(function(ann){
+                    new Annotation(data.AnnotationID).then(function(){
                         Consolidation.consolidateAll();
                     });
                 }).error(function(msg) {

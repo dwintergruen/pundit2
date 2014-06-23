@@ -204,7 +204,8 @@ angular.module('Pundit2.TripleComposer')
             statements[0].scope.wipe();
             return;
         }
-        
+
+        var index = -1;
         statements.some(function(s, i){
             if (s.id === id) {
                 index = i;
@@ -226,6 +227,7 @@ angular.module('Pundit2.TripleComposer')
 
     // extend arr object with scope property
     tripleComposer.addStatementScope = function(id, scope){
+        var index = -1;
         statements.some(function(s, i){
             if (s.id === id) {
                 index = i;
@@ -242,6 +244,7 @@ angular.module('Pundit2.TripleComposer')
     // this produce the view update and a new <statement> directive
     // is added to the triple composer directive
     tripleComposer.duplicateStatement = function(id){
+        var index = -1;
         statements.some(function(s, i){
             if (s.id === id) {
                 index = i;

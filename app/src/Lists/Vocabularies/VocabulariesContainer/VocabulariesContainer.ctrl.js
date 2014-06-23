@@ -129,8 +129,9 @@ angular.module('Pundit2.Vocabularies')
     $scope.$watch(function() {
         return $scope.tabs.activeTab;
     }, function(newActive, oldActive) {
-        if (newActive !== oldActive)
+        if (newActive !== oldActive){
             updateMessage();
+        }            
     });
 
 });
