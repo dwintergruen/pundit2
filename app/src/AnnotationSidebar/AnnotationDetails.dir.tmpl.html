@@ -32,14 +32,13 @@
 
         <div class="pnd-annotation-details-info" ng-show="metaInfo">
             <div class="pnd-annotation-details-info-author">
-                Author: {{annotation.creatorName}}
+                <strong>Author:</strong> {{annotation.creatorName}}
             </div>
             <div class="pnd-annotation-details-info-date">
-                Date: {{annotation.created | date : 'MMM d, y H:mm a'}}
+                <strong>Date:</strong> {{annotation.created | date : 'MMM d, y H:mm a'}}
             </div>       
             <div class="pnd-annotation-details-info-notebook">
-                Notebook: 
-                <a href="{{askLink}}{{annotation.notebookId}}" target="_blank">
+                <strong>Notebook:</strong> <a href="{{askLink}}{{annotation.notebookId}}" target="_blank">
                     {{notebookName}}
                 </a>
             </div>       
