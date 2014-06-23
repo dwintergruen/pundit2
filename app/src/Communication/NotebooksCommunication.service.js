@@ -197,10 +197,12 @@ angular.module('Pundit2.Communication')
 
                     if ('NotebookID' in data) {
                         // read metadata from server then add to notebooksExchange
-                        new Notebook(data.NotebookID, true);                        
-                        promise.resolve(data.NotebookID);
-                        notebookCommunication.log("Created a new notebook: "+data.NotebookID);
-                        Analytics.track('api', 'post', 'notebook create');
+                        new Notebook(data.NotebookID, true).then(function(){
+                            promise.resolve(data.NotebookID);
+                            notebookCommunication.log("Created a new notebook: "+data.NotebookID);
+                            Analytics.track('api', 'post', 'notebook create');
+                        });
+
                     } else {
                         promise.reject('some sort of error?');
                         notebookCommunication.log("Error creating a notebook -- TODO");

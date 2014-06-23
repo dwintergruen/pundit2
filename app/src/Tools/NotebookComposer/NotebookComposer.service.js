@@ -5,6 +5,7 @@ angular.module('Pundit2.NotebookComposer')
     clientDashboardPanel: "tools",
     clientDashboardTabTitle: "Notebooks Composer",
     savingMsg: "We are saving your notebook",
+    editingMsg: "We are editing your notebook",
     savingMsgTime: 1250,
     notificationMsgTime: 1500,
     notificationSuccessMsg: "Your notebook has been saved successfully",
@@ -15,79 +16,37 @@ angular.module('Pundit2.NotebookComposer')
 
         var notebookComposer = new BaseComponent("NotebookComposer", NOTEBOOKCOMPOSERDEFAULTS);
 
+        // create a notebook
         notebookComposer.createNotebook = function(notebook){
             var promise = $q.defer();
             var statePromise = {};
+            var allPromises = [];
 
-            // create the notebook
-            NotebookCommunication.createNotebook(notebook.name).then(
-                function(notebookID){
+            // when the notebook is created, will be set the visibility as private and notebook as current
+            // if options are selected by user
+            // setPrivate and setCurrent return a promise
+            NotebookCommunication.createNotebook(notebook.name).then(function(notebookID){
 
-                    statePromise.notebookID = notebookID;
-                    // notebook public and not current
-                    if(!notebook.current && notebook.visibility === 'public'){
-                        promise.resolve(statePromise);
+                if(notebook.visibility === 'private'){
+                    var promVisibility = NotebookCommunication.setPrivate(notebookID);
+                    allPromises.push(promVisibility);
+                }
 
-                    // notebook private and not current
-                    } else if(!notebook.current && notebook.visibility === 'private'){
-                        NotebookCommunication.setPrivate(notebookID).then(function(){
-                            statePromise.setPrivate = true;
-                            promise.resolve(statePromise);
+                if(notebook.current === true){
+                    var promCurrent = NotebookCommunication.setCurrent(notebookID);
+                    allPromises.push(promCurrent);
+                }
+                    // create promise will be resolved when all promises are resolved
+                    $q.all(allPromises).then(function(){
+                       promise.resolve();
+                    });
 
-                        }, function(){
-                            statePromise.setPrivate = false;
-                            promise.resolve(statePromise);
-                        });
-
-                    // notebook public and current
-                    } else if(notebook.current && notebook.visibility !== 'private'){
-                        NotebookCommunication.setCurrent(notebookID).then(
-                            function(){
-                                statePromise.setCurrent = true;
-                                promise.resolve(statePromise);
-                        },
-                            function(){
-                                statePromise.setCurrent = false;
-                                promise.resolve(statePromise);
-                        });
-
-                    // notebook private and current
-                    } else if(notebook.current && notebook.visibility === 'private'){
-                        NotebookCommunication.setCurrent(notebookID).then(
-                            function(){
-                                statePromise.setCurrent = true;
-
-                                NotebookCommunication.setPrivate(notebookID).then(function(){
-                                    statePromise.setPrivate = true;
-                                    promise.resolve(statePromise);
-
-                                }, function(){
-                                    statePromise.setPrivate = false;
-                                    promise.resolve(statePromise);
-                                });
-
-                            },
-                            function(){
-                                statePromise.setCurrent = false;
-
-                                NotebookCommunication.setPrivate(notebookID).then(function(){
-                                    statePromise.setPrivate = true;
-                                    promise.resolve(statePromise);
-
-                                }, function(){
-                                    statePromise.setPrivate = false;
-                                    promise.resolve(statePromise);
-                                });
-
-                            });
-                    }
-
-
-
-           }, function(){
+            },
+            function(){
                 // reject in case of notebook creation fail
                 promise.reject("created failed");
             });
+
 
             return promise.promise;
 
@@ -95,12 +54,12 @@ angular.module('Pundit2.NotebookComposer')
 
         var notebookToEdit = null;
 
+        // edit the name of a notebook
         notebookComposer.editNotebook = function(id, name){
 
             var promise = $q.defer();
 
             NotebookCommunication.setName(id, name).then(function(){
-                console.log("YO");
                 promise.resolve();
             }, function(){
                 promise.reject("edited failed");
@@ -109,12 +68,13 @@ angular.module('Pundit2.NotebookComposer')
             return promise.promise;
         };
 
+        // return the notebook that want to edit
         notebookComposer.getNotebookToEdit = function(){
             return notebookToEdit;
         };
 
+        // set the notebook that want to edit
         notebookComposer.setNotebookToEdit = function(notebook){
-            console.log(notebook);
             notebookToEdit = notebook;
         };
 
