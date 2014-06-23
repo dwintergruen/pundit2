@@ -1,5 +1,5 @@
 angular.module('Pundit2.NotebookComposer')
-    .controller('NotebookComposerCtrl', function($scope, NotebookComposer, Toolbar, $timeout, NotebookExchange, NotebookCommunication) {
+    .controller('NotebookComposerCtrl', function($scope, NotebookComposer, Toolbar, $timeout, NotebookExchange, NotebookCommunication, $q) {
 
         $scope.notebook = {};
         $scope.notebook.visibility = "public";
@@ -108,25 +108,32 @@ angular.module('Pundit2.NotebookComposer')
 
         $scope.edit = function(){
 
-          /*if($scope.notebookToEdit.label === $scope.notebook.name){
-              console.log("il nome è lo stesso");
-          } else {
-              NotebookComposer.editNotebook($scope.notebookToEdit.id, $scope.notebook.name).then(function(){
-              });
-          }*/
+            var promises = [];
+
+
+            if($scope.notebookToEdit.label !== $scope.notebook.name){
+                var promiseEdit = NotebookComposer.editNotebook($scope.notebookToEdit.id, $scope.notebook.name);
+                promises.push(promiseEdit);
+            }
 
             if($scope.notebook.current === true){
-                NotebookCommunication.setCurrent($scope.notebookToEdit.id);
+                var promiseCurrent = NotebookCommunication.setCurrent($scope.notebookToEdit.id);
+                promises.push(promiseCurrent);
             }
 
             if($scope.notebookToEdit.visibility !== $scope.notebook.visibility){
                 if($scope.notebook.visibility === 'public'){
-                    NotebookCommunication.setPublic($scope.notebookToEdit.id);
+                    var promisePublic = NotebookCommunication.setPublic($scope.notebookToEdit.id);
+                    promises.push(promisePublic);
                 } else if($scope.notebook.visibility === 'private'){
-                    NotebookCommunication.setPrivate($scope.notebookToEdit.id);
+                    var promisePrivate = NotebookCommunication.setPrivate($scope.notebookToEdit.id);
+                    promises.push(promisePrivate);
                 }
             }
 
+            $q.all(promises).then(function(){
+                $scope.clear();
+            });
 
 
         };
