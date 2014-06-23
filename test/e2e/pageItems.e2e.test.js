@@ -23,21 +23,21 @@ describe("Page Items interaction", function() {
             expect(btn.length).toBe(1);
         });
         // check if exist items
-        p.findElements(protractor.By.css('.pnd-tab-content item')).then(function(items) {
+        p.findElements(protractor.By.css('.pnd-tab-content .active item')).then(function(items) {
             expect(items.length).toBe(2);
         });
     });
 
     it("should correctly filter by type when change active tab", function(){
         // check initial items number (all items tab)
-        p.findElements(protractor.By.css('.pnd-tab-content item')).then(function(items) {
+        p.findElements(protractor.By.css('.pnd-tab-content .active item')).then(function(items) {
             expect(items.length).toBe(2);
         });
 
         // got to text items tab
         p.findElement(protractor.By.css('.pnd-tab-header > li > a[data-index="1"]')).click();
         // check new items number (text items tab)
-        p.findElements(protractor.By.css('.pnd-tab-content item')).then(function(items) {
+        p.findElements(protractor.By.css('.pnd-tab-content .active item')).then(function(items) {
             expect(items.length).toBe(1);
             // check item uri
             expect(items[0].getAttribute('uri')).toEqual('textFragmentUri');
@@ -46,7 +46,7 @@ describe("Page Items interaction", function() {
         // got to image items tab
         p.findElement(protractor.By.css('.pnd-tab-header > li > a[data-index="2"]')).click();
         // check new items number (image items tab)
-        p.findElements(protractor.By.css('.pnd-tab-content item')).then(function(items) {
+        p.findElements(protractor.By.css('.pnd-tab-content .active item')).then(function(items) {
             expect(items.length).toBe(1);
             // check item uri
             expect(items[0].getAttribute('uri')).toEqual('imageFragmentUri');
@@ -62,45 +62,45 @@ describe("Page Items interaction", function() {
 
     it("should correctly filter by label when input text", function(){
         // check initial items number
-        p.findElements(protractor.By.css('.pnd-tab-content item')).then(function(items) {
+        p.findElements(protractor.By.css('.pnd-tab-content .active item')).then(function(items) {
             expect(items.length).toBe(2);
         });
         // search text
         p.findElement(protractor.By.css('.pnd-panel-tab-content-header input')).sendKeys('text');
         // check new items number
-        p.findElements(protractor.By.css('.pnd-tab-content item')).then(function(items) {
+        p.findElements(protractor.By.css('.pnd-tab-content .active item')).then(function(items) {
             expect(items.length).toBe(1);
         });
     });
 
     it("should correctly clear filter when click input x icon", function(){
         // check initial items number
-        p.findElements(protractor.By.css('.pnd-tab-content item')).then(function(items) {
+        p.findElements(protractor.By.css('.pnd-tab-content .active item')).then(function(items) {
             expect(items.length).toBe(2);
         });
         // search text
         p.findElement(protractor.By.css('.pnd-panel-tab-content-header input')).sendKeys('text');
         // check new items number
-        p.findElements(protractor.By.css('.pnd-tab-content item')).then(function(items) {
+        p.findElements(protractor.By.css('.pnd-tab-content .active item')).then(function(items) {
             expect(items.length).toBe(1);
         });
         // click clear icon
         p.findElement(protractor.By.css('.pnd-panel-tab-content-header span')).click();
         // check new items number
-        p.findElements(protractor.By.css('.pnd-tab-content item')).then(function(items) {
+        p.findElements(protractor.By.css('.pnd-tab-content .active item')).then(function(items) {
             expect(items.length).toBe(2);
         });
     });
 
     it("should correctly show no found messagge", function(){
         // check initial items number
-        p.findElements(protractor.By.css('.pnd-tab-content item')).then(function(items) {
+        p.findElements(protractor.By.css('.pnd-tab-content .active item')).then(function(items) {
             expect(items.length).toBe(2);
         });
         // search text
         p.findElement(protractor.By.css('.pnd-panel-tab-content-header input')).sendKeys('testo impossibile da trovare');
         // check new items number
-        p.findElements(protractor.By.css('.pnd-tab-content item')).then(function(items) {
+        p.findElements(protractor.By.css('.pnd-tab-content .active item')).then(function(items) {
             expect(items.length).toBe(0);
         });
         // check if is shown no found messagge

@@ -37,7 +37,7 @@ describe("Vocabularies interaction", function() {
         });
 
         // check tab content (welcome messagge)
-        p.findElements(protractor.By.css('.pnd-tab-content .pnd-dashboard-welcome')).then(function(items){
+        p.findElements(protractor.By.css('.pnd-tab-content .active .pnd-dashboard-welcome')).then(function(items){
             expect(items.length).toBe(1);
             expect(items[0].getText()).toEqual("I'm a welcome message");
         });
@@ -48,7 +48,7 @@ describe("Vocabularies interaction", function() {
 
         p.findElement(protractor.By.css('.pnd-panel-tab-content-header input')).sendKeys('pippo');
 
-        p.findElements(protractor.By.css('.pnd-tab-content item')).then(function(items){
+        p.findElements(protractor.By.css('.pnd-tab-content .active item')).then(function(items){
             expect(items.length).toBe(1);
             expect(items[0].getAttribute('uri')).toEqual(freebaseItemUri);
             expect(items[0].getAttribute('menu-type')).toEqual(menuType);
@@ -65,7 +65,7 @@ describe("Vocabularies interaction", function() {
             tabs[1].click();
         });
 
-        p.findElements(protractor.By.css('.pnd-tab-content item')).then(function(items){
+        p.findElements(protractor.By.css('.pnd-tab-content .active item')).then(function(items){
             expect(items.length).toBe(2);
             expect(items[0].getAttribute('uri')).toEqual(murucaItemsUri[1]);
             expect(items[1].getAttribute('uri')).toEqual(murucaItemsUri[0]);
@@ -85,7 +85,7 @@ describe("Vocabularies interaction", function() {
         });
 
         // check tab content (no found messagge)
-        p.findElements(protractor.By.css('.pnd-tab-content .pnd-dashboard-welcome')).then(function(items){
+        p.findElements(protractor.By.css('.pnd-tab-content .active .pnd-dashboard-welcome')).then(function(items){
             expect(items.length).toBe(1);
             expect(items[0].getText()).toEqual("No item found to: anything");
         });
