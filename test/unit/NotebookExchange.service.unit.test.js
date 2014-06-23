@@ -16,14 +16,16 @@ describe('NotebooksExchange factory', function() {
         $httpBackend
             .when('GET', NameSpace.get('asOpenNBMeta', {id: testId}))
             .respond(testNotebooks.simple1);
-        var nt = new Notebook(testId);
+        var nt;
+        new Notebook(testId).then(function(res){
+            nt = res;
+        });
         $httpBackend.flush();
 
         var notebooks = NotebookExchange.getNotebooks();
         expect(notebooks.length).toBe(1);
-        // TODO read from fixtures file
-        expect(notebooks[0].id).toBe("simple1ID");
-        expect(NotebookExchange.getNotebookById("simple1ID")).toBeDefined();
+        expect(notebooks[0].id).toBe(nt.id);
+        expect(NotebookExchange.getNotebookById(nt.id)).toBeDefined();
     });
 
     it("should not duplicate existing notebook", function(){
@@ -31,11 +33,15 @@ describe('NotebooksExchange factory', function() {
         $httpBackend
             .when('GET', NameSpace.get('asOpenNBMeta', {id: testId}))
             .respond(testNotebooks.simple1);
-        var nt = new Notebook(testId);
+        var nt;
+        new Notebook(testId).then(function(res){
+            nt = res;
+        });
+        
         $httpBackend.flush();
 
         // try to duplicate notebook
-        NotebookExchange.addNotebook({id: testId});
+        NotebookExchange.addNotebook({id: nt.id});
 
         var notebooks = NotebookExchange.getNotebooks();
         expect(notebooks.length).toBe(1);
@@ -46,19 +52,22 @@ describe('NotebooksExchange factory', function() {
         $httpBackend
             .when('GET', NameSpace.get('asOpenNBMeta', {id: testId}))
             .respond(testNotebooks.simple1);
-        var nt = new Notebook(testId, true);
+        var nt;
+        new Notebook(testId, true).then(function(res){
+            nt = res;
+        });
         $httpBackend.flush();
 
         // default list
         var notebooks = NotebookExchange.getNotebooks();
         expect(notebooks.length).toBe(1);
-        expect(notebooks[0].id).toBe("simple1ID");
-        expect(NotebookExchange.getNotebookById("simple1ID")).toBeDefined();
+        expect(notebooks[0].id).toBe(nt.id);
+        expect(NotebookExchange.getNotebookById(nt.id)).toBeDefined();
 
         // my notebooks list
         var myNotebooks = NotebookExchange.getMyNotebooks();
         expect(myNotebooks.length).toBe(1);
-        expect(myNotebooks[0].id).toBe("simple1ID");
+        expect(myNotebooks[0].id).toBe(nt.id);
     });
 
     it("should correctly get and set current notebook", function(){
@@ -66,13 +75,16 @@ describe('NotebooksExchange factory', function() {
         $httpBackend
             .when('GET', NameSpace.get('asOpenNBMeta', {id: testId}))
             .respond(testNotebooks.simple1);
-        var nt = new Notebook(testId, true);
+        var nt;
+        new Notebook(testId, true).then(function(res){
+            nt = res;
+        });
         $httpBackend.flush();
 
         NotebookExchange.setCurrentNotebooks(testId);
         var current = NotebookExchange.getCurrentNotebooks();
 
-        expect(current.id).toBe(testId);
+        expect(current.id).toBe(nt.id);
         expect(current.isCurrent()).toBe(true);
     });
 
@@ -81,14 +93,17 @@ describe('NotebooksExchange factory', function() {
         $httpBackend
             .when('GET', NameSpace.get('asOpenNBMeta', {id: testId}))
             .respond(testNotebooks.simple1);
-        var nt = new Notebook(testId);
+        var nt;
+        new Notebook(testId).then(function(res){
+            nt = res;
+        });
         $httpBackend.flush();
         NotebookExchange.setCurrentNotebooks(testId);
 
         NotebookExchange.wipe();
 
         expect(NotebookExchange.getNotebooks().length).toBe(0);
-        expect(NotebookExchange.getNotebookById("simple1ID")).toBeUndefined();
+        expect(NotebookExchange.getNotebookById(nt.id)).toBeUndefined();
         expect(NotebookExchange.getMyNotebooks().length).toBe(0);
         expect(NotebookExchange.getCurrentNotebooks()).toBeUndefined();
     });
@@ -98,14 +113,36 @@ describe('NotebooksExchange factory', function() {
         $httpBackend
             .when('GET', NameSpace.get('asOpenNBMeta', {id: testId}))
             .respond(testNotebooks.simple1);
-        var nt = new Notebook(testId, true);
+        var nt;
+        new Notebook(testId).then(function(res){
+            nt = res;
+        });
+        $httpBackend.flush();
+        
+        NotebookExchange.removeNotebook(testId);
+        NotebookExchange.removeNotebook('fakeID');
+
+        expect(NotebookExchange.getNotebooks().length).toBe(0);
+        expect(NotebookExchange.getNotebookById(nt.id)).toBeUndefined();
+    });
+
+    it("should correctly remove notebook from my notebooks", function(){
+        var testId = 'simple1ID';
+        $httpBackend
+            .when('GET', NameSpace.get('asOpenNBMeta', {id: testId}))
+            .respond(testNotebooks.simple1);
+        var nt;
+        new Notebook(testId, true).then(function(res){
+            nt = res;
+        });
         $httpBackend.flush();
         NotebookExchange.setCurrentNotebooks(testId);
 
         NotebookExchange.removeNotebook(testId);
+        NotebookExchange.removeNotebook('fakeID');
 
         expect(NotebookExchange.getNotebooks().length).toBe(0);
-        expect(NotebookExchange.getNotebookById("simple1ID")).toBeUndefined();
+        expect(NotebookExchange.getNotebookById(nt.id)).toBeUndefined();
         expect(NotebookExchange.getMyNotebooks().length).toBe(0);
         expect(NotebookExchange.getCurrentNotebooks()).toBeUndefined();
     });
