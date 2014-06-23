@@ -55,7 +55,11 @@ angular.module('Pundit2.Communication')
     };
 
     Notebook.prototype.isCurrent = function() {
-        return this.id === NotebookExchange.getCurrentNotebooks().id;
+        var current = NotebookExchange.getCurrentNotebooks();
+        if (typeof(current) === 'undefined') {
+            return false;
+        }
+        return this.id === current.id;
     };
 
     // TODO: after login

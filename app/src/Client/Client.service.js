@@ -422,6 +422,13 @@ angular.module('Pundit2.Client')
             // and get notified automatically when logged in, if needed
             MyPundit.checkLoggedIn().then(function(value) {
 
+                if (value === true) {
+                    MyItems.getAllItems();
+                    NotebookCommunication.getMyNotebooks().then(function(){
+                        NotebookCommunication.getCurrent();
+                    });
+                }
+
                 // Now that we know if we're logged in or not, we can download the right
                 // annotations: auth or non-auth form the server
                 getAnnotations();
@@ -440,14 +447,6 @@ angular.module('Pundit2.Client')
                         onLogout();
                     }
                 });
-
-                if (value === true) {
-                    MyItems.getAllItems();
-                    NotebookCommunication.getMyNotebooks().then(function(){
-                        NotebookCommunication.getCurrent();
-                    });
-                    
-                }
                 
             });
 
@@ -480,13 +479,14 @@ angular.module('Pundit2.Client')
             ItemsExchange.wipe();
             AnnotationsExchange.wipe();
 
+            NotebookCommunication.getMyNotebooks().then(function(){
+                NotebookCommunication.getCurrent();
+            });
+
             // There could be private annotations we want to show, get them again
             getAnnotations();
 
             MyItems.getAllItems();
-            NotebookCommunication.getMyNotebooks().then(function(){
-                NotebookCommunication.getCurrent();
-            });
             loadBasicRelations();
         };
 
