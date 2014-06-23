@@ -1,5 +1,5 @@
 angular.module('Pundit2.Preview')
-.controller('PreviewCtrl', function($scope, Preview, TypesHelper, $window, $element, Notebook) {
+.controller('PreviewCtrl', function($scope, Preview, TypesHelper, $window, Toolbar, Notebook) {
 
     $scope.itemDashboardPreview = null;
 
@@ -42,7 +42,7 @@ angular.module('Pundit2.Preview')
 
     // return true if dashboard preview is empty
     $scope.isNotebook = function() {
-        if($scope.itemDashboardPreview.type[0] === "http://purl.org/pundit/ont/ao#Notebook"){
+        if($scope.itemDashboardPreview !== null && $scope.itemDashboardPreview.type[0] === "http://purl.org/pundit/ont/ao#Notebook"){
             return true;
         } else {
             return false;
@@ -74,6 +74,11 @@ angular.module('Pundit2.Preview')
     $scope.openUrl = function(url) {
         $window.open(url);
     };
+
+    $scope.openNotebookUrl = function(id){
+        var url = Toolbar.options.askLinkDefault + '#/myNotebooks/'+id;
+        $window.open(url);
+    }
 
     $scope.getItemIcon = function() {
         if (!$scope.isItemEmpty()){
