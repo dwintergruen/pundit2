@@ -95,7 +95,7 @@ angular.module('Pundit2.Communication')
             var promise = $q.defer();
             notebookCommunication.log('Setting as current '+id);
 
-            if(MyPundit.isUserLogged){
+            if(MyPundit.isUserLogged()){
 
                 $http({
                     headers: { 'Content-Type': 'application/json' },
@@ -126,7 +126,7 @@ angular.module('Pundit2.Communication')
             notebookCommunication.log('Setting as public '+id);
 
 
-            if(MyPundit.isUserLogged){
+            if(MyPundit.isUserLogged()){
                 $http({
                     headers: { 'Content-Type': 'application/json' },
                     method: 'PUT',
@@ -152,7 +152,7 @@ angular.module('Pundit2.Communication')
             var promise = $q.defer();
             notebookCommunication.log('Setting as private '+id);
 
-            if(MyPundit.isUserLogged){
+            if(MyPundit.isUserLogged()){
                 $http({
                     headers: { 'Content-Type': 'application/json' },
                     method: 'PUT',
@@ -258,13 +258,7 @@ angular.module('Pundit2.Communication')
             var promise = $q.defer();
             notebookCommunication.log('Edit name of notebook '+id);
 
-            MyPundit.login().then(function(val) {
-
-                if (val === false) {
-                    promise.reject('Ouch! Login error');
-                    return;
-                }
-
+            if(MyPundit.isUserLogged()){
                 $http({
                     headers: { 'Content-Type': 'application/json' },
                     method: 'PUT',
@@ -281,8 +275,10 @@ angular.module('Pundit2.Communication')
                     notebookCommunication.log('Impossible to edit name of notebook: '+id);
                     promise.reject(msg);
                 });
-
-            });
+            } else {
+                notebookCommunication.log('Impossible to set as current: you have to be logged in');
+                promise.reject('User not logged in');
+            }
 
             return promise.promise;
         };
