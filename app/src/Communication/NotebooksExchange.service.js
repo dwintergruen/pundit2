@@ -47,12 +47,13 @@ angular.module('Pundit2.Communication')
 
             // if no notebook is found in the notebook list, get error
             if (index === -1) {
-                notebookExchange.err("Cannot remove notebook "+ns+" from notebook list: notebook is not in notebook list.");
+                notebookExchange.err("Cannot remove notebook "+notebookID+" from notebook list: notebook is not in notebook list.");
                 return;
             }
 
             // remove notebook from notebook list
             nsList.splice(index, 1);
+            delete nsListById[notebookID];
 
             // reset index
             index = -1;
@@ -67,12 +68,13 @@ angular.module('Pundit2.Communication')
 
             // if no notebook is found in the my notebook list, get error
             if (index === -1) {
-                notebookExchange.err("Cannot remove notebook "+ns+" from my notebook list: notebook is not in my notebook list.");
+                notebookExchange.err("Cannot remove notebook "+notebookID+" from my notebook list: notebook is not in my notebook list.");
                 return;
             }
 
             // remove notebook from my notebook list
             myNsList.splice(index, 1);
+            delete myNsListById[notebookID];
         };
 
         notebookExchange.getNotebookById = function(id) {
