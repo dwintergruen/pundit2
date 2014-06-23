@@ -309,6 +309,9 @@ angular.module('Pundit2.Dashboard')
         } else {
             state.containerHeight = newHeight;
         }
+
+        // TODO: why without this the view not update right
+        $rootScope.$$phase || $rootScope.$digest();
         
         return true;
     };

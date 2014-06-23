@@ -108,7 +108,6 @@ angular.module('Pundit2.Dashboard')
         if ( Dashboard.increaseContainerHeight(dy) ) {
             lastPageY = event.pageY;
         }
-        $rootScope.$$phase || $scope.$digest();
     };
 
     $scope.footerMouseDownHandler = function(event) {
