@@ -1,11 +1,12 @@
 body.pnd-annotation-sidebar-collapsed {
     margin-right: @annotation-sidebar-coll-width;
     background-position-x: -@annotation-sidebar-coll-width;
-}
+    }
+    
 body.pnd-annotation-sidebar-expanded {
     margin-right: @annotation-sidebar-exp-width;
     background-position-x: -@annotation-sidebar-exp-width;
-}
+    }
 
 // .pnd-as-transition {
 //     -webkit-transition-duration: 1s;
@@ -23,28 +24,28 @@ body.pnd-annotation-sidebar-expanded {
     z-index: 99;
     display: block;
     border-left: 1px solid @gray-lighter; 
-}
+	}
+
 .pnd-annotation-sidebar-content{
     padding: 0px;  
-    background-color: @gray-lighter;
-	-webkit-box-shadow: -1px 0 3px 0 @gray-light;
-	box-shadow: -1px 0 3px 0 @gray-light;
+    //background-color: @gray-lighter;
 	}
 
 .pnd-annotation-details{
     padding: 5px;
-}
+    }
+    
 .pnd-annotation-sidebar-container.pnd-annotation-sidebar-collapsed {
     width: @annotation-sidebar-coll-width;
-}
+    }	
+    
 .pnd-annotation-sidebar-container.pnd-annotation-sidebar-expanded {
     width: @annotation-sidebar-exp-width;
-}
+    }
 
 .pnd-footer-sidebar-filter {
 	text-align: center;
-}
-
+	}
 
 .pnd-annotation-sidebar-annotations {
 	margin-top: 26px;
@@ -268,8 +269,6 @@ body.pnd-annotation-sidebar-expanded {
 		display: inline-block;
 		}
 		
-
-        
         
         // FOOTER
         
@@ -408,9 +407,22 @@ body.pnd-annotation-sidebar-expanded {
 
                     }
                     
+                                .pnd-annotation-details-object {
+                	background-color: transparent;
+                    //border-bottom: 0px solid @gray-extra-light;
+                    
+                    }    
+                    
+                .pnd-annotation-details-object + .pnd-annotation-details-object {
+                	background-color: transparent;
+                    border-bottom: 1px solid @gray-extra-light;
+                    }
+                
+
+                    
                 .pnd-annotation-details-subject,
-                .pnd-annotation-details-predicate,
-                .pnd-annotation-details-object {
+                .pnd-annotation-details-predicate/*,
+                .pnd-annotation-details-object*/ {
                 	background-color: transparent;
                     border-bottom: 1px solid @gray-extra-light;
                     
