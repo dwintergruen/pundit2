@@ -8,7 +8,7 @@
 		                <span>{{annotation.mainItem.label}}</span>
 		        </div>    
                 <button type="button" class="btn  pull-right">
-                    <span ng-class="{true:'pnd-icon-sort-up', false:'pnd-icon-sort-down'}[annotation.expanded]"></span>
+                    <span ng-class="{true:'pnd-icon-caret-up', false:'pnd-icon-sort-down'}[annotation.expanded]"></span>
                 </button>
         </div>
     </div>
@@ -61,7 +61,7 @@
 	                            <span ng-bind-html="item.subject.label">{{item.subject.label}}</span> ({{item.subject.typeLabel}})
                             </div>
                             <button type="button" class="btn btn-link pull-right">
-                                <span ng-class="{true:'pnd-icon-sort-up', false:'pnd-icon-sort-down'}[subInfo]"></span>
+                                <span ng-class="{true:'pnd-icon-caret-up', false:'pnd-icon-sort-down'}[subInfo]"></span>
                             </button>
                         </div>
 
@@ -83,7 +83,7 @@
     	                    	<span ng-bind-html="item.predicate.label">{{item.predicate.label}}</span>
                         	</div>
                             <button type="button" class="btn  btn-link pull-right">
-                                <span ng-class="{true:'pnd-icon-sort-up', false:'pnd-icon-sort-down'}[preInfo]"></span>
+                                <span ng-class="{true:'pnd-icon-caret-up', false:'pnd-icon-sort-down'}[preInfo]"></span>
                             </button>
                         </div>
 
@@ -108,7 +108,7 @@
 	                                 ({{object.typeLabel}})
                                 </div>
                                 <button type="button" class="btn  btn-link pull-right" ng-if="object.typeClass=='uri'">
-                                        <span ng-class="{true:'pnd-icon-sort-up', false:'pnd-icon-sort-down'}[objInfo]"></span>
+                                        <span ng-class="{true:'pnd-icon-caret-up', false:'pnd-icon-sort-down'}[objInfo]"></span>
                                 </button>
                             </div>
                             <div ng-show="objInfo" class="pnd-sub-info">
