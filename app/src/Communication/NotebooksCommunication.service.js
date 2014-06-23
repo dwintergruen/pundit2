@@ -12,16 +12,9 @@ angular.module('Pundit2.Communication')
             var promise = $q.defer();
             notebookCommunication.log('Getting my notebooks from the server');
 
-            MyPundit.login().then(function(val) {
+            if(MyPundit.isUserLogged()){
 
-                if (val === false) {
-                    // TODO: resolve badly
-                    promise.reject('Ouch!');
-                    return;
-                }
-
-                var httpPromise;
-                httpPromise = $http({
+                $http({
                     headers: { 'Accept': 'application/json' },
                     method: 'GET',
                     url: NameSpace.get('asNBOwned'),
@@ -56,7 +49,10 @@ angular.module('Pundit2.Communication')
                     notebookCommunication.err("Error from server while retrieving list of my notebooks: "+ statusCode);
                     Analytics.track('api', 'error', 'get notebook owned', statusCode);
                 });
-            });
+            } else {
+                notebookCommunication.log('Impossible to get my notebooks: you have to be logged in');
+                promise.reject('User not logged in');
+            }
 
             return promise.promise;
         };
@@ -65,28 +61,25 @@ angular.module('Pundit2.Communication')
 
             var promise = $q.defer();
             notebookCommunication.log('Getting current notebook');
-            MyPundit.login().then(function(val) {
-
-                if (val === false) {
-                    promise.reject('Ouch! Login error');
-                } else {
-
-                    $http({
-                        headers: { 'Content-Type': 'application/json' },
-                        method: 'GET',
-                        url: NameSpace.get('asNBCurrent'),
-                        withCredentials: true
-                    }).success(function(data) {
-                        notebookCommunication.log(data.NotebookID+' is the current notebook');
-                        NotebookExchange.setCurrentNotebooks(data.NotebookID);
-                        promise.resolve(data.NotebookID);
-                    }).error(function(msg) {
-                        notebookCommunication.log('Impossible to get the current notebook ');
-                        promise.reject(msg);
-                    });
-                }
-
-            });
+            
+            if(MyPundit.isUserLogged()){
+                $http({
+                    headers: { 'Content-Type': 'application/json' },
+                    method: 'GET',
+                    url: NameSpace.get('asNBCurrent'),
+                    withCredentials: true
+                }).success(function(data) {
+                    notebookCommunication.log(data.NotebookID+' is the current notebook');
+                    NotebookExchange.setCurrentNotebooks(data.NotebookID);
+                    promise.resolve(data.NotebookID);
+                }).error(function(msg) {
+                    notebookCommunication.log('Impossible to get the current notebook ');
+                    promise.reject(msg);
+                });
+            } else {
+                notebookCommunication.log('Impossible to get current: you have to be logged in');
+                promise.reject('User not logged in');
+            }            
 
             return promise.promise;
         };
@@ -228,13 +221,7 @@ angular.module('Pundit2.Communication')
             var promise = $q.defer();
             notebookCommunication.log('Deleting '+id);
 
-            MyPundit.login().then(function(val) {
-
-                if (val === false) {
-                    promise.reject('Ouch! Login error');
-                    return;
-                }
-
+            if(MyPundit.isUserLogged()){
                 $http({
                     headers: { 'Content-Type': 'application/json' },
                     method: 'DELETE',
@@ -249,7 +236,10 @@ angular.module('Pundit2.Communication')
                     promise.reject(msg);
                 });
 
-            });
+            } else {
+                notebookCommunication.log('Impossible to set as current: you have to be logged in');
+                promise.reject('User not logged in');
+            }
 
             return promise.promise;
         };
