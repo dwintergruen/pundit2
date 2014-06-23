@@ -9,20 +9,25 @@
 <div class="pnd-panel-tab-content-content">
 
     <div class="form-group pnd-notebook-composer-container" ng-hide="saving">
+    	<p>
         <input type="text" class="form-control" placeholder="Enter notebook name" ng-model="notebook.name">
+    	</p>
+        <div class="checkbox">
         <label>
-            <input type="checkbox" ng-model="notebook.current" ng-disabled="editMode && isCurrentNotebook"> Set as current
+            <input type="checkbox" ng-model="notebook.current" ng-disabled="editMode && isCurrentNotebook">
+            <span class="pnd-icon pnd-icon-pencil-square"></span> Set as current
         </label>
+        </div>
         <div class="radio">
             <label>
                 <input type="radio" name="visibility" value="public" ng-model="notebook.visibility">
-                Public
+                <span class="pnd-icon pnd-icon-group"></span> Public
             </label>
         </div>
         <div class="radio">
             <label>
                 <input type="radio" name="visibility" value="private" ng-model="notebook.visibility">
-                Private
+                <span class="pnd-icon pnd-icon-lock"></span> Private
             </label>
         </div>
     </div>
