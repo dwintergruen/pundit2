@@ -17,12 +17,14 @@ angular.module('Pundit2.MyNotebooksContainer')
     
 })
 .service('MyNotebooksContainer', function($rootScope, MYNOTEBOOKSCONTAINERDEFAULTS, BaseComponent,
-    ContextualMenu, NotebookExchange, ItemsExchange, NotebookCommunication, Consolidation, Toolbar, AnnotationsExchange, NotebookComposer, Dashboard) {
+    NotebookExchange, ItemsExchange, AnnotationsExchange, NotebookCommunication, Consolidation,
+    ContextualMenu, Toolbar, Dashboard, NotebookComposer,
+    $modal, $timeout) {
 
     var myNotebooksContainer = new BaseComponent('MyNotebooksContainer', MYNOTEBOOKSCONTAINERDEFAULTS);
 
-    // used only to configuration, this service is injected inside client and controller
-    // to read the passed configuration
+    // this service is injected inside client and controller
+    // to read the passed configuration and initialize notebooks contextual menu actions
 
     var initContextualMenu = function() {
 
@@ -86,12 +88,9 @@ angular.module('Pundit2.MyNotebooksContainer')
                 return !nt.isCurrent();
             },
             action: function(nt) {
-                Toolbar.setLoading(true);
-                NotebookCommunication.deleteNotebook(nt.id).then(function(){
-                    AnnotationsExchange.removeAnnotationByNotebookId(nt.id);
-                    Consolidation.consolidateAll();
-                    Toolbar.setLoading(false);
-               });                
+                // delete notebook is a dangerous action
+                // it also remove all contained annotation
+                openConfirmModal(nt);              
             }
         });
 
@@ -104,12 +103,14 @@ angular.module('Pundit2.MyNotebooksContainer')
                 return true;
             },
             action: function(nt) {
-                // TODO expose API on notebooks composer
+                // open dashobard
                 if(!Dashboard.isDashboardVisible()){
                     Dashboard.toggle();
                 }
+                // then swicth to notebook composer tab
                 $rootScope.$emit('change-show-tabs', NotebookComposer.options.clientDashboardTabTitle);
                 NotebookComposer.setNotebookToEdit(nt);
+                // TODO open if the panel is collapsed
             }
         });
 
@@ -119,6 +120,57 @@ angular.module('Pundit2.MyNotebooksContainer')
     $rootScope.$on('pundit-boot-done', function() {
         initContextualMenu();
     });
+
+    // confirm modal
+    var modalScope = $rootScope.$new();
+
+    modalScope.titleMessage = "Delete Notebook"
+
+    // confirm btn click
+    modalScope.confirm = function() {
+        
+        Toolbar.setLoading(true);
+        // remove notebook and all annotation contained in it
+        NotebookCommunication.deleteNotebook(modalScope.notebook.id).then(function(){
+            // success
+            modalScope.notifyMessage = "Notebook "+modalScope.notebook.label+" correctly deleted.";
+            AnnotationsExchange.removeAnnotationByNotebookId(modalScope.notebook.id);
+            Consolidation.consolidateAll();
+            Toolbar.setLoading(false);
+            $timeout(function(){
+                confirmModal.hide();
+            }, 3000);
+        }, function(){
+            // error
+            modalScope.notifyMessage = "Error impossible to delete this notebook, please retry.";
+            Toolbar.setLoading(false);
+            $timeout(function(){
+                confirmModal.hide();
+            }, 1000);
+        });
+
+    };
+
+    // cancel btn click
+    modalScope.cancel = function() {
+        confirmModal.hide();
+    };
+
+    var confirmModal = $modal({
+        container: "[data-ng-app='Pundit2']",
+        template: 'src/Core/confirm.modal.tmpl.html',
+        show: false,
+        backdrop: 'static',
+        scope: modalScope
+    });
+
+    // open modal
+    var openConfirmModal = function(nt){
+        // promise is needed to open modal when template is ready
+        modalScope.notifyMessage = "Are you sure you want to delete this notebook? will also remove all the annotation contained in it.";
+        modalScope.notebook = nt;
+        confirmModal.$promise.then(confirmModal.show);
+    };
 
     return myNotebooksContainer;
 
