@@ -26,13 +26,7 @@ angular.module('Pundit2.Communication')
         }
 
         NotebookExchange.addNotebook(this, isMyNotebook);
-
     }
-
-    // TODO this is a workaround to fix property
-    Notebook.prototype.isProperty = function() {
-        return false;
-    };
 
     Notebook.prototype.getIcon = function() {
         return notebookComponent.options.iconDefault;
@@ -108,7 +102,7 @@ angular.module('Pundit2.Communication')
     }; // Notebook.load()
     
     var readData = function(nb, data) {
-        // For some weird reason, the first level of the object is
+        // For some weird reason, the first level of the object
         // is the notebook's URI
         for (var nbUri in data) {
             nb.uri = nbUri;
@@ -116,6 +110,11 @@ angular.module('Pundit2.Communication')
         
         var ns = NameSpace.notebook,
             nbData = data[nb.uri];
+
+        if (typeof(nbData) === 'undefined') {
+            notebookComponent.err('Malformed notebook uri='+nb.uri+', wrong metadata: ', data);
+            return false;
+        }
 
         // Treat properties as single values inside an array, read them
         // one by one by using the correct URI taken from the NameSpace,
@@ -155,10 +154,6 @@ angular.module('Pundit2.Communication')
         var nb = new Notebook(id, isMyNotebook);
         return nb._q.promise;
     }
-
-    NotebookFactory.prototype.getMe = function() {
-        console.log('something');
-    };
 
     notebookComponent.log('Component up and running');
 

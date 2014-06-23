@@ -181,10 +181,6 @@ angular.module('Pundit2.Communication')
             return promise.promise;
         };
 
-        notebookCommunication.setActive = function() {
-            // TODO
-        };
-
         notebookCommunication.createNotebook = function(name) {
             var promise = $q.defer();
             notebookCommunication.log('Creating a new notebook');
