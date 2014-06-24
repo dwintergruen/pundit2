@@ -260,8 +260,8 @@ angular.module('Pundit2.Client')
     })
 
     .service('Client', function(CLIENTDEFAULTS, BaseComponent, Config, MyPundit,
-                                ImageFragmentAnnotator, TextFragmentAnnotator, Consolidation,
-                                AnnotationsExchange, Item, ItemsExchange, Annotation, MyItems,
+                                ImageFragmentAnnotator, TextFragmentAnnotator, AnnotationsCommunication,
+                                AnnotationsExchange, Item, ItemsExchange, MyItems,
                                 TextFragmentHandler, Toolbar, Annomatic, NotebookCommunication, NotebookExchange,
                                 SelectorsManager, FreebaseSelector, MurucaSelector, KorboBasketSelector,
                                 $injector, $templateCache, $rootScope) {
@@ -348,53 +348,7 @@ angular.module('Pundit2.Client')
         }; // addComponents()
 
         // Retrieves the annotations for this page and consolidates them
-        var getAnnotations = function() {
-
-            Toolbar.setLoading(true);
-
-            var uris = Consolidation.getAvailableTargets(),
-                annPromise = AnnotationsExchange.searchByUri(uris);
-
-            client.log('Getting annotations for available targets', uris);
-
-            annPromise.then(function(ids) {
-                client.log('Found '+ids.length+' annotations on the current page.');
-
-                if (ids.length === 0) {
-                    Toolbar.setLoading(false);
-                    return;
-                }
-
-                var annPromises = [],
-                    settled = 0;
-                for (var i=0; i<ids.length; i++) {
-
-                    var a = new Annotation(ids[i]);
-                    a.then(function(){
-                        // The annotation got loaded, it is already available
-                        // in the AnnotationsExchange
-                    }, function(error) {
-                        client.log("Could not retrieve annotation: "+ error);
-                        // TODO: can we try again? Let the user try again with an error on
-                        // the toolbar?
-                    }).finally().then(function() {
-                        settled++;
-                        client.log('Received annotation '+settled+'/'+annPromises.length);
-                        if (settled === annPromises.length) {
-                            client.log('All promises settled, consolidating');
-
-                            Consolidation.consolidateAll();
-                            Toolbar.setLoading(false);
-                        }
-                    });
-                    annPromises.push(a);
-                }
-
-            }, function(msg) {
-                client.err("Could not search for annotations, error from the server: "+msg);
-            });
-
-        }; // client.getAnnotations()
+        //var getAnnotations 
 
         // Loads the basic relations into some special ItemsExchange container
         var loadBasicRelations = function() {
@@ -431,7 +385,7 @@ angular.module('Pundit2.Client')
 
                 // Now that we know if we're logged in or not, we can download the right
                 // annotations: auth or non-auth form the server
-                getAnnotations();
+                AnnotationsCommunication.getAnnotations();
 
                 $rootScope.$watch(function() {
                     return MyPundit.isUserLogged();
@@ -484,7 +438,7 @@ angular.module('Pundit2.Client')
             });
 
             // There could be private annotations we want to show, get them again
-            getAnnotations();
+            AnnotationsCommunication.getAnnotations();
 
             MyItems.getAllItems();
             loadBasicRelations();
@@ -498,7 +452,7 @@ angular.module('Pundit2.Client')
             AnnotationsExchange.wipe();
 
             // There might have been private annotations we dont want to show anymore
-            getAnnotations();
+            AnnotationsCommunication.getAnnotations();
             loadBasicRelations();
         };
 
