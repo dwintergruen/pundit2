@@ -19,7 +19,7 @@ describe('Notebook Communication service', function() {
 
     }));
 
-    iit("", function() {
+    iit("should set a ", function() {
         expect(true).toBe(true);
     });
 

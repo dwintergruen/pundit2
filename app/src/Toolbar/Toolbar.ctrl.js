@@ -49,13 +49,14 @@ angular.module('Pundit2.Toolbar')
     }, true);
     
     $scope.userData = {};
-    $scope.userNotebooksDropdown = [];
+    $scope.userNotebooksDropdown = [{text: 'Please select notebook you want to use', header: true }];
 
     $scope.showMyNotebooks = function(){
         var notebooks = myNotebooks;
-
+        var j = 1;
         for (var i = 0; i<notebooks.length; i++){
-            $scope.userNotebooksDropdown[i] = {text: notebooks[i].label,
+            $scope.userNotebooksDropdown[j] = {
+                                                text: notebooks[i].label,
                                                 currentNotebook: notebooks[i].id === currentNotebook.id,
                                                 visibility: notebooks[i].visibility,
                                                 click: function(_i){
@@ -65,6 +66,7 @@ angular.module('Pundit2.Toolbar')
                                                 }(i)
 
                             }
+            j++;
         }
     };
 
