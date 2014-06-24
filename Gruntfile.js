@@ -93,6 +93,11 @@ module.exports = function(grunt) {
                 files: [{
                     src: ['<%= conf.build %>/docs/*']
                 }]
+            },
+            prod:{
+                files: [{
+                    src: ['<%= conf.build %>/prod/*']
+                }]
             }
         },
 
@@ -240,6 +245,35 @@ module.exports = function(grunt) {
                     dest: '<%= conf.build %>/css/img',
                     src: 'generated/*'
                 }]
+            },
+            prod: {
+                files: [
+                    {
+                        src: '<%= conf.build %>/css/*.pundit.css',
+                        dest: '<%= conf.build %>/prod/pundit2.css'
+
+                    },
+                    {
+                        src: '<%= conf.build %>/scripts/*.pundit2.js',
+                        dest: '<%= conf.build %>/prod/pundit2.js'
+                    },
+                    {
+                        src: '<%= conf.build %>/scripts/*.libs.js',
+                        dest: '<%= conf.build %>/prod/libs.js'
+                    },
+                    {
+                        expand: true,
+                        cwd: '<%= conf.build %>/css/',
+                        dest: '<%= conf.build %>/prod/',
+                        src: 'fonts/*'
+                    },
+                    {
+                        expand: true,
+                        cwd: '<%= conf.build %>/css/',
+                        dest: '<%= conf.build %>/prod/',
+                        src: 'img/*'
+                    }
+                ]
             },
             bookmarklet: {
                 files: [
@@ -575,5 +609,8 @@ module.exports = function(grunt) {
 
     grunt.registerTask('default',
         ['clean']);
+
+    grunt.registerTask('prod', 'Copy files ready to be included in the HTML page',
+        ['clean:prod', 'copy:prod']);
 
 };
