@@ -1,4 +1,4 @@
-ddescribe("Client interaction", function() {
+describe("Client interaction", function() {
 
     var httpMock = function() {
         angular.module('httpBackendMock', ['ngMockE2E'])
