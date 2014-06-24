@@ -137,13 +137,11 @@ angular.module('Pundit2.AnnotationSidebar')
         var graph = annotation.graph;
         var results = [];
         var currentItem;
-        var currentId;
 
         for (var subject in graph){
             currentItem = ItemsExchange.getItemByUri(subject);
             if (Consolidation.isConsolidated(currentItem)){
-                currentId = TextFragmentAnnotator.getFragmentIdByUri(subject);
-                results.push(TextFragmentAnnotator.getFragmentIconScopeById(currentId).fragment);
+                results.push(TextFragmentAnnotator.getFragmentIdByUri(subject));
             }
 
             for (var predicate in graph[subject]){
@@ -156,8 +154,7 @@ angular.module('Pundit2.AnnotationSidebar')
                     if (objectType === 'uri'){
                         currentItem = ItemsExchange.getItemByUri(objectValue);
                         if (Consolidation.isConsolidated(currentItem)){
-                            currentId = TextFragmentAnnotator.getFragmentIdByUri(objectValue);
-                            results.push(TextFragmentAnnotator.getFragmentIconScopeById(currentId).fragment);
+                            results.push(TextFragmentAnnotator.getFragmentIdByUri(objectValue));
                         }
                     }
 

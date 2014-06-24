@@ -294,6 +294,7 @@ angular.module('Pundit2.AnnotationSidebar')
     };
 
     annotationSidebar.filtersCount = {};
+    annotationSidebar.annotationPosition = {};
 
     // Expands or collapses the sidebar
     annotationSidebar.toggle = function(){
@@ -381,6 +382,37 @@ angular.module('Pundit2.AnnotationSidebar')
                     }
                 });
             });
+        });
+    };
+
+    var setAnnotationPosition = function(annotations) {
+        angular.forEach(annotations, function(annotation) {
+            var graph = annotation.graph;
+            var firstSubjectUri;
+            var currentItem;
+            var currentId;
+
+            var currentFragment;
+            
+            for (firstSubjectUri in graph){
+                break;
+            }
+
+            currentItem = ItemsExchange.getItemByUri(firstSubjectUri);
+
+            if (Consolidation.isConsolidated(currentItem)){
+                currentFragment = TextFragmentAnnotator.getFragmentIdByUri(firstSubjectUri);
+            } else{
+                currentFragment = undefined;
+            }
+
+            if (typeof(currentFragment) !== 'undefined' && !annotation.isBroken()){
+                var top = angular.element('.'+currentFragment).offset().top;
+                annotationSidebar.annotationPosition[annotation.id] = top+"px";
+            } else{
+                annotationSidebar.annotationPosition[annotation.id] = "60px";
+            }
+
         });
     };
 
@@ -624,6 +656,7 @@ angular.module('Pundit2.AnnotationSidebar')
         var annotations = AnnotationsExchange.getAnnotations();
         state.allAnnotations = angular.copy(annotations);
         setFilterElements(state.allAnnotations);
+        setAnnotationPosition(state.allAnnotations);
     });
 
 

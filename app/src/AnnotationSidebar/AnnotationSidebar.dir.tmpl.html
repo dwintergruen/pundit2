@@ -263,7 +263,8 @@
             </div>
 
             <div ng-repeat="ann in filtered = (annotations)">
-                <annotation-details id="{{ann.id}}"></annotation-details>
+                <!-- <annotation-details id="{{ann.id}}"></annotation-details> -->
+                <annotation-details id="{{ann.id}}" style="position: absolute; top: {{annotationSidebar.annotationPosition[ann.id]}}"></annotation-details>
             </div>  
         </div>
     </div>
