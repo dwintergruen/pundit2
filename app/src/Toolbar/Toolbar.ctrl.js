@@ -57,6 +57,7 @@ angular.module('Pundit2.Toolbar')
         for (var i = 0; i<notebooks.length; i++){
             $scope.userNotebooksDropdown[i] = {text: notebooks[i].label,
                                                 currentNotebook: notebooks[i].id === currentNotebook.id,
+                                                visibility: notebooks[i].visibility,
                                                 click: function(_i){
                                                     return function(){
                                                         NotebookExchange.setCurrentNotebooks(notebooks[_i].id);
