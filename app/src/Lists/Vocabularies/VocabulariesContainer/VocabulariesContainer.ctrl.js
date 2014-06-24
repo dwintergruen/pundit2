@@ -1,10 +1,12 @@
 angular.module('Pundit2.Vocabularies')
-.controller('VocabulariesContainerCtrl', function($scope, $timeout, $injector, BaseComponent,
+.controller('VocabulariesContainerCtrl', function($scope, $timeout, $injector, $element, BaseComponent,
                                                     SelectorsManager, ItemsExchange, TypesHelper) {
 
     // SelectorsManager is initialized inside client.boot()
 
     $scope.dropdownTemplate = "src/ContextualMenu/dropdown.tmpl.html";
+
+    var orderBtn = angular.element($element).find('.vocab-items-btn-order');
 
     $scope.message = {
         flag: true,
@@ -121,8 +123,10 @@ angular.module('Pundit2.Vocabularies')
         $scope.displayedItems = newItems;
         if ($scope.displayedItems.length === 0) {
             $scope.message.flag = true;
+            orderBtn.addClass('disabled');
         } else {
             $scope.message.flag = false;
+            orderBtn.removeClass('disabled');
         }
     }, true);
 
