@@ -2,7 +2,7 @@
 
 angular.module('Pundit2.AnnotationSidebar')
 .controller('AnnotationDetailsCtrl', function($scope, AnnotationSidebar, AnnotationDetails, 
-        AnnotationsExchange, Notebook, ItemsExchange, Toolbar, TypesHelper) {
+        AnnotationsExchange, Notebook, ItemsExchange, TextFragmentAnnotator, Toolbar, TypesHelper) {
 
     var currentId = $scope.id;
     AnnotationDetails.addAnnotationReference($scope);
@@ -37,6 +37,18 @@ angular.module('Pundit2.AnnotationSidebar')
 
     $scope.isUserToolShowed = function() {
         return AnnotationDetails.isUserToolShowed($scope.annotation.creator);
+    };
+
+    $scope.mouseoverHandler = function(fragment) {
+        if(typeof(fragment) !== 'undefined'){
+            TextFragmentAnnotator.highlightById(fragment);
+        }
+    };
+
+    $scope.mouseoutHandler = function(fragment) {
+        if(typeof(fragment) !== 'undefined'){
+            TextFragmentAnnotator.clearHighlightById(fragment);
+        }
     };
 
     AnnotationDetails.log('Controller Details Run');

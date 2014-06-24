@@ -132,7 +132,7 @@ angular.module('Pundit2.AnnotationSidebar')
         return results;
     };
 
-    var getHeigth = function(currentAnnotation) {
+    var getFragment = function(currentAnnotation) {
 
         var annotation = currentAnnotation;
         var graph = annotation.graph;
@@ -147,7 +147,9 @@ angular.module('Pundit2.AnnotationSidebar')
 
         if (Consolidation.isConsolidated(currentItem)){
             var id= TextFragmentAnnotator.getFragmentIdByUri(firstSubjectUri);
-            annotationDetails.log("icona",TextFragmentAnnotator.getFragmentIconById(id));
+            return TextFragmentAnnotator.getFragmentIconScopeById(id).fragment;
+        } else{
+            return undefined;
         }
 
     };
@@ -155,8 +157,6 @@ angular.module('Pundit2.AnnotationSidebar')
     annotationDetails.addAnnotationReference = function(scope) {
         var currentId = scope.id;
         var currentAnnotation = AnnotationsExchange.getAnnotationById(currentId);
-
-        getHeigth(currentAnnotation);
 
         state.annotations[currentId] = {
             id: currentId,
@@ -168,7 +168,8 @@ angular.module('Pundit2.AnnotationSidebar')
             mainItem: buildMainItem(currentAnnotation),
             itemsArray: buildItemsArray(currentAnnotation),
             broken: currentAnnotation.isBroken(),
-            expanded: state.defaultExpanded
+            expanded: state.defaultExpanded,
+            fragment: getFragment(currentAnnotation)
         };
     };
 

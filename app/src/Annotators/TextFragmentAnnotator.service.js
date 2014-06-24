@@ -378,9 +378,15 @@ angular.module('Pundit2.Annotators')
         }
     };
 
-    tfa.getFragmentIconById = function(id) {
+    tfa.getFragmentIconScopeById = function(id) {
         if (typeof(fragmentById[id]) !== "undefined") {
             return fragmentById[id].icon;
+        }
+    };
+
+    tfa.getBitsById = function(id) {
+        if (typeof(fragmentById[id]) !== "undefined") {
+            return fragmentById[id].bits;
         }
     };
 
