@@ -39,15 +39,21 @@ angular.module('Pundit2.AnnotationSidebar')
         return AnnotationDetails.isUserToolShowed($scope.annotation.creator);
     };
 
-    $scope.mouseoverHandler = function(fragment) {
-        if(typeof(fragment) !== 'undefined'){
-            TextFragmentAnnotator.highlightById(fragment);
+    $scope.mouseoverHandler = function() {
+        var fragments = $scope.annotation.fragments;
+        if(fragments.length > 0){
+            for (var fragment in fragments){
+                TextFragmentAnnotator.highlightById(fragments[fragment]);
+            }
         }
     };
 
-    $scope.mouseoutHandler = function(fragment) {
-        if(typeof(fragment) !== 'undefined'){
-            TextFragmentAnnotator.clearHighlightById(fragment);
+    $scope.mouseoutHandler = function() {
+        var fragments = $scope.annotation.fragments;
+        if(fragments.length > 0){
+            for (var fragment in fragments){
+                TextFragmentAnnotator.clearHighlightById(fragments[fragment]);
+            }
         }
     };
 

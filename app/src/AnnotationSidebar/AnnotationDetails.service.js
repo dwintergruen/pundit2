@@ -132,26 +132,39 @@ angular.module('Pundit2.AnnotationSidebar')
         return results;
     };
 
-    var getFragment = function(currentAnnotation) {
-
+    var getFragments = function(currentAnnotation) {
         var annotation = currentAnnotation;
         var graph = annotation.graph;
-        var firstSubjectUri;
+        var results = [];
         var currentItem;
-        
-        for (firstSubjectUri in graph){
-            break;
+        var currentId;
+
+        for (var subject in graph){
+            currentItem = ItemsExchange.getItemByUri(subject);
+            if (Consolidation.isConsolidated(currentItem)){
+                currentId = TextFragmentAnnotator.getFragmentIdByUri(subject);
+                results.push(TextFragmentAnnotator.getFragmentIconScopeById(currentId).fragment);
+            }
+
+            for (var predicate in graph[subject]){
+
+                var objectList = graph[subject][predicate];
+                for (var object in objectList){
+                    objectValue = objectList[object].value;
+                    objectType = objectList[object].type;
+
+                    if (objectType === 'uri'){
+                        currentItem = ItemsExchange.getItemByUri(objectValue);
+                        if (Consolidation.isConsolidated(currentItem)){
+                            currentId = TextFragmentAnnotator.getFragmentIdByUri(objectValue);
+                            results.push(TextFragmentAnnotator.getFragmentIconScopeById(currentId).fragment);
+                        }
+                    }
+
+                }
+            }
         }
-
-        currentItem = ItemsExchange.getItemByUri(firstSubjectUri);
-
-        if (Consolidation.isConsolidated(currentItem)){
-            var id= TextFragmentAnnotator.getFragmentIdByUri(firstSubjectUri);
-            return TextFragmentAnnotator.getFragmentIconScopeById(id).fragment;
-        } else{
-            return undefined;
-        }
-
+        return results;
     };
 
     annotationDetails.addAnnotationReference = function(scope) {
@@ -169,7 +182,7 @@ angular.module('Pundit2.AnnotationSidebar')
             itemsArray: buildItemsArray(currentAnnotation),
             broken: currentAnnotation.isBroken(),
             expanded: state.defaultExpanded,
-            fragment: getFragment(currentAnnotation)
+            fragments: getFragments(currentAnnotation)
         };
     };
 
