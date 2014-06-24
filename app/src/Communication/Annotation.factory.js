@@ -73,35 +73,35 @@ angular.module('Pundit2.Communication')
         var graph = this.graph;
         var currentItem;
         var list;
-        var broken = true;
+        var broken = false;
+
+        // TODO: add support for web pages and external text/image fragment
 
         for (var subject in graph){
             currentItem = ItemsExchange.getItemByUri(subject);
-
-            if (Consolidation.isConsolidated(currentItem)){
-                broken = false;
-            } else{
-                annotationComponent.log("notConsolidate subject-> ",currentItem);
+            if (currentItem.isTextFragment() || currentItem.isImageFragment()){
+                if (!Consolidation.isConsolidated(currentItem)){
+                    broken = true;
+                }
             }
 
-            // TODO: per le annotazioni rotte si fa riferimento sia ai subjects che agli objects?
+            for (var predicate in graph[subject]){
 
-            // for (var predicate in graph[subject]){
+                list = graph[subject][predicate];
+                for (var object in list){
+                    objectValue = list[object].value;
+                    objectType = list[object].type;
 
-            //     list = graph[subject][predicate];
-            //     for (var object in list){
-            //         objectValue = list[object].value;
-            //         objectType = list[object].type;
-
-            //         if (objectType === 'uri'){
-            //             currentItem = ItemsExchange.getItemByUri(objectValue);
-            //             if (!Consolidation.isConsolidated(currentItem)){
-            //                 broken = true;
-            //                 annotationComponent.log("notConsolidate object-> ",currentItem);
-            //             }
-            //         } 
-            //     }
-            // }
+                    if (objectType === 'uri'){
+                        currentItem = ItemsExchange.getItemByUri(objectValue);
+                        if (currentItem.isTextFragment() || currentItem.isImageFragment()){
+                            if (!Consolidation.isConsolidated(currentItem)){
+                                broken = true;
+                            }
+                        }
+                    } 
+                }
+            }
         }
         return broken;
     };
