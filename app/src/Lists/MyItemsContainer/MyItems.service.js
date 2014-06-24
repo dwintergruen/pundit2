@@ -186,7 +186,8 @@ angular.module("Pundit2.MyItemsContainer")
     };
 
     myItems.deleteAllItems = function(){
-        var currentTime = new Date();
+        var currentTime = new Date(),
+        promise = $q.defer();
 
         // remove all my item on pundit server
         // setting it to []
@@ -205,12 +206,16 @@ angular.module("Pundit2.MyItemsContainer")
             // remove all my items on application
             // controller watch now update the view
             ItemsExchange.wipeContainer(myItems.options.container);
+            promise.resolve();
             Consolidation.consolidateAll();
             
             myItems.log('Deleted all my items on server', data);
         }).error(function(msg) {
             myItems.err('Cant delete my items on server: ', msg);
+            promise.reject();
         });
+
+        return promise.promise;
     };
 
     myItems.deleteItem = function(value){

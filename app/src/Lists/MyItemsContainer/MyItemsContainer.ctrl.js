@@ -1,5 +1,6 @@
 angular.module('Pundit2.MyItemsContainer')
-.controller('MyItemsContainerCtrl', function($scope, MyItemsContainer, ItemsExchange, MyItems, MyPundit, Preview, TypesHelper) {
+.controller('MyItemsContainerCtrl', function($scope, $rootScope, $modal, $timeout, $element,
+    MyItemsContainer, ItemsExchange, MyItems, MyPundit, Preview, TypesHelper) {
 
     // read by <item> directive (in Lists/itemList.tmpl.html)
     // specifie how contextual menu type show on item
@@ -7,6 +8,9 @@ angular.module('Pundit2.MyItemsContainer')
 
     // This is the centralized template to dropdown
     $scope.dropdownTemplate = "src/ContextualMenu/dropdown.tmpl.html";
+
+    var deleteBtn = angular.element($element).find('.my-items-btn-delete'),
+        orderBtn = angular.element($element).find('.my-items-btn-order');
 
     // showed when the items list is empty
     $scope.message = {
@@ -113,9 +117,7 @@ angular.module('Pundit2.MyItemsContainer')
 
     // delete all my Items
     $scope.onClickDeleteAllMyItems = function(){
-        if (MyPundit.isUserLogged()) {
-            MyItems.deleteAllItems();
-        }
+        openConfirmModal();
     };
 
     // every time that change active tab show new items array
@@ -202,9 +204,53 @@ angular.module('Pundit2.MyItemsContainer')
         // show empty lists messagge
         if (len === 0){
             $scope.message.flag = true;
+            deleteBtn.addClass('disabled');
+            orderBtn.addClass('disabled');
         } else {
             $scope.message.flag = false;
+            deleteBtn.removeClass('disabled');
+            orderBtn.removeClass('disabled');
         }
+
     });
+
+    // confirm modal
+    var modalScope = $rootScope.$new();
+
+    modalScope.titleMessage = "Delete All My Items"
+
+    // confirm btn click
+    modalScope.confirm = function() {
+        if (MyPundit.isUserLogged()) {
+            MyItems.deleteAllItems().then(function(){
+                modalScope.notifyMessage = "Success, my items correctly deleted.";
+            }, function(){
+                modalScope.notifyMessage = "Error impossible to delete my items, please retry.";
+            });
+        }
+        $timeout(function(){
+            confirmModal.hide();
+        }, 1000);
+    };
+
+    // cancel btn click
+    modalScope.cancel = function() {
+        confirmModal.hide();
+    };
+
+    var confirmModal = $modal({
+        container: "[data-ng-app='Pundit2']",
+        template: 'src/Core/confirm.modal.tmpl.html',
+        show: false,
+        backdrop: 'static',
+        scope: modalScope
+    });
+
+    // open modal
+    var openConfirmModal = function(){
+        // promise is needed to open modal when template is ready
+        modalScope.notifyMessage = "Are you sure you want to delete all my items? After you can no longer recover.";
+        confirmModal.$promise.then(confirmModal.show);
+    };
 
 });
