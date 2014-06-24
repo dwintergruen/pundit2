@@ -205,6 +205,7 @@ angular.module("Pundit2.MyItemsContainer")
             // remove all my items on application
             // controller watch now update the view
             ItemsExchange.wipeContainer(myItems.options.container);
+            Consolidation.consolidateAll();
             
             myItems.log('Deleted all my items on server', data);
         }).error(function(msg) {
