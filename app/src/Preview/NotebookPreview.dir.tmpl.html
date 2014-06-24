@@ -1,17 +1,18 @@
-
-<div class="pnd-preview-notebook-visibility">
-    <span>Visibility: </span> <span>{{notebook.visibility}}</span>
-</div>
-<div class="pnd-preview-notebook-annotations">
-    <span># Annotations: </span> <span>{{notebook.includes.length}}</span>
-</div>
-<div class="pnd-preview-notebook-creator">
-    <span>Creator: </span> <span>{{notebook.creatorName}}</span>
-</div>
-
-<div class="pnd-preview-notebook-date">
-    <span>Creation date: </span> <span>{{notebook.created}}</span>
-</div>
-<div class="pnd-preview-notebook-current" ng-show="isCurrent">
-    <p>current notebook</p>
+<div class="pnd-dashboard-welcome">
+	<div class="pnd-preview-notebook-visibility">
+	    <span><strong>Visibility:</strong> </span> <span>{{notebook.visibility}}</span>
+	</div>
+	<div class="pnd-preview-notebook-annotations">
+	    <span><strong>Annotations:</strong>  </span> <span>{{notebook.includes.length}}</span>
+	</div>
+	<div class="pnd-preview-notebook-creator">
+	    <span><strong>Creator:</strong>  </span> <span>{{notebook.creatorName}}</span>
+	</div>
+	
+	<div class="pnd-preview-notebook-date">
+	    <span><strong>Creation date:</strong>  </span> <span>{{notebook.created}}</span>
+	</div>
+	<div class="pnd-preview-notebook-current" ng-show="isCurrent">
+	    <p>current notebook</p>
+	</div>
 </div>
