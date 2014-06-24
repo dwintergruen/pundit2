@@ -17,8 +17,8 @@ angular.module('Pundit2.MyNotebooksContainer')
     
 })
 .service('MyNotebooksContainer', function($rootScope, MYNOTEBOOKSCONTAINERDEFAULTS, BaseComponent,
-    NotebookExchange, ItemsExchange, AnnotationsExchange, NotebookCommunication, Consolidation,
-    ContextualMenu, Toolbar, Dashboard, NotebookComposer,
+    NotebookExchange, ItemsExchange, PageItemsContainer, AnnotationsExchange, NotebookCommunication, Consolidation,
+    ContextualMenu, Toolbar, Dashboard, NotebookComposer, AnnotationsCommunication,
     $modal, $timeout) {
 
     var myNotebooksContainer = new BaseComponent('MyNotebooksContainer', MYNOTEBOOKSCONTAINERDEFAULTS);
@@ -129,21 +129,27 @@ angular.module('Pundit2.MyNotebooksContainer')
     // confirm btn click
     modalScope.confirm = function() {
         
-        Toolbar.setLoading(true);
+        //Toolbar.setLoading(true);
         // remove notebook and all annotation contained in it
         NotebookCommunication.deleteNotebook(modalScope.notebook.id).then(function(){
             // success
             modalScope.notifyMessage = "Notebook "+modalScope.notebook.label+" correctly deleted.";
+            // remove annotations that belong to the notebook deleted
             AnnotationsExchange.removeAnnotationByNotebookId(modalScope.notebook.id);
-            Consolidation.consolidateAll();
-            Toolbar.setLoading(false);
+            // wipe page items
+            ItemsExchange.wipeContainer(PageItemsContainer.options.container);
+            // update page items by update all annotations info
+            // item can belong to more than one annotation or to my items
+            // this function use cache to skip real http calls
+            // all the informations is cache at initialization time
+            AnnotationsCommunication.getAnnotations();
+
             $timeout(function(){
                 confirmModal.hide();
-            }, 3000);
+            }, 1000);
         }, function(){
             // error
             modalScope.notifyMessage = "Error impossible to delete this notebook, please retry.";
-            Toolbar.setLoading(false);
             $timeout(function(){
                 confirmModal.hide();
             }, 1000);
