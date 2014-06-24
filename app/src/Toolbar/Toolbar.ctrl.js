@@ -1,7 +1,8 @@
 angular.module('Pundit2.Toolbar')
 .controller('ToolbarCtrl', function($scope, Toolbar, MyPundit, Dashboard, AnnotationSidebar, ResourcePanel, ItemsExchange, MyNotebooksContainer, NotebookExchange) {
 
-    $scope.dropdownTemplate = "src/Toolbar/myNotebooksDropdown.tmpl.html";
+    $scope.dropdownTemplate = "src/ContextualMenu/dropdown.tmpl.html";
+    $scope.dropdownTemplateMyNotebook = "src/Toolbar/myNotebooksDropdown.tmpl.html";
     
     var login = function() {
         ResourcePanel.hide();
