@@ -1,11 +1,14 @@
 angular.module('Pundit2.PageItemsContainer')
-.controller('PageItemsContainerCtrl', function($scope, PageItemsContainer, ItemsExchange, Preview, TypesHelper) {
+.controller('PageItemsContainerCtrl', function($scope, $element,
+    PageItemsContainer, ItemsExchange, Preview, TypesHelper) {
 
     $scope.dropdownTemplate = "src/ContextualMenu/dropdown.tmpl.html";
 
     // read by <item> directive (in PageItemsContainer/items.tmpl.html)
     // will trigger this contextual menu type clicking on the contextual item icon
     $scope.itemMenuType = PageItemsContainer.options.cMenuType;
+
+    var orderBtn = angular.element($element).find('.page-items-btn-order');
 
     $scope.message = {
         flag: true,
@@ -186,8 +189,10 @@ angular.module('Pundit2.PageItemsContainer')
         // show empty lists messagge
         if (len === 0){
             $scope.message.flag = true;
+            orderBtn.addClass('disabled');
         } else {
             $scope.message.flag = false;
+            orderBtn.removeClass('disabled');
         }
     });
 
