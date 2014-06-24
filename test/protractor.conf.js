@@ -1,7 +1,7 @@
 exports.config = {
 
     // To launch the tests on your dev machine:
-    seleniumServerJar: '../node_modules/protractor/selenium/selenium-server-standalone-2.41.0.jar',
+    seleniumServerJar: '../node_modules/protractor/selenium/selenium-server-standalone-2.42.0.jar',
     seleniumPort: null,
     chromeDriver: '../node_modules/protractor/selenium/chromedriver',
     seleniumArgs: [],
