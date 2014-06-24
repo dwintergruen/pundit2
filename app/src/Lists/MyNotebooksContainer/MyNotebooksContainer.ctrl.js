@@ -1,5 +1,5 @@
 angular.module('Pundit2.MyNotebooksContainer')
-.controller('MyNotebooksContainerCtrl', function($scope, MyNotebooksContainer, NotebookExchange) {
+.controller('MyNotebooksContainerCtrl', function($scope, $element, MyNotebooksContainer, NotebookExchange) {
 
     var inputIconSearch = 'pnd-icon-search',
         inputIconClear = 'pnd-icon-times';
@@ -8,6 +8,8 @@ angular.module('Pundit2.MyNotebooksContainer')
     $scope.displayedNotebook = allNotebook;
 
     $scope.dropdownTemplate = "src/ContextualMenu/dropdown.tmpl.html";
+
+    var orderBtn = angular.element($element).find('.my-notebooks-btn-order');
 
     // read by <notebook> directive
     // will trigger this contextual menu type clicking on the contextual notebook icon
@@ -110,8 +112,10 @@ angular.module('Pundit2.MyNotebooksContainer')
         // show empty lists messagge
         if (len === 0){
             $scope.message.flag = true;
+            orderBtn.addClass('disabled');
         } else {
             $scope.message.flag = false;
+            orderBtn.removeClass('disabled');
         }
     });
 
