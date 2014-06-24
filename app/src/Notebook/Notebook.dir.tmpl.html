@@ -6,10 +6,11 @@
     </div>
 
     <div class="pnd-item-text">
-            <span class="pnd-item-typeLabel">{{notebook.visibility}}</span>
-        <span ng-if="notebook.isCurrent()" class="pnd-icon pnd-icon-pencil-square"></span>    
+        <span class="pnd-item-typeLabel">{{notebook.visibility}}</span>
+        <span ng-if="notebook.isCurrent()" class="pnd-icon pnd-icon-pencil-square"></span>
+        <span ng-if="notebook.isCurrent()" class="pnd-icon pnd-icon-lock"></span>
+        <span ng-if="notebook.isCurrent()" class="pnd-icon pnd-icon-group"></span>    
         <span class="pnd-item-label">{{notebook.label}}</span>
-
     </div>
 
 </div>
