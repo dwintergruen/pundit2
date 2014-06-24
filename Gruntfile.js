@@ -93,11 +93,6 @@ module.exports = function(grunt) {
                 files: [{
                     src: ['<%= conf.build %>/docs/*']
                 }]
-            },
-            prod:{
-                files: [{
-                    src: ['<%= conf.build %>/prod/*']
-                }]
             }
         },
 
@@ -250,27 +245,27 @@ module.exports = function(grunt) {
                 files: [
                     {
                         src: '<%= conf.build %>/css/*.pundit.css',
-                        dest: '<%= conf.build %>/prod/pundit2.css'
+                        dest: '<%= customDir %>/pundit2.css'
 
                     },
                     {
                         src: '<%= conf.build %>/scripts/*.pundit2.js',
-                        dest: '<%= conf.build %>/prod/pundit2.js'
+                        dest: '<%= customDir %>/pundit2.js'
                     },
                     {
                         src: '<%= conf.build %>/scripts/*.libs.js',
-                        dest: '<%= conf.build %>/prod/libs.js'
+                        dest: '<%= customDir %>/libs.js'
                     },
                     {
                         expand: true,
                         cwd: '<%= conf.build %>/css/',
-                        dest: '<%= conf.build %>/prod/',
+                        dest: '<%= customDir %>/',
                         src: 'fonts/*'
                     },
                     {
                         expand: true,
                         cwd: '<%= conf.build %>/css/',
-                        dest: '<%= conf.build %>/prod/',
+                        dest: '<%= customDir %>/',
                         src: 'img/*'
                     }
                 ]
@@ -611,6 +606,10 @@ module.exports = function(grunt) {
         ['clean']);
 
     grunt.registerTask('prod', 'Copy files ready to be included in the HTML page',
-        ['clean:prod', 'copy:prod']);
+        function(){
+            grunt.config.set('customDir', arguments[0]);
+            grunt.task.run('copy:prod');
+
+        });
 
 };
