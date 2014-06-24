@@ -12,19 +12,19 @@
     	<p>
         <input type="text" class="form-control" placeholder="Enter notebook name" ng-model="notebook.name">
     	</p>
-        <div class="checkbox">
+        <div class="checkbox" ng-class="{'pnd-nb-composer-elem-selected': notebook.current}">
         <label>
             <input type="checkbox" ng-model="notebook.current" ng-disabled="editMode && isCurrentNotebook">
             <span class="pnd-icon pnd-icon-pencil-square"></span> Set as current
         </label>
         </div>
-        <div class="radio">
+        <div class="radio" ng-class="{'pnd-nb-composer-elem-selected': notebook.visibility == 'public'}">
             <label>
                 <input type="radio" name="visibility" value="public" ng-model="notebook.visibility">
                 <span class="pnd-icon pnd-icon-group"></span> Public
             </label>
         </div>
-        <div class="radio">
+        <div class="radio" ng-class="{'pnd-nb-composer-elem-selected': notebook.visibility == 'private'}">
             <label>
                 <input type="radio" name="visibility" value="private" ng-model="notebook.visibility">
                 <span class="pnd-icon pnd-icon-lock"></span> Private
