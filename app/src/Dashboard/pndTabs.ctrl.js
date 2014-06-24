@@ -195,13 +195,18 @@ angular.module('Pundit2.Dashboard')
 
     $scope.active = $scope.activePane = 0;
 
-    $rootScope.$on('change-show-tabs', function(evt, title){
+    $rootScope.$on('pnd-dashboard-show-tab', function(evt, title){
         
         for (var i=0; i<$scope.panes.length; i++) {
             if ($scope.panes[i].title === title) {
                 if ($scope.active !== i) {
                     $scope.setActive(i);
-                }                
+                }
+                // parent scope must to be the scope of the
+                // dashboardPanel controller
+                if ($scope.$parent.isCollapsed) {
+                    $scope.$parent.toggleCollapse();
+                }             
                 return;
             }
         }

@@ -125,7 +125,7 @@ angular.module('Pundit2.Annotators')
                 if(!Dashboard.isDashboardVisible()){
                     Dashboard.toggle();
                 }
-                $rootScope.$emit('change-show-tabs', TripleComposer.options.clientDashboardTabTitle);
+                $rootScope.$emit('pnd-dashboard-show-tab', TripleComposer.options.clientDashboardTabTitle);
                 TripleComposer.addToSubject(item);
             }
         });
