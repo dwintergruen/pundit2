@@ -9,25 +9,36 @@
 
 	.pnd-icon {
 		font-size: 14px;
-		width: 20px;
+		width: 18px;
 		display: inline-block;
 		text-align: center;
+		vertical-align: text-top;
+		}
+		
+	input[type="text"] {
+		margin: 10px 0px 20px 0px;
+		width: 50%;
 		}
 		
 	input[type="radio"],
 	input[type="checkbox"] {
-	  margin: 0px;
-	  }
+		margin: 0px;
+		padding: 0px;
+		}
 	  
-	radio,
-	checkbox {
+	.radio + .radio,
+	.checkbox + .checkbox {
+		margin-top: 10px;
+		}
+		  
+	.radio,
+	.checkbox {
 	 
-	  &:hover {
-	  color: @brand-success;
-	  }
+		&:hover {
+			color: @brand-success;
+			}
 
-	 
-	  }
+	}
 			
 }
 	
