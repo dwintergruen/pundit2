@@ -264,16 +264,10 @@ angular.module('Pundit2.TripleComposer')
 
     };
 
-    // TODO to fix (used to add a subject from outside of triple composer)
+    // Used to add a subject from outside of triple composer
     tripleComposer.addToSubject = function(item) {
-        if (statements.length === 1 && statements[0].scope.get().subject === null) {
-            statements[0].scope.get().subject = item;
-
-            statements[0].scope.subjectLabel = item.label;
-            statements[0].scope.subjectTypeLabel = TypesHelper.getLabel(item.type[0]);
-            statements[0].scope.subjectFound = true;
-        } else {
-            // add blank statement then insert subject
+        if (statements.length === 1) {
+            statements[0].scope.setSubject(item);
         }
     };
 

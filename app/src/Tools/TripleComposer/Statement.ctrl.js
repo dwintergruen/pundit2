@@ -224,7 +224,7 @@ angular.module('Pundit2.TripleComposer')
         }
     });
 
-    var setSubject = function(item){
+    $scope.setSubject = function(item){
         $scope.subjectLabel = item.label;
         $scope.subjectTypeLabel = TypesHelper.getLabel(item.type[0]);
         $scope.subjectFound = true;
@@ -232,10 +232,10 @@ angular.module('Pundit2.TripleComposer')
         $scope.tripleComposerCtrl.isAnnotationComplete();
     };
     $scope.onClickSubject = function($event){
-        ResourcePanel.showItemsForSubject(buildUrisArray(), $event.target, $scope.subjectSearch).then(setSubject);
+        ResourcePanel.showItemsForSubject(buildUrisArray(), $event.target, $scope.subjectSearch).then($scope.setSubject);
     };
     $scope.onKeyUpSubject = function($event){
-        ResourcePanel.showItemsForSubject(buildUrisArray(), $event.target, $scope.subjectSearch).then(setSubject);
+        ResourcePanel.showItemsForSubject(buildUrisArray(), $event.target, $scope.subjectSearch).then($scope.setSubject);
     };
 
     var setPredicate = function(item){
