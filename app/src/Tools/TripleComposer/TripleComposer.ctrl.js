@@ -1,5 +1,6 @@
 angular.module('Pundit2.TripleComposer')
-.controller('TripleComposerCtrl', function($scope, $http, $timeout, Toolbar, Annotation, Consolidation, TripleComposer, NameSpace, TypesHelper, XpointersHelper, MyPundit) {
+.controller('TripleComposerCtrl', function($scope, $http, $timeout, NameSpace, TypesHelper, XpointersHelper, MyPundit,
+    Toolbar, Annotation, Consolidation, TripleComposer, NotebookExchange) {
 
     // statements objects are extend by this.addStatementScope()
     // the function is called in the statement directive link function
@@ -136,6 +137,7 @@ angular.module('Pundit2.TripleComposer')
                     }                    
 
                     new Annotation(data.AnnotationID).then(function(){
+                        NotebookExchange.getCurrentNotebooks().addAnnotation(data.AnnotationID);
                         Consolidation.consolidateAll();
                     });
                 }).error(function(msg) {

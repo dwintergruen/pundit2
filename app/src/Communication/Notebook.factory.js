@@ -28,6 +28,13 @@ angular.module('Pundit2.Communication')
         NotebookExchange.addNotebook(this, isMyNotebook);
     }
 
+    Notebook.prototype.addAnnotation = function(annID) {
+        if (typeof(this.includes) === 'undefined') {
+            this.includes = [];
+        }
+        this.includes.push(annID);
+    };
+
     Notebook.prototype.getIcon = function() {
         return notebookComponent.options.iconDefault;
     };
