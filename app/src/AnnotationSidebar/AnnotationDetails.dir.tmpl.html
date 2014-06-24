@@ -61,7 +61,7 @@
                             <!-- <span class="{{item.subject.icon}}"></span> -->
                             <div class="pnd-annotation-item-header-text">
 	                            <span class="pnd-icon pnd-icon-certificate"></span>
-	                            <span ng-bind-html="item.subject.label">{{item.subject.label}}</span> ({{item.subject.typeLabel}})
+	                            <span ng-bind-html="item.subject.label">{{item.subject.label}}</span>
                             </div>
                             <button type="button" class="btn btn-link pull-right">
                                 <span ng-class="{true:'pnd-icon-caret-up', false:'pnd-icon-sort-down'}[subInfo]"></span>
@@ -108,7 +108,6 @@
                                 <div class="pnd-annotation-item-header-text">
 	                                <span class="pnd-icon pnd-icon-certificate"></span>
 	                                <span ng-bind-html="object.label">{{object.label}}</span>
-	                                 ({{object.typeLabel}})
                                 </div>
                                 <button type="button" class="btn  btn-link pull-right" ng-if="object.typeClass=='uri'">
                                         <span ng-class="{true:'pnd-icon-caret-up', false:'pnd-icon-sort-down'}[objInfo]"></span>
