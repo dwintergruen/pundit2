@@ -60,7 +60,7 @@ angular.module('Pundit2.ResourcePanel')
  */
 .service('ResourcePanel', function(BaseComponent, RESOURCEPANELDEFAULTS,
                                    ItemsExchange, MyItems, PageItemsContainer, Client, NameSpace, SelectorsManager,
-                                   $filter, $rootScope, $popover, $q, $timeout, $datepicker) {
+                                   $filter, $rootScope, $popover, $q, $timeout, Preview) {
 
     var resourcePanel = new BaseComponent('ResourcePanel', RESOURCEPANELDEFAULTS);
     var state = {};
@@ -120,11 +120,13 @@ angular.module('Pundit2.ResourcePanel')
             state.popoverOptions.scope.save = function() {
 
                 state.resourcePromise.resolve(new Date(this.selectedDate));
+                Preview.hideDashboardPreview();
                 resourcePanel.hide();
             };
 
             // close popoverLiteral popover without saving
             state.popoverOptions.scope.cancel = function() {
+                Preview.hideDashboardPreview();
                 resourcePanel.hide();
             };
 
@@ -142,11 +144,13 @@ angular.module('Pundit2.ResourcePanel')
             // handle save a new popoverLiteral
             state.popoverOptions.scope.save = function() {
                 state.resourcePromise.resolve(this.literalText);
+                Preview.hideDashboardPreview();
                 resourcePanel.hide();
             };
 
             // close popoverLiteral popover without saving
             state.popoverOptions.scope.cancel = function() {
+                Preview.hideDashboardPreview();
                 resourcePanel.hide();
             };
 
@@ -169,11 +173,13 @@ angular.module('Pundit2.ResourcePanel')
             // handle save a new popoverLiteral
             state.popoverOptions.scope.save = function(elem) {
                 resourcePanel.hide();
+                Preview.hideDashboardPreview();
                 state.resourcePromise.resolve(elem);
             };
 
             // close popoverLiteral popover without saving
             state.popoverOptions.scope.cancel = function() {
+                Preview.hideDashboardPreview();
                 resourcePanel.hide();
             };
         }
