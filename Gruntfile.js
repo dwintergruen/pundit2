@@ -267,6 +267,10 @@ module.exports = function(grunt) {
                         cwd: '<%= conf.build %>/css/',
                         dest: '<%= customDir %>/',
                         src: 'img/*'
+                    },
+                    {
+                        src: './pundit2_conf.js',
+                        dest: '<%= customDir %>/pundit2_conf.js'
                     }
                 ]
             },
@@ -607,9 +611,9 @@ module.exports = function(grunt) {
 
     grunt.registerTask('prod', 'Copy files ready to be included in the HTML page',
         function(){
+            grunt.task.run('build');
             grunt.config.set('customDir', arguments[0]);
             grunt.task.run('copy:prod');
-
         });
 
 };
