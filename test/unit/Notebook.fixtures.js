@@ -18,10 +18,10 @@ testNotebooks.simple1 = {
 };
 
 testNotebooks.myNotebook = {
-    "http://purl.org/pundit/demo-cloud-server/notebook/simple1ID": {
+    "http://purl.org/pundit/demo-cloud-server/notebook/myNbID": {
         "http://open.vocab.org/terms/visibility": [{value: "public", type: "literal"}],
         "http://purl.org/dc/elements/1.1/creator": [{value: "Simone", type: "literal"}],
-        "http://purl.org/pundit/ont/ao#id": [{value: "simple1ID", type: "literal"}],
+        "http://purl.org/pundit/ont/ao#id": [{value: "myNbID", type: "literal"}],
         "http://purl.org/pundit/ont/ao#includes": [{
             value: "http://purl.org/pundit/demo-cloud-server/annotation/testannid99",
             type: "uri"

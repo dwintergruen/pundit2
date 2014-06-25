@@ -38,7 +38,7 @@ describe('Notebook Communication service', function() {
 
         var header = {"Accept":"application/json","Content-Type":"application/json;charset=UTF-8;"};
         var data = {"NotebookName": 'myNotebook'};
-        var testId = 'simple1ID';
+        var testId = 'myNbID';
 
         // catch http request for user logged in
         $httpBackend.whenGET(NameSpace.get('asUsersCurrent')).respond(userLoggedIn);
@@ -60,9 +60,12 @@ describe('Notebook Communication service', function() {
         p.then(function(nbID) {
             expect(nbID).toBe(testId);
             var notebook = NotebookExchange.getNotebookById(nbID);
+            // new notebook should have the given label...
             expect(notebook.label).toBe(name);
             expect(notebook.id).toBe(testId);
+            // ...should be set as public...
             expect(notebook.visibility).toBe("public");
+            // ... and should not be the current notebook
             var currentNotebook = NotebookExchange.getCurrentNotebooks();
             expect(currentNotebook).toBeUndefined();
         });
