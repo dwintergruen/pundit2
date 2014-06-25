@@ -2,7 +2,7 @@
 
 angular.module('Pundit2.AnnotationSidebar')
 .controller('AnnotationDetailsCtrl', function($scope, AnnotationSidebar, AnnotationDetails, 
-        AnnotationsExchange, Notebook, ItemsExchange, TextFragmentAnnotator, Toolbar, TypesHelper) {
+        AnnotationsExchange, NotebookExchange, ItemsExchange, TextFragmentAnnotator, Toolbar, TypesHelper) {
 
     var currentId = $scope.id;
     AnnotationDetails.addAnnotationReference($scope);
@@ -15,11 +15,15 @@ angular.module('Pundit2.AnnotationSidebar')
     }
 
     var notebookId = $scope.annotation.notebookId;
-    var notebookRef = new Notebook(notebookId);
-    notebookRef.then(function(nb) {
-        $scope.notebookName = nb.label;
-    }, function(message) {
-        $scope.notebookName = "Failed to load notebook: "+message;
+
+    $scope.notebookName = 'Downloading notebook in progress'
+    var cancelWatchNotebookName = $scope.$watch(function() {
+        return NotebookExchange.getNotebookById(notebookId);;
+    }, function(nb) {
+        if (typeof(nb) !== 'undefined') {
+            $scope.notebookName = nb.label;
+            cancelWatchNotebookName();
+        }
     });
 
     $scope.toggleAnnotation = function(){

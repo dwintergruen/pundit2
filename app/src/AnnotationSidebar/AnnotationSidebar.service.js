@@ -228,7 +228,7 @@ angular.module('Pundit2.AnnotationSidebar')
     debug: false
 })
 .service('AnnotationSidebar', function($rootScope, $filter, $timeout,
-                                       BaseComponent, AnnotationsExchange, Consolidation, ItemsExchange, Notebook,
+                                       BaseComponent, AnnotationsExchange, Consolidation, ItemsExchange, NotebookExchange,
                                        TypesHelper, TextFragmentAnnotator, ANNOTATIONSIDEBARDEFAULTS) {
     
     var annotationSidebar = new BaseComponent('AnnotationSidebar', ANNOTATIONSIDEBARDEFAULTS);
@@ -477,11 +477,15 @@ angular.module('Pundit2.AnnotationSidebar')
             var notebookId = annotation.isIncludedIn;
             var notebookUri = annotation.isIncludedInUri;
             if (typeof(elementsList.notebooks[notebookUri]) === 'undefined'){
-                var notebookRef = new Notebook(notebookId);
-                var notebookName = "";
-                notebookRef.then(function(nb) {
-                    notebookName = nb.label;
-                    elementsList.notebooks[notebookUri].label = notebookName;
+                var notebookName = "Downloading in progress";
+                var cancelWatchNotebookName = $rootScope.$watch(function() {
+                    return NotebookExchange.getNotebookById(notebookId);;
+                }, function(nb) {
+                    if (typeof(nb) !== 'undefined') {
+                        notebookName = nb.label;
+                        elementsList.notebooks[notebookUri].label = notebookName;
+                        cancelWatchNotebookName();
+                    }
                 });
 
                 elementsList.notebooks[notebookUri] = {
