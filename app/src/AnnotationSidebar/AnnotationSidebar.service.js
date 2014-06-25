@@ -253,6 +253,7 @@ angular.module('Pundit2.AnnotationSidebar')
     };
 
     var startPosition = 70;
+    var annotationPosition = [];
 
     // Contains the values ​​of active filters
     annotationSidebar.filters = {
@@ -299,7 +300,7 @@ angular.module('Pundit2.AnnotationSidebar')
     };
 
     annotationSidebar.filtersCount = {};
-    annotationSidebar.annotationPosition = {};
+    annotationSidebar.annotationPositionReal = {};
 
     // Expands or collapses the sidebar
     annotationSidebar.toggle = function(){
@@ -390,7 +391,43 @@ angular.module('Pundit2.AnnotationSidebar')
         });
     };
 
+    var orderAndSetPos = function(){
+
+        var pos;
+        var currentTop;
+
+        annotationPosition.sort(function(a, b){
+            return a.top-b.top;
+        });
+
+        pos = annotationPosition;
+        for (var ann in pos){
+            annotationSidebar.annotationPositionReal[pos[ann].id] = {
+                id: pos[ann].id, 
+                top: pos[ann].top, 
+                broken: pos[ann].broken
+            };
+        }
+
+        pos = annotationSidebar.annotationPositionReal;
+        for (var ann in pos){
+            if(!pos[ann].broken){
+                currentTop = pos[ann].top;
+
+                if (currentTop > startPosition){
+                    annotationSidebar.annotationPositionReal[ann].top = currentTop;
+                    startPosition = currentTop + annotationSidebar.options.annotationHeigth;
+                } else{
+                    annotationSidebar.annotationPositionReal[ann].top = startPosition;
+                    startPosition += annotationSidebar.options.annotationHeigth;
+                }
+            }
+        }
+
+    };
+
     var setAnnotationPosition = function(annotations) {
+        var up = 0;
         startPosition = 70;
 
         angular.forEach(annotations, function(annotation) {
@@ -402,7 +439,7 @@ angular.module('Pundit2.AnnotationSidebar')
             var currentFragment;
 
             if (annotation.isBroken()){
-                annotationSidebar.annotationPosition[annotation.id] = {top: startPosition, broken: true};
+                annotationPosition.push({id: annotation.id, top: startPosition, broken: true});
                 startPosition += annotationSidebar.options.annotationHeigth;
             } else{
                 for (firstSubjectUri in graph){
@@ -419,20 +456,11 @@ angular.module('Pundit2.AnnotationSidebar')
 
                 if (typeof(currentFragment) !== 'undefined'){
                     var top = angular.element('.'+currentFragment).offset().top;
-                    var currentFreePos = startPosition + annotationSidebar.options.annotationHeigth;
-
-                    annotationSidebar.annotationPosition[annotation.id] = {top: top, broken: false};                        
-
-                    if (top > currentFreePos){
-                        annotationSidebar.annotationPosition[annotation.id] = {top: top, broken: false};                        
-                    } else{
-                        annotationSidebar.annotationPosition[annotation.id] = {top: startPosition, broken: false};                        
-                        startPosition += annotationSidebar.options.annotationHeigth;
-                    }
+                    annotationPosition.push({id: annotation.id, top: top, broken: false});
                 }
             }
-
         });
+        orderAndSetPos();
     };
 
     var setAnnotationInPage = function(annotations) {
