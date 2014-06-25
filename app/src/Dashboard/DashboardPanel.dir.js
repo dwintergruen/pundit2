@@ -5,7 +5,7 @@ angular.module('Pundit2.Dashboard')
         restrict: 'E',
         transclude: true,
         scope: {
-            title: '@'
+            paneltitle: '@'
         },
         templateUrl: "src/Dashboard/DashboardPanel.dir.tmpl.html",
         controller: "DashboardPanelCtrl"

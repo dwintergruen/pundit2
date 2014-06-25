@@ -184,7 +184,7 @@ angular.module('Pundit2.Dashboard')
      * @description
      * `number`
      *
-     * Panel title tabs height
+     * Panel paneltitle tabs height
      *
      * Default value:
      * <pre> panelTabsHeight: 27 </pre>
@@ -343,7 +343,7 @@ angular.module('Pundit2.Dashboard')
 
     var panels = [];
     dashboard.addPanel = function(panelScope) {
-        dashboard.log("Adding panel", panelScope.title);
+        dashboard.log("Adding panel", panelScope.paneltitle);
         var len = panels.length;
 
         // Last panel is slighty different: its collapsedWidth must NOT include
@@ -354,16 +354,16 @@ angular.module('Pundit2.Dashboard')
         }
         panelScope.isLast = true;
         panelScope.collapsedWidth = dashboard.options.panelCollapsedWidth - dashboard.options.separatorWidth;
-        panelScope.minWidth = dashboard.options.panels[panelScope.title].minWidth;
+        panelScope.minWidth = dashboard.options.panels[panelScope.paneltitle].minWidth;
         panelScope.index = len;
 
         panels.push(panelScope);
 
         // If there's any previously saved panel content for this panel, add it
-        if (panelScope.title in state.panelsContent) {
-            var contents = state.panelsContent[panelScope.title];
+        if (panelScope.paneltitle in state.panelsContent) {
+            var contents = state.panelsContent[panelScope.paneltitle];
             for (var l=contents.length; l--;) {
-                dashboard.log('Adding tab '+contents[l].tabName+' to existing panel '+panelScope.title);
+                dashboard.log('Adding tab '+contents[l].tabName+' to existing panel '+panelScope.paneltitle);
                 panelScope.addContent(contents[l].tabName, contents[l].tabTemplate);
             }
         }
@@ -623,7 +623,7 @@ angular.module('Pundit2.Dashboard')
     // as soon as the panel is added
     dashboard.addContent = function(panelTitle, tabName, tabTemplate) {
         for (var i in panels) {
-            if (panels[i].title === panelTitle) {
+            if (panels[i].paneltitle === panelTitle) {
                 dashboard.log('Adding tab '+tabName+' to existing panel '+panelTitle);
                 panels[i].addContent(tabName, tabTemplate);
                 return;

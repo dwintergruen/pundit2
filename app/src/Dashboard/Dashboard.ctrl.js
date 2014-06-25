@@ -45,7 +45,7 @@ angular.module('Pundit2.Dashboard')
     }, function(panels) {
         for (var p in panels) {
             Dashboard.log('Adding configured panel to Dashboard: '+ p);
-            jqElement.container.append('<dashboard-panel title="'+ p +'"></dashboard-panel>');
+            jqElement.container.append('<dashboard-panel paneltitle="'+ p +'"></dashboard-panel>');
         }
         var added = angular.element("dashboard-panel");
         $compile(added)($scope);
