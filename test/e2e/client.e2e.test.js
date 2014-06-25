@@ -1,4 +1,4 @@
-describe("Client interaction", function() {
+xdescribe("Client interaction", function() {
 
     var httpMock = function() {
         angular.module('httpBackendMock', ['ngMockE2E'])
@@ -61,15 +61,45 @@ describe("Client interaction", function() {
                     loginServer: "http:\/\/demo-cloud.as.thepund.it:8080\/annotationserver\/login.jsp"
                 };
 
+                var userNotLogged = {
+                    loginStatus: 0,
+                    loginServer: "http:\/\/demo-cloud.as.thepund.it:8080\/annotationserver\/login.jsp"
+                };
+
                 var logoutOk = { logout: 1 };
+
+                var annMedatadaSearch = {
+                    "http://sever.url/annotation/a4274e35": {
+                        // annotation medatada here if necessary
+                    }
+                };
 
                 // extend here if you nedd to catch an unexpected http call
 
-                $httpBackend.whenGET(NameSpace.get('asUsersLogout')).respond(logoutOk);
-                $httpBackend.whenGET(NameSpace.get('asUsersCurrent')).respond(userLoggedIn);
-                $httpBackend.whenGET(new RegExp("http://test.config.url/api/services/preferences/favorites")).respond(undefined);
-                $httpBackend.whenGET("http://test.config.url/api/notebooks/owned").respond(undefined);
-                $httpBackend.whenGET(new RegExp("http://test.config.url/api/annotations/metadata/search")).respond(undefined);
+                //$httpBackend.whenGET(NameSpace.get('asUsersLogout')).respond(logoutOk);
+
+                // if user is logged do this http call
+                // get user status (user logged)
+                //$httpBackend.whenGET(NameSpace.get('asUsersCurrent')).respond(userLoggedIn);
+                // get my items
+                //$httpBackend.whenGET(new RegExp("http://test.config.url/api/services/preferences/favorites")).respond(undefined);
+                // get my notebooks
+                //$httpBackend.whenGET("http://test.config.url/api/notebooks/owned").respond(undefined);
+                // get annotations on annotations API
+                //$httpBackend.whenGET(new RegExp("http://test.config.url/api/annotations/metadata/search")).respond(annMedatadaSearch);
+                //$httpBackend.whenGET(new RegExp("http://test.config.url/api/annotations/a4274e35")).respond(annResponse);
+                //
+                // annotation details made new Notebook http://test.config.url/api/notebooks//metadata
+
+                // if user is not logged do this http call
+                // get user status (not logged)
+                $httpBackend.whenGET(NameSpace.get('asUsersCurrent')).respond(userNotLogged);
+                // get annotations on open API
+                $httpBackend.whenGET(new RegExp("http://test.config.url/api/open/metadata/search")).respond(annMedatadaSearch);
+                $httpBackend.whenGET(new RegExp("http://test.config.url/api/open/annotations/a4274e35")).respond(annResponse);
+
+                
+                
 
             });
     };
@@ -85,13 +115,13 @@ describe("Client interaction", function() {
         p.removeMockModule('httpBackendMock');
     });
 
-    it("test", function(){
+    iit("test", function(){
 
         //p.findElements(protractor.By.css("[data-ng-app='Pundit2']")).then(function(rootNode) {
         //    expect(rootNode.length).toBe(1);            
         //});
 
-        //p.sleep(60000);
+        p.sleep(60000);
 
     });
 

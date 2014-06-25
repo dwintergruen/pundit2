@@ -1,6 +1,6 @@
 angular.module('Pundit2.Communication')
     .service('NotebookCommunication', function(BaseComponent, NameSpace, Notebook, MyPundit, Analytics, Config,
-                                            $http, $q, NotebookExchange) {
+                                            $http, $q, NotebookExchange, Toolbar) {
 
         // This serive contain the http support to read and write
         // notebooks from server
@@ -14,6 +14,8 @@ angular.module('Pundit2.Communication')
 
             if(MyPundit.isUserLogged()){
 
+                Toolbar.setLoading(true);
+
                 $http({
                     headers: { 'Accept': 'application/json' },
                     method: 'GET',
@@ -21,6 +23,7 @@ angular.module('Pundit2.Communication')
                     withCredentials: true
 
                 }).success(function(data) {
+                    Toolbar.setLoading(false);
                     Analytics.track('api', 'get', 'notebook owned');
 
                     if (typeof(data) === 'undefined') {
@@ -51,6 +54,7 @@ angular.module('Pundit2.Communication')
                     }
 
                 }).error(function(data, statusCode) {
+                    Toolbar.setLoading(false);
                     promise.reject("Error from server while retrieving list of my notebooks: "+ statusCode);
                     notebookCommunication.err("Error from server while retrieving list of my notebooks: "+ statusCode);
                     Analytics.track('api', 'error', 'get notebook owned', statusCode);
@@ -69,16 +73,20 @@ angular.module('Pundit2.Communication')
             notebookCommunication.log('Getting current notebook');
             
             if(MyPundit.isUserLogged()){
+                Toolbar.setLoading(true);
+
                 $http({
                     headers: { 'Content-Type': 'application/json' },
                     method: 'GET',
                     url: NameSpace.get('asNBCurrent'),
                     withCredentials: true
                 }).success(function(data) {
+                    Toolbar.setLoading(false);
                     notebookCommunication.log(data.NotebookID+' is the current notebook');
                     NotebookExchange.setCurrentNotebooks(data.NotebookID);
                     promise.resolve(data.NotebookID);
                 }).error(function(msg) {
+                    Toolbar.setLoading(false);
                     notebookCommunication.log('Impossible to get the current notebook ');
                     promise.reject(msg);
                 });
@@ -95,6 +103,7 @@ angular.module('Pundit2.Communication')
             notebookCommunication.log('Setting as current '+id);
 
             if(MyPundit.isUserLogged()){
+                Toolbar.setLoading(true);
 
                 $http({
                     headers: { 'Content-Type': 'application/json' },
@@ -102,10 +111,12 @@ angular.module('Pundit2.Communication')
                     url: NameSpace.get('asNBCurrent')+"/"+id,
                     withCredentials: true
                 }).success(function() {
+                    Toolbar.setLoading(false);
                     notebookCommunication.log(id+' is now current');
                     NotebookExchange.setCurrentNotebooks(id);
                     promise.resolve();
                 }).error(function(msg) {
+                    Toolbar.setLoading(false);
                     notebookCommunication.log('Impossible to set as current: '+id);
                     promise.reject(msg);
                 });
@@ -126,16 +137,20 @@ angular.module('Pundit2.Communication')
 
 
             if(MyPundit.isUserLogged()){
+                Toolbar.setLoading(true);
+
                 $http({
                     headers: { 'Content-Type': 'application/json' },
                     method: 'PUT',
                     url: NameSpace.get('asNBPublic', { id: id }),
                     withCredentials: true
                 }).success(function() {
+                    Toolbar.setLoading(false);
                     notebookCommunication.log(id+' is now public');
                     NotebookExchange.getNotebookById(id).setPublic();
                     promise.resolve();
                 }).error(function(msg) {
+                    Toolbar.setLoading(false);
                     notebookCommunication.log('Impossible to set as public: '+id);
                     promise.reject(msg);
                 });
@@ -152,16 +167,20 @@ angular.module('Pundit2.Communication')
             notebookCommunication.log('Setting as private '+id);
 
             if(MyPundit.isUserLogged()){
+                Toolbar.setLoading(true);
+
                 $http({
                     headers: { 'Content-Type': 'application/json' },
                     method: 'PUT',
                     url: NameSpace.get('asNBPrivate', { id: id }),
                     withCredentials: true
                 }).success(function() {
+                    Toolbar.setLoading(false);
                     notebookCommunication.log(id+' is now private');
                     NotebookExchange.getNotebookById(id).setPrivate();
                     promise.resolve();
                 }).error(function(msg) {
+                    Toolbar.setLoading(false);
                     notebookCommunication.log('Impossible to set as private: '+id);
                     promise.reject(msg);
                 });
@@ -186,9 +205,9 @@ angular.module('Pundit2.Communication')
                     promise.reject('Ouch!');
                     return;
                 }
-
-                var httpPromise;
-                httpPromise = $http({
+                Toolbar.setLoading(true);
+                
+                $http({
                     headers: {
                         "Accept": "application/json",
                         "Content-Type": "application/json;charset=UTF-8;"
@@ -200,6 +219,7 @@ angular.module('Pundit2.Communication')
                         NotebookName: name
                     }
                 }).success(function(data) {
+                    Toolbar.setLoading(false);
 
                     if ('NotebookID' in data) {
                         // read metadata from server then add to notebooksExchange
@@ -216,6 +236,7 @@ angular.module('Pundit2.Communication')
                     }
 
                 }).error(function(data, statusCode) {
+                    Toolbar.setLoading(false);
                     promise.reject("Error from server while retrieving list of my notebooks: "+ statusCode);
                     notebookCommunication.err("Error from server while retrieving list of my notebooks: "+ statusCode);
                     Analytics.track('api', 'error', 'get notebook owned', statusCode);
@@ -230,16 +251,20 @@ angular.module('Pundit2.Communication')
             notebookCommunication.log('Deleting '+id);
 
             if(MyPundit.isUserLogged()){
+                Toolbar.setLoading(true);
+
                 $http({
                     headers: { 'Content-Type': 'application/json' },
                     method: 'DELETE',
                     url: NameSpace.get('asNB')+"/"+id,
                     withCredentials: true
                 }).success(function() {
+                    Toolbar.setLoading(false);
                     notebookCommunication.log(id+' is removed');
                     NotebookExchange.removeNotebook(id);
                     promise.resolve();
                 }).error(function(msg) {
+                    Toolbar.setLoading(false);
                     notebookCommunication.log('Impossible to remove '+id);
                     promise.reject(msg);
                 });
@@ -257,6 +282,8 @@ angular.module('Pundit2.Communication')
             notebookCommunication.log('Edit name of notebook '+id);
 
             if(MyPundit.isUserLogged()){
+                Toolbar.setLoading(true);
+
                 $http({
                     headers: { 'Content-Type': 'application/json' },
                     method: 'PUT',
@@ -266,10 +293,12 @@ angular.module('Pundit2.Communication')
                         NotebookName: name
                     }
                 }).success(function() {
+                    Toolbar.setLoading(false);
                     notebookCommunication.log(id+' is now edited');
                     NotebookExchange.getNotebookById(id).setLabel(name);
                     promise.resolve();
                 }).error(function(msg) {
+                    Toolbar.setLoading(false);
                     notebookCommunication.log('Impossible to edit name of notebook: '+id);
                     promise.reject(msg);
                 });

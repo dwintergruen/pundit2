@@ -18,7 +18,7 @@ angular.module('Pundit2.MyNotebooksContainer')
 })
 .service('MyNotebooksContainer', function($rootScope, MYNOTEBOOKSCONTAINERDEFAULTS, BaseComponent,
     NotebookExchange, ItemsExchange, PageItemsContainer, AnnotationsExchange, NotebookCommunication, Consolidation,
-    ContextualMenu, Toolbar, Dashboard, NotebookComposer, AnnotationsCommunication,
+    ContextualMenu, Dashboard, NotebookComposer, AnnotationsCommunication,
     $modal, $timeout) {
 
     var myNotebooksContainer = new BaseComponent('MyNotebooksContainer', MYNOTEBOOKSCONTAINERDEFAULTS);
@@ -39,11 +39,8 @@ angular.module('Pundit2.MyNotebooksContainer')
             showIf: function(nt) {
                 return nt.visibility === "public";
             },
-            action: function(nt) {
-                Toolbar.setLoading(true);
-                NotebookCommunication.setPrivate(nt.id).then(function(){
-                    Toolbar.setLoading(false);
-                });
+            action: function(nt) {                
+                NotebookCommunication.setPrivate(nt.id);
             }
         });
 
@@ -56,10 +53,7 @@ angular.module('Pundit2.MyNotebooksContainer')
                 return nt.visibility === "private";
             },
             action: function(nt) {
-                Toolbar.setLoading(true);
-                NotebookCommunication.setPublic(nt.id).then(function(){
-                    Toolbar.setLoading(false);
-                });
+                NotebookCommunication.setPublic(nt.id);
             }
         });
 
@@ -72,10 +66,7 @@ angular.module('Pundit2.MyNotebooksContainer')
                 return !nt.isCurrent();
             },
             action: function(nt) {
-                Toolbar.setLoading(true);
-                NotebookCommunication.setCurrent(nt.id).then(function(){
-                    Toolbar.setLoading(false);
-                });
+                NotebookCommunication.setCurrent(nt.id);
             }
         });
 
@@ -129,7 +120,6 @@ angular.module('Pundit2.MyNotebooksContainer')
     // confirm btn click
     modalScope.confirm = function() {
         
-        //Toolbar.setLoading(true);
         // remove notebook and all annotation contained in it
         NotebookCommunication.deleteNotebook(modalScope.notebook.id).then(function(){
             // success
