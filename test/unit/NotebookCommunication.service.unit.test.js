@@ -21,34 +21,54 @@ describe('Notebook Communication service', function() {
 
     }));
 
-    xit("should create a new notebook", function() {
+    it("should create a new notebook", function() {
 
         var name = 'myNotebook';
         var userLoggedIn = {
-            loginStatus: 1
+            loginStatus: 1,
+            id: "myFakeId",
+            uri: "http://myUri.fake",
+            openid: "http://myOpenId.fake",
+            firstName: "Mario",
+            lastName: "Rossi",
+            fullName: "Mario Rossi",
+            email: "mario@rossi.it",
+            loginServer: "http:\/\/demo-cloud.as.thepund.it:8080\/annotationserver\/login.jsp"
         };
 
+        var header = {"Accept":"application/json","Content-Type":"application/json;charset=UTF-8;"};
+        var data = {"NotebookName": 'myNotebook'};
+        var testId = 'simple1ID';
 
+        // catch http request for user logged in
         $httpBackend.whenGET(NameSpace.get('asUsersCurrent')).respond(userLoggedIn);
+
+        // create a notebook
         var p = NotebookCommunication.createNotebook(name);
 
+        // catch http request for notebook creation
         $httpBackend
-            .when('POST', NameSpace.get('asNB', {NotebookName: name}))
-            .respond(testNotebooks.simple1);
+            .expectPOST(NameSpace.get('asNB'), data, header)
+            .respond({"NotebookID": testId});
 
+        // catch http request for get notebook metadata, called when bu Notebook.factory when a notebook is created
+        $httpBackend
+            .whenGET(NameSpace.get('asNBMeta', {id: testId}))
+            .respond(testNotebooks.myNotebook);
+
+        // when notebook is created correctly, the promise will be resolved
         p.then(function(nbID) {
-            console.log("aaa");
-            expect(nbID).toBe(testNotebooks.simple1.id);
+            expect(nbID).toBe(testId);
             var notebook = NotebookExchange.getNotebookById(nbID);
-            expect(notebook.label).toBe(testNotebooks.simple1.label);
-            expect(notebook.id).toBe(testNotebooks.simple1.id);
-            expect(notebook.visibility).toBe('public');
+            expect(notebook.label).toBe(name);
+            expect(notebook.id).toBe(testId);
+            expect(notebook.visibility).toBe("public");
             var currentNotebook = NotebookExchange.getCurrentNotebooks();
-            expect(currentNotebook).toBeNull();
+            expect(currentNotebook).toBeUndefined();
         });
 
         $httpBackend.flush();
-
+        $rootScope.$digest();
 
     });
 
