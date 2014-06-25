@@ -18,20 +18,28 @@ angular.module('Pundit2.Communication')
         };
 
         notebookExchange.addNotebook = function(ns, isMyNotebook) {
-            // TODO: sanity checks?
+            // try to add to generic list
             if (ns.id in nsListById) {
                 notebookExchange.log('Not adding notebook '+ns.id+': already present.');
             } else {
                 ns._q.promise.then(function(n) {
                     nsListById[ns.id] = n;
                     nsList.push(n);
-                    // add to my notebooks list
-                    if (typeof(isMyNotebook)!=='undefined' && isMyNotebook) {
-                        myNsListById[ns.id] = n;
-                        myNsList.push(n);
-                    }
                 });
             }
+
+            if (typeof(isMyNotebook)!=='undefined' && isMyNotebook) {
+                // try to add to my notebooks list
+                if (ns.id in myNsListById) {
+                    notebookExchange.log('Not adding notebook '+ns.id+' to my notebook, already present.');
+                } else {
+                    ns._q.promise.then(function(n) {                    
+                        myNsListById[ns.id] = n;
+                        myNsList.push(n);                    
+                    });
+                }
+            }
+            
         };
 
         notebookExchange.removeNotebook = function(notebookID) {
