@@ -148,6 +148,11 @@ angular.module("Pundit2.MyItemsContainer")
         }).success(function(data) {
             var num = 0;
 
+            if (typeof(data) === 'undefined') {
+                myItems.log('Undefined Server response');
+                return;
+            }
+
             if (typeof(data.redirectTo) !== 'undefined') {
                 myItems.log('Get all my items on server produce a redirect response to: ', data);
                 return;

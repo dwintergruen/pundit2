@@ -23,6 +23,12 @@ angular.module('Pundit2.Communication')
                 }).success(function(data) {
                     Analytics.track('api', 'get', 'notebook owned');
 
+                    if (typeof(data) === 'undefined') {
+                        promise.reject('some sort of error?');
+                        notebookCommunication.log("Error retrieving list of my notebooks - Server undefined response");
+                        return;
+                    }
+
                     if ('NotebookIDs' in data) {
 
                         var nbs = [];

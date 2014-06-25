@@ -1,5 +1,6 @@
 <!-- buildexamples:section header --><!-- /buildexamples -->
 
+<!-- This file is used in end to end testing on the client, must not be modified in any way -->
 <style>
     .pnd-cons {
         background: #fc0;
@@ -8,15 +9,14 @@
 
 <script>
     var punditConfig = {
+        annotationServerBaseURL: 'http://test.config.url/',
         modules: {
             'Client': {
                 active: true
             }
         }
-    }
+    };    
 </script>
-
-<h1>Launching the client</h1>
 
 <div data-ng-app="Pundit2"></div>
 
