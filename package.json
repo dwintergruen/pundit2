@@ -23,7 +23,7 @@
     "jshint-stylish": "0.1.4",
     "grunt-contrib-uglify": "~0.2.2",
     "protractor": "latest",
-    "grunt-protractor-runner": "~0.1.6",
+    "grunt-protractor-runner": "~1.0.0",
     "grunt-shell": "~0.4.0",
     "grunt-karma": "~0.6.2",
     "karma-script-launcher": "~0.1.0",
