@@ -194,6 +194,8 @@ angular.module("Pundit2.MyItemsContainer")
         var currentTime = new Date(),
         promise = $q.defer();
 
+        Toolbar.setLoading(true);
+
         // remove all my item on pundit server
         // setting it to []
         $http({
@@ -203,6 +205,8 @@ angular.module("Pundit2.MyItemsContainer")
             withCredentials: true,
             data: angular.toJson({value: [], created: currentTime.getTime()})     
         }).success(function(data) {
+
+            Toolbar.setLoading(false);
 
             if (typeof(data.redirectTo) !== 'undefined') {
                 myItems.log('Deleted all my items on server produce a redirect response to: ', data);
@@ -216,6 +220,7 @@ angular.module("Pundit2.MyItemsContainer")
             
             myItems.log('Deleted all my items on server', data);
         }).error(function(msg) {
+            Toolbar.setLoading(false);
             myItems.err('Cant delete my items on server: ', msg);
             promise.reject();
         });
