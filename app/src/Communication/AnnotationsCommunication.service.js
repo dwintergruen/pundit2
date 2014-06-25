@@ -1,12 +1,13 @@
 angular.module('Pundit2.Communication')
     .service('AnnotationsCommunication', function(BaseComponent, NameSpace, Toolbar, Consolidation,
-        AnnotationsExchange, Annotation, $http, $q) {
+        AnnotationsExchange, Annotation, NotebookExchange, Notebook, $http, $q) {
 
     var annotationsCommunication = new BaseComponent("AnnotationCommunication");
 
     // get all annotations of the page from the server
     // add annotation inside annotationExchange
     // add items to page items inside itemsExchange
+    // TODO add notebooks to notebooksExchange
     // than consilidate all items
     annotationsCommunication.getAnnotations = function() {
 
@@ -30,9 +31,14 @@ angular.module('Pundit2.Communication')
             for (var i=0; i<ids.length; i++) {
 
                 var a = new Annotation(ids[i]);
-                a.then(function(){
+                a.then(function(ann){
                     // The annotation got loaded, it is already available
                     // in the AnnotationsExchange
+                    var notebookID = ann.isIncludedIn;
+                    if (typeof(NotebookExchange.getNotebookById(notebookID)) === 'undefined') {
+                        // if the notebook is not loaded download it and add to notebooksExchange
+                        new Notebook(notebookID);
+                    }
                 }, function(error) {
                     annotationsCommunication.log("Could not retrieve annotation: "+ error);
                     // TODO: can we try again? Let the user try again with an error on
