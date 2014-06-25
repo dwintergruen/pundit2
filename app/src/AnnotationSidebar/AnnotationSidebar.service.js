@@ -209,6 +209,9 @@ angular.module('Pundit2.AnnotationSidebar')
      */
     clientDomTemplate: 'src/AnnotationSidebar/ClientAnnotationSidebar.tmpl.html',
 
+    // TODO: doc
+    annotationHeigth: 25,
+
     /**
      * @module punditConfig
      * @ngdoc property
@@ -248,6 +251,8 @@ angular.module('Pundit2.AnnotationSidebar')
         predicates: {},
         types: {}
     };
+
+    var startPosition = 70;
 
     // Contains the values ​​of active filters
     annotationSidebar.filters = {
@@ -386,6 +391,8 @@ angular.module('Pundit2.AnnotationSidebar')
     };
 
     var setAnnotationPosition = function(annotations) {
+        startPosition = 70;
+
         angular.forEach(annotations, function(annotation) {
             var graph = annotation.graph;
             var firstSubjectUri;
@@ -393,24 +400,36 @@ angular.module('Pundit2.AnnotationSidebar')
             var currentId;
 
             var currentFragment;
-            
-            for (firstSubjectUri in graph){
-                break;
-            }
 
-            currentItem = ItemsExchange.getItemByUri(firstSubjectUri);
-
-            if (Consolidation.isConsolidated(currentItem)){
-                currentFragment = TextFragmentAnnotator.getFragmentIdByUri(firstSubjectUri);
+            if (annotation.isBroken()){
+                annotationSidebar.annotationPosition[annotation.id] = {top: startPosition, broken: true};
+                startPosition += annotationSidebar.options.annotationHeigth;
             } else{
-                currentFragment = undefined;
-            }
+                for (firstSubjectUri in graph){
+                    break;
+                }
 
-            if (typeof(currentFragment) !== 'undefined' && !annotation.isBroken()){
-                var top = angular.element('.'+currentFragment).offset().top;
-                annotationSidebar.annotationPosition[annotation.id] = top+"px";
-            } else{
-                annotationSidebar.annotationPosition[annotation.id] = "60px";
+                currentItem = ItemsExchange.getItemByUri(firstSubjectUri);
+
+                if (Consolidation.isConsolidated(currentItem)){
+                    currentFragment = TextFragmentAnnotator.getFragmentIdByUri(firstSubjectUri);
+                } else{
+                    currentFragment = undefined;
+                }
+
+                if (typeof(currentFragment) !== 'undefined'){
+                    var top = angular.element('.'+currentFragment).offset().top;
+                    var currentFreePos = startPosition + annotationSidebar.options.annotationHeigth;
+
+                    annotationSidebar.annotationPosition[annotation.id] = {top: top, broken: false};                        
+
+                    if (top > currentFreePos){
+                        annotationSidebar.annotationPosition[annotation.id] = {top: top, broken: false};                        
+                    } else{
+                        annotationSidebar.annotationPosition[annotation.id] = {top: startPosition, broken: false};                        
+                        startPosition += annotationSidebar.options.annotationHeigth;
+                    }
+                }
             }
 
         });
