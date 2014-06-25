@@ -127,7 +127,7 @@ describe('Client service', function() {
         expect(rootNode.find('toolbar').length).toBe(1);
 
         compileDirective('dashboard');
-        var el = angular.element.find("[title='tools'] .testClassToFindTmpl");
+        var el = angular.element.find("[paneltitle='tools'] .testClassToFindTmpl");
         expect(el.length).toBe(1);
         expect(el[0].innerHTML.indexOf("TestContent")).toBeGreaterThan(-1);
     });

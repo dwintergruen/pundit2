@@ -191,7 +191,7 @@ describe('Dashboard service', function() {
 
         Dashboard.setContainerWidth(width);
 
-        var scope = angular.element(el).find('dashboard-panel[title="lists"]').isolateScope();
+        var scope = angular.element(el).find('dashboard-panel[paneltitle="lists"]').isolateScope();
         
         var diff = scope.width - DASHBOARDDEFAULTS.panels.lists.minWidth;
 
@@ -289,9 +289,9 @@ describe('Dashboard service', function() {
         
         Dashboard.setContainerWidth(1200);
 
-        var listsScope = angular.element(el).find('dashboard-panel[title="lists"]').isolateScope();
+        var listsScope = angular.element(el).find('dashboard-panel[paneltitle="lists"]').isolateScope();
         var listsWidth = listsScope.width;
-        var toolsScope = angular.element(el).find('dashboard-panel[title="tools"]').isolateScope();
+        var toolsScope = angular.element(el).find('dashboard-panel[paneltitle="tools"]').isolateScope();
         var toolsWidth = toolsScope.width;        
 
         expect(Dashboard.tryToResizeCouples(0,-30)).toBe(true);
@@ -308,9 +308,9 @@ describe('Dashboard service', function() {
         }
         Dashboard.setContainerWidth(minWidth);
 
-        var listsScope = angular.element(el).find('dashboard-panel[title="lists"]').isolateScope();
+        var listsScope = angular.element(el).find('dashboard-panel[paneltitle="lists"]').isolateScope();
         var listsWidth = listsScope.width;
-        var toolsScope = angular.element(el).find('dashboard-panel[title="tools"]').isolateScope();
+        var toolsScope = angular.element(el).find('dashboard-panel[paneltitle="tools"]').isolateScope();
         var toolsWidth = toolsScope.width;        
 
         expect(Dashboard.tryToResizeCouples(0,-30)).toBe(false);
@@ -327,9 +327,9 @@ describe('Dashboard service', function() {
         }
         Dashboard.setContainerWidth(minWidth);
 
-        var listsScope = angular.element(el).find('dashboard-panel[title="lists"]').isolateScope();
+        var listsScope = angular.element(el).find('dashboard-panel[paneltitle="lists"]').isolateScope();
         var listsWidth = listsScope.width;
-        var toolsScope = angular.element(el).find('dashboard-panel[title="tools"]').isolateScope();
+        var toolsScope = angular.element(el).find('dashboard-panel[paneltitle="tools"]').isolateScope();
         var toolsWidth = toolsScope.width;        
 
         expect(Dashboard.tryToResizeCouples(0,+30)).toBe(false);
@@ -343,13 +343,13 @@ describe('Dashboard service', function() {
         
         Dashboard.setContainerWidth(1200);
 
-        var toolsScope = angular.element(el).find('dashboard-panel[title="tools"]').isolateScope();
+        var toolsScope = angular.element(el).find('dashboard-panel[paneltitle="tools"]').isolateScope();
         toolsScope.toggleCollapse();
 
-        var listsScope = angular.element(el).find('dashboard-panel[title="lists"]').isolateScope();
+        var listsScope = angular.element(el).find('dashboard-panel[paneltitle="lists"]').isolateScope();
         var listsWidth = listsScope.width;
         
-        var detailsScope = angular.element(el).find('dashboard-panel[title="details"]').isolateScope();
+        var detailsScope = angular.element(el).find('dashboard-panel[paneltitle="details"]').isolateScope();
         var detailsWidth = detailsScope.width;             
 
         expect(Dashboard.tryToResizeCouples(1,+54)).toBe(true);
@@ -364,13 +364,13 @@ describe('Dashboard service', function() {
         
         Dashboard.setContainerWidth(1200);
 
-        var toolsScope = angular.element(el).find('dashboard-panel[title="tools"]').isolateScope();
+        var toolsScope = angular.element(el).find('dashboard-panel[paneltitle="tools"]').isolateScope();
         toolsScope.toggleCollapse();
 
-        var listsScope = angular.element(el).find('dashboard-panel[title="lists"]').isolateScope();
+        var listsScope = angular.element(el).find('dashboard-panel[paneltitle="lists"]').isolateScope();
         var listsWidth = listsScope.width;
         
-        var detailsScope = angular.element(el).find('dashboard-panel[title="details"]').isolateScope();
+        var detailsScope = angular.element(el).find('dashboard-panel[paneltitle="details"]').isolateScope();
         var detailsWidth = detailsScope.width;             
 
         expect(Dashboard.tryToResizeCouples(0,-54)).toBe(true);
@@ -385,13 +385,13 @@ describe('Dashboard service', function() {
         
         Dashboard.setContainerWidth(1200);
 
-        var toolsScope = angular.element(el).find('dashboard-panel[title="tools"]').isolateScope();
+        var toolsScope = angular.element(el).find('dashboard-panel[paneltitle="tools"]').isolateScope();
         toolsScope.toggleCollapse();
 
-        var detailsScope = angular.element(el).find('dashboard-panel[title="details"]').isolateScope();
+        var detailsScope = angular.element(el).find('dashboard-panel[paneltitle="details"]').isolateScope();
         detailsScope.toggleCollapse();            
 
-        var listsScope = angular.element(el).find('dashboard-panel[title="lists"]').isolateScope();
+        var listsScope = angular.element(el).find('dashboard-panel[paneltitle="lists"]').isolateScope();
         var listsWidth = listsScope.width;
         
 
@@ -406,10 +406,10 @@ describe('Dashboard service', function() {
         
         Dashboard.setContainerWidth(1200);
 
-        var toolsScope = angular.element(el).find('dashboard-panel[title="tools"]').isolateScope();
+        var toolsScope = angular.element(el).find('dashboard-panel[paneltitle="tools"]').isolateScope();
         toolsScope.toggleCollapse();
 
-        var listsScope = angular.element(el).find('dashboard-panel[title="lists"]').isolateScope();
+        var listsScope = angular.element(el).find('dashboard-panel[paneltitle="lists"]').isolateScope();
         listsScope.toggleCollapse();
         
 
@@ -422,13 +422,13 @@ describe('Dashboard service', function() {
         
         Dashboard.setContainerWidth(1200);
 
-        var toolsScope = angular.element(el).find('dashboard-panel[title="tools"]').isolateScope();
+        var toolsScope = angular.element(el).find('dashboard-panel[paneltitle="tools"]').isolateScope();
         toolsScope.toggleCollapse();
 
-        var detailsScope = angular.element(el).find('dashboard-panel[title="details"]').isolateScope();
+        var detailsScope = angular.element(el).find('dashboard-panel[paneltitle="details"]').isolateScope();
         detailsScope.toggleCollapse();            
 
-        var listsScope = angular.element(el).find('dashboard-panel[title="lists"]').isolateScope();
+        var listsScope = angular.element(el).find('dashboard-panel[paneltitle="lists"]').isolateScope();
         var listsWidth = listsScope.width;
         
 
