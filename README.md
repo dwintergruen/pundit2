@@ -17,6 +17,9 @@ To install the project and be ready to develop you need a few components:
 >     sudo apt-get install npm
 >     sudo npm -g install grunt-cli grunt
 
+#### Install bower
+>     npm install -g bower
+
 #### Install pundit2
 WARNING: this step must NOT be run as root, npm will just let you down.
 
