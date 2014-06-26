@@ -437,7 +437,7 @@ angular.module('Pundit2.AnnotationSidebar')
             startPosition = 70;
             annotationPosition = [];
 
-            if (typeof(optId) !== 'undefined' && typeof(optHeight) !== 'undefined'){
+            if (typeof(optId) !== 'undefined' && typeof(optHeight) === 'number'){
                 optCheck = true;
             }
 
@@ -475,7 +475,7 @@ angular.module('Pundit2.AnnotationSidebar')
                     }
 
                     if (typeof(currentFragment) !== 'undefined'){
-                        var top = angular.element('.'+currentFragment).offset().top - toolbarHeight;
+                        var top = angular.element('.'+currentFragment).offset().top;// - toolbarHeight;
                         annotationHeigth = annotationSidebar.options.annotationHeigth;
                         if (optCheck && optId === annotation.id){
                             annotationHeigth = optHeight;

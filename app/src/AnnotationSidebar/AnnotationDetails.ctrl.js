@@ -36,7 +36,7 @@ angular.module('Pundit2.AnnotationSidebar')
     };
 
     $scope.$watch(function() {
-        return angular.element($element).find(".pnd-annotation-details").height();
+        return angular.element($element).find(".pnd-annotation-details-wrap").height();
     }, function(newHeight, oldHeight) {
         if (newHeight!=oldHeight && $scope.annotation.expanded){
             AnnotationSidebar.setAnnotationPosition(currentId, newHeight);
