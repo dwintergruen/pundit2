@@ -1,5 +1,6 @@
 angular.module('Pundit2.Toolbar')
-.controller('ToolbarCtrl', function($scope, Toolbar, MyPundit, Dashboard, AnnotationSidebar, ResourcePanel, ItemsExchange, MyNotebooksContainer, NotebookExchange) {
+.controller('ToolbarCtrl', function($scope, Toolbar, MyPundit, Dashboard, AnnotationSidebar, ResourcePanel,
+    NotebookExchange, NotebookCommunication) {
 
     $scope.dropdownTemplate = "src/ContextualMenu/dropdown.tmpl.html";
     $scope.dropdownTemplateMyNotebook = "src/Toolbar/myNotebooksDropdown.tmpl.html";
@@ -31,41 +32,48 @@ angular.module('Pundit2.Toolbar')
         { text: 'My template 3', href: '#' }
     ];
 
-    var myNotebooks, currentNotebook;
+    var myNotebooks;
 
     $scope.$watch(function() {
         return NotebookExchange.getMyNotebooks();
     }, function(ns) {
         // update all notebooks array and display new notebook
         myNotebooks = ns;
-
+        updateMyNotebooks();
     }, true);
 
     $scope.$watch(function() {
         return NotebookExchange.getCurrentNotebooks();
-    }, function(curr) {
-        currentNotebook = curr;
-
-    }, true);
+    }, function(newCurr) {
+        if (typeof(newCurr) !== "undefined") {
+            updateMyNotebooks();
+        }
+    });
     
     $scope.userData = {};
     $scope.userNotebooksDropdown = [{text: 'Please select notebook you want to use', header: true }];
 
-    $scope.showMyNotebooks = function(){
+    var updateMyNotebooks = function(){
         var notebooks = myNotebooks;
         var j = 1;
         for (var i = 0; i<notebooks.length; i++){
             $scope.userNotebooksDropdown[j] = {
-                                                text: notebooks[i].label,
-                                                currentNotebook: notebooks[i].id === currentNotebook.id,
-                                                visibility: notebooks[i].visibility,
-                                                click: function(_i){
-                                                    return function(){
-                                                        NotebookExchange.setCurrentNotebooks(notebooks[_i].id);
-                                                    };
-                                                }(i)
-
-                            }
+                text: notebooks[i].label,
+                currentNotebook: function(){
+                    var current = NotebookExchange.getCurrentNotebooks();
+                    if (typeof(current)!== "undefined" && notebooks[i].id === current.id) {
+                        return true;
+                    } else {
+                        return false;
+                    }                    
+                }(),
+                visibility: notebooks[i].visibility,
+                click: function(_i){
+                    return function(){
+                        NotebookCommunication.setCurrent(notebooks[_i].id);
+                    };
+                }(i)
+            }
             j++;
         }
     };
