@@ -2,6 +2,14 @@
 
 <script>
 
+    var punditConfig = {
+        //debugAllModules: true,
+        modules: {
+            "MyItemsContainer": {debug: true},
+            "MyItems": {debug: true}
+        }
+    };
+
     var MyItemsDemoCtrl = function($scope, MyItems, MyPundit) {
 
         MyPundit.login().then(function(value) {
