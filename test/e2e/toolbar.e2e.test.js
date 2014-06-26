@@ -131,17 +131,25 @@ describe("The toolbar module", function() {
                 $httpBackend.whenGET(NameSpace.get('asUsersCurrent')).respond(userLoggedIn);
 
                 var myNotebooks = {
-                    NotebookIDs: ["18cd546a"]
+                    NotebookIDs: ["18cd546a", "123zzz"]
                 };
                 $httpBackend.whenGET(NameSpace.get('asNBOwned')).respond(myNotebooks);
 
-                var notebookMetadata = {
+                var notebookMetadata1 = {
                     "http://purl.org/pundit/demo-cloud-server/notebook/18cd546a": {
                         "http://open.vocab.org/terms/visibility": [{value:"public", type:"literal"}],
                         "http://www.w3.org/2000/01/rdf-schema#label": [{value:"Notebook Name", type:"literal"}]
                     }
                 };
-                $httpBackend.whenGET(NameSpace.get('asNBMeta', {id:"18cd546a"})).respond(notebookMetadata);
+                $httpBackend.whenGET(NameSpace.get('asNBMeta', {id:"18cd546a"})).respond(notebookMetadata1);
+
+                var notebookMetadata2 = {
+                    "http://purl.org/pundit/demo-cloud-server/notebook/123zzz": {
+                        "http://open.vocab.org/terms/visibility": [{value:"private", type:"literal"}],
+                        "http://www.w3.org/2000/01/rdf-schema#label": [{value:"Second Notebook Name", type:"literal"}]
+                    }
+                };
+                $httpBackend.whenGET(NameSpace.get('asNBMeta', {id:"123zzz"})).respond(notebookMetadata2);
 
             });
     };
@@ -187,14 +195,22 @@ describe("The toolbar module", function() {
         p.findElement(protractor.By.css('toolbar .pnd-toolbar-notebook-menu-button')).click();
         // check dropdown voices number
         p.findElements(protractor.By.css('toolbar .pnd-toolbar-notebook-menu-button .dropdown-menu li')).then(function(items) {
-            expect(items.length).toBe(2);
-            expect(items[1].getText()).toBe("Notebook Name");
+            expect(items.length).toBe(3);
+            expect(items[1].getText()).toBe("Second Notebook Name");
+            expect(items[2].getText()).toBe("Notebook Name");
         });
         // check dropdown voices icon (public icon)
         p.findElements(protractor.By.css('toolbar .pnd-toolbar-notebook-menu-button .dropdown-menu .pnd-icon-group')).then(function(icons) {
             expect(icons.length).toBe(1);
         });
+        // check dropdown voices icon (private icon)
+        p.findElements(protractor.By.css('toolbar .pnd-toolbar-notebook-menu-button .dropdown-menu .pnd-icon-lock')).then(function(icons) {
+            expect(icons.length).toBe(1);
+        });
+
+        p.sleep(10000)
 
     });
+
 
 });
