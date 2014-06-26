@@ -228,7 +228,7 @@ angular.module('Pundit2.AnnotationSidebar')
     debug: false
 })
 .service('AnnotationSidebar', function($rootScope, $filter, $timeout,
-                                       BaseComponent, AnnotationsExchange, Consolidation, ItemsExchange, NotebookExchange,
+                                       BaseComponent, AnnotationsExchange, Consolidation, Dashboard, ItemsExchange, NotebookExchange,
                                        TypesHelper, TextFragmentAnnotator, ANNOTATIONSIDEBARDEFAULTS) {
     
     var annotationSidebar = new BaseComponent('AnnotationSidebar', ANNOTATIONSIDEBARDEFAULTS);
@@ -432,6 +432,14 @@ angular.module('Pundit2.AnnotationSidebar')
         var annotations = (annotationSidebar.needToFilter() ? state.filteredAnnotations : state.allAnnotations);
         var optCheck = false;
         var annotationHeigth = 0;
+        var dashboardHeight;
+
+
+        if (Dashboard.isDashboardVisible()){
+            dashboardHeight = Dashboard.getContainerHeight();
+        } else{
+            dashboardHeight = 0;
+        }
 
         if(annotations.length>0){
             startPosition = 70;
@@ -475,7 +483,7 @@ angular.module('Pundit2.AnnotationSidebar')
                     }
 
                     if (typeof(currentFragment) !== 'undefined'){
-                        var top = angular.element('.'+currentFragment).offset().top - toolbarHeight;
+                        var top = angular.element('.'+currentFragment).offset().top - toolbarHeight - dashboardHeight;
                         annotationHeigth = annotationSidebar.options.annotationHeigth;
                         if (optCheck && optId === annotation.id){
                             annotationHeigth = optHeight;
