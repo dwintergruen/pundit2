@@ -22,7 +22,7 @@ angular.module('Pundit2.Communication')
                     url: NameSpace.get('asNBOwned'),
                     withCredentials: true
 
-                }).success(function(data) {console.log("*************", typeof(data));
+                }).success(function(data) {
                     Toolbar.setLoading(false);
                     Analytics.track('api', 'get', 'notebook owned');
 
