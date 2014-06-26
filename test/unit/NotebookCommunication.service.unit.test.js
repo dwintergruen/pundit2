@@ -13,6 +13,10 @@ describe('Notebook Communication service', function() {
         loginStatus: 1
     };
 
+    var userNotLoggedIn = {
+        loginStatus: 0
+    };
+
     beforeEach(module('Pundit2'));
 
     beforeEach(inject(function($injector, _$rootScope_, _$httpBackend_, _$compile_, _Notebook_, _NotebookExchange_, _MyPundit_){
@@ -320,6 +324,81 @@ describe('Notebook Communication service', function() {
                     n = NotebookExchange.getNotebookById(testId);
                     expect(n).toBeUndefined();
                 });
+            });
+
+        });
+
+        $httpBackend.flush();
+
+    });
+
+    it("should reject promise if user is not logged in", function() {
+
+        // if an user not logged get any kind of operation is notebook communication service,
+        // promise should be rejected with a User not logged error
+        NotebookCommunication.setCurrent("myID").then(function(){
+            }, function(msg){
+                // check if user not logged message is returned
+                expect(msg.indexOf("User not logged")).toBeGreaterThan(-1);
+            });
+
+        NotebookCommunication.setPrivate("myID").then(function(){
+        }, function(msg){
+            // check if user not logged message is returned
+            expect(msg.indexOf("User not logged")).toBeGreaterThan(-1);
+        });
+
+        NotebookCommunication.setPublic("myID").then(function(){
+        }, function(msg){
+            // check if user not logged message is returned
+            expect(msg.indexOf("User not logged")).toBeGreaterThan(-1);
+        });
+
+        NotebookCommunication.getMyNotebooks().then(function(){
+        }, function(msg){
+            // check if user not logged message is returned
+            expect(msg.indexOf("User not logged")).toBeGreaterThan(-1);
+        });
+
+        NotebookCommunication.getCurrent().then(function(){
+        }, function(msg){
+            // check if user not logged message is returned
+            expect(msg.indexOf("User not logged")).toBeGreaterThan(-1);
+        });
+
+        NotebookCommunication.deleteNotebook().then(function(){
+        }, function(msg){
+            // check if user not logged message is returned
+            expect(msg.indexOf("User not logged")).toBeGreaterThan(-1);
+        });
+
+        NotebookCommunication.setName("id", "name").then(function(){
+        }, function(msg){
+            // check if user not logged message is returned
+            expect(msg.indexOf("User not logged")).toBeGreaterThan(-1);
+        });
+
+        $rootScope.$digest();
+
+    });
+
+    it("should reject a delete notebook", function() {
+
+        var testId = 'simple1ID';
+        var errorMessage = "server get error";
+
+        // http mock for login
+        $httpBackend.whenGET(NameSpace.get('asUsersCurrent')).respond(userLoggedIn);
+        $httpBackend.whenDELETE(NameSpace.get('asNB'+"/"+testId)).respond(500, errorMessage);
+
+        // get login
+        MyPundit.login().then(function(){
+            // delete the notebook
+            NotebookCommunication.deleteNotebook(testId).then(function(){
+
+            }, function(msg){
+                // promise should be resolved with error message
+                expect(msg).toBe(errorMessage);
             });
 
         });
