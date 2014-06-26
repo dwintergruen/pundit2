@@ -34,6 +34,8 @@ angular.module('Pundit2.Toolbar')
 
     var myNotebooks;
 
+    // TODO add a function on click that add this watcher
+    // when drodown is showed and remove when dropdown is closed
     $scope.$watch(function() {
         return NotebookExchange.getMyNotebooks();
     }, function(ns) {
