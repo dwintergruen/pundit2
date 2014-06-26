@@ -130,6 +130,19 @@ describe("The toolbar module", function() {
                 $httpBackend.whenGET(NameSpace.get('asUsersLogout')).respond(logoutOk);
                 $httpBackend.whenGET(NameSpace.get('asUsersCurrent')).respond(userLoggedIn);
 
+                var myNotebooks = {
+                    NotebookIDs: ["18cd546a"]
+                };
+                $httpBackend.whenGET(NameSpace.get('asNBOwned')).respond(myNotebooks);
+
+                var notebookMetadata = {
+                    "http://purl.org/pundit/demo-cloud-server/notebook/18cd546a": {
+                        "http://open.vocab.org/terms/visibility": [{value:"public", type:"literal"}],
+                        "http://www.w3.org/2000/01/rdf-schema#label": [{value:"Notebook Name", type:"literal"}]
+                    }
+                };
+                $httpBackend.whenGET(NameSpace.get('asNBMeta', {id:"18cd546a"})).respond(notebookMetadata);
+
             });
     };
 
@@ -158,6 +171,28 @@ describe("The toolbar module", function() {
         p.findElement(protractor.By.css('.btn-example-logout')).click().then(function() {
             // at this time user should not be logged in anymore
             checkNotLoggedUserButtons();
+        });
+
+    });
+
+    it('should correctly show my notebooks', function() {
+
+        p.get('/app/examples/toolbar.html');
+
+        // click login button and get login
+        p.findElement(protractor.By.css('.btn-example-login')).click();
+        // click get my notebooks button
+        p.findElement(protractor.By.css('.pnd-test-get-my-notebooks')).click();
+        // click and open my notebooks dropdown
+        p.findElement(protractor.By.css('toolbar .pnd-toolbar-notebook-menu-button')).click();
+        // check dropdown voices number
+        p.findElements(protractor.By.css('toolbar .pnd-toolbar-notebook-menu-button .dropdown-menu li')).then(function(items) {
+            expect(items.length).toBe(2);
+            expect(items[1].getText()).toBe("Notebook Name");
+        });
+        // check dropdown voices icon (public icon)
+        p.findElements(protractor.By.css('toolbar .pnd-toolbar-notebook-menu-button .dropdown-menu .pnd-icon-group')).then(function(icons) {
+            expect(icons.length).toBe(1);
         });
 
     });
