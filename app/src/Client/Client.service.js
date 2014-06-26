@@ -263,7 +263,7 @@ angular.module('Pundit2.Client')
                                 ImageFragmentAnnotator, TextFragmentAnnotator, AnnotationsCommunication,
                                 AnnotationsExchange, Item, ItemsExchange, MyItems,
                                 TextFragmentHandler, Toolbar, Annomatic, NotebookCommunication, NotebookExchange,
-                                SelectorsManager, FreebaseSelector, MurucaSelector, KorboBasketSelector,
+                                SelectorsManager, FreebaseSelector, MurucaSelector, KorboBasketSelector, PredicateSelector,
                                 $injector, $templateCache, $rootScope) {
 
         var client = new BaseComponent('Client', CLIENTDEFAULTS),
@@ -345,10 +345,7 @@ angular.module('Pundit2.Client')
 
             } // for l=client.options.bootModules.length
 
-        }; // addComponents()
-
-        // Retrieves the annotations for this page and consolidates them
-        //var getAnnotations 
+        }; // addComponents() 
 
         // Loads the basic relations into some special ItemsExchange container
         var loadBasicRelations = function() {
@@ -361,6 +358,17 @@ angular.module('Pundit2.Client')
             client.log('Loaded '+num+' basic relations');
         };
 
+        // Loads configured relations into some special ItemsExchange container
+        var loadConfiguredRelations = function() {
+            PredicateSelector.getAllVocabularies().then(function(res){
+                for (var p in res) {
+                    var item = new Item(res[p].uri, res[p]);
+                    ItemsExchange.addItemToContainer(item, client.options.relationsContainer);
+                }
+                client.log('Loaded '+res.length+' configured relations');
+            });
+        };
+
 
         // Reads the conf and initializes the active components, bootstrap what needs to be
         // bootstrapped (gets annotations, check if the user is logged in, etc)
@@ -371,6 +379,7 @@ angular.module('Pundit2.Client')
             if (Config.useBasicRelations) {
                 loadBasicRelations();
             }
+            loadConfiguredRelations();
 
             // Check if we're logged in, other components should $watch MyPundit
             // and get notified automatically when logged in, if needed
@@ -439,7 +448,10 @@ angular.module('Pundit2.Client')
             AnnotationsCommunication.getAnnotations();
 
             MyItems.getAllItems();
-            loadBasicRelations();
+            if (Config.useBasicRelations) {
+                loadBasicRelations();
+            }
+            loadConfiguredRelations();
         };
 
         // Called when the user completed the logout process, clicking on logout
@@ -451,7 +463,10 @@ angular.module('Pundit2.Client')
 
             // There might have been private annotations we dont want to show anymore
             AnnotationsCommunication.getAnnotations();
-            loadBasicRelations();
+            if (Config.useBasicRelations) {
+                loadBasicRelations();
+            }
+            loadConfiguredRelations();
         };
 
         client.log("Component up and running");

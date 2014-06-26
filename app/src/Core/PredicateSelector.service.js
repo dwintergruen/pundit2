@@ -59,7 +59,7 @@ angular.module('Pundit2.Core')
                     delete p.children;
                     delete p.is_root_node;
                     delete p.nodetype;
-                    p.type = p.rdftype[0];
+                    p.type = p.rdftype;
                     delete p.rdftype;
                     p.uri = p.value;
                     delete p.value;
