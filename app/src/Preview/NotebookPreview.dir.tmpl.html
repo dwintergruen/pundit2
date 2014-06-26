@@ -1,6 +1,6 @@
 <div class="pnd-dashboard-welcome">
 	<div class="pnd-preview-notebook-visibility">
-	    <span><strong>Visibility:</strong> </span> <span>{{notebook.visibility}}</span>
+	    <span><strong>Visibility:</strong> <span class="pnd-icon pnd-icon-group"></span> <span class="pnd-icon pnd-icon-lock"></span> {{notebook.visibility}}</span>
 	</div>
 	<div class="pnd-preview-notebook-annotations">
 	    <span><strong>Annotations:</strong>  </span> <span>{{notebook.includes.length}}</span>
@@ -13,6 +13,6 @@
 	    <span><strong>Creation date:</strong>  </span> <span>{{notebook.created}}</span>
 	</div>
 	<div class="pnd-preview-notebook-current" ng-show="isCurrent">
-	    <p>current notebook</p>
+	    <strong>current notebook</strong> <span class="pnd-icon pnd-icon-pencil-square"></span>
 	</div>
 </div>
