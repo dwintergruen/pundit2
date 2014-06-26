@@ -28,6 +28,9 @@ angular.module('Pundit2.AnnotationSidebar')
     });
 
     $scope.toggleAnnotation = function(){
+        if(!AnnotationSidebar.isAnnotationSidebarExpanded()){
+            AnnotationSidebar.toggle();
+        }
         $scope.metaInfo = false;
         AnnotationDetails.toggleAnnotationView(currentId);
         if (!$scope.annotation.expanded){
@@ -40,6 +43,17 @@ angular.module('Pundit2.AnnotationSidebar')
     }, function(newHeight, oldHeight) {
         if (newHeight!=oldHeight && $scope.annotation.expanded){
             AnnotationSidebar.setAnnotationPosition(currentId, newHeight);
+        }
+    });
+
+    $scope.$watch(function() {
+        return AnnotationSidebar.isAnnotationSidebarExpanded();
+    }, function(newState, oldState) {
+        if (newState!=oldState){
+            if(!AnnotationSidebar.isAnnotationSidebarExpanded()){
+                AnnotationDetails.closeAllAnnotationView();
+                AnnotationSidebar.setAnnotationPosition();
+            }
         }
     });
 
