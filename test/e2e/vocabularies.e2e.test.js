@@ -39,7 +39,7 @@ describe("Vocabularies interaction", function() {
         // check tab content (welcome messagge)
         p.findElements(protractor.By.css('.pnd-tab-content .active .pnd-dashboard-welcome')).then(function(items){
             expect(items.length).toBe(1);
-            expect(items[0].getText()).toEqual("I'm a welcome message");
+            expect(items[0].getText()).toEqual("Enter text to search in the vocabularies.");
         });
 
     });
