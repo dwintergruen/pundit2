@@ -28,6 +28,19 @@ angular.module('Pundit2.Core')
          */
         debugAllModules: false,
 
+        /**
+         * @module punditConfig
+         * @ngdoc object
+         * @name vocabularies
+         * @description
+         * `Array of url`
+         * Specifies relations vocaularies that will be available to Pundit users
+         * (defines a list of relations with domain and ranges). 
+         * Each vocabulary definition is a JSONP file available on the Web and is loaded by resolving an absolute URL.
+         *
+         * Default:
+         * <pre> vocabularies: [] </pre>
+         */
         vocabularies: [],
 
         /**
@@ -42,7 +55,6 @@ angular.module('Pundit2.Core')
          * <pre> useBasicRelations: true </pre>
          */
         useBasicRelations: true,
-
 
         // Modules active by default are activated here with active=true
         /**
