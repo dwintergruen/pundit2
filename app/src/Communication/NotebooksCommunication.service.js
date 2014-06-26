@@ -22,11 +22,12 @@ angular.module('Pundit2.Communication')
                     url: NameSpace.get('asNBOwned'),
                     withCredentials: true
 
-                }).success(function(data) {
+                }).success(function(data) {console.log("*************", typeof(data));
                     Toolbar.setLoading(false);
                     Analytics.track('api', 'get', 'notebook owned');
 
-                    if (typeof(data) === 'undefined') {
+                    // data is empty when user is logged in in Pundit for first time and have no notebooks
+                    if (typeof(data) === 'undefined' || data === '') {
                         promise.reject('some sort of error?');
                         notebookCommunication.log("Error retrieving list of my notebooks - Server undefined response");
                         return;

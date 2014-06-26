@@ -1,6 +1,6 @@
 angular.module('Pundit2.TripleComposer')
 .controller('TripleComposerCtrl', function($scope, $http, $timeout, NameSpace, TypesHelper, XpointersHelper, MyPundit,
-    Toolbar, Annotation, Consolidation, TripleComposer, NotebookExchange) {
+    Toolbar, Annotation, Consolidation, TripleComposer, NotebookExchange, AnnotationsExchange) {
 
     // statements objects are extend by this.addStatementScope()
     // the function is called in the statement directive link function
@@ -138,11 +138,24 @@ angular.module('Pundit2.TripleComposer')
 
                     // TODO if is rejected ???
                     new Annotation(data.AnnotationID).then(function(){
-                        var currentNotebook = NotebookExchange.getCurrentNotebooks();
-                        if (typeof(currentNotebook) !== 'undefined') {
-                            // TODO why is undefined ? need to add a promise? or retry to download
-                            currentNotebook.addAnnotation(data.AnnotationID);
+
+                        var ann = AnnotationsExchange.getAnnotationById(data.AnnotationID);
+
+                        // get notebook that include the new annotation
+                        var nb = NotebookExchange.getNotebookById(ann.isIncludedIn);
+
+                        // if no notebook is defined, it means that user is logged in a new user in Pundit and has not any notebooks
+                        // so create a new notebook and add annotation in new notebook in NotebookExchange
+                        if(typeof(nb) === 'undefined'){
+                            new Notebook(ann.isIncludedIn, true).then(function(id){
+                                NotebookExchange.getNotebookById(id).addAnnotation(data.AnnotationID);
+                            });
+
+                        } else {
+                            // otherwise if user has a notebook yet, use it to add new annotation in that notebook in NotebookExchange
+                            NotebookExchange.getNotebookById(ann.isIncludedIn).addAnnotation(data.AnnotationID);
                         }
+
                         Consolidation.consolidateAll();
                     }, function(){
                         // rejected, impossible to download annotation from server
