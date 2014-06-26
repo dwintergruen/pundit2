@@ -2,7 +2,7 @@
 
 <script>
 
-var ToolbarDemoCtrl = function($scope, Toolbar, MyPundit, $httpBackend, NameSpace, $rootScope) {
+var ToolbarDemoCtrl = function($scope, Toolbar, MyPundit, NotebookCommunication) {
     
     var numberErrors = 0;
     
@@ -26,8 +26,11 @@ var ToolbarDemoCtrl = function($scope, Toolbar, MyPundit, $httpBackend, NameSpac
 
     $scope.setLoading = function(v) {
         Toolbar.setLoading(v);
-    }
+    };
 
+    $scope.getMyNotebooks = function(){
+        NotebookCommunication.getMyNotebooks();
+    };
 }
 
 </script>
@@ -45,6 +48,7 @@ var ToolbarDemoCtrl = function($scope, Toolbar, MyPundit, $httpBackend, NameSpac
             <button type="button" class="btn btn-info" ng-click="setLoading(false)">
                 Remove loading status
             </button>
+            <button type="button" class="btn btn-info" ng-click="getMyNotebooks()">Get MyNotebooks</button>
         </div>
     </div>
 
