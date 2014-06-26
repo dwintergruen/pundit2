@@ -82,6 +82,7 @@ describe('Client service', function() {
 
     afterEach(function(){
         angular.element("[data-ng-app='Pundit2']").remove();
+        delete window.punditConfig;
     });
 
     it('should initialize vocab selectors, fix root node class and emit boot event', function(){

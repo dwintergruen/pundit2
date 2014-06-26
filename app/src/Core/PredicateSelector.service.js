@@ -3,10 +3,13 @@ angular.module('Pundit2.Core')
     
     var predicateSelector = new BaseComponent("PredicateSelector");
 
+    // get all items from urls passed with pundit configuration object
+    // inside vocabularies array
     predicateSelector.getAllVocabularies = function() {
         var urls = Config.vocabularies,
             result = [],
             promise = $q.defer();
+            
         predicateSelector.log("Loading predicates from", urls);
 
         var predPromises = [];
@@ -27,7 +30,7 @@ angular.module('Pundit2.Core')
         return promise.promise;
     };
 
-    // get all items
+    // make a jsonp to get all items from url
     // remove unecessary properties
     // reneme some propeties as pundit2 conventions
     predicateSelector.getRelations = function(url){
@@ -43,7 +46,12 @@ angular.module('Pundit2.Core')
                     return;
                 }
                 if (data.result.vocab_type !== "predicates") {
-                    predicateSelector.log("Response not is a predicates vocabularie"+url);
+                    predicateSelector.log("Response not is a predicates vocabularie "+url);
+                    promise.resolve();
+                    return;
+                }
+                if (typeof(data.result.items) === "undefined") {
+                    predicateSelector.log("Response not have items property "+url);
                     promise.resolve();
                     return;
                 }
