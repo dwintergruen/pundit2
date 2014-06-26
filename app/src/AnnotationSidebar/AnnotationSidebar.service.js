@@ -253,7 +253,9 @@ angular.module('Pundit2.AnnotationSidebar')
     };
 
     // TODO: take startPosition from element in sidebar
+    // TODO: take toolbar height from service
     var startPosition = 70;
+    var toolbarHeight = 30;
     var annotationPosition = [];
 
     // Contains the values ​​of active filters
@@ -473,7 +475,7 @@ angular.module('Pundit2.AnnotationSidebar')
                     }
 
                     if (typeof(currentFragment) !== 'undefined'){
-                        var top = angular.element('.'+currentFragment).offset().top;
+                        var top = angular.element('.'+currentFragment).offset().top - toolbarHeight;
                         annotationHeigth = annotationSidebar.options.annotationHeigth;
                         if (optCheck && optId === annotation.id){
                             annotationHeigth = optHeight;
