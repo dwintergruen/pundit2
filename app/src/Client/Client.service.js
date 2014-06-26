@@ -378,9 +378,8 @@ angular.module('Pundit2.Client')
 
                 if (value === true) {
                     MyItems.getAllItems();
-                    NotebookCommunication.getMyNotebooks().then(function(){
-                        NotebookCommunication.getCurrent();
-                    });
+                    NotebookCommunication.getMyNotebooks();
+                    NotebookCommunication.getCurrent();
                 }
 
                 // Now that we know if we're logged in or not, we can download the right
@@ -433,9 +432,8 @@ angular.module('Pundit2.Client')
             ItemsExchange.wipe();
             AnnotationsExchange.wipe();
 
-            NotebookCommunication.getMyNotebooks().then(function(){
-                NotebookCommunication.getCurrent();
-            });
+            NotebookCommunication.getMyNotebooks();
+            NotebookCommunication.getCurrent();
 
             // There could be private annotations we want to show, get them again
             AnnotationsCommunication.getAnnotations();

@@ -7,7 +7,7 @@ angular.module('Pundit2.Communication')
 
         var notebookCommunication = new BaseComponent("NotebookCommunication");
 
-
+        // TODO use a finally instead of a $q.all
         notebookCommunication.getMyNotebooks = function() {
             var promise = $q.defer();
             notebookCommunication.log('Getting my notebooks from the server');
@@ -83,6 +83,7 @@ angular.module('Pundit2.Communication')
                 }).success(function(data) {
                     Toolbar.setLoading(false);
                     notebookCommunication.log(data.NotebookID+' is the current notebook');
+                    // TODO check if exist inside notebookExchange otherwise get metadata from server ?
                     NotebookExchange.setCurrentNotebooks(data.NotebookID);
                     promise.resolve(data.NotebookID);
                 }).error(function(msg) {

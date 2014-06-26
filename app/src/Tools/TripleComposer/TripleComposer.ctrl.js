@@ -136,13 +136,21 @@ angular.module('Pundit2.TripleComposer')
                         });
                     }                    
 
+                    // TODO if is rejected ???
                     new Annotation(data.AnnotationID).then(function(){
-                        NotebookExchange.getCurrentNotebooks().addAnnotation(data.AnnotationID);
+                        var currentNotebook = NotebookExchange.getCurrentNotebooks();
+                        if (typeof(currentNotebook) !== 'undefined') {
+                            // TODO why is undefined ? need to add a promise? or retry to download
+                            currentNotebook.addAnnotation(data.AnnotationID);
+                        }
                         Consolidation.consolidateAll();
+                    }, function(){
+                        // rejected, impossible to download annotation from server
+                        console.log("Error: impossible to get annotation from server after save");
                     });
                 }).error(function(msg) {
                     // TODO
-                    console.log(msg);
+                    console.log("Error: impossible to save annotation", msg);
                     // if you have gone at least 500ms
                     if (promiseResolved) {
                         updateMessagge(TripleComposer.options.notificationErrorMsg, TripleComposer.options.notificationMsgTime, true);

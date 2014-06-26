@@ -1,13 +1,17 @@
 angular.module('Pundit2.Communication')
     .service('NotebookExchange', function(BaseComponent) {
 
+        // TODO what appens if i getCurrentNotebook to add an annotation
+        // and the current notebook is undefined? need to add a promise?
+        // or download all annotation and notebook after a new annotation ?
+
         var notebookExchange = new BaseComponent("NotebookExchange");
 
         var nsList = [],
             nsListById = {},
             myNsList = [],
             myNsListById = {},
-            currentId;
+            currentId = null;
 
         notebookExchange.wipe = function() {
             notebookExchange.log('Wiping every loaded notebooks.');
@@ -101,7 +105,9 @@ angular.module('Pundit2.Communication')
         };
 
         notebookExchange.getCurrentNotebooks = function() {
-            return nsListById[currentId];
+            if (currentId !== null){
+                return nsListById[currentId];    
+            }            
         };
 
         notebookExchange.setCurrentNotebooks = function(notebookID) {
