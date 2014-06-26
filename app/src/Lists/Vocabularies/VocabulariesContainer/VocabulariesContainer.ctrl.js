@@ -10,7 +10,7 @@ angular.module('Pundit2.Vocabularies')
 
     $scope.message = {
         flag: true,
-        text: "I'm a welcome message"
+        text: "Enter text to search in the vocabularies."
     };
 
     // read by <item> directive (in Lists/itemList.tmpl.html)

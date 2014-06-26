@@ -17,7 +17,7 @@ angular.module('Pundit2.MyNotebooksContainer')
 
     $scope.message = {
         flag: true,
-        text: "I'm a welcome message"
+        text: "No notebooks found."
     };
 
     // notebook property used to compare
@@ -64,9 +64,9 @@ angular.module('Pundit2.MyNotebooksContainer')
 
         // update text messagge
         if(str === ''){
-            $scope.message.text = "I'm a welcome message";
+            $scope.message.text = "No notebook found.";
         } else {
-            $scope.message.text = "No item found to: "+str;
+            $scope.message.text = "No notebook found to: "+str;
         }
     };
 
