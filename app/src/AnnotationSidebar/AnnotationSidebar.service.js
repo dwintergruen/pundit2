@@ -252,6 +252,7 @@ angular.module('Pundit2.AnnotationSidebar')
         types: {}
     };
 
+    // TODO: take startPosition from element in sidebar
     var startPosition = 70;
     var annotationPosition = [];
 
@@ -392,9 +393,11 @@ angular.module('Pundit2.AnnotationSidebar')
     };
 
     var orderAndSetPos = function(){
-
         var pos;
         var currentTop;
+
+        startPosition = 70;
+        annotationSidebar.annotationPositionReal = {};
 
         annotationPosition.sort(function(a, b){
             return a.top-b.top;
@@ -404,63 +407,88 @@ angular.module('Pundit2.AnnotationSidebar')
         for (var ann in pos){
             annotationSidebar.annotationPositionReal[pos[ann].id] = {
                 id: pos[ann].id, 
-                top: pos[ann].top, 
+                top: pos[ann].top,
+                height: pos[ann].height,
                 broken: pos[ann].broken
             };
-        }
 
-        pos = annotationSidebar.annotationPositionReal;
-        for (var ann in pos){
-            if(!pos[ann].broken){
-                currentTop = pos[ann].top;
+            currentTop = pos[ann].top;
 
-                if (currentTop > startPosition){
-                    annotationSidebar.annotationPositionReal[ann].top = currentTop;
-                    startPosition = currentTop + annotationSidebar.options.annotationHeigth;
-                } else{
-                    annotationSidebar.annotationPositionReal[ann].top = startPosition;
-                    startPosition += annotationSidebar.options.annotationHeigth;
-                }
+            if (currentTop > startPosition){
+                annotationSidebar.annotationPositionReal[pos[ann].id].top = currentTop;
+                startPosition = currentTop + pos[ann].height;
+            } else{
+                annotationSidebar.annotationPositionReal[pos[ann].id].top = startPosition;
+                startPosition += pos[ann].height;
             }
         }
 
     };
 
-    var setAnnotationPosition = function(annotations) {
-        var up = 0;
-        startPosition = 70;
+    var setAnnotationsPosition = function(optId, optHeight) {
 
-        angular.forEach(annotations, function(annotation) {
-            var graph = annotation.graph;
-            var firstSubjectUri;
-            var currentItem;
-            var currentId;
+        var annotations = (annotationSidebar.needToFilter() ? state.filteredAnnotations : state.allAnnotations);
+        var optCheck = false;
+        var annotationHeigth = 0;
 
-            var currentFragment;
+        if(annotations.length>0){
+            startPosition = 70;
+            annotationPosition = [];
 
-            if (annotation.isBroken()){
-                annotationPosition.push({id: annotation.id, top: startPosition, broken: true});
-                startPosition += annotationSidebar.options.annotationHeigth;
-            } else{
-                for (firstSubjectUri in graph){
-                    break;
-                }
-
-                currentItem = ItemsExchange.getItemByUri(firstSubjectUri);
-
-                if (Consolidation.isConsolidated(currentItem)){
-                    currentFragment = TextFragmentAnnotator.getFragmentIdByUri(firstSubjectUri);
-                } else{
-                    currentFragment = undefined;
-                }
-
-                if (typeof(currentFragment) !== 'undefined'){
-                    var top = angular.element('.'+currentFragment).offset().top;
-                    annotationPosition.push({id: annotation.id, top: top, broken: false});
-                }
+            if (typeof(optId) !== 'undefined' && typeof(optHeight) !== 'undefined'){
+                optCheck = true;
             }
-        });
-        orderAndSetPos();
+
+            angular.forEach(annotations, function(annotation) {
+                var graph = annotation.graph;
+                var firstSubjectUri;
+                var currentItem;
+                var currentId;
+
+                var currentFragment;
+
+                if (annotation.isBroken()){
+                    annotationHeigth = annotationSidebar.options.annotationHeigth;
+                    if (optCheck && optId === annotation.id){
+                        annotationHeigth = optHeight;
+                    }
+
+                    annotationPosition.push({
+                        id: annotation.id, 
+                        top: startPosition,
+                        height: annotationHeigth,
+                        broken: true
+                    });
+                } else{
+                    for (firstSubjectUri in graph){
+                        break;
+                    }
+
+                    currentItem = ItemsExchange.getItemByUri(firstSubjectUri);
+
+                    if (Consolidation.isConsolidated(currentItem)){
+                        currentFragment = TextFragmentAnnotator.getFragmentIdByUri(firstSubjectUri);
+                    } else{
+                        currentFragment = undefined;
+                    }
+
+                    if (typeof(currentFragment) !== 'undefined'){
+                        var top = angular.element('.'+currentFragment).offset().top;
+                        annotationHeigth = annotationSidebar.options.annotationHeigth;
+                        if (optCheck && optId === annotation.id){
+                            annotationHeigth = optHeight;
+                        }
+                        annotationPosition.push({
+                            id: annotation.id, 
+                            top: top, 
+                            height: annotationHeigth,                        
+                            broken: false
+                        });
+                    }
+                }
+            });
+            orderAndSetPos();
+        }
     };
 
     var setAnnotationInPage = function(annotations) {
@@ -596,6 +624,7 @@ angular.module('Pundit2.AnnotationSidebar')
             }
         });
         setAnnotationInPage(state.filteredAnnotations);
+        setAnnotationsPosition();
         // filtersCount(state.filteredAnnotations); 
         return state.filteredAnnotations;
     };
@@ -622,6 +651,10 @@ angular.module('Pundit2.AnnotationSidebar')
                 }
             );
         }
+    };
+
+    annotationSidebar.setAnnotationPosition = function(id, height){
+        setAnnotationsPosition(id, height);
     };
 
     // Check if some filters are active
@@ -707,7 +740,7 @@ angular.module('Pundit2.AnnotationSidebar')
         var annotations = AnnotationsExchange.getAnnotations();
         state.allAnnotations = angular.copy(annotations);
         setFilterElements(state.allAnnotations);
-        setAnnotationPosition(state.allAnnotations);
+        setAnnotationsPosition();
     });
 
 

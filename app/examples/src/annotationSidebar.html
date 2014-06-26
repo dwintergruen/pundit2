@@ -21,7 +21,7 @@
 
     var AnnotationSidebarDemoCtrl = function($rootScope, $scope, $q, AnnotationSidebar,
                                              AnnotationsExchange, Consolidation, ItemsExchange,
-                                             Annotation, TextFragmentAnnotator) {
+                                             Annotation, AnnotationsCommunication,  TextFragmentAnnotator) {
 
         $scope.toogle = function(){
             AnnotationSidebar.toggle();
@@ -39,28 +39,30 @@
 
         // ---
 
-        var uris = Consolidation.getAvailableTargets();
-        console.log('Available targets', uris);
+        // var uris = Consolidation.getAvailableTargets();
+        // console.log('Available targets', uris);
 
-        var annPromise = AnnotationsExchange.searchByUri(uris);
-        annPromise.then(function(ids) {
-            console.log('Found '+ids.length+' annotations on the current page.', ids);
+        // var annPromise = AnnotationsExchange.searchByUri(uris);
+        // annPromise.then(function(ids) {
+        //     console.log('Found '+ids.length+' annotations on the current page.', ids);
 
-            var annPromises = [];
-            for (var i=0; i<ids.length; i++) {
-                var a = new Annotation(ids[i]);
-                annPromises.push(a);
-            }
-            $q.all(annPromises).then(function(ret) {
-                console.log("Retrieved annotations details searching by URIs", ret);
-                // Consolidation.consolidate(ItemsExchange.getItems());
-                Consolidation.consolidateAll();
-                $scope.tempannotations = JSON.stringify(ret, null, "  ");
-            });
+        //     var annPromises = [];
+        //     for (var i=0; i<ids.length; i++) {
+        //         var a = new Annotation(ids[i]);
+        //         annPromises.push(a);
+        //     }
+        //     $q.all(annPromises).then(function(ret) {
+        //         console.log("Retrieved annotations details searching by URIs", ret);
+        //         // Consolidation.consolidate(ItemsExchange.getItems());
+        //         Consolidation.consolidateAll();
+        //         $scope.tempannotations = JSON.stringify(ret, null, "  ");
+        //     });
 
-        }, function() {
-        // TODO: cant search for annotations? OUCH
-        });
+        // }, function() {
+        // // TODO: cant search for annotations? OUCH
+        // });
+
+        AnnotationsCommunication.getAnnotations();
 
         $rootScope.$emit('pundit-boot-done');
         // ---

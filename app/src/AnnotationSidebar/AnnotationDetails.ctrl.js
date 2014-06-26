@@ -1,10 +1,11 @@
 /*jshint strict: false*/
 
 angular.module('Pundit2.AnnotationSidebar')
-.controller('AnnotationDetailsCtrl', function($scope, AnnotationSidebar, AnnotationDetails, 
+.controller('AnnotationDetailsCtrl', function($scope, $element, AnnotationSidebar, AnnotationDetails, 
         AnnotationsExchange, NotebookExchange, ItemsExchange, TextFragmentAnnotator, Toolbar, TypesHelper) {
 
     var currentId = $scope.id;
+    var currentHeight = angular.element($element).find(".pnd-annotation-details").height();
     AnnotationDetails.addAnnotationReference($scope);
 
     $scope.annotation = AnnotationDetails.getAnnotationDetails(currentId);
@@ -29,7 +30,18 @@ angular.module('Pundit2.AnnotationSidebar')
     $scope.toggleAnnotation = function(){
         $scope.metaInfo = false;
         AnnotationDetails.toggleAnnotationView(currentId);
+        if (!$scope.annotation.expanded){
+            AnnotationSidebar.setAnnotationPosition(currentId, currentHeight)
+        }
     };
+
+    $scope.$watch(function() {
+        return angular.element($element).find(".pnd-annotation-details").height();
+    }, function(newHeight, oldHeight) {
+        if (newHeight!=oldHeight && $scope.annotation.expanded){
+            AnnotationSidebar.setAnnotationPosition(currentId, newHeight);
+        }
+    });
 
     $scope.toggleObjectInfo = function(type, value){
         if(type !== 'uri'){
