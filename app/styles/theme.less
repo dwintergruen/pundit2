@@ -204,6 +204,14 @@
 	padding: 0px;
 }
 
+.dropdown-menu li,
+.dropdown-menu li a {
+	max-width: 250px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
 .dropdown-menu > li > a:hover,
 .dropdown-menu > li > a:focus {
   //#gradient > .vertical(@start-color: @dropdown-link-hover-bg; @end-color: darken(@dropdown-link-hover-bg, 5%));
@@ -220,6 +228,12 @@
   margin: 0px;
 }
 
+.dropdown-menu .dropdown-header {
+	padding: 3px 10px;
+	white-space: normal;
+	color: @gray-darker; 
+	font-size: inherit;
+}
 
 //
 // Navbar
