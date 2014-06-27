@@ -44,7 +44,6 @@ angular.module('Pundit2.Communication')
                             promise.resolve(notebooks);
                             notebookCommunication.log("Retrieved all of my notebooks");
                         }, function() {
-                            console.log('My notebooks all error?! :(');
                             promise.reject('some other error?');
                         });
 

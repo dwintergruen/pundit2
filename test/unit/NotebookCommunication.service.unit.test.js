@@ -7,7 +7,8 @@ describe('Notebook Communication service', function() {
         $compile,
         Notebook,
         NotebookExchange,
-        MyPundit;
+        MyPundit,
+        $log;
 
     var userLoggedIn = {
         loginStatus: 1
@@ -19,7 +20,7 @@ describe('Notebook Communication service', function() {
 
     beforeEach(module('Pundit2'));
 
-    beforeEach(inject(function($injector, _$rootScope_, _$httpBackend_, _$compile_, _Notebook_, _NotebookExchange_, _MyPundit_){
+    beforeEach(inject(function($injector, _$rootScope_, _$httpBackend_, _$compile_, _Notebook_, _NotebookExchange_, _MyPundit_, _$log_){
         NotebookCommunication = $injector.get('NotebookCommunication');
         NameSpace = $injector.get('NameSpace');
         $rootScope = _$rootScope_;
@@ -28,6 +29,7 @@ describe('Notebook Communication service', function() {
         Notebook = _Notebook_;
         NotebookExchange = _NotebookExchange_;
         MyPundit = _MyPundit_;
+        $log = _$log_;
 
     }));
 
@@ -382,7 +384,7 @@ describe('Notebook Communication service', function() {
 
     });
 
-    it("should reject a delete notebook", function() {
+    it("should reject delete notebook promise", function() {
 
         var testId = 'simple1ID';
         var errorMessage = "server get error";
@@ -407,6 +409,295 @@ describe('Notebook Communication service', function() {
 
     });
 
+    it("should reject edit notebook promise", function() {
 
+        var testId = 'simple1ID';
+        var errorMessage = "server get error";
+        var data = {"NotebookName": 'edited name'};
+
+        // http mock for login
+        $httpBackend.whenGET(NameSpace.get('asUsersCurrent')).respond(userLoggedIn);
+        //$httpBackend.whenDELETE(NameSpace.get('asNB'+"/"+testId)).respond(500, errorMessage);
+        $httpBackend.whenPUT(NameSpace.get('asNBEditMeta',{id: testId}), data).respond(500, errorMessage);
+
+        // get login
+        MyPundit.login().then(function(){
+            // delete the notebook
+            NotebookCommunication.setName(testId, data.NotebookName).then(function(){
+
+            }, function(msg){
+                // promise should be resolved with error message
+                expect(msg).toBe(errorMessage);
+            });
+
+        });
+
+        $httpBackend.flush();
+
+    });
+
+    it("should reject set private notebook promise", function() {
+
+        var testId = 'simple1ID';
+        var errorMessage = "server get error";
+
+        // http mock for login
+        $httpBackend.whenGET(NameSpace.get('asUsersCurrent')).respond(userLoggedIn);
+        $httpBackend.whenPUT(NameSpace.get('asNBPrivate'), {id: testId}).respond(500, errorMessage);
+
+        // get login
+        MyPundit.login().then(function(){
+            // delete the notebook
+            NotebookCommunication.setPrivate(testId).then(function(){
+
+            }, function(msg){
+                // promise should be resolved with error message
+                expect(msg).toBe(errorMessage);
+            });
+
+        });
+
+        $httpBackend.flush();
+
+    });
+
+    it("should reject set public notebook promise", function() {
+
+        var testId = 'simple1ID';
+        var errorMessage = "server get error";
+
+        // http mock for login
+        $httpBackend.whenGET(NameSpace.get('asUsersCurrent')).respond(userLoggedIn);
+        $httpBackend.whenPUT(NameSpace.get('asNBPublic'), {id: testId}).respond(500, errorMessage);
+
+        // get login
+        MyPundit.login().then(function(){
+            // delete the notebook
+            NotebookCommunication.setPublic(testId).then(function(){
+
+            }, function(msg){
+                // promise should be resolved with error message
+                expect(msg).toBe(errorMessage);
+            });
+
+        });
+
+        $httpBackend.flush();
+
+    });
+
+    it("should reject get current notebook promise", function() {
+
+        var errorMessage = "server get error";
+        $log.reset();
+
+        // http mock for login
+        $httpBackend.whenGET(NameSpace.get('asUsersCurrent')).respond(userLoggedIn);
+        $httpBackend.whenGET(NameSpace.get('asNBCurrent')).respond(500, errorMessage);
+
+        // get login
+        MyPundit.login().then(function(){
+            // delete the notebook
+            NotebookCommunication.getCurrent().then(function(){
+
+            }, function(msg){
+                // promise should be resolved with error message
+                expect(msg).toBe(errorMessage);
+            });
+
+        });
+
+        $httpBackend.flush();
+
+    });
+
+    it("should reject set current notebook promise", function() {
+
+        var testId = 'simple1ID';
+        var errorMessage = "server get error";
+        $log.reset();
+
+        // http mock for login
+        $httpBackend.whenGET(NameSpace.get('asUsersCurrent')).respond(userLoggedIn);
+        $httpBackend.whenPUT(NameSpace.get('asNBCurrent'+"/"+testId)).respond(500, errorMessage);
+
+        // get login
+        MyPundit.login().then(function(){
+            // delete the notebook
+            NotebookCommunication.setCurrent(testId).then(function(){
+
+            }, function(msg){
+                // promise should be resolved with error message
+                expect(msg).toBe(errorMessage);
+            });
+
+        });
+
+        $httpBackend.flush();
+
+    });
+
+    it("should reject create notebook promise", function() {
+
+        var errorMessage = "server get error";
+
+        var name = 'myNotebook';
+
+        var header = {"Accept":"application/json","Content-Type":"application/json;charset=UTF-8;"};
+        var data = {"NotebookName": 'myNotebook'};
+
+        // http mock for login
+        $httpBackend.whenGET(NameSpace.get('asUsersCurrent')).respond(userLoggedIn);
+        // catch http request for notebook creation
+        $httpBackend
+            .expectPOST(NameSpace.get('asNB'), data, header)
+            .respond(500, errorMessage);
+
+        // get login
+        MyPundit.login().then(function(){
+            // delete the notebook
+            NotebookCommunication.createNotebook(name).then(function(){
+
+            }, function(msg){
+                // promise should be resolved with error message
+                expect(msg).toBe("Error from server while retrieving list of my notebooks: "+500);
+
+            });
+
+        });
+
+        $httpBackend.flush();
+    });
+
+    it("should reject create notebook promise when create method return an empty notebook", function() {
+
+        var name = 'myNotebook';
+
+        var header = {"Accept":"application/json","Content-Type":"application/json;charset=UTF-8;"};
+        var data = {"NotebookName": 'myNotebook'};
+
+        // http mock for login
+        $httpBackend.whenGET(NameSpace.get('asUsersCurrent')).respond(userLoggedIn);
+        // catch http request for notebook creation
+        $httpBackend
+            .expectPOST(NameSpace.get('asNB'), data, header)
+            .respond({});
+
+        // get login
+        MyPundit.login().then(function(){
+            // delete the notebook
+            NotebookCommunication.createNotebook(name).then(function(){
+
+            }, function(msg){
+                // promise should be resolved with error message
+                expect(msg).toBe('some sort of error?');
+
+            });
+
+        });
+
+        $httpBackend.flush();
+    });
+
+    it("should reject get my notebook promise", function() {
+
+        var errorMessage = "server get error";
+
+        // http mock for login
+        $httpBackend.whenGET(NameSpace.get('asUsersCurrent')).respond(userLoggedIn);
+        $httpBackend.whenGET(NameSpace.get('asNBOwned')).respond(500);
+
+        // get login
+        MyPundit.login().then(function(){
+            // delete the notebook
+            NotebookCommunication.getMyNotebooks().then(function(){
+
+            }, function(msg){
+                // promise should be resolved with error message
+                expect(msg).toBe("Error from server while retrieving list of my notebooks: "+500);
+
+            });
+
+        });
+
+        $httpBackend.flush();
+    });
+
+    it("should reject get my notebook promise when get my notebooks return empty response", function() {
+
+        var errorMessage = "server get error";
+
+        // http mock for login
+        $httpBackend.whenGET(NameSpace.get('asUsersCurrent')).respond(userLoggedIn);
+        $httpBackend.whenGET(NameSpace.get('asNBOwned')).respond('');
+
+        // get login
+        MyPundit.login().then(function(){
+            // delete the notebook
+            NotebookCommunication.getMyNotebooks().then(function(){
+
+            }, function(msg){
+                // promise should be resolved with error message
+                expect(msg).toBe("some sort of error?");
+
+            });
+
+        });
+
+        $httpBackend.flush();
+    });
+
+    it("should reject get my notebook promise when return empty notebooks response", function() {
+
+        var errorMessage = "server get error";
+
+        // http mock for login
+        $httpBackend.whenGET(NameSpace.get('asUsersCurrent')).respond(userLoggedIn);
+        $httpBackend.whenGET(NameSpace.get('asNBOwned')).respond({});
+
+        // get login
+        MyPundit.login().then(function(){
+            // delete the notebook
+            NotebookCommunication.getMyNotebooks().then(function(){
+
+            }, function(msg){
+                // promise should be resolved with error message
+                expect(msg).toBe("some sort of error?");
+
+            });
+
+        });
+
+        $httpBackend.flush();
+    });
+
+    it("should reject get my notebook promise when new notebook call is rejected", function() {
+
+        var data = {
+            NotebookIDs: ["myTestId"]
+        };
+
+        // http mock for login
+        $httpBackend.whenGET(NameSpace.get('asUsersCurrent')).respond(userLoggedIn);
+        $httpBackend.whenGET(NameSpace.get('asNBOwned')).respond(data);
+        $httpBackend
+            .whenGET(NameSpace.get('asNBMeta', {id: "myTestId"}))
+            .respond(500);
+
+        // get login
+        MyPundit.login().then(function(){
+            // delete the notebook
+            NotebookCommunication.getMyNotebooks().then(function(){
+
+            }, function(msg){
+                // promise should be resolved with error message
+                expect(msg).toBe("some other error?");
+
+            });
+
+        });
+
+        $httpBackend.flush();
+    });
 
 });
