@@ -12,12 +12,17 @@
 
     var MyItemsDemoCtrl = function($scope, MyItems, MyPundit) {
 
-        MyPundit.login().then(function(value) {
-           console.log("Is logged in is "+value);
-           MyItems.getAllItems();
-        }, function() {
-           console.log("Error: "+value);
-        });
+        $scope.login = function() {
+            MyPundit.login().then(function(value) {
+               console.log("Is logged in is "+value);
+            }, function() {
+               console.log("Error: "+value);
+            });
+        };
+
+        $scope.getMyItems = function() {
+            MyItems.getAllItems();
+        };
 
     };
 
@@ -25,6 +30,9 @@
 
 <div data-ng-app="Pundit2" class="pnd-wrp" ng-controller="MyItemsDemoCtrl">
     <my-items-container></my-items-container>
+
+    <button type="button" class="btn btn-success pnd-test-login" ng-click="login()">Login</button>
+    <button type="button" class="btn btn-info pnd-test-get-my-items" ng-click="getMyItems()">Get MyItems</button>
 </div>
 
 <!-- buildexamples:section footer --><!-- /buildexamples -->

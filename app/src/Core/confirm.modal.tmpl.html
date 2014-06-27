@@ -1,4 +1,4 @@
-<div class="modal pnd-login-modal-container" tabindex="-1" role="dialog">
+<div class="modal pnd-confirm-modal-container" tabindex="-1" role="dialog">
 
     <div class="modal-dialog">
 
@@ -8,13 +8,13 @@
                 <h4 class="modal-title"> {{titleMessage}} </h4>
             </div>
 
-            <div class="modal-body pnd-login-modal-body">
+            <div class="modal-body pnd-confirm-modal-body">
                 {{notifyMessage}}
             </div>
 
-            <div class="modal-footer pnd-login-modal-footer">
-                <button type="button" class="btn btn-default pnd-login-modal-cancel" ng-click="cancel()">Cancel</button>
-                <button type="button" class="btn btn-default pnd-login-modal-openPopUp" ng-click="confirm()">Confirm</button>
+            <div class="modal-footer pnd-confirm-modal-footer">
+                <button type="button" class="btn btn-default pnd-confirm-modal-cancel" ng-click="cancel()">Cancel</button>
+                <button type="button" class="btn btn-default pnd-confirm-modal-confirm" ng-click="confirm()">Confirm</button>
             </div> <!-- end modal-footer -->
 
         </div> <!-- end modal content-->
