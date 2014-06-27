@@ -23,16 +23,26 @@
 	input[type="radio"],
 	input[type="checkbox"] {
 		margin: 0px;
+		margin-left: -18px !important;
 		padding: 0px;
 		}
 	  
 	.radio + .radio,
 	.checkbox + .checkbox {
-		margin-top: 10px;
+		margin-top: 0px;
 		}
-		  
+		
+	.radio {
+		display: inline-block;
+		}
+		
+	.checkbox {
+		margin: 5px 0px 5px 0px;
+		}
+		
 	.radio,
 	.checkbox {
+		margin-right: 3px;
 			
 		&.pnd-notebook-composer-element-active {
 			color: @brand-success;
