@@ -23,6 +23,10 @@ describe('Toolbar service', function() {
         $compile = _$compile_;
     }));
 
+    afterEach(function(){
+        angular.element('toolbar').remove();
+    });
+
     var compileToolbarDirective = function(){
         var elem = $compile('<toolbar></toolbar>')($rootScope);
         $rootScope.$digest();
@@ -147,6 +151,44 @@ describe('Toolbar service', function() {
 
         // at this time callback should be executed
         expect(callbackIsExecuted).toBe(true);
+    });
+
+    it("should correctly set loading status", function(){
+        Toolbar.setLoading(true);
+        expect(Toolbar.isLoading()).toBe(true);
+
+        Toolbar.setLoading(false);
+        expect(Toolbar.isLoading()).toBe(false);
+    });
+
+    it("should correctly support multiple loading operation", function(){
+        // add two loading operation
+        Toolbar.setLoading(true);
+        Toolbar.setLoading(true);
+        expect(Toolbar.isLoading()).toBe(true);
+
+        // abort one operation
+        Toolbar.setLoading(false);
+        // loading end when all operation end
+        expect(Toolbar.isLoading()).toBe(true);
+        // now all operation is finished
+        Toolbar.setLoading(false);
+        expect(Toolbar.isLoading()).toBe(false);
+    });
+
+    it("should correctly update UI when is in loading status", function(){
+        var elem = compileToolbarDirective();
+
+        Toolbar.setLoading(true);
+        expect(Toolbar.isLoading()).toBe(true);
+        $rootScope.$digest();
+        expect(angular.element(elem).find('.pnd-toolbar-loading-button').length).toBe(1);
+        expect(angular.element(elem).find('.pnd-toolbar-loading-button.ng-hide').length).toBe(0);
+
+        Toolbar.setLoading(false);
+        expect(Toolbar.isLoading()).toBe(false);
+        $rootScope.$digest();
+        expect(angular.element(elem).find('.pnd-toolbar-loading-button.ng-hide').length).toBe(1);
     });
 
 });
