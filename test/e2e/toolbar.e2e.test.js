@@ -132,6 +132,52 @@ describe("The toolbar module", function() {
 
     });
 
+    it('should correctly open and close dashboard', function() {
+
+        p.get('/app/examples/toolbar.html');
+
+        // by default dashboard is close
+        p.findElements(protractor.By.css('.pnd-dashboard-container.ng-hide')).then(function(d){
+            expect(d.length).toBe(1);
+        });
+
+        // open dashboard
+        p.findElement(protractor.By.css('.pnd-toolbar-dashboard-button')).click();
+        p.findElements(protractor.By.css('.pnd-dashboard-container.ng-hide')).then(function(d){
+            expect(d.length).toBe(0);
+        });
+
+        // close dashboard
+        p.findElement(protractor.By.css('.pnd-toolbar-dashboard-button')).click();
+        p.findElements(protractor.By.css('.pnd-dashboard-container.ng-hide')).then(function(d){
+            expect(d.length).toBe(1);
+        });
+
+    });
+
+    it('should correctly open and close sidebar', function() {
+
+        p.get('/app/examples/toolbar.html');
+
+        // by default siderbar is collapsed
+        p.findElements(protractor.By.css('annotation-sidebar > .pnd-annotation-sidebar-collapsed')).then(function(d){
+            expect(d.length).toBe(1);
+        });
+
+        // open sidebar
+        p.findElement(protractor.By.css('.pnd-toolbar-annotations-button')).click();
+        p.findElements(protractor.By.css('annotation-sidebar > .pnd-annotation-sidebar-expanded')).then(function(d){
+            expect(d.length).toBe(1);
+        });
+
+        // close sidebar
+        p.findElement(protractor.By.css('.pnd-toolbar-annotations-button')).click();
+        p.findElements(protractor.By.css('annotation-sidebar > .pnd-annotation-sidebar-collapsed')).then(function(d){
+            expect(d.length).toBe(1);
+        });
+
+    });
+
     var httpMock = function() {
         angular.module('httpBackendMock', ['ngMockE2E'])
             .run(function($httpBackend, NameSpace) {
@@ -232,6 +278,5 @@ describe("The toolbar module", function() {
         });
 
     });
-
 
 });

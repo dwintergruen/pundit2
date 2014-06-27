@@ -1,4 +1,4 @@
-ddescribe("My Items interaction", function() {
+describe("My Items interaction", function() {
 
     var httpMock = function() {
         angular.module('httpBackendMock', ['ngMockE2E'])

@@ -35,8 +35,10 @@ var ToolbarDemoCtrl = function($scope, Toolbar, MyPundit, NotebookCommunication)
 
 </script>
 <div data-ng-app="Pundit2" class="pnd-wrp">
+    <toolbar></toolbar>
+    <dashboard></dashboard>
+    <annotation-sidebar></annotation-sidebar>
     <div class="container">
-        <toolbar></toolbar>
         
         <div ng-controller="ToolbarDemoCtrl">
             <button type="button" class="btn btn-success btn-example-login" ng-show="!getStatus()" ng-click="login()">Log in</button>
@@ -50,6 +52,7 @@ var ToolbarDemoCtrl = function($scope, Toolbar, MyPundit, NotebookCommunication)
             </button>
             <button type="button" class="btn btn-info pnd-test-get-my-notebooks" ng-click="getMyNotebooks()">Get MyNotebooks</button>
         </div>
+
     </div>
 
 </div>
