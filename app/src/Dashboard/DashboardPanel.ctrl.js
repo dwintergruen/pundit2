@@ -87,7 +87,8 @@ angular.module('Pundit2.Dashboard')
 
         var h = Dashboard.getContainerHeight(),
             elInner = angular.element($element).find('.pnd-inner .pnd-tab-content'),
-            elInnerScrollable = angular.element($element).find('.pnd-inner-scrollable');
+            elInnerScrollable = angular.element($element).find('.pnd-inner-scrollable'),
+            elInnerScrollableNoHeader = angular.element($element).find('.pnd-inner-scrollable.pnd-inner-no-tabs');
 
         // .pnd-tab-header height
         h -= Dashboard.options.panelTabsHeight;
@@ -106,9 +107,15 @@ angular.module('Pundit2.Dashboard')
             h -= Dashboard.options.panelInnerTabsHeight;
 
             elInner.height(h-1);
-        } else if (elInnerScrollable.length > 0) {
+        }
+        if (elInnerScrollable.length > 0) {
             // TODO why -7 ???
             elInnerScrollable.height(h-7);
+        }
+        if (elInnerScrollableNoHeader.length > 0) {
+            // TODO why -7 ???
+            h += Dashboard.options.panelContentHeaderHeight;
+            elInnerScrollableNoHeader.height(h-9);
         }
 
     };
