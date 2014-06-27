@@ -2,7 +2,8 @@
 
 angular.module('Pundit2.AnnotationSidebar')
 .controller('AnnotationDetailsCtrl', function($scope, $element, AnnotationSidebar, AnnotationDetails, 
-        AnnotationsExchange, NotebookExchange, ItemsExchange, TextFragmentAnnotator, Toolbar, TypesHelper) {
+        AnnotationsExchange, AnnotationsCommunication, NotebookExchange, ItemsExchange,
+        TextFragmentAnnotator, Toolbar, TypesHelper) {
 
     var currentId = $scope.id;
     var currentHeight = angular.element($element).find(".pnd-annotation-details").height();
@@ -36,6 +37,10 @@ angular.module('Pundit2.AnnotationSidebar')
         if (!$scope.annotation.expanded){
             AnnotationSidebar.setAnnotationPosition(currentId, currentHeight)
         }
+    };
+
+    $scope.deleteAnnotation = function() {
+        AnnotationsCommunication.deleteAnnotation($scope.annotation.id);
     };
 
     $scope.$watch(function() {

@@ -1,6 +1,6 @@
 angular.module('Pundit2.Communication')
-    .service('AnnotationsCommunication', function(BaseComponent, NameSpace, Toolbar, Consolidation,
-        AnnotationsExchange, Annotation, NotebookExchange, Notebook, $http, $q) {
+    .service('AnnotationsCommunication', function(BaseComponent, NameSpace, Toolbar, Consolidation, MyPundit,
+        AnnotationsExchange, Annotation, NotebookExchange, Notebook, ItemsExchange, Config, $http, $q) {
 
     var annotationsCommunication = new BaseComponent("AnnotationCommunication");
 
@@ -60,6 +60,40 @@ angular.module('Pundit2.Communication')
             annotationsCommunication.err("Could not search for annotations, error from the server: "+msg);
         });
 
+    };
+
+    // delete specified annotation from server
+    // TODO optimize (we must reload all annotation from server? i think that is not necessary)
+    annotationsCommunication.deleteAnnotation = function(annID) {
+
+        if(MyPundit.isUserLogged()){
+            Toolbar.setLoading(true);
+            $http({
+                method: 'DELETE',
+                url: NameSpace.get('asAnn', {id: annID}),
+                withCredentials: true
+            }).success(function(data) {
+                Toolbar.setLoading(false);
+                annotationsCommunication.log("Success annotation: "+annID+" correctly deleted");
+                // remove annotation from relative notebook
+                var notebookID = AnnotationsExchange.getAnnotationById(annID).isIncludedIn;
+                var nt = NotebookExchange.getNotebookById(notebookID);
+                if (typeof(nt) !== 'undefined') {
+                    nt.removeAnnotation(annID);
+                }
+                // wipe page items
+                ItemsExchange.wipeContainer(Config.modules.PageItemsContainer.container);
+                // wipe all annotations (are chached)
+                AnnotationsExchange.wipe();
+                // reload all annotation
+                annotationsCommunication.getAnnotations();
+            }).error(function(data, statusCode) {
+                Toolbar.setLoading(false);
+                annotationsCommunication.log("Error impossible to delete annotation: "+annID+" please retry.");
+            });
+        } else {
+            annotationsCommunication.log("Error impossible to delete annotation: "+annID+" you are not logged");
+        }
     };
 
     return annotationsCommunication;

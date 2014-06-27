@@ -35,6 +35,17 @@ angular.module('Pundit2.Communication')
         this.includes.push(annID);
     };
 
+    Notebook.prototype.removeAnnotation = function(annID) {
+        if (typeof(this.includes) === 'undefined') {
+            return false;
+        }
+        var index = this.includes.indexOf(annID);
+        if (index > -1) {
+            this.includes.splice(index, 1);
+            return true;
+        }
+    };
+
     Notebook.prototype.getIcon = function() {
         return notebookComponent.options.iconDefault;
     };
