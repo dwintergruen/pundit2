@@ -83,6 +83,8 @@ angular.module('Pundit2.Dashboard')
     // Multiple cases:
     // .pnd-inner-scrollable (eg: Preview): larger scrollable area
     // .pnd-inner .pnd-tab-content (eg: Items containers): tinier scrollable area
+    // TODO: optimize, resize only showed content not all panel content
+    // and not use angular.element inside watcher, store a element reference and update it
     $scope.setTabContentHeight = function() {
 
         var h = Dashboard.getContainerHeight(),
