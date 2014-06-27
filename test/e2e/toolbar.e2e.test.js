@@ -109,6 +109,29 @@ describe("The toolbar module", function() {
         });
     };
 
+    it('should correctly show loading button', function() {
+
+        p.get('/app/examples/toolbar.html');
+
+        // click set loading btn
+        p.findElement(protractor.By.css('.pnd-test-set-loading')).click();
+
+        p.findElements(protractor.By.css('.pnd-toolbar-loading-button')).then(function(buttons) {
+            expect(buttons.length).toBe(1);
+        });
+        p.findElements(protractor.By.css('.pnd-toolbar-loading-button.ng-hide')).then(function(buttons) {
+            expect(buttons.length).toBe(0);
+        });
+
+        // click remove loading btn
+        p.findElement(protractor.By.css('.pnd-test-remove-loading')).click();
+
+        p.findElements(protractor.By.css('.pnd-toolbar-loading-button.ng-hide')).then(function(buttons) {
+            expect(buttons.length).toBe(1);
+        });
+
+    });
+
     var httpMock = function() {
         angular.module('httpBackendMock', ['ngMockE2E'])
             .run(function($httpBackend, NameSpace) {
@@ -207,8 +230,6 @@ describe("The toolbar module", function() {
         p.findElements(protractor.By.css('toolbar .pnd-toolbar-notebook-menu-button .dropdown-menu .pnd-icon-lock')).then(function(icons) {
             expect(icons.length).toBe(1);
         });
-
-        p.sleep(10000)
 
     });
 

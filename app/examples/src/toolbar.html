@@ -42,10 +42,10 @@ var ToolbarDemoCtrl = function($scope, Toolbar, MyPundit, NotebookCommunication)
             <button type="button" class="btn btn-success btn-example-login" ng-show="!getStatus()" ng-click="login()">Log in</button>
             <button type="button" class="btn btn-warning btn-example-logout" ng-show="getStatus()" ng-click="logout()">Log out</button>
             <button type="button" class="btn btn-danger" ng-click="addError()">Add Error</button>
-            <button type="button" class="btn btn-info" ng-click="setLoading(true)">
+            <button type="button" class="btn btn-info pnd-test-set-loading" ng-click="setLoading(true)">
                 Set loading status
             </button>
-            <button type="button" class="btn btn-info" ng-click="setLoading(false)">
+            <button type="button" class="btn btn-info pnd-test-remove-loading" ng-click="setLoading(false)">
                 Remove loading status
             </button>
             <button type="button" class="btn btn-info pnd-test-get-my-notebooks" ng-click="getMyNotebooks()">Get MyNotebooks</button>
