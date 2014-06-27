@@ -1,6 +1,8 @@
 <div class="pnd-dashboard-welcome">
 	<div class="pnd-preview-notebook-visibility">
-	    <span><strong>Visibility:</strong> <span class="pnd-icon pnd-icon-group"></span> <span class="pnd-icon pnd-icon-lock"></span> {{notebook.visibility}}</span>
+	    <span><strong>Visibility:</strong>
+            <span class="pnd-icon pnd-icon-group" ng-if="notebook.isPublic()"></span>
+            <span class="pnd-icon pnd-icon-lock" ng-if="!notebook.isPublic()"></span> {{notebook.visibility}}</span>
 	</div>
 	<div class="pnd-preview-notebook-annotations">
 	    <span><strong>Annotations:</strong>  </span> <span>{{notebook.includes.length}}</span>
