@@ -1,5 +1,5 @@
 angular.module('Pundit2.Toolbar')
-.controller('ToolbarCtrl', function($scope, $rootScope, $modal, Toolbar,
+.controller('ToolbarCtrl', function($scope, $rootScope, $modal, NameSpace, Config, Toolbar, SelectorsManager,
     MyPundit, Dashboard, AnnotationSidebar, ResourcePanel, NotebookExchange, NotebookCommunication) {
 
     $scope.dropdownTemplate = "src/ContextualMenu/dropdown.tmpl.html";
@@ -21,25 +21,35 @@ angular.module('Pundit2.Toolbar')
 
     infoModalScope.titleMessage = "About Pundit";
     infoModalScope.info = [
-        "Pundit Version 2.X.XXX-2014-06-25:18:25",
-        "Annotation server URL: http://as.thepund.it",
-        "Korbo basket: http://url.com",
-        "Providers: Freebase, DBPedia",
-        "Predicates vocabularies: http://url1.com, http://url2.com, http://url3.com",
-        "Contact the Pundit team pundit@netseven.it",
+        "Pundit Version ", // read from?
+        "Annotation server URL: "+NameSpace.as,
+        "Korbo basket: ", // is always defined? read from korbo selector instance? if i have more than one instance?
+        "Contact the Pundit team punditdev@netseven.it",
         "License: http://url3.com",
         "Developed by Net7 Srl",
         "Credits"
     ];
+
+    if (Config.vocabularies.length > 0) {
+        infoModalScope.info.push("Predicates vocabularies: "+Config.vocabularies.toString());
+    } else if (Config.useBasicRelations) {
+        infoModalScope.info.push("Predicates vocabularies: Pundit default basic relations");   
+    }
+
+    var str = "", providers = SelectorsManager.getActiveSelectors();
+    for (var p in providers) {
+        str += " "+providers[p].config.label;
+    }
+    infoModalScope.info.push("Providers:"+str);
 
     sendModalScope.titleMessage = "Found a bug? tell us!";
     sendModalScope.text = {msg: "", subject: ""};
 
     var sendMail = function(subject, body) {
         var link = "mailto:donatigiacomo91@gmail.com"
-                + "?cc="
-                 + "&subject=" + escape(subject)
-                 + "&body=" + escape(body);
+            + "?cc="
+            + "&subject=" + escape(subject)
+            + "&body=" + escape(body);
 
         window.location.href = link;
     }
@@ -56,6 +66,8 @@ angular.module('Pundit2.Toolbar')
         // open a second modal to report a bug
         sendModal.$promise.then(function(){
 
+            sendModalScope.text.msg = "";
+            sendModalScope.text.subject = "";
             sendModal.show();
             
             var sendBtn = angular.element('.pnd-send-modal-send');

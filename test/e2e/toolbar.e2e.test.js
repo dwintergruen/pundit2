@@ -178,6 +178,53 @@ describe("The toolbar module", function() {
 
     });
 
+    it('should correctly open info and send modals', function() {
+
+        p.get('/app/examples/toolbar.html');
+
+        // open info dropdown
+        p.findElement(protractor.By.css('.pnd-toolbar-status-button-ok')).click();
+        // check if dropdown exist
+        p.findElements(protractor.By.css('.pnd-toolbar-status-button-ok .dropdown-menu')).then(function(d){
+            expect(d.length).toBe(1);
+        });
+        // check if dropdown exist
+        p.findElements(protractor.By.css('.pnd-toolbar-status-button-ok .dropdown-menu a')).then(function(a){
+            expect(a.length).toBe(1);
+            expect(a[0].getText()).toEqual("About Pundit");
+            // open info modal
+            a[0].click();
+        });
+        // check if info modal exist
+        p.findElements(protractor.By.css('.pnd-info-modal-container')).then(function(m){
+            expect(m.length).toBe(1);
+        });
+        // open send modal
+        p.findElement(protractor.By.css('.pnd-info-modal-tell')).click();
+        // check if send modal exist
+        p.findElements(protractor.By.css('.pnd-send-modal-container')).then(function(m){
+            expect(m.length).toBe(1);
+        });
+        // check if send btn is disabled
+        p.findElements(protractor.By.css('.disabled.pnd-send-modal-send')).then(function(b){
+            expect(b.length).toBe(1);
+        });
+        // check if contain an input
+        p.findElements(protractor.By.css('.pnd-send-modal-body input')).then(function(i){
+            expect(i.length).toBe(1);
+            i[0].sendKeys('Mail Subject');
+        });
+        // check if contain a textarea
+        p.findElements(protractor.By.css('.pnd-send-modal-body textarea')).then(function(a){
+            expect(a.length).toBe(1);
+        });
+        // check if send btn is disabled
+        p.findElement(protractor.By.css('.pnd-send-modal-send')).getAttribute('class').then(function(c){
+            expect(c.indexOf('disabled')).toBe(-1);
+        });
+
+    });
+
     var httpMock = function() {
         angular.module('httpBackendMock', ['ngMockE2E'])
             .run(function($httpBackend, NameSpace) {
