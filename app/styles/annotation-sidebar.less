@@ -348,7 +348,7 @@ body.pnd-annotation-sidebar-expanded {
         vertical-align: middle;
         line-height: 24px; 
         height: 24px;
-        width: 300px;
+        width: @annotation-sidebar-filter-width;
         background-color: @subject-color;
         color: white;
     
@@ -489,3 +489,10 @@ body.pnd-annotation-sidebar-expanded {
     }
 
 }
+
+.pnd-annotation-sidebar-collapse{
+ .pnd-annotation-item-header-text {
+        display: none;
+    }
+}
+        
