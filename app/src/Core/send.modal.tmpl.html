@@ -1,0 +1,25 @@
+<div class="modal pnd-send-modal-container" tabindex="-1" role="dialog">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title"> {{titleMessage}} </h4>
+            </div>
+
+            <div class="modal-body pnd-send-modal-body">
+                <input placeholder="Subject" ng-model="text.subject">
+                <br>
+                <textarea ng-model="text.msg"></textarea>
+            </div>
+
+            <div class="modal-footer pnd-send-modal-footer">
+                <button type="button" class="btn btn-default disabled pnd-send-modal-send" ng-click="send()">Send</button>
+            </div> <!-- end modal-footer -->
+
+        </div> <!-- end modal content-->
+
+    </div> <!-- end modal dialog-->
+
+</div> <!-- end modal -->

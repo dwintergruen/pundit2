@@ -1,0 +1,28 @@
+<div class="modal pnd-info-modal-container" tabindex="-1" role="dialog">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title"> {{titleMessage}} </h4>
+            </div>
+
+            <div class="modal-body pnd-info-modal-body">
+                <ul>
+                    <li ng-repeat="label in info">
+                        {{label}}
+                    </li>
+                </ul>
+            </div>
+
+            <div class="modal-footer pnd-info-modal-footer">
+                <button type="button" class="btn btn-default pnd-info-modal-cancel" ng-click="close()">Close</button>
+                <button type="button" class="btn btn-default pnd-info-modal-info" ng-click="send()">Found a bug? tell us!</button>
+            </div> <!-- end modal-footer -->
+
+        </div> <!-- end modal content-->
+
+    </div> <!-- end modal dialog-->
+
+</div> <!-- end modal -->

@@ -1,6 +1,6 @@
 angular.module('Pundit2.Toolbar')
-.controller('ToolbarCtrl', function($scope, Toolbar, MyPundit, Dashboard, AnnotationSidebar, ResourcePanel,
-    NotebookExchange, NotebookCommunication) {
+.controller('ToolbarCtrl', function($scope, $rootScope, $modal, Toolbar,
+    MyPundit, Dashboard, AnnotationSidebar, ResourcePanel, NotebookExchange, NotebookCommunication) {
 
     $scope.dropdownTemplate = "src/ContextualMenu/dropdown.tmpl.html";
     $scope.dropdownTemplateMyNotebook = "src/Toolbar/myNotebooksDropdown.tmpl.html";
@@ -14,12 +14,99 @@ angular.module('Pundit2.Toolbar')
         ResourcePanel.hide();
         MyPundit.logout();
     };
+
+    // confirm modal
+    var infoModalScope = $rootScope.$new(),
+        sendModalScope = $rootScope.$new();
+
+    infoModalScope.titleMessage = "About Pundit";
+    infoModalScope.info = [
+        "Pundit Version 2.X.XXX-2014-06-25:18:25",
+        "Annotation server URL: http://as.thepund.it",
+        "Korbo basket: http://url.com",
+        "Providers: Freebase, DBPedia",
+        "Predicates vocabularies: http://url1.com, http://url2.com, http://url3.com",
+        "Contact the Pundit team pundit@netseven.it",
+        "License: http://url3.com",
+        "Developed by Net7 Srl",
+        "Credits"
+    ];
+
+    sendModalScope.titleMessage = "Found a bug? tell us!";
+    sendModalScope.text = {msg: "", subject: ""};
+
+    var sendMail = function(subject, body) {
+        var link = "mailto:donatigiacomo91@gmail.com"
+                + "?cc="
+                 + "&subject=" + escape(subject)
+                 + "&body=" + escape(body);
+
+        window.location.href = link;
+    }
+
+    sendModalScope.send = function() {
+        // send a mail
+        sendMail(sendModalScope.text.subject, sendModalScope.text.msg)
+        sendModal.hide();
+    };
+
+    // found bug btn
+    var removeWatch;
+    infoModalScope.send = function() {
+        // open a second modal to report a bug
+        sendModal.$promise.then(function(){
+
+            sendModal.show();
+            
+            var sendBtn = angular.element('.pnd-send-modal-send');
+            $scope.$watch(function() {
+                return sendModalScope.text.subject;
+            }, function(text) {
+                if (text.length > 0) {
+                    sendBtn.removeClass('disabled');
+                } else {
+                    sendBtn.addClass('disabled');
+                }
+            }, true);
+
+        });
+    };
+
+    // close btn
+    infoModalScope.close = function() {
+        infoModal.hide();
+    };
+
+    var infoModal = $modal({
+        container: "[data-ng-app='Pundit2']",
+        template: 'src/Core/info.modal.tmpl.html',
+        show: false,
+        backdrop: 'static',
+        scope: infoModalScope
+    });
+
+    var sendModal = $modal({
+        container: "[data-ng-app='Pundit2']",
+        template: 'src/Core/send.modal.tmpl.html',
+        show: false,
+        backdrop: 'static',
+        scope: sendModalScope
+    });
+
+    // open info modal
+    var showInfo = function() {
+        infoModal.$promise.then(infoModal.show);
+    };
     
     $scope.errorMessageDropdown = Toolbar.getErrorMessageDropdown();
 
     $scope.userNotLoggedDropdown = [
         { text: 'Please sign in to use Pundit', header: true },
         { text: 'Sign in', click: login }
+    ];
+
+    $scope.infoDropdown = [
+        { text: 'About Pundit', click: showInfo }
     ];
     
     $scope.userLoggedInDropdown = [
