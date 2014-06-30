@@ -46,7 +46,7 @@ angular.module('Pundit2.Toolbar')
     sendModalScope.text = {msg: "", subject: ""};
 
     var sendMail = function(subject, body) {
-        var link = "mailto:donatigiacomo91@gmail.com"
+        var link = "mailto:punditdev@netseven.it"
             + "?cc="
             + "&subject=" + escape(subject)
             + "&body=" + escape(body);
