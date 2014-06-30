@@ -44,6 +44,10 @@ angular.module('Pundit2.Communication')
                 Analytics.track('api', 'get', 'search');
 
                 // TODO: check for emptyness? More edge cases?
+                if (typeof(data) === "undefined") {
+                    promise.reject("Any data found on the response");
+                    return;
+                }
 
                 var ids = [];
                 for (var annURI in data) {

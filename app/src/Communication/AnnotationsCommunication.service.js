@@ -11,6 +11,8 @@ angular.module('Pundit2.Communication')
     // than consilidate all items
     annotationsCommunication.getAnnotations = function() {
 
+        var promise = $q.defer();
+
         Toolbar.setLoading(true);
 
         var uris = Consolidation.getAvailableTargets(),
@@ -20,7 +22,7 @@ angular.module('Pundit2.Communication')
 
         annPromise.then(function(ids) {
             annotationsCommunication.log('Found '+ids.length+' annotations on the current page.');
-
+            
             if (ids.length === 0) {
                 Toolbar.setLoading(false);
                 return;
@@ -46,11 +48,12 @@ angular.module('Pundit2.Communication')
                 }).finally().then(function() {
                     settled++;
                     annotationsCommunication.log('Received annotation '+settled+'/'+annPromises.length);
+
                     if (settled === annPromises.length) {
                         annotationsCommunication.log('All promises settled, consolidating');
-
                         Consolidation.consolidateAll();
                         Toolbar.setLoading(false);
+                        promise.resolve(settled);
                     }
                 });
                 annPromises.push(a);
@@ -58,7 +61,10 @@ angular.module('Pundit2.Communication')
 
         }, function(msg) {
             annotationsCommunication.err("Could not search for annotations, error from the server: "+msg);
+            promise.reject(msg);
         });
+
+        return promise.promise;
 
     };
 
@@ -66,13 +72,15 @@ angular.module('Pundit2.Communication')
     // TODO optimize (we must reload all annotation from server? i think that is not necessary)
     annotationsCommunication.deleteAnnotation = function(annID) {
 
+        var promise = $q.defer();
+
         if(MyPundit.isUserLogged()){
             Toolbar.setLoading(true);
             $http({
                 method: 'DELETE',
                 url: NameSpace.get('asAnn', {id: annID}),
                 withCredentials: true
-            }).success(function(data) {
+            }).success(function() {
                 Toolbar.setLoading(false);
                 annotationsCommunication.log("Success annotation: "+annID+" correctly deleted");
                 // remove annotation from relative notebook
@@ -83,17 +91,26 @@ angular.module('Pundit2.Communication')
                 }
                 // wipe page items
                 ItemsExchange.wipeContainer(Config.modules.PageItemsContainer.container);
-                // wipe all annotations (are chached)
+                // wipe all annotations (are in chace)
                 AnnotationsExchange.wipe();
                 // reload all annotation
-                annotationsCommunication.getAnnotations();
-            }).error(function(data, statusCode) {
+                annotationsCommunication.getAnnotations().then(function(){
+                    promise.resolve(annID);
+                }, function(){
+                    promise.reject("Error during getAnnotations after a delete of: "+annID);
+                });
+
+            }).error(function() {
                 Toolbar.setLoading(false);
                 annotationsCommunication.log("Error impossible to delete annotation: "+annID+" please retry.");
+                promise.reject("Error impossible to delete annotation: "+annID);
             });
         } else {
             annotationsCommunication.log("Error impossible to delete annotation: "+annID+" you are not logged");
+            promise.reject("Error impossible to delete annotation: "+annID+" you are not logged");
         }
+
+        return promise.promise;
     };
 
     return annotationsCommunication;
