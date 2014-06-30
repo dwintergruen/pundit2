@@ -43,7 +43,7 @@ angular.module('Pundit2.AnnotationSidebar')
      */
     debug: false
 })
-.service('AnnotationDetails', function($rootScope, $filter, BaseComponent, Annotation, AnnotationsExchange, Consolidation, ItemsExchange, MyPundit, TextFragmentAnnotator, TypesHelper, ANNOTATIONDETAILSDEFAULTS) {
+.service('AnnotationDetails', function($rootScope, $filter, BaseComponent, Annotation, AnnotationsExchange, Consolidation, ContextualMenu, ItemsExchange, MyPundit, TextFragmentAnnotator, TypesHelper, ANNOTATIONDETAILSDEFAULTS) {
     
     var annotationDetails = new BaseComponent('AnnotationDetails', ANNOTATIONDETAILSDEFAULTS);
 
@@ -53,6 +53,26 @@ angular.module('Pundit2.AnnotationSidebar')
         isUserLogged: false,
         userData: {}
     };
+
+    ContextualMenu.addAction({
+        type: [TextFragmentAnnotator.options.cMenuType],
+        name: 'showAllAnnotations',
+        label: 'Show all annotations on this item',
+        showIf: function() {
+            return true;
+        },
+        priority: 10,
+        action: function(item) {
+            for(var annotation in state.annotations) {
+                if(state.annotations[annotation].itemsUriArray.indexOf(item.uri) === -1){
+                    state.annotations[annotation].ghosted = true;
+                }
+            }
+            
+            // TextFragmentAnnotator.hideAll();
+            // TextFragmentAnnotator.showByUri(item.uri);
+        }
+    });
 
     var buildItemDetails = function(currentUri) {
         var currentItem = ItemsExchange.getItemByUri(currentUri);
@@ -132,6 +152,20 @@ angular.module('Pundit2.AnnotationSidebar')
         return results;
     };
 
+    var buildItemsUriArray = function(currentAnnotation) {
+        var annotation = currentAnnotation;
+        var items = annotation.items;
+        var results = [];
+
+        for (var item in items){
+            if(results.indexOf(item) === -1){
+                results.push(item);
+            }
+        }
+
+        return results;
+    };
+
     var getFragments = function(currentAnnotation) {
         var annotation = currentAnnotation;
         var graph = annotation.graph;
@@ -177,8 +211,10 @@ angular.module('Pundit2.AnnotationSidebar')
             scopeReference: scope,
             mainItem: buildMainItem(currentAnnotation),
             itemsArray: buildItemsArray(currentAnnotation),
+            itemsUriArray: buildItemsUriArray(currentAnnotation),
             broken: currentAnnotation.isBroken(),
             expanded: state.defaultExpanded,
+            ghosted: false,
             fragments: getFragments(currentAnnotation)
         };
     };
@@ -203,6 +239,10 @@ angular.module('Pundit2.AnnotationSidebar')
 
     annotationDetails.openAnnotationView = function(currentId) {
         annotationDetails.closeAllAnnotationView(currentId);
+        state.annotations[currentId].expanded = true;
+    };
+
+    annotationDetails.openSingleAnnotationView = function(currentId) {
         state.annotations[currentId].expanded = true;
     };
 

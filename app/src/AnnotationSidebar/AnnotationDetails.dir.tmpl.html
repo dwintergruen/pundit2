@@ -4,7 +4,7 @@
     ng-mouseout="mouseoutHandler()">
     <div class="pnd-annotation-details-header pnd-annotation-details-top" 
         ng-click="toggleAnnotation()"
-        ng-class="{'pnd-annotation-details-broken': annotation.broken}">
+        ng-class="{'pnd-annotation-details-broken': annotation.broken, 'pnd-annotation-details-ghosted': annotation.ghosted}">
         <div class="{{annotation.mainItem.class}}">
 		        <div class="pnd-annotation-item-header-text">
                         <span ng-show="annotation.broken" class="pnd-icon-exclamation-circle"></span>
