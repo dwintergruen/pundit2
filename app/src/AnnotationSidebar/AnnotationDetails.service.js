@@ -65,6 +65,8 @@ angular.module('Pundit2.AnnotationSidebar')
         action: function(item) {
             if(!AnnotationSidebar.isAnnotationSidebarExpanded()){
                 AnnotationSidebar.toggle();
+            } else{
+                AnnotationSidebar.setAnnotationPosition();
             }
             annotationDetails.closeViewAndReset();
             for(var annotation in state.annotations) {
@@ -73,8 +75,8 @@ angular.module('Pundit2.AnnotationSidebar')
                 }
             }
             
-            TextFragmentAnnotator.hideAll();
-            TextFragmentAnnotator.showByUri(item.uri);
+            TextFragmentAnnotator.ghostAll();
+            TextFragmentAnnotator.ghostRemoveByUri(item.uri);
         }
     });
 
@@ -246,7 +248,7 @@ angular.module('Pundit2.AnnotationSidebar')
             state.annotations[id].ghosted = false;
             state.annotations[id].expanded = false;
         }
-        TextFragmentAnnotator.showAll();
+        TextFragmentAnnotator.ghostRemoveAll();
     };
 
     annotationDetails.closeAllAnnotationView = function(skipId) {

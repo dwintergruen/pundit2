@@ -457,6 +457,42 @@ angular.module('Pundit2.Annotators')
         }
     };
 
+    // Ghost and remove ghost from a single fragment (identified by its item's URI)
+    tfa.ghostByUri = function(uri) {
+        if (typeof(fragmentIds[uri]) === "undefined") {
+            tfa.log('Fragment id not found');
+            return;
+        }
+        var id = fragmentIds[uri];
+        for (var l=fragmentById[id].bits.length; l--;) {
+            fragmentById[id].bits[l].ghost();
+        }
+    };
+
+    tfa.ghostRemoveByUri = function(uri) {
+        if (typeof(fragmentIds[uri]) === "undefined") {
+            tfa.log('Fragment id not found');
+            return;
+        }
+        var id = fragmentIds[uri];
+        for (var l=fragmentById[id].bits.length; l--;) {
+            fragmentById[id].bits[l].expo();
+        }
+    };
+
+    // Hides and shows every fragment
+    tfa.ghostAll = function() {
+        for (var uri in fragmentIds) {
+            tfa.ghostByUri(uri);
+        }
+    };
+
+    tfa.ghostRemoveAll = function() {
+        for (var uri in fragmentIds) {
+            tfa.ghostRemoveByUri(uri);
+        }
+    };
+
     tfa.log("Component up and running");
     return tfa;
 });

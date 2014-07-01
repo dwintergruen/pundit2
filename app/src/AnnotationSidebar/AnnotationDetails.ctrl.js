@@ -38,7 +38,7 @@ angular.module('Pundit2.AnnotationSidebar')
         $scope.metaInfo = false;
         AnnotationDetails.toggleAnnotationView(currentId);
         if (!$scope.annotation.expanded){
-            AnnotationSidebar.setAnnotationPosition(currentId, currentHeight)
+            AnnotationSidebar.setAnnotationPosition(currentId, currentHeight);
         }
     };
 

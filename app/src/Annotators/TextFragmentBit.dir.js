@@ -25,6 +25,14 @@ angular.module('Pundit2.Annotators')
                 element.removeClass('pnd-textfragment-hidden');
             };
 
+            scope.ghost = function() {
+                element.addClass('pnd-textfragment-ghosted');
+            };
+            scope.expo = function() {
+                element.removeClass('pnd-textfragment-ghosted');
+            };
+
+
         } // link()
     };
 });
