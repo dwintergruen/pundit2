@@ -1,0 +1,13 @@
+// Path where to find bootstrap's .less sources
+@bspath: "../../bower_components/bootstrap/less/";
+
+// Core variables and mixins, imported again to being able to use them
+// outside of the .pnd-wrp import
+@import "@{bspath}variables.less";
+@import "@{bspath}mixins.less";
+@import "variables.less";
+@import "korboee-variables.less";
+
+.ee-wrp {
+  @import "korboee-theme.less";
+}

@@ -1,0 +1,154 @@
+/*darken(@navbar-default-bg, 6.5%);*/
+/*@border-radius-base*/
+/*@border-radius-base*/
+.ee-wrp {
+  /*input.ng-invalid.ng-dirty {
+  border: 1px solid red;
+}
+input.ng-valid.ng-dirty {
+  border: 1px solid green;
+}*/
+}
+.ee-wrp .error {
+  color: red;
+}
+.ee-wrp #korbo-ee-container .input-group .form-control.ee-input-elem-to-search {
+  width: 100%;
+}
+.ee-wrp .ee-container.ee-loading {
+  opacity: 0.3;
+}
+.ee-wrp button.btn.ee-loading-button i {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-right: 4px;
+  background-image: url(img/loading.gif);
+}
+.ee-wrp .ee-float-container {
+  float: left;
+  width: 100%;
+}
+.ee-wrp .tab-content .ee-search .ee-vertical-tab {
+  margin-top: 15px;
+  padding: 0px;
+}
+.ee-wrp .tab-content .ee-search .ee-vertical-tab > ul {
+  width: 150px;
+  float: left;
+  position: relative;
+  margin: 0;
+}
+.ee-wrp .tab-content .ee-search .ee-vertical-tab .ee-provider-tab.active {
+  background-color: #E6E6E6;
+  border: 1px solid #dddddd;
+}
+.ee-wrp .tab-content .ee-search .ee-vertical-tab .ee-full-item-preview {
+  float: left;
+  width: 390px;
+}
+.ee-wrp .tab-content .ee-search .ee-vertical-tab .ee-full-item-preview .ee-item-pic-full-preview {
+  float: left;
+  padding-right: 15px;
+  padding-top: 4px;
+}
+.ee-wrp .tab-content .ee-search .ee-vertical-tab .ee-full-item-preview .ee-item-abstract-full-preview {
+  text-align: justify;
+}
+.ee-wrp .tab-content .ee-search .ee-vertical-tab .ee-full-item-preview .ee-item-label-full-preview {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  float: left;
+}
+.ee-wrp .tab-content .ee-search .ee-vertical-tab .ee-full-item-preview .ee-item-type-full-preview {
+  margin-top: 15px;
+  margin-bottom: 10px;
+}
+.ee-wrp .tab-content .ee-search .ee-vertical-tab .ee-full-item-preview .ee-button-container {
+  float: right;
+  margin-top: 10px;
+}
+.ee-wrp .tab-content .ee-search .ee-vertical-tab .ee-short-item-preview {
+  width: 390px;
+  float: left;
+}
+.ee-wrp .tab-content .ee-search .ee-vertical-tab .ee-short-item-preview .ee-item-pic-short-preview {
+  float: left;
+  padding-right: 15px;
+  padding-top: 4px;
+  margin-bottom: 10px;
+}
+.ee-wrp .tab-content .ee-search .ee-vertical-tab .ee-short-item-preview .ee-item-abstract-short-preview {
+  text-align: justify;
+  margin-bottom: 10px;
+}
+.ee-wrp .tab-content .ee-search .ee-vertical-tab .ee-short-item-preview .ee-item-label-short-preview {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  float: left;
+}
+.ee-wrp .tab-content .ee-search .ee-vertical-tab .ee-short-item-preview .ee-item-type-short-preview {
+  margin-top: 15px;
+  margin-bottom: 10px;
+}
+.ee-wrp .tab-content .ee-search .ee-vertical-tab .ee-list-group-items {
+  width: 200px;
+  cursor: pointer;
+}
+.ee-wrp .tab-content .ee-search .ee-vertical-tab .list-group-item.ee-item-selected {
+  background-color: #E6E6E6;
+  border: 1px solid #dddddd;
+}
+.ee-wrp .tab-content .ee-search .ee-vertical-tab div.ee-no-depiction {
+  width: 75px;
+  height: 75px;
+  background-image: url('img/no-image.png');
+}
+.ee-wrp .tab-content .ee-search .ee-vertical-tab .ee-result-items {
+  display: inline-block;
+  float: left;
+  width: 200px;
+  text-align: center;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.ee-wrp .tab-content .ee-search .ee-vertical-tab .ee-result-items .pagination {
+  margin: 0px;
+}
+.ee-wrp .modal-dialog.ee-modal-large {
+  width: 800px;
+}
+.ee-wrp .modal-dialog.ee-modal-small {
+  width: 500px;
+}
+.ee-wrp .modal-dialog.mouse-loading {
+  cursor: progress;
+}
+.ee-wrp .mouse-pointer {
+  cursor: pointer;
+}
+.ee-wrp #ee-modal .input-group {
+  width: 100%;
+}
+.ee-wrp #ee-modal .input-group .input-group-addon {
+  width: 100px;
+}
+.ee-wrp #ee-modal .input-group .ee-abstract-input {
+  resize: vertical;
+}
+.ee-wrp #ee-modal .ee-new {
+  margin-top: 10px;
+}
+.ee-wrp #ee-modal .ee-edit {
+  margin-top: 10px;
+}
+.ee-wrp #ee-modal .ee-label-contr {
+  margin-top: 15px;
+}
+.ee-wrp #ee-modal .ee-nav-tabset ul.nav-tabs {
+  margin: 0;
+}
+.ee-wrp #ee-modal .btn {
+  text-shadow: none;
+}
+/*# sourceMappingURL=data:application/json,%7B%22version%22%3A3%2C%22sources%22%3A%5B%22app%2Fstyles%2Fkorboee.less%22%2C%22app%2Fstyles%2Fkorboee-theme.less%22%5D%2C%22names%22%3A%5B%5D%2C%22mappings%22%3A%22%3B%3B%3BAAUA%3B%3B%3B%3B%3B%3B%3B%3BAAAA%2COCHA%3BEACE%2CUAAA%3B%3BAAMI%2COAHN%2CoBACE%2CaACE%2CcACG%3BEACC%2CWAAA%3B%3BAASN%2COADF%2CcACG%3BEACC%2CYAAA%3B%3BADfJ%2COCmBA%2COAAM%2CIAAI%2CkBAAmB%3BEAC3B%2CqBAAA%3BEACA%2CWAAA%3BEACA%2CYAAA%3BEACA%2CiBAAA%3BEACA%2CsCAAA%3B%3BADxBF%2COC2BA%3BEACE%2CWAAA%3BEACA%2CWAAA%3B%3BAD7BF%2COCgCA%2CaACE%2CWACE%3BEACE%2CgBAAA%3BEACA%2CYAAA%3B%3BAACA%2COALN%2CaACE%2CWACE%2CiBAGG%3BEACC%2CYAAA%3BEACA%2CWAAA%3BEACA%2CkBAAA%3BEACA%2CSAAA%3B%3BAAIA%2COAbR%2CaACE%2CWACE%2CiBAUE%2CiBACG%3BEACC%2CyBAAA%3BEACA%2CyBAAA%3B%3BAD%2FCV%2COCgCA%2CaACE%2CWACE%2CiBAiBE%3BEACE%2CWAAA%3BEACA%2CYAAA%3B%3BADrDR%2COCgCA%2CaACE%2CWACE%2CiBAiBE%2CsBAIE%3BEACE%2CWAAA%3BEACA%2CmBAAA%3BEACA%2CgBAAA%3B%3BAD1DV%2COCgCA%2CaACE%2CWACE%2CiBAiBE%2CsBAUE%3BEACE%2CmBAAA%3B%3BAD9DV%2COCgCA%2CaACE%2CWACE%2CiBAiBE%2CsBAcE%3BEACE%2CgBAAA%3BEACA%2CmBAAA%3BEACA%2CWAAA%3B%3BADpEV%2COCgCA%2CaACE%2CWACE%2CiBAiBE%2CsBAoBE%3BEACE%2CgBAAA%3BEACA%2CmBAAA%3B%3BADzEV%2COCgCA%2CaACE%2CWACE%2CiBAiBE%2CsBAyBE%3BEACE%2CYAAA%3BEACA%2CgBAAA%3B%3BAD9EV%2COCgCA%2CaACE%2CWACE%2CiBAgDE%3BEACE%2CYAAA%3BEACA%2CWAAA%3B%3BADpFR%2COCgCA%2CaACE%2CWACE%2CiBAgDE%2CuBAIE%3BEACE%2CWAAA%3BEACA%2CmBAAA%3BEACA%2CgBAAA%3BEACA%2CmBAAA%3B%3BAD1FV%2COCgCA%2CaACE%2CWACE%2CiBAgDE%2CuBAWE%3BEACE%2CmBAAA%3BEACA%2CmBAAA%3B%3BAD%2FFV%2COCgCA%2CaACE%2CWACE%2CiBAgDE%2CuBAgBE%3BEACE%2CgBAAA%3BEACA%2CmBAAA%3BEACA%2CWAAA%3B%3BADrGV%2COCgCA%2CaACE%2CWACE%2CiBAgDE%2CuBAsBE%3BEACE%2CgBAAA%3BEACA%2CmBAAA%3B%3BAD1GV%2COCgCA%2CaACE%2CWACE%2CiBA6EE%3BEACE%2CYAAA%3BEACA%2CeAAA%3B%3BAAIA%2COArFR%2CaACE%2CWACE%2CiBAkFE%2CiBACG%3BEACC%2CyBAAA%3BEACA%2CyBAAA%3B%3BADvHV%2COCgCA%2CaACE%2CWACE%2CiBA0FE%2CIAAG%3BEACD%2CWAAA%3BEACA%2CYAAA%3BEACA%2CsBAAsB%2CmBAAtB%3B%3BAD%2FHR%2COCgCA%2CaACE%2CWACE%2CiBAgGE%3BEACE%2CqBAAA%3BEACA%2CWAAA%3BEACA%2CYAAA%3BEACA%2CkBAAA%3BEACA%2CiBAAA%3BEACA%2CkBAAA%3B%3BADxIR%2COCgCA%2CaACE%2CWACE%2CiBAgGE%2CiBAQE%3BEACE%2CWAAA%3B%3BAAWR%2COAFF%2CcAEG%3BEACC%2CYAAA%3B%3BAAGF%2COANF%2CcAMG%3BEACC%2CYAAA%3B%3BAAGF%2COAVF%2CcAUG%3BEACC%2CgBAAA%3B%3BAD%2FJJ%2COCoKA%3BEACE%2CeAAA%3B%3BADrKF%2COCwKA%2CUAGE%3BEACE%2CWAAA%3B%3BAD5KJ%2COCwKA%2CUAGE%2CaAGE%3BEACE%2CYAAA%3B%3BAD%2FKN%2COCwKA%2CUAGE%2CaAOE%3BEACE%2CgBAAA%3B%3BADnLN%2COCwKA%2CUAeE%3BEACE%2CgBAAA%3B%3BADxLJ%2COCwKA%2CUAmBE%3BEACE%2CgBAAA%3B%3BAD5LJ%2COCwKA%2CUAuBE%3BEACE%2CgBAAA%3B%3BADhMJ%2COCwKA%2CUA2BE%2CeACE%2CGAAE%3BEACA%2CSAAA%3B%3BADrMN%2COCwKA%2CUAiCE%3BEACE%2CiBAAA%22%7D */
