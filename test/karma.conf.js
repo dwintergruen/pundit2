@@ -33,6 +33,7 @@ module.exports = function(config) {
             'app/src/ResourcePanel/ResourcePanel.js',
             'app/src/Communication/Communication.js',
             'app/src/Notebook/Notebook.js',
+            'app/src/KorboEE/KorboEE.js',
             'app/src/**/*.js',
             'test/unit/**/*.js'
         ],

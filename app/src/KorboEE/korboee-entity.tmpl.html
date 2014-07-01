@@ -1,0 +1,20 @@
+<div class="container" id="korbo-ee-container" ng-if="renderElement()">
+    <div class="row">
+        <div class="input-group input-group-sm ee-input-container col-md-4">
+            <input class="form-control ee-input-elem-to-search"
+                   name="{{conf.tafonyName}}"
+                   id="{{conf.tafonyId}}"
+                   placeholder="Type at least {{conf.labelMinLength}} characters..."
+                   ng-keypress="keyPressHandle($event)"
+                   type="text"
+                   autocomplete="off"/>
+
+        </div> <!-- div ee-input-container -->
+    </div> <!-- div row -->
+
+    <!-- input hidden -->
+    <input type="hidden" name="{{conf.nameInputHiddenUri}}" value="{{location}}" class="ee-uri-hidden" />
+    <input type="hidden" name="{{conf.nameInputHiddenLabel}}" value="{{label}}" class="ee-label-hidden" />
+    <!-- fine input hidden -->
+
+</div> <!-- div container -->

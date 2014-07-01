@@ -340,7 +340,8 @@ module.exports = function(grunt) {
                     paths: ["<%= conf.app %>/css"]
                 },
                 files: {
-                    "<%= conf.app %>/css/pundit2.css": "<%= conf.app %>/styles/pundit2.less"
+                    "<%= conf.app %>/css/pundit2.css": "<%= conf.app %>/styles/pundit2.less",
+                    "<%= conf.app %>/css/korboee.css": "<%= conf.app %>/styles/korboee.less"
                 }
             },
             dist: {
@@ -349,7 +350,8 @@ module.exports = function(grunt) {
                     cleancss: true
                 },
                 files: {
-                    "<%= conf.app %>/css/pundit2.css": "<%= conf.app %>/styles/pundit2.less"
+                    "<%= conf.app %>/css/pundit2.css": "<%= conf.app %>/styles/pundit2.less",
+                    "<%= conf.app %>/css/korboee.css": "<%= conf.app %>/styles/korboee.less"
                 }
             }
         },
@@ -456,7 +458,8 @@ module.exports = function(grunt) {
                         inject: true,
                         protractor: true,
                         jasmine: true,
-                        angular: true
+                        angular: true,
+                        KORBODEFAULTCONF: true,
                     }
                 },
                 files: {

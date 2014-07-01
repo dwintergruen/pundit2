@@ -1,0 +1,79 @@
+<!-- buildexamples:section header --><!-- /buildexamples -->
+
+
+<script>
+    var myConf = {
+        //endpoint: "http://dev.korbo2.org/v1",
+        basketID: 1,
+        globalObjectName : 'KK',
+        useOnlyCallback: false,
+        useTafonyCompatibility: true,
+        onLoad: function(){
+            console.log("onLoad calling");
+        },
+        providers: {
+            freebase: true,
+            dbpedia: false
+        },
+        type: [
+
+            {
+                label: 'Place',
+                state: false,
+                URI:'http://place.uri'
+            },
+            {
+                label: 'Scientist',
+                state: false,
+                URI:'http://scientist.uri'
+            },
+            {
+                label: 'Writer',
+                state: false,
+                URI:'http://writer.uri'
+            }
+        ],
+        buttonLabel: "Search",
+        useTranslation: false,
+        useAutocompleteSearch: false,
+        /*
+         visualizeUseButton: false,
+         visualizeCopyButton: false,
+         visualizeEditButton: false
+         */
+        visualizeUseButton: ['freebase', 'korbo'],
+        visualizeCopyButton: ['freebase'],
+        copyToKorboBeforeUse: true,
+        visualizeEditButton: false
+
+    };
+
+    var myConf1 = {
+        //endpoint: "http://korbo2.local:80/v1",
+        globalObjectName : 'FF',
+        useTafonyCompatibility: true,
+        useAutocompleteWithSearch: true,
+        onReady: function(){
+            console.log("widget is ready to use2");
+        }
+    }
+
+    var myConf2 = {
+        //endpoint: "http://korbo2.local:80/v1",
+        globalObjectName : 'GG',
+        useTafonyCompatibility: true,
+        useAutocompleteWithNew: true
+    }
+
+</script>
+<div data-ng-app="Pundit2" class="pnd-wrp ee-wrp">
+    <br>
+    <korbo-entity-editor conf-name="myConf"></korbo-entity-editor>
+    <br>
+    <korbo-entity-editor conf-name="myConf1"></korbo-entity-editor>
+    <br>
+    <korbo-entity-editor conf-name="myConf2"></korbo-entity-editor>
+    <br>
+    <korbo-entity-editor></korbo-entity-editor>
+</div>
+<!-- buildexamples:section footer --><!-- /buildexamples -->
