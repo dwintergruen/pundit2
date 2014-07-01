@@ -183,7 +183,7 @@ angular.module('Pundit2.Vocabularies')
     // a container match if contain in its name the passed string
     var wipeContainersByName = function(str){
         selectorsManager.log('Wipe all containers that match '+ str);
-        
+
         for (var j in selectorInstances) {
             var name = selectorInstances[j].config.container+str;
             ItemsExchange.wipeContainer(name);
@@ -228,7 +228,6 @@ angular.module('Pundit2.Vocabularies')
             // selector always resolve the promise (even in case of error)
             selectorInstances[j].getItems(term).then(function(){
                 pendingRequest--;
-                console.log(ItemsExchange.getAll())
                 if (pendingRequest <= 0 && compleatedPromise!== null) {
                     compleatedPromise.resolve();
                     compleatedPromise = null;
