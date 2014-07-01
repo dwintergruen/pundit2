@@ -32,6 +32,9 @@ angular.module('Pundit2.AnnotationSidebar')
         if(!AnnotationSidebar.isAnnotationSidebarExpanded()){
             AnnotationSidebar.toggle();
         }
+        if(AnnotationDetails.isAnnotationGhosted(currentId)){
+            AnnotationDetails.closeViewAndReset();
+        }
         $scope.metaInfo = false;
         AnnotationDetails.toggleAnnotationView(currentId);
         if (!$scope.annotation.expanded){

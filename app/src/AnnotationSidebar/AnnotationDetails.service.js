@@ -63,6 +63,7 @@ angular.module('Pundit2.AnnotationSidebar')
         },
         priority: 10,
         action: function(item) {
+            annotationDetails.closeViewAndReset();
             for(var annotation in state.annotations) {
                 if(state.annotations[annotation].itemsUriArray.indexOf(item.uri) === -1){
                     state.annotations[annotation].ghosted = true;
@@ -229,6 +230,19 @@ angular.module('Pundit2.AnnotationSidebar')
         return state.annotations[currentId].expanded;
     };
 
+    annotationDetails.resetGhosted = function() {
+        for (var id in state.annotations){
+            state.annotations[id].ghosted = false;
+        }
+    };
+
+    annotationDetails.closeViewAndReset = function() {
+        for (var id in state.annotations){
+            state.annotations[id].ghosted = false;
+            state.annotations[id].expanded = false;
+        }
+    };
+
     annotationDetails.closeAllAnnotationView = function(skipId) {
         for (var id in state.annotations){
             if (id !== skipId){
@@ -249,6 +263,10 @@ angular.module('Pundit2.AnnotationSidebar')
     annotationDetails.toggleAnnotationView = function(currentId) {
         annotationDetails.closeAllAnnotationView(currentId);
         state.annotations[currentId].expanded = !state.annotations[currentId].expanded;
+    };
+
+    annotationDetails.isAnnotationGhosted = function(currentId) {
+        return state.annotations[currentId].ghosted;
     };
 
     annotationDetails.isAnnotationUser = function(creator) {
