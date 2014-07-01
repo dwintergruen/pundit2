@@ -480,6 +480,7 @@ angular.module('Pundit2.ResourcePanel')
 
     };
 
+    var searchPromise;
     var searchOnVocab = function(label, selectors) {
 
         var vocabObjResultEmpty = true,
@@ -499,9 +500,16 @@ angular.module('Pundit2.ResourcePanel')
         } else {
             var res = [];
 
-            SelectorsManager.getItems(label).then(function() {
+            var containerLabel = label.split(' ').join('$');
+            if (typeof(searchPromise) !== 'undefined') {
+                searchPromise.resolve();
+            }
+            searchPromise = $q.defer();
+
+
+            SelectorsManager.getItems(label, searchPromise.promise).then(function() {
                 angular.forEach(selectors, function(sel){
-                    res[sel.config.container] = ItemsExchange.getItemsByContainer(sel.config.container);
+                    res[sel.config.container] = ItemsExchange.getItemsByContainer(sel.config.container+containerLabel);
                     if(res[sel.config.container].length >0){
                         noFound = false;
                     }
