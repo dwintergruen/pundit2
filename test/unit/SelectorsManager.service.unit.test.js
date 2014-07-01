@@ -58,7 +58,7 @@ describe('SelectorsManager service', function() {
         expect(sel[0].config.label).toEqual('MurucaTestLabel');
     });
 
-    iit('should correctly resolve get items promise', function(){
+    it('should correctly resolve get items promise', function(){
         var resolved = false;
         var fakePromise = {then: function(){}};
         SelectorsManager.init();
