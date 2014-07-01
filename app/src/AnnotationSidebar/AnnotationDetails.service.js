@@ -43,7 +43,7 @@ angular.module('Pundit2.AnnotationSidebar')
      */
     debug: false
 })
-.service('AnnotationDetails', function($rootScope, $filter, BaseComponent, Annotation, AnnotationsExchange, Consolidation, ContextualMenu, ItemsExchange, MyPundit, TextFragmentAnnotator, TypesHelper, ANNOTATIONDETAILSDEFAULTS) {
+.service('AnnotationDetails', function($rootScope, $filter, BaseComponent, Annotation, AnnotationSidebar, AnnotationsExchange, Consolidation, ContextualMenu, ItemsExchange, MyPundit, TextFragmentAnnotator, TypesHelper, ANNOTATIONDETAILSDEFAULTS) {
     
     var annotationDetails = new BaseComponent('AnnotationDetails', ANNOTATIONDETAILSDEFAULTS);
 
@@ -63,6 +63,9 @@ angular.module('Pundit2.AnnotationSidebar')
         },
         priority: 10,
         action: function(item) {
+            if(!AnnotationSidebar.isAnnotationSidebarExpanded()){
+                AnnotationSidebar.toggle();
+            }
             annotationDetails.closeViewAndReset();
             for(var annotation in state.annotations) {
                 if(state.annotations[annotation].itemsUriArray.indexOf(item.uri) === -1){
@@ -70,8 +73,8 @@ angular.module('Pundit2.AnnotationSidebar')
                 }
             }
             
-            // TextFragmentAnnotator.hideAll();
-            // TextFragmentAnnotator.showByUri(item.uri);
+            TextFragmentAnnotator.hideAll();
+            TextFragmentAnnotator.showByUri(item.uri);
         }
     });
 
@@ -241,6 +244,7 @@ angular.module('Pundit2.AnnotationSidebar')
             state.annotations[id].ghosted = false;
             state.annotations[id].expanded = false;
         }
+        TextFragmentAnnotator.showAll();
     };
 
     annotationDetails.closeAllAnnotationView = function(skipId) {
