@@ -168,7 +168,7 @@ angular.module('Pundit2.Vocabularies')
     inputIconClear: 'pnd-icon-times'
 
 })
-.service('SelectorsManager', function(BaseComponent, SELECTORMANAGERDEFAULTS, $injector, $q) {
+.service('SelectorsManager', function(BaseComponent, SELECTORMANAGERDEFAULTS, ItemsExchange, $injector, $q) {
 
     var selectorsManager = new BaseComponent('SelectorsManager', SELECTORMANAGERDEFAULTS);
 
@@ -177,25 +177,66 @@ angular.module('Pundit2.Vocabularies')
     // active selectors factory instances
     var selectorInstances = [];
 
-    selectorsManager.getItems = function(term){
+    var researching = {};
+
+    // wipe and remove all items container that match str
+    // a container match if contain in its name the passed string
+    var wipeContainersByName = function(str){
+        selectorsManager.log('Wipe all containers that match '+ str);
+        
+        for (var j in selectorInstances) {
+            var name = selectorInstances[j].config.container+str;
+            ItemsExchange.wipeContainer(name);
+        }
+    };
+
+    // term to search inside selectors
+    // promise resolved when the result is no longer needed
+    // TODO wipe container when all promise (relative to term) is resolved
+    selectorsManager.getItems = function(term, promise){
         
         // a promise resolved when all selectors complete
         // the http query request
-        var promise = $q.defer(),
-            pendingRequest = selectorInstances.length;
+        var compleatedPromise = $q.defer(),
+            pendingRequest = selectorInstances.length,
+            termName = term.split(' ').join('$');
+
+        if (typeof(researching[termName]) === 'undefined') {
+            researching[termName] = [promise];
+        } else {
+            researching[termName].push(promise);
+        }
+        
+        // when the promise is resolved no longer need the items
+        promise.then(function(){
+            var self = promise;
+            // search the resolved promise
+            var index = researching[termName].indexOf(self);
+            // remove promise from the array
+            if (index > -1) {
+                researching[termName].splice(index, 1);
+                // if we not have pending request wipe items and remove container
+                if (researching[termName].length === 0) {
+                    wipeContainersByName(termName);
+                    delete researching[termName];
+                }
+            }            
+        });
 
         // get items from actives selectors
         for (var j in selectorInstances) {
+            // selector always resolve the promise (even in case of error)
             selectorInstances[j].getItems(term).then(function(){
                 pendingRequest--;
-                if (pendingRequest <= 0 && promise!== null) {
-                    promise.resolve();
-                    promise = null;
+                console.log(ItemsExchange.getAll())
+                if (pendingRequest <= 0 && compleatedPromise!== null) {
+                    compleatedPromise.resolve();
+                    compleatedPromise = null;
                 }
             });
         }
 
-        return promise.promise;
+        return compleatedPromise.promise;
 
     };
 

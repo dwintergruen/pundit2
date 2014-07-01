@@ -162,9 +162,13 @@ angular.module('Pundit2.Vocabularies')
         this.config = config;
     };
 
+    // if two search are launched in parallel on the same term then won the last one is completed
+    // you can change this behavior
+    // eg. removing the wipeContainer() to produce a union of two research results
     KorboBasketFactory.prototype.getItems = function(term){
         var self = this,
-            promise = $q.defer();
+            promise = $q.defer(),
+            container = self.config.container + term.split(' ').join('$');
 
         var config = {
             params: {
@@ -185,7 +189,7 @@ angular.module('Pundit2.Vocabularies')
 
                 if (data.result.length === 0) {
                     korboBasketSelector.log('Http success, but empty response');
-                    ItemsExchange.wipeContainer(self.config.container);
+                    ItemsExchange.wipeContainer(container);
                     // promise is always resolved
                     promise.resolve();
                     return;
@@ -214,9 +218,9 @@ angular.module('Pundit2.Vocabularies')
                     korboBasketSelector.log('Completed all items http request');
                     // when all http request are completed we can wipe itemsExchange
                     // and put new items inside relative container
-                    ItemsExchange.wipeContainer(self.config.container);
+                    ItemsExchange.wipeContainer(container);
                     for (i=0; i<itemsArr.length; i++) {
-                        ItemsExchange.addItemToContainer(new Item(itemsArr[i].uri, itemsArr[i]), self.config.container);
+                        ItemsExchange.addItemToContainer(new Item(itemsArr[i].uri, itemsArr[i]), container);
                     }
                     // promise is always resolved
                     promise.resolve();

@@ -136,11 +136,14 @@ angular.module('Pundit2.Vocabularies')
         this.config = config;
     };
 
-    // TODO if the server not response the http timeout is very long (120s)
-    // and the error notification arrive only after this time (need a less timeout?)
+    // if two search are launched in parallel on the same term then won the last one is completed
+    // you can change this behavior
+    // eg. removing the wipeContainer() to produce a union of two research results
     MurucaFactory.prototype.getItems = function(term){
         var self = this,
-        promise = $q.defer();
+            promise = $q.defer(),
+            // use selector container + term (replace space with $)
+            container = self.config.container + term.split(' ').join('$');
 
         var config = {
             params: {
@@ -153,12 +156,14 @@ angular.module('Pundit2.Vocabularies')
             }
         };
 
+        // TODO if the server not response the http timeout is very long (120s)
+        // and the error notification arrive only after this time (need a less timeout?)
         $http.jsonp(murucaSelector.options.murucaReconURL+"?jsonp=JSON_CALLBACK", config)
             .success(function(data){
 
                 murucaSelector.log('Http success, get items from muruca '+self.config.label, data);
 
-                ItemsExchange.wipeContainer(self.config.container);
+                ItemsExchange.wipeContainer(container);
 
                 if (data.result.length === 0) {
                     murucaSelector.log('Empty Response');
@@ -166,11 +171,11 @@ angular.module('Pundit2.Vocabularies')
                     promise.resolve();
                 } else {
                     // this function is synchronous
-                    self.getItemsDetails(data.result, promise);
+                    self.getItemsDetails(data.result, promise, container);
                 }
 
             }).error(function () {
-                ItemsExchange.wipeContainer(self.config.container);
+                ItemsExchange.wipeContainer(container);
                 // promise is resolved but container is undefined
                 promise.resolve();
             });
@@ -179,7 +184,7 @@ angular.module('Pundit2.Vocabularies')
 
     };
 
-    MurucaFactory.prototype.getItemsDetails = function(result, promise){
+    MurucaFactory.prototype.getItemsDetails = function(result, promise, container){
 
         var self = this;
 
@@ -211,7 +216,7 @@ angular.module('Pundit2.Vocabularies')
             }
 
             var added = new Item(item.uri, item);
-            ItemsExchange.addItemToContainer(added, self.config.container);
+            ItemsExchange.addItemToContainer(added, container);
 
         }
 

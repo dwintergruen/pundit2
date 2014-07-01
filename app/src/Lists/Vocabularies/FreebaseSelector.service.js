@@ -218,10 +218,15 @@ angular.module('Pundit2.Vocabularies')
         this.config = config;
     };
 
+    // if two search are launched in parallel on the same term then won the last one is completed
+    // you can change this behavior
+    // eg. removing the wipeContainer() to produce a union of two research results
     FreebaseFactory.prototype.getItems = function(term){
 
         var self = this,
-            promise = $q.defer();
+            promise = $q.defer(),
+            // use selector container + term (replace space with $)
+            container = self.config.container + term.split(' ').join('$');
 
         $http({
             method: 'GET',
@@ -237,7 +242,7 @@ angular.module('Pundit2.Vocabularies')
 
             if (data.result.length === 0) {
                 freebaseSelector.log('Http success, but get empty result');
-                ItemsExchange.wipeContainer(self.config.container);
+                ItemsExchange.wipeContainer(container);
                 promise.resolve();
                 return;
             }
@@ -268,9 +273,9 @@ angular.module('Pundit2.Vocabularies')
                 freebaseSelector.log('Completed all items http request (topic and mql)');
                 // when all http request are completed we can wipe itemsExchange
                 // and put new items inside relative container
-                ItemsExchange.wipeContainer(self.config.container);
+                ItemsExchange.wipeContainer(container);
                 for (i=0; i<itemsArr.length; i++) {
-                    ItemsExchange.addItemToContainer(new Item(itemsArr[i].uri, itemsArr[i]), self.config.container);
+                    ItemsExchange.addItemToContainer(new Item(itemsArr[i].uri, itemsArr[i]), container);
                 }
                 promise.resolve();
             });

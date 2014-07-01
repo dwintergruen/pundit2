@@ -1,5 +1,5 @@
 angular.module('Pundit2.Vocabularies')
-.controller('VocabulariesContainerCtrl', function($scope, $timeout, $injector, $element, BaseComponent,
+.controller('VocabulariesContainerCtrl', function($scope, $timeout, $injector, $element, $q, BaseComponent,
                                                     SelectorsManager, ItemsExchange, TypesHelper) {
 
     // SelectorsManager is initialized inside client.boot()
@@ -108,17 +108,27 @@ angular.module('Pundit2.Vocabularies')
         }
     };
 
+    // this promise is resolved when we make a new search
+    // and we no longer need the items related to previous research
+    var queryPromise = null,
+        actualContainer;
+    // make a new research
     var querySelectors = function(){
-        SelectorsManager.getItems($scope.search.term).then(
+        if (queryPromise !== null) {
+            queryPromise.resolve();
+        }
+        queryPromise = $q.defer();
+        SelectorsManager.getItems($scope.search.term, queryPromise.promise).then(
             function(){
                 updateMessage();
             }, function(){
                 updateMessage();
             });
+        actualContainer = $scope.tabs[$scope.tabs.activeTab].itemsContainer + $scope.search.term.split(' ').join('$');
     };
 
     $scope.$watch(function() {
-            return ItemsExchange.getItemsByContainer($scope.tabs[$scope.tabs.activeTab].itemsContainer);
+            return ItemsExchange.getItemsByContainer(actualContainer);
     }, function(newItems) {
         // update all items array and display new items
         $scope.displayedItems = newItems;
@@ -135,6 +145,7 @@ angular.module('Pundit2.Vocabularies')
         return $scope.tabs.activeTab;
     }, function(newActive, oldActive) {
         if (newActive !== oldActive){
+            actualContainer = $scope.tabs[$scope.tabs.activeTab].itemsContainer + $scope.search.term.split(' ').join('$');
             updateMessage();
         }            
     });
