@@ -9,13 +9,19 @@
             </div>
 
             <div class="modal-body pnd-send-modal-body">
-                <input placeholder="Subject" ng-model="text.subject">
-                <br>
-                <textarea ng-model="text.msg"></textarea>
+            	<div class="form-group">
+	            	<label for="exampleInputEmail1">Subject:</label>
+	            	<input placeholder="Subject" ng-model="text.subject" class="form-control" >
+	            </div>
+	            <div class="form-group">
+	            	<label for="exampleInputPassword1">Description:</label>
+	            	<textarea ng-model="text.msg" class="form-control"  rows="5"></textarea>
+	            </div>
             </div>
 
             <div class="modal-footer pnd-send-modal-footer">
-                <button type="button" class="btn btn-default disabled pnd-send-modal-send" ng-click="send()">Send</button>
+            	<button type="button" class="btn btn-default pnd-info-modal-close">Cancel</button>
+                <button type="button" class="btn btn-success disabled pnd-send-modal-send" ng-click="send()">Send</button>
             </div> <!-- end modal-footer -->
 
         </div> <!-- end modal content-->
