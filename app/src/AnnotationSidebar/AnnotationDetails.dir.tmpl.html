@@ -1,10 +1,10 @@
 <div 
-    class="pnd-annotation-details-wrap pnd-ignore"
-    ng-mouseover="mouseoverHandler()"
-    ng-mouseout="mouseoutHandler()">
+    class="pnd-annotation-details-wrap pnd-ignore">
     <div class="pnd-annotation-details-header pnd-annotation-details-top" 
         ng-click="toggleAnnotation()"
-        ng-class="{'pnd-annotation-details-broken': annotation.broken, 'pnd-annotation-details-ghosted': annotation.ghosted}">
+        ng-class="{'pnd-annotation-details-broken': annotation.broken, 'pnd-annotation-details-ghosted': annotation.ghosted}"
+        ng-mouseover="mouseoverHandler()"
+        ng-mouseout="mouseoutHandler()">
         <div class="{{annotation.mainItem.class}}">
 		        <div class="pnd-annotation-item-header-text">
                         <span ng-show="annotation.broken" class="pnd-icon-exclamation-circle"></span>
@@ -53,7 +53,9 @@
             <!-- subject -->
                 <div 
                     class="pnd-annotation-details-subject" 
-                    ng-init="subInfo = false">
+                    ng-init="subInfo = false"
+                    ng-mouseover="mouseoverItemHandler(item.subject.uri)"
+                    ng-mouseout="mouseoutItemHandler(item.subject.uri)">
                         <div 
                             class="pnd-annotation-details-item-header" 
                             ng-click="subInfo = !subInfo"
@@ -99,7 +101,9 @@
                 <div ng-repeat="object in item.objects">
                     <div 
                         class="pnd-annotation-details-object"                         
-                        ng-init="objInfo = false">
+                        ng-init="objInfo = false"
+                        ng-mouseover="mouseoverItemHandler(object.uri)"
+                        ng-mouseout="mouseoutItemHandler(object.uri)">
                             <div 
                                 class="pnd-annotation-details-item-header" 
                                 ng-click="objInfo = toggleObjectInfo(object.typeClass, objInfo)"

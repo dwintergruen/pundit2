@@ -206,21 +206,23 @@ angular.module('Pundit2.AnnotationSidebar')
         var currentId = scope.id;
         var currentAnnotation = AnnotationsExchange.getAnnotationById(currentId);
 
-        state.annotations[currentId] = {
-            id: currentId,
-            creator: currentAnnotation.creator,
-            creatorName: currentAnnotation.creatorName,
-            created: currentAnnotation.created,
-            notebookId: currentAnnotation.isIncludedIn,
-            scopeReference: scope,
-            mainItem: buildMainItem(currentAnnotation),
-            itemsArray: buildItemsArray(currentAnnotation),
-            itemsUriArray: buildItemsUriArray(currentAnnotation),
-            broken: currentAnnotation.isBroken(),
-            expanded: state.defaultExpanded,
-            ghosted: false,
-            fragments: getFragments(currentAnnotation)
-        };
+        if(typeof(state.annotations[currentId]) === 'undefined'){
+            state.annotations[currentId] = {
+                id: currentId,
+                creator: currentAnnotation.creator,
+                creatorName: currentAnnotation.creatorName,
+                created: currentAnnotation.created,
+                notebookId: currentAnnotation.isIncludedIn,
+                scopeReference: scope,
+                mainItem: buildMainItem(currentAnnotation),
+                itemsArray: buildItemsArray(currentAnnotation),
+                itemsUriArray: buildItemsUriArray(currentAnnotation),
+                broken: currentAnnotation.isBroken(),
+                expanded: state.defaultExpanded,
+                ghosted: false,
+                fragments: getFragments(currentAnnotation)
+            };
+        }
     };
 
     annotationDetails.getAnnotationDetails = function(currentId) {

@@ -95,5 +95,13 @@ angular.module('Pundit2.AnnotationSidebar')
         }
     };
 
+    $scope.mouseoverItemHandler = function(itemUri) {
+        TextFragmentAnnotator.highlightByUri(itemUri);
+    };
+
+    $scope.mouseoutItemHandler = function(itemUri) {
+        TextFragmentAnnotator.clearHighlightByUri(itemUri);
+    };
+
     AnnotationDetails.log('Controller Details Run');
 });
