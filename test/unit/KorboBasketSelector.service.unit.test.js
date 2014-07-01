@@ -93,7 +93,7 @@ describe('KorboBasketSelector service', function() {
         expect(called).toBe(true);
 
         var all = ItemsExchange.getAll(),
-            container = conf.container;
+            container = conf.container+'term';
 
         expect(all.itemListByContainer[container]).toBeDefined();
         expect(all.itemListByContainer[container].length).toBe(1);

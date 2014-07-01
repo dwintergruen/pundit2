@@ -85,7 +85,7 @@ describe('MurucaSelector service', function() {
         $httpBackend.flush();
 
         var all = ItemsExchange.getAll(),
-            container = conf.container;
+            container = conf.container+'term';
 
         var item1 = all.itemListByContainer[container][0],
             item2 = all.itemListByContainer[container][1],

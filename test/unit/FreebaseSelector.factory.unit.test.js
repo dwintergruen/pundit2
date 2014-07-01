@@ -106,7 +106,7 @@ describe('FreebaseSelector service', function() {
         expect(called).toBe(true);
 
         var all = ItemsExchange.getAll(),
-            container = conf.container,
+            container = conf.container+"term",
             list = all.itemListByContainer[container];
 
         // check item properties
