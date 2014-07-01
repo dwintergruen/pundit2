@@ -63,11 +63,29 @@ describe('KorboBasketSelector service', function() {
         $httpBackend.flush();
 
         var all = ItemsExchange.getAll(),
-            container = conf.container;
+            container = conf.container+'term';
 
         expect(all.itemListByContainer[container]).toBeUndefined();
         expect(called).toBe(true);
+    });
+
+    it('should resolve promise when get http error', function(){
+        var conf = KORBOBASKETSELECTORDEFAULTS.instances[0],
+            sel = new KorboBasketSelector(conf),
+            called = false;
+
+        $httpBackend.whenJSONP(url).respond(500, undefined);
+        sel.getItems('term').then(function(){
+            called = true;
+        });
         
+        $httpBackend.flush();
+
+        var all = ItemsExchange.getAll(),
+            container = conf.container+'term';
+
+        expect(all.itemListByContainer[container]).toBeUndefined();
+        expect(called).toBe(true);
     });
 
     it('should correctly launch all items details http request when get not empty result', function(){

@@ -67,7 +67,7 @@ describe('FreebaseSelector service', function() {
         $httpBackend.flush();
 
         var all = ItemsExchange.getAll(),
-            container = conf.container;
+            container = conf.container+'term';
 
         expect(all.itemListByContainer[container]).toBeUndefined();
         expect(called).toBe(true);
@@ -141,7 +141,7 @@ describe('FreebaseSelector service', function() {
         
     });
 
-    it('should correctly resolve the promise if get http error on topic', function(){
+    it('should correctly resolve the promise if get http error on mql and topic', function(){
         var conf = FREEBASESELECTORDEFAULTS.instances[0],
             sel = new FreebaseSelector(conf),
             called = false;

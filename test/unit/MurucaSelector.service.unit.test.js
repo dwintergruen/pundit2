@@ -65,11 +65,29 @@ describe('MurucaSelector service', function() {
         $httpBackend.flush();
 
         var all = ItemsExchange.getAll(),
-            container = conf.container;
+            container = conf.container+'term';
 
         expect(all.itemListByContainer[container]).toBeUndefined();
         expect(called).toBe(true);
+    });
+
+    it('should resolve promise when get http error', function(){
+        var conf = MURUCASELECTORDEFAULTS.instances[0],
+            sel = new MurucaSelector(conf),
+            called = false;
+
+        $httpBackend.whenJSONP(url).respond(500, undefined);
+        sel.getItems('term').then(function(){
+            called = true;
+        });
         
+        $httpBackend.flush();
+
+        var all = ItemsExchange.getAll(),
+            container = conf.container+'term';
+
+        expect(all.itemListByContainer[container]).toBeUndefined();
+        expect(called).toBe(true);
     });
 
     it('should resolve promise when get not empty result', function(){
