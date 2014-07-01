@@ -176,6 +176,8 @@ angular.module('Pundit2.Vocabularies')
             withCredentials: true
         };
 
+        // TODO if the server not response the http timeout is very long (120s)
+        // and the error notification arrive only after this time
         $http.jsonp(korboBasketSelector.options.korboBasketReconURL+korboBasketSelector.options.baskets[0]+"?jsonp=JSON_CALLBACK", config)
             .success(function(data){
 
@@ -184,6 +186,7 @@ angular.module('Pundit2.Vocabularies')
                 if (data.result.length === 0) {
                     korboBasketSelector.log('Http success, but empty response');
                     ItemsExchange.wipeContainer(self.config.container);
+                    // promise is always resolved
                     promise.resolve();
                     return;
                 }
@@ -215,6 +218,7 @@ angular.module('Pundit2.Vocabularies')
                     for (i=0; i<itemsArr.length; i++) {
                         ItemsExchange.addItemToContainer(new Item(itemsArr[i].uri, itemsArr[i]), self.config.container);
                     }
+                    // promise is always resolved
                     promise.resolve();
                 });
 
@@ -222,6 +226,9 @@ angular.module('Pundit2.Vocabularies')
                     self.getItemDetails(itemsArr[i], deferArr[i]);
                 }
 
+            }).error(function () {
+                // promise is always resolved
+                promise.resolve();
             });
 
         return promise.promise;
@@ -271,6 +278,9 @@ angular.module('Pundit2.Vocabularies')
                 // resolve item promise
                 itemPromise.resolve();
 
+            }).error(function () {
+                // resolve item promise
+                itemPromise.resolve();
             });
 
     };

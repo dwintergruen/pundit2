@@ -119,7 +119,8 @@ angular.module('Pundit2.Vocabularies')
     debug: false
 
 })
-.factory('MurucaSelector', function(BaseComponent, MURUCASELECTORDEFAULTS, Item, ItemsExchange, SelectorsManager, $http, $q) {
+.factory('MurucaSelector', function(BaseComponent, MURUCASELECTORDEFAULTS, Item, ItemsExchange, SelectorsManager,
+    $http, $q, $timeout) {
 
     var murucaSelector = new BaseComponent('MurucaSelector', MURUCASELECTORDEFAULTS);
     murucaSelector.name = 'MurucaSelector';
@@ -135,6 +136,8 @@ angular.module('Pundit2.Vocabularies')
         this.config = config;
     };
 
+    // TODO if the server not response the http timeout is very long (120s)
+    // and the error notification arrive only after this time (need a less timeout?)
     MurucaFactory.prototype.getItems = function(term){
         var self = this,
         promise = $q.defer();
@@ -159,11 +162,17 @@ angular.module('Pundit2.Vocabularies')
 
                 if (data.result.length === 0) {
                     murucaSelector.log('Empty Response');
+                    // promise is resolved but container is undefined
                     promise.resolve();
                 } else {
+                    // this function is synchronous
                     self.getItemsDetails(data.result, promise);
                 }
 
+            }).error(function () {
+                ItemsExchange.wipeContainer(self.config.container);
+                // promise is resolved but container is undefined
+                promise.resolve();
             });
 
             return promise.promise;
@@ -206,6 +215,8 @@ angular.module('Pundit2.Vocabularies')
 
         }
 
+        // promise is always resolved when parsing is completed
+        // and the items were added to the itemsExchange
         promise.resolve();
 
         murucaSelector.log('Complete items parsing');

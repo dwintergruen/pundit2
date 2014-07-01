@@ -101,6 +101,7 @@ angular.module('Pundit2.Vocabularies')
 
     });
 
+    $scope.displayedItems = [];
     var updateMessage = function(){
         if ($scope.displayedItems.length === 0 && $scope.search.term!=='' && typeof($scope.search.term)!=='undefined') {
             $scope.message.text = "No item found to: "+$scope.search.term;
@@ -117,7 +118,7 @@ angular.module('Pundit2.Vocabularies')
     };
 
     $scope.$watch(function() {
-        return ItemsExchange.getItemsByContainer($scope.tabs[$scope.tabs.activeTab].itemsContainer);
+            return ItemsExchange.getItemsByContainer($scope.tabs[$scope.tabs.activeTab].itemsContainer);
     }, function(newItems) {
         // update all items array and display new items
         $scope.displayedItems = newItems;
