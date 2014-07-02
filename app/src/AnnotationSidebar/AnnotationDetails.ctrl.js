@@ -53,7 +53,6 @@ angular.module('Pundit2.AnnotationSidebar')
             Dashboard.toggle();
         }
         $rootScope.$emit('pnd-dashboard-show-tab', TripleComposer.options.clientDashboardTabTitle);
-        $rootScope.$$phase || $rootScope.$digest();
     };
 
     $scope.$watch(function() {
