@@ -494,13 +494,27 @@ body.pnd-annotation-sidebar-expanded {
 
 }
 
+
+//
+// SIDEBAR COLLAPSED
+// --------------------------------------------------
+
+
 .pnd-annotation-sidebar-collapsed {
+
+	.pnd-saving-content{
+		display: none;		
+		}
 
 	.pnd-annotation-details-header {
 		width: 23px;
 
 		.pnd-annotation-item-header-text {
-			display: none;
+			visibility: hidden;
+		
+			.pnd-icon {
+				visibility:visible;
+				}	
 			}
 		
 		.btn {
@@ -509,4 +523,6 @@ body.pnd-annotation-sidebar-expanded {
 		}
 						
 }
+
+
         
