@@ -500,12 +500,13 @@ body.pnd-annotation-sidebar-expanded {
 
 .pnd-annotation-sidebar-collapsed {
 
-	.pnd-annotation-details-broken {
-	
-				.pnd-icon-camera,
-				.pnd-icon-align-center { display: none;}	
+	.pnd-annotation-details-broken {				
+				
+		[class^="pnd-icon"]+[class*="pnd-icon-"]{
+			display: none;
+			}
 		
-	}
+		}
 
 	.pnd-saving-content{
 		display: none;		
