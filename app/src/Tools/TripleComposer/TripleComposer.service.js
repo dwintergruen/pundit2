@@ -253,6 +253,8 @@ angular.module('Pundit2.TripleComposer')
         });
         
         if (index > -1) {
+            // extend scope with actual mode
+            scope.editMode = editMode;
             statements[index].scope = scope;
         }
         tripleComposer.log('statement extended with scope', statements[index]);
