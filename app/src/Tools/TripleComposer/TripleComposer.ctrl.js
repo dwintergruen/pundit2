@@ -66,6 +66,15 @@ angular.module('Pundit2.TripleComposer')
         TripleComposer.addStatement();
     };
 
+    $scope.editAnnotation = function(){
+        // AnnotationsCommunication.editAnnotation(annID);
+    };
+
+    $scope.cancelEditMode = function(){
+        TripleComposer.reset();
+        TripleComposer.setEditMode(false);
+    };
+
     // update triple composer messagge then after "time" (ms)
     // restore default template content
     var updateMessagge = function(msg, time, err){
