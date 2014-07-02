@@ -1,9 +1,12 @@
 angular.module('KorboEE')
-    .controller('EEDirectiveCtrl', function($scope) {
-        console.log($scope);
+    .controller('EEDirectiveCtrl', function($scope, APIService, korboConf, $http, KorboCommunication, $timeout) {
 
+        $scope.autocompleteListTemplate = 'src/KorboEE/autocompleteList.tmpl.html';
         var api;
         $scope.readyToRender = false;
+        $scope.noFound = "no entities found";
+        $scope.elemToSearch = '';
+        var updateTimer;
 
         $scope.renderElement = function(){
             return $scope.readyToRender;
@@ -15,6 +18,8 @@ angular.module('KorboEE')
             if (!$scope.errorGlobalObjName){
                 $scope.init = function(){
                     $scope.readyToRender = $scope.conf.updateTime;
+                    $scope.limit = $scope.conf.limitSearchResult;
+                    $scope.minLabelLength = $scope.conf.labelMinLength;
 
                     initExposeAPI();
                     // TODO: the template is NOT rendered yet, let's try an evalAsync
@@ -35,6 +40,8 @@ angular.module('KorboEE')
         };
 
         var initExposeAPI = function(){
+            api = APIService.get($scope.conf.globalObjectName);
+            //TODO vedere vecchio korboee
 
         };
 
@@ -53,6 +60,29 @@ angular.module('KorboEE')
 
             }
         };
+
+
+
+        $scope.autoCompleteSearch = function(viewValue) {
+            if(viewValue.length >= $scope.conf.labelMinLength){
+                var res = KorboCommunication.search(viewValue);
+                return res;
+            }
+
+        };
+
+        $scope.isLoading = function(){
+            return KorboCommunication.isAutocompleteLoading();
+        }
+
+        $scope.isSelect = function(m){
+            console.log("hai selezionato: ",m);
+        };
+
+        // timer when input change
+        $scope.$watch('elemToSearch', function() {
+
+        });
 
 
     });

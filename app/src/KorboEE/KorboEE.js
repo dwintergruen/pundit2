@@ -1,1 +1,1 @@
-angular.module('KorboEE', ['templates-main', 'APIModule']);
+angular.module('KorboEE', ['korboee-templates', 'APIModule', 'mgcrea.ngStrap']);

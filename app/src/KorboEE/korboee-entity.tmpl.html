@@ -1,16 +1,20 @@
-<div class="container" id="korbo-ee-container" ng-if="renderElement()">
-    <div class="row">
-        <div class="input-group input-group-sm ee-input-container col-md-4">
+<div class="container ee-wrp" id="korbo-ee-container" ng-if="renderElement()">
+        <div class="left-inner-icon">
+            <span class="pnd-icon pnd-icon-refresh" ng-show="isLoading()"></span>
             <input class="form-control ee-input-elem-to-search"
                    name="{{conf.tafonyName}}"
                    id="{{conf.tafonyId}}"
                    placeholder="Type at least {{conf.labelMinLength}} characters..."
                    ng-keypress="keyPressHandle($event)"
                    type="text"
-                   autocomplete="off"/>
+                   autocomplete="off"
+                   ng-model="elemToSearch"
+                   template="{{autocompleteListTemplate}}"
+                   ng-options="e.label for e in autoCompleteSearch($viewValue)"
+                   bs-typeahead/>
 
         </div> <!-- div ee-input-container -->
-    </div> <!-- div row -->
+
 
     <!-- input hidden -->
     <input type="hidden" name="{{conf.nameInputHiddenUri}}" value="{{location}}" class="ee-uri-hidden" />
