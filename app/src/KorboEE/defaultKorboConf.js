@@ -81,13 +81,17 @@ KORBODEFAULTCONF = {
 
     useTranslation: false,
 
-    useAutocompleteWithSearch: false,
+    //useAutocompleteWithSearch: false,
 
-    useAutocompleteWithNew: false,
+    //useAutocompleteWithNew: false,
 
     visualizeUseButton: ['freebase', 'korbo'],
     visualizeCopyButton: ['freebase', 'korbo'],
     visualizeEditButton: true,
 
-    onReady: null
+    onReady: null,
+
+    useAutoComplete: false,
+    autoCompleteMode: '', // full | simple
+    autoCompleteOptions: '' // search | new | all | none
 };
