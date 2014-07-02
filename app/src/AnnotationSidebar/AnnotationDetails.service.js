@@ -208,6 +208,7 @@ angular.module('Pundit2.AnnotationSidebar')
 
     annotationDetails.addAnnotationReference = function(scope) {
         var currentId = scope.id;
+        var isBroken = scope.broken;
         var currentAnnotation = AnnotationsExchange.getAnnotationById(currentId);
 
         if(typeof(state.annotations[currentId]) === 'undefined'){
@@ -221,7 +222,7 @@ angular.module('Pundit2.AnnotationSidebar')
                 mainItem: buildMainItem(currentAnnotation),
                 itemsArray: buildItemsArray(currentAnnotation),
                 itemsUriArray: buildItemsUriArray(currentAnnotation),
-                broken: currentAnnotation.isBroken(),
+                broken: isBroken,
                 expanded: state.defaultExpanded,
                 ghosted: false,
                 fragments: getFragments(currentAnnotation)

@@ -226,6 +226,14 @@ angular.module('Pundit2.AnnotationSidebar')
         }
     };
 
+    $scope.toggleBrokenAnnotations = function() {
+        if(AnnotationSidebar.filters.broken.expression === ''){
+            AnnotationSidebar.filters.broken.expression = 'hideBroken';
+        } else{
+            AnnotationSidebar.filters.broken.expression = '';
+        }
+    }
+
     $scope.setSearchIcon = function(str) {
         if (typeof(str) === 'undefined' || str === '') {
             return search.icon;

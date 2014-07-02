@@ -328,7 +328,13 @@ angular.module('Pundit2.AnnotationSidebar')
             filterName: 'types',
             filterLabel: 'Types',
             expression: []
+        },
+        broken: {
+            filterName: 'broken',
+            filterLabel: 'Broken',
+            expression: ''
         }
+
     };
 
     annotationSidebar.filtersCount = {};
@@ -554,6 +560,12 @@ angular.module('Pundit2.AnnotationSidebar')
                 }
             });
             orderAndSetPos();
+        }
+    };
+
+    var setBrokenInfo = function(){
+        for (var i in state.allAnnotations){
+            state.allAnnotations[i].broken = state.allAnnotations[i].isBroken();
         }
     };
 
@@ -805,6 +817,7 @@ angular.module('Pundit2.AnnotationSidebar')
 
         var annotations = AnnotationsExchange.getAnnotations();
         state.allAnnotations = angular.copy(annotations);
+        setBrokenInfo();
         setFilterElements(state.allAnnotations);
         setAnnotationsPosition();
     });

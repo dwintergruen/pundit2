@@ -46,6 +46,23 @@ angular.module('Pundit2.AnnotationSidebar')
         return results;
     };
 })
+.filter('broken', function() {
+    return function(input, search) {
+        var results = [];
+
+        if (search.length > 0) {
+            for (var annotation in input){
+                if(!input[annotation].broken){
+                    results.push(input[annotation]);
+                }
+            }
+        } else {
+            results = input;
+        }
+        return results;
+    };
+})
+
 .filter('authors', function() {
     return function(input, search) {
         var results = [];
