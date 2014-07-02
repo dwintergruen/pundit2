@@ -169,8 +169,14 @@ module.exports = function(grunt) {
                 base: '<%= conf.app %>/'
             },
             main: {
+                module: 'templates-main',
                 src: ['<%= conf.app %>/src/**/*.tmpl.html'],
                 dest: '<%= conf.app %>/src/templates.js'
+            },
+            korboee: {
+                module: 'korboee-templates',
+                src: ['<%= conf.app %>/src/KorboEE/**/*.tmpl.html'],
+                dest: '<%= conf.app %>/src/korboee-template.js'
             }
         },
 
@@ -325,6 +331,7 @@ module.exports = function(grunt) {
                     src: [
                         '<%= conf.build %>/scripts/libs.js',
                         '<%= conf.build %>/scripts/pundit2.js',
+                        '<%= conf.build %>/scripts/korboee.js',
                         '<%= conf.build %>/css/pundit.css',
                         '<%= conf.build %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
                     ]
@@ -459,7 +466,7 @@ module.exports = function(grunt) {
                         protractor: true,
                         jasmine: true,
                         angular: true,
-                        KORBODEFAULTCONF: true,
+                        KORBODEFAULTCONF: true
                     }
                 },
                 files: {
@@ -590,12 +597,12 @@ module.exports = function(grunt) {
         ['bower', 'shell:protractorInstall']);
 
     grunt.registerTask('build', 'Builds a production-ready version of the application',
-        ['clean:dist', 'copy:fonts', 'html2js', 'examples', 'useminPrepare', 'less:dist', 'copy:css', 'imagemin',
+        ['clean:dist', 'copy:fonts', 'html2js:main', 'html2js:korboee', 'examples', 'useminPrepare', 'less:dist', 'copy:css', 'imagemin',
             'htmlmin', 'concat',  'copy:dist', 'ngmin', 'cssmin', 'uglify',
             'rev', 'usemin', 'htmlmin:final', 'copy:bookmarklet']);
 
     grunt.registerTask('dev', 'Live dev workflow: watches app files and reloads the browser automatically',
-        ['less:dev', 'copy:fonts', 'imagemin:dev', 'html2js', 'examples', 'connect:livereload', 'open:server', 'watch']);
+        ['less:dev', 'copy:fonts', 'imagemin:dev', 'html2js:main', 'html2js:korboee', 'examples', 'connect:livereload', 'open:server', 'watch']);
     grunt.registerTask('dev:unit', 'Live dev UNIT tests workflow: watches for test files and runs unit tests automatically',
         ['test:unit', 'watch:unit']);
 

@@ -6,8 +6,10 @@
         //endpoint: "http://dev.korbo2.org/v1",
         basketID: 1,
         globalObjectName : 'KK',
+        limitSearchResult: 11,
         useOnlyCallback: false,
         useTafonyCompatibility: true,
+        labelMinLength: 4,
         onLoad: function(){
             console.log("onLoad calling");
         },
@@ -35,38 +37,60 @@
         ],
         buttonLabel: "Search",
         useTranslation: false,
-        useAutocompleteSearch: false,
-        /*
-         visualizeUseButton: false,
-         visualizeCopyButton: false,
-         visualizeEditButton: false
-         */
         visualizeUseButton: ['freebase', 'korbo'],
         visualizeCopyButton: ['freebase'],
         copyToKorboBeforeUse: true,
-        visualizeEditButton: false
+        visualizeEditButton: false,
+
+        languages: [
+            {
+                name:'Italian',
+                value:'it',
+                state: true
+            },
+            {
+                name:'English',
+                value:'en',
+                state: false
+            },
+            {
+                name:'German',
+                value:'de',
+                state: false
+            }
+        ]
 
     };
 
     var myConf1 = {
         //endpoint: "http://korbo2.local:80/v1",
+        labelMinLength: 5,
+        limitSearchResult: 3,
         globalObjectName : 'FF',
         useTafonyCompatibility: true,
-        useAutocompleteWithSearch: true,
         onReady: function(){
             console.log("widget is ready to use2");
-        }
+        },
+
+        useAutoComplete: true,
+        autoCompleteMode: 'full',
+        autoCompleteOptions: 'search'
     }
 
     var myConf2 = {
         //endpoint: "http://korbo2.local:80/v1",
+        limitSearchResult: 20,
+        labelMinLength: 6,
         globalObjectName : 'GG',
         useTafonyCompatibility: true,
-        useAutocompleteWithNew: true
+
+        useAutoComplete: true,
+        autoCompleteMode: 'simple',
+        autoCompleteOptions: 'all'
     }
 
 </script>
-<div data-ng-app="Pundit2" class="pnd-wrp ee-wrp">
+<div data-ng-app="Pundit2" class="kee-wrp">
     <br>
     <korbo-entity-editor conf-name="myConf"></korbo-entity-editor>
     <br>

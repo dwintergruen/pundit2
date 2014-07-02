@@ -138,11 +138,18 @@
     <script src="../src/Tools/NotebookComposer/NotebookComposer.ctrl.js"></script>
     <script src="../src/Tools/NotebookComposer/NotebookComposer.service.js"></script>
 
+    <!-- endbuild -->
+
+    <!-- build:js scripts/korboee.js -->
+
+    <script src="../src/korboee-template.js"></script>
+
     <script src="../src/KorboEE/KorboEE.js"></script>
     <script src="../src/KorboEE/KorboEE.dir.js"></script>
     <script src="../src/KorboEE/KorboEE.ctrl.js"></script>
     <script src="../src/KorboEE/KorboConf.factory.js"></script>
     <script src="../src/KorboEE/APIModule/APIService.service.js"></script>
     <script src="../src/KorboEE/defaultKorboConf.js"></script>
+    <script src="../src/KorboEE/KorboCommunication.service.js"></script>
 
     <!-- endbuild -->

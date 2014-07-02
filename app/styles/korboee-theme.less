@@ -1,220 +1,26 @@
-/*input.ng-invalid.ng-dirty {
-  border: 1px solid red;
-}
-input.ng-valid.ng-dirty {
-  border: 1px solid green;
-}*/
+//
+// Input and icon
+// --------------------------------------------------
 
-.error{
-  color:red;
-}
 
-#korbo-ee-container{
-  .input-group{
-    .form-control{
-      &.ee-input-elem-to-search{
-        width: 100%;
-      }
-    }
-  }
+.left-inner-icon {
+  position: relative;
+  padding: 0px;
 }
 
-
-
-.ee-container {
-  &.ee-loading {
-    opacity: 0.3;
-  }
+.left-inner-icon input {
+  padding-right: 20px;
+  font-weight: normal;
 }
 
-button.btn.ee-loading-button i {
-  display: inline-block;
-  width: 16px;
-  height: 16px;
-  margin-right: 4px;
-  background-image: url(img/loading.gif);
+.left-inner-icon .pnd-icon {
+  position: absolute;
+  color: @gray-light;
+  right: 0px;
+  top: 0px;
+  padding: 7px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
-
-.ee-float-container{
-  float:left;
-  width:100%;
-}
-
-.tab-content{
-  .ee-search{
-    .ee-vertical-tab {
-      margin-top: 15px;
-      padding: 0px;
-      &>ul {
-        width: 150px;
-        float: left;
-        position: relative;
-        margin:0;
-      }
-
-      .ee-provider-tab {
-        &.active{
-          background-color:#E6E6E6;
-          border:1px solid #dddddd;
-        }
-      } // end ee-provider-tab
-
-      .ee-full-item-preview {
-        float: left;
-        width: @preview-width;
-
-        .ee-item-pic-full-preview{
-          float: left;
-          padding-right: 15px;
-          padding-top: 4px;
-        }
-
-        .ee-item-abstract-full-preview{
-          text-align: justify;
-        }
-
-        .ee-item-label-full-preview{
-          margin-top: 10px;
-          margin-bottom: 10px;
-          float: left;
-        }
-
-        .ee-item-type-full-preview {
-          margin-top: 15px;
-          margin-bottom: 10px;
-        }
-
-        .ee-button-container{
-          float:right;
-          margin-top: 10px;
-        }
-      } // and ee-full-item-preview
-
-      .ee-short-item-preview{
-        width: @preview-width;
-        float: left;
-
-        .ee-item-pic-short-preview{
-          float: left;
-          padding-right: 15px;
-          padding-top: 4px;
-          margin-bottom: 10px;
-        }
-
-        .ee-item-abstract-short-preview{
-          text-align: justify;
-          margin-bottom: 10px;
-        }
-
-        .ee-item-label-short-preview{
-          margin-top: 10px;
-          margin-bottom: 10px;
-          float: left;
-        }
-
-        .ee-item-type-short-preview{
-          margin-top: 15px;
-          margin-bottom: 10px;
-        }
-
-      } // and ee-short-item-preview
-
-      .ee-list-group-items{
-        width: @results-width;
-        cursor: pointer;
-      }
-
-      .list-group-item{
-        &.ee-item-selected {
-          background-color:#E6E6E6;
-          border:1px solid #dddddd;
-        }
-
-      }
-
-      div.ee-no-depiction {
-        width: 75px;
-        height: 75px;
-        background-image: url('img/no-image.png');
-      }
-
-      .ee-result-items {
-        display: inline-block;
-        float: left;
-        width: @results-width;
-        text-align: center;
-        margin-left: @cols-margin;
-        margin-right: @cols-margin;
-
-        .pagination {
-          margin: 0px;
-        }
-
-      }
-
-    } // end ee-vertical-tab
-  } // end ee-search
-} // end tab-content
-
-.modal-dialog{
-
-  &.ee-modal-large{
-    width: 800px;
-  }
-
-  &.ee-modal-small{
-    width: 500px;
-  }
-
-  &.mouse-loading{
-    cursor: progress;
-  }
-
-}
-
-.mouse-pointer{
-  cursor: pointer;
-}
-
-#ee-modal {
-
-
-  .input-group {
-    width: 100%;
-
-    .input-group-addon {
-      width: 100px;
-    }
-
-    .ee-abstract-input{
-      resize: vertical;
-    }
-  } // end input group
-
-  .ee-new{
-    margin-top: 10px;
-  }
-
-  .ee-edit{
-    margin-top: 10px;
-  }
-
-  .ee-label-contr{
-    margin-top: 15px;
-  }
-
-  .ee-nav-tabset{
-    ul.nav-tabs{
-      margin:0;
-    }
-  }
-
-  .btn{
-    text-shadow:none;
-  }
-} // end #ee-modal
-
-
-
-
 
