@@ -126,7 +126,7 @@ angular.module('Pundit2.TripleComposer')
                 }).success(function(data) {
 
                     // reset triple composer state
-                    $scope.statements = TripleComposer.reset();
+                    TripleComposer.reset();
                     // if you have gone at least 500ms
                     if (promiseResolved) {
                         updateMessagge(TripleComposer.options.notificationSuccessMsg, TripleComposer.options.notificationMsgTime, false);

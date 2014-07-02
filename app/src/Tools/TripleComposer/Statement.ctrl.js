@@ -172,7 +172,7 @@ angular.module('Pundit2.TripleComposer')
             return;
         }
         $scope.predicateSearch = "";
-        ResourcePanel.showProperties(buildUrisArray(), undefined, $scope.predicateSearch).then(setPredicate);
+        ResourcePanel.showProperties(buildUrisArray(), undefined, $scope.predicateSearch).then($scope.setPredicate);
     };
 
     $scope.wipeObject = function(){
@@ -192,7 +192,7 @@ angular.module('Pundit2.TripleComposer')
             return;
         }
         $scope.objectSearch = "";
-        ResourcePanel.showItemsForObject(buildUrisArray(), undefined, $scope.objectSearch).then(setObject);
+        ResourcePanel.showItemsForObject(buildUrisArray(), undefined, $scope.objectSearch).then($scope.setObject);
     };
 
     // update input icons when text is present
@@ -238,7 +238,7 @@ angular.module('Pundit2.TripleComposer')
         ResourcePanel.showItemsForSubject(buildUrisArray(), $event.target, $scope.subjectSearch).then($scope.setSubject);
     };
 
-    var setPredicate = function(item){
+    $scope.setPredicate = function(item){
         $scope.predicateLabel = item.label;
         $scope.predicateFound = true;
         triple.predicate = item;
@@ -252,13 +252,13 @@ angular.module('Pundit2.TripleComposer')
         $scope.tripleComposerCtrl.isAnnotationComplete();
     };
     $scope.onClickPredicate = function($event){
-        ResourcePanel.showProperties(buildUrisArray(), $event.target, $scope.predicateSearch).then(setPredicate);
+        ResourcePanel.showProperties(buildUrisArray(), $event.target, $scope.predicateSearch).then($scope.setPredicate);
     };
     $scope.onKeyUpPredicate = function($event){
-        ResourcePanel.showProperties(buildUrisArray(), $event.target, $scope.predicateSearch).then(setPredicate);
+        ResourcePanel.showProperties(buildUrisArray(), $event.target, $scope.predicateSearch).then($scope.setPredicate);
     };
 
-    var setObject = function(item){
+    $scope.setObject = function(item){
         $scope.objectFound = true;
         triple.object = item;
         
@@ -283,10 +283,10 @@ angular.module('Pundit2.TripleComposer')
         
     };
     $scope.onClickObject = function($event){        
-        ResourcePanel.showItemsForObject(buildUrisArray(), $event.target, $scope.objectSearch).then(setObject);
+        ResourcePanel.showItemsForObject(buildUrisArray(), $event.target, $scope.objectSearch).then($scope.setObject);
     };
     $scope.onKeyUpObject = function($event){
-        ResourcePanel.showItemsForObject(buildUrisArray(), $event.target, $scope.objectSearch).then(setObject);
+        ResourcePanel.showItemsForObject(buildUrisArray(), $event.target, $scope.objectSearch).then($scope.setObject);
     };
 
     $scope.onClickObjectCalendar = function($event){

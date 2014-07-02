@@ -180,7 +180,8 @@ angular.module('Pundit2.TripleComposer')
     debug: false
     
 })
-.service('TripleComposer', function(BaseComponent, TRIPLECOMPOSERDEFAULTS, TypesHelper, NameSpace) {
+.service('TripleComposer', function($rootScope, BaseComponent, TRIPLECOMPOSERDEFAULTS, TypesHelper, NameSpace,
+    AnnotationsExchange, ItemsExchange) {
 
     var tripleComposer = new BaseComponent('TripleComposer', TRIPLECOMPOSERDEFAULTS);
 
@@ -195,7 +196,8 @@ angular.module('Pundit2.TripleComposer')
 
     tripleComposer.addStatement = function(){
         nextId = nextId + 1;
-        statements.push({id: nextId});
+        var l = statements.push({id: nextId});
+        return statements[l-1];
     };
 
     tripleComposer.removeStatement = function(id){
@@ -215,14 +217,14 @@ angular.module('Pundit2.TripleComposer')
         if (index > -1) {
             statements.splice(index, 1);
         }
+        tripleComposer.log('Try to remove statement at index', index);
     };
 
     tripleComposer.reset = function(){
         nextId = 1;
-        statements = [{
-            id: nextId
-        }];
-        return statements;
+        statements.splice(0, statements.length);
+        statements.push({id: nextId});
+        tripleComposer.log('statements reset', statements);
     };
 
     // extend arr object with scope property
@@ -238,6 +240,7 @@ angular.module('Pundit2.TripleComposer')
         if (index > -1) {
             statements[index].scope = scope;
         }
+        tripleComposer.log('statement extended with scope', statements[index]);
     };
 
     // duplicate a statement and add it to the statements array
@@ -280,6 +283,55 @@ angular.module('Pundit2.TripleComposer')
             }
         });
         return complete;
+    };
+
+    // build all statement relative to the passed annotation
+    tripleComposer.editAnnotation = function(annID) {
+        // wipe all statements
+        tripleComposer.reset();
+
+        var ann = AnnotationsExchange.getAnnotationById(annID),
+            i;
+
+        var triples = [];
+        for (var s in ann.graph) {
+            for (var p in ann.graph[s]) {
+                for (var o in ann.graph[s][p]) {
+                    triples.push({
+                        subject: s,
+                        predicate: p,
+                        object: ann.graph[s][p][o]
+                    });
+                }
+            }
+        }
+
+        var l = triples.length;
+        // one triple is added by the reset function (defulat is one empty triple)
+        for (i=0; i<l-1; i++) {
+            tripleComposer.addStatement();
+        }
+
+        var removeWatcher = $rootScope.$watch(function() {
+            return statements[l-1].scope;
+        }, function(newScope) {
+            if (typeof(newScope) !== 'undefined'){
+                tripleComposer.log('Now the last statement is populated with relative scope');
+                for (i=0; i<statements.length; i++) {
+                    statements[i].scope.setSubject(ItemsExchange.getItemByUri(triples[i].subject));
+                    statements[i].scope.setPredicate(ItemsExchange.getItemByUri(triples[i].predicate));
+                    if (triples[i].object.type === 'uri') {
+                        statements[i].scope.setObject(ItemsExchange.getItemByUri(triples[i].object.value));
+                    } else if (triples[i].object.type === 'literal') {
+                        statements[i].scope.setObject(triples[i].object.value);
+                    } else {
+                        tripleComposer.log('Try to add incompatible type of object', triples[i].object);
+                    }
+                    tripleComposer.log('New statement populated with', triples[i]);
+                }
+                removeWatcher();
+            }
+        });
     };
 
     // build the items object used inside http call

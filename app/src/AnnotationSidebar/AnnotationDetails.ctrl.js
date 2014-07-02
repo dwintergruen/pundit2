@@ -1,8 +1,8 @@
 /*jshint strict: false*/
 
 angular.module('Pundit2.AnnotationSidebar')
-.controller('AnnotationDetailsCtrl', function($scope, $element, AnnotationSidebar, AnnotationDetails, 
-        AnnotationsExchange, AnnotationsCommunication, NotebookExchange, ItemsExchange,
+.controller('AnnotationDetailsCtrl', function($scope, $rootScope, $element, AnnotationSidebar, AnnotationDetails, 
+        AnnotationsExchange, AnnotationsCommunication, NotebookExchange, ItemsExchange, TripleComposer, Dashboard,
         TextFragmentAnnotator, Toolbar, TypesHelper) {
 
     var currentId = $scope.id;
@@ -45,6 +45,15 @@ angular.module('Pundit2.AnnotationSidebar')
 
     $scope.deleteAnnotation = function() {
         AnnotationsCommunication.deleteAnnotation($scope.annotation.id);
+    };
+
+    $scope.editAnnotation = function() {
+        TripleComposer.editAnnotation($scope.annotation.id);
+        if(!Dashboard.isDashboardVisible()){
+            Dashboard.toggle();
+        }
+        $rootScope.$emit('pnd-dashboard-show-tab', TripleComposer.options.clientDashboardTabTitle);
+        $rootScope.$$phase || $rootScope.$digest();
     };
 
     $scope.$watch(function() {
