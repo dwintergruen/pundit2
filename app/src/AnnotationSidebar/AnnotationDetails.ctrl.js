@@ -6,7 +6,8 @@ angular.module('Pundit2.AnnotationSidebar')
         TextFragmentAnnotator, Toolbar, TypesHelper) {
 
     var currentId = $scope.id;
-    var currentHeight = angular.element($element).find(".pnd-annotation-details").height();
+    var currentElement = angular.element($element).find(".pnd-annotation-details-wrap");
+    var initialHeight = currentElement.height();
     AnnotationDetails.addAnnotationReference($scope);
 
     $scope.annotation = AnnotationDetails.getAnnotationDetails(currentId);
@@ -38,7 +39,7 @@ angular.module('Pundit2.AnnotationSidebar')
         $scope.metaInfo = false;
         AnnotationDetails.toggleAnnotationView(currentId);
         if (!$scope.annotation.expanded){
-            AnnotationSidebar.setAnnotationPosition(currentId, currentHeight);
+            AnnotationSidebar.setAnnotationPosition(currentId, initialHeight);
         }
     };
 
@@ -47,7 +48,7 @@ angular.module('Pundit2.AnnotationSidebar')
     };
 
     $scope.$watch(function() {
-        return angular.element($element).find(".pnd-annotation-details-wrap").height();
+        return currentElement.height();
     }, function(newHeight, oldHeight) {
         if (newHeight!=oldHeight && $scope.annotation.expanded){
             AnnotationSidebar.setAnnotationPosition(currentId, newHeight);
