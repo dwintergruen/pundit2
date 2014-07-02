@@ -11,7 +11,9 @@ angular.module('Pundit2.AnnotationSidebar')
      * @description
      * `object`
      *
-     * Configuration for AnnotationSidebar module
+     * Configuration object for AnnotationSidebar module. By default, 
+     * AnnotationSidebar directive is collapsed and can be expanded. It
+     * also contains filters that can be used to show or hide annotations.
      */
 
     /**
@@ -197,6 +199,36 @@ angular.module('Pundit2.AnnotationSidebar')
     /**
      * @module punditConfig
      * @ngdoc property
+     * @name modules#AnnotationSidebar.annotationHeigth
+     *
+     * @description
+     * `number`
+     *
+     * The height of the annotations in the sidebar for positioning
+     *
+     * Default value:
+     * <pre> annotationHeigth: 25 </pre>
+     */
+    annotationHeigth: 25,
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#AnnotationSidebar.annotationHeigth
+     *
+     * @description
+     * `number`
+     *
+     * First top position of annotations in the sidebar
+     *
+     * Default value:
+     * <pre> annotationHeigth: 25 </pre>
+     */
+    startTop: 55,
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
      * @name modules#AnnotationSidebar.clientDomTemplate
      *
      * @description
@@ -208,9 +240,6 @@ angular.module('Pundit2.AnnotationSidebar')
      * <pre> clientDomTemplate: 'src/AnnotationSidebar/ClientAnnotationSidebar.tmpl.html' </pre>
      */
     clientDomTemplate: 'src/AnnotationSidebar/ClientAnnotationSidebar.tmpl.html',
-
-    // TODO: doc
-    annotationHeigth: 25,
 
     /**
      * @module punditConfig
@@ -254,7 +283,7 @@ angular.module('Pundit2.AnnotationSidebar')
 
     // TODO: take startPosition from element in sidebar
     // TODO: take toolbar height from service
-    var startPosition = 70;
+    var startPosition = annotationSidebar.options.startTop;
     var toolbarHeight = 30;
     var annotationPosition = [];
 
@@ -398,7 +427,7 @@ angular.module('Pundit2.AnnotationSidebar')
         var pos;
         var currentTop;
 
-        startPosition = 70;
+        startPosition = annotationSidebar.options.startTop;
         annotationSidebar.annotationPositionReal = {};
 
         annotationPosition.sort(function(a, b){
@@ -473,7 +502,7 @@ angular.module('Pundit2.AnnotationSidebar')
         }
 
         if(annotations.length>0){
-            startPosition = 70;
+            startPosition = annotationSidebar.options.startTop;
             annotationPosition = [];
 
             if (typeof(optId) !== 'undefined' && typeof(optHeight) === 'number'){
@@ -498,7 +527,7 @@ angular.module('Pundit2.AnnotationSidebar')
 
                     annotationPosition.push({
                         id: annotation.id, 
-                        top: startPosition,
+                        top: -1,
                         height: annotationHeigth,
                         broken: true
                     });

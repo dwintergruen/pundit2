@@ -10,7 +10,9 @@ angular.module('Pundit2.AnnotationSidebar')
      * @description
      * `object`
      *
-     * Configuration for AnnotationDetails
+     * Configuration object for AnnotationDetails module. AnnotationDetails 
+     * directive is instantiated from the AnnotationSidebar and
+     * contains details of the annotations.
      */
 
     /**

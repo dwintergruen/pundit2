@@ -9,7 +9,9 @@ angular.module('Pundit2.Core')
      * @description
      * `object`
      *
-     * Configuration for Analytics
+     * Configuration object for Analytics module. Analytics provides 
+     * methods to submit events tracked by other modules, by managing 
+     * queues to avoid losing packets
      */
 
     /**
