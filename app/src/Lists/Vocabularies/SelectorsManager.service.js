@@ -176,7 +176,11 @@ angular.module('Pundit2.Vocabularies')
     var selectors = {};
     // active selectors factory instances
     var selectorInstances = [];
-
+    // object that contain the actual pending research
+    // the key is the term searched and the value is an
+    // array of promise. when all promise are resolve the
+    // result of research is no longer necessary and the 
+    // relative itemsExchange container is wiped
     var researching = {};
 
     // wipe and remove all items container that match str
@@ -192,13 +196,14 @@ angular.module('Pundit2.Vocabularies')
 
     // term to search inside selectors
     // promise resolved when the result is no longer needed
-    // TODO wipe container when all promise (relative to term) is resolved
     selectorsManager.getItems = function(term, promise){
         
         // a promise resolved when all selectors complete
         // the http query request
         var compleatedPromise = $q.defer(),
             pendingRequest = selectorInstances.length,
+            // replace space with $ and use as container name
+            // with selector instace container name
             termName = term.split(' ').join('$');
 
         if (typeof(researching[termName]) === 'undefined') {
@@ -212,8 +217,9 @@ angular.module('Pundit2.Vocabularies')
             var self = promise;
             // search the resolved promise
             var index = researching[termName].indexOf(self);
-            // remove promise from the array
+            
             if (index > -1) {
+                // remove promise from the array
                 researching[termName].splice(index, 1);
                 // if we not have pending request wipe items and remove container
                 if (researching[termName].length === 0) {
@@ -225,7 +231,8 @@ angular.module('Pundit2.Vocabularies')
 
         // get items from actives selectors
         for (var j in selectorInstances) {
-            // selector always resolve the promise (even in case of error)
+            // selector always resolve the promise 
+            // when http call return (even in case of error)
             selectorInstances[j].getItems(term).then(function(){
                 pendingRequest--;
                 if (pendingRequest <= 0 && compleatedPromise!== null) {
