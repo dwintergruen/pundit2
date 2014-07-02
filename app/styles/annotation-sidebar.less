@@ -192,10 +192,6 @@ body.pnd-annotation-sidebar-expanded {
 			padding: 0px 10px;
 			border-top: 1px solid @gray-extra-light;
 			width: @annotation-sidebar-filter-width;
-			
-			//&+.pnd-annotation-sidebar-filter {
-			//border-top: 1px solid @gray-extra-light;
-			//}
 	}
 
 	// ---------- PANELS
@@ -207,8 +203,35 @@ body.pnd-annotation-sidebar-expanded {
 		cursor: pointer;
 		
 		&:hover {
-		background-color: @gray-lighter;
-		}
+			background-color: @gray-lighter;
+					
+			&:after {
+			color: @brand-success;
+			}
+			
+			
+			}	
+		
+		// ---------- TOGGLE ICON
+		
+		&:after {
+			content: "\f0dd";
+			font-family: 'pundit-font';
+			display: inline-block;
+			float: right;
+			}	
+		
+	}
+
+	.pnd-annotation-sidebar-filter-show .pnd-panel {
+			
+		&:after {
+			content: "\f0d8";
+			font-family: 'pundit-font';
+			display: inline-block;
+			float: right;
+			}
+			
 	}
 
 	
