@@ -16,19 +16,17 @@ body.pnd-annotation-sidebar-expanded {
 // }    
 
 .pnd-annotation-sidebar-container {
-    //background: #fff;
     position: absolute;
     right: 0px;
     top: @toolbar-height;
     height: 100%;
     z-index: 99;
     display: block;
-    border-left: 1px solid @gray-light; 
+    //border-left: 1px solid @gray-light; 
 	}
 
 .pnd-annotation-sidebar-content{
     padding: 0px;  
-    //background-color: @gray-lighter;
 	}
 
 .pnd-annotation-sidebar-container.pnd-annotation-sidebar-collapsed {
@@ -502,18 +500,42 @@ body.pnd-annotation-sidebar-expanded {
 
 .pnd-annotation-sidebar-collapsed {
 
+	.pnd-annotation-details-broken {
+	
+				.pnd-icon-camera,
+				.pnd-icon-align-center { display: none;}	
+		
+	}
+
 	.pnd-saving-content{
 		display: none;		
 		}
 
 	.pnd-annotation-details-header {
-		width: 23px;
+		width: @annotation-sidebar-coll-width;
+		
+		&:hover {
+			color: #fff;
+			background-color: darken(@subject-color, 10%);  
+			}
+		                
+	    &.pnd-annotation-details-broken {
+		                 
+		    &:hover {
+			    background-color: darken(@brand-warning, 10%);  
+			    } 
+
+			}
 
 		.pnd-annotation-item-header-text {
-			visibility: hidden;
+			width: @annotation-sidebar-coll-width;
+			white-space: normal;
+			overflow: hidden;
+			text-overflow: inherit;
+			display: inline;
 		
-			.pnd-icon {
-				visibility:visible;
+			.pnd-item-title {
+				display: none;
 				}	
 			}
 		
