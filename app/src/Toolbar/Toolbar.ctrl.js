@@ -15,9 +15,25 @@ angular.module('Pundit2.Toolbar')
         MyPundit.logout();
     };
 
-    // confirm modal
+    // modal
     var infoModalScope = $rootScope.$new(),
         sendModalScope = $rootScope.$new();
+
+    var infoModal = $modal({
+        container: "[data-ng-app='Pundit2']",
+        template: 'src/Core/info.modal.tmpl.html',
+        show: false,
+        backdrop: 'static',
+        scope: infoModalScope
+    });
+
+    var sendModal = $modal({
+        container: "[data-ng-app='Pundit2']",
+        template: 'src/Core/send.modal.tmpl.html',
+        show: false,
+        backdrop: 'static',
+        scope: sendModalScope
+    });
 
     infoModalScope.titleMessage = "About Pundit";
     infoModalScope.info = [
@@ -60,6 +76,10 @@ angular.module('Pundit2.Toolbar')
         sendModal.hide();
     };
 
+    sendModalScope.cancel = function() {
+        sendModal.hide();
+    };
+
     // found bug btn
     var removeWatch;
     infoModalScope.send = function() {
@@ -88,22 +108,6 @@ angular.module('Pundit2.Toolbar')
     infoModalScope.close = function() {
         infoModal.hide();
     };
-
-    var infoModal = $modal({
-        container: "[data-ng-app='Pundit2']",
-        template: 'src/Core/info.modal.tmpl.html',
-        show: false,
-        backdrop: 'static',
-        scope: infoModalScope
-    });
-
-    var sendModal = $modal({
-        container: "[data-ng-app='Pundit2']",
-        template: 'src/Core/send.modal.tmpl.html',
-        show: false,
-        backdrop: 'static',
-        scope: sendModalScope
-    });
 
     // open info modal
     var showInfo = function() {
