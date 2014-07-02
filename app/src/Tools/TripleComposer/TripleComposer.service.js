@@ -202,6 +202,11 @@ angular.module('Pundit2.TripleComposer')
 
     tripleComposer.setEditMode = function(bool) {
         editMode = bool;
+        for (var i in statements) {
+            if (typeof(statements[i].scope) !== 'undefined') {
+                statements[i].scope.editMode = bool;
+            }
+        }
     };
 
     tripleComposer.addStatement = function(){
@@ -299,7 +304,6 @@ angular.module('Pundit2.TripleComposer')
     tripleComposer.editAnnotation = function(annID) {
         // wipe all statements
         tripleComposer.reset();
-        editMode = true;
 
         var ann = AnnotationsExchange.getAnnotationById(annID),
             i;
@@ -338,6 +342,7 @@ angular.module('Pundit2.TripleComposer')
                     } else {
                         tripleComposer.log('Try to add incompatible type of object', triples[i].object);
                     }
+                    tripleComposer.setEditMode(true);
                     tripleComposer.log('New statement populated with', triples[i]);
                 }
                 removeWatcher();
