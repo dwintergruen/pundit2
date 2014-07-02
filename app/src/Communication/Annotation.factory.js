@@ -70,40 +70,56 @@ angular.module('Pundit2.Communication')
     };
 
     Annotation.prototype.isBroken = function() {
-        var graph = this.graph;
-        var currentItem;
-        var list;
-        var broken = false;
+        // var graph = this.graph;
+        // var currentItem;
+        // var list;
+        // var broken = true;
+
+        // // TODO: add support for web pages and external text/image fragment
+
+        // for (var subject in graph){
+        //     currentItem = ItemsExchange.getItemByUri(subject);
+        //     if (currentItem.isTextFragment() || currentItem.isImageFragment()){
+        //         if (Consolidation.isConsolidated(currentItem)){
+        //             broken = false;
+        //             return broken;
+        //         }
+        //     }
+
+        //     for (var predicate in graph[subject]){
+
+        //         list = graph[subject][predicate];
+        //         for (var object in list){
+        //             objectValue = list[object].value;
+        //             objectType = list[object].type;
+
+        //             if (objectType === 'uri'){
+        //                 currentItem = ItemsExchange.getItemByUri(objectValue);
+        //                 if (currentItem.isTextFragment() || currentItem.isImageFragment()){
+        //                     if (Consolidation.isConsolidated(currentItem)){
+        //                         broken = false;
+        //                         return broken;;
+        //                     }
+        //                 }
+        //             } 
+        //         }
+        //     }
+        // }
+        // return broken;
+
+        var items = this.items;
 
         // TODO: add support for web pages and external text/image fragment
 
-        for (var subject in graph){
-            currentItem = ItemsExchange.getItemByUri(subject);
+        for (var i in items){
+            currentItem = ItemsExchange.getItemByUri(items[i].uri);
             if (currentItem.isTextFragment() || currentItem.isImageFragment()){
-                if (!Consolidation.isConsolidated(currentItem)){
-                    broken = true;
-                }
-            }
-
-            for (var predicate in graph[subject]){
-
-                list = graph[subject][predicate];
-                for (var object in list){
-                    objectValue = list[object].value;
-                    objectType = list[object].type;
-
-                    if (objectType === 'uri'){
-                        currentItem = ItemsExchange.getItemByUri(objectValue);
-                        if (currentItem.isTextFragment() || currentItem.isImageFragment()){
-                            if (!Consolidation.isConsolidated(currentItem)){
-                                broken = true;
-                            }
-                        }
-                    } 
+                if (Consolidation.isConsolidated(currentItem)){
+                    return false;
                 }
             }
         }
-        return broken;
+        return true;
     };
 
     // Returns true if the annotation has been parsed correctly and entirely

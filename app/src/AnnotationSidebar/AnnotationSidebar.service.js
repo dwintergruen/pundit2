@@ -427,13 +427,44 @@ angular.module('Pundit2.AnnotationSidebar')
 
     };
 
+    var findFirstConsolidateItem = function(currentAnnotation){
+        var graph = currentAnnotation.graph;
+        var list;
+
+        for (var subject in graph){
+            currentItem = ItemsExchange.getItemByUri(subject);
+            if (currentItem.isTextFragment() || currentItem.isImageFragment()){
+                if (Consolidation.isConsolidated(currentItem)){
+                    return subject;
+                }
+            }
+
+            for (var predicate in graph[subject]){
+
+                list = graph[subject][predicate];
+                for (var object in list){
+                    objectValue = list[object].value;
+                    objectType = list[object].type;
+
+                    if (objectType === 'uri'){
+                        currentItem = ItemsExchange.getItemByUri(objectValue);
+                        if (currentItem.isTextFragment() || currentItem.isImageFragment()){
+                            if (Consolidation.isConsolidated(currentItem)){
+                                return objectValue;
+                            }
+                        }
+                    } 
+                }
+            }
+        }
+    };
+
     var setAnnotationsPosition = function(optId, optHeight) {
 
         var annotations = (annotationSidebar.needToFilter() ? state.filteredAnnotations : state.allAnnotations);
         var optCheck = false;
         var annotationHeigth = 0;
         var dashboardHeight;
-
 
         if (Dashboard.isDashboardVisible()){
             dashboardHeight = Dashboard.getContainerHeight();
@@ -451,13 +482,15 @@ angular.module('Pundit2.AnnotationSidebar')
 
             angular.forEach(annotations, function(annotation) {
                 var graph = annotation.graph;
-                var firstSubjectUri;
+                var firstValidUri;
                 var currentItem;
                 var currentId;
 
                 var currentFragment;
 
-                if (annotation.isBroken()){
+                firstValidUri = findFirstConsolidateItem(annotation);
+
+                if (typeof(firstValidUri) === 'undefined'){
                     annotationHeigth = annotationSidebar.options.annotationHeigth;
                     if (optCheck && optId === annotation.id){
                         annotationHeigth = optHeight;
@@ -470,20 +503,12 @@ angular.module('Pundit2.AnnotationSidebar')
                         broken: true
                     });
                 } else{
-                    for (firstSubjectUri in graph){
-                        break;
-                    }
-
-                    currentItem = ItemsExchange.getItemByUri(firstSubjectUri);
-
-                    if (Consolidation.isConsolidated(currentItem)){
-                        currentFragment = TextFragmentAnnotator.getFragmentIdByUri(firstSubjectUri);
-                    } else{
-                        currentFragment = undefined;
-                    }
+                    currentItem = ItemsExchange.getItemByUri(firstValidUri);
+                    currentFragment = TextFragmentAnnotator.getFragmentIdByUri(firstValidUri);
 
                     if (typeof(currentFragment) !== 'undefined'){
                         var top = angular.element('.'+currentFragment).offset().top - toolbarHeight - dashboardHeight;
+                        // annotationSidebar.log("curr fr "+currentFragment + " alt "+ angular.element('.'+currentFragment).offset().top );
                         annotationHeigth = annotationSidebar.options.annotationHeigth;
                         if (optCheck && optId === annotation.id){
                             annotationHeigth = optHeight;
@@ -494,6 +519,8 @@ angular.module('Pundit2.AnnotationSidebar')
                             height: annotationHeigth,                        
                             broken: false
                         });
+                    } else {
+                        annotationSidebar.log("Something wrong with this annotation: ",annotation);
                     }
                 }
             });
