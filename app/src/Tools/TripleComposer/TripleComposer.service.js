@@ -284,10 +284,21 @@ angular.module('Pundit2.TripleComposer')
 
     };
 
+    tripleComposer.canAddItemAsSubject = function(){
+        if (statements.length === 1 && !statements[0].scope.subjectFound && !editMode) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
     // Used to add a subject from outside of triple composer
     tripleComposer.addToSubject = function(item) {
-        if (statements.length === 1) {
+        if (tripleComposer.canAddItemAsSubject()) {
             statements[0].scope.setSubject(item);
+            tripleComposer.log('Add item as subject');
+        } else {
+            tripleComposer.log('Impossible to add this item as subject, subject already present or more than one triple');
         }
     };
 

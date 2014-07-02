@@ -118,7 +118,7 @@ angular.module('Pundit2.Annotators')
             name: 'addToSubject',
             label: 'Annotate this text fragment',
             showIf: function(item) {
-                return item.isTextFragment();
+                return item.isTextFragment() && TripleComposer.canAddItemAsSubject();
             },
             priority: 20,
             action: function(item) {
