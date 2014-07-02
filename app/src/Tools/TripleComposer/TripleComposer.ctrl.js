@@ -9,6 +9,18 @@ angular.module('Pundit2.TripleComposer')
     $scope.saving = false;
     $scope.textMessage = TripleComposer.options.savingMsg;
 
+    $scope.editMode = false;
+    $scope.$watch(function() {
+        return TripleComposer.isEditMode();
+    }, function(editMode) {
+        if (editMode) {
+            $scope.headerMessage = "Edit and update your Annotation";
+        } else {
+            $scope.headerMessage = "Create New Annotation";
+        }
+        $scope.editMode = editMode;
+    });
+
     var loadShortMsg = "Loading",
         successShortMsg = "Saved",
         warnShortMsg = "Warning!";

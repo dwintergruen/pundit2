@@ -190,8 +190,18 @@ angular.module('Pundit2.TripleComposer')
         id: nextId
     }];
 
+    var editMode = false;
+
     tripleComposer.getStatements = function(){
         return statements;
+    };
+
+    tripleComposer.isEditMode = function(){
+        return editMode;
+    };
+
+    tripleComposer.setEditMode = function(bool) {
+        editMode = bool;
     };
 
     tripleComposer.addStatement = function(){
@@ -289,6 +299,7 @@ angular.module('Pundit2.TripleComposer')
     tripleComposer.editAnnotation = function(annID) {
         // wipe all statements
         tripleComposer.reset();
+        editMode = true;
 
         var ann = AnnotationsExchange.getAnnotationById(annID),
             i;
