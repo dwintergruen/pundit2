@@ -94,7 +94,7 @@ angular.module('Pundit2.Toolbar')
             $scope.$watch(function() {
                 return sendModalScope.text.subject;
             }, function(text) {
-                if (text.length > 0) {
+                if (text.length > 2) {
                     sendBtn.removeClass('disabled');
                 } else {
                     sendBtn.addClass('disabled');
