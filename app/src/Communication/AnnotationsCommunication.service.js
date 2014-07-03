@@ -1,6 +1,7 @@
 angular.module('Pundit2.Communication')
     .service('AnnotationsCommunication', function(BaseComponent, NameSpace, Toolbar, Consolidation, MyPundit,
-        AnnotationsExchange, Annotation, NotebookExchange, Notebook, ItemsExchange, Config, $http, $q) {
+        AnnotationsExchange, Annotation, NotebookExchange, Notebook, ItemsExchange, Config, XpointersHelper,
+        $http, $q) {
 
     var annotationsCommunication = new BaseComponent("AnnotationCommunication");
 
@@ -112,6 +113,33 @@ angular.module('Pundit2.Communication')
 
         return promise.promise;
     };
+
+
+    /* this API not work correctly sometimese save correctly the items sometimes not save correctly
+    annotationsCommunication.editAnnotation = function(annID, graph, items, targets){
+
+        $http({
+            headers: { 'Content-Type': 'application/json' },
+            method: 'PUT',
+            url: NameSpace.get('asAnnContent', {id: annID}),
+            params: {
+                context: angular.toJson({
+                    targets: targets,
+                    pageContext: XpointersHelper.getSafePageContext()
+                })
+            },
+            withCredentials: true,
+            data: {
+                "graph": graph,
+                "items": items               
+            }
+        }).success(function(data) {
+            console.log('Edit success', data);
+        }).error(function(msg) {
+            console.log("Edit Error", msg);
+        });
+
+    };*/
 
     return annotationsCommunication;
 

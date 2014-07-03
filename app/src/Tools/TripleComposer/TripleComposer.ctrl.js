@@ -1,6 +1,6 @@
 angular.module('Pundit2.TripleComposer')
 .controller('TripleComposerCtrl', function($scope, $http, $timeout, NameSpace, TypesHelper, XpointersHelper, MyPundit,
-    Toolbar, Annotation, Consolidation, TripleComposer, NotebookExchange, AnnotationsExchange) {
+    Toolbar, Annotation, Consolidation, TripleComposer, NotebookExchange, AnnotationsExchange, AnnotationsCommunication) {
 
     // statements objects are extend by this.addStatementScope()
     // the function is called in the statement directive link function
@@ -66,13 +66,21 @@ angular.module('Pundit2.TripleComposer')
         TripleComposer.addStatement();
     };
 
-    $scope.editAnnotation = function(){
-        // AnnotationsCommunication.editAnnotation(annID);
-    };
-
     $scope.cancelEditMode = function(){
         TripleComposer.reset();
         TripleComposer.setEditMode(false);
+    };
+
+    $scope.editAnnotation = function(){
+        /*var annID = TripleComposer.getEditAnnID();
+        if (typeof(annID) !== 'undefined') {
+            AnnotationsCommunication.editAnnotation(
+                annID,
+                TripleComposer.buildGraph(),
+                TripleComposer.buildItems(),
+                TripleComposer.buildTargets()
+            );            
+        }*/
     };
 
     // update triple composer messagge then after "time" (ms)

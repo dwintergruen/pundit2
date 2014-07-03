@@ -190,7 +190,8 @@ angular.module('Pundit2.TripleComposer')
         id: nextId
     }];
 
-    var editMode = false;
+    var editMode = false,
+        editAnnID;
 
     tripleComposer.getStatements = function(){
         return statements;
@@ -198,6 +199,10 @@ angular.module('Pundit2.TripleComposer')
 
     tripleComposer.isEditMode = function(){
         return editMode;
+    };
+
+    tripleComposer.getEditAnnID = function(){
+        return editAnnID;
     };
 
     tripleComposer.setEditMode = function(bool) {
@@ -317,9 +322,12 @@ angular.module('Pundit2.TripleComposer')
     tripleComposer.editAnnotation = function(annID) {
         // wipe all statements
         tripleComposer.reset();
+        editAnnID = annID;
 
         var ann = AnnotationsExchange.getAnnotationById(annID),
             i;
+
+        console.log(ann);
 
         var triples = [];
         for (var s in ann.graph) {

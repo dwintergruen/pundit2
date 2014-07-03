@@ -149,6 +149,7 @@ angular.module("Pundit2.Core")
     ns.asOpenAnnMetaSearch = ns.as + "api/open/metadata/search";
     ns.asAnn               = ns.as + "api/annotations/{{id}}";
     ns.asOpenAnn           = ns.as + "api/open/annotations/{{id}}";
+    ns.asAnnContent        = ns.as + "api/annotations/{{id}}/content";
 
     ns.asPref              = ns.as + "api/services/preferences/{{key}}";
 
