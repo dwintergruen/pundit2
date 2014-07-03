@@ -26,6 +26,32 @@ angular.module('Pundit2.Communication')
         annotationComponent.log('Creating a new Annotation on the server');
         this._q.resolve('New annotation created: TODO, after LOGIN');
     };
+
+    // update local annotation info reading from server
+    Annotation.prototype.update = function(){
+
+        var self = this,
+            promise = $q.defer();
+
+        $http({
+            headers: { 'Accept': 'application/json' },
+            method: 'GET',
+            url: NameSpace.get('asAnn', {id: self.id}),
+            withCredentials: true
+        }).success(function(data) {
+
+            // update info
+            readAnnotationData(self, data);
+            
+            promise.resolve();
+            annotationComponent.log("Retrieved annotation "+self.id+" metadata");
+        }).error(function(data, statusCode) {
+            promise.reject();
+            annotationComponent.err("Error getting annotation "+self.id+". Server answered with status code "+statusCode);
+        });
+
+        return promise.promise;
+    };
     
     Annotation.prototype.load = function(useCache) {
         var self = this,
@@ -46,7 +72,7 @@ angular.module('Pundit2.Communication')
             withCredentials: true
 
         }).success(function(data) {
-            
+
             var ret = readAnnotationData(self, data);
 
             // TODO: if ret, resolve() .. otherwise reject()?

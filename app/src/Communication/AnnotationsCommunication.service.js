@@ -116,6 +116,7 @@ angular.module('Pundit2.Communication')
 
 
     // this API not work correctly sometimese save correctly the items sometimes not save correctly
+    // TODO : safety check if we get an error in one of the two http calls
     annotationsCommunication.editAnnotation = function(annID, graph, items, targets){
 
         var completed = 0;
@@ -132,15 +133,19 @@ angular.module('Pundit2.Communication')
             },
             withCredentials: true,
             data: {
-                "graph": graph               
+                "graph": graph
             }
-        }).success(function(data) {
+        }).success(function() {
             if (completed > 0) {
-                new Annotation(annID, false);
+                AnnotationsExchange.getAnnotationById(annID).update().then(function(){
+                    Consolidation.consolidateAll();
+                });
             }            
             completed++;
+            annotationsCommunication.log("Graph correctly updated: "+annID);
         }).error(function(msg) {
             completed--;
+            annotationsCommunication.log("Error during graph editing of "+annID);
         });
 
         $http({
@@ -149,13 +154,17 @@ angular.module('Pundit2.Communication')
             url: NameSpace.get('asAnnItems', {id: annID}),
             withCredentials: true,
             data: items
-        }).success(function(data) {
+        }).success(function() {
             if (completed > 0) {
-                new Annotation(annID, false);
+                AnnotationsExchange.getAnnotationById(annID).update().then(function(){
+                    Consolidation.consolidateAll();
+                });
             }            
             completed++;
+            annotationsCommunication.log("Items correctly updated: "+annID);
         }).error(function(msg) {
             completed--;
+            annotationsCommunication.log("Error during items editing of "+annID);
         });
 
     };
