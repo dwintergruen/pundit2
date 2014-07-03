@@ -71,21 +71,46 @@ angular.module('Pundit2.TripleComposer')
         TripleComposer.setEditMode(false);
     };
 
+    var editPromise ,editPromiseResolved = false;
     $scope.editAnnotation = function(){
         var annID = TripleComposer.getEditAnnID();
 
         if (typeof(annID) !== 'undefined') {
+
+            // init save process showing saving message
+            $scope.textMessage = TripleComposer.options.savingMsg;
+            $scope.shortMessagge = loadShortMsg;
+            $scope.savingIcon = loadIcon;
+            $scope.shortMessageClass = loadMessageClass;
+
+            editPromiseResolved = false;
+            editPromise = $timeout(function(){ editPromiseResolved = true; }, TripleComposer.options.savingMsgTime);
+            $scope.saving = true;
+
             AnnotationsCommunication.editAnnotation(
                 annID,
                 TripleComposer.buildGraph(),
                 TripleComposer.buildItems(),
                 TripleComposer.buildTargets()
             ).then(function(){
+                // if you have gone at least 500ms
+                if (editPromiseResolved) {
+                    updateMessagge(TripleComposer.options.notificationSuccessMsg, TripleComposer.options.notificationMsgTime, false);
+                } else {
+                    editPromise.then(function(){
+                        updateMessagge(TripleComposer.options.notificationSuccessMsg, TripleComposer.options.notificationMsgTime, false);
+                    });
+                }
                 TripleComposer.reset();
-                TripleComposer.setEditMode(false);
             }, function(){
+                if (editPromiseResolved) {
+                    updateMessagge(TripleComposer.options.notificationErrorMsg, TripleComposer.options.notificationMsgTime, true);
+                } else {
+                    editPromise.then(function(){
+                        updateMessagge(TripleComposer.options.notificationErrorMsg, TripleComposer.options.notificationMsgTime, true);
+                    });
+                }
                 TripleComposer.reset();
-                TripleComposer.setEditMode(false);
             });            
         }
     };
@@ -157,7 +182,7 @@ angular.module('Pundit2.TripleComposer')
                     withCredentials: true,
                     data: {
                         "graph": TripleComposer.buildGraph(),
-                        "items": TripleComposer.buildItems()               
+                        "items": TripleComposer.buildItems()
                     }
                 }).success(function(data) {
 
