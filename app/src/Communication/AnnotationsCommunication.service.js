@@ -115,8 +115,10 @@ angular.module('Pundit2.Communication')
     };
 
 
-    /* this API not work correctly sometimese save correctly the items sometimes not save correctly
+    // this API not work correctly sometimese save correctly the items sometimes not save correctly
     annotationsCommunication.editAnnotation = function(annID, graph, items, targets){
+
+        var completed = 0;
 
         $http({
             headers: { 'Content-Type': 'application/json' },
@@ -130,16 +132,33 @@ angular.module('Pundit2.Communication')
             },
             withCredentials: true,
             data: {
-                "graph": graph,
-                "items": items               
+                "graph": graph               
             }
         }).success(function(data) {
-            console.log('Edit success', data);
+            if (completed > 0) {
+                new Annotation(annID, false);
+            }            
+            completed++;
         }).error(function(msg) {
-            console.log("Edit Error", msg);
+            completed--;
         });
 
-    };*/
+        $http({
+            headers: { 'Content-Type': 'application/json' },
+            method: 'PUT',
+            url: NameSpace.get('asAnnItems', {id: annID}),
+            withCredentials: true,
+            data: items
+        }).success(function(data) {
+            if (completed > 0) {
+                new Annotation(annID, false);
+            }            
+            completed++;
+        }).error(function(msg) {
+            completed--;
+        });
+
+    };
 
     return annotationsCommunication;
 

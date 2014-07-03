@@ -8,12 +8,12 @@ angular.module('Pundit2.Communication')
     // Creates a new Annotation instance. If an id is passed in
     // then the annotation is loaded, otherwise a new annotation
     // is created on the server
-    function Annotation(id) {
+    function Annotation(id, useCache) {
         this._q = $q.defer();
         
         if (typeof(id) !== "undefined") {
             this.id = id;
-            this.load();
+            this.load(useCache);
         } else {
             this.create();
         }
@@ -46,7 +46,7 @@ angular.module('Pundit2.Communication')
             withCredentials: true
 
         }).success(function(data) {
-
+            
             var ret = readAnnotationData(self, data);
 
             // TODO: if ret, resolve() .. otherwise reject()?
@@ -260,8 +260,8 @@ angular.module('Pundit2.Communication')
     // get the annotation using .then(success, error). The annotation
     // will load its content as soon as possible and resolve the
     // promise.
-    function AnnotationFactory(id) {
-        var nb = new Annotation(id);
+    function AnnotationFactory(id, useCache) {
+        var nb = new Annotation(id, useCache);
         return nb._q.promise;
     }
 

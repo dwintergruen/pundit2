@@ -150,6 +150,7 @@ angular.module("Pundit2.Core")
     ns.asAnn               = ns.as + "api/annotations/{{id}}";
     ns.asOpenAnn           = ns.as + "api/open/annotations/{{id}}";
     ns.asAnnContent        = ns.as + "api/annotations/{{id}}/content";
+    ns.asAnnItems          = ns.as + "api/annotations/{{id}}/items";
 
     ns.asPref              = ns.as + "api/services/preferences/{{key}}";
 

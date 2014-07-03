@@ -327,8 +327,6 @@ angular.module('Pundit2.TripleComposer')
         var ann = AnnotationsExchange.getAnnotationById(annID),
             i;
 
-        console.log(ann);
-
         var triples = [];
         for (var s in ann.graph) {
             for (var p in ann.graph[s]) {

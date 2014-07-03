@@ -72,7 +72,8 @@ angular.module('Pundit2.TripleComposer')
     };
 
     $scope.editAnnotation = function(){
-        /*var annID = TripleComposer.getEditAnnID();
+        var annID = TripleComposer.getEditAnnID();
+        
         if (typeof(annID) !== 'undefined') {
             AnnotationsCommunication.editAnnotation(
                 annID,
@@ -80,7 +81,7 @@ angular.module('Pundit2.TripleComposer')
                 TripleComposer.buildItems(),
                 TripleComposer.buildTargets()
             );            
-        }*/
+        }
     };
 
     // update triple composer messagge then after "time" (ms)
