@@ -73,14 +73,20 @@ angular.module('Pundit2.TripleComposer')
 
     $scope.editAnnotation = function(){
         var annID = TripleComposer.getEditAnnID();
-        
+
         if (typeof(annID) !== 'undefined') {
             AnnotationsCommunication.editAnnotation(
                 annID,
                 TripleComposer.buildGraph(),
                 TripleComposer.buildItems(),
                 TripleComposer.buildTargets()
-            );            
+            ).then(function(){
+                TripleComposer.reset();
+                TripleComposer.setEditMode(false);
+            }, function(){
+                TripleComposer.reset();
+                TripleComposer.setEditMode(false);
+            });            
         }
     };
 

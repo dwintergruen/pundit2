@@ -119,7 +119,8 @@ angular.module('Pundit2.Communication')
     // TODO : safety check if we get an error in one of the two http calls
     annotationsCommunication.editAnnotation = function(annID, graph, items, targets){
 
-        var completed = 0;
+        var completed = 0,
+            promise = $q.defer();
 
         $http({
             headers: { 'Content-Type': 'application/json' },
@@ -139,12 +140,13 @@ angular.module('Pundit2.Communication')
             if (completed > 0) {
                 AnnotationsExchange.getAnnotationById(annID).update().then(function(){
                     Consolidation.consolidateAll();
+                    promise.resolve();
                 });
             }            
             completed++;
             annotationsCommunication.log("Graph correctly updated: "+annID);
-        }).error(function(msg) {
-            completed--;
+        }).error(function() {
+            promise.reject();
             annotationsCommunication.log("Error during graph editing of "+annID);
         });
 
@@ -158,14 +160,17 @@ angular.module('Pundit2.Communication')
             if (completed > 0) {
                 AnnotationsExchange.getAnnotationById(annID).update().then(function(){
                     Consolidation.consolidateAll();
+                    promise.resolve();
                 });
             }            
             completed++;
             annotationsCommunication.log("Items correctly updated: "+annID);
-        }).error(function(msg) {
-            completed--;
+        }).error(function() {
+            promise.reject();
             annotationsCommunication.log("Error during items editing of "+annID);
         });
+
+        return promise.promise;
 
     };
 
