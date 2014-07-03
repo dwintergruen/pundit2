@@ -24,16 +24,22 @@ angular.module("src/KorboEE/Korboee-error-config.tmpl.html", []).run(["$template
 
 angular.module("src/KorboEE/autocompleteList.tmpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("src/KorboEE/autocompleteList.tmpl.html",
-    "<ul tabindex=\"-1\" class=\"typeahead dropdown-menu\" ng-show=\"$isVisible()\" role=\"select\">\n" +
+    "<ul tabindex=\"-1\" class=\"typeahead dropdown-menu kee-autocomplete-list\" ng-show=\"$isVisible() && !serverNotRunning\" role=\"select\">\n" +
     "  <li role=\"presentation\" ng-repeat=\"match in $matches\" ng-class=\"{active: $index == $activeIndex}\">\n" +
-    "    <a role=\"menuitem\" tabindex=\"-1\" ng-click=\"$select($index, $event);isSelect(match)\" ng-bind=\"match.label\" ng-if=\"match.label!== 'no found'\"></a>\n" +
-    "    <a role=\"menuitem\" tabindex=\"-1\" disabled ng-bind=\"noFound\" ng-if=\"match.value.noResult === true\"></a>\n" +
+    "    <a role=\"menuitem\" tabindex=\"-1\" ng-click=\"$select($index, $event);selectEntity(match)\" ng-bind=\"match.label\" ng-show=\"match.label!== 'no found'\"></a>\n" +
+    "    <a role=\"menuitem\" tabindex=\"-1\" disabled ng-bind=\"noFound\" ng-show=\"match.value.noResult === true\"></a>\n" +
     "  </li>\n" +
-    "    <li class=\"divider\"></li>\n" +
+    "    <li ng-show=\"showNewButton() || showSearchButton()\" class=\"divider\"></li>\n" +
     "    <li>\n" +
-    "        <span>{{elemToSearch}}</span>\n" +
-    "        <button> New </button>\n" +
-    "        <button> Search </button>\n" +
+    "        <span class=\"kee-elem-to-search\" ng-show=\"showNewButton() || showSearchButton()\">{{elemToSearch}}</span>\n" +
+    "        <button class=\"kee-btn-new btn btn-success btn-xs\" ng-show=\"showNewButton()\">\n" +
+    "            <i class=\"pnd-icon-plus\"></i>\n" +
+    "            Create new\n" +
+    "        </button>\n" +
+    "        <button class=\"kee-btn-search btn btn-success btn-xs\" ng-show=\"showSearchButton()\">\n" +
+    "            <i class=\"pnd-icon-search\"></i>\n" +
+    "            Search in LOD\n" +
+    "        </button>\n" +
     "    </li>\n" +
     "</ul>\n" +
     "");
@@ -41,10 +47,10 @@ angular.module("src/KorboEE/autocompleteList.tmpl.html", []).run(["$templateCach
 
 angular.module("src/KorboEE/korboee-entity.tmpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("src/KorboEE/korboee-entity.tmpl.html",
-    "<div class=\"container ee-wrp\" id=\"korbo-ee-container\" ng-if=\"renderElement()\">\n" +
+    "<div class=\"container kee-wrp\" id=\"korbo-ee-container\" ng-show=\"renderElement()\">\n" +
     "        <div class=\"left-inner-icon\">\n" +
-    "            <span class=\"pnd-icon pnd-icon-refresh\" ng-show=\"isLoading()\"></span>\n" +
-    "            <input class=\"form-control ee-input-elem-to-search\"\n" +
+    "            <span class=\"pnd-icon pnd-icon-refresh\" ng-show=\"isLoading() && !serverNotRunning\"></span>\n" +
+    "            <input class=\"kee-input-elem-to-search\"\n" +
     "                   name=\"{{conf.tafonyName}}\"\n" +
     "                   id=\"{{conf.tafonyId}}\"\n" +
     "                   placeholder=\"Type at least {{conf.labelMinLength}} characters...\"\n" +
@@ -53,8 +59,12 @@ angular.module("src/KorboEE/korboee-entity.tmpl.html", []).run(["$templateCache"
     "                   autocomplete=\"off\"\n" +
     "                   ng-model=\"elemToSearch\"\n" +
     "                   template=\"{{autocompleteListTemplate}}\"\n" +
-    "                   ng-options=\"e.label for e in autoCompleteSearch($viewValue)\"\n" +
-    "                   bs-typeahead/>\n" +
+    "                   ng-options=\"e.label for e in results\"\n" +
+    "                   bs-typeahead\n" +
+    "                   ng-disabled=\"serverNotRunning\"\n" +
+    "                   ng-show = \"!serverNotRunning\"\n" +
+    "                    />\n" +
+    "            <input ng-disabled=\"true\" class=\"form-control kee-input-elem-to-search kee-input-error-server\" placeholder=\"Sorry!The service is not working\" ng-show = \"serverNotRunning\"/>\n" +
     "\n" +
     "        </div> <!-- div ee-input-container -->\n" +
     "\n" +

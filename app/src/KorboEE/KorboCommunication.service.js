@@ -14,11 +14,9 @@ angular.module('KorboEE')
         };
 
 
-        korboCommunication.search = function(val) {
+        korboCommunication.search = function(val, endpoint, prov, limit, offset, lang) {
             isAutocompleteLoading = true;
             korboCommunication.log('Searching entity in korbo...');
-            var endpoint = korboConf.getEndpoint();
-            var lang = korboConf.getDefaultLanguage();
 
             return $http({
                 //headers: { 'Content-Type': 'application/json' },
@@ -27,9 +25,10 @@ angular.module('KorboEE')
                 cache: false,
                 params: {
                     q: val,
-                    limit: 12,
-                    offset: 0,
-                    lang: lang.value
+                    p: prov,
+                    limit: limit,
+                    offset: offset,
+                    lang: lang
                 }
             }).then(function(res) {
 
@@ -42,6 +41,10 @@ angular.module('KorboEE')
                     return res.data.data;
                 }
 
+            },
+            function(msg){
+                var errorServer = [{label:"error", errorServer:true}];
+                return errorServer;
             });
 
 

@@ -1,12 +1,18 @@
-<ul tabindex="-1" class="typeahead dropdown-menu" ng-show="$isVisible()" role="select">
+<ul tabindex="-1" class="typeahead dropdown-menu kee-autocomplete-list" ng-show="$isVisible() && !serverNotRunning" role="select">
   <li role="presentation" ng-repeat="match in $matches" ng-class="{active: $index == $activeIndex}">
-    <a role="menuitem" tabindex="-1" ng-click="$select($index, $event);isSelect(match)" ng-bind="match.label" ng-if="match.label!== 'no found'"></a>
-    <a role="menuitem" tabindex="-1" disabled ng-bind="noFound" ng-if="match.value.noResult === true"></a>
+    <a role="menuitem" tabindex="-1" ng-click="$select($index, $event);selectEntity(match)" ng-bind="match.label" ng-show="match.label!== 'no found'"></a>
+    <a role="menuitem" tabindex="-1" disabled ng-bind="noFound" ng-show="match.value.noResult === true"></a>
   </li>
-    <li class="divider"></li>
+    <li ng-show="showNewButton() || showSearchButton()" class="divider"></li>
     <li>
-        <span>{{elemToSearch}}</span>
-        <button> New </button>
-        <button> Search </button>
+        <span class="kee-elem-to-search" ng-show="showNewButton() || showSearchButton()">{{elemToSearch}}</span>
+        <button class="kee-btn-new btn btn-success btn-xs" ng-show="showNewButton()">
+            <i class="pnd-icon-plus"></i>
+            Create new
+        </button>
+        <button class="kee-btn-search btn btn-success btn-xs" ng-show="showSearchButton()">
+            <i class="pnd-icon-search"></i>
+            Search in LOD
+        </button>
     </li>
 </ul>
