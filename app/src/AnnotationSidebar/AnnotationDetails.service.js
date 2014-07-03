@@ -247,30 +247,6 @@ angular.module('Pundit2.AnnotationSidebar')
         return results;
     };
 
-    annotationDetails.addAnnotationReference = function(scope) {
-        var currentId = scope.id;
-        var isBroken = scope.broken;
-        var currentAnnotation = AnnotationsExchange.getAnnotationById(currentId);
-
-        if(typeof(state.annotations[currentId]) === 'undefined'){
-            state.annotations[currentId] = {
-                id: currentId,
-                creator: currentAnnotation.creator,
-                creatorName: currentAnnotation.creatorName,
-                created: currentAnnotation.created,
-                notebookId: currentAnnotation.isIncludedIn,
-                scopeReference: scope,
-                mainItem: buildMainItem(currentAnnotation),
-                itemsArray: buildItemsArray(currentAnnotation),
-                itemsUriArray: buildItemsUriArray(currentAnnotation),
-                broken: isBroken,
-                expanded: state.defaultExpanded,
-                ghosted: false,
-                fragments: getFragments(currentAnnotation)
-            };
-        }
-    };
-
     annotationDetails.getAnnotationDetails = function(currentId) {
         if (currentId in state.annotations) {
             return state.annotations[currentId];
@@ -333,6 +309,47 @@ angular.module('Pundit2.AnnotationSidebar')
     annotationDetails.isUserToolShowed = function(creator) {
         return state.isUserLogged === true && creator === state.userData.uri;
     };
+
+    annotationDetails.addAnnotationReference = function(scope, force) {
+        var currentId = scope.id;
+        var isBroken = scope.broken;
+        var currentAnnotation = AnnotationsExchange.getAnnotationById(currentId);
+        var expandedState = (force ? true : state.defaultExpanded);
+
+        if(typeof(state.annotations[currentId]) === 'undefined' || typeof(force) !== 'undefined'){
+            state.annotations[currentId] = {
+                id: currentId,
+                creator: currentAnnotation.creator,
+                creatorName: currentAnnotation.creatorName,
+                created: currentAnnotation.created,
+                notebookId: currentAnnotation.isIncludedIn,
+                scopeReference: scope,
+                mainItem: buildMainItem(currentAnnotation),
+                itemsArray: buildItemsArray(currentAnnotation),
+                itemsUriArray: buildItemsUriArray(currentAnnotation),
+                broken: isBroken,
+                expanded: expandedState,
+                ghosted: false,
+                fragments: getFragments(currentAnnotation)
+            };
+        }
+    };
+
+    $rootScope.$on('edit-annotation-completed', function(e, annotationId) {
+        annotationDetails.log('Update annotation details');
+
+        var targetAnnotation;
+        var currentAnnotation;
+        if(typeof(annotationId) !== 'undefined'){
+            currentAnnotation = AnnotationsExchange.getAnnotationById(annotationId);
+            targetAnnotation = {
+                id: annotationId,
+                broken: currentAnnotation.isBroken()
+            }
+            annotationDetails.closeAllAnnotationView(annotationId);
+            annotationDetails.addAnnotationReference(targetAnnotation, true);
+        }
+    });
 
     $rootScope.$watch(function() {
         return MyPundit.isUserLogged(); 

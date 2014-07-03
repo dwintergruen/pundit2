@@ -1,7 +1,7 @@
 angular.module('Pundit2.Communication')
     .service('AnnotationsCommunication', function(BaseComponent, NameSpace, Toolbar, Consolidation, MyPundit,
         AnnotationsExchange, Annotation, NotebookExchange, Notebook, ItemsExchange, Config, XpointersHelper,
-        $http, $q) {
+        $http, $q, $rootScope) {
 
     var annotationsCommunication = new BaseComponent("AnnotationCommunication");
 
@@ -122,6 +122,8 @@ angular.module('Pundit2.Communication')
         var completed = 0,
             promise = $q.defer();
 
+        Toolbar.setLoading(true);
+
         $http({
             headers: { 'Content-Type': 'application/json' },
             method: 'PUT',
@@ -139,10 +141,12 @@ angular.module('Pundit2.Communication')
         }).success(function() {
             if (completed > 0) {
                 AnnotationsExchange.getAnnotationById(annID).update().then(function(){
+                    $rootScope.$emit('edit-annotation-completed', annID);
                     Consolidation.consolidateAll();
                     promise.resolve();
                 });
-            }            
+            }
+            Toolbar.setLoading(false);          
             completed++;
             annotationsCommunication.log("Graph correctly updated: "+annID);
         }).error(function() {
@@ -159,10 +163,12 @@ angular.module('Pundit2.Communication')
         }).success(function() {
             if (completed > 0) {
                 AnnotationsExchange.getAnnotationById(annID).update().then(function(){
+                    $rootScope.$emit('edit-annotation-completed', annID);
                     Consolidation.consolidateAll();
                     promise.resolve();
                 });
-            }            
+            }
+            Toolbar.setLoading(false);         
             completed++;
             annotationsCommunication.log("Items correctly updated: "+annID);
         }).error(function() {
