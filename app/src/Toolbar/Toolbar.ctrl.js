@@ -1,5 +1,5 @@
 angular.module('Pundit2.Toolbar')
-.controller('ToolbarCtrl', function($scope, $rootScope, $modal, NameSpace, Config, Toolbar, SelectorsManager,
+.controller('ToolbarCtrl', function($scope, $rootScope, $modal, $http, NameSpace, Config, Toolbar, SelectorsManager,
     MyPundit, Dashboard, AnnotationSidebar, ResourcePanel, NotebookExchange, NotebookCommunication) {
 
     $scope.dropdownTemplate = "src/ContextualMenu/dropdown.tmpl.html";
@@ -37,7 +37,6 @@ angular.module('Pundit2.Toolbar')
 
     infoModalScope.titleMessage = "About Pundit";
     infoModalScope.info = [
-        "Pundit Version ", // read from?
         "Annotation server URL: "+NameSpace.as,
         "Korbo basket: ", // is always defined? read from korbo selector instance? if i have more than one instance?
         "Contact the Pundit team punditdev@netseven.it",
@@ -45,6 +44,14 @@ angular.module('Pundit2.Toolbar')
         "Developed by Net7 Srl",
         "Credits"
     ];
+
+    var punditVersion = "Pundit Version: ";
+    $http.get("/app/src/version.json").success(function(data){
+        punditVersion += data.version;
+        infoModalScope.info.push(punditVersion);
+    }).error(function () {
+        // TODO
+    });
 
     if (Config.vocabularies.length > 0) {
         infoModalScope.info.push("Predicates vocabularies: "+Config.vocabularies.toString());
@@ -62,10 +69,17 @@ angular.module('Pundit2.Toolbar')
     sendModalScope.text = {msg: "", subject: ""};
 
     var sendMail = function(subject, body) {
-        var link = "mailto:punditdev@netseven.it"
+        var user = MyPundit.getUserData();
+        var link = "mailto:punditbug@netseven.it"
             + "?cc="
             + "&subject=" + escape(subject)
-            + "&body=" + escape(body);
+            + "&body=" + escape(body)
+            + "%0A%0A" + punditVersion 
+            + "%0A" + "Broswer info: " + window.navigator.userAgent
+            + "%0A%0A" + "User openid: " + user.openid
+            + "%0A" + "User uri: " + user.uri
+            + "%0A" + "User name: " + user.fullName
+            + "%0A" + "User mail: " + user.email;
 
         window.location.href = link;
     }
