@@ -84,17 +84,19 @@ angular.module('Pundit2.AnnotationSidebar')
 
     var buildItemDetails = function(currentUri) {
         var currentItem = ItemsExchange.getItemByUri(currentUri);
-        var result = {
-            uri: currentUri,
-            label: currentItem.label,
-            description: currentItem.description,
-            image: (typeof currentItem.image !== 'undefined' ? currentItem.image : null),
-            class: currentItem.getClass(),
-            icon: currentItem.getIcon(),
-            typeLabel: (typeof currentItem.type[0] !== 'undefined' ? TypesHelper.getLabel(currentItem.type[0]) : null),
-            // typeLabel: TypesHelper.getLabel(currentItem.type[0]),
-            typeClass: 'uri'
-        };
+        if(typeof(currentItem) !== 'undefined'){
+            var result = {
+                uri: currentUri,
+                label: currentItem.label,
+                description: currentItem.description,
+                image: (typeof currentItem.image !== 'undefined' ? currentItem.image : null),
+                class: currentItem.getClass(),
+                icon: currentItem.getIcon(),
+                typeLabel: (typeof currentItem.type[0] !== 'undefined' ? TypesHelper.getLabel(currentItem.type[0]) : null),
+                // typeLabel: TypesHelper.getLabel(currentItem.type[0]),
+                typeClass: 'uri'
+            };
+        }
         return result;
     };
 

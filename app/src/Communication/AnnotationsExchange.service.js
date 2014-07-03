@@ -76,9 +76,23 @@ angular.module('Pundit2.Communication')
                 annotationExchange.log('Not adding annotation '+ann.id+': already present.');
             } else {
                 ann._q.promise.then(function(a) {
-                    annListById[ann.id] = a;
-                    annList.push(a);
-                });
+                    if (typeof(a) !== "undefined" &&
+                    typeof(a.graph) !== "undefined" &&
+                    typeof(a.items) !== "undefined") {
+                        annListById[ann.id] = a;
+                        annList.push(a);
+                    }
+                }); 
+            }
+        };
+
+        annotationExchange.removeAnnotation = function(id) {
+            if (id in annListById) {
+                var index = annList.indexOf(annListById[id]);
+                annList.splice(index, 1);
+                delete annListById[id];
+            } else {
+                annotationExchange.log('Impossible to remove annotation '+id+': not exist.');
             }
         };
 

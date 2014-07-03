@@ -387,7 +387,9 @@ angular.module('Pundit2.AnnotationSidebar')
 
         angular.forEach(elementsList, function(element) {
             for(var key in element) {
-                element[key].count = 0;
+                if(typeof(element[key]) !== 'undefined'){
+                    element[key].count = 0;
+                }
             }
         });
 
