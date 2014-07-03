@@ -7,7 +7,7 @@ angular.module('Pundit2.AnnotationSidebar')
 
     var currentId = $scope.id;
     var currentElement = angular.element($element).find(".pnd-annotation-details-wrap");
-    var initialHeight = currentElement.height();
+    var initialHeight = AnnotationSidebar.options.annotationHeigth;
     AnnotationDetails.addAnnotationReference($scope);
 
     $scope.annotation = AnnotationDetails.getAnnotationDetails(currentId);
@@ -33,13 +33,13 @@ angular.module('Pundit2.AnnotationSidebar')
         if(!AnnotationSidebar.isAnnotationSidebarExpanded()){
             AnnotationSidebar.toggle();
         }
-        if(AnnotationDetails.isAnnotationGhosted(currentId)){
-            AnnotationDetails.closeViewAndReset();
-        }
+        // if(AnnotationDetails.isAnnotationGhosted(currentId)){
+        //     AnnotationDetails.closeViewAndReset();
+        // }
         $scope.metaInfo = false;
         AnnotationDetails.toggleAnnotationView(currentId);
         if (!$scope.annotation.expanded){
-            AnnotationSidebar.setAnnotationPosition(currentId, initialHeight);
+            AnnotationSidebar.setAllPosition(currentId, initialHeight);
         }
     };
 
@@ -59,7 +59,7 @@ angular.module('Pundit2.AnnotationSidebar')
         return currentElement.height();
     }, function(newHeight, oldHeight) {
         if (newHeight!=oldHeight && $scope.annotation.expanded){
-            AnnotationSidebar.setAnnotationPosition(currentId, newHeight);
+            AnnotationSidebar.setAllPosition(currentId, newHeight);
         }
     });
 
@@ -69,7 +69,7 @@ angular.module('Pundit2.AnnotationSidebar')
         if (newState!=oldState){
             if(!AnnotationSidebar.isAnnotationSidebarExpanded()){
                 AnnotationDetails.closeViewAndReset();
-                AnnotationSidebar.setAnnotationPosition();
+                AnnotationSidebar.setAllPosition();
             }
         }
     });

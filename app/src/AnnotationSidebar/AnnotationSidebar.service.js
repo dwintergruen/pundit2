@@ -431,16 +431,26 @@ angular.module('Pundit2.AnnotationSidebar')
         });
     };
 
-    var orderAndSetPos = function(){
+    var orderAndSetPos = function(optId, optHeight){
         var pos;
-        var currentTop;
+        var currentTop,
+            currentIndex;
 
         startPosition = annotationSidebar.options.startTop;
         annotationSidebar.annotationPositionReal = {};
 
-        annotationPosition.sort(function(a, b){
-            return a.top-b.top;
-        });
+        if (typeof(optId) !== 'undefined' && typeof(optHeight) === 'number'){
+            currentIndex = annotationPosition.map(function(e) { return e.id; }).indexOf(optId);
+            if (currentIndex !== -1){
+                annotationPosition[currentIndex].height = optHeight;
+            }
+        } else {
+            annotationPosition.sort(function(a, b){
+                return a.top-b.top;
+            });
+        }
+
+        
 
         pos = annotationPosition;
         for (var ann in pos){
@@ -733,8 +743,18 @@ angular.module('Pundit2.AnnotationSidebar')
         }
     };
 
-    annotationSidebar.setAnnotationPosition = function(id, height){
-        setAnnotationsPosition(id, height);
+    annotationSidebar.setAllPosition = function(id, height){
+        orderAndSetPos(id, height);
+    };
+
+    annotationSidebar.setAnnotationPosition = function(optId, optHeight){
+        var currentIndex;
+        if (typeof(optId) !== 'undefined' && typeof(optHeight) === 'number'){
+            currentIndex = annotationPosition.map(function(e) { return e.id; }).indexOf(optId);
+            if (currentIndex !== -1){
+                annotationPosition[currentIndex].height = optHeight;
+            }
+        } 
     };
 
     // Check if some filters are active

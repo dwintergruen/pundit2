@@ -45,7 +45,7 @@ angular.module('Pundit2.AnnotationSidebar')
      */
     debug: false
 })
-.service('AnnotationDetails', function($rootScope, $filter, BaseComponent, Annotation, AnnotationSidebar, AnnotationsExchange, Consolidation, ContextualMenu, ItemsExchange, MyPundit, TextFragmentAnnotator, TypesHelper, ANNOTATIONDETAILSDEFAULTS) {
+.service('AnnotationDetails', function($rootScope, $filter, $document, BaseComponent, Annotation, AnnotationSidebar, AnnotationsExchange, Consolidation, ContextualMenu, ItemsExchange, MyPundit, TextFragmentAnnotator, TypesHelper, ANNOTATIONDETAILSDEFAULTS) {
     
     var annotationDetails = new BaseComponent('AnnotationDetails', ANNOTATIONDETAILSDEFAULTS);
 
@@ -53,13 +53,14 @@ angular.module('Pundit2.AnnotationSidebar')
         annotations: [],
         defaultExpanded: annotationDetails.options.defaultExpanded,
         isUserLogged: false,
+        isGhostedActive: false,
         userData: {}
     };
 
     ContextualMenu.addAction({
         type: [TextFragmentAnnotator.options.cMenuType],
         name: 'showAllAnnotations',
-        label: 'Show all annotations on this item',
+        label: 'Show all annotations of this item',
         showIf: function() {
             return true;
         },
@@ -68,7 +69,7 @@ angular.module('Pundit2.AnnotationSidebar')
             if(!AnnotationSidebar.isAnnotationSidebarExpanded()){
                 AnnotationSidebar.toggle();
             } else{
-                AnnotationSidebar.setAnnotationPosition();
+                AnnotationSidebar.setAllPosition();
             }
             annotationDetails.closeViewAndReset();
             for(var annotation in state.annotations) {
@@ -77,8 +78,44 @@ angular.module('Pundit2.AnnotationSidebar')
                 }
             }
             
+            state.isGhostedActive = true;
             TextFragmentAnnotator.ghostAll();
             TextFragmentAnnotator.ghostRemoveByUri(item.uri);
+        }
+    });
+
+    var isToBeIgnored = function(node) {
+        var annClass = 'pnd-annotation-details-wrap';
+        var filterClass = 'pnd-annotation-sidebar-filter-content';
+        var refClass = 'pnd-annotation-details-ghosted';
+
+        // Traverse every parent and check if it has one of the classes we
+        // need to ignore. As soon as we find one, return true: must ignore.
+        while (node.nodeName.toLowerCase() !== 'body') {
+            if (angular.element(node).hasClass(annClass)) {
+                if (angular.element(node).find('.'+refClass).length === 0){
+                    return false;                   
+                }
+            }
+            if (angular.element(node).hasClass(filterClass)) {
+                return false;                   
+            }
+            // If there's no parent node .. even better, we didnt find anything wrong!
+            if (node.parentNode === null) {
+                return true;
+            }
+            node = node.parentNode;
+        }
+        return true;
+    };
+
+    $document.on('mousedown', function(downEvt) {
+        var target = downEvt.target;
+
+        if(state.isGhostedActive){
+            if(isToBeIgnored(target)){
+                annotationDetails.closeViewAndReset();
+            }
         }
     });
 
@@ -246,13 +283,17 @@ angular.module('Pundit2.AnnotationSidebar')
         for (var id in state.annotations){
             state.annotations[id].ghosted = false;
         }
+        state.isGhostedActive = false;
+
     };
 
     annotationDetails.closeViewAndReset = function() {
         for (var id in state.annotations){
             state.annotations[id].ghosted = false;
             state.annotations[id].expanded = false;
+            AnnotationSidebar.setAllPosition(id, AnnotationSidebar.options.annotationHeigth);
         }
+        state.isGhostedActive = false;
         TextFragmentAnnotator.ghostRemoveAll();
     };
 
@@ -260,6 +301,7 @@ angular.module('Pundit2.AnnotationSidebar')
         for (var id in state.annotations){
             if (id !== skipId){
                 state.annotations[id].expanded = false;
+                AnnotationSidebar.setAnnotationPosition(id, AnnotationSidebar.options.annotationHeigth);
             }
         }
     };
