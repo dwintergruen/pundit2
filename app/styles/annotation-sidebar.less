@@ -8,12 +8,6 @@ body.pnd-annotation-sidebar-expanded {
     background-position-x: -@annotation-sidebar-exp-width;
     }
 
-// .pnd-as-transition {
-//     -webkit-transition-duration: 1s;
-//     -moz-transition-duration: 1s;
-//     -o-transition-duration: 1s;
-//     transition-duration: 1s;
-// }    
 
 .pnd-annotation-sidebar-container {
     position: absolute;
@@ -23,7 +17,7 @@ body.pnd-annotation-sidebar-expanded {
     //height: 100%;
     z-index: 99;
     display: block;
-    //background-color: aqua;
+    background-color: #fff;
     //border-left: 1px solid @gray-light; 
 	}
 
@@ -192,6 +186,7 @@ body.pnd-annotation-sidebar-expanded {
 			padding: 0px 10px;
 			border-top: 1px solid @gray-extra-light;
 			width: @annotation-sidebar-filter-width;
+			
 	}
 
 	// ---------- PANELS
@@ -269,6 +264,7 @@ body.pnd-annotation-sidebar-expanded {
     }
     .pnd-annotation-sidebar-filter-input { 
         display: none; 
+        
         &.pnd-annotation-sidebar-current-filter-active {
             display: block;
         }
@@ -375,7 +371,7 @@ body.pnd-annotation-sidebar-expanded {
         width: @annotation-sidebar-filter-width;
         background-color: @subject-color;
         color: white;
-    
+        
 	        &.pnd-annotation-details-broken {
 		        background-color: @brand-warning;
 		        
@@ -573,5 +569,17 @@ body.pnd-annotation-sidebar-expanded {
 						
 }
 
+
+//
+// ANIMATION TEST
+// --------------------------------------------------
+
+
+.pnd-annotation-details-ghosted {
+     -webkit-transition-duration: 0.8s;
+     -moz-transition-duration: 0.8s;
+     -o-transition-duration: 0.8s;
+     transition-duration: 0.8s;
+     }
 
         
