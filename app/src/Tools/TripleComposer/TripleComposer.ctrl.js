@@ -132,7 +132,8 @@ angular.module('Pundit2.TripleComposer')
         
         $timeout(function(){
             $scope.saving = false; 
-            Toolbar.setLoading(false); 
+            Toolbar.setLoading(false);
+            TripleComposer.setEditMode(false);
         }, time);
     };
 

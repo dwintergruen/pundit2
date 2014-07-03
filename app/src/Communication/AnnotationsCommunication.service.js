@@ -150,6 +150,7 @@ angular.module('Pundit2.Communication')
             completed++;
             annotationsCommunication.log("Graph correctly updated: "+annID);
         }).error(function() {
+            Toolbar.setLoading(false);            
             promise.reject();
             annotationsCommunication.log("Error during graph editing of "+annID);
         });
@@ -172,6 +173,7 @@ angular.module('Pundit2.Communication')
             completed++;
             annotationsCommunication.log("Items correctly updated: "+annID);
         }).error(function() {
+            Toolbar.setLoading(false);            
             promise.reject();
             annotationsCommunication.log("Error during items editing of "+annID);
         });
