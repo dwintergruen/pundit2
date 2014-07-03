@@ -117,6 +117,8 @@ angular.module('Pundit2.AnnotationSidebar')
                 annotationDetails.closeViewAndReset();
             }
         }
+
+        $rootScope.$$phase || $rootScope.$digest();
     });
 
     var buildItemDetails = function(currentUri) {
