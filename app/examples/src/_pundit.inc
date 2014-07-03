@@ -10,6 +10,8 @@
 
     <script src="../src/pundit2.js"></script>
 
+    <script src="../src/version.js"></script>
+
     <script src="../src/Client/Client.js"></script>
     <script src="../src/Client/Client.service.js"></script>
 

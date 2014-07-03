@@ -37,6 +37,7 @@ angular.module('Pundit2.Toolbar')
 
     infoModalScope.titleMessage = "About Pundit";
     infoModalScope.info = [
+        "Pundit Version: "+PUNDITVERSION.version,
         "Annotation server URL: "+NameSpace.as,
         "Korbo basket: ", // is always defined? read from korbo selector instance? if i have more than one instance?
         "Contact the Pundit team punditdev@netseven.it",
@@ -44,14 +45,6 @@ angular.module('Pundit2.Toolbar')
         "Developed by Net7 Srl",
         "Credits"
     ];
-
-    var punditVersion = "Pundit Version: ";
-    $http.get("version.json").success(function(data){
-        punditVersion += data.version;
-        infoModalScope.info.push(punditVersion);
-    }).error(function () {
-        // TODO
-    });
 
     if (Config.vocabularies.length > 0) {
         infoModalScope.info.push("Predicates vocabularies: "+Config.vocabularies.toString());
@@ -74,7 +67,7 @@ angular.module('Pundit2.Toolbar')
             + "?cc="
             + "&subject=" + escape(subject)
             + "&body=" + escape(body)
-            + "%0A%0A" + punditVersion 
+            + "%0A%0A" + "Pundit Version: "+ PUNDITVERSION.version
             + "%0A" + "Broswer info: " + window.navigator.userAgent
             + "%0A%0A" + "User openid: " + user.openid
             + "%0A" + "User uri: " + user.uri
