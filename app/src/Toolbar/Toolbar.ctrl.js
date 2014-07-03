@@ -46,7 +46,7 @@ angular.module('Pundit2.Toolbar')
     ];
 
     var punditVersion = "Pundit Version: ";
-    $http.get("app/src/version.json").success(function(data){
+    $http.get("version.json").success(function(data){
         punditVersion += data.version;
         infoModalScope.info.push(punditVersion);
     }).error(function () {
