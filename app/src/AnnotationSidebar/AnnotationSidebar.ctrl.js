@@ -1,7 +1,7 @@
 /*jshint strict: false*/
 
 angular.module('Pundit2.AnnotationSidebar')
-.controller('AnnotationSidebarCtrl', function($scope, $filter, $window, AnnotationSidebar, Dashboard, Toolbar) {
+.controller('AnnotationSidebarCtrl', function($scope, $filter, $timeout, $window, AnnotationSidebar, Dashboard, Toolbar) {
     var bodyClasses = AnnotationSidebar.options.bodyExpandedClass + ' ' + AnnotationSidebar.options.bodyCollapsedClass;
     var sidebarClasses = AnnotationSidebar.options.sidebarExpandedClass + ' ' + AnnotationSidebar.options.sidebarCollapsedClass;
 
@@ -187,8 +187,16 @@ angular.module('Pundit2.AnnotationSidebar')
         }
     });
 
+    $scope.$watch('freeText', function(freeText) {
+        $timeout(function(){
+            AnnotationSidebar.filters.freeText.expression = freeText;
+        }, 1500);
+    });
+
     $scope.$watch('annotationSidebar.filters', function(currentFilters) {
-        // TODO: individuare un modo migliore per rilevare i singoli filtri attivi
+        if(AnnotationSidebar.filters.freeText.expression === ''){
+            $scope.freeText = '';
+        }
         $scope.annotations = AnnotationSidebar.getAllAnnotationsFiltered(currentFilters);
     }, true);
 

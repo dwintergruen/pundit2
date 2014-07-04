@@ -38,28 +38,12 @@
                     
 
                     <!-- Free text -->
-                    <!-- <div class="pnd-annotation-sidebar-filter">
-                        <div class="pnd-panel" ng-click="toggleFilterList($event)">Contains</div>
-                        <div 
-                            ng-show="isFilterLabelShowed(annotationSidebar.filters.freeText.expression)"
-                            class="pnd-annotation-sidebar-filter-label">
-                            <span class="pnd-icon pnd-icon-check"></span>
-                            {{annotationSidebar.filters.freeText.expression}}
-                        </div>
-                        <div class="pnd-annotation-sidebar-filter-input">
-                        	<span 
-                                class="pnd-icon" 
-                                ng-class="setSearchIcon(annotationSidebar.filters.freeText.expression)" 
-                                ng-click="annotationSidebar.filters.freeText.expression = ''"></span>
-                            <input class="form-control" ng-model="annotationSidebar.filters.freeText.expression" placeholder="Search">
-                        </div>
-                    </div> -->
                     <div class="pnd-annotation-sidebar-filter-input-contains">
                         <span 
                             class="pnd-icon" 
                             ng-class="setSearchIcon(annotationSidebar.filters.freeText.expression)" 
-                            ng-click="annotationSidebar.filters.freeText.expression = ''"></span>
-                        <input class="form-control" ng-model="annotationSidebar.filters.freeText.expression" placeholder="Contains">
+                            ng-click="freeText = ''"></span>
+                        <input class="form-control" ng-model="freeText" placeholder="Contains">
                     </div>
 
                     <!-- Authors -->
