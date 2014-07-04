@@ -23,7 +23,9 @@ describe('AnnotationsExchange service', function() {
     it('should correctly add annotation', function(){
         var ann = {
             _q: $q.defer(),
-            id: "testAnnId1"
+            id: "testAnnId1",
+            graph: {},
+            items: {}
         };
 
         AnnotationsExchange.addAnnotation(ann);
@@ -55,11 +57,15 @@ describe('AnnotationsExchange service', function() {
     it('should correctly wipe annotations', function(){
         var ann = {
             _q: $q.defer(),
-            id: "testAnnId1"
+            id: "testAnnId1",
+            graph: {},
+            items: {}
         };
         var ann2 = {
             _q: $q.defer(),
-            id: "testAnnId2"
+            id: "testAnnId2",
+            graph: {},
+            items: {}
         };
 
         AnnotationsExchange.addAnnotation(ann);
@@ -78,11 +84,15 @@ describe('AnnotationsExchange service', function() {
     it('should correctly get annotation by id', function(){
         var ann = {
             _q: $q.defer(),
-            id: "testAnnId1"
+            id: "testAnnId1",
+            graph: {},
+            items: {}
         };
         var ann2 = {
             _q: $q.defer(),
-            id: "testAnnId2"
+            id: "testAnnId2",
+            graph: {},
+            items: {}
         };
 
         AnnotationsExchange.addAnnotation(ann);

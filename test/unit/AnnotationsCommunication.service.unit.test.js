@@ -34,6 +34,8 @@ describe('AnnotationsCommunication service', function() {
     it("should correctly delete an annotation", function(){
         var ann = {
             id : "testid123",
+            graph: {},
+            items: {},
             isIncludedIn: "testNotebookID",
             _q: $q.defer() 
         };
