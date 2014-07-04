@@ -83,7 +83,7 @@ describe('AnnotationsCommunication service', function() {
         $httpBackend.flush();
     });
 
-    it("should reject if user is not logged", function(){
+    it("should reject promise when try to delete and user is not logged", function(){
         var rejected = false;
         AnnotationsCommunication.deleteAnnotation("ID").then(function(){
             // if resolve the test fail
@@ -96,7 +96,7 @@ describe('AnnotationsCommunication service', function() {
         $rootScope.$digest();
     });
 
-    it("should reject if server responde with error", function(){
+    it("should reject promise when delete and server responde with error", function(){
         var rejected;
         // http mock for login
         $httpBackend.expectGET(NameSpace.get('asUsersCurrent')).respond(userLoggedIn);
@@ -111,6 +111,72 @@ describe('AnnotationsCommunication service', function() {
             });
         });
         $httpBackend.flush();
+    });
+
+    it("should reject promise when try to edit annotation and server responde with error on content", function(){
+        var rejected;
+        // http mock for login
+        $httpBackend.expectGET(NameSpace.get('asUsersCurrent')).respond(userLoggedIn);
+        MyPundit.login().then(function(){
+            $httpBackend.expectPUT(new RegExp(NameSpace.get('asAnnContent', {id: "ID"}))).respond(500, "Error msg");
+            $httpBackend.expectPUT(new RegExp(NameSpace.get('asAnnItems', {id: "ID"}))).respond({});
+            AnnotationsCommunication.editAnnotation("ID").then(function(){ }, function(){
+                rejected = true;
+            });
+            waitsFor(function() { return rejected; }, 500);
+            runs(function() {
+                expect(rejected).toBe(true);
+            });
+        });
+        $httpBackend.flush();
+    });
+
+    it("should reject promise when try to edit annotation and server responde with error on items", function(){
+        var rejected;
+        // http mock for login
+        $httpBackend.expectGET(NameSpace.get('asUsersCurrent')).respond(userLoggedIn);
+        MyPundit.login().then(function(){
+            $httpBackend.expectPUT(new RegExp(NameSpace.get('asAnnContent', {id: "ID"}))).respond({});
+            $httpBackend.expectPUT(new RegExp(NameSpace.get('asAnnItems', {id: "ID"}))).respond(500, "Error msg");
+            AnnotationsCommunication.editAnnotation("ID").then(function(){ }, function(){
+                rejected = true;
+            });
+            waitsFor(function() { return rejected; }, 500);
+            runs(function() {
+                expect(rejected).toBe(true);
+            });
+        });
+        $httpBackend.flush();
+    });
+
+    it("should correctly edit an annotation", function(){
+        var ann = {
+            id : "testid123",
+            graph: {},
+            items: {},
+            update: function() {
+                var promise = $q.defer();
+                promise.resolve();
+                return promise.promise;
+            },
+            _q: $q.defer() 
+        };
+        // http mock for edit annotation
+        $httpBackend.expectPUT(new RegExp(NameSpace.get('asAnnContent', {id: ann.id}))).respond({});
+        $httpBackend.expectPUT(new RegExp(NameSpace.get('asAnnItems', {id: ann.id}))).respond({});
+
+        // mock annotation locally
+        AnnotationsExchange.addAnnotation(ann);
+        ann._q.resolve(ann);
+        $rootScope.$digest();
+
+        var resolved;        
+        AnnotationsCommunication.editAnnotation(ann.id).then(function(){
+            resolved = true;
+        });
+        $httpBackend.flush();
+        $rootScope.$digest();
+        expect(resolved).toBe(true);
     });
 
 });

@@ -141,8 +141,8 @@ angular.module('Pundit2.Communication')
         }).success(function() {
             if (completed > 0) {
                 AnnotationsExchange.getAnnotationById(annID).update().then(function(){
-                    $rootScope.$emit('edit-annotation-completed', annID);
                     Consolidation.consolidateAll();
+                    $rootScope.$emit('edit-annotation-completed', annID);
                     promise.resolve();
                 });
             }
@@ -164,8 +164,8 @@ angular.module('Pundit2.Communication')
         }).success(function() {
             if (completed > 0) {
                 AnnotationsExchange.getAnnotationById(annID).update().then(function(){
-                    $rootScope.$emit('edit-annotation-completed', annID);
                     Consolidation.consolidateAll();
+                    $rootScope.$emit('edit-annotation-completed', annID);
                     promise.resolve();
                 });
             }
