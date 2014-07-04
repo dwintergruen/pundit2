@@ -1,6 +1,15 @@
 angular.module('Pundit2.Preview')
     .controller('ItemPreviewCtrl', function($scope, TypesHelper, ItemsExchange, $element, Preview) {
+        var currentElement = angular.element($element).find(".pnd-annotation-preview-item-container");
+        var sticking;
         $scope.typeHidden = true;
+        $scope.isSticky = false;
+
+        if (typeof($scope.sticking) !== 'undefined'){
+            sticking = $scope.sticking;
+        } else{
+            sticking = false;
+        }
 
         // get the label of a type from his uri
         $scope.getTypeLabel = function(uri) {
@@ -11,44 +20,44 @@ angular.module('Pundit2.Preview')
             // TODO: special initialization for certain kind of items, like image fragments?
             $scope.item = ItemsExchange.getItemByUri($scope.uri);
 
-            if(Preview.getItemDashboardSticky() !== null && Preview.getItemDashboardSticky().uri === $scope.uri){
-                $scope.isSticky = true;
-            } else {
-                $scope.isSticky = false;
+            if(sticking){
+                if(Preview.getItemDashboardSticky() !== null && Preview.getItemDashboardSticky().uri === $scope.uri){
+                    $scope.isSticky = true;
+                } else {
+                    $scope.isSticky = false;
+                }
             }
-
-
         });
 
         $scope.$watch(function() {
-            return angular.element($element).find('li.pnd-preview-single-type').css('width');
+            return currentElement.find('li.pnd-preview-single-type').css('width');
         }, function() {
             $scope.typeHidden = true;
             var liList;
 
             // if preview sticky item,
-            if($scope.isSticky){
+            if($scope.isSticky && sticking){
                 $scope.typeHiddenPresent = $scope.prev;
 
             }else{
 
-                liList = angular.element($element).find('div.pnd-preview-item-types').children('ul.pnd-preview-item-types-ul').children('li:not(.pnd-is-sticky)');
+                liList = currentElement.find('div.pnd-preview-item-types').children('ul.pnd-preview-item-types-ul').children('li:not(.pnd-is-sticky)');
 
                 // get <ul> width containing types
-                var luWidth = parseInt(angular.element($element).find('div.pnd-preview-item-types').children('ul.pnd-preview-item-types-ul').css('width'), 10);
+                var luWidth = parseInt(currentElement.find('div.pnd-preview-item-types').children('ul.pnd-preview-item-types-ul').css('width'), 10);
 
                 // get height (with margin) of single <li> element
-                var heightLiSingle = angular.element(liList[0]).outerHeight(true);
+                var heightLiSingle = currentElement.find(liList[0]).outerHeight(true);
 
                 // get div where types are shown
-                var divTypes = angular.element('div.pnd-preview-item-types');
+                var divTypes = currentElement.find('div.pnd-preview-item-types');
 
                 // get padding div below type. It need to calculate the right height for div where types are shown
                 var prevDivPadding = 0;
-                if(angular.element('.pnd-preview-item-image').length > 0){
-                    prevDivPadding = parseInt(angular.element('.pnd-preview-item-image').css('padding-top'), 10);
-                } else if(angular.element('.pnd-preview-item-description').length > 0){
-                    prevDivPadding = parseInt(angular.element('.pnd-preview-item-description').css('padding-top'), 10);
+                if(currentElement.find('.pnd-preview-item-image').length > 0){
+                    prevDivPadding = parseInt(currentElement.find('.pnd-preview-item-image').css('padding-top'), 10);
+                } else if(currentElement.find('.pnd-preview-item-description').length > 0){
+                    prevDivPadding = parseInt(currentElement.find('.pnd-preview-item-description').css('padding-top'), 10);
 
                 }
 
@@ -66,15 +75,14 @@ angular.module('Pundit2.Preview')
         });
 
         // when change width panel where preview is shown...
+        var divPndPreview = currentElement.find('div.pnd-preview');
         $scope.$watch(function() {
-            return angular.element('div.pnd-preview').width();
+            return divPndPreview.width();
         }, function() {
             // ... update types visible and not
-            var liList = angular.element($element).find('div.pnd-preview-item-types').children('ul.pnd-preview-item-types-ul').children('li');
-            var luWidth = angular.element($element).find('div.pnd-preview-item-types').children('ul.pnd-preview-item-types-ul').width();
+            var liList = currentElement.find('div.pnd-preview-item-types').children('ul.pnd-preview-item-types-ul').children('li');
+            var luWidth = currentElement.find('div.pnd-preview-item-types').children('ul.pnd-preview-item-types-ul').width();
             checkFitTypes(liList, luWidth);
-
-
         });
 
         // check if there is at least a type that doesn't fit in <ul> width
@@ -91,7 +99,7 @@ angular.module('Pundit2.Preview')
             // for each types
             for(var i = 0; i < typeList.length; i++){
                 // get width of <li> element and check if fit in <ul> width
-                w = parseInt(angular.element(typeList[i]).css('width'), 10) + tmpWidth;
+                w = parseInt(currentElement.find(typeList[i]).css('width'), 10) + tmpWidth;
                 if(w > widthToFit){
 
                     $scope.typeHiddenPresent = true;
@@ -110,10 +118,10 @@ angular.module('Pundit2.Preview')
         // hide/show types
         $scope.showAlltypes = function() {
             // get div where types list is shown
-            var div = angular.element('div.pnd-preview-item-types');
+            var div = currentElement.find('div.pnd-preview-item-types');
 
             // get current height of div where types list is shown
-            var divHeight = angular.element('div.pnd-preview-item-types').height();
+            var divHeight = currentElement.find('div.pnd-preview-item-types').height();
 
             // toggle types visibility
 

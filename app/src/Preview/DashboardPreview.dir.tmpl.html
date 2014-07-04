@@ -14,7 +14,7 @@
     <div class="pnd-panel-tab-content-content pnd-inner-scrollable">
         <span class="pnd-dashboard-welcome" ng-if="isItemEmpty()">{{getWelcomeBodyMessage()}}</span>
 
-        <item-preview ng-if="!isItemEmpty() && !isNotebook()" uri="{{itemDashboardPreview.uri}}"></item-preview>
+        <item-preview ng-if="!isItemEmpty() && !isNotebook()" uri="{{itemDashboardPreview.uri}}" sticking="true"></item-preview>
         <notebook-preview ng-if="!isItemEmpty() && isNotebook()" id="{{itemDashboardPreview.id}}"></notebook-preview>
 
     </div> <!-- end pnd-panel-tab-content-content -->

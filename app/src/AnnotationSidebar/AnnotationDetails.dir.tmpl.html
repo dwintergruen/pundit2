@@ -70,7 +70,7 @@
                         </div>
 
                         <div ng-show="subInfo" class="pnd-sub-info">
-                            <item-preview uri="{{item.subject.uri}}"></item-preview>
+                            <item-preview uri="{{item.subject.uri}}" sticking="false"></item-preview>
                         </div>
                 </div>
              <!-- // end subject -->
@@ -92,7 +92,7 @@
                         </div>
 
                         <div ng-show="preInfo"  class="pnd-sub-info">
-                            <item-preview uri="{{item.predicate.uri}}"></item-preview>
+                            <item-preview uri="{{item.predicate.uri}}" sticking="false"></item-preview>
                         </div>
                 </div>
              <!-- // end predicate -->
@@ -117,7 +117,7 @@
                                 </button>
                             </div>
                             <div ng-show="objInfo" class="pnd-sub-info">
-                                <item-preview class="pnd-preview clearfix" uri="{{object.uri}}"></item-preview>
+                                <item-preview class="pnd-preview clearfix" uri="{{object.uri}}" sticking="false"></item-preview>
                             </div>
                     </div>
                 </div>

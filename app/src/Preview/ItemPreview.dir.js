@@ -3,7 +3,8 @@ angular.module('Pundit2.Preview')
         return {
             restrict: 'E',
             scope: {
-                uri: '@'
+                uri: '@',
+                sticking: '=sticking'
             },
             templateUrl: "src/Preview/ItemPreview.dir.tmpl.html",
             controller: 'ItemPreviewCtrl'
