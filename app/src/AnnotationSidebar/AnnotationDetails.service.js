@@ -68,8 +68,6 @@ angular.module('Pundit2.AnnotationSidebar')
         action: function(item) {
             if(!AnnotationSidebar.isAnnotationSidebarExpanded()){
                 AnnotationSidebar.toggle();
-            } else{
-                AnnotationSidebar.setAllPosition();
             }
             annotationDetails.closeViewAndReset();
             for(var annotation in state.annotations) {

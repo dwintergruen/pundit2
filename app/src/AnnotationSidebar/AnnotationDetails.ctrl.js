@@ -51,9 +51,11 @@ angular.module('Pundit2.AnnotationSidebar')
     // confirm btn click
     modalScope.confirm = function() {
         if (MyPundit.isUserLogged()) {
+            currentElement.addClass('pnd-annotation-details-delete-in-progress');
             AnnotationsCommunication.deleteAnnotation($scope.annotation.id).then(function(){
                 modalScope.notifyMessage = "Your annotation has been deleted successfully";
             }, function(){
+                currentElement.removeClass('pnd-annotation-details-delete-in-progress');
                 modalScope.notifyMessage = "Impossible to delete the annotation. Please reatry later.";
             });
         }
