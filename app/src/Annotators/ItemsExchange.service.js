@@ -47,10 +47,14 @@ angular.module('Pundit2.Core')
                 // remove container from itemContainers object array
                 itemContainers[item.uri].splice(itemContainers[item.uri].indexOf(container), 1);
                 // if we have zero container must remove item everywhere
+                // TODO: is the right choice check if it is equal to zero?
                 if (itemContainers[item.uri].length === 0) {
                     delete itemContainers[item.uri];
                     delete itemListByURI[item.uri];
-                    // TODO remove from itemList ?
+                    var itemIndex = itemList.indexOf(item);
+                    if (itemIndex !== -1){
+                        itemList.splice(itemIndex, 1);
+                    }
                 }
             });
             // empty container list
@@ -176,10 +180,14 @@ angular.module('Pundit2.Core')
             var containerIndex = itemContainers[item.uri].indexOf(container);
             itemContainers[item.uri].splice(containerIndex, 1);
             // if we have zero container must remove item everywhere
+            // TODO: is the right choice check if it is equal to zero?
             if (itemContainers[item.uri].length === 0) {
                 delete itemContainers[item.uri];
                 delete itemListByURI[item.uri];
-                // TODO remove from itemList ?
+                var itemIndex = itemList.indexOf(item);
+                if (itemIndex !== -1){
+                    itemList.splice(itemIndex, 1);
+                }
             }
 
             itemsExchange.log("Item "+ item.label +" removed from container "+ container);

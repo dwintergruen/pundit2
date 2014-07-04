@@ -25,6 +25,8 @@ angular.module('Pundit2.AnnotationSidebar')
         clean: AnnotationSidebar.options.inputIconClear
     };
 
+    var delay;
+
     $scope.annotationSidebar = AnnotationSidebar;
 
     $scope.filters = AnnotationSidebar.getFilters();
@@ -188,7 +190,8 @@ angular.module('Pundit2.AnnotationSidebar')
     });
 
     $scope.$watch('freeText', function(freeText) {
-        $timeout(function(){
+        $timeout.cancel(delay);
+        delay = $timeout(function(){
             AnnotationSidebar.filters.freeText.expression = freeText;
         }, 1500);
     });
