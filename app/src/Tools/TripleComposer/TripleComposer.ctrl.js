@@ -83,6 +83,10 @@ angular.module('Pundit2.TripleComposer')
             $scope.savingIcon = loadIcon;
             $scope.shortMessageClass = loadMessageClass;
 
+            // disable save button
+            angular.element('.pnd-triplecomposer-save').addClass('disabled');
+            angular.element('.pnd-triplecomposer-cancel').addClass('disabled');
+
             editPromiseResolved = false;
             editPromise = $timeout(function(){ editPromiseResolved = true; }, TripleComposer.options.savingMsgTime);
             $scope.saving = true;
@@ -131,12 +135,14 @@ angular.module('Pundit2.TripleComposer')
         }
         
         $timeout(function(){
+            TripleComposer.setEditMode(false);
+            angular.element('.pnd-triplecomposer-cancel').removeClass('disabled');
             $scope.saving = false; 
             Toolbar.setLoading(false);
-            TripleComposer.setEditMode(false);
         }, time);
     };
 
+    // TODO move save to AnnotationCommunication and refactor saving interaction messagge
     var savePromise, promiseResolved;
     $scope.saveAnnotation = function(){
 
