@@ -1,9 +1,10 @@
 /*jshint strict: false*/
 
 angular.module('Pundit2.AnnotationSidebar')
-.controller('AnnotationDetailsCtrl', function($scope, $rootScope, $element, AnnotationSidebar, AnnotationDetails, 
-        AnnotationsExchange, AnnotationsCommunication, NotebookExchange, ItemsExchange, TripleComposer, Dashboard,
-        TextFragmentAnnotator, Toolbar, TypesHelper) {
+.controller('AnnotationDetailsCtrl', function($scope, $rootScope, $element, $modal, $timeout,
+        AnnotationSidebar, AnnotationDetails, AnnotationsExchange, AnnotationsCommunication,
+        NotebookExchange, ItemsExchange, TripleComposer, Dashboard,
+        TextFragmentAnnotator, Toolbar, TypesHelper, MyPundit) {
 
     var currentId = $scope.id;
     var currentElement = angular.element($element).find(".pnd-annotation-details-wrap");
@@ -43,8 +44,46 @@ angular.module('Pundit2.AnnotationSidebar')
         }
     };
 
+    // confirm modal
+    var modalScope = $rootScope.$new();
+    modalScope.titleMessage = "Delete Annotation"
+
+    // confirm btn click
+    modalScope.confirm = function() {
+        if (MyPundit.isUserLogged()) {
+            AnnotationsCommunication.deleteAnnotation($scope.annotation.id).then(function(){
+                modalScope.notifyMessage = "Your annotation has been deleted successfully";
+            }, function(){
+                modalScope.notifyMessage = "Impossible to delete the annotation. Please reatry later.";
+            });
+        }
+        $timeout(function(){
+            confirmModal.hide();
+        }, 1000);
+    };
+
+    // cancel btn click
+    modalScope.cancel = function() {
+        confirmModal.hide();
+    };
+
+    var confirmModal = $modal({
+        container: "[data-ng-app='Pundit2']",
+        template: 'src/Core/confirm.modal.tmpl.html',
+        show: false,
+        backdrop: 'static',
+        scope: modalScope
+    });
+
+    // open modal
+    var openConfirmModal = function(){
+        // promise is needed to open modal when template is ready
+        modalScope.notifyMessage = "Are you sure you want to delete this annotation? After you can no longer recover.";
+        confirmModal.$promise.then(confirmModal.show);
+    };
+
     $scope.deleteAnnotation = function() {
-        AnnotationsCommunication.deleteAnnotation($scope.annotation.id);
+        openConfirmModal();
     };
 
     $scope.editAnnotation = function() {
