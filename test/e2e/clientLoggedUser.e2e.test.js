@@ -45,7 +45,11 @@ describe("Client interaction when user is logged in", function() {
                             "http://purl.org/pundit/ont/ao#hasPageContext":
                                 [{type: "uri", value: "http://localhost:9000/app/examples/client-TEST.html"}],
                             "http://purl.org/pundit/ont/ao#isIncludedIn":
-                                [{type: "uri", value: "http://purl.org/pundit/demo-cloud-server/notebook/ntid123"}]
+                                [{type: "uri", value: "http://purl.org/pundit/demo-cloud-server/notebook/ntid123"}],
+                            "http://purl.org/dc/terms/creator":
+                                [{type: "uri", value: "http://purl.org/pundit/demo-cloud-server/user/userid123"}],
+                            "http://purl.org/dc/elements/1.1/creator":
+                                [{type: "literal", value: "Creator User Name"}]
                         }
 
                     }
@@ -53,8 +57,8 @@ describe("Client interaction when user is logged in", function() {
 
                 var userLoggedIn = {
                     loginStatus: 1,
-                    id: "myFakeId",
-                    uri: "http://myUri.fake",
+                    id: "userid123",
+                    uri: "http://purl.org/pundit/demo-cloud-server/user/userid123",
                     openid: "http://myOpenId.fake",
                     firstName: "Mario",
                     lastName: "Rossi",
@@ -124,8 +128,41 @@ describe("Client interaction when user is logged in", function() {
         p.removeMockModule('httpBackendMock');
     });
 
-    it("test", function(){
+    it("should correctly open triple composer from annotation sidebar when edit annotation", function(){
+        // open sidebar by click on annotation icon
+        p.findElement(protractor.By.css('annotation-sidebar annotation-details[id=annid123]')).click();
+        // open triple composer by click on edit button
+        p.findElement(protractor.By.css('annotation-sidebar annotation-details[id=annid123] .pnd-annotation-details-footer button.btn-success')).click();
+        
+        // now triple composer show annotation and allow to modify it
 
+        // dashboard should be visible
+        p.findElements(protractor.By.css('.pnd-dashboard-container.ng-hide')).then(function(elements) {
+            expect(elements.length).toBe(0);
+        });
+        // dashboard (tools) panel should be visible
+        p.findElements(protractor.By.css('dashboard-panel[paneltitle=tools] .pnd-dashboard-panel-expanded.ng-hide')).then(function(elements) {
+            expect(elements.length).toBe(0);
+        });
+        // triple composer should be have one triple
+        p.findElements(protractor.By.css(".pnd-triplecomposer-statements-container statement")).then(function(s) {
+            expect(s.length).toBe(1);
+        });
+        // the triple should be have the expected subject
+        p.findElements(protractor.By.css("statement .pnd-statement-subject .pnd-statement-label")).then(function(sub) {
+            expect(sub.length).toBe(1);
+            expect(sub[0].getText()).toEqual("Dante");
+        });
+        // the triple should be have the expected predicate
+        p.findElements(protractor.By.css("statement .pnd-statement-predicate .pnd-statement-label")).then(function(pred) {
+            expect(pred.length).toBe(1);
+            expect(pred[0].getText()).toEqual("has comment (free text)");
+        });
+        // the triple should be have the expected object
+        p.findElements(protractor.By.css("statement .pnd-statement-object .pnd-statement-label")).then(function(obj) {
+            expect(obj.length).toBe(1);
+            expect(obj[0].getText()).toEqual("poeta italiano del 1300");
+        });
     });
 
 });
