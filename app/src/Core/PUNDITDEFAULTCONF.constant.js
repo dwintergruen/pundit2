@@ -46,6 +46,20 @@ angular.module('Pundit2.Core')
         /**
          * @module punditConfig
          * @ngdoc object
+         * @name vocabularies
+         * @description
+         * `Array of url`
+         * Specifies templates that will be available to Pundit users
+         * Each template definition is a JSONP file available on the Web and is loaded by resolving an absolute URL.
+         *
+         * Default:
+         * <pre> templates: [] </pre>
+         */
+        templates: [],
+
+        /**
+         * @module punditConfig
+         * @ngdoc object
          * @name useBasicRelations
          * @description
          * `boolean`
