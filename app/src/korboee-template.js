@@ -64,7 +64,7 @@ angular.module("src/KorboEE/korboee-entity.tmpl.html", []).run(["$templateCache"
     "                   ng-disabled=\"serverNotRunning\"\n" +
     "                   ng-show = \"!serverNotRunning\"\n" +
     "                    />\n" +
-    "            <input ng-disabled=\"true\" class=\"form-control kee-input-elem-to-search kee-input-error-server\" placeholder=\"Sorry!The service is not working\" ng-show = \"serverNotRunning\"/>\n" +
+    "            <input ng-disabled=\"true\" class=\"kee-input-elem-to-search kee-input-error-server\" placeholder=\"Sorry!The service is not working\" ng-show = \"serverNotRunning\"/>\n" +
     "\n" +
     "        </div> <!-- div ee-input-container -->\n" +
     "\n" +

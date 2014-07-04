@@ -1,7 +1,7 @@
 angular.module('KorboEE')
-    .service('KorboCommunication', function(BaseComponent, $q, $http, korboConf){
+    .service('KorboCommunication', function($q, $http, KorboEEBaseComponent){
 
-        var korboCommunication = new BaseComponent("KorboCommunication");
+        var korboCommunication = new KorboEEBaseComponent("KorboCommunication");
 
         var isAutocompleteLoading = false;
 
@@ -16,7 +16,6 @@ angular.module('KorboEE')
 
         korboCommunication.search = function(val, endpoint, prov, limit, offset, lang) {
             isAutocompleteLoading = true;
-            korboCommunication.log('Searching entity in korbo...');
 
             return $http({
                 //headers: { 'Content-Type': 'application/json' },
