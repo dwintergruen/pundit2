@@ -9,6 +9,8 @@ angular.module('Pundit2.TripleComposer')
     $scope.saving = false;
     $scope.textMessage = TripleComposer.options.savingMsg;
 
+    $scope.headerMessage = "Create New Annotation";
+
     $scope.editMode = false;
     $scope.$watch(function() {
         return TripleComposer.isEditMode();
@@ -19,6 +21,22 @@ angular.module('Pundit2.TripleComposer')
             $scope.headerMessage = "Create New Annotation";
         }
         $scope.editMode = editMode;
+    });
+
+    $scope.templateMode;
+    var lastHeader;
+    $scope.$watch(function() {
+        return Toolbar.isActiveTemplateMode();
+    }, function(newVal, oldVal) {
+        $scope.templateMode = newVal;
+        if (newVal) {
+            lastHeader = $scope.headerMessage;
+            $scope.headerMessage = "Compleate your Annotation and Save!";
+            // TODO load template items
+        } else if(newVal !== oldVal) {
+            $scope.headerMessage = lastHeader;
+            // TODO wipe template items
+        }
     });
 
     var loadShortMsg = "Loading",
@@ -67,8 +85,16 @@ angular.module('Pundit2.TripleComposer')
     };
 
     $scope.cancelEditMode = function(){
-        TripleComposer.reset();
-        TripleComposer.setEditMode(false);
+        if ($scope.editMode) {
+            TripleComposer.reset();
+            TripleComposer.setEditMode(false);
+            return;
+        }
+        if($scope.templateMode) {
+            // TODO wipe only not precompiled (template) items
+            return;
+        }
+        
     };
 
     var editPromise ,editPromiseResolved = false;

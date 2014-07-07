@@ -108,9 +108,9 @@
     <!-- Right buttons -->
     <div class="pnd-statement-buttons">
         <!-- close icon -->
-        <button type="button" class="btn btn-xs btn-danger pnd-btn-statement" ng-click="remove()" title="delete"><span class="pnd-icon pnd-icon-trash-o"></span></button>
+        <button type="button" class="btn btn-xs btn-danger pnd-btn-statement" ng-hide="templateMode" ng-click="remove()" title="delete"><span class="pnd-icon pnd-icon-trash-o"></span></button>
         <!-- copy icon -->
-        <button type="button" class="btn btn-xs btn-success pnd-btn-statement" ng-click="duplicate()" title="copy"><span class="pnd-icon pnd-icon-copy"></span></button>
+        <button type="button" class="btn btn-xs btn-success pnd-btn-statement" ng-hide="templateMode" ng-click="duplicate()" title="copy"><span class="pnd-icon pnd-icon-copy"></span></button>
     </div>
 
 </div>

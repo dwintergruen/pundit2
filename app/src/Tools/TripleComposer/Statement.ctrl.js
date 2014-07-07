@@ -1,5 +1,5 @@
 angular.module('Pundit2.TripleComposer')
-.controller('StatementCtrl', function($scope, $element, TypesHelper, ResourcePanel, NameSpace, TripleComposer) {
+.controller('StatementCtrl', function($scope, $element, TypesHelper, ResourcePanel, NameSpace, TripleComposer, Toolbar) {
 
     // default values
     $scope.subjectLabel = '';
@@ -22,6 +22,13 @@ angular.module('Pundit2.TripleComposer')
 
     $scope.canBeObjectDate = true;
     $scope.canBeObjectLiteral = true;
+
+    $scope.templateMode;
+    $scope.$watch(function() {
+        return Toolbar.isActiveTemplateMode();
+    }, function(val) {
+        $scope.templateMode = val;
+    });
 
     // reference to the items used inside this statement
     var triple = {
