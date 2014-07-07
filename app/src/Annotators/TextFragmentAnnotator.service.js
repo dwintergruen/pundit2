@@ -122,10 +122,6 @@ angular.module('Pundit2.Annotators')
             },
             priority: 20,
             action: function(item) {
-                if(!Dashboard.isDashboardVisible()){
-                    Dashboard.toggle();
-                }
-                $rootScope.$emit('pnd-dashboard-show-tab', TripleComposer.options.clientDashboardTabTitle);
                 TripleComposer.addToSubject(item);
             }
         });

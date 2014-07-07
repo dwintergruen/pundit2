@@ -97,7 +97,7 @@ angular.module('Pundit2.Annotators')
 
     })
     .service('TextFragmentHandler', function(TEXTFRAGMENTHANDLERDEFAULTS, NameSpace, BaseComponent,
-                                             ContextualMenu, XpointersHelper, Item, ItemsExchange,
+                                             ContextualMenu, XpointersHelper, Item, ItemsExchange, Toolbar, TripleComposer,
                                              $document) {
 
         var tfh = new BaseComponent('TextFragmentHandler', TEXTFRAGMENTHANDLERDEFAULTS);
@@ -168,9 +168,14 @@ angular.module('Pundit2.Annotators')
 
             tfh.log('Valid selection ended on document. Text fragment Item produced: '+ item.label);
 
-            if (!Toolbar.isActiveTemplateMode()) {
-                ContextualMenu.show(upEvt.pageX, upEvt.pageY, item, tfh.options.cMenuType);
+            if (Toolbar.isActiveTemplateMode()) {
+                tfh.log('ABORT: template mode active.');
+                TripleComposer.addToSubject(item);
+                return;
             }
+
+            ContextualMenu.show(upEvt.pageX, upEvt.pageY, item, tfh.options.cMenuType);
+            
 
         }; // mouseUpHandler()
 

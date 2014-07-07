@@ -181,7 +181,7 @@ angular.module('Pundit2.TripleComposer')
     
 })
 .service('TripleComposer', function($rootScope, BaseComponent, TRIPLECOMPOSERDEFAULTS, TypesHelper, NameSpace,
-    AnnotationsExchange, ItemsExchange) {
+    AnnotationsExchange, ItemsExchange, Dashboard) {
 
     var tripleComposer = new BaseComponent('TripleComposer', TRIPLECOMPOSERDEFAULTS);
 
@@ -299,8 +299,13 @@ angular.module('Pundit2.TripleComposer')
 
     // Used to add a subject from outside of triple composer
     tripleComposer.addToSubject = function(item) {
+        if(!Dashboard.isDashboardVisible()){
+            Dashboard.toggle();
+        }
+        $rootScope.$emit('pnd-dashboard-show-tab', tripleComposer.options.clientDashboardTabTitle);
         if (tripleComposer.canAddItemAsSubject()) {
             statements[0].scope.setSubject(item);
+            $rootScope.$$phase || $rootScope.$digest();
             tripleComposer.log('Add item as subject');
         } else {
             tripleComposer.log('Impossible to add this item as subject, subject already present or more than one triple');
