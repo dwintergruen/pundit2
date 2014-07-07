@@ -148,11 +148,13 @@ angular.module('Pundit2.Toolbar')
         updateMyNotebooks();
     }, true);
 
+    $scope.currentNotebookLabel = "Loading...";
     $scope.$watch(function() {
         return NotebookExchange.getCurrentNotebooks();
     }, function(newCurr) {
         if (typeof(newCurr) !== "undefined") {
             updateMyNotebooks();
+            $scope.currentNotebookLabel = newCurr.label;
         }
     });
     
