@@ -49,14 +49,14 @@
             <ul class="nav navbar-nav navbar-right pnd-toolbar-navbar-right">
                 
                 <!-- Template mode button -->
-                <li class="pnd-toolbar-template-mode-button" ng-show="isTemplateModeActive()">
+                <li class="pnd-toolbar-template-mode-button" ng-click="toggleTemplateMode()">
                     <a href="javascript:void(0)">
-                        <span class="pnd-toolbar-active-element pnd-icon pnd-icon-pencil"></span>
+                        <span class="pnd-icon pnd-icon-pencil"></span>
                     </a>
                 </li>
                 
                 <!-- Template menu -->
-                <li class="pnd-toolbar-template-menu-button" ng-show="isTemplateMenuActive()" >
+                <li class="pnd-toolbar-template-menu-button">
                     <a href="javascript:void(0)" template="{{dropdownTemplateTemplates}}" bs-dropdown="userTemplateDropdown"><span class="pnd-toolbar-active-element">Templates</span></a>
                 </li>
                 

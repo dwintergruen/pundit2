@@ -266,9 +266,21 @@ angular.module('Pundit2.Toolbar')
         return $scope.isUserLogged === true;
     };
     
-    // return true if user is logged in --> template button is active
-    $scope.isTemplateModeActive = function() {
-        return $scope.isUserLogged === true;
+    // TODO if the template mode can change only by click on the toolbar btn
+    // remove this watch and do this action inside the toggleTemplateMode function
+    var templateModeBtn = angular.element('.pnd-toolbar-template-mode-button span');
+    $scope.$watch(function() {
+        return Toolbar.isActiveTemplateMode();
+    }, function(val) {
+        if (val) {
+            templateModeBtn.removeClass('pnd-toolbar-not-active-element');
+        } else {
+            templateModeBtn.addClass('pnd-toolbar-not-active-element');
+        }
+    });
+
+    $scope.toggleTemplateMode = function() {
+        Toolbar.toggleTemplateMode();
     };
     
     // return true if user is logged in --> template menu is active

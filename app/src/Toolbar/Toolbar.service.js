@@ -96,7 +96,8 @@ angular.module('Pundit2.Toolbar')
         loadingOperation = 0,
         isLoadingShown = false,
         isErrorShown = false,
-        errorMessageDropdown = [];
+        errorMessageDropdown = [],
+        templateMode = false;
 
     toolbar.getErrorShown = function() {
         return isErrorShown;
@@ -167,20 +168,20 @@ angular.module('Pundit2.Toolbar')
         return errorMessageDropdown;
     };
     
-    toolbar.setNotebooks = function() {
-        //TODO
-    };
-    
-    toolbar.setTemplates = function() {
-        //TODO
-    };
-    
     toolbar.getAskLink = function() {
         if (MyPundit.isUserLogged()) {
             return toolbar.options.askLinkUser;
         } else {
             return toolbar.options.askLinkDefault;
         }
+    };
+
+    toolbar.isActiveTemplateMode = function() {
+        return templateMode;
+    };
+
+    toolbar.toggleTemplateMode = function() {
+        templateMode = !templateMode;
     };
     
     return toolbar;
