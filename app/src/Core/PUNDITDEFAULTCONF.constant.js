@@ -46,7 +46,7 @@ angular.module('Pundit2.Core')
         /**
          * @module punditConfig
          * @ngdoc object
-         * @name vocabularies
+         * @name templates
          * @description
          * `Array of url`
          * Specifies templates that will be available to Pundit users
@@ -54,6 +54,43 @@ angular.module('Pundit2.Core')
          *
          * Default:
          * <pre> templates: [] </pre>
+         *
+         * Where a template is defined by:
+         * <pre>
+         * {
+         *  "label": "Template label",
+         *  "description": "Template long description"
+         *  "triples" :
+         *      [
+         *          { triple 1 details },
+         *          { triple 2 details },
+         *          ....
+         *          { triple N details }
+         *      ]
+         * }
+         * </pre>
+         *
+         * Where a triple is defined by:
+         * <pre>
+         * {
+         *      "mandatory":  true | false,
+         *      "subject" : {
+         *         "value" : ....,
+         *         "type": "uri|literal"
+         *       }
+         *      "predicate" : {
+         *              "uri": ...,
+         *              "label": ...,
+         *              "domain": [...],
+         *              "range": [...],
+         *       },
+         *       "object" : {
+         *         "value" : ....,
+         *         "type": "uri|literal"
+         *       }
+         * }
+         * </pre>
+         * All propeties are optional. By default a triple is not mandatory.
          */
         templates: [],
 
