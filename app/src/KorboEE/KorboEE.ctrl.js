@@ -112,40 +112,15 @@ angular.module('KorboEE')
                         $scope.serverNotRunning = true;
                         $scope.isSearching = false;
                     } else {
-                        console.log(res);
                         $scope.isSearching = false;
                         $scope.serverNotRunning = false;
                         return $scope.results;
                     }
-
-                    });
-
-            }
-
-            /*
-            var korboCommunication = new KorboCommunicationFactory();
-            var param = {};
-            param.endpoint = $scope.conf.endpoint;
-            param.provider = 'korbo';
-            param.limit = $scope.conf.limitSearchResult;
-            param.offset = 0;
-            param.lang = $scope.defaultLan.value;
-
-            if(viewValue.length >= $scope.conf.labelMinLength){
-                $scope.results = [];
-                param.label = viewValue;
-                $scope.results = korboCommunication.search(param, containerPrefix+param.provider).then(function(){
-                    $scope.results = ItemsExchange.getItemsByContainer(containerPrefix+param.provider);
-                    console.log(ItemsExchange.getItemsByContainer(containerPrefix+param.provider));
                 });
-            }*/
-
-
+            }
         };
 
-
         $scope.selectEntity = function(entity){
-            console.log("hai selezionato: ",entity);
             $scope.location = entity.value.uri;
             $scope.label = entity.value.label;
 
