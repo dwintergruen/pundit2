@@ -619,7 +619,7 @@ module.exports = function(grunt) {
     grunt.registerTask('default',
         ['clean']);
 
-    grunt.registerTask('prod', 'Copy files ready to be included in the HTML page',
+    grunt.registerTask('prod', 'Take as parameter a path or directory when to copy files ready to be included in the HTML page',
         function(){
             grunt.task.run('build');
             grunt.config.set('customDir', arguments[0]);
