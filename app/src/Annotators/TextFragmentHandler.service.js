@@ -168,7 +168,9 @@ angular.module('Pundit2.Annotators')
 
             tfh.log('Valid selection ended on document. Text fragment Item produced: '+ item.label);
 
-            ContextualMenu.show(upEvt.pageX, upEvt.pageY, item, tfh.options.cMenuType);
+            if (!Toolbar.isActiveTemplateMode()) {
+                ContextualMenu.show(upEvt.pageX, upEvt.pageY, item, tfh.options.cMenuType);
+            }
 
         }; // mouseUpHandler()
 
