@@ -4,6 +4,7 @@ describe('Client service', function() {
         $rootScope, $httpBackend, $templateCache, $compile;
 
     var testPunditConfig = {
+        templates: [],
         modules: {
             "Client": {
                 bootModules: ['Toolbar', 'Dashboard', 'DisabledModule', 'Preview'],

@@ -54,7 +54,13 @@ angular.module('Pundit2.Core')
          * The template to be used initially as a current must be first on the list.
          *
          * Default:
-         * <pre> templates: [] </pre>
+         * <pre> templates: [
+         *   "http://conf.thepund.it/V2/templates/tagFree",
+         *   "http://conf.thepund.it/V2/templates/comment",
+         *   "http://conf.thepund.it/V2/templates/tagFixedMarx",
+         *   "http://conf.thepund.it/V2/templates/timeline",
+         *   "http://conf.thepund.it/V2/templates/peopleGraph"
+         * ] </pre>
          *
          * Where a template is defined by:
          * <pre>
@@ -93,7 +99,13 @@ angular.module('Pundit2.Core')
          * </pre>
          * All propeties are optional. By default a triple is not mandatory.
          */
-        templates: [],
+        templates: [
+            "http://conf.thepund.it/V2/templates/tagFree",
+            "http://conf.thepund.it/V2/templates/comment",
+            "http://conf.thepund.it/V2/templates/tagFixedMarx",
+            "http://conf.thepund.it/V2/templates/timeline",
+            "http://conf.thepund.it/V2/templates/peopleGraph"
+        ],
 
         /**
          * @module punditConfig

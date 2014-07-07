@@ -8,21 +8,13 @@ angular.module('Pundit2.Core')
         container: 'freebase'
     });
 
-    var testUrls = [
-        "http://conf.thepund.it/V2/templates/tagFree",
-        "http://conf.thepund.it/V2/templates/comment",
-        "http://conf.thepund.it/V2/templates/tagFixedMarx",
-        "http://conf.thepund.it/V2/templates/timeline",
-        "http://conf.thepund.it/V2/templates/peopleGraph"
-    ];
-
     // by convention the template initially used as current
     // is the first of the urls list
 
     // get all templates from urls passed with pundit configuration object
     // inside templates array
     templatesSelector.getAll = function() {
-        var urls = /*Config.templates,*/ testUrls,
+        var urls = Config.templates,
             promiseArr = [];
 
         // set the first as current
