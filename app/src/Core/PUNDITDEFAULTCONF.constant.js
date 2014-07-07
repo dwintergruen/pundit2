@@ -51,6 +51,7 @@ angular.module('Pundit2.Core')
          * `Array of url`
          * Specifies templates that will be available to Pundit users
          * Each template definition is a JSONP file available on the Web and is loaded by resolving an absolute URL.
+         * The template to be used initially as a current must be first on the list.
          *
          * Default:
          * <pre> templates: [] </pre>
