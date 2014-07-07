@@ -264,6 +264,7 @@ angular.module('Pundit2.Client')
                                 AnnotationsExchange, Item, ItemsExchange, MyItems,
                                 TextFragmentHandler, Toolbar, Annomatic, NotebookCommunication, NotebookExchange,
                                 SelectorsManager, FreebaseSelector, MurucaSelector, KorboBasketSelector, PredicateSelector,
+                                TemplatesSelector,
                                 $injector, $templateCache, $rootScope) {
 
         var client = new BaseComponent('Client', CLIENTDEFAULTS),
@@ -417,6 +418,8 @@ angular.module('Pundit2.Client')
             // and the selector manager can't show the selector
             // es: FreebaseSelector, MurucaSelector, KorboBasketSelector
             SelectorsManager.init();
+
+            TemplatesSelector.getAll();
 
             addComponents();
 
