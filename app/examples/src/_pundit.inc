@@ -141,10 +141,6 @@
     <script src="../src/Tools/NotebookComposer/NotebookComposer.ctrl.js"></script>
     <script src="../src/Tools/NotebookComposer/NotebookComposer.service.js"></script>
 
-    <!-- endbuild -->
-
-    <!-- build:js scripts/korboee.js -->
-
     <script src="../src/korboee-template.js"></script>
 
     <script src="../src/KorboEE/KorboEE.js"></script>

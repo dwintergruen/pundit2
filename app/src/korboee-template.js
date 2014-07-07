@@ -26,8 +26,8 @@ angular.module("src/KorboEE/autocompleteList.tmpl.html", []).run(["$templateCach
   $templateCache.put("src/KorboEE/autocompleteList.tmpl.html",
     "<ul tabindex=\"-1\" class=\"typeahead dropdown-menu kee-autocomplete-list\" ng-show=\"$isVisible() && !serverNotRunning\" role=\"select\">\n" +
     "  <li role=\"presentation\" ng-repeat=\"match in $matches\" ng-class=\"{active: $index == $activeIndex}\">\n" +
-    "    <a role=\"menuitem\" tabindex=\"-1\" ng-click=\"$select($index, $event);selectEntity(match)\" ng-bind=\"match.label\" ng-show=\"match.label!== 'no found'\"></a>\n" +
-    "      <!--<item uri=\"{{match.value.uri}}\"></item>-->\n" +
+    "    <!-- <a role=\"menuitem\" tabindex=\"-1\" ng-click=\"$select($index, $event);selectEntity(match)\" ng-bind=\"match.label\" ng-show=\"match.label!== 'no found'\"></a> -->\n" +
+    "    <item uri=\"{{match.value.uri}}\" ng-click=\"$select($index, $event);selectEntity(match)\"></item>\n" +
     "    <a role=\"menuitem\" tabindex=\"-1\" disabled ng-bind=\"noFound\" ng-show=\"match.value.noResult === true\"></a>\n" +
     "  </li>\n" +
     "    <li ng-show=\"showNewButton() || showSearchButton()\" class=\"divider\"></li>\n" +
