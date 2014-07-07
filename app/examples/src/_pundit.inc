@@ -46,6 +46,7 @@
     <script src="../src/Communication/Annotation.factory.js"></script>
     <script src="../src/Communication/AnnotationsExchange.service.js"></script>
     <script src="../src/Communication/AnnotationsCommunication.service.js"></script>
+    <script src="../src/Communication/TemplatesExchange.service.js"></script>
 
     <script src="../src/Annomatic/Annomatic.js"></script>
     <script src="../src/Annomatic/AnnomaticPanel.dir.js"></script>

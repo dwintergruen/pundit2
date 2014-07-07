@@ -330,13 +330,13 @@ angular.module('Pundit2.Vocabularies')
             if (item.description !== -1) {
                 freebaseSelector.log('MQL was last, complete for item ' + item.uri);
                 delete item.mid;
-                itemPromise.resolve();
+                itemPromise.resolve(item);
             }
 
         }).error(function(msg) {
             freebaseSelector.err('Cant get MQL from freebase: ', msg);
             if (item.description !== -1 || error>0) {
-                itemPromise.resolve();
+                itemPromise.resolve(item);
             }
             error++;
         });
@@ -362,13 +362,13 @@ angular.module('Pundit2.Vocabularies')
             if (item.uri !== -1) {
                 freebaseSelector.log('TOPIC was last, complete http for item ' + item.uri);
                 delete item.mid;
-                itemPromise.resolve();
+                itemPromise.resolve(item);
             }
 
         }).error(function(msg) {
             freebaseSelector.err('Cant get TOPIC from freebase: ', msg);
             if (item.uri !== -1 || error>0) {
-                itemPromise.resolve();
+                itemPromise.resolve(item);
             }
             error++;
         });
