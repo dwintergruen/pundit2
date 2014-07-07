@@ -184,6 +184,7 @@ angular.module('Pundit2.Toolbar')
     };
 
     $scope.userTemplateDropdown = [{text: 'Please select template you want to use', header: true }];
+    $scope.currentTemplateLabel = "Loading...";
 
     $scope.$watch(function() {
         return TemplatesExchange.getTemplates().length;
@@ -196,6 +197,7 @@ angular.module('Pundit2.Toolbar')
     }, function(newCurr) {
         if (typeof(newCurr) !== "undefined") {
             updateTemplates();
+            $scope.currentTemplateLabel = newCurr.label;
         }
     });
     
