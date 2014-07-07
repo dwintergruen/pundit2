@@ -1,5 +1,5 @@
 angular.module('KorboEE')
-    .service('KorboCommunicationAutocomplete', function($q, $http, BaseComponent, ItemsExchange, Item){
+    .service('KorboCommunicationService', function($q, $http, BaseComponent, ItemsExchange, Item){
 
         var korboCommunication = new BaseComponent("KorboCommunication");
 
@@ -16,7 +16,6 @@ angular.module('KorboEE')
 
         korboCommunication.autocompleteSearch = function(val, endpoint, prov, limit, offset, lang) {
             isAutocompleteLoading = true;
-
             return $http({
                 //headers: { 'Content-Type': 'application/json' },
                 method: 'GET',
@@ -63,6 +62,7 @@ angular.module('KorboEE')
 
             },
             function(){
+                isAutocompleteLoading = false;
                 var errorServer = [{label:"error", errorServer:true}];
                 return errorServer;
             });

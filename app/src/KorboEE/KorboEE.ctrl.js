@@ -1,5 +1,5 @@
 angular.module('KorboEE')
-    .controller('EEDirectiveCtrl', function($scope, APIService, korboConf, $http, KorboCommunicationFactory, $timeout, ItemsExchange, KorboCommunicationAutocomplete, Item) {
+    .controller('EEDirectiveCtrl', function($scope, APIService, korboConf, $http, KorboCommunicationFactory, $timeout, ItemsExchange, KorboCommunicationService, Item) {
 
         $scope.autocompleteListTemplate = 'src/KorboEE/autocompleteList.tmpl.html';
         var api;
@@ -106,7 +106,7 @@ angular.module('KorboEE')
             if(viewValue.length >= $scope.conf.labelMinLength){
                 $scope.isSearching = true;
 
-                $scope.results = KorboCommunicationAutocomplete.autocompleteSearch(viewValue, $scope.conf.endpoint, 'korbo', $scope.conf.limitSearchResult, 0, $scope.defaultLan.value);
+                $scope.results = KorboCommunicationService.autocompleteSearch(viewValue, $scope.conf.endpoint, 'korbo', $scope.conf.limitSearchResult, 0, $scope.defaultLan.value);
                 $scope.results.then(function(res){
                     if(typeof(res[0]) !== 'undefined' && res[0].errorServer){
                         $scope.serverNotRunning = true;
