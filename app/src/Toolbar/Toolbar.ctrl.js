@@ -1,9 +1,10 @@
 angular.module('Pundit2.Toolbar')
 .controller('ToolbarCtrl', function($scope, $rootScope, $modal, $http, NameSpace, Config, Toolbar, SelectorsManager,
-    MyPundit, Dashboard, AnnotationSidebar, ResourcePanel, NotebookExchange, NotebookCommunication) {
+    MyPundit, Dashboard, AnnotationSidebar, ResourcePanel, NotebookExchange, NotebookCommunication, TemplatesExchange) {
 
     $scope.dropdownTemplate = "src/ContextualMenu/dropdown.tmpl.html";
     $scope.dropdownTemplateMyNotebook = "src/Toolbar/myNotebooksDropdown.tmpl.html";
+    $scope.dropdownTemplateTemplates = "src/Toolbar/templatesDropdown.tmpl.html";
     
     var login = function() {
         ResourcePanel.hide();
@@ -75,7 +76,7 @@ angular.module('Pundit2.Toolbar')
             + "%0A" + "User mail: " + user.email;
 
         window.location.href = link;
-    }
+    };
 
     sendModalScope.send = function() {
         // send a mail
@@ -135,15 +136,8 @@ angular.module('Pundit2.Toolbar')
     $scope.userLoggedInDropdown = [
         { text: 'Log out', click: logout }
     ];
-    
-    $scope.userTemplateDropdown = [
-        { text: 'My template 1', href: '#' },
-        { text: 'My template 2', href: '#' },
-        { text: 'My template 3', href: '#' }
-    ];
 
     var myNotebooks;
-
     // TODO add a function on click that add this watcher
     // when drodown is showed and remove when dropdown is closed
     $scope.$watch(function() {
@@ -162,7 +156,6 @@ angular.module('Pundit2.Toolbar')
         }
     });
     
-    $scope.userData = {};
     $scope.userNotebooksDropdown = [{text: 'Please select notebook you want to use', header: true }];
 
     var updateMyNotebooks = function(){
@@ -190,6 +183,47 @@ angular.module('Pundit2.Toolbar')
         }
     };
 
+    $scope.userTemplateDropdown = [{text: 'Please select template you want to use', header: true }];
+
+    $scope.$watch(function() {
+        return TemplatesExchange.getTemplates().length;
+    }, function() {
+        updateTemplates();
+    });
+
+    $scope.$watch(function() {
+        return TemplatesExchange.getCurrent();
+    }, function(newCurr) {
+        if (typeof(newCurr) !== "undefined") {
+            updateTemplates();
+        }
+    });
+    
+    var updateTemplates = function(){
+        var templates = TemplatesExchange.getTemplates();
+        var j = 1;
+        for (var i = 0; i<templates.length; i++){
+            $scope.userTemplateDropdown[j] = {
+                text: templates[i].label,
+                currentTemplate: function(){
+                    var current = TemplatesExchange.getCurrent();
+                    if (typeof(current)!== "undefined" && templates[i].id === current.id) {
+                        return true;
+                    } else {
+                        return false;
+                    }                    
+                }(),
+                click: function(_i){
+                    return function(){
+                        TemplatesExchange.setCurrent(templates[_i].id);
+                    };
+                }(i)
+            }
+            j++;
+        }
+    };
+
+    $scope.userData = {};
     // listener for user status
     // when user is logged in, set flag isUserLogged to true
     $scope.$watch(function() { return MyPundit.isUserLogged(); }, function(newStatus) {
@@ -234,14 +268,12 @@ angular.module('Pundit2.Toolbar')
     
     // return true if user is logged in --> template button is active
     $scope.isTemplateModeActive = function() {
-        //return $scope.isUserLogged === true;
-        return false;
+        return $scope.isUserLogged === true;
     };
     
     // return true if user is logged in --> template menu is active
     $scope.isTemplateMenuActive = function() {
-        //return $scope.isUserLogged === true;
-        return false;
+        return $scope.isUserLogged === true;
     };
     
     // return true if user is logged in --> notebook menu is active

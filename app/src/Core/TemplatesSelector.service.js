@@ -1,8 +1,8 @@
 angular.module('Pundit2.Core')
 .service('TemplatesSelector', function(BaseComponent, Config, $http, $q,
-    TemplatesExchange, FreebaseSelector) {
+    TemplatesExchange, FreebaseSelector, SelectorsManager) {
     
-    var templateSelector = new BaseComponent("TemplatesSelector");
+    var templatesSelector = new BaseComponent("TemplatesSelector");
 
     var selector = new FreebaseSelector({
         container: 'freebase'
@@ -16,23 +16,29 @@ angular.module('Pundit2.Core')
         "http://conf.thepund.it/V2/templates/peopleGraph"
     ];
 
+    // by convention the template initially used as current
+    // is the first of the urls list
+
     // get all templates from urls passed with pundit configuration object
     // inside templates array
-    templateSelector.getAll = function() {
+    templatesSelector.getAll = function() {
         var urls = /*Config.templates,*/ testUrls,
             promiseArr = [];
 
+        // set the first as current
+        TemplatesExchange.setCurrent(urls[0]);
+
         for (var i in urls) {
-            promiseArr.push(templateSelector.get(urls[i]));
+            promiseArr.push(templatesSelector.get(urls[i]));
         }
             
-        templateSelector.log("Loading predicates from", urls);
+        templatesSelector.log("Loading predicates from", urls);
         
         return $q.all(promiseArr);
     };
 
     // make a jsonp to get template object from url
-    templateSelector.get = function(url){
+    templatesSelector.get = function(url){
 
         // promise il always resolved to use $q.all
         // if the result value is undefined
@@ -43,7 +49,7 @@ angular.module('Pundit2.Core')
             .success(function(data){
 
                 if (typeof(data) === 'undefined' || typeof(data.triples) === 'undefined') {
-                    templateSelector.log("Impossible to get templates from: "+url);
+                    templatesSelector.log("Impossible to get templates from: "+url);
                     promise.resolve(undefined);
                     return;
                 }
@@ -97,6 +103,6 @@ angular.module('Pundit2.Core')
 
     };
 
-    return templateSelector;
+    return templatesSelector;
 
 });

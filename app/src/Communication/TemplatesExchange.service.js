@@ -4,7 +4,8 @@ angular.module('Pundit2.Communication')
     var templatesExchange = new BaseComponent("TemplatesExchange");
 
     var tmplList = [],
-        tmplListById = {};
+        tmplListById = {},
+        currentTmplID;
 
     templatesExchange.wipe = function() {
         templatesExchange.log('Wiping every loaded template.');
@@ -40,6 +41,14 @@ angular.module('Pundit2.Communication')
             return tmplListById[id];
         }
         // If the template is not found, it will return undefined
+    };
+
+    templatesExchange.setCurrent = function(id) {
+        currentTmplID = id;
+    };
+
+    templatesExchange.getCurrent = function() {
+        return tmplListById[currentTmplID];
     };
 
     return templatesExchange;
