@@ -8,7 +8,6 @@ angular.module('KorboEE')
         $scope.elemToSearch = '';
         $scope.isSearching = false;
         $scope.serverNotRunning = false;
-        //$scope.results = [];
         var containerPrefix = "kee-";
 
         $scope.renderElement = function(){
@@ -55,7 +54,6 @@ angular.module('KorboEE')
         });
 
         var callOnReayd = function(){
-            //console.log(angular.element('.kee-input-elem-to-search').outerWidth());
             $scope.inputWidth = angular.element('.kee-input-elem-to-search').outerWidth();
 
             if ($scope.conf.onReady !== null && typeof($scope.conf.onReady) === 'function'){
