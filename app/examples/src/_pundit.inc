@@ -154,6 +154,5 @@
     <script src="../src/KorboEE/APIModule/APIService.service.js"></script>
     <script src="../src/KorboEE/defaultKorboConf.js"></script>
     <script src="../src/KorboEE/KorboCommunication.service.js"></script>
-    <script src="../src/KorboEE/KorboEE.BaseComponent.service.js"></script>
 
     <!-- endbuild -->

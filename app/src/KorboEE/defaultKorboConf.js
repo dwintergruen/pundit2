@@ -91,7 +91,6 @@ KORBODEFAULTCONF = {
 
     onReady: null,
 
-    useAutoComplete: false,
     autoCompleteMode: '', // full | simple
     autoCompleteOptions: '' // search | new | all | none
 };

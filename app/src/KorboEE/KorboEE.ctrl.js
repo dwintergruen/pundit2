@@ -1,5 +1,5 @@
 angular.module('KorboEE')
-    .controller('EEDirectiveCtrl', function($scope, APIService, korboConf, $http, KorboCommunication, $timeout) {
+    .controller('EEDirectiveCtrl', function($scope, APIService, korboConf, $http, KorboCommunicationFactory, $timeout, ItemsExchange, KorboCommunicationAutocomplete, Item) {
 
         $scope.autocompleteListTemplate = 'src/KorboEE/autocompleteList.tmpl.html';
         var api;
@@ -8,7 +8,8 @@ angular.module('KorboEE')
         $scope.elemToSearch = '';
         $scope.isSearching = false;
         $scope.serverNotRunning = false;
-        var updateTimer;
+        //$scope.results = [];
+        var containerPrefix = "kee-";
 
         $scope.renderElement = function(){
             return $scope.readyToRender;
@@ -101,15 +102,19 @@ angular.module('KorboEE')
             }
         };
 
+
         $scope.autoCompleteSearch = function(viewValue) {
+            var container = "kee-korbo";
             if(viewValue.length >= $scope.conf.labelMinLength){
                 $scope.isSearching = true;
-                $scope.results = KorboCommunication.search(viewValue, $scope.conf.endpoint, 'korbo', $scope.conf.limitSearchResult, 0, $scope.defaultLan.value);
+
+                $scope.results = KorboCommunicationAutocomplete.autocompleteSearch(viewValue, $scope.conf.endpoint, 'korbo', $scope.conf.limitSearchResult, 0, $scope.defaultLan.value);
                 $scope.results.then(function(res){
                     if(typeof(res[0]) !== 'undefined' && res[0].errorServer){
                         $scope.serverNotRunning = true;
                         $scope.isSearching = false;
                     } else {
+                        console.log(res);
                         $scope.isSearching = false;
                         $scope.serverNotRunning = false;
                         return $scope.results;
@@ -118,6 +123,25 @@ angular.module('KorboEE')
                     });
 
             }
+
+            /*
+            var korboCommunication = new KorboCommunicationFactory();
+            var param = {};
+            param.endpoint = $scope.conf.endpoint;
+            param.provider = 'korbo';
+            param.limit = $scope.conf.limitSearchResult;
+            param.offset = 0;
+            param.lang = $scope.defaultLan.value;
+
+            if(viewValue.length >= $scope.conf.labelMinLength){
+                $scope.results = [];
+                param.label = viewValue;
+                $scope.results = korboCommunication.search(param, containerPrefix+param.provider).then(function(){
+                    $scope.results = ItemsExchange.getItemsByContainer(containerPrefix+param.provider);
+                    console.log(ItemsExchange.getItemsByContainer(containerPrefix+param.provider));
+                });
+            }*/
+
 
         };
 
@@ -138,11 +162,19 @@ angular.module('KorboEE')
             api.fireOnSave(obj);
         };
 
+        var updateTimer;
         // timer when input change
         $scope.$watch('elemToSearch', function() {
-            $scope.results = [];
+            //$timeout.cancel(updateTimer);
+            //httpHandler();
             $scope.autoCompleteSearch($scope.elemToSearch);
         });
+
+        var httpHandler = function() {
+            updateTimer = $timeout(function(){
+                $scope.autoCompleteSearch($scope.elemToSearch);
+            }, 1000);
+        };
 
         $scope.showSearchButton = function(){
             if($scope.conf.autoCompleteOptions === 'search' || $scope.conf.autoCompleteOptions === 'all' ){
@@ -163,5 +195,6 @@ angular.module('KorboEE')
         $scope.isLoading = function(){
             return $scope.isSearching;
         };
+
 
     });

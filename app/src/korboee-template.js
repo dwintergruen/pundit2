@@ -27,6 +27,7 @@ angular.module("src/KorboEE/autocompleteList.tmpl.html", []).run(["$templateCach
     "<ul tabindex=\"-1\" class=\"typeahead dropdown-menu kee-autocomplete-list\" ng-show=\"$isVisible() && !serverNotRunning\" role=\"select\">\n" +
     "  <li role=\"presentation\" ng-repeat=\"match in $matches\" ng-class=\"{active: $index == $activeIndex}\">\n" +
     "    <a role=\"menuitem\" tabindex=\"-1\" ng-click=\"$select($index, $event);selectEntity(match)\" ng-bind=\"match.label\" ng-show=\"match.label!== 'no found'\"></a>\n" +
+    "      <!--<item uri=\"{{match.value.uri}}\"></item>-->\n" +
     "    <a role=\"menuitem\" tabindex=\"-1\" disabled ng-bind=\"noFound\" ng-show=\"match.value.noResult === true\"></a>\n" +
     "  </li>\n" +
     "    <li ng-show=\"showNewButton() || showSearchButton()\" class=\"divider\"></li>\n" +
@@ -50,7 +51,7 @@ angular.module("src/KorboEE/korboee-entity.tmpl.html", []).run(["$templateCache"
     "<div class=\"container kee-wrp\" id=\"korbo-ee-container\" ng-show=\"renderElement()\">\n" +
     "        <div class=\"left-inner-icon\">\n" +
     "            <span class=\"pnd-icon pnd-icon-refresh\" ng-show=\"isLoading() && !serverNotRunning\"></span>\n" +
-    "            <input class=\"kee-input-elem-to-search\"\n" +
+    "            <input class=\"kee-input-elem-to-search kee-input-ok\"\n" +
     "                   name=\"{{conf.tafonyName}}\"\n" +
     "                   id=\"{{conf.tafonyId}}\"\n" +
     "                   placeholder=\"Type at least {{conf.labelMinLength}} characters...\"\n" +
