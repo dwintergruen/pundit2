@@ -1,6 +1,6 @@
 angular.module('Pundit2.Core')
 .service('TemplatesSelector', function(BaseComponent, Config, $http, $q,
-    TemplatesExchange, FreebaseSelector, SelectorsManager) {
+    Item, ItemsExchange, TemplatesExchange, FreebaseSelector, SelectorsManager) {
     
     var templatesSelector = new BaseComponent("TemplatesSelector");
 
@@ -52,6 +52,11 @@ angular.module('Pundit2.Core')
                 // chek if need to get items from freebase
                 var trp = data.triples;
                 for(var i in trp) {
+                    // read predicate and made a real item
+                    if (typeof(trp[i].predicate) !== 'undefined') {
+                        trp[i].predicate = new Item(trp[i].predicate.uri, trp[i].predicate);
+                        ItemsExchange.addItemToContainer(trp[i].predicate, Config.modules.Client.relationsContainer);
+                    }
                     // if the type is an uri we must get items from uri
                     if (typeof(trp[i].object) !== 'undefined' && trp[i].object.type === 'uri') {
                         // identify how selector use by parsing the uri
@@ -74,6 +79,7 @@ angular.module('Pundit2.Core')
                                 trp[i].object.value = ret;
                                 // TODO how label use?
                                 trp[i].object.value.label = trp[i].object.value.description;
+                                trp[i].object.value = new Item(trp[i].object.value.uri, trp[i].object.value);
                             });
                             selector.getItemDetails(item, p);
                         }

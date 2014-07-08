@@ -316,6 +316,16 @@ angular.module('Pundit2.TripleComposer')
         }
     };
 
+    tripleComposer.addToAllSubject = function(item) {
+        openTripleComposer();
+        // template have always a free subject ?
+        for (var i in statements) {
+            statements[i].scope.setSubject(item);
+        }        
+        $rootScope.$$phase || $rootScope.$digest();
+        tripleComposer.log('Add item: '+item.uri+ 'as subject of all triples');
+    };
+
     tripleComposer.addToPredicate = function(item) {        
         statements[0].scope.setPredicate(item);
         $rootScope.$$phase || $rootScope.$digest();

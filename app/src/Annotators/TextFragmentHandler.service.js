@@ -169,8 +169,8 @@ angular.module('Pundit2.Annotators')
             tfh.log('Valid selection ended on document. Text fragment Item produced: '+ item.label);
 
             if (Toolbar.isActiveTemplateMode()) {
-                tfh.log('ABORT: template mode active.');
-                TripleComposer.addToSubject(item);
+                tfh.log('Item used as subject inside triple composer (template mode active).');
+                TripleComposer.addToAllSubject(item);
                 return;
             }
 
