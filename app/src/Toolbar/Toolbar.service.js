@@ -88,7 +88,7 @@ angular.module('Pundit2.Toolbar')
     debug: false
 })
 
-    .service('Toolbar', function(BaseComponent, TOOLBARDEFAULTS, MyPundit) {
+    .service('Toolbar', function(BaseComponent, TOOLBARDEFAULTS, MyPundit, TripleComposer) {
 
     var toolbar = new BaseComponent('Toolbar', TOOLBARDEFAULTS);
     
@@ -181,7 +181,11 @@ angular.module('Pundit2.Toolbar')
     };
 
     toolbar.toggleTemplateMode = function() {
+        TripleComposer.reset();
         templateMode = !templateMode;
+        if (templateMode) {
+            TripleComposer.showCurrentTemplate();            
+        }
     };
     
     return toolbar;

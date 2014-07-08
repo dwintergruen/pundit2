@@ -181,7 +181,7 @@ angular.module('Pundit2.TripleComposer')
     
 })
 .service('TripleComposer', function($rootScope, BaseComponent, TRIPLECOMPOSERDEFAULTS, TypesHelper, NameSpace,
-    AnnotationsExchange, ItemsExchange, Dashboard) {
+    AnnotationsExchange, ItemsExchange, Dashboard, TemplatesExchange) {
 
     var tripleComposer = new BaseComponent('TripleComposer', TRIPLECOMPOSERDEFAULTS);
 
@@ -297,12 +297,16 @@ angular.module('Pundit2.TripleComposer')
         }
     };
 
-    // Used to add a subject from outside of triple composer
-    tripleComposer.addToSubject = function(item) {
+    var openTripleComposer = function() {
         if(!Dashboard.isDashboardVisible()){
             Dashboard.toggle();
         }
         $rootScope.$emit('pnd-dashboard-show-tab', tripleComposer.options.clientDashboardTabTitle);
+    };
+
+    // Used to add a subject from outside of triple composer
+    tripleComposer.addToSubject = function(item) {
+        openTripleComposer();
         if (tripleComposer.canAddItemAsSubject()) {
             statements[0].scope.setSubject(item);
             $rootScope.$$phase || $rootScope.$digest();
@@ -310,6 +314,18 @@ angular.module('Pundit2.TripleComposer')
         } else {
             tripleComposer.log('Impossible to add this item as subject, subject already present or more than one triple');
         }
+    };
+
+    tripleComposer.addToPredicate = function(item) {        
+        statements[0].scope.setPredicate(item);
+        $rootScope.$$phase || $rootScope.$digest();
+        tripleComposer.log('Add item as predicate', item);        
+    };
+
+    tripleComposer.addToObject = function(item) {        
+        statements[0].scope.setObject(item);
+        $rootScope.$$phase || $rootScope.$digest();
+        tripleComposer.log('Add item as object', item);        
     };
 
     tripleComposer.isAnnotationComplete = function(){
@@ -321,6 +337,39 @@ angular.module('Pundit2.TripleComposer')
             }
         });
         return complete;
+    };
+
+    tripleComposer.showCurrentTemplate = function() {
+        tripleComposer.reset();
+        var i, tmpl = TemplatesExchange.getCurrent();
+        // at least one statement is present
+        for (i=1; i<tmpl.triples.length; i++) {
+            tripleComposer.addStatement();
+        }
+
+        var removeWatcher = $rootScope.$watch(function() {
+            return statements[tmpl.triples.length-1].scope;
+        }, function(newScope) {
+            if (typeof(newScope) !== 'undefined'){
+                tripleComposer.log('Now the last statement is populated with relative scope');
+                for (i=0; i<statements.length; i++) {
+                    var triple = tmpl.triples[i];
+                    if (typeof(triple.predicate)!== 'undefined') {
+                        statements[i].scope.setPredicate(triple.predicate, true);
+                    }
+                    if (typeof(triple.subject)!== 'undefined') {
+                        statements[i].scope.setSubject(triple.subject.value, true);
+                    }
+                    if (typeof(triple.object)!== 'undefined') {
+                        statements[i].scope.setObject(triple.object.value, true);
+                    }
+                    tripleComposer.log('New statement populated with', triple);
+                }
+                removeWatcher();
+            }
+        });
+        
+        tripleComposer.log('Showed template: '+tmpl.label);
     };
 
     // build all statement relative to the passed annotation

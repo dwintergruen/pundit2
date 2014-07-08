@@ -7,11 +7,13 @@ angular.module('Pundit2.TripleComposer')
     $scope.subjectFound = false;
     $scope.subjectSearch = "";
     $scope.subjectIcon = TripleComposer.options.inputIconSearch;
+    $scope.subjectFixed = false;
 
     $scope.predicateLabel = '';
     $scope.predicateFound = false;
     $scope.predicateSearch = "";
     $scope.predicateIcon = TripleComposer.options.inputIconSearch;
+    $scope.predicateFixed = false;
 
     $scope.objectLabel = '';
     $scope.objectTypeLabel = '';
@@ -19,6 +21,7 @@ angular.module('Pundit2.TripleComposer')
     $scope.objectSearch = "";
     $scope.objectIcon = TripleComposer.options.inputIconSearch;
     $scope.objectLiteral = false;
+    $scope.objectFixed = false;
 
     $scope.canBeObjectDate = true;
     $scope.canBeObjectLiteral = true;
@@ -151,6 +154,7 @@ angular.module('Pundit2.TripleComposer')
         $scope.subjectFound = false;
         $scope.subjectSearch = "";
         $scope.subjectIcon = TripleComposer.options.inputIconSearch;
+        $scope.subjectFixed = false;
         triple.subject = null;
         ResourcePanel.hide();
         angular.element('.pnd-triplecomposer-save').addClass('disabled');
@@ -170,6 +174,7 @@ angular.module('Pundit2.TripleComposer')
         $scope.predicateIcon = TripleComposer.options.inputIconSearch;
         $scope.canBeObjectDate = true;
         $scope.canBeObjectLiteral = true;
+        $scope.predicatetFixed = false;
         triple.predicate = null;
         ResourcePanel.hide();
         angular.element('.pnd-triplecomposer-save').addClass('disabled');
@@ -190,6 +195,7 @@ angular.module('Pundit2.TripleComposer')
         $scope.objectIcon = TripleComposer.options.inputIconSearch;
         $scope.objectLiteral = false;
         $scope.objectDate = false;
+        $scope.objectFixed = false;
         triple.object = null; 
         ResourcePanel.hide();
         angular.element('.pnd-triplecomposer-save').addClass('disabled');
@@ -231,11 +237,16 @@ angular.module('Pundit2.TripleComposer')
         }
     });
 
-    $scope.setSubject = function(item){
+    $scope.setSubject = function(item, fixed){
         $scope.subjectLabel = item.label;
         $scope.subjectTypeLabel = TypesHelper.getLabel(item.type[0]);
         $scope.subjectFound = true;
         triple.subject = item;
+
+        if (typeof(fixed) !== 'undefined') {
+            $scope.subjectFixed = fixed;
+        }
+
         $scope.tripleComposerCtrl.isAnnotationComplete();
     };
     $scope.onClickSubject = function($event){
@@ -245,10 +256,15 @@ angular.module('Pundit2.TripleComposer')
         ResourcePanel.showItemsForSubject(buildUrisArray(), $event.target, $scope.subjectSearch).then($scope.setSubject);
     };
 
-    $scope.setPredicate = function(item){
+    $scope.setPredicate = function(item, fixed){
         $scope.predicateLabel = item.label;
         $scope.predicateFound = true;
         triple.predicate = item;
+
+        if (typeof(fixed) !== 'undefined') {
+            $scope.predicateFixed = fixed;
+        }
+
         // check predicate range
         if (item.range.indexOf(NameSpace.rdfs.literal) === -1) {
             $scope.canBeObjectLiteral = false;
@@ -265,8 +281,13 @@ angular.module('Pundit2.TripleComposer')
         ResourcePanel.showProperties(buildUrisArray(), $event.target, $scope.predicateSearch).then($scope.setPredicate);
     };
 
-    $scope.setObject = function(item){
+    $scope.setObject = function(item, fixed){
         $scope.objectFound = true;
+
+        if (typeof(fixed) !== 'undefined') {
+            $scope.objectFixed = fixed;
+        }
+         
         triple.object = item;
         
         if (typeof(item) === 'string') {

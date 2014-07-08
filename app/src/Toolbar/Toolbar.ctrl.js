@@ -1,6 +1,6 @@
 angular.module('Pundit2.Toolbar')
 .controller('ToolbarCtrl', function($scope, $rootScope, $modal, $http, NameSpace, Config, Toolbar, SelectorsManager,
-    MyPundit, Dashboard, AnnotationSidebar, ResourcePanel, NotebookExchange, NotebookCommunication, TemplatesExchange) {
+    MyPundit, Dashboard, TripleComposer, AnnotationSidebar, ResourcePanel, NotebookExchange, NotebookCommunication, TemplatesExchange) {
 
     $scope.dropdownTemplate = "src/ContextualMenu/dropdown.tmpl.html";
     $scope.dropdownTemplateMyNotebook = "src/Toolbar/myNotebooksDropdown.tmpl.html";
@@ -220,6 +220,9 @@ angular.module('Pundit2.Toolbar')
                 click: function(_i){
                     return function(){
                         TemplatesExchange.setCurrent(templates[_i].id);
+                        if (Toolbar.isActiveTemplateMode()) {
+                            TripleComposer.showCurrentTemplate();
+                        }
                     };
                 }(i)
             }
