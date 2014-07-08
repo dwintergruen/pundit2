@@ -275,14 +275,17 @@ angular.module('Pundit2.Toolbar')
     
     // TODO if the template mode can change only by click on the toolbar btn
     // remove this watch and do this action inside the toggleTemplateMode function
-    var templateModeBtn = angular.element('.pnd-toolbar-template-mode-button span');
+    var templateModeSpan = angular.element('.pnd-toolbar-template-mode-button span'),
+        templateSwitchSpan = angular.element('.pnd-toolbar-template-menu-button span');
     $scope.$watch(function() {
         return Toolbar.isActiveTemplateMode();
     }, function(val) {
         if (val) {
-            templateModeBtn.removeClass('pnd-toolbar-not-active-element');
+            templateModeSpan.removeClass('pnd-toolbar-not-active-element');
+            templateSwitchSpan.removeClass('pnd-toolbar-not-active-element');
         } else {
-            templateModeBtn.addClass('pnd-toolbar-not-active-element');
+            templateModeSpan.addClass('pnd-toolbar-not-active-element');
+            templateSwitchSpan.addClass('pnd-toolbar-not-active-element');
         }
     });
 
