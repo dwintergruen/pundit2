@@ -97,25 +97,13 @@ angular.module('Pundit2.TripleComposer')
         
     };
 
-    var editPromise ,editPromiseResolved = false;
     $scope.editAnnotation = function(){
         var annID = TripleComposer.getEditAnnID();
 
         if (typeof(annID) !== 'undefined') {
 
-            // init save process showing saving message
-            $scope.textMessage = TripleComposer.options.savingMsg;
-            $scope.shortMessagge = loadShortMsg;
-            $scope.savingIcon = loadIcon;
-            $scope.shortMessageClass = loadMessageClass;
-
-            // disable save button
-            angular.element('.pnd-triplecomposer-save').addClass('disabled');
+            var savePromise = initSavingProcess();
             angular.element('.pnd-triplecomposer-cancel').addClass('disabled');
-
-            editPromiseResolved = false;
-            editPromise = $timeout(function(){ editPromiseResolved = true; }, TripleComposer.options.savingMsgTime);
-            $scope.saving = true;
 
             AnnotationsCommunication.editAnnotation(
                 annID,
@@ -123,24 +111,19 @@ angular.module('Pundit2.TripleComposer')
                 TripleComposer.buildItems(),
                 TripleComposer.buildTargets()
             ).then(function(){
-                // if you have gone at least 500ms
-                if (editPromiseResolved) {
-                    updateMessagge(TripleComposer.options.notificationSuccessMsg, TripleComposer.options.notificationMsgTime, false);
-                } else {
-                    editPromise.then(function(){
-                        updateMessagge(TripleComposer.options.notificationSuccessMsg, TripleComposer.options.notificationMsgTime, false);
-                    });
-                }
-                TripleComposer.reset();
+                stopSavingProcess(
+                    savePromise,
+                    TripleComposer.options.notificationSuccessMsg,
+                    TripleComposer.options.notificationMsgTime,
+                    false
+                );
             }, function(){
-                if (editPromiseResolved) {
-                    updateMessagge(TripleComposer.options.notificationErrorMsg, TripleComposer.options.notificationMsgTime, true);
-                } else {
-                    editPromise.then(function(){
-                        updateMessagge(TripleComposer.options.notificationErrorMsg, TripleComposer.options.notificationMsgTime, true);
-                    });
-                }
-                TripleComposer.reset();
+                stopSavingProcess(
+                    savePromise,
+                    TripleComposer.options.notificationErrorMsg,
+                    TripleComposer.options.notificationMsgTime,
+                    true
+                );
             });            
         }
     };
@@ -168,8 +151,37 @@ angular.module('Pundit2.TripleComposer')
         }, time);
     };
 
-    // TODO move save to AnnotationCommunication and refactor saving interaction messagge
-    var savePromise, promiseResolved;
+    var promiseResolved;
+    var initSavingProcess = function() {
+        // disable save button
+        angular.element('.pnd-triplecomposer-save').addClass('disabled');
+
+        // init save process showing saving message
+        $scope.textMessage = TripleComposer.options.savingMsg;
+        $scope.shortMessagge = loadShortMsg;
+        $scope.savingIcon = loadIcon;
+        $scope.shortMessageClass = loadMessageClass;
+
+        promiseResolved = false;
+        //savePromise = $timeout(function(){ promiseResolved = true; }, TripleComposer.options.savingMsgTime);
+        $scope.saving = true;
+        Toolbar.setLoading(true);
+        return $timeout(function(){ promiseResolved = true; }, TripleComposer.options.savingMsgTime);
+    };
+
+    var stopSavingProcess = function(promise, msg, msgTime, err) {
+        // reset triple composer state
+        TripleComposer.reset();
+        // if you have gone at least 500ms
+        if (promiseResolved) {
+            updateMessagge(msg, msgTime, err);
+        } else {
+            promise.then(function(){
+                updateMessagge(msg, msgTime, err);
+            });
+        }
+    };
+
     $scope.saveAnnotation = function(){
 
         MyPundit.login().then(function(logged) {
@@ -188,19 +200,7 @@ angular.module('Pundit2.TripleComposer')
                     return;
                 }
 
-                // disable save button
-                angular.element('.pnd-triplecomposer-save').addClass('disabled');
-
-                // init save process showing saving message
-                $scope.textMessage = TripleComposer.options.savingMsg;
-                $scope.shortMessagge = loadShortMsg;
-                $scope.savingIcon = loadIcon;
-                $scope.shortMessageClass = loadMessageClass;
-
-                promiseResolved = false;
-                savePromise = $timeout(function(){ promiseResolved = true; }, TripleComposer.options.savingMsgTime);
-                $scope.saving = true;
-                Toolbar.setLoading(true);
+                var savePromise = initSavingProcess();
 
                 $http({
                     headers: { 'Content-Type': 'application/json' },
@@ -217,18 +217,14 @@ angular.module('Pundit2.TripleComposer')
                         "graph": TripleComposer.buildGraph(),
                         "items": TripleComposer.buildItems()
                     }
-                }).success(function(data) {
+                }).success(function(data) {                    
 
-                    // reset triple composer state
-                    TripleComposer.reset();
-                    // if you have gone at least 500ms
-                    if (promiseResolved) {
-                        updateMessagge(TripleComposer.options.notificationSuccessMsg, TripleComposer.options.notificationMsgTime, false);
-                    } else {
-                        savePromise.then(function(){
-                            updateMessagge(TripleComposer.options.notificationSuccessMsg, TripleComposer.options.notificationMsgTime, false);
-                        });
-                    }                    
+                    stopSavingProcess(
+                        savePromise,
+                        TripleComposer.options.notificationSuccessMsg,
+                        TripleComposer.options.notificationMsgTime,
+                        false
+                    );
 
                     // TODO if is rejected ???
                     new Annotation(data.AnnotationID).then(function(){
@@ -258,14 +254,14 @@ angular.module('Pundit2.TripleComposer')
                 }).error(function(msg) {
                     // TODO
                     console.log("Error: impossible to save annotation", msg);
-                    // if you have gone at least 500ms
-                    if (promiseResolved) {
-                        updateMessagge(TripleComposer.options.notificationErrorMsg, TripleComposer.options.notificationMsgTime, true);
-                    } else {
-                        savePromise.then(function(){
-                            updateMessagge(TripleComposer.options.notificationErrorMsg, TripleComposer.options.notificationMsgTime, true);
-                        });
-                    }
+
+                    stopSavingProcess(
+                        savePromise,
+                        TripleComposer.options.notificationErrorMsg,
+                        TripleComposer.options.notificationMsgTime,
+                        true
+                    );
+
                 });
 
 
