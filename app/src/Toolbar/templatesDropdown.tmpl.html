@@ -2,8 +2,8 @@
     <li role="presentation" ng-class="{'current-template': item.currentTemplate, divider: item.divider, 'disabled': item.disable, active: item.isActive, 'dropdown-header': item.header}" ng-repeat="item in content">
         <span ng-if="item.header" ng-bind="item.text">dksad</span>
         <a role="menuitem" tabindex="-1" href="javascript:void(0)" ng-if="!item.divider && item.click" ng-click="$eval(item.click);$hide()">
+        <span class="pnd-icon pnd-icon-certificate pull-right"></span>
         <span ng-if="item.currentTemplate" class="pnd-icon pnd-icon-check"></span>
-        {{item.text}}
-        <span class="pnd-icon pnd-icon-certificate pull-right"></span></a>
+        {{item.text}}</a>
     </li>
 </ul>
