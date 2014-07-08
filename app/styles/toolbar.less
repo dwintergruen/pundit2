@@ -226,6 +226,40 @@ body.pnd-toolbar-active {
             }
         }
     }
+    
+    
+    &.pnd-toolbar-template-menu-button  .dropdown-menu {
+    	padding: 0px;
+    	border: 1px solid  @gray-extra-light;
+    	
+    	li:first-child a {
+            border-top: 0px;
+            }
+            
+        .dropdown-header {
+         	background-color: #fff;
+         	}
+         	
+        .current-template a {
+         	background-color: #fff;
+         	color: @gray-darker;
+         	}
+     
+        li a {
+	        background-color: @gray-extra-lighter;
+            color: @gray;
+            padding: 3px 10px;
+            border-top: 1px solid @gray-extra-light;
+            
+            .pnd-icon-check { color: @brand-success;}
+            
+            
+            &:hover {
+                background-color: #fff;
+                color: @gray-darker;
+            }
+        }
+    }
 
     
     .dropdown-menu {
