@@ -237,11 +237,12 @@ body.pnd-toolbar-active {
             }
             
         .dropdown-header {
-         	background-color: #fff;
+         	background-color: @dropdown-bg;
+         	// color: @dropdown-header-color;
          	}
          	
         .current-template a {
-         	background-color: #fff;
+         	background-color: @dropdown-bg;
          	color: @gray-darker;
          	}
      
@@ -251,8 +252,9 @@ body.pnd-toolbar-active {
             padding: 3px 10px;
             border-top: 1px solid @gray-extra-light;
             
-            .pnd-icon-check { color: @brand-success;}
-            
+            .pnd-icon-check {
+            	color: @brand-success;
+            	}      
             
             &:hover {
                 background-color: #fff;
