@@ -500,55 +500,51 @@ angular.module('Pundit2.ResourcePanel')
 
     };
 
-    var searchPromise;
     var searchOnVocab = function(label, selectors) {
 
-        var vocabObjResultEmpty = true,
-            vocabSubResultEmpty = true,
-            noFound = true;
-
+        // if label is an empty string
+        // set empty array as results for each vocab
         if(label === ''){
-            if(state.popoverOptions.scope.type === 'sub'){
-                state.popoverOptions.scope.vocabSubStatus = 'done';
-                state.popoverOptions.scope.vocabSubRes = [];
-            }
-            if(state.popoverOptions.scope.type === 'obj'){
-                state.popoverOptions.scope.vocabObjStatus = 'done';
-                state.popoverOptions.scope.vocabObjRes = [];
-            }
+            for(var i=0; i<selectors.length; i++){
+                (function(index) {
 
-        } else {
-            var res = [];
-
-            var containerLabel = label.split(' ').join('$');
-            if (typeof(searchPromise) !== 'undefined') {
-                searchPromise.resolve();
-            }
-            searchPromise = $q.defer();
-
-
-            SelectorsManager.getItems(label, searchPromise.promise).then(function() {
-                angular.forEach(selectors, function(sel){
-                    res[sel.config.container] = ItemsExchange.getItemsByContainer(sel.config.container+containerLabel);
-                    if(res[sel.config.container].length >0){
-                        noFound = false;
+                    for(var t=0; t<state.popoverOptions.scope.contentTabs.length; t++){
+                        if(state.popoverOptions.scope.contentTabs[t].title === selectors[index].config.label){
+                            state.popoverOptions.scope.contentTabs[t].items = [];
+                            state.popoverOptions.scope.contentTabs[t].isLoading = false;
+                        }
                     }
-                });
-                if(state.popoverOptions.scope.type === 'sub'){
-                    state.popoverOptions.scope.vocabSubStatus = 'done';
-                    state.popoverOptions.scope.vocabSubRes = res;
-                    state.popoverOptions.scope.vocabSubResEmpty = noFound;
-                }
-                if(state.popoverOptions.scope.type === 'obj'){
-                    state.popoverOptions.scope.vocabObjStatus = 'done';
-                    state.popoverOptions.scope.vocabObjRes = res;
-                    state.popoverOptions.scope.vocabObjResEmpty = noFound;
+                })(i);
+            }
 
-                }
+        // if label is a valid string
+        } else {
+            // for each selector...
+            for(var i=0; i<selectors.length; i++){
 
-            });
+                (function(index) {
+                    // ... set loading status...
+                    for(var t=0; t<state.popoverOptions.scope.contentTabs.length; t++){
+                        if(state.popoverOptions.scope.contentTabs[t].title === selectors[index].config.label){
+                            state.popoverOptions.scope.contentTabs[t].isLoading = true;
+                        }
+                    }
+                    // ... and search label for each selector
+                    selectors[index].getItems(label).then(function(){
 
+                        // where results is done, update content for each selector
+                        for(var t=0; t<state.popoverOptions.scope.contentTabs.length; t++){
+                            if(state.popoverOptions.scope.contentTabs[t].title === selectors[index].config.label){
+                                var container = state.popoverOptions.scope.contentTabs[t].itemsContainer + label.split(' ').join('$');
+                                state.popoverOptions.scope.contentTabs[t].items = ItemsExchange.getItemsByContainer(container);
+                                // and set loading to false
+                                state.popoverOptions.scope.contentTabs[t].isLoading = false;
+                            }
+                        }
 
+                    });
+                })(i);
+            }
 
         }
 
@@ -590,7 +586,7 @@ angular.module('Pundit2.ResourcePanel')
         });
 
         if(state.popover !== null && state.popover.clickTarget === target && state.popoverOptions.scope.label !== label){
-            state.popoverOptions.scope.vocabObjStatus = 'loading';
+            //state.popoverOptions.scope.vocabObjStatus = 'loading';
             $timeout.cancel(searchTimer);
             setLabelToSearch(label);
             searchTimer = $timeout(function(){
@@ -601,7 +597,7 @@ angular.module('Pundit2.ResourcePanel')
             $timeout.cancel(searchTimer);
 
             if(typeof(label) !== 'undefined' && label !== '' && state.popoverOptions.scope.label !== label){
-                state.popoverOptions.scope.vocabObjStatus = 'loading';
+                //state.popoverOptions.scope.vocabObjStatus = 'loading';
                 $timeout.cancel(searchTimer);
                 searchTimer = $timeout(function(){
                    searchOnVocab(label, selectors);

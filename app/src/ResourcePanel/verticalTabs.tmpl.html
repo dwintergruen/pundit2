@@ -1,7 +1,8 @@
 <ul class="nav nav-tabs pnd-vertical-tabs">
   <li ng-repeat="pane in contentTabs" ng-class="{active: $index == active}" >
     <a data-toggle="tab" ng-click="setActive($index, $event)" data-index="{{$index}}" ng-show="pane.title != 'My Items' || (pane.title == 'My Items' && userLoggedIn)">
-        {{pane.title}} ({{pane.items.length}})
+        {{pane.title}} <span>({{pane.items.length}})</span>
+        <span class="pnd-icon-refresh" ng-show="pane.isLoading"></span>
     </a>
   </li>
 </ul>
