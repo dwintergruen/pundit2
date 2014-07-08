@@ -164,7 +164,7 @@ angular.module('Pundit2.TripleComposer')
             return;
         }
         $scope.subjectSearch = "";
-        ResourcePanel.showItemsForSubject(buildUrisArray(), undefined, $scope.subjectSearch).then(setSubject);
+        ResourcePanel.showItemsForSubject(buildUrisArray(), undefined, $scope.subjectSearch).then($scope.setSubject);
     };
 
     $scope.wipePredicate = function(){
