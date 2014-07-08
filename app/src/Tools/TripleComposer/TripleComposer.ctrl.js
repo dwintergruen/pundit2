@@ -88,13 +88,7 @@ angular.module('Pundit2.TripleComposer')
         if ($scope.editMode) {
             TripleComposer.reset();
             TripleComposer.setEditMode(false);
-            return;
-        }
-        if($scope.templateMode) {
-            Toolbar.toggleTemplateMode();
-            return;
-        }
-        
+        }        
     };
 
     $scope.editAnnotation = function(){
@@ -180,6 +174,7 @@ angular.module('Pundit2.TripleComposer')
         }
     };
 
+    // TODO check mode (edit or template) then wipe correctly the items
     $scope.saveAnnotation = function(){
 
         MyPundit.login().then(function(logged) {
