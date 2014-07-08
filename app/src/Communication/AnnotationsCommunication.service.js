@@ -114,6 +114,69 @@ angular.module('Pundit2.Communication')
         return promise.promise;
     };
 
+    annotationsCommunication.saveAnnotation = function(graph, items, targets){
+
+        var completed = 0,
+            promise = $q.defer();
+
+        Toolbar.setLoading(true);
+
+        $http({
+            headers: { 'Content-Type': 'application/json' },
+            method: 'POST',
+            url: NameSpace.get('asNBCurrent'),
+            params: {
+                context: angular.toJson({
+                    targets: targets,
+                    pageContext: XpointersHelper.getSafePageContext()
+                })
+            },
+            withCredentials: true,
+            data: {
+                "graph": graph,
+                "items": items
+            }
+        }).success(function(data) {                    
+
+            // TODO if is rejected ???
+            new Annotation(data.AnnotationID).then(function(){
+
+                var ann = AnnotationsExchange.getAnnotationById(data.AnnotationID);
+
+                // get notebook that include the new annotation
+                var nb = NotebookExchange.getNotebookById(ann.isIncludedIn);
+
+                // if no notebook is defined, it means that user is logged in a new user in Pundit and has not any notebooks
+                // so create a new notebook and add annotation in new notebook in NotebookExchange
+                if(typeof(nb) === 'undefined'){
+                    new Notebook(ann.isIncludedIn, true).then(function(id){
+                        NotebookExchange.getNotebookById(id).addAnnotation(data.AnnotationID);
+                    });
+                } else {
+                    // otherwise if user has a notebook yet, use it to add new annotation in that notebook in NotebookExchange
+                    NotebookExchange.getNotebookById(ann.isIncludedIn).addAnnotation(data.AnnotationID);
+                }
+                Consolidation.consolidateAll();
+                // TODO move inside notebook then?
+                Toolbar.setLoading(false);
+                promise.resolve();
+            }, function(){
+                // rejected, impossible to download annotation from server
+                console.log("Error: impossible to get annotation from server after save");
+                Toolbar.setLoading(false);
+                promise.reject();
+            });
+        }).error(function(msg) {
+            // TODO
+            console.log("Error: impossible to save annotation", msg);
+            Toolbar.setLoading(false);
+            promise.reject();
+        });
+
+        return promise.promise;
+
+    };
+
 
     // this API not work correctly sometimese save correctly the items sometimes not save correctly
     // TODO : safety check if we get an error in one of the two http calls

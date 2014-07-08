@@ -1,6 +1,6 @@
 angular.module('Pundit2.TripleComposer')
-.controller('TripleComposerCtrl', function($scope, $http, $timeout, NameSpace, TypesHelper, XpointersHelper, MyPundit,
-    Toolbar, Annotation, Consolidation, TripleComposer, NotebookExchange, AnnotationsExchange, AnnotationsCommunication) {
+.controller('TripleComposerCtrl', function($scope, $http, $timeout, NameSpace,
+    MyPundit, Toolbar, TripleComposer, AnnotationsCommunication) {
 
     // statements objects are extend by this.addStatementScope()
     // the function is called in the statement directive link function
@@ -146,8 +146,7 @@ angular.module('Pundit2.TripleComposer')
         $timeout(function(){
             TripleComposer.setEditMode(false);
             angular.element('.pnd-triplecomposer-cancel').removeClass('disabled');
-            $scope.saving = false; 
-            Toolbar.setLoading(false);
+            $scope.saving = false;
         }, time);
     };
 
@@ -165,7 +164,6 @@ angular.module('Pundit2.TripleComposer')
         promiseResolved = false;
         //savePromise = $timeout(function(){ promiseResolved = true; }, TripleComposer.options.savingMsgTime);
         $scope.saving = true;
-        Toolbar.setLoading(true);
         return $timeout(function(){ promiseResolved = true; }, TripleComposer.options.savingMsgTime);
     };
 
@@ -202,71 +200,29 @@ angular.module('Pundit2.TripleComposer')
 
                 var savePromise = initSavingProcess();
 
-                $http({
-                    headers: { 'Content-Type': 'application/json' },
-                    method: 'POST',
-                    url: NameSpace.get('asNBCurrent'),
-                    params: {
-                        context: angular.toJson({
-                            targets: TripleComposer.buildTargets(),
-                            pageContext: XpointersHelper.getSafePageContext()
-                        })
-                    },
-                    withCredentials: true,
-                    data: {
-                        "graph": TripleComposer.buildGraph(),
-                        "items": TripleComposer.buildItems()
-                    }
-                }).success(function(data) {                    
-
+                AnnotationsCommunication.saveAnnotation(
+                    TripleComposer.buildGraph(),
+                    TripleComposer.buildItems(),
+                    TripleComposer.buildTargets())
+                .then(function(){
+                    // resolved
                     stopSavingProcess(
                         savePromise,
                         TripleComposer.options.notificationSuccessMsg,
                         TripleComposer.options.notificationMsgTime,
                         false
                     );
-
-                    // TODO if is rejected ???
-                    new Annotation(data.AnnotationID).then(function(){
-
-                        var ann = AnnotationsExchange.getAnnotationById(data.AnnotationID);
-
-                        // get notebook that include the new annotation
-                        var nb = NotebookExchange.getNotebookById(ann.isIncludedIn);
-
-                        // if no notebook is defined, it means that user is logged in a new user in Pundit and has not any notebooks
-                        // so create a new notebook and add annotation in new notebook in NotebookExchange
-                        if(typeof(nb) === 'undefined'){
-                            new Notebook(ann.isIncludedIn, true).then(function(id){
-                                NotebookExchange.getNotebookById(id).addAnnotation(data.AnnotationID);
-                            });
-
-                        } else {
-                            // otherwise if user has a notebook yet, use it to add new annotation in that notebook in NotebookExchange
-                            NotebookExchange.getNotebookById(ann.isIncludedIn).addAnnotation(data.AnnotationID);
-                        }
-
-                        Consolidation.consolidateAll();
-                    }, function(){
-                        // rejected, impossible to download annotation from server
-                        console.log("Error: impossible to get annotation from server after save");
-                    });
-                }).error(function(msg) {
-                    // TODO
-                    console.log("Error: impossible to save annotation", msg);
-
+                }, function(){
+                    // rejected
                     stopSavingProcess(
                         savePromise,
                         TripleComposer.options.notificationErrorMsg,
                         TripleComposer.options.notificationMsgTime,
                         true
                     );
-
                 });
 
-
             } //end if logged
-
         }); // end my pundit login       
 
     }; // end save function
