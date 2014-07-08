@@ -13,11 +13,8 @@
                 <input type="text" class="input-sm form-control" placeholder="search a subject" ng-model="$parent.subjectSearch" ng-click="onClickSubject($event)" ng-keyup="onKeyUpSubject($event)">
             </div>
 
-            <!-- Subject Buttons div -->
-            <div class="pnd-row-button-subject">
-                <!--Korbo Icon-->
-                <button type="button" class="btn btn-xs btn-link" title="add"><span class="pnd-icon pnd-icon-plus"></span></button>
-            </div>
+            <!-- Subject Buttons div (empty)-->
+            <div class="pnd-row-button-subject"></div>
 
         </div>
 
@@ -76,8 +73,6 @@
 
             <!-- Object Buttons div -->
             <div class="pnd-row-button-object">
-                <!--Korbo Icon-->
-                <button type="button" class="btn btn-xs btn-link" title="add"><span class="pnd-icon pnd-icon-plus"></span></button>
                 <!--Calendar Icon-->
                 <button type="button" class="btn btn-xs btn-link" ng-if="canBeObjectDate" ng-click="onClickObjectCalendar($event)"  title="calendar"><span class="pnd-icon pnd-icon-table"></span></button>
                 <!--Pen Icon-->
