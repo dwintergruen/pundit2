@@ -84,14 +84,14 @@ angular.module('Pundit2.TripleComposer')
         TripleComposer.addStatement();
     };
 
-    $scope.cancelEditMode = function(){
+    $scope.cancel = function(){
         if ($scope.editMode) {
             TripleComposer.reset();
             TripleComposer.setEditMode(false);
             return;
         }
         if($scope.templateMode) {
-            // TODO wipe only not precompiled (template) items
+            Toolbar.toggleTemplateMode();
             return;
         }
         
