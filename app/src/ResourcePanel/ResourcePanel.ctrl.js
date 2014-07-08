@@ -1,55 +1,15 @@
 angular.module('Pundit2.ResourcePanel')
-    .controller('ResourcePanelCtrl', function($rootScope, $scope, MyItems, PageItemsContainer, ItemsExchange, MyPundit) {
+    .controller('ResourcePanelCtrl', function($rootScope, $scope, MyItems, PageItemsContainer, ItemsExchange, MyPundit, $filter, Client) {
 
         var myItemsContainer = MyItems.options.container;
         var pageItemsContainer = PageItemsContainer.options.container;
+        var propertiesContainer = Client.options.relationsContainer;
 
-        $scope.caretMyItems = true;
-        $scope.caretPageItems = false;
-        $scope.caretProperties = false;
 
-        $scope.toggleMyItems = function(){
-            $scope.caretMyItems = !$scope.caretMyItems;
-            $('#collapseMyItems').toggle();
-        };
-
-        $scope.togglePageItems = function(){
-            $scope.caretProperties = !$scope.caretProperties;
-            $('#collapsePageItems').toggle();
-        };
-
-        /*$scope.toggleProperties = function(){
-            $scope.caretPageItems = !$scope.caretPageItems;
-            $('#collapseProperties').toggle();
-        };*/
-
-        $scope.toggleObjVocab = function(v){
-
-            var elem = angular.element('span.pnd-vocab-'+v+' i');
-            if(elem.hasClass('pnd-icon-caret-right')){
-                elem.addClass('pnd-icon-caret-down').removeClass('pnd-icon-caret-right');
-            } else {
-                elem.addClass('pnd-icon-caret-right').removeClass('pnd-icon-caret-down');
-            }
-
-            $('#obj-'+v).toggle();
-        };
-
-        $scope.toggleSubVocab = function(v){
-
-            var elem = angular.element('span.pnd-sub-vocab-'+v+' i');
-            if(elem.hasClass('pnd-icon-caret-right')){
-                elem.addClass('pnd-icon-caret-down').removeClass('pnd-icon-caret-right');
-            } else {
-                elem.addClass('pnd-icon-caret-right').removeClass('pnd-icon-caret-down');
-            }
-
-            $('#sub-'+v).toggle();
-        };
 
         $rootScope.$watch(function() {
             return MyPundit.isUserLogged();
-        }, function(newStatus, oldStatus) {
+        }, function(newStatus) {
             $scope.userLoggedIn = newStatus;
         });
 
@@ -62,6 +22,40 @@ angular.module('Pundit2.ResourcePanel')
         $scope.getOrderProperty = function(item){
             return removeSpace(item.label);
         };
+
+        $scope.$watch('label', function(newLabel) {
+            for(var i=0; i<$scope.contentTabs.length; i++){
+                //ItemsExchange.getItemsByContainer(myItemsContainer);
+                if($scope.contentTabs[i].title === 'My Items'){
+                    $scope.contentTabs[i].items = $filter('filterByLabel')(ItemsExchange.getItemsByContainer(myItemsContainer), $scope.label);
+                }
+
+                if($scope.contentTabs[i].title === 'Page Items'){
+                    $scope.contentTabs[i].items = $filter('filterByLabel')(ItemsExchange.getItemsByContainer(pageItemsContainer), $scope.label);
+                }
+
+                if($scope.contentTabs[i].title === 'Properties'){
+                    $scope.contentTabs[i].items = $filter('filterByLabel')(ItemsExchange.getItemsByContainer(propertiesContainer), $scope.label);
+                }
+            }
+
+        });
+
+        $scope.itemSelected = null;
+        $scope.isUseActive = false;
+
+        $scope.isSelected = function(item){
+            if ($scope.itemSelected !== null && $scope.itemSelected.uri === item.uri){
+                return true;
+            } else {
+                return false;
+            }
+        };
+
+        $scope.select = function(item){
+            $scope.isUseActive = true;
+            $scope.itemSelected = item;
+        }
 
 
 

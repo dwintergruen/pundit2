@@ -1,7 +1,7 @@
 <div class="popover pnd-resource-panel-popover" ng-controller="ResourcePanelCtrl">
     <div class="arrow"></div>
 
-    <h3 class="popover-title pnd-resource-panel-popover-title">Choose your...<span style="float:right" class="pnd-icon-times" ng-click="cancel()"></span></h3>
+    <!--<h3 class="popover-title pnd-resource-panel-popover-title">Choose your...<span style="float:right" class="pnd-icon-times" ng-click="cancel()"></span></h3>
     <div class="popover-content pnd-resource-panel-popover-content panel-group" id="accordion">
 
 	    <div ng-show = "type != 'pr' && myItems.length>0 && userLoggedIn"> My items ({{myItems.length}})
@@ -43,7 +43,7 @@
         </div>
 
         <div ng-show = "type == 'pr' && properties.length>0"> Properties ({{properties.length}})
-            <!--<span class="pull-left"><i ng-class="{'pnd-icon-caret-down': caretProperties, 'pnd-icon-caret-right': !caretProperties}"ng-click="toggleProperties()"></i></span>-->
+
             <ul class="list-group" id ="collapseProperties">
                 <li class="list-group-item" ng-repeat="pr in properties | orderBy:getOrderProperty">
                     <item uri="{{pr.uri}}" ng-click="save(pr)"></item>
@@ -56,7 +56,10 @@
         <div ng-show = "type == 'sub' && vocabSubResEmpty && pageItems.length == 0 && myItems.length == 0 && vocabSubStatus == 'done'"> No subject match </div>
 
     </div>
-
+-->
+    <!-- ngModel is optional -->
+    <div bs-tabs="contentTabs" data-template = "src/ResourcePanel/verticalTabs.tmpl.html">
+    </div>
 
 
 </div>

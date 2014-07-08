@@ -40,4 +40,12 @@ angular.module('Pundit2.Item')
         return false;
     };
 
+    $scope.isItemSelected = function(){
+      if($scope.isSelected === false || typeof($scope.isSelected) === 'undefined'){console.log("false");
+          return false;
+      } else {
+          return true;
+      }
+    };
+
 });

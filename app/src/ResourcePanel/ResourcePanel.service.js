@@ -98,7 +98,7 @@ angular.module('Pundit2.ResourcePanel')
     state.popoverOptions.trigger = "manual";
 
     // initialize a popover
-    var initPopover = function(content, target, placement, type){
+    var initPopover = function(content, target, placement, type, contentTabs){
 
         // initialize a calendar popover
         if(type === 'calendar') {
@@ -164,6 +164,7 @@ angular.module('Pundit2.ResourcePanel')
             state.popoverOptions.scope.pageItems = content.pageItems;
             state.popoverOptions.scope.myItems = content.myItems;
             state.popoverOptions.scope.properties = content.properties;
+            state.popoverOptions.scope.contentTabs = contentTabs;
             if(content.label !== '' && typeof(content.label) !== 'undefined'){
                 setLabelToSearch(content.label);
             } else {
@@ -340,12 +341,31 @@ angular.module('Pundit2.ResourcePanel')
     var showPopoverResourcePanel = function(target, pageItems, myItems, properties, label, type){
         var content = {};
         content.type = type;
+        var contentTabs = [];
         if(type === 'sub' || type === 'obj'){
+            var pageItemsForTabs = {
+              title: 'Page Items',
+              items: pageItems
+            };
+            contentTabs.push(pageItemsForTabs);
             content.pageItems = pageItems;
+
+            var myItemsForTabs = {
+                title: 'My Items',
+                items: myItems
+            };
+            contentTabs.push(myItemsForTabs);
             content.myItems = myItems;
+
             content.properties = null;
         }
         if (type === 'pr') {
+            var prop = {
+                title: 'Properties',
+                items: properties
+            };
+            contentTabs.push(prop);
+
             content.properties = properties;
             content.pageItems = null;
             content.myItems = null;
@@ -354,14 +374,14 @@ angular.module('Pundit2.ResourcePanel')
         content.label = label;
         // if no popover is shown, just show it
         if (state.popover === null) {
-            state.popover = initPopover(content, target, "", 'resourcePanel');
+            state.popover = initPopover(content, target, "", 'resourcePanel', contentTabs);
             state.popover.$promise.then(state.popover.show);
         }
 
         // if click a different popover, hide the shown popover and show the clicked one
         else if (state.popover !== null && state.popover.clickTarget !== target) {
             resourcePanel.hide();
-            state.popover = initPopover(content, target, "", 'resourcePanel');
+            state.popover = initPopover(content, target, "", 'resourcePanel', contentTabs);
             state.popover.$promise.then(state.popover.show);
         } // if click a different popover, hide the shown popover and show the clicked one
 
