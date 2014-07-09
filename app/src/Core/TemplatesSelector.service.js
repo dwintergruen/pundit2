@@ -54,6 +54,7 @@ angular.module('Pundit2.Core')
                 for(var i in trp) {
                     // read predicate and made a real item
                     if (typeof(trp[i].predicate) !== 'undefined') {
+                        trp[i].predicate.type = ["http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"];
                         trp[i].predicate = new Item(trp[i].predicate.uri, trp[i].predicate);
                         ItemsExchange.addItemToContainer(trp[i].predicate, Config.modules.Client.relationsContainer);
                     }
@@ -91,6 +92,7 @@ angular.module('Pundit2.Core')
                 // if we have get it eg. from freebase
                 TemplatesExchange.addTemplate(data);
                 promise.resolve(data);
+                console.log(data)
 
             })
             .error(function(){
