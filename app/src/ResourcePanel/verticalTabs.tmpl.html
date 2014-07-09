@@ -1,11 +1,16 @@
+<div class="tabbable tabs-left"> <!-- tabs left -->
+
 <ul class="nav nav-tabs pnd-vertical-tabs">
-  <li ng-repeat="pane in contentTabs" ng-class="{active: $index == active}" >
+  <li ng-repeat="pane in contentTabs" ng-class="{active: $index == active}" data-toggle="tab" >
     <a data-toggle="tab" ng-click="setActive($index, $event)" data-index="{{$index}}" ng-show="pane.title != 'My Items' || (pane.title == 'My Items' && userLoggedIn)">
         {{pane.title}} <span>({{pane.items.length}})</span>
         <span class="pnd-icon-refresh" ng-show="pane.isLoading"></span>
     </a>
   </li>
 </ul>
+
+
+
 <div>
     <div class="pnd-vertical-tab-content tab-content">
         <div class="pnd-vertical-tab-header-content">
@@ -13,9 +18,11 @@
             <span class="pnd-icon-times" ng-click="cancel()"></span>
         </div>
         <div ng-repeat="pane in contentTabs" class="tab-pane pnd-vertical-tab-list-content" ng-class="[$index == active ? 'active' : '']">
+        <ul class="list-group">
             <li class="list-group-item" ng-repeat="mi in contentTabs[$index].items | orderBy:getOrderProperty" >
                 <item uri="{{mi.uri}}" is-selected="{{isSelected(mi)}}" ng-click="select(mi)" ></item>
             </li>
+        </ul>
         </div>
         <div class="pnd-vertical-tab-footer-content">
             <button class="pnd-resource-panel-use-button btn btn-xs btn-success" ng-class="{'disabled': !isUseActive}" ng-click="save(itemSelected)">Use</button>
@@ -25,3 +32,4 @@
     </div>
 </div>
 
+</div> <!-- / tabs left -->
