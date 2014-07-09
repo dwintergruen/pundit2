@@ -57,7 +57,10 @@
                 
                 <!-- Template menu -->
                 <li class="pnd-toolbar-template-menu-button" ng-show="useTemplates">
-                    <a href="javascript:void(0)" template="{{dropdownTemplateTemplates}}" bs-dropdown="userTemplateDropdown"><span>{{currentTemplateLabel}}</span> <span class="pnd-icon pnd-icon-certificate"> </span></a>
+                    <a href="javascript:void(0)" template="{{dropdownTemplateTemplates}}" bs-dropdown="userTemplateDropdown">
+                        <span>{{currentTemplateLabel}}</span>
+                        <span class="pnd-icon pnd-icon-certificate" style="color: {{currentTemplateColor}};"></span>
+                    </a>
                 </li>
                 
                 <!-- Notebooks menu -->

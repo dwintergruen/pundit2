@@ -8,6 +8,10 @@ angular.module('Pundit2.Core')
         container: 'freebase'
     });
 
+    // TODO generate color indipendently from template number
+    // this array must have the same number of element of the Config.templates array
+    var colors = ["#FF00FF", "#0000FF", "#00FFFF", "#00FF00", "#FFFF00"];
+
     // by convention the template initially used as current
     // is the first of the urls list
 
@@ -21,7 +25,7 @@ angular.module('Pundit2.Core')
         TemplatesExchange.setCurrent(urls[0]);
 
         for (var i in urls) {
-            promiseArr.push(templatesSelector.get(urls[i]));
+            promiseArr.push(templatesSelector.get(urls[i], colors[i]));
         }
             
         templatesSelector.log("Loading predicates from", urls);
@@ -30,7 +34,7 @@ angular.module('Pundit2.Core')
     };
 
     // make a jsonp to get template object from url
-    templatesSelector.get = function(url){
+    templatesSelector.get = function(url, color){
 
         // promise il always resolved to use $q.all
         // if the result value is undefined
@@ -48,6 +52,9 @@ angular.module('Pundit2.Core')
 
                 // url is used as id to identify the template
                 data.id = url;
+                if (typeof(color) !== 'undefined') {
+                    data.color = color;                    
+                }
 
                 // chek if need to get items from freebase
                 var trp = data.triples;
