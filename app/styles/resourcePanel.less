@@ -1,28 +1,64 @@
+//
+// Resource panel
+// --------------------------------------------------
+
+
 .pnd-resource-panel-popover {
   position: fixed !important;
-  max-width: 500px !important;
-  width: 500px !important;
-  height: auto;
+  max-width: 400px !important;
+  width: 400px;
 
-  .list-group-item {
-    overflow: hidden;
-  }
+			
+	.pnd-item-buttons {
+		
+		.pnd-icon-check {
+			color: @brand-success;
+			}
+		}
+	
+	.list-group-item {
+		overflow: hidden;
+		}
+	
+	.pnd-resource-panel-popover-content {
+		overflow-y: scroll;
+		}
+		
+	.pnd-vertical-tabs  {
+		height: 200px;
+		}
 
-  .pnd-resource-panel-popover-content{
-    overflow-y: scroll;
-    height: 260px;
-  }
+	.pnd-vertical-tab-list-content {
+		height: 200px;
+		overflow-y: auto;
+		}
 
-  .pnd-vertical-tab-list-content{
-    height: 200px;
-    overflow-y: auto;
-  }
+	.pnd-vertical-tab-footer-content {
+		display: block;
+		border-top: 1px solid @gray-light;
+		background-color: #fff;
+		height: 30px;
+		padding: 5px;
+		position: absolute;
+		bottom: 0;
+		right: 0px;
+		left: 0;
+		}
+		
+	.pnd-vertical-tab-header-content{
+		display: block;
+		border-bottom: 1px solid @gray-light;
+		background-color: #fff;
+		height: 30px;
+		padding: 5px;
+		}
 }
 
 .pnd-popover-literal {
-  position: fixed !important;
-}
+	  position: fixed !important;
+	  }
 
 .pnd-popover-calendar {
-  position: fixed !important;
-}
+	  position: fixed !important;
+	  }
+
