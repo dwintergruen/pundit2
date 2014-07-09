@@ -114,12 +114,20 @@ angular.module('Pundit2.Communication')
         return promise.promise;
     };
 
-    annotationsCommunication.saveAnnotation = function(graph, items, targets){
+    annotationsCommunication.saveAnnotation = function(graph, items, targets, templateID){
 
         var completed = 0,
             promise = $q.defer();
 
         Toolbar.setLoading(true);
+
+        var postData = {
+            graph: graph,
+            items: items
+        };
+        if (typeof(templateID) !== 'undefined') {
+            postData.metadata = {template: templateID};
+        }
 
         $http({
             headers: { 'Content-Type': 'application/json' },
@@ -132,10 +140,7 @@ angular.module('Pundit2.Communication')
                 })
             },
             withCredentials: true,
-            data: {
-                "graph": graph,
-                "items": items
-            }
+            data: postData
         }).success(function(data) {                    
 
             // TODO if is rejected ???

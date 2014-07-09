@@ -1,6 +1,6 @@
 angular.module('Pundit2.TripleComposer')
 .controller('TripleComposerCtrl', function($scope, $http, $timeout, NameSpace,
-    MyPundit, Toolbar, TripleComposer, AnnotationsCommunication) {
+    MyPundit, Toolbar, TripleComposer, AnnotationsCommunication, TemplatesExchange) {
 
     // statements objects are extend by this.addStatementScope()
     // the function is called in the statement directive link function
@@ -203,11 +203,21 @@ angular.module('Pundit2.TripleComposer')
 
                 var savePromise = initSavingProcess();
 
-                AnnotationsCommunication.saveAnnotation(
-                    TripleComposer.buildGraph(),
-                    TripleComposer.buildItems(),
-                    TripleComposer.buildTargets())
-                .then(function(){
+                var httpPromise;
+                if ($scope.templateMode) {
+                    httpPromise = AnnotationsCommunication.saveAnnotation(
+                                    TripleComposer.buildGraph(),
+                                    TripleComposer.buildItems(),
+                                    TripleComposer.buildTargets(),
+                                    TemplatesExchange.getCurrent().id);
+                } else {
+                    httpPromise = AnnotationsCommunication.saveAnnotation(
+                                    TripleComposer.buildGraph(),
+                                    TripleComposer.buildItems(),
+                                    TripleComposer.buildTargets());
+                }
+                
+                httpPromise.then(function(){
                     // resolved
                     stopSavingProcess(
                         savePromise,
