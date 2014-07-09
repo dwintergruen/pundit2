@@ -3,7 +3,7 @@ angular.module('Pundit2.Core')
     label: 'Finish',
     link: '',
     active: false,
-    debug: true
+    debug: false
 })
 .service('Fp3', function(BaseComponent, FP3DEFAULTS, $http, $q, $window) {
     
@@ -49,7 +49,7 @@ angular.module('Pundit2.Core')
             withCredentials: true
         }).success(function(data) {
             fp3.log("Success: fp3 post data");
-            $window.close();
+            // TODO how close the window?
         }).error(function(msg) {
             fp3.log("Error: impossible to post data", msg);
             promise.reject();
