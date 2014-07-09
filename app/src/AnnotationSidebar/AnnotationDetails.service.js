@@ -45,7 +45,7 @@ angular.module('Pundit2.AnnotationSidebar')
      */
     debug: false
 })
-.service('AnnotationDetails', function($rootScope, $filter, $document, BaseComponent, Annotation, AnnotationSidebar, AnnotationsExchange, Consolidation, ContextualMenu, ItemsExchange, MyPundit, TextFragmentAnnotator, TypesHelper, ANNOTATIONDETAILSDEFAULTS) {
+.service('AnnotationDetails', function($rootScope, $filter, $document, BaseComponent, Annotation, AnnotationSidebar, AnnotationsExchange, TemplatesExchange, Consolidation, ContextualMenu, ItemsExchange, MyPundit, TextFragmentAnnotator, TypesHelper, ANNOTATIONDETAILSDEFAULTS) {
     
     var annotationDetails = new BaseComponent('AnnotationDetails', ANNOTATIONDETAILSDEFAULTS);
 
@@ -313,6 +313,11 @@ angular.module('Pundit2.AnnotationSidebar')
         var isBroken = scope.broken;
         var currentAnnotation = AnnotationsExchange.getAnnotationById(currentId);
         var expandedState = (force ? true : state.defaultExpanded);
+        var template = TemplatesExchange.getTemplateById(currentAnnotation.hasTemplate);
+        var currentColor;
+        if (typeof(template) !== 'undefined') {
+            currentColor = template.color;
+        }
 
         if(typeof(state.annotations[currentId]) === 'undefined' || typeof(force) !== 'undefined'){
             state.annotations[currentId] = {
@@ -328,7 +333,8 @@ angular.module('Pundit2.AnnotationSidebar')
                 broken: isBroken,
                 expanded: expandedState,
                 ghosted: false,
-                fragments: getFragments(currentAnnotation)
+                fragments: getFragments(currentAnnotation),
+                color: currentColor
             };
         }
     };
