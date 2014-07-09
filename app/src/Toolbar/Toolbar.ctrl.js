@@ -185,50 +185,62 @@ angular.module('Pundit2.Toolbar')
         }
     };
 
-    $scope.userTemplateDropdown = [{text: 'Please select template you want to use', header: true }];
-    $scope.currentTemplateLabel = "Loading...";
+    // check configuration object to see if templates are enabled
+    $scope.useTemplates = Config.useTemplates;
 
-    $scope.$watch(function() {
-        return TemplatesExchange.getTemplates().length;
-    }, function() {
-        updateTemplates();
-    });
+    // configured templates are empty then we remove the relative buttons
+    if (Config.templates.length === 0) {
+        $scope.useTemplates = false;
+    }
 
-    $scope.$watch(function() {
-        return TemplatesExchange.getCurrent();
-    }, function(newCurr) {
-        if (typeof(newCurr) !== "undefined") {
+    if ($scope.useTemplates) {
+
+        $scope.userTemplateDropdown = [{text: 'Please select template you want to use', header: true }];
+        $scope.currentTemplateLabel = "Loading...";
+
+        $scope.$watch(function() {
+            return TemplatesExchange.getTemplates().length;
+        }, function() {
             updateTemplates();
-            $scope.currentTemplateLabel = newCurr.label;
-        }
-    });
-    
-    var updateTemplates = function(){
-        var templates = TemplatesExchange.getTemplates();
-        var j = 1;
-        for (var i = 0; i<templates.length; i++){
-            $scope.userTemplateDropdown[j] = {
-                text: templates[i].label,
-                currentTemplate: function(){
-                    var current = TemplatesExchange.getCurrent();
-                    if (typeof(current)!== "undefined" && templates[i].id === current.id) {
-                        return true;
-                    } else {
-                        return false;
-                    }                    
-                }(),
-                click: function(_i){
-                    return function(){
-                        TemplatesExchange.setCurrent(templates[_i].id);
-                        if (Toolbar.isActiveTemplateMode()) {
-                            TripleComposer.showCurrentTemplate();
-                        }
-                    };
-                }(i)
+        });
+
+        $scope.$watch(function() {
+            return TemplatesExchange.getCurrent();
+        }, function(newCurr) {
+            if (typeof(newCurr) !== "undefined") {
+                updateTemplates();
+                $scope.currentTemplateLabel = newCurr.label;
             }
-            j++;
-        }
-    };
+        });
+        
+        var updateTemplates = function(){
+            var templates = TemplatesExchange.getTemplates();
+            var j = 1;
+            for (var i = 0; i<templates.length; i++){
+                $scope.userTemplateDropdown[j] = {
+                    text: templates[i].label,
+                    currentTemplate: function(){
+                        var current = TemplatesExchange.getCurrent();
+                        if (typeof(current)!== "undefined" && templates[i].id === current.id) {
+                            return true;
+                        } else {
+                            return false;
+                        }                    
+                    }(),
+                    click: function(_i){
+                        return function(){
+                            TemplatesExchange.setCurrent(templates[_i].id);
+                            if (Toolbar.isActiveTemplateMode()) {
+                                TripleComposer.showCurrentTemplate();
+                            }
+                        };
+                    }(i)
+                }
+                j++;
+            }
+        };
+
+    } // end-if-use-templates
 
     $scope.userData = {};
     // listener for user status

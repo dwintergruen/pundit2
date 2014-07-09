@@ -113,6 +113,19 @@ angular.module('Pundit2.Core')
          * @name useBasicRelations
          * @description
          * `boolean`
+         * Load configured templates.
+         *
+         * Default:
+         * <pre> useTemplates: true </pre>
+         */
+        useTemplates: true,
+
+        /**
+         * @module punditConfig
+         * @ngdoc object
+         * @name useBasicRelations
+         * @description
+         * `boolean`
          * Load basic relations configured in Client module.
          *
          * Default:

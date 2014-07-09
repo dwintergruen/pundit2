@@ -382,6 +382,10 @@ angular.module('Pundit2.Client')
             }
             loadConfiguredRelations();
 
+            if (Config.useTemplates) {
+                TemplatesSelector.getAll();
+            }
+
             // Check if we're logged in, other components should $watch MyPundit
             // and get notified automatically when logged in, if needed
             MyPundit.checkLoggedIn().then(function(value) {
@@ -418,8 +422,6 @@ angular.module('Pundit2.Client')
             // and the selector manager can't show the selector
             // es: FreebaseSelector, MurucaSelector, KorboBasketSelector
             SelectorsManager.init();
-
-            TemplatesSelector.getAll();
 
             addComponents();
 
