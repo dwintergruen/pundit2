@@ -7,8 +7,8 @@
         <!-- // end header -->
 
 <ul class="nav nav-tabs pnd-vertical-tabs">
-  <li ng-repeat="pane in contentTabs" ng-class="{active: $index == active}" data-toggle="tab" >
-    <a data-toggle="tab" ng-click="setActive($index, $event)" data-index="{{$index}}" ng-show="pane.title != 'My Items' || (pane.title == 'My Items' && userLoggedIn)">
+  <li ng-repeat="pane in contentTabs" ng-class="{active: $index == active}" ng-show="pane.title != 'My Items' || (pane.title == 'My Items' && userLoggedIn)">
+    <a data-toggle="tab" ng-click="setActive($index, $event)" data-index="{{$index}}" >
         <span class="badge pull-right" ng-show="!pane.isLoading">{{pane.items.length}}</span>
         <span class="pnd-icon pnd-icon-refresh pnd-icon-spin pull-right" ng-show="pane.isLoading"></span>
         {{pane.title}}
@@ -22,6 +22,8 @@
     <div class="pnd-vertical-tab-content tab-content">
         <div ng-repeat="pane in contentTabs" class="tab-pane pnd-vertical-tab-list-content" ng-class="[$index == active ? 'active' : '']">
         <ul class="list-group">
+            <li ng-show="contentTabs[$index].items.length === 0 && label !== ''">No results found</li>
+            <li ng-show="contentTabs[$index].items.length === 0 && label === ''">Type a label to search...</li>
             <li class="list-group-item" ng-repeat="mi in contentTabs[$index].items | orderBy:getOrderProperty" >
                 <item uri="{{mi.uri}}" is-selected="{{isSelected(mi)}}" ng-click="select(mi)" ></item>
             </li>
