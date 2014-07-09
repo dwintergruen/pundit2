@@ -1,5 +1,5 @@
 angular.module('Pundit2.Toolbar')
-.controller('ToolbarCtrl', function($scope, $rootScope, $modal, $http, NameSpace, Config, Toolbar, SelectorsManager,
+.controller('ToolbarCtrl', function($scope, $rootScope, $modal, $http, NameSpace, Config, Toolbar, SelectorsManager, Fp3,
     MyPundit, Dashboard, TripleComposer, AnnotationSidebar, ResourcePanel, NotebookExchange, NotebookCommunication, TemplatesExchange) {
 
     $scope.dropdownTemplate = "src/ContextualMenu/dropdown.tmpl.html";
@@ -130,8 +130,11 @@ angular.module('Pundit2.Toolbar')
     ];
 
     $scope.infoDropdown = [
-        { text: 'About Pundit', click: showInfo }
+        { text: 'About Pundit', click: showInfo },
     ];
+    if (Fp3.options.active) {
+        $scope.infoDropdown.push({ text: Fp3.options.label, click: Fp3.post });
+    }
     
     $scope.userLoggedInDropdown = [
         { text: 'Log out', click: logout }

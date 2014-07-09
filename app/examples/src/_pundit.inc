@@ -25,6 +25,7 @@
     <script src="../src/Core/Analytics.service.js"></script>
     <script src="../src/Core/PredicateSelector.service.js"></script>
     <script src="../src/Core/TemplatesSelector.service.js"></script>
+    <script src="../src/Core/Fp3.service.js"></script>
 
     <script src="../src/Core/Item.factory.js"></script>
     <script src="../src/Core/TypesHelper.service.js"></script>

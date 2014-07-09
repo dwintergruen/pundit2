@@ -2,6 +2,16 @@
 
 <script>
 
+var punditConfig = {
+    modules: {
+        "Fp3": {
+            active: true,
+            label: 'Custom Label',
+            link: 'http://custom-link.html'
+        }
+    }
+};
+
 var ToolbarDemoCtrl = function($scope, Toolbar, MyPundit, NotebookCommunication) {
     
     var numberErrors = 0;
@@ -54,6 +64,9 @@ var ToolbarDemoCtrl = function($scope, Toolbar, MyPundit, NotebookCommunication)
         </div>
 
     </div>
+
+    <div id="html-storage"><h1>Contenuto del tag con id html-storage</h1></div>
+    <div class="pundit-content" about="http://pundit-content-url-di-prova.html"></div>
 
 </div>
 
