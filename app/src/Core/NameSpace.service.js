@@ -94,7 +94,8 @@ angular.module("Pundit2.Core")
         modified: _dct + "modified",
         pageContext: _pnd + "hasPageContext",
         target: "http://www.openannotation.org/ns/hasTarget",
-        isIncludedIn: _pnd + "isIncludedIn"
+        isIncludedIn: _pnd + "isIncludedIn",
+        hasTemplate: _pnd + "hasTemplate"
     };
 
     // TODO: move to Consolidation.options ??

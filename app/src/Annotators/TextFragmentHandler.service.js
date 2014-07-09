@@ -170,7 +170,7 @@ angular.module('Pundit2.Annotators')
 
             if (Toolbar.isActiveTemplateMode()) {
                 tfh.log('Item used as subject inside triple composer (template mode active).');
-                TripleComposer.addToAllSubject(item, true);
+                TripleComposer.addToAllSubject(item);
                 return;
             }
 
