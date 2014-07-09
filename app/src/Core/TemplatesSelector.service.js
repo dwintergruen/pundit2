@@ -92,7 +92,6 @@ angular.module('Pundit2.Core')
                 // if we have get it eg. from freebase
                 TemplatesExchange.addTemplate(data);
                 promise.resolve(data);
-                console.log(data)
 
             })
             .error(function(){
