@@ -212,6 +212,22 @@ angular.module('Pundit2.Toolbar')
                 $scope.currentTemplateLabel = newCurr.label;
             }
         });
+
+        // TODO if the template mode can change only by click on the toolbar btn
+        // remove this watch and do this action inside the toggleTemplateMode function
+        var templateModeSpan = angular.element('.pnd-toolbar-template-mode-button span'),
+            templateSwitchSpan = angular.element('.pnd-toolbar-template-menu-button span');
+        $scope.$watch(function() {
+            return Toolbar.isActiveTemplateMode();
+        }, function(val) {
+            if (val) {
+                templateModeSpan.removeClass('pnd-toolbar-not-active-element');
+                templateSwitchSpan.removeClass('pnd-toolbar-not-active-element');
+            } else {
+                templateModeSpan.addClass('pnd-toolbar-not-active-element');
+                templateSwitchSpan.addClass('pnd-toolbar-not-active-element');
+            }
+        });
         
         var updateTemplates = function(){
             var templates = TemplatesExchange.getTemplates();
@@ -284,22 +300,6 @@ angular.module('Pundit2.Toolbar')
     $scope.isAskActive = function() {
         return $scope.isUserLogged === true;
     };
-    
-    // TODO if the template mode can change only by click on the toolbar btn
-    // remove this watch and do this action inside the toggleTemplateMode function
-    var templateModeSpan = angular.element('.pnd-toolbar-template-mode-button span'),
-        templateSwitchSpan = angular.element('.pnd-toolbar-template-menu-button span');
-    $scope.$watch(function() {
-        return Toolbar.isActiveTemplateMode();
-    }, function(val) {
-        if (val) {
-            templateModeSpan.removeClass('pnd-toolbar-not-active-element');
-            templateSwitchSpan.removeClass('pnd-toolbar-not-active-element');
-        } else {
-            templateModeSpan.addClass('pnd-toolbar-not-active-element');
-            templateSwitchSpan.addClass('pnd-toolbar-not-active-element');
-        }
-    });
 
     $scope.toggleTemplateMode = function() {
         Toolbar.toggleTemplateMode();

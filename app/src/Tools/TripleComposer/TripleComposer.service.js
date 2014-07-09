@@ -247,6 +247,21 @@ angular.module('Pundit2.TripleComposer')
         tripleComposer.log('statements reset', statements);
     };
 
+    tripleComposer.wipeNotFixedItems = function(){
+        for(var i in statements) {
+            if (!statements[i].scope.subjectFixed) {
+                statements[i].scope.wipeSubject();
+            }
+            if (!statements[i].scope.predicateFixed) {
+                statements[i].scope.wipePredicate();
+            }
+            if (!statements[i].scope.objectFixed) {
+                statements[i].scope.wipeObject();
+            }
+        }
+        tripleComposer.log('Wiped not fixed items.');
+    };
+
     // extend arr object with scope property
     tripleComposer.addStatementScope = function(id, scope){
         var index = -1;
@@ -316,11 +331,10 @@ angular.module('Pundit2.TripleComposer')
         }
     };
 
-    tripleComposer.addToAllSubject = function(item) {
-        openTripleComposer();
+    tripleComposer.addToAllSubject = function(item, fixed) {
         // template have always a free subject ?
         for (var i in statements) {
-            statements[i].scope.setSubject(item);
+            statements[i].scope.setSubject(item, fixed);
         }        
         $rootScope.$$phase || $rootScope.$digest();
         tripleComposer.log('Add item: '+item.uri+ 'as subject of all triples');

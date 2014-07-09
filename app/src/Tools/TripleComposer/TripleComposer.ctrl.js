@@ -162,8 +162,7 @@ angular.module('Pundit2.TripleComposer')
     };
 
     var stopSavingProcess = function(promise, msg, msgTime, err) {
-        // reset triple composer state
-        TripleComposer.reset();
+
         // if you have gone at least 500ms
         if (promiseResolved) {
             updateMessagge(msg, msgTime, err);
@@ -171,6 +170,15 @@ angular.module('Pundit2.TripleComposer')
             promise.then(function(){
                 updateMessagge(msg, msgTime, err);
             });
+        }
+
+        if ($scope.templateMode) {
+            TripleComposer.wipeNotFixedItems();
+            return;
+        }
+        if ($scope.editMode) {
+            TripleComposer.reset();
+            return;
         }
     };
 

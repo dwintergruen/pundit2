@@ -92,7 +92,7 @@ angular.module('Pundit2.Annotators')
 
 .service('TextFragmentAnnotator',
     function(TEXTFRAGMENTANNOTATORDEFAULTS, NameSpace, BaseComponent, Consolidation,
-             XpointersHelper, ContextualMenu, ItemsExchange, Config, TripleComposer, Dashboard,
+             XpointersHelper, ContextualMenu, ItemsExchange, Config, TripleComposer, Dashboard, Toolbar,
              $compile, $rootScope, $location) {
 
     // Create the component and declare what we deal with: text
@@ -118,7 +118,7 @@ angular.module('Pundit2.Annotators')
             name: 'addToSubject',
             label: 'Annotate this text fragment',
             showIf: function(item) {
-                return item.isTextFragment() && TripleComposer.canAddItemAsSubject();
+                return !Toolbar.isActiveTemplateMode() && item.isTextFragment() && TripleComposer.canAddItemAsSubject();
             },
             priority: 20,
             action: function(item) {
