@@ -1,13 +1,14 @@
-<div class="modal" tabindex="-1" role="dialog">
+<div class="kee-wrp kee-modal-container modal" tabindex="-1" role="dialog" ng-controller="KeeModalCtrl">
     <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header" ng-show="title">
-                <button type="button" class="close" ng-click="$hide()">&times;</button>
-                <h4 class="modal-title" ng-bind="title"></h4>
+        <div class="modal-content kee-modal-content">
+            <div class="modal-header kee-modal-header">
+                <h4 class="modal-title kee-modal-title">Korbo EE</h4>
             </div>
-            <div class="modal-body" ng-bind="content"></div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" ng-click="$hide()">Close</button>
+            <div class="modal-body kee-modal-body">
+                <div ng-model="korboModalTabs.activeTab" data-template="src/KorboEE/Modal/KorboEE.modal.tabs.tmpl.html" bs-tabs="korboModalTabs"> </div>
+            </div>
+            <div class="modal-footer kee-modal-footer">
+                <button type="button" class="btn btn-default" ng-click="closeKeeModal()">Close</button>
             </div>
         </div>
     </div>

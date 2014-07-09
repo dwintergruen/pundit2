@@ -1,5 +1,5 @@
 angular.module('KorboEE')
-    .service('KorboCommunicationService', function($q, $http, BaseComponent, ItemsExchange, Item){
+    .service('KorboCommunicationService', function($q, $http, BaseComponent, ItemsExchange, Item, $rootScope, $modal, korboConf){
 
         var korboCommunication = new BaseComponent("KorboCommunication");
 
@@ -13,6 +13,76 @@ angular.module('KorboEE')
             return isAutocompleteLoading;
         };
 
+        // modal
+        var KeeModalScope = $rootScope.$new();
+
+        var KeeModal = $modal({
+            container: "[data-ng-app='Pundit2']",
+            template: 'src/KorboEE/Modal/KorboEE.modal.tmpl.html',
+            show: false,
+            backdrop: 'static',
+            scope: KeeModalScope
+        });
+
+        korboCommunication.openModalOnNew = function(conf, entity){
+            if(korboConf.getIsOpenModal() === false){
+                korboConf.setIsOpenModal(true);
+                if(typeof(entity) !== 'undefined' || entity !== ''){
+                    KeeModalScope.entityToCreate = entity;
+                } else {
+                    KeeModalScope.entityToCreate = null;
+                }
+
+                KeeModalScope.labelToSearch = null;
+                KeeModalScope.idEntityToEdit = null;
+                KeeModalScope.op = "new";
+                KeeModalScope.conf = conf;
+                KeeModal.$promise.then(KeeModal.show);
+            }
+
+        };
+
+        korboCommunication.openModalOnSearch = function(conf, val){
+            if(korboConf.getIsOpenModal() === false){
+                korboConf.setIsOpenModal(true);
+                if(typeof(val) !== 'undefined' || val !== ''){
+                    KeeModalScope.labelToSearch = val;
+                } else {
+                    KeeModalScope.labelToSearch = null;
+                }
+
+                KeeModalScope.entityToCreate = null;
+                KeeModalScope.idEntityToEdit = null;
+                KeeModalScope.op = "search";
+                KeeModalScope.conf = conf;
+                KeeModal.$promise.then(KeeModal.show);
+            }
+        };
+
+        korboCommunication.openModalOnEdit = function(conf, id){
+            if(korboConf.getIsOpenModal() === false){
+                korboConf.setIsOpenModal(true);
+                if(typeof(id) !== 'undefined' || id !== ''){
+                    KeeModalScope.idEntityToEdit = id;
+                } else {
+                    KeeModalScope.idEntityToEdit = null;
+                }
+
+                KeeModalScope.entityToCreate = null;
+                KeeModalScope.labelToSearch = null;
+                KeeModalScope.op = "edit";
+                KeeModalScope.conf = conf;
+                KeeModal.$promise.then(KeeModal.show);
+            }
+        };
+
+        korboCommunication.closeModal = function(){
+            if(korboConf.getIsOpenModal() === true){
+                korboConf.setIsOpenModal(false);
+                KeeModal.hide();
+            }
+
+        };
 
         korboCommunication.autocompleteSearch = function(val, endpoint, prov, limit, offset, lang) {
             isAutocompleteLoading = true;

@@ -1,5 +1,5 @@
 angular.module('KorboEE')
-    .controller('EEDirectiveCtrl', function($scope, APIService, korboConf, $http, KorboCommunicationFactory, $timeout, ItemsExchange, KorboCommunicationService, Item) {
+    .controller('EEDirectiveCtrl', function($scope, APIService, korboConf, $http, KorboCommunicationFactory, $timeout, ItemsExchange, KorboCommunicationService, $modal, $rootScope) {
 
         $scope.autocompleteListTemplate = 'src/KorboEE/autocompleteList.tmpl.html';
         var api;
@@ -9,6 +9,8 @@ angular.module('KorboEE')
         $scope.isSearching = false;
         $scope.serverNotRunning = false;
         var containerPrefix = "kee-";
+
+
 
         $scope.renderElement = function(){
             return $scope.readyToRender;
@@ -22,6 +24,7 @@ angular.module('KorboEE')
                     $scope.readyToRender = $scope.conf.updateTime;
                     $scope.limit = $scope.conf.limitSearchResult;
                     $scope.minLabelLength = $scope.conf.labelMinLength;
+                    //KeeModalScope.conf = $scope.conf;
 
                     // set default language
                     $scope.defaultLan = $scope.conf.languages[0];
@@ -69,14 +72,38 @@ angular.module('KorboEE')
 
                 api.exposeOpenSearch(function(val){
                     //TODO
+                    KorboCommunicationService.openModalOnSearch($scope.conf, val);
+                    /*KeeModalScope.op = 'search';
+                    KeeModalScope.elemToSearch = val;
+                    KeeModalScope.entityToCreate = null;
+                    KeeModalScope.idEntityToEdit = null;
+                    $scope.openKeeModal();*/
                 });
 
                 api.exposeOpenNew(function(entity){
                     //TODO
+                    KorboCommunicationService.openModalOnNew($scope.conf, entity);
+                    /*KeeModalScope.op = 'new';
+                    KeeModalScope.elemToSearch = null;
+                    KeeModalScope.entityToCreate = entity;
+                    KeeModalScope.idEntityToEdit = null;
+                    $scope.openKeeModal();*/
                 });
 
                 api.exposeEdit(function(id){
                     //TODO
+                    KorboCommunicationService.openModalOnEdit($scope.conf, id);
+                    /*KeeModalScope.op = 'edit';
+                    KeeModalScope.elemToSearch = null;
+                    KeeModalScope.entityToCreate = null;
+                    KeeModalScope.idEntityToEdit = id;
+                    $scope.openKeeModal();*/
+                });
+
+                api.exposeCancel(function(){
+                    //TODO
+
+                    KorboCommunicationService.closeModal();
                 });
 
 
@@ -168,6 +195,18 @@ angular.module('KorboEE')
         $scope.isLoading = function(){
             return $scope.isSearching;
         };
+
+        // open info modal
+        $scope.openKeeModal = function() {
+            var obj = {label: $scope.elemToSearch};
+            KorboCommunicationService.openModalOnNew($scope.conf, obj);
+        };
+
+        $scope.searchOnLOD = function() {
+            KorboCommunicationService.openModalOnSearch($scope.conf, $scope.elemToSearch);
+        };
+
+
 
 
     });

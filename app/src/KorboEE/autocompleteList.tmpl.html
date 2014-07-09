@@ -7,11 +7,11 @@
     <li ng-show="showNewButton() || showSearchButton()" class="divider"></li>
     <li>
         <span class="kee-elem-to-search" ng-show="showNewButton() || showSearchButton()">{{elemToSearch}}</span>
-        <button class="kee-btn-new btn btn-success btn-xs" ng-show="showNewButton()">
+        <button class="kee-btn-new btn btn-success btn-xs" ng-show="showNewButton()" ng-click="openKeeModal()">
             <i class="pnd-icon-plus"></i>
             Create new
         </button>
-        <button class="kee-btn-search btn btn-success btn-xs" ng-show="showSearchButton()">
+        <button class="kee-btn-search btn btn-success btn-xs" ng-show="showSearchButton()" ng-click="searchOnLOD()">
             <i class="pnd-icon-search"></i>
             Search in LOD
         </button>
