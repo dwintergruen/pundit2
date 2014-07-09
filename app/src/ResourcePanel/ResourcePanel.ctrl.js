@@ -1,5 +1,5 @@
 angular.module('Pundit2.ResourcePanel')
-    .controller('ResourcePanelCtrl', function($rootScope, $scope, MyItems, PageItemsContainer, ItemsExchange, MyPundit, $filter, Client, SelectorsManager) {
+    .controller('ResourcePanelCtrl', function($rootScope, $scope, MyItems, PageItemsContainer, ItemsExchange, MyPundit, $filter, Client, SelectorsManager, ResourcePanel) {
 
         var myItemsContainer = MyItems.options.container;
         var pageItemsContainer = PageItemsContainer.options.container;
@@ -28,6 +28,7 @@ angular.module('Pundit2.ResourcePanel')
         }, function(newActive, oldActive) {
             if (newActive !== oldActive){
                 actualContainer = $scope.contentTabs[$scope.contentTabs.activeTab].itemsContainer + $scope.label.split(' ').join('$');
+                $scope.showUseAndCopyButton();
             }
         });
 
@@ -85,6 +86,22 @@ angular.module('Pundit2.ResourcePanel')
         $scope.select = function(item){
             $scope.isUseActive = true;
             $scope.itemSelected = item;
-        }
+        };
+
+        $scope.showUseAndCopyButton = function(){
+            var currTab = $scope.contentTabs[$scope.contentTabs.activeTab].title;
+            //$scope.contentTabs[$scope.contentTabs.activeTab].itemsContainer
+            if(ResourcePanel.options.basketKorboID !== -1 && (currTab !== 'KorboBasket' && currTab !== 'Page Items' && currTab !== 'My Items')){
+                return true;
+            } else {
+                return false;
+            }
+        };
+
+
+        $scope.showCreateNewButton = function(){
+        };
+
+
 
     });

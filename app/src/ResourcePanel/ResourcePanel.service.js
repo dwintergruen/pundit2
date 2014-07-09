@@ -36,7 +36,23 @@ angular.module('Pundit2.ResourcePanel')
      *
      * Initial date showing in calendar popover.
      */
-    initialCalendarDate: '1900-1-01'
+    initialCalendarDate: '1900-1-01',
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#ResourcePanel.basketKorboID
+     *
+     * @description
+     * `number`
+     *
+     * Basket Korbo ID where copy a new entity in Korbo.
+     * If a valid ID is present, in the resource panel will be shown
+     * a 'Use and Copy' button that allow to select an entity, copy it in Korbo,
+     * and use the copied entity
+     *
+     */
+    basketKorboID: -1
 })
 
 /**
