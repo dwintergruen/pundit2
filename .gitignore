@@ -10,6 +10,7 @@
 
 .idea
 /app/src/templates.js
+/app/src/korboee-template.js
 /app/css/pundit2.css
 /app/css/korboee.css
 /app/css/style.css
