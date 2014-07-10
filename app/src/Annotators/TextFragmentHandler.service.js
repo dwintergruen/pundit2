@@ -96,7 +96,7 @@ angular.module('Pundit2.Annotators')
         labelMaxLength: 40
 
     })
-    .service('TextFragmentHandler', function(TEXTFRAGMENTHANDLERDEFAULTS, NameSpace, BaseComponent,
+    .service('TextFragmentHandler', function($rootScope, TEXTFRAGMENTHANDLERDEFAULTS, NameSpace, BaseComponent,
                                              ContextualMenu, XpointersHelper, Item, ItemsExchange, Toolbar, TripleComposer,
                                              $document) {
 
@@ -171,6 +171,7 @@ angular.module('Pundit2.Annotators')
             if (Toolbar.isActiveTemplateMode()) {
                 tfh.log('Item used as subject inside triple composer (template mode active).');
                 TripleComposer.addToAllSubject(item);
+                $rootScope.$emit('pnd-save-annotation');
                 return;
             }
 

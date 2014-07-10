@@ -1,5 +1,5 @@
 angular.module('Pundit2.TripleComposer')
-.controller('TripleComposerCtrl', function($scope, $http, $timeout, NameSpace,
+.controller('TripleComposerCtrl', function($rootScope, $scope, $http, $timeout, NameSpace,
     MyPundit, Toolbar, TripleComposer, AnnotationsCommunication, TemplatesExchange) {
 
     // statements objects are extend by this.addStatementScope()
@@ -182,7 +182,6 @@ angular.module('Pundit2.TripleComposer')
         }
     };
 
-    // TODO check mode (edit or template) then wipe correctly the items
     $scope.saveAnnotation = function(){
 
         MyPundit.login().then(function(logged) {
@@ -197,7 +196,7 @@ angular.module('Pundit2.TripleComposer')
                 });
 
                 if (abort) {
-                    console.log('Try to save incomplete statement');
+                    // try to save incomplete annotation
                     return;
                 }
 
@@ -239,5 +238,7 @@ angular.module('Pundit2.TripleComposer')
         }); // end my pundit login       
 
     }; // end save function
+
+    $rootScope.$on('pnd-save-annotation', $scope.saveAnnotation);
 
 });
