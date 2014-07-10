@@ -334,7 +334,8 @@ angular.module('Pundit2.AnnotationSidebar')
                 expanded: expandedState,
                 ghosted: false,
                 fragments: getFragments(currentAnnotation),
-                color: currentColor
+                color: currentColor,
+                hasTemplate: template
             };
         }
     };

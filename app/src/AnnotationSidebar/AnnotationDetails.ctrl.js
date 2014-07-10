@@ -89,7 +89,7 @@ angular.module('Pundit2.AnnotationSidebar')
     };
 
     $scope.showEdit = function() {
-        return $scope.annotation.hasTemplate === '';
+        return typeof($scope.annotation.hasTemplate) === 'undefined';
     };
 
     $scope.editAnnotation = function() {
