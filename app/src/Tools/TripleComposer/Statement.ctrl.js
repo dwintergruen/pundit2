@@ -250,6 +250,11 @@ angular.module('Pundit2.TripleComposer')
         $scope.tripleComposerCtrl.isAnnotationComplete();
     };
     $scope.onClickSubject = function($event){
+        if ($scope.templateMode) {
+            // not open resource panel on subject when
+            // template mode is enabled (subject can be only a text selection)
+            return;
+        }
         ResourcePanel.showItemsForSubject(buildUrisArray(), $event.target, $scope.subjectSearch).then($scope.setSubject);
     };
     $scope.onKeyUpSubject = function($event){

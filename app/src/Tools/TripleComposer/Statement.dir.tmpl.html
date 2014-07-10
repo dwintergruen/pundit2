@@ -9,8 +9,9 @@
 
             <!-- Subject Input div -->
             <div class="left-inner-icon">
-                <span class="pnd-icon {{subjectIcon}}" ng-click="clearSubjectSearch()"></span>
-                <input type="text" class="input-sm form-control" placeholder="search a subject" ng-model="$parent.subjectSearch" ng-click="onClickSubject($event)" ng-keyup="onKeyUpSubject($event)">
+                <span ng-show="!templateMode" class="pnd-icon {{subjectIcon}}" ng-click="clearSubjectSearch()"></span>
+                <input ng-show="!templateMode" type="text" class="input-sm form-control" placeholder="search a subject" ng-model="$parent.subjectSearch" ng-click="onClickSubject($event)" ng-keyup="onKeyUpSubject($event)">
+                <div ng-show="templateMode" class="pnd-statement-label">Select an item from the page</div>
             </div>
 
             <!-- Subject Buttons div (empty)-->
