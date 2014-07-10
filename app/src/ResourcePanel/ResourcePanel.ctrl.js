@@ -90,7 +90,6 @@ angular.module('Pundit2.ResourcePanel')
 
         $scope.showUseAndCopyButton = function(){
             var currTab = $scope.contentTabs[$scope.contentTabs.activeTab].title;
-            //$scope.contentTabs[$scope.contentTabs.activeTab].itemsContainer
             if(ResourcePanel.options.basketKorboID !== -1 && (currTab !== 'KorboBasket' && currTab !== 'Page Items' && currTab !== 'My Items')){
                 return true;
             } else {

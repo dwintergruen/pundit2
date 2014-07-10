@@ -73,31 +73,16 @@ angular.module('KorboEE')
                 api.exposeOpenSearch(function(val){
                     //TODO
                     KorboCommunicationService.openModalOnSearch($scope.conf, val);
-                    /*KeeModalScope.op = 'search';
-                    KeeModalScope.elemToSearch = val;
-                    KeeModalScope.entityToCreate = null;
-                    KeeModalScope.idEntityToEdit = null;
-                    $scope.openKeeModal();*/
                 });
 
                 api.exposeOpenNew(function(entity){
                     //TODO
                     KorboCommunicationService.openModalOnNew($scope.conf, entity);
-                    /*KeeModalScope.op = 'new';
-                    KeeModalScope.elemToSearch = null;
-                    KeeModalScope.entityToCreate = entity;
-                    KeeModalScope.idEntityToEdit = null;
-                    $scope.openKeeModal();*/
                 });
 
                 api.exposeEdit(function(id){
                     //TODO
                     KorboCommunicationService.openModalOnEdit($scope.conf, id);
-                    /*KeeModalScope.op = 'edit';
-                    KeeModalScope.elemToSearch = null;
-                    KeeModalScope.entityToCreate = null;
-                    KeeModalScope.idEntityToEdit = id;
-                    $scope.openKeeModal();*/
                 });
 
                 api.exposeCancel(function(){
