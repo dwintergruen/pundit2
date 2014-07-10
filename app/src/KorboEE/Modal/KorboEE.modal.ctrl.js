@@ -28,4 +28,26 @@ angular.module('KorboEE')
             KorboCommunicationService.closeModal();
         }
 
+        $scope.use = function(){
+            //TODO
+            /*
+            $scope.directiveScope.location = "Use";
+            $scope.directiveScope.elemToSearch = "Use";
+            $scope.directiveScope.label = "Use";
+            KorboCommunicationService.closeModal();
+            */
+        };
+
+        $scope.useAndCopy = function(){
+            //TODO
+        };
+
+        $scope.showMoreInfo = function(){
+            //TODO
+        };
+
+        $scope.copyInEditor = function(){
+            //TODO
+        };
+
     });

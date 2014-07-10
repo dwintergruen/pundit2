@@ -41,7 +41,7 @@ angular.module('KorboEE')
             }
         };
 
-        $scope.contentTabs.activeTab = 0;
+        $scope.active = $scope.contentTabs.activeTab = 0;
 
         var updateTimer;
         $scope.$watch('elemToSearch', function(val){
@@ -85,9 +85,56 @@ angular.module('KorboEE')
         };
 
         $scope.getItem = function(item){
+            var param = {};
+            param.endpoint = $scope.conf.endpoint;
+            if($scope.contentTabs[$scope.contentTabs.activeTab].provider === 'korbo'){
+                param.basketID = 'null';
+            } else {
+                param.basketID = $scope.conf.basketID;
+            }
 
-            ItemsExchange.getItemByUri(item.uri);
+            param.language = $scope.defaultLan.value;
+            param.provider = $scope.contentTabs[$scope.contentTabs.activeTab].provider;
+            param.item = item;
+            var promise = korboComm.getItem(param);
 
+            promise.then(function(res){
+                if(res.label === ''){
+                    param.language = res.available_languages[0];
+                    korboComm.getItem(param).then(function(r){
+                        var updatedItem = ItemsExchange.getItemByUri(item.uri);
+                        updatedItem.description = r.abstract;
+                        updatedItem.type = angular.copy(r.type);
+                        updatedItem.image = r.depiction;
+                        updatedItem.location = r.uri;
+                    })
+                } else {
+                    var updatedItem = ItemsExchange.getItemByUri(item.uri);
+                    updatedItem.description = res.abstract;
+                    updatedItem.type = angular.copy(res.type);
+                    updatedItem.image = res.depiction;
+                    updatedItem.location = res.uri;
+                }
+
+            });
+
+        };
+
+        $scope.itemSelected = null;
+
+        $scope.select = function(item){
+            $scope.isUseActive = true;
+            $scope.itemSelected = item;
+            console.log($scope.itemSelected);
+        };
+
+
+        $scope.isSelected = function(item){
+            if ($scope.itemSelected !== null && $scope.itemSelected.uri === item.uri){
+                return true;
+            } else {
+                return false;
+            }
         };
 
 

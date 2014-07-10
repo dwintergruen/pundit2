@@ -72,17 +72,17 @@ angular.module('KorboEE')
 
                 api.exposeOpenSearch(function(val){
                     //TODO
-                    KorboCommunicationService.openModalOnSearch($scope.conf, val);
+                    KorboCommunicationService.openModalOnSearch($scope.conf, val, $scope);
                 });
 
                 api.exposeOpenNew(function(entity){
                     //TODO
-                    KorboCommunicationService.openModalOnNew($scope.conf, entity);
+                    KorboCommunicationService.openModalOnNew($scope.conf, entity, $scope);
                 });
 
                 api.exposeEdit(function(id){
                     //TODO
-                    KorboCommunicationService.openModalOnEdit($scope.conf, id);
+                    KorboCommunicationService.openModalOnEdit($scope.conf, id, $scope);
                 });
 
                 api.exposeCancel(function(){
@@ -184,11 +184,11 @@ angular.module('KorboEE')
         // open info modal
         $scope.openKeeModal = function() {
             var obj = {label: $scope.elemToSearch};
-            KorboCommunicationService.openModalOnNew($scope.conf, obj);
+            KorboCommunicationService.openModalOnNew($scope.conf, obj, $scope);
         };
 
         $scope.searchOnLOD = function() {
-            KorboCommunicationService.openModalOnSearch($scope.conf, $scope.elemToSearch);
+            KorboCommunicationService.openModalOnSearch($scope.conf, $scope.elemToSearch, $scope);
         };
 
 

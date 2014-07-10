@@ -24,7 +24,7 @@ angular.module('KorboEE')
             scope: KeeModalScope
         });
 
-        korboCommunication.openModalOnNew = function(conf, entity){
+        korboCommunication.openModalOnNew = function(conf, entity, directiveScope){
             if(korboConf.getIsOpenModal() === false){
                 korboConf.setIsOpenModal(true);
                 if(typeof(entity) !== 'undefined' || entity !== ''){
@@ -37,12 +37,13 @@ angular.module('KorboEE')
                 KeeModalScope.idEntityToEdit = null;
                 KeeModalScope.op = "new";
                 KeeModalScope.conf = conf;
+                KeeModalScope.directiveScope = directiveScope;
                 KeeModal.$promise.then(KeeModal.show);
             }
 
         };
 
-        korboCommunication.openModalOnSearch = function(conf, val){
+        korboCommunication.openModalOnSearch = function(conf, val, directiveScope){
             if(korboConf.getIsOpenModal() === false){
                 korboConf.setIsOpenModal(true);
                 if(typeof(val) !== 'undefined' || val !== ''){
@@ -55,11 +56,12 @@ angular.module('KorboEE')
                 KeeModalScope.idEntityToEdit = null;
                 KeeModalScope.op = "search";
                 KeeModalScope.conf = conf;
+                KeeModalScope.directiveScope = directiveScope;
                 KeeModal.$promise.then(KeeModal.show);
             }
         };
 
-        korboCommunication.openModalOnEdit = function(conf, id){
+        korboCommunication.openModalOnEdit = function(conf, id, directiveScope){
             if(korboConf.getIsOpenModal() === false){
                 korboConf.setIsOpenModal(true);
                 if(typeof(id) !== 'undefined' || id !== ''){
@@ -72,6 +74,7 @@ angular.module('KorboEE')
                 KeeModalScope.labelToSearch = null;
                 KeeModalScope.op = "edit";
                 KeeModalScope.conf = conf;
+                KeeModalScope.directiveScope = directiveScope;
                 KeeModal.$promise.then(KeeModal.show);
             }
         };
@@ -176,7 +179,7 @@ angular.module('KorboEE')
                     offset: param.offset,
                     lang: param.lang
                 }
-            }).success(function(res){ console.log("aaaaaa", res);
+            }).success(function(res){
                 ItemsExchange.wipeContainer(container);
                 for(var i=0; i<res.data.length; i++){
 
@@ -188,14 +191,44 @@ angular.module('KorboEE')
                             type: ['']
                             }
 
-                    /*for(var j=0; j<res.data[i].type.length; j++){
-                        item.type.push(res.data[i].type[j]);
-                    }*/
                     var itemToAdd = new Item(item.uri, item);
                     ItemsExchange.addItemToContainer(itemToAdd, container);
                 }
 
                 promise.resolve();
+            }).error(function(){
+                promise.reject();
+            });
+
+            return promise.promise;
+        };
+
+        // this method accept the following parameters
+        // param = {
+        //   endpoint
+        //   item
+        //   provider
+        //   basketID
+        //   language
+        // }
+        //
+        // container: where add items
+        //
+
+        KorboCommFactory.prototype.getItem = function(param){
+            var promise = $q.defer();
+
+            $http({
+                headers: { 'Accept-Language': param.language },
+                method: 'GET',
+                url: param.endpoint + "/baskets/"+param.basketID+"/items/"+param.item.uri+"",
+                cache: true,
+                params: {
+                    p: param.provider
+                }
+            }).success(function(res){
+
+                promise.resolve(res);
             }).error(function(){
                 promise.reject();
             });

@@ -11,13 +11,13 @@
     </ul>
     <div>
         <div class="pnd-vertical-tab-content tab-content">
-            <div ng-repeat="pane in contentTabs" class="tab-pane pnd-vertical-tab-list-content" ng-class="[$index == active ? 'active' : '']" style="float: left">
+            <div ng-repeat="pane in contentTabs" class="tab-pane pnd-vertical-tab-list-content" ng-class="[$index == active ? 'active' : '']" style="float: left; height: 400px; overflow: scroll">
                 <ul class="list-group">
                     <li ng-show="!contentTabs[$index].isLoading && contentTabs[$index].items.length === 0 && elemToSearch !== ''">No results found</li>
                     <li ng-show="contentTabs[$index].isLoading && elemToSearch !== ''">Searching...</li>
                     <li ng-show="!contentTabs[$index].isLoading && contentTabs[$index].items.length === 0 && elemToSearch === ''">Type a label to search...</li>
                     <li class="list-group-item" ng-repeat="mi in contentTabs[$index].items | orderBy:getOrderProperty" >
-                        <item uri="{{mi.uri}}" is-selected="{{isSelected(mi)}}" ng-click="select(mi)" ng-mouseover="getItem(mi)"></item>
+                        <item uri="{{mi.uri}}" hide-options="true" ng-click="select(mi)" is-selected="{{isSelected(mi)}}" ng-mouseover="getItem(mi)"></item>
                     </li>
                 </ul>
             </div>
