@@ -283,11 +283,15 @@ angular.module('Pundit2.AnnotationSidebar')
     };
 
     annotationDetails.openAnnotationView = function(currentId) {
-        if(!AnnotationSidebar.isAnnotationSidebarExpanded()){
-            AnnotationSidebar.toggle();
+        if(typeof(state.annotations[currentId]) !== 'undefined'){
+            if(!AnnotationSidebar.isAnnotationSidebarExpanded()){
+                AnnotationSidebar.toggle();
+            }
+            annotationDetails.closeAllAnnotationView(currentId);
+            state.annotations[currentId].expanded = true;
+        } else{
+            annotationDetails.log("Cannot find this annotation: id -> " + currentId);
         }
-        annotationDetails.closeAllAnnotationView(currentId);
-        state.annotations[currentId].expanded = true;
     };
 
     annotationDetails.openSingleAnnotationView = function(currentId) {
