@@ -27,6 +27,7 @@
     <script src="../src/Core/TemplatesSelector.service.js"></script>
     <script src="../src/Core/Fp3.service.js"></script>
 
+    <script src="../src/Core/Template.factory.js"></script>
     <script src="../src/Core/Item.factory.js"></script>
     <script src="../src/Core/TypesHelper.service.js"></script>
     <script src="../src/Core/Consolidation.service.js"></script>
