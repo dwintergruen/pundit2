@@ -7,12 +7,14 @@ angular.module('Pundit2.TripleComposer')
     $scope.subjectFound = false;
     $scope.subjectSearch = "";
     $scope.subjectIcon = TripleComposer.options.inputIconSearch;
+    // fixed by template
     $scope.subjectFixed = false;
 
     $scope.predicateLabel = '';
     $scope.predicateFound = false;
     $scope.predicateSearch = "";
     $scope.predicateIcon = TripleComposer.options.inputIconSearch;
+    // fixed by template
     $scope.predicateFixed = false;
 
     $scope.objectLabel = '';
@@ -21,11 +23,17 @@ angular.module('Pundit2.TripleComposer')
     $scope.objectSearch = "";
     $scope.objectIcon = TripleComposer.options.inputIconSearch;
     $scope.objectLiteral = false;
+    // fixed by template
     $scope.objectFixed = false;
 
     $scope.canBeObjectDate = true;
     $scope.canBeObjectLiteral = true;
 
+    // if is true the triple must be completed before save annotation (in template mode)
+    // if is false the triple can not ben completed and when save the annotation
+    // the triple simply is skipped and not included
+    $scope.isMandatory = true;
+    // true when pundit is in template mode
     $scope.templateMode;
     $scope.$watch(function() {
         return Toolbar.isActiveTemplateMode();
