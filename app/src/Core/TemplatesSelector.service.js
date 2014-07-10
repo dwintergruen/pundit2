@@ -105,7 +105,6 @@ angular.module('Pundit2.Core')
                 // TODO at this point we have the template info
                 // but is possible that we not have the items info
                 // if we have get it eg. from freebase
-                console.log(tmpl);
                 promise.resolve(tmpl);
 
             })

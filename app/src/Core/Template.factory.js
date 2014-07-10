@@ -20,10 +20,6 @@ angular.module('Pundit2.Core')
         TemplatesExchange.addTemplate(this);
     };
 
-    TemplateFactory.prototype.fun = function() {
-        
-    };
-
     return TemplateFactory;
 
 });
