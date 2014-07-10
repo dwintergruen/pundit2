@@ -368,7 +368,7 @@ body.pnd-annotation-sidebar-expanded {
 		// ANNOTATION HEADER 
     
     .pnd-annotation-details-header {
-        padding-left: 7px;
+        //padding-left: 7px;
         vertical-align: middle;
         line-height: 24px; 
         height: 24px;
@@ -378,6 +378,8 @@ body.pnd-annotation-sidebar-expanded {
         
 	        &.pnd-annotation-details-broken {
 		        background-color: @brand-warning;
+		        padding-left: 7px;
+		        
 		        
 			    .btn {
 	                background-color: lighten(@brand-warning, 5%);
@@ -531,6 +533,10 @@ body.pnd-annotation-sidebar-expanded {
 		[class^="pnd-icon"]+[class*="pnd-icon-"]{
 			display: none;
 			}
+			
+		.pnd-annotation-icon-color {
+			display: none;
+			}
 		
 		}
 
@@ -572,6 +578,14 @@ body.pnd-annotation-sidebar-expanded {
 		}
 						
 }
+
+
+.pnd-annotation-icon-color {
+	height: 24px;
+	width: 26px;
+	display: inline-block;
+	text-align: center;
+	}
 
 
 //
