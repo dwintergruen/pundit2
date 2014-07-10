@@ -219,7 +219,7 @@ angular.module('Pundit2.TripleComposer')
                                     TripleComposer.buildTargets());
                 }
                 
-                httpPromise.then(function(){
+                httpPromise.then(function(annID){
                     // resolved
                     stopSavingProcess(
                         savePromise,
@@ -227,6 +227,7 @@ angular.module('Pundit2.TripleComposer')
                         TripleComposer.options.notificationMsgTime,
                         false
                     );
+                    // TODO open annotation details inside sidebar
                     promise.resolve();
                 }, function(){
                     // rejected

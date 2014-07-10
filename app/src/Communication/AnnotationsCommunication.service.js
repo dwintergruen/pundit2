@@ -164,16 +164,16 @@ angular.module('Pundit2.Communication')
                 Consolidation.consolidateAll();
                 // TODO move inside notebook then?
                 Toolbar.setLoading(false);
-                promise.resolve();
+                promise.resolve(ann.id);
             }, function(){
                 // rejected, impossible to download annotation from server
-                console.log("Error: impossible to get annotation from server after save");
+                annotationsCommunication.log("Error: impossible to get annotation from server after save");
                 Toolbar.setLoading(false);
                 promise.reject();
             });
         }).error(function(msg) {
             // TODO
-            console.log("Error: impossible to save annotation", msg);
+            annotationsCommunication.log("Error: impossible to save annotation", msg);
             Toolbar.setLoading(false);
             promise.reject();
         });
