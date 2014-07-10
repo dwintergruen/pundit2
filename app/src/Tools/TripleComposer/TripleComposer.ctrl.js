@@ -1,6 +1,6 @@
 angular.module('Pundit2.TripleComposer')
 .controller('TripleComposerCtrl', function($rootScope, $scope, $http, $q, $timeout, NameSpace,
-    MyPundit, Toolbar, TripleComposer, AnnotationsCommunication, TemplatesExchange, AnnotationDetails) {
+    MyPundit, Toolbar, TripleComposer, AnnotationsCommunication, TemplatesExchange, AnnotationSidebar) {
 
     // statements objects are extend by this.addStatementScope()
     // the function is called in the statement directive link function
@@ -226,7 +226,7 @@ angular.module('Pundit2.TripleComposer')
                     );
                     // TODO open annotation details inside sidebar
                     // this function not work
-                    AnnotationDetails.openAnnotationView(annID);
+                    AnnotationSidebar.showAnnotation(annID);
                     promise.resolve();
                 }, function(){
                     // rejected

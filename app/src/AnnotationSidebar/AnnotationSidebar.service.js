@@ -373,6 +373,16 @@ angular.module('Pundit2.AnnotationSidebar')
         state.isAnnotationsPanelActive = false;
     };
 
+    var opened;
+    annotationSidebar.showAnnotation = function(annID) {
+        opened = annID;
+        // TODO
+        // 1) controlla se l'annotazione esiste già
+        // - se esiste apre l'annotazione (e la sidebar se necessario)
+        // - se non esiste registra un watch e aspetta che venga creata
+        //      quando è stata creata la apre (apre anche la sidebar se necessario) e deregistra il watch 
+    };
+
     var filterCountIncrement = function(uri){
         if (typeof(annotationSidebar.filtersCount[uri]) === 'undefined'){
             annotationSidebar.filtersCount[uri] = 1;
