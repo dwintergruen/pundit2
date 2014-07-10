@@ -307,7 +307,12 @@ angular.module('Pundit2.Toolbar')
     };
 
     $scope.toggleTemplateMode = function() {
+        ResourcePanel.hide();
         Toolbar.toggleTemplateMode();
+    };
+
+    $scope.onClickTemplateDropdown = function() {
+        ResourcePanel.hide();
     };
     
     // return true if user is logged in --> template menu is active
