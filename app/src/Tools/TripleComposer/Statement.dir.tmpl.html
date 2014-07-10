@@ -69,7 +69,7 @@
             <!-- Object Input div -->
             <div class="left-inner-icon">
                 <span class="pnd-icon {{objectIcon}}" ng-click="clearObjectSearch()"></span>
-                <input type="text" class="input-sm form-control" placeholder="search an object" ng-model="$parent.objectSearch" ng-click="onClickObject($event)" ng-keyup="onKeyUpObject($event)" ng-class="{'pnd-statement-mandatory-object':isMandatory}">
+                <input type="text" class="input-sm form-control" placeholder="search an object" ng-model="$parent.objectSearch" ng-click="onClickObject($event)" ng-keyup="onKeyUpObject($event)" ng-class="{'pnd-statement-mandatory-object':isMandatory && templateMode}">
             </div>
 
             <!-- Object Buttons div -->
