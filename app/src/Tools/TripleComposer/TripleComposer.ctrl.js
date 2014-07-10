@@ -1,5 +1,5 @@
 angular.module('Pundit2.TripleComposer')
-.controller('TripleComposerCtrl', function($rootScope, $scope, $http, $timeout, NameSpace,
+.controller('TripleComposerCtrl', function($rootScope, $scope, $http, $q, $timeout, NameSpace,
     MyPundit, Toolbar, TripleComposer, AnnotationsCommunication, TemplatesExchange) {
 
     // statements objects are extend by this.addStatementScope()
@@ -184,6 +184,8 @@ angular.module('Pundit2.TripleComposer')
 
     $scope.saveAnnotation = function(){
 
+        var promise = $q.defer();
+
         MyPundit.login().then(function(logged) {
             
             if (logged) {
@@ -197,6 +199,7 @@ angular.module('Pundit2.TripleComposer')
 
                 if (abort) {
                     // try to save incomplete annotation
+                    promise.reject();
                     return;
                 }
 
@@ -224,6 +227,7 @@ angular.module('Pundit2.TripleComposer')
                         TripleComposer.options.notificationMsgTime,
                         false
                     );
+                    promise.resolve();
                 }, function(){
                     // rejected
                     stopSavingProcess(
@@ -232,13 +236,22 @@ angular.module('Pundit2.TripleComposer')
                         TripleComposer.options.notificationMsgTime,
                         true
                     );
+                    promise.resolve();
                 });
 
             } //end if logged
-        }); // end my pundit login       
+        }); // end my pundit login
+
+        return promise.promise;
 
     }; // end save function
 
-    $rootScope.$on('pnd-save-annotation', $scope.saveAnnotation);
+    $rootScope.$on('pnd-save-annotation', function(){
+        $scope.saveAnnotation().catch(function(){
+            // incomplete annotation
+            // open triple composer to tell user to complete the annotation
+            TripleComposer.openTripleComposer();
+        });
+    });
 
 });

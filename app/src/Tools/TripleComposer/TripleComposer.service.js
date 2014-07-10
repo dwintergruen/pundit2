@@ -312,7 +312,7 @@ angular.module('Pundit2.TripleComposer')
         }
     };
 
-    var openTripleComposer = function() {
+    tripleComposer.openTripleComposer = function() {
         if(!Dashboard.isDashboardVisible()){
             Dashboard.toggle();
         }
@@ -321,7 +321,7 @@ angular.module('Pundit2.TripleComposer')
 
     // Used to add a subject from outside of triple composer
     tripleComposer.addToSubject = function(item) {
-        openTripleComposer();
+        tripleComposer.openTripleComposer();
         if (tripleComposer.canAddItemAsSubject()) {
             statements[0].scope.setSubject(item);
             $rootScope.$$phase || $rootScope.$digest();
