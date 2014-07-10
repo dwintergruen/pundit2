@@ -352,10 +352,10 @@ angular.module('Pundit2.TripleComposer')
         tripleComposer.log('Add item as object', item);        
     };
 
-    tripleComposer.isAnnotationComplete = function(){
+    tripleComposer.isAnnotationComplete = function(isTemplateMode){
         var complete = true;
         statements.some(function(s){
-            if (!s.scope.isStatementComplete()) {
+            if (s.scope.isMandatory && !s.scope.isStatementComplete()) {
                 complete = false;
                 return true;
             }
@@ -459,6 +459,11 @@ angular.module('Pundit2.TripleComposer')
         statements.forEach(function(el){
             var triple = el.scope.get();
 
+            // skip incomplete triple
+            if (triple.subject===null || triple.predicate===null || triple.object===null) {
+                return;
+            }
+
             // add item and its rdf properties
             res[triple.subject.uri] = triple.subject.toRdf();
 
@@ -467,7 +472,7 @@ angular.module('Pundit2.TripleComposer')
             // discard literals
             if (typeof(triple.object.uri) !== 'undefined') {
                 res[triple.object.uri] = triple.object.toRdf();
-
+                // add object types and its label
                 triple.object.type.forEach(function(e, i){
                     var type = triple.object.type[i];
                     res[type] = { };
@@ -509,6 +514,11 @@ angular.module('Pundit2.TripleComposer')
         statements.forEach(function(el){
             var triple = el.scope.get();
 
+            // skip incomplete triple
+            if (triple.subject===null || triple.predicate===null || triple.object===null) {
+                return;
+            }
+
             if (triple.subject.isTextFragment() || triple.subject.isImage() || triple.subject.isImageFragment() ){
                 if (res.indexOf(triple.subject.uri) === -1) {
                     res.push(triple.subject.uri);
@@ -537,6 +547,11 @@ angular.module('Pundit2.TripleComposer')
 
         statements.forEach(function(el){
             var triple = el.scope.get();
+
+            // skip incomplete triple
+            if (triple.subject===null || triple.predicate===null || triple.object===null) {
+                return;
+            }
             
             if (typeof(res[triple.subject.uri]) === 'undefined' ) {
                 // subject uri not exist (happy it's easy)

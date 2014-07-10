@@ -32,10 +32,8 @@ angular.module('Pundit2.TripleComposer')
         if (newVal) {
             lastHeader = $scope.headerMessage;
             $scope.headerMessage = "Compleate your Annotation and Save!";
-            // TODO load template items
         } else if(newVal !== oldVal) {
             $scope.headerMessage = lastHeader;
-            // TODO wipe template items
         }
     });
 
@@ -74,7 +72,7 @@ angular.module('Pundit2.TripleComposer')
     };
 
     this.isAnnotationComplete = function(){
-        if (TripleComposer.isAnnotationComplete()) {
+        if (TripleComposer.isAnnotationComplete($scope.templateMode)) {
             angular.element('.pnd-triplecomposer-save').removeClass('disabled');
         }
     };
@@ -191,8 +189,9 @@ angular.module('Pundit2.TripleComposer')
             if (logged) {
                 var abort = $scope.statements.some(function(el){
                     var t = el.scope.get();
-                    // only comple triples can be saved
-                    if (t.subject===null || t.predicate===null || t.object===null) {
+                    // if the triple is mandatory it must be completed before saving annotation
+                    // if the triple is not mandatory it can be saved with incomplete triples (this triples is skipped)
+                    if (el.scope.isMandatory && (t.subject===null || t.predicate===null || t.object===null)) {
                         return true;
                     }
                 });
