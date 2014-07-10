@@ -176,21 +176,21 @@ angular.module('KorboEE')
                     offset: param.offset,
                     lang: param.lang
                 }
-            }).success(function(res){
+            }).success(function(res){ console.log("aaaaaa", res);
                 ItemsExchange.wipeContainer(container);
                 for(var i=0; i<res.data.length; i++){
 
                     var item = {
-                            uri: res.data[i].uri,
+                            uri: res.data[i].id,
                             label: res.data[i].label,
-                            description: res.data[i].abstract,
-                            depiction: res.data[i].depiction,
-                            type: []
+                            description: "",
+                            depiction: "",
+                            type: ['']
                             }
 
-                    for(var j=0; j<res.data[i].type.length; j++){
+                    /*for(var j=0; j<res.data[i].type.length; j++){
                         item.type.push(res.data[i].type[j]);
-                    }
+                    }*/
                     var itemToAdd = new Item(item.uri, item);
                     ItemsExchange.addItemToContainer(itemToAdd, container);
                 }

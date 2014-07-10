@@ -1,7 +1,9 @@
 <div class="tabbable tabs-left"> <!-- tabs left -->
     	<!-- header -->
         <div class="pnd-vertical-tab-header-content">
-            <strong>Choose your...</strong>
+            <strong ng-if="type === 'sub'">Choose your subject...</strong>
+            <strong ng-if="type === 'obj'">Choose your object...</strong>
+            <strong ng-if="type === 'pr'">Choose your predicate...</strong>
             <button type="button" class="btn btn-xs btn-link pnd-btn-dashboard pull-right" ng-click="cancel()"><span class="pnd-icon pnd-icon-times"></span></button>
         </div>
         <!-- // end header -->
@@ -25,7 +27,7 @@
             <li ng-show="contentTabs[$index].items.length === 0 && label !== ''">No results found</li>
             <li ng-show="contentTabs[$index].items.length === 0 && label === ''">Type a label to search...</li>
             <li class="list-group-item" ng-repeat="mi in contentTabs[$index].items | orderBy:getOrderProperty" >
-                <item uri="{{mi.uri}}" is-selected="{{isSelected(mi)}}" ng-click="select(mi)" ></item>
+                <item uri="{{mi.uri}}" is-selected="{{isSelected(mi)}}" ng-click="select(mi)" hide-options="true"></item>
             </li>
         </ul>
         </div>

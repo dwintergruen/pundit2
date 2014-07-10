@@ -24,10 +24,6 @@ angular.module('KorboEE')
             }
         });
 
-
-
-
-
         $scope.closeKeeModal = function(){
             KorboCommunicationService.closeModal();
         }

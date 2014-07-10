@@ -1,7 +1,12 @@
 <div class="kee-wrp" ng-controller="KeeSearchCtrl">
     <div>
         <label>Search entity to use </label>
-        <input type="text" ng-model="elemToSearch">
+        <input type="text" ng-model="elemToSearch" placeholder="Type at least {{conf.labelMinLength}} characters...">
     </div>
     <div ng-model="contentTabs.activeTab" bs-tabs="contentTabs" data-template = "src/KorboEE/Search/KorboEEverticalTabs.tmpl.html"></div>
+
+    <div>
+        <preview></preview>
+    </div>
+
 </div>

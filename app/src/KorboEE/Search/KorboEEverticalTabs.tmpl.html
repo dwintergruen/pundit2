@@ -11,16 +11,18 @@
     </ul>
     <div>
         <div class="pnd-vertical-tab-content tab-content">
-            <div ng-repeat="pane in contentTabs" class="tab-pane pnd-vertical-tab-list-content" ng-class="[$index == active ? 'active' : '']">
+            <div ng-repeat="pane in contentTabs" class="tab-pane pnd-vertical-tab-list-content" ng-class="[$index == active ? 'active' : '']" style="float: left">
                 <ul class="list-group">
-                    <li ng-show="contentTabs[$index].items.length === 0 && label !== ''">No results found</li>
-                    <li ng-show="contentTabs[$index].items.length === 0 && label === ''">Type a label to search...</li>
+                    <li ng-show="!contentTabs[$index].isLoading && contentTabs[$index].items.length === 0 && elemToSearch !== ''">No results found</li>
+                    <li ng-show="contentTabs[$index].isLoading && elemToSearch !== ''">Searching...</li>
+                    <li ng-show="!contentTabs[$index].isLoading && contentTabs[$index].items.length === 0 && elemToSearch === ''">Type a label to search...</li>
                     <li class="list-group-item" ng-repeat="mi in contentTabs[$index].items | orderBy:getOrderProperty" >
-                        <item uri="{{mi.uri}}" is-selected="{{isSelected(mi)}}" ng-click="select(mi)" ></item>
+                        <item uri="{{mi.uri}}" is-selected="{{isSelected(mi)}}" ng-click="select(mi)" ng-mouseover="getItem(mi)"></item>
                     </li>
                 </ul>
             </div>
         </div>
     </div>
+
 
 </div> <!-- / tabs left -->

@@ -5,7 +5,8 @@ angular.module('Pundit2.Item')
         scope: {
             uri: '@',
             menuType: '@',
-            isSelected: '@'
+            isSelected: '@',
+            hideOptions: '@'
         },
         templateUrl: "src/Item/Item.dir.tmpl.html",
         controller: "ItemCtrl"

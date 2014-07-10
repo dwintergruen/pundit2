@@ -89,8 +89,18 @@
         autoCompleteOptions: 'all'
     }
 
+    var KeeDemoCtrl = function($scope, KorboCommunicationService, $window) {
+        console.log($scope.conf);
+        $scope.openSearch = function(){
+            $window.KK.callOpenSearch();
+
+            //KorboCommunicationService.openModalOnSearch($window[myConf]);
+        };
+    };
+
+
 </script>
-<div data-ng-app="Pundit2" class="kee-wrp">
+<div data-ng-app="Pundit2" class="kee-wrp" ng-controller="KeeDemoCtrl">
     <br>
     <korbo-entity-editor conf-name="myConf"></korbo-entity-editor>
     <br>
@@ -99,5 +109,6 @@
     <korbo-entity-editor conf-name="myConf2"></korbo-entity-editor>
     <br>
     <korbo-entity-editor></korbo-entity-editor>
+    <button class="btn btn-xs btn-success" ng-click="openSearch()">Search</button>
 </div>
 <!-- buildexamples:section footer --><!-- /buildexamples -->
