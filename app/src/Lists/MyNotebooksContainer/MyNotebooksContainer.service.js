@@ -125,7 +125,7 @@ angular.module('Pundit2.MyNotebooksContainer')
             // success
             modalScope.notifyMessage = "Notebook "+modalScope.notebook.label+" correctly deleted.";
             // remove annotations that belong to the notebook deleted
-            AnnotationsExchange.removeAnnotationByNotebookId(modalScope.notebook.id);
+            AnnotationsExchange.wipe();
             // wipe page items
             ItemsExchange.wipeContainer(PageItemsContainer.options.container);
             // update page items by update all annotations info

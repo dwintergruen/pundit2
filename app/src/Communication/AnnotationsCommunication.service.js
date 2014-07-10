@@ -8,7 +8,7 @@ angular.module('Pundit2.Communication')
     // get all annotations of the page from the server
     // add annotation inside annotationExchange
     // add items to page items inside itemsExchange
-    // TODO add notebooks to notebooksExchange
+    // add notebooks to notebooksExchange
     // than consilidate all items
     annotationsCommunication.getAnnotations = function() {
 
