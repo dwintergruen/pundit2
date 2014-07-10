@@ -21,7 +21,7 @@
 
     var AnnotationSidebarDemoCtrl = function($rootScope, $scope, $q, AnnotationSidebar,
                                              AnnotationsExchange, Consolidation, ItemsExchange,
-                                             Annotation, AnnotationsCommunication,  TextFragmentAnnotator) {
+                                             Annotation, AnnotationsCommunication, AnnotationDetails, TextFragmentAnnotator) {
 
         $scope.toogle = function(){
             AnnotationSidebar.toggle();
@@ -35,6 +35,10 @@
         };
         $scope.setDate = function(){
             AnnotationSidebar.setFilter('toDate', '2014-04-28');
+        };
+
+        $scope.openAnnotation = function(id) {
+            AnnotationDetails.openAnnotationView(id);
         };
 
         // ---
@@ -78,6 +82,7 @@
         <button type="button" class="btn btn-default" ng-click="setAuthor()">Imposta filtro autore</button>
         <button type="button" class="btn btn-default" ng-click="removeAuthor()">Rimuovi filtro autore</button>
         <button type="button" class="btn btn-default" ng-click="setDate()">Imposta filtro data</button>
+        <button type="button" class="btn btn-default" ng-click="openAnnotation('31c2dd69')">Open annotation 31c2dd69</button>
     </div>
 
     <br />

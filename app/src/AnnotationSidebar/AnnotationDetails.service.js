@@ -283,6 +283,9 @@ angular.module('Pundit2.AnnotationSidebar')
     };
 
     annotationDetails.openAnnotationView = function(currentId) {
+        if(!AnnotationSidebar.isAnnotationSidebarExpanded()){
+            AnnotationSidebar.toggle();
+        }
         annotationDetails.closeAllAnnotationView(currentId);
         state.annotations[currentId].expanded = true;
     };
