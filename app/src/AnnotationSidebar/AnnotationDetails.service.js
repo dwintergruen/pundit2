@@ -347,8 +347,8 @@ angular.module('Pundit2.AnnotationSidebar')
         }
     };
 
-    $rootScope.$on('edit-annotation-completed', function(e, annotationId) {
-        annotationDetails.log('Update annotation details');
+    $rootScope.$on('update-annotation-completed', function(e, annotationId) {
+        annotationDetails.log('Update annotation');
 
         var targetAnnotation;
         var currentAnnotation;
@@ -357,6 +357,9 @@ angular.module('Pundit2.AnnotationSidebar')
             targetAnnotation = {
                 id: annotationId,
                 broken: currentAnnotation.isBroken()
+            }
+            if(!AnnotationSidebar.isAnnotationSidebarExpanded()){
+                AnnotationSidebar.toggle();
             }
             annotationDetails.closeAllAnnotationView(annotationId);
             annotationDetails.addAnnotationReference(targetAnnotation, true);

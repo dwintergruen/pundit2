@@ -162,6 +162,7 @@ angular.module('Pundit2.Communication')
                     NotebookExchange.getNotebookById(ann.isIncludedIn).addAnnotation(data.AnnotationID);
                 }
                 Consolidation.consolidateAll();
+                $rootScope.$emit('update-annotation-completed', data.AnnotationID);
                 // TODO move inside notebook then?
                 Toolbar.setLoading(false);
                 promise.resolve(ann.id);
@@ -210,7 +211,7 @@ angular.module('Pundit2.Communication')
             if (completed > 0) {
                 AnnotationsExchange.getAnnotationById(annID).update().then(function(){
                     Consolidation.consolidateAll();
-                    $rootScope.$emit('edit-annotation-completed', annID);
+                    $rootScope.$emit('update-annotation-completed', annID);
                     promise.resolve();
                 });
             }
@@ -233,7 +234,7 @@ angular.module('Pundit2.Communication')
             if (completed > 0) {
                 AnnotationsExchange.getAnnotationById(annID).update().then(function(){
                     Consolidation.consolidateAll();
-                    $rootScope.$emit('edit-annotation-completed', annID);
+                    $rootScope.$emit('update-annotation-completed', annID);
                     promise.resolve();
                 });
             }

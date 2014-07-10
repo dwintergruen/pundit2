@@ -1,6 +1,6 @@
 angular.module('Pundit2.TripleComposer')
 .controller('TripleComposerCtrl', function($rootScope, $scope, $http, $q, $timeout, NameSpace,
-    MyPundit, Toolbar, TripleComposer, AnnotationsCommunication, TemplatesExchange, AnnotationSidebar) {
+    MyPundit, Toolbar, TripleComposer, AnnotationsCommunication, AnnotationsExchange, TemplatesExchange) {
 
     // statements objects are extend by this.addStatementScope()
     // the function is called in the statement directive link function
@@ -224,9 +224,6 @@ angular.module('Pundit2.TripleComposer')
                         TripleComposer.options.notificationMsgTime,
                         false
                     );
-                    // TODO open annotation details inside sidebar
-                    // this function not work
-                    AnnotationSidebar.showAnnotation(annID);
                     promise.resolve();
                 }, function(){
                     // rejected
