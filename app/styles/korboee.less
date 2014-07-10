@@ -55,4 +55,29 @@
 
 }
 
+//////////////////////////////////////////////////////////////////////////
+// Rewrite every rule which was applied to body, html or any other rule //
+// which gets messed up by the wrapped import. Please take note of the  //
+// original file and line, so to being able to update it when new BS    //
+// versions get out.                                                    //
+//////////////////////////////////////////////////////////////////////////
+
+
+// scaffolding.less, line 27.
+
+// Was html
+.kee-wrp {
+  font-size: 62.5%;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+// Was body
+.kee-wrp {
+  font-family: @font-family-base;
+  font-size: @font-size-base;
+  line-height: @line-height-base;
+  color: @text-color;
+  background-color: @body-bg;
+}
+
 @import "@{bspath}utilities.less";
