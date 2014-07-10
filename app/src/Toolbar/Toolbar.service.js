@@ -185,6 +185,9 @@ angular.module('Pundit2.Toolbar')
         templateMode = !templateMode;
         if (templateMode) {
             TripleComposer.showCurrentTemplate();            
+        } else {
+            // disable save btn
+            angular.element('.pnd-triplecomposer-save').addClass('disabled');
         }
     };
     

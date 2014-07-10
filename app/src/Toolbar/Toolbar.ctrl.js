@@ -253,6 +253,8 @@ angular.module('Pundit2.Toolbar')
                             TemplatesExchange.setCurrent(templates[_i].id);
                             if (Toolbar.isActiveTemplateMode()) {
                                 TripleComposer.showCurrentTemplate();
+                                // disable save btn
+                                angular.element('.pnd-triplecomposer-save').addClass('disabled');
                             }
                         };
                     }(i)

@@ -1,6 +1,6 @@
 angular.module('Pundit2.TripleComposer')
 .controller('TripleComposerCtrl', function($rootScope, $scope, $http, $q, $timeout, NameSpace,
-    MyPundit, Toolbar, TripleComposer, AnnotationsCommunication, TemplatesExchange) {
+    MyPundit, Toolbar, TripleComposer, AnnotationsCommunication, TemplatesExchange, AnnotationDetails) {
 
     // statements objects are extend by this.addStatementScope()
     // the function is called in the statement directive link function
@@ -174,10 +174,8 @@ angular.module('Pundit2.TripleComposer')
             TripleComposer.wipeNotFixedItems();
             return;
         }
-        if ($scope.editMode) {
-            TripleComposer.reset();
-            return;
-        }
+
+        TripleComposer.reset();
     };
 
     $scope.saveAnnotation = function(){
@@ -227,6 +225,8 @@ angular.module('Pundit2.TripleComposer')
                         false
                     );
                     // TODO open annotation details inside sidebar
+                    // this function not work
+                    AnnotationDetails.openAnnotationView(annID);
                     promise.resolve();
                 }, function(){
                     // rejected
@@ -247,11 +247,22 @@ angular.module('Pundit2.TripleComposer')
     }; // end save function
 
     $rootScope.$on('pnd-save-annotation', function(){
-        $scope.saveAnnotation().catch(function(){
-            // incomplete annotation
-            // open triple composer to tell user to complete the annotation
-            TripleComposer.openTripleComposer();
+        var open = $scope.statements.some(function(el){
+            var t = el.scope.get();
+            if (t.subject===null || t.predicate===null || t.object===null) {
+                return true;
+            }
         });
+        if (open) {
+            TripleComposer.openTripleComposer();
+        } else {
+            $scope.saveAnnotation().catch(function(){
+                // incomplete annotation
+                // open triple composer to tell user to complete the annotation
+                TripleComposer.openTripleComposer();
+            });
+        }
+        
     });
 
 });

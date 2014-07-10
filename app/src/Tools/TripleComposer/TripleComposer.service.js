@@ -316,6 +316,7 @@ angular.module('Pundit2.TripleComposer')
         if(!Dashboard.isDashboardVisible()){
             Dashboard.toggle();
         }
+        $rootScope.$$phase || $rootScope.$digest();
         $rootScope.$emit('pnd-dashboard-show-tab', tripleComposer.options.clientDashboardTabTitle);
     };
 
