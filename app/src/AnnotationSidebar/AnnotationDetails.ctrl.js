@@ -88,6 +88,10 @@ angular.module('Pundit2.AnnotationSidebar')
         openConfirmModal();
     };
 
+    $scope.showEdit = function() {
+        return $scope.annotation.hasTemplate === '';
+    };
+
     $scope.editAnnotation = function() {
         TripleComposer.editAnnotation($scope.annotation.id);
         if(!Dashboard.isDashboardVisible()){
