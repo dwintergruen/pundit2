@@ -253,19 +253,26 @@ describe("The toolbar module", function() {
 
                 var notebookMetadata1 = {
                     "http://purl.org/pundit/demo-cloud-server/notebook/18cd546a": {
+                        "http://purl.org/pundit/ont/ao#id": [{value:"18cd546a", type:"literal"}],
                         "http://open.vocab.org/terms/visibility": [{value:"public", type:"literal"}],
-                        "http://www.w3.org/2000/01/rdf-schema#label": [{value:"Notebook Name", type:"literal"}]
+                        "http://www.w3.org/2000/01/rdf-schema#label": [{value:"Notebook Name", type:"literal"}],
+                        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": [{value:"http://purl.org/pundit/ont/ao#Notebook", type:"uri"}]
                     }
                 };
                 $httpBackend.whenGET(NameSpace.get('asNBMeta', {id:"18cd546a"})).respond(notebookMetadata1);
 
                 var notebookMetadata2 = {
                     "http://purl.org/pundit/demo-cloud-server/notebook/123zzz": {
+                        "http://purl.org/pundit/ont/ao#id": [{value:"123zzz", type:"literal"}],
                         "http://open.vocab.org/terms/visibility": [{value:"private", type:"literal"}],
-                        "http://www.w3.org/2000/01/rdf-schema#label": [{value:"Second Notebook Name", type:"literal"}]
+                        "http://www.w3.org/2000/01/rdf-schema#label": [{value:"Second Notebook Name", type:"literal"}],
+                        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": [{value:"http://purl.org/pundit/ont/ao#Notebook", type:"uri"}]
                     }
                 };
                 $httpBackend.whenGET(NameSpace.get('asNBMeta', {id:"123zzz"})).respond(notebookMetadata2);
+
+                var currentNotebook = {NotebookID: "18cd546a"};
+                $httpBackend.whenGET(NameSpace.get('asNBCurrent')).respond(currentNotebook);
 
             });
     };
@@ -323,6 +330,36 @@ describe("The toolbar module", function() {
         p.findElements(protractor.By.css('toolbar .pnd-toolbar-notebook-menu-button .dropdown-menu .pnd-icon-lock')).then(function(icons) {
             expect(icons.length).toBe(1);
         });
+
+    });
+
+    it('should correctly show current notebook name', function() {
+
+        p.get('/app/examples/toolbar.html');
+
+        // check showed name
+        p.findElements(protractor.By.css('toolbar .pnd-toolbar-notebook-menu-button span')).then(function(spans) {
+            expect(spans[0].getText()).toBe("My Notebooks");
+        });
+
+        // click login button and get login
+        p.findElement(protractor.By.css('.btn-example-login')).click();
+
+        // get current info
+        p.findElement(protractor.By.css('.pnd-test-get-current-notebook')).click();
+
+        // check showed name
+        p.findElements(protractor.By.css('toolbar .pnd-toolbar-notebook-menu-button span')).then(function(spans) {
+            expect(spans[1].getText()).toBe("Loading...");
+        });
+
+        // click get my notebooks button
+        p.findElement(protractor.By.css('.pnd-test-get-my-notebooks')).click();
+
+        // check showed name
+        p.findElements(protractor.By.css('toolbar .pnd-toolbar-notebook-menu-button span')).then(function(spans) {
+            expect(spans[1].getText()).toBe("Notebook Name");
+        });        
 
     });
 

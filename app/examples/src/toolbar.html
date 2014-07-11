@@ -41,6 +41,10 @@ var ToolbarDemoCtrl = function($scope, Toolbar, MyPundit, NotebookCommunication)
     $scope.getMyNotebooks = function(){
         NotebookCommunication.getMyNotebooks();
     };
+
+    $scope.getCurrentNotebook = function() {
+        NotebookCommunication.getCurrent();
+    };
 }
 
 </script>
@@ -61,6 +65,7 @@ var ToolbarDemoCtrl = function($scope, Toolbar, MyPundit, NotebookCommunication)
                 Remove loading status
             </button>
             <button type="button" class="btn btn-info pnd-test-get-my-notebooks" ng-click="getMyNotebooks()">Get MyNotebooks</button>
+            <button type="button" class="btn btn-info pnd-test-get-current-notebook" ng-click="getCurrentNotebook()">Get Current Notebook</button>
         </div>
 
     </div>
