@@ -17,7 +17,7 @@
                     <li ng-show="contentTabs[$index].isLoading && elemToSearch !== ''">Searching...<span class="pnd-icon pnd-icon-refresh pnd-icon-spin pull-right"></span></li>
                     <li ng-show="!contentTabs[$index].isLoading && contentTabs[$index].items.length === 0 && elemToSearch === ''">Type a label to search...</li>
                     <li class="list-group-item" ng-repeat="mi in contentTabs[$index].items | orderBy:getOrderProperty" >
-                        <item uri="{{mi.uri}}" hide-options="true" ng-click="select(mi)" is-selected="{{isSelected(mi)}}" ng-mouseover="getItem(mi)"></item>
+                        <item uri="{{mi.uri}}" hide-options="true" hide-sticky-button="true" ng-click="select(mi)" is-selected="{{isSelected(mi)}}" ng-mouseover="getItem(mi)"></item>
                     </li>
                 </ul>
                 <ul class="list-group" ng-if="contentTabs[$index].serverError">

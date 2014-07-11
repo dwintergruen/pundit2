@@ -95,15 +95,12 @@ angular.module('KorboEE')
                 $scope.directiveScope.location = $scope.itemSelected.location;
                 $scope.directiveScope.elemToSearch = $scope.itemSelected.label;
                 $scope.directiveScope.label = $scope.itemSelected.label;
-                //TODO fire onSave
 
             } else {
                 //TODO controllare la location nel caso di entità non di korbo
                 $scope.directiveScope.location = "fake location?";
                 $scope.directiveScope.elemToSearch = $scope.itemSelected.label;
                 $scope.directiveScope.label = $scope.itemSelected.label;
-                //TODO fire onSave
-
             }
 
             // declare object returned onSave() call
@@ -116,8 +113,8 @@ angular.module('KorboEE')
             obj.language = $scope.defaultLan.value;
             api.fireOnSave(obj);
             api.fireOnCancel();
-            korboConf.setIsOpenModal(false);
             KorboCommunicationService.closeModal();
+            korboConf.setIsOpenModal(false);
 
         };
 

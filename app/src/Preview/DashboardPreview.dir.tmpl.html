@@ -21,7 +21,7 @@
 
     <!-- FOOTER -->
 
-    <div class="pnd-panel-tab-content-footer">
+    <div class="pnd-panel-tab-content-footer" ng-hide="useInKorbo">
 
         <!-- More info -->
         <button class="btn btn-success btn-xs pnd-dashboard-preview-more-info-button" ng-if="!itemIsAnImage && !isNotebook()" ng-click="openUrl(itemDashboardPreview.uri)" ng-class="{disabled: !isStickyItem()}">More info</button>

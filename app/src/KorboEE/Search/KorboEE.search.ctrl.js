@@ -156,6 +156,7 @@ angular.module('KorboEE')
         $scope.isUseActive = false;
 
         $scope.select = function(item){
+            Preview.setItemDashboardSticky(item);
             $scope.isUseActive = true;
             $scope.itemSelected = item;
             $scope.itemSelected.providerFrom = $scope.contentTabs[$scope.contentTabs.activeTab].provider;
