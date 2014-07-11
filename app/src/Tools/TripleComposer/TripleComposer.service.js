@@ -367,6 +367,11 @@ angular.module('Pundit2.TripleComposer')
     tripleComposer.showCurrentTemplate = function() {
         tripleComposer.reset();
         var i, tmpl = TemplatesExchange.getCurrent();
+
+        if (typeof(tmpl) === 'undefined') {
+            return;
+        }
+
         // at least one statement is present
         for (i=1; i<tmpl.triples.length; i++) {
             tripleComposer.addStatement();

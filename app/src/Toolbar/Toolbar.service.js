@@ -97,6 +97,7 @@ angular.module('Pundit2.Toolbar')
         isLoadingShown = false,
         isErrorShown = false,
         errorMessageDropdown = [],
+        // tell to other components if is active the template mode
         templateMode = false;
 
     toolbar.getErrorShown = function() {

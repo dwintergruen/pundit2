@@ -2,6 +2,7 @@ describe('Toolbar service', function() {
     
     var Toolbar,
         MyPundit,
+        TripleComposer,
         $rootScope,
         $compile;
     
@@ -19,6 +20,7 @@ describe('Toolbar service', function() {
     beforeEach(inject(function($injector, _$rootScope_, _$compile_){
         Toolbar = $injector.get('Toolbar');
         MyPundit = $injector.get('MyPundit');
+        TripleComposer = $injector.get('TripleComposer');
         $rootScope = _$rootScope_;
         $compile = _$compile_;
     }));
@@ -189,6 +191,17 @@ describe('Toolbar service', function() {
         expect(Toolbar.isLoading()).toBe(false);
         $rootScope.$digest();
         expect(angular.element(elem).find('.pnd-toolbar-loading-button.ng-hide').length).toBe(1);
+    });
+
+    it("should correctly toggle template mode", function(){
+        // by default template mode is disabled
+        expect(Toolbar.isActiveTemplateMode()).toBe(false);
+        Toolbar.toggleTemplateMode();
+        expect(Toolbar.isActiveTemplateMode()).toBe(true);
+        // switch template mode reset all triple composer statements
+        expect(TripleComposer.getStatements().length).toBe(1);
+        expect(TripleComposer.getStatements()[0].id).toBe(1);
+        // TODO check if the template is showed inside triple composer
     });
 
 });
