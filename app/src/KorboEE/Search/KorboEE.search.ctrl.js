@@ -50,7 +50,33 @@ angular.module('KorboEE')
                 updateTimer = $timeout(function(){searchOnProviders(val)}, $scope.conf.updateTime);
             } else if (val === ''){
                 wipeResults();
+                $scope.itemSelected = null;
+                $scope.korboModalTabs[0].totalResults = 0;
+                Preview.clearItemDashboardSticky();
+
             }
+
+        });
+
+        $scope.$watch('contentTabs.activeTab', function(tab){
+            $scope.currentProv.p = $scope.contentTabs[tab].provider;
+            if($scope.itemSelected === null){
+                if($scope.contentTabs[tab].provider !== 'korbo' && typeof($scope.conf.copyToKorboBeforeUse) !== 'undefined' && $scope.conf.copyToKorboBeforeUse){
+                    $scope.showUse.visibility = false;
+                    $scope.showUseAndCopy.visibility = true;
+
+                } else if($scope.contentTabs[tab].provider === 'korbo' && typeof($scope.conf.copyToKorboBeforeUse) !== 'undefined' && $scope.conf.copyToKorboBeforeUse){
+                    $scope.showUse.visibility = true;
+                    $scope.showUseAndCopy.visibility = false;
+                }
+                else if(typeof($scope.conf.copyToKorboBeforeUse) === 'undefined' || !$scope.conf.copyToKorboBeforeUse){
+                    $scope.showUse.visibility = true;
+                    $scope.showUseAndCopy.visibility = false;
+                }
+
+                //TODO controlli sulla configurazione del pulsante copy
+            }
+
 
         });
 
@@ -66,10 +92,16 @@ angular.module('KorboEE')
                     param.provider = $scope.contentTabs[index].provider;
                     param.index = index;
                     $scope.contentTabs[index].isLoading = true;
-                    korboComm.search(param, $scope.contentTabs[index].itemsContainer).then(function(){
-                        $scope.contentTabs[index].isLoading = false;
-                        $scope.contentTabs[index].items = ItemsExchange.getItemsByContainer($scope.contentTabs[index].itemsContainer);
-                    });
+                    korboComm.search(param, $scope.contentTabs[index].itemsContainer).then(
+                        function(){
+                            $scope.contentTabs[index].isLoading = false;
+                            $scope.contentTabs[index].serverError = false;
+                            $scope.contentTabs[index].items = ItemsExchange.getItemsByContainer($scope.contentTabs[index].itemsContainer);
+                            $scope.korboModalTabs[0].totalResults += $scope.contentTabs[index].items.length;
+                        }, function(){
+                            $scope.contentTabs[index].isLoading = false;
+                            $scope.contentTabs[index].serverError = true;
+                        });
 
                 })(j)
             }
@@ -121,11 +153,43 @@ angular.module('KorboEE')
         };
 
         $scope.itemSelected = null;
+        $scope.isUseActive = false;
 
         $scope.select = function(item){
             $scope.isUseActive = true;
             $scope.itemSelected = item;
-            console.log($scope.itemSelected);
+            $scope.itemSelected.providerFrom = $scope.contentTabs[$scope.contentTabs.activeTab].provider;
+            KorboCommunicationService.setSelectedEntity($scope.itemSelected);
+
+
+            $scope.showMoreInfo.disabled = false;
+
+            // se ho selezionato un entità da korbo devo nascondere useAndCopy e visualizzare solo Use attivo
+            if($scope.itemSelected.providerFrom === 'korbo'){
+                $scope.showUse.disabled = false;
+                $scope.showUse.visibility = true;
+                $scope.showUseAndCopy.visibility = false;
+            }
+
+            if($scope.itemSelected.providerFrom !== 'korbo' && typeof($scope.conf.copyToKorboBeforeUse) !== 'undefined' && $scope.conf.copyToKorboBeforeUse){
+                $scope.showUseAndCopy.disabled = false;
+                $scope.showUse.visibility = false;
+                $scope.showUseAndCopy.visibility = true;
+            } else if($scope.itemSelected.providerFrom !== 'korbo' && (typeof($scope.conf.copyToKorboBeforeUse) === 'undefined' || !$scope.conf.copyToKorboBeforeUse)){
+                $scope.showUse.disabled = false;
+                $scope.showUse.visibility = true;
+                $scope.showUseAndCopy.visibility = false;
+            }
+
+            if($scope.conf.visualizeCopyButton.indexOf($scope.contentTabs[$scope.contentTabs.activeTab].provider) !== -1){
+                $scope.showCopyInEditor.visibility = true;
+                $scope.showCopyInEditor.disabled = false;
+            } else {
+                $scope.showCopyInEditor.disabled = true;
+            }
+
+
+
         };
 
 
@@ -136,8 +200,5 @@ angular.module('KorboEE')
                 return false;
             }
         };
-
-
-
 
     });

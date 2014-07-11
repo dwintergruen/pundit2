@@ -9,10 +9,11 @@
             </div>
             <div class="modal-footer kee-modal-footer">
                 <button type="button" class="btn btn-xs btn-success" ng-click="closeKeeModal()">Close</button>
-                <button type="button" class="btn btn-xs btn-success" ng-click="">More Info</button>
-                <button type="button" class="btn btn-xs btn-success" ng-click="">Copy in editor</button>
-                <button type="button" class="btn btn-xs btn-success" ng-click="use()">Use</button>
-                <button type="button" class="btn btn-xs btn-success" ng-click="">Copy and Use</button>
+                <button type="button" class="btn btn-xs btn-success" ng-show="showMoreInfo.visibility" ng-class="{'disabled': showMoreInfo.disabled}" ng-click="moreInfo()">More Info</button>
+                <button type="button" class="btn btn-xs btn-success" ng-show="showCopyInEditor.visibility" ng-class="{'disabled': showCopyInEditor.disabled}" ng-click="copyInEditor()">Copy in editor</button>
+                <button type="button" class="btn btn-xs btn-success" ng-show="showUse.visibility" ng-class="{'disabled': showUse.disabled}" ng-click="use()">Use</button>
+                <button type="button" class="btn btn-xs btn-success" ng-show="showUseAndCopy.visibility" ng-class="{'disabled': showUseAndCopy.disabled}" ng-click="copyAndUse()">Copy and Use</button>
+                <button type="button" class="btn btn-xs btn-success" ng-show="showSaveAndAdd.visibility"ng-click="">Save and add</button>
             </div>
         </div>
     </div>

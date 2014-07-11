@@ -143,6 +143,16 @@ angular.module('KorboEE')
 
         };
 
+        var entity = null;
+
+        korboCommunication.setSelectedEntity = function(e){
+            entity = e;
+        }
+
+        korboCommunication.getSelectedEntity = function(){
+            return entity;
+        }
+
         return korboCommunication;
     })
 
