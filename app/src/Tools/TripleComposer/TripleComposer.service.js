@@ -341,18 +341,6 @@ angular.module('Pundit2.TripleComposer')
         tripleComposer.log('Add item: '+item.uri+ 'as subject of all triples');
     };
 
-    tripleComposer.addToPredicate = function(item) {        
-        statements[0].scope.setPredicate(item);
-        $rootScope.$$phase || $rootScope.$digest();
-        tripleComposer.log('Add item as predicate', item);        
-    };
-
-    tripleComposer.addToObject = function(item) {        
-        statements[0].scope.setObject(item);
-        $rootScope.$$phase || $rootScope.$digest();
-        tripleComposer.log('Add item as object', item);        
-    };
-
     tripleComposer.isAnnotationComplete = function(isTemplateMode){
         var complete = true;
         statements.some(function(s){

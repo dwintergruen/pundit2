@@ -3,6 +3,8 @@ describe('TripleComposer service', function() {
     var TripleComposer,
         TRIPLECOMPOSERDEFAULTS,
         Item,
+        Template,
+        TemplatesExchange,
         NameSpace,
         $rootScope,
         $compile;
@@ -21,10 +23,14 @@ describe('TripleComposer service', function() {
 
     beforeEach(module('Pundit2'));
 
-    beforeEach(inject(function(_TRIPLECOMPOSERDEFAULTS_, _TripleComposer_, _Item_, _NameSpace_, _$rootScope_, _$compile_){
+    beforeEach(inject(function(_TRIPLECOMPOSERDEFAULTS_, _TripleComposer_, _Item_, _Template_, _TemplatesExchange_, _NameSpace_,
+        _$rootScope_, _$compile_){
+
         TRIPLECOMPOSERDEFAULTS = _TRIPLECOMPOSERDEFAULTS_;
         TripleComposer = _TripleComposer_;
         Item = _Item_;
+        Template = _Template_;
+        TemplatesExchange = _TemplatesExchange_;
         NameSpace = _NameSpace_;
         $rootScope = _$rootScope_;
         $compile = _$compile_;
@@ -285,6 +291,47 @@ describe('TripleComposer service', function() {
         expect(typeof(scope)).toEqual('object');
         expect(scope.subjectLabel).toEqual('testLabel');
         expect(scope.subjectFound).toBe(true);
+
+        angular.element('triple-composer').remove();
+    });
+
+    it('should correctly set edit mode', function(){
+        compileDirective();
+        var s = TripleComposer.getStatements();
+        TripleComposer.setEditMode(true);
+        
+        var scope = s[0].scope;
+        expect(scope).toBeDefined();
+        expect(scope.editMode).toBe(true);
+
+        angular.element('triple-composer').remove();
+    });
+
+    it('should correctly show current template', function(){
+        compileDirective();
+        var currentTmpl = new Template('testID', {
+            triples: [
+                {
+                    predicate: {
+                        mandatory: true,
+                        label: 'predicate label',
+                        id: 'predicateTestID',
+                        range: [],
+                        domain: []
+                    }
+                }
+            ]
+        });
+        TemplatesExchange.setCurrent(currentTmpl.id);
+        TripleComposer.showCurrentTemplate();
+        $rootScope.$digest();
+
+        var s = TripleComposer.getStatements();        
+        var scope = s[0].scope;
+        expect(scope.predicateLabel).toBe('predicate label');
+        expect(scope.predicateFound).toBe(true);
+        expect(scope.predicateFixed).toBe(true);
+        expect(scope.isMandatory).toBe(true);
 
         angular.element('triple-composer').remove();
     });
