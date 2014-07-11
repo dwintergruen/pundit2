@@ -22,7 +22,9 @@ angular.module('Pundit2.Core')
             promiseArr = [];
 
         // set the first as current
-        TemplatesExchange.setCurrent(urls[0]);
+        if (urls.length > 0) {
+            TemplatesExchange.setCurrent(urls[0]);            
+        }
 
         for (var i in urls) {
             promiseArr.push(templatesSelector.get(urls[i], colors[i]));
