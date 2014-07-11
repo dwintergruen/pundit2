@@ -97,6 +97,20 @@ describe("Client interaction when user is logged in", function() {
                     NotebookIDs: ["ntid123"]
                 };
 
+                var templates = {
+                    label: 'Template Name',
+                    triples : [
+                        {
+                            predicate: {
+                                "label": "talks about",
+                                "domain": ["http://purl.org/pundit/ont/ao#fragment-text"],
+                                "range": [],
+                                "uri": "http://purl.org/pundit/ont/oa#talksAbout"
+                            }
+                        }
+                    ]
+                };
+
                 // extend here if you nedd to catch an unexpected http call
                 // if user is logged do this http call
 
@@ -113,6 +127,8 @@ describe("Client interaction when user is logged in", function() {
                 $httpBackend.whenGET(NameSpace.get('asNBMeta', {id: "ntid123"})).respond(notebookMedatada);
                 // get current notebook
                 $httpBackend.whenGET(NameSpace.get('asNBCurrent')).respond(notebookCurrent);
+                // get configured templates
+                $httpBackend.whenJSONP(new RegExp("http://template-test-url.com/t1")).respond(templates);
 
             });
     };
@@ -174,6 +190,55 @@ describe("Client interaction when user is logged in", function() {
         p.findElements(protractor.By.css('.pnd-confirm-modal-container')).then(function(m){
             expect(m.length).toBe(1);
         });
+    });
+
+    it("should correctly show template inside triple composer", function(){
+        //enable template mode
+        p.findElement(protractor.By.css('toolbar .pnd-toolbar-template-mode-button')).click();
+        // open dashboard (triple composer is showed by default)
+        p.findElement(protractor.By.css('toolbar .pnd-toolbar-dashboard-button')).click();
+
+        // check triple composer header
+        p.findElement(protractor.By.css('triple-composer .pnd-panel-tab-content-header')).then(function(h){
+            expect(h.getText()).toBe('Complete your Annotation and Save!');
+        });
+        // check triple composer statement subject text
+        p.findElement(protractor.By.css('triple-composer statement .pnd-statement-subject .pnd-statement-subject-text')).then(function(t){
+            expect(t.getText()).toBe('Select some text on the page');
+            // it must be visible
+            t.getAttribute('class').then(function(classes){
+                expect(classes.indexOf('ng-hide')).toBe(-1);
+            });
+        });
+        // check triple composer object
+        p.findElement(protractor.By.css('triple-composer statement .pnd-statement-object .pnd-statement-mandatory-object')).then(function(o){
+            // it must have solid red border
+            o.getCssValue('border').then(function(border){
+                expect(border).toBeDefined();
+                expect(border.indexOf('1px solid')).toBeGreaterThan(-1);
+            });
+        });
+    });
+
+    it("should correctly show a text selection inside triple composer during template mode", function(){
+        //enable template mode
+        p.findElement(protractor.By.css('toolbar .pnd-toolbar-template-mode-button')).click();
+        // open dashboard (triple composer is showed by default)
+        p.findElement(protractor.By.css('toolbar .pnd-toolbar-dashboard-button')).click();
+
+        var el = p.findElement(protractor.By.css('.pnd-test-init-selection'));
+        // dbclick (simulate a selection) on text populate the triple composer subject
+        p.actions().doubleClick(el).perform();
+
+        // check triple composer statement subject text
+        p.findElement(protractor.By.css('triple-composer statement .pnd-statement-subject .pnd-statement-label')).then(function(t){
+            expect(t.getText()).toBe('Boccaccio');
+            // it must be visible
+            t.getAttribute('class').then(function(classes){
+                expect(classes.indexOf('ng-hide')).toBe(-1);
+            });
+        });
+        
     });
 
 });

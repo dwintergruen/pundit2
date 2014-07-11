@@ -30,28 +30,29 @@ describe("TripleComposer interaction", function() {
 
     it("should correctly add item", function(){
 
+        p.driver.manage().window().setSize(1200, 960);
+
         // open resource panel
-        p.findElement(protractor.By.css(".pnd-statement-subject input")).click();
+        p.findElement(protractor.By.css(".pnd-statement-object input")).click();
 
         p.findElements(protractor.By.css(".pnd-resource-panel-popover")).then(function(popover) {
             expect(popover.length).toBe(1);
         });
 
-        // open page items list
-        // p.findElement(protractor.By.css(".pnd-resource-panel-popover .pnd-page-items-header .pnd-icon-caret-right")).click();
+        // add item by click on resource panel item and use btn
+        p.findElement(protractor.By.css(".pnd-resource-panel-popover .pnd-item")).click();
+        p.findElement(protractor.By.css(".pnd-resource-panel-popover .pnd-vertical-tab-footer-content .pnd-resource-panel-use-button")).click();
 
-        // add item by click on resource panel item
-        p.findElement(protractor.By.css(".pnd-resource-panel-popover .pnd-page-items-header item")).click();
         // label
-        p.findElement(protractor.By.css(".pnd-statement-subject .pnd-statement-label")).then(function(label) {
+        p.findElement(protractor.By.css(".pnd-statement-object .pnd-statement-label")).then(function(label) {
             expect(label.getText()).toEqual("item1Label");
         });
         // delete button
-        p.findElement(protractor.By.css(".pnd-statement-subject .pnd-row-button-subject button")).then(function(btn) {
+        p.findElement(protractor.By.css(".pnd-statement-object .pnd-row-button-object button")).then(function(btn) {
             expect(btn.getAttribute('title')).toEqual("delete");
         });
         // type label
-        p.findElement(protractor.By.css(".pnd-statement-subject .pnd-row-button-subject")).then(function(div) {
+        p.findElement(protractor.By.css(".pnd-statement-object .pnd-row-button-object")).then(function(div) {
             expect(div.getText()).toEqual("Text fragment");
         });   
     });
@@ -75,9 +76,10 @@ describe("TripleComposer interaction", function() {
             expect(label.getText()).toEqual("testo");
         });
         // delete button
-        p.findElements(protractor.By.css(".pnd-statement-object .pnd-row-button-object [ng-if='objectLiteral']")).then(function(btn) {
-            expect(btn.length).toBe(1);
-            expect(btn[0].getAttribute('title')).toEqual("text");
+        p.findElements(protractor.By.css(".pnd-statement-object .pnd-row-button-object button")).then(function(btn) {
+            expect(btn.length).toBe(2);
+            expect(btn[0].getAttribute('title')).toEqual("delete");
+            expect(btn[1].getAttribute('title')).toEqual("text");
         });
         // type label
         p.findElement(protractor.By.css(".pnd-statement-object .pnd-row-button-object")).then(function(div) {
@@ -118,54 +120,53 @@ describe("TripleComposer interaction", function() {
 
     it("should correctly remove item", function(){
 
-        // open resource panel
-        p.findElement(protractor.By.css(".pnd-statement-subject input")).click();
-        // open page items list
-        //p.findElement(protractor.By.css(".pnd-resource-panel-popover .pnd-page-items-header .pnd-icon-caret-right")).click();
+        p.driver.manage().window().setSize(1200, 960);
 
-        // add item by click on resource panel item
-        p.findElement(protractor.By.css(".pnd-resource-panel-popover .pnd-page-items-header item")).click();
+        // open resource panel
+        p.findElement(protractor.By.css(".pnd-statement-object input")).click();
+
+        // add item by click on resource panel item and use btn
+        p.findElement(protractor.By.css(".pnd-resource-panel-popover .pnd-item")).click();
+        p.findElement(protractor.By.css(".pnd-resource-panel-popover .pnd-vertical-tab-footer-content .pnd-resource-panel-use-button")).click();
+
         // check label
-        p.findElement(protractor.By.css(".pnd-statement-subject .pnd-statement-label")).then(function(label) {
+        p.findElement(protractor.By.css(".pnd-statement-object .pnd-statement-label")).then(function(label) {
             expect(label.getText()).toEqual("item1Label");
         });
 
         // click delete button
-        p.findElement(protractor.By.css(".pnd-statement-subject .pnd-row-button-subject button")).click();
+        p.findElement(protractor.By.css(".pnd-statement-object .pnd-row-button-object button")).click();
         // check input
-        p.findElements(protractor.By.css(".pnd-statement-subject input")).then(function(input) {
+        p.findElements(protractor.By.css(".pnd-statement-object input")).then(function(input) {
             expect(input.length).toBe(1);
-            expect(input[0].getAttribute('placeholder')).toEqual("search a subject");
+            expect(input[0].getAttribute('placeholder')).toEqual("search an object");
         });
-        // check korbo button
-        p.findElements(protractor.By.css(".pnd-statement-subject .pnd-row-button-subject button")).then(function(btn) {
-            expect(btn.length).toBe(1);
-            expect(btn[0].getAttribute('title')).toEqual("add");
-        });          
+                  
     });
 
     it("should correctly duplicate statement", function(){
 
         // open resource panel
-        p.findElement(protractor.By.css(".pnd-statement-subject input")).click();
-        // open page items list
-        //p.findElement(protractor.By.css(".pnd-resource-panel-popover .pnd-page-items-header .pnd-icon-caret-right")).click();
-        // add item by click on item inside list
-        p.findElement(protractor.By.css(".pnd-resource-panel-popover .pnd-page-items-header item")).click();
+        p.findElement(protractor.By.css(".pnd-statement-object input")).click();
+
+        // add item by click on resource panel item and use btn
+        p.findElement(protractor.By.css(".pnd-resource-panel-popover .pnd-item")).click();
+        p.findElement(protractor.By.css(".pnd-resource-panel-popover .pnd-vertical-tab-footer-content .pnd-resource-panel-use-button")).click();
+     
         // duplicate statement
         p.findElement(protractor.By.css("statement[id='1'] .pnd-statement-buttons [title='copy']")).click();
         
 
         // check if have the same label
-        p.findElement(protractor.By.css("statement[id='2'] .pnd-statement-subject .pnd-statement-label")).then(function(label) {
+        p.findElement(protractor.By.css("statement[id='2'] .pnd-statement-object .pnd-statement-label")).then(function(label) {
             expect(label.getText()).toEqual("item1Label");
         });
         // che if have the delete button
-        p.findElement(protractor.By.css("statement[id='2'] .pnd-statement-subject .pnd-row-button-subject button")).then(function(btn) {
+        p.findElement(protractor.By.css("statement[id='2'] .pnd-statement-object .pnd-row-button-object button")).then(function(btn) {
             expect(btn.getAttribute('title')).toEqual("delete");
         });
         // che if have the same type label
-        p.findElement(protractor.By.css("statement[id='2'] .pnd-statement-subject .pnd-row-button-subject")).then(function(div) {
+        p.findElement(protractor.By.css("statement[id='2'] .pnd-statement-object .pnd-row-button-object")).then(function(div) {
             expect(div.getText()).toEqual("Text fragment");
         });   
     });
