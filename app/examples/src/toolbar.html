@@ -3,16 +3,10 @@
 <script>
 
 var punditConfig = {
-    modules: {
-        "Fp3": {
-            active: true,
-            label: 'Custom Label',
-            link: 'http://custom-link.html'
-        }
-    }
+    templates: ['http://template-test-url.com/t1']
 };
 
-var ToolbarDemoCtrl = function($scope, Toolbar, MyPundit, NotebookCommunication) {
+var ToolbarDemoCtrl = function($scope, Toolbar, MyPundit, NotebookCommunication, TemplatesSelector) {
     
     var numberErrors = 0;
     
@@ -45,6 +39,10 @@ var ToolbarDemoCtrl = function($scope, Toolbar, MyPundit, NotebookCommunication)
     $scope.getCurrentNotebook = function() {
         NotebookCommunication.getCurrent();
     };
+
+    $scope.getTemplates = function() {
+        TemplatesSelector.getAll();
+    };
 }
 
 </script>
@@ -66,12 +64,13 @@ var ToolbarDemoCtrl = function($scope, Toolbar, MyPundit, NotebookCommunication)
             </button>
             <button type="button" class="btn btn-info pnd-test-get-my-notebooks" ng-click="getMyNotebooks()">Get MyNotebooks</button>
             <button type="button" class="btn btn-info pnd-test-get-current-notebook" ng-click="getCurrentNotebook()">Get Current Notebook</button>
+            <button type="button" class="btn btn-info pnd-test-get-templates" ng-click="getTemplates()">Get Templates</button>
         </div>
 
     </div>
 
-    <div id="html-storage">Contenuto del tag con id html-storage</div>
-    <div class="pundit-content" about="http://pundit-content-url-di-prova.html"></div>
+    <!--<div id="html-storage">Contenuto del tag con id html-storage</div>
+    <div class="pundit-content" about="http://pundit-content-url-di-prova.html"></div>-->
 
 </div>
 

@@ -274,6 +274,12 @@ describe("The toolbar module", function() {
                 var currentNotebook = {NotebookID: "18cd546a"};
                 $httpBackend.whenGET(NameSpace.get('asNBCurrent')).respond(currentNotebook);
 
+                var templates = {
+                    label: 'Template Name',
+                    triples : []
+                };
+                $httpBackend.whenJSONP(new RegExp("http://template-test-url.com/t1")).respond(templates);
+
             });
     };
 
@@ -359,8 +365,71 @@ describe("The toolbar module", function() {
         // check showed name
         p.findElements(protractor.By.css('toolbar .pnd-toolbar-notebook-menu-button span')).then(function(spans) {
             expect(spans[1].getText()).toBe("Notebook Name");
-        });        
+        });
+    });
 
+    it('should correctly show current template name', function() {
+
+        p.get('/app/examples/toolbar.html');
+
+        // check showed name
+        p.findElements(protractor.By.css('toolbar .pnd-toolbar-template-menu-button span')).then(function(spans) {
+            expect(spans[0].getText()).toBe("Loading...");
+        });
+
+        // get templates
+        p.findElement(protractor.By.css('.pnd-test-get-templates')).click();
+
+        // check showed name
+        p.findElements(protractor.By.css('toolbar .pnd-toolbar-template-menu-button span')).then(function(spans) {
+            expect(spans[0].getText()).toBe("Template Name");
+        });
+    });
+
+    it('should correctly show templates dropdown list', function() {
+
+        p.get('/app/examples/toolbar.html');
+
+        // get templates
+        p.findElement(protractor.By.css('.pnd-test-get-templates')).click();
+        // open templates dropdown
+        p.findElement(protractor.By.css('toolbar .pnd-toolbar-template-menu-button')).click();
+
+        // check dropdown voices number
+        p.findElements(protractor.By.css('toolbar .pnd-toolbar-template-menu-button .dropdown-menu li')).then(function(items) {
+            expect(items.length).toBe(2);
+            expect(items[1].getText()).toBe("Template Name");
+        });
+        // check dropdown voices icon (color icon)
+        p.findElements(protractor.By.css('toolbar .pnd-toolbar-template-menu-button .dropdown-menu .pnd-icon-certificate')).then(function(icons) {
+            expect(icons.length).toBe(1);
+        });
+        // check dropdown voices icon (current icon)
+        p.findElements(protractor.By.css('toolbar .pnd-toolbar-template-menu-button .dropdown-menu .pnd-icon-check')).then(function(icons) {
+            expect(icons.length).toBe(1);
+        });
+    });
+
+    it('should correctly activate template mode', function(){
+
+        p.get('/app/examples/toolbar.html');
+
+        // template icon is disable
+        p.findElements(protractor.By.css('toolbar .pnd-toolbar-template-mode-button .pnd-toolbar-not-active-element')).then(function(s) {
+            expect(s.length).toBe(1);
+        });
+        p.findElements(protractor.By.css('toolbar .pnd-toolbar-template-menu-button .pnd-toolbar-not-active-element')).then(function(s) {
+            expect(s.length).toBe(2);
+        });
+        //enable template mode
+        p.findElement(protractor.By.css('toolbar .pnd-toolbar-template-mode-button')).click();
+        // template icon is enabled
+        p.findElements(protractor.By.css('toolbar .pnd-toolbar-template-mode-button .pnd-toolbar-not-active-element')).then(function(s) {
+            expect(s.length).toBe(0);
+        });
+        p.findElements(protractor.By.css('toolbar .pnd-toolbar-template-menu-button .pnd-toolbar-not-active-element')).then(function(s) {
+            expect(s.length).toBe(0);
+        });
     });
 
 });
