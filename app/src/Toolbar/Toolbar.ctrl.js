@@ -198,7 +198,7 @@ angular.module('Pundit2.Toolbar')
 
     if ($scope.useTemplates) {
 
-        $scope.userTemplateDropdown = [{text: 'Please select template you want to use', header: true }];
+        $scope.userTemplateDropdown = [{text: 'Select the template you wish to use', header: true }];
         $scope.currentTemplateLabel = "Loading...";
 
         $scope.$watch(function() {

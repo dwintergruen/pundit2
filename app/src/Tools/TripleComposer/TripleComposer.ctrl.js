@@ -31,7 +31,7 @@ angular.module('Pundit2.TripleComposer')
         $scope.templateMode = newVal;
         if (newVal) {
             lastHeader = $scope.headerMessage;
-            $scope.headerMessage = "Compleate your Annotation and Save!";
+            $scope.headerMessage = "Complete your Annotation and Save!";
         } else if(newVal !== oldVal) {
             $scope.headerMessage = lastHeader;
         }
