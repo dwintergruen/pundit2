@@ -145,7 +145,7 @@ describe('Annotation', function() {
             expect(typeof(object)).toBe('object');
 
             // items is added to page items container (not predicate)
-            expect(ItemsExchange.getItemsByContainer(PAGEITEMSCONTAINERDEFAULTS.container).length).toBe(2);
+            expect(ItemsExchange.getItemsByContainer(PAGEITEMSCONTAINERDEFAULTS.container).length).toBe(3);
         });
         promise.then(function(ret) {
             ann = ret;
@@ -163,9 +163,13 @@ describe('Annotation', function() {
             promise = new Annotation(testId);
         waitsFor(function() { return ann; }, 2000);
         runs(function() {
-            var notebookId = 'e39af478';
-            // TODO take it from fixture file
+            var metaUri = Object.keys(testAnnotations.simple2.metadata)[0];
+            var currentMeta = testAnnotations.simple2.metadata[metaUri];
+            var isIncludedInUri = currentMeta[NameSpace.annotation.isIncludedIn][0].value;
+            var notebookId = isIncludedInUri.match(/[a-z0-9]*$/)[0];
+            
             var targetValue = 'http://metasound.dibet.univpm.it/exmaple';
+
             expect(ann.uri).toBe(Object.keys(testAnnotations.simple2.metadata)[0]);
             expect(ann.isIncludedIn).toEqual(notebookId);
             expect(ann.target[0]).toEqual(targetValue);
