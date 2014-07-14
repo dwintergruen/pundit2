@@ -255,6 +255,13 @@ angular.module('Pundit2.AnnotationSidebar')
         return state.annotations[currentId].expanded;
     };
 
+    annotationDetails.setGhosted = function(currentId) {
+        if (typeof(state.annotations[currentId]) !== 'undefined') {
+            state.annotations[currentId].ghosted = true;
+        }
+        state.isGhostedActive = true;
+    };
+
     annotationDetails.resetGhosted = function() {
         for (var id in state.annotations){
             state.annotations[id].ghosted = false;
@@ -292,10 +299,6 @@ angular.module('Pundit2.AnnotationSidebar')
         } else{
             annotationDetails.log("Cannot find this annotation: id -> " + currentId);
         }
-    };
-
-    annotationDetails.openSingleAnnotationView = function(currentId) {
-        state.annotations[currentId].expanded = true;
     };
 
     annotationDetails.toggleAnnotationView = function(currentId) {

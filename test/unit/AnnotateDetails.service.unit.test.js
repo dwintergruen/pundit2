@@ -109,6 +109,13 @@ describe('AnnotationDetails service', function() {
         expect(AnnotationDetails.getAnnotationViewStatus(fakeScope.id)).toEqual(true);
     });
 
+    it('should open single annotation view', function(){
+        AnnotationDetails.addAnnotationReference(fakeScope);
+        expect(AnnotationDetails.getAnnotationViewStatus(fakeScope.id)).toEqual(ANNOTATIONDETAILSDEFAULTS.defaultExpanded);
+        AnnotationDetails.openAnnotationView(fakeScope.id);
+        expect(AnnotationDetails.getAnnotationViewStatus(fakeScope.id)).toEqual(true);
+    });
+
     it('should toggle annotation view', function(){
         AnnotationDetails.addAnnotationReference(fakeScope);
         expect(AnnotationDetails.getAnnotationViewStatus(fakeScope.id)).toEqual(ANNOTATIONDETAILSDEFAULTS.defaultExpanded);
@@ -123,5 +130,37 @@ describe('AnnotationDetails service', function() {
         AnnotationDetails.closeAllAnnotationView();
         expect(AnnotationDetails.getAnnotationViewStatus(fakeScope.id)).toEqual(false);
     });
-    
+
+    it('should update annotation details and open it', function(){
+        $rootScope.$emit('update-annotation-completed', fakeScope.id);
+        var currentAnnotationDetails = AnnotationDetails.getAnnotationDetails(fakeScope.id);
+        expect(typeof(currentAnnotationDetails)).toBe('object');
+        expect(currentAnnotationDetails.expanded).toEqual(true);
+    });
+
+    it('should reset all annotation state', function(){
+        AnnotationDetails.addAnnotationReference(fakeScope);
+        AnnotationDetails.closeViewAndReset();
+        var currentAnnotationDetails = AnnotationDetails.getAnnotationDetails(fakeScope.id);
+        expect(currentAnnotationDetails.expanded).toEqual(false);
+        expect(currentAnnotationDetails.ghosted).toEqual(false);
+    });
+
+    it('should user tool showed', function(){
+        var userUri = userLoggedIn.uri;
+        var isUser = AnnotationDetails.isAnnotationUser(userUri);
+        expect(isUser).toEqual(true);
+        var isTool = AnnotationDetails.isUserToolShowed(userUri);
+        expect(isTool).toEqual(true);
+    });
+
+    it('should change ghost status', function(){
+        AnnotationDetails.addAnnotationReference(fakeScope);
+        
+        AnnotationDetails.setGhosted(fakeScope.id);
+        expect(AnnotationDetails.isAnnotationGhosted(fakeScope.id)).toEqual(true);
+        
+        AnnotationDetails.resetGhosted();
+        expect(AnnotationDetails.isAnnotationGhosted(fakeScope.id)).toEqual(false);
+    });
 });
