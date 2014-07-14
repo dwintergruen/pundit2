@@ -168,7 +168,7 @@ describe('Annotation', function() {
             var isIncludedInUri = currentMeta[NameSpace.annotation.isIncludedIn][0].value;
             var notebookId = isIncludedInUri.match(/[a-z0-9]*$/)[0];
             
-            var targetValue = 'http://metasound.dibet.univpm.it/exmaple';
+            var targetValue = currentMeta[NameSpace.annotation.target][0].value;
 
             expect(ann.uri).toBe(Object.keys(testAnnotations.simple2.metadata)[0]);
             expect(ann.isIncludedIn).toEqual(notebookId);
