@@ -12,8 +12,10 @@ angular.module('KorboEE')
             } // end if
         } // end for
 
+        // current tab provider selected in search tab
         $scope.currentProv = {};
 
+        // modal tabs
         $scope.korboModalTabs = [
             {
                 "title": "Search",
@@ -52,6 +54,7 @@ angular.module('KorboEE')
             "disabled":    true
         };
 
+        // set active tab in according with operation passed from callback
         $scope.$watch('op', function(val){
 
             if(val === 'search'){
@@ -64,10 +67,12 @@ angular.module('KorboEE')
             }
         });
 
+        // every time a tab in the modal (Search,New) is selected, update buttons visibility
         $scope.$watch('korboModalTabs.activeTab', function(){
             handleButton();
         });
 
+        // close modal
         $scope.closeKeeModal = function(){
             KorboCommunicationService.closeModal();
         }
@@ -89,13 +94,14 @@ angular.module('KorboEE')
             console.log("vuoi copiare ", $scope.itemSelected);
         };
 
+        // set location, label and elemToSearch values of directive
         $scope.use = function(){
-            console.log("use click", $scope.itemSelected);
+            // if is a korbo entity
             if($scope.itemSelected.providerFrom === 'korbo'){
                 $scope.directiveScope.location = $scope.itemSelected.location;
                 $scope.directiveScope.elemToSearch = $scope.itemSelected.label;
                 $scope.directiveScope.label = $scope.itemSelected.label;
-
+            // if is a no-korbo entity
             } else {
                 //TODO controllare la location nel caso di entità non di korbo
                 $scope.directiveScope.location = "fake location?";
@@ -111,15 +117,19 @@ angular.module('KorboEE')
             obj.image = $scope.itemSelected.image;
             obj.description = $scope.itemSelected.description;
             obj.language = $scope.defaultLan.value;
+            // fire onSave callback
             api.fireOnSave(obj);
+            // fire onCancel callback
             api.fireOnCancel();
+            // close modal
             KorboCommunicationService.closeModal();
+            // set modal as close in configuration
             korboConf.setIsOpenModal(false);
 
         };
 
         $scope.itemSelected = null;
-
+        // watching when an entity is selected
         $scope.$watch(function(){return KorboCommunicationService.getSelectedEntity()},
                     function(item){
                         if(item !== null){
@@ -127,7 +137,10 @@ angular.module('KorboEE')
                         }
                     });
 
+        // handle button visibility
         var handleButton = function(){
+
+            // if no item is selected, set buttons visibility
             if($scope.itemSelected === null){
                 $scope.showUseButton();
                 $scope.showUseAndCopyButton();
@@ -138,54 +151,59 @@ angular.module('KorboEE')
 
         };
 
+        // set visibility Use button and Copy and Use button
         $scope.showUseButton = function(){
+
+            // if Search tab is active
             if($scope.korboModalTabs.activeTab === 0){
 
+                // if a non-korbo provider tab is selected and in configuration copyToKorboBeforeUse is set to true
+                // show only Use and Copy button
                 if($scope.currentProv.p !== 'korbo' && typeof($scope.conf.copyToKorboBeforeUse) !== 'undefined' && $scope.conf.copyToKorboBeforeUse){
                     $scope.showUse.visibility = false;
                     $scope.showUseAndCopy.visibility = true;
 
+                // if korbo provider tab is selected and in configuration copyToKorboBeforeUse is set to true
+                // show only Use button
                 } else if($scope.currentProv.p === 'korbo' && typeof($scope.conf.copyToKorboBeforeUse) !== 'undefined' && $scope.conf.copyToKorboBeforeUse){
                     $scope.showUse.visibility = true;
                     $scope.showUseAndCopy.visibility = false;
                 }
+
+                // if in configuration copyToKorboBeforeUse is not defined or is set to false
+                // show only Use button
                 else if(typeof($scope.conf.copyToKorboBeforeUse) === 'undefined' || !$scope.conf.copyToKorboBeforeUse){
                     $scope.showUse.visibility = true;
                     $scope.showUseAndCopy.visibility = false;
                 }
+
+            // if New tab is active, hide Use button
             } else {
                 $scope.showUse.visibility = false;
             }
         };
 
+        // If New Tab is selected, hide Use and Copy button
         $scope.showUseAndCopyButton = function(){
             if($scope.korboModalTabs.activeTab === 1){
                 $scope.showUseAndCopy.visibility = false;
             }
         };
 
+        // show Copy in Editor button only in Search tab
         $scope.showCopyInEditorButton = function(){
-            if($scope.korboModalTabs.activeTab === 0){
-                $scope.showCopyInEditor.visibility = true;
-            } else {
-                $scope.showCopyInEditor.visibility = false;
-            }
+            $scope.showCopyInEditor.visibility = $scope.korboModalTabs.activeTab === 0;
         };
 
+        // show More Info button only in Search tab
         $scope.showMoreInfoButton = function(){
-            if($scope.korboModalTabs.activeTab === 0){
-                $scope.showMoreInfo.visibility = true;
-            } else {
-                $scope.showMoreInfo.visibility = false;
-            }
+            $scope.showMoreInfo.visibility = $scope.korboModalTabs.activeTab === 0;
+
         };
 
+        // show Save and Add button only in New tab
         $scope.showSaveAndAddButton = function(){
-            if($scope.korboModalTabs.activeTab === 1){
-                $scope.showSaveAndAdd.visibility = true;
-            } else {
-                $scope.showSaveAndAdd.visibility = false;
-            }
+            $scope.showSaveAndAdd.visibility = $scope.korboModalTabs.activeTab === 1;
         };
 
     });

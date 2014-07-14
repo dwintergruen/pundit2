@@ -5,17 +5,20 @@ angular.module('KorboEE')
 
         var isAutocompleteLoading = false;
 
+        // set autocomplete loading status
         korboCommunication.setAutocompleteLoading = function(val){
             isAutocompleteLoading = val;
         };
 
+        // get autocomplete loading status
         korboCommunication.isAutocompleteLoading = function(){
             return isAutocompleteLoading;
         };
 
-        // modal
+        // create a new scope for korbo modal
         var KeeModalScope = $rootScope.$new();
 
+        // initializa korbo modal
         var KeeModal = $modal({
             container: "[data-ng-app='Pundit2']",
             template: 'src/KorboEE/Modal/KorboEE.modal.tmpl.html',
@@ -24,9 +27,13 @@ angular.module('KorboEE')
             scope: KeeModalScope
         });
 
+        // open korbo modal on New tab
+        // if an entity is defined, the form in New tab will be fill with entity passed values
         korboCommunication.openModalOnNew = function(conf, entity, directiveScope){
+            // open only if modal is not open yet
             if(korboConf.getIsOpenModal() === false){
                 korboConf.setIsOpenModal(true);
+                // if an entity is passed, set in the scope
                 if(typeof(entity) !== 'undefined' || entity !== ''){
                     KeeModalScope.entityToCreate = entity;
                 } else {
@@ -35,17 +42,24 @@ angular.module('KorboEE')
 
                 KeeModalScope.labelToSearch = null;
                 KeeModalScope.idEntityToEdit = null;
+                // set operation code
                 KeeModalScope.op = "new";
+                // set configuration object in scope
                 KeeModalScope.conf = conf;
+                // set directive scope in modal scope
                 KeeModalScope.directiveScope = directiveScope;
+                // show the modal
                 KeeModal.$promise.then(KeeModal.show);
             }
 
         };
 
+        // open modal in Search tab
+        // if a label is defined, when modal is open start searching the label
         korboCommunication.openModalOnSearch = function(conf, val, directiveScope){
             if(korboConf.getIsOpenModal() === false){
                 korboConf.setIsOpenModal(true);
+                // if label is defined, set it in the modal scope
                 if(typeof(val) !== 'undefined' || val !== ''){
                     KeeModalScope.labelToSearch = val;
                 } else {
@@ -54,13 +68,19 @@ angular.module('KorboEE')
 
                 KeeModalScope.entityToCreate = null;
                 KeeModalScope.idEntityToEdit = null;
+                // set operation code
                 KeeModalScope.op = "search";
+                // set configuration object in scope
                 KeeModalScope.conf = conf;
+                // set directive scope in modal scope
                 KeeModalScope.directiveScope = directiveScope;
+                // show modal
                 KeeModal.$promise.then(KeeModal.show);
             }
         };
 
+        // open modal in Edit mode
+        // it need the id of entity to edit
         korboCommunication.openModalOnEdit = function(conf, id, directiveScope){
             if(korboConf.getIsOpenModal() === false){
                 korboConf.setIsOpenModal(true);
@@ -73,12 +93,15 @@ angular.module('KorboEE')
                 KeeModalScope.entityToCreate = null;
                 KeeModalScope.labelToSearch = null;
                 KeeModalScope.op = "edit";
+                // set configuration object in scope
                 KeeModalScope.conf = conf;
+                // set directive scope in modal scope
                 KeeModalScope.directiveScope = directiveScope;
                 KeeModal.$promise.then(KeeModal.show);
             }
         };
 
+        // close an open modal
         korboCommunication.closeModal = function(){
             if(korboConf.getIsOpenModal() === true){
                 korboConf.setIsOpenModal(false);
@@ -87,8 +110,10 @@ angular.module('KorboEE')
 
         };
 
+        // get a searching of a given label
         korboCommunication.autocompleteSearch = function(val, endpoint, prov, limit, offset, lang) {
             isAutocompleteLoading = true;
+            // return an http Promise
             return $http({
                 //headers: { 'Content-Type': 'application/json' },
                 method: 'GET',
@@ -101,12 +126,16 @@ angular.module('KorboEE')
                     offset: offset,
                     lang: lang
                 }
+                // if no server error occures
             }).then(function(res) {
+                    //if empty results is found, return an object with no found label
                 if(res.data.metadata.totalCount === "0"){
                     var noFound = [{label:"no found", noResult:true}];
                     isAutocompleteLoading = false;
+                    // on return http Promise will be resolved
                     return noFound;
                 } else {
+                    // if no empty results is found
                     // wipe container
                     ItemsExchange.wipeContainer("kee-"+prov);
 
@@ -134,6 +163,7 @@ angular.module('KorboEE')
                 }
 
             },
+                // if server error is occurred, return error
             function(){
                 isAutocompleteLoading = false;
                 var errorServer = [{label:"error", errorServer:true}];
@@ -144,11 +174,12 @@ angular.module('KorboEE')
         };
 
         var entity = null;
-
+        // set selected entity
         korboCommunication.setSelectedEntity = function(e){
             entity = e;
         }
 
+        // get selected entity
         korboCommunication.getSelectedEntity = function(){
             return entity;
         }
@@ -190,9 +221,10 @@ angular.module('KorboEE')
                     lang: param.lang
                 }
             }).success(function(res){
+                // wipe container
                 ItemsExchange.wipeContainer(container);
+                // for each results...
                 for(var i=0; i<res.data.length; i++){
-
                     var item = {
                             uri: res.data[i].id,
                             label: res.data[i].label,
@@ -200,8 +232,9 @@ angular.module('KorboEE')
                             depiction: "",
                             type: ['']
                             }
-
+                    // ... create an item...
                     var itemToAdd = new Item(item.uri, item);
+                    // ... and add it to container
                     ItemsExchange.addItemToContainer(itemToAdd, container);
                 }
 
