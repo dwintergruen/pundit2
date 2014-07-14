@@ -207,7 +207,6 @@ angular.module('KorboEE')
         //
         KorboCommFactory.prototype.search = function(param, container){
             var promise = $q.defer();
-
             $http({
                 //headers: { 'Content-Type': 'application/json' },
                 method: 'GET',
@@ -218,7 +217,7 @@ angular.module('KorboEE')
                     p: param.provider,
                     limit: param.limit,
                     offset: param.offset,
-                    lang: param.lang
+                    lang: param.language
                 }
             }).success(function(res){
                 // wipe container
@@ -272,6 +271,26 @@ angular.module('KorboEE')
             }).success(function(res){
 
                 promise.resolve(res);
+            }).error(function(){
+                promise.reject();
+            });
+
+            return promise.promise;
+        };
+
+        // save an entity
+        KorboCommFactory.prototype.save = function(entity, lan, baseURL, basketID){
+            var promise = $q.defer();
+
+            $http({
+                headers: {'Access-Control-Expose-Headers': "Location", 'Content-Language': lan},
+                method: 'POST',
+                url: baseURL + "/baskets/" + basketID + "/items",
+                data: entity
+            }).success(function(data, status, headers){
+                var location = headers('Location');
+
+                promise.resolve(location);
             }).error(function(){
                 promise.reject();
             });

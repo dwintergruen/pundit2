@@ -1,7 +1,8 @@
 angular.module('KorboEE')
-    .controller('KeeModalCtrl', function($scope, $modal, KorboCommunicationService, APIService, korboConf) {
+    .controller('KeeModalCtrl', function($scope, $modal, KorboCommunicationService, APIService, korboConf, KorboCommunicationFactory) {
 
         var api = APIService.get($scope.conf.globalObjectName);
+        var korboComm = new KorboCommunicationFactory();
 
         // set default language
         $scope.defaultLan = $scope.conf.languages[0];
@@ -81,7 +82,40 @@ angular.module('KorboEE')
 
         $scope.copyAndUse = function(){
             //TODO
-            console.log("vuoi usare e copiare ", $scope.itemSelected);
+
+            var itemToCopyInKorbo = {
+                "label": $scope.itemSelected.label,
+                "abstract": $scope.itemSelected.description,
+                "type": $scope.itemSelected.type,
+                "depiction": $scope.itemSelected.image,
+                "resourceUrl": $scope.itemSelected.resource
+            };
+            var promise = korboComm.save(itemToCopyInKorbo, $scope.defaultLan.value, $scope.conf.endpoint, $scope.conf.basketID );
+            promise.then(function(res){
+
+                    $scope.directiveScope.label = itemToCopyInKorbo.label;
+                    $scope.directiveScope.elemToSearch = itemToCopyInKorbo.label;
+                    $scope.directiveScope.location = res;
+
+                    // declare object returned onSave() call
+                    var obj = {};
+                    obj.value = res.location;
+                    obj.label = itemToCopyInKorbo.label;
+                    obj.type = itemToCopyInKorbo.type;
+                    obj.image = itemToCopyInKorbo.depiction;
+                    obj.description = itemToCopyInKorbo.abstract;
+                    obj.language = $scope.defaultLan.value;
+                    api.fireOnSave(obj);
+                    api.fireOnCancel();
+                    // close modal
+                    KorboCommunicationService.closeModal();
+                    // set modal as close in configuration
+                    korboConf.setIsOpenModal(false);
+
+            },
+            function(){
+               console.log("error to copy entity in korbo");
+            });
         };
 
         $scope.moreInfo = function(){
