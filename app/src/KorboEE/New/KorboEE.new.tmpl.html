@@ -13,12 +13,12 @@
         <div class="kee-right-content">
             <div class="kee-new-original-url">
                 <label>Original URL</label>
-                <input type="text" ng-model="imageUrl">
+                <input type="text" >
                 <span class="pnd-icon-external-link"></span>
             </div>
             <div class="kee-new-image-url">
                 <label>Image URL</label>
-                <input type="text">
+                <input type="text" ng-model="imageUrl">
             </div>
             <div class="kee-new-types">
                 <label>Types</label>
@@ -26,7 +26,9 @@
         </div>
     </div><!-- End new content-->
 
-    <div class>
-        <button type="button" class="btn btn-xs btn-success" ng-show="showSaveAndAdd.visibility"ng-click="save()">Save and add</button>
+    <div class="kee-new-footer">
+        <button type="button" class="btn btn-xs btn-success" ng-click="closeKeeModal()">Close</button>
+        <button type="button" class="btn btn-xs btn-success" ng-click="save()">Save and add</button>
     </div>
+
 </div>

@@ -3,7 +3,7 @@ angular.module('KorboEE')
 
         var api = APIService.get($scope.conf.globalObjectName);
         var korboComm = new KorboCommunicationFactory();
-
+        
         // set default language
         $scope.defaultLan = $scope.conf.languages[0];
         for (var j in $scope.conf.languages){
@@ -76,10 +76,6 @@ angular.module('KorboEE')
         // close modal
         $scope.closeKeeModal = function(){
             KorboCommunicationService.closeModal();
-        };
-
-        $scope.save = function(a){
-            console.log("aaaa ",$scope);
         };
 
         $scope.copyAndUse = function(){

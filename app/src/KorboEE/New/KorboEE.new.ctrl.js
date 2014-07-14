@@ -1,6 +1,8 @@
 angular.module('KorboEE')
     .controller('KeeNewCtrl', function($scope, $modal, KorboCommunicationService) {
+
         $scope.tabs = [];
+        $scope.imageUrl = "";
         $scope.tabs.push({
             title: 'EN',
             label: '',
@@ -43,6 +45,9 @@ angular.module('KorboEE')
             content: 'English'
         });
 
+    $scope.save = function(){
+        console.log($scope.imageUrl);
+    };
 
 
     });
