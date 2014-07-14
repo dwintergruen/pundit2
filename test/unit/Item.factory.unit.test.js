@@ -158,7 +158,7 @@ describe('Item Factory', function() {
         expect(rdfObj[NameSpace.item.description][0].value).toBe(testItems.allPropItem.description);
 
         // should encode image as literal
-        expect(rdfObj[NameSpace.item.image][0].type).toBe('literal');
+        expect(rdfObj[NameSpace.item.image][0].type).toBe('uri');
         expect(rdfObj[NameSpace.item.image][0].value).toBe(testItems.allPropItem.image);
 
         // should encode pageContext as uri
@@ -207,7 +207,7 @@ describe('Item Factory', function() {
 
               // IMAGE
               'http://xmlns.com/foaf/0.1/depiction': [{
-                  type: "literal",
+                  type: "uri",
                   value: "http://depic-uri"
               }],
 
