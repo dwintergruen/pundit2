@@ -3,15 +3,14 @@
 
 // Core variables and mixins, imported again to being able to use them
 // outside of the .pnd-wrp import
+
 @import "@{bspath}variables.less";
 @import "@{bspath}mixins.less";
-@import "variables.less";
-@import "korboee-variables.less";
+
+
 
 .kee-wrp {
-  @import "korboee-theme.less";
-
-
+  
   @import "@{bspath}normalize.less";
   @import "@{bspath}print.less";
 
@@ -24,7 +23,7 @@
   @import "@{bspath}buttons.less";
 
   @import "@{bspath}component-animations.less";
-  @import "@{bspath}glyphicons.less";
+  // @import "@{bspath}glyphicons.less";
   @import "@{bspath}dropdowns.less";
   @import "@{bspath}button-groups.less";
   @import "@{bspath}input-groups.less";
@@ -35,7 +34,7 @@
   @import "@{bspath}pager.less";
   @import "@{bspath}labels.less";
   @import "@{bspath}badges.less";
-  @import "@{bspath}jumbotron.less";
+  // @import "@{bspath}jumbotron.less";
   @import "@{bspath}thumbnails.less";
   @import "@{bspath}alerts.less";
   @import "@{bspath}progress-bars.less";
@@ -50,8 +49,13 @@
   @import "@{bspath}popovers.less";
   @import "@{bspath}carousel.less";
 
-  @import "verticalTabs.less";
+  @import "variables.less";
+  @import "korboee-variables.less";
+  @import "pageItemContainer.less";
+  @import "item.less";
+  @import "korboee-theme.less";
   @import "preview.less";
+  @import "verticalTabs.less";
 
 }
 
