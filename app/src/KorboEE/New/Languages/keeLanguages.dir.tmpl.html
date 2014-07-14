@@ -1,0 +1,26 @@
+<div class="tabbable tabs-left"> <!-- tabs left -->
+
+    <ul class="nav nav-tabs pnd-vertical-tabs">
+        <li ng-repeat="pane in panes" ng-class="{active: $index == active}" ng-show="pane.isVisible">
+            <a data-toggle="tab" ng-click="setActive($index, $event)" data-index="{{$index}}" ng-bind-html="pane.title"></a>
+        </li>
+        <li class="pull-right show-tabs" ng-class="{active: hiddenTabIsActive}" placement="bottom-right" template="{{hiddenTabsDropdownTemplate}}" bs-dropdown="hiddenTabs" ng-show="hiddenTabsToShow()">
+            <a><span class="pnd-icon  pnd-icon-bars"></span></a>
+        </li>
+    </ul>
+
+
+
+    <div>
+        <div class="pnd-vertical-tab-content tab-content">
+            <div ng-repeat="pane in panes" class="tab-pane pnd-vertical-tab-list-content" ng-class="[$index == active ? 'active' : '']">
+                <label>Title</label>
+                <input type="text">
+                <label>Description</label>
+                <input type="textarea">
+            </div>
+
+        </div>
+    </div>
+
+</div> <!-- / tabs left -->

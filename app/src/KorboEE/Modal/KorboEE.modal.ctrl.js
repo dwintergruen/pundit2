@@ -76,12 +76,13 @@ angular.module('KorboEE')
         // close modal
         $scope.closeKeeModal = function(){
             KorboCommunicationService.closeModal();
-        }
+        };
 
-
+        $scope.save = function(a){
+            console.log("aaaa ",$scope);
+        };
 
         $scope.copyAndUse = function(){
-            //TODO
 
             var itemToCopyInKorbo = {
                 "label": $scope.itemSelected.label,

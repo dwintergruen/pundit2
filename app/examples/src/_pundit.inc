@@ -156,6 +156,8 @@
     <script src="../src/KorboEE/KorboCommunication.service.js"></script>
     <script src="../src/KorboEE/Modal/KorboEE.modal.ctrl.js"></script>
     <script src="../src/KorboEE/New/KorboEE.new.ctrl.js"></script>
+    <script src="../src/KorboEE/New/Languages/keeLanguages.dir.js"></script>
+    <script src="../src/KorboEE/New/Languages/keeLanguages.ctrl.js"></script>
     <script src="../src/KorboEE/Search/KorboEE.search.ctrl.js"></script>
 
     <!-- endbuild -->

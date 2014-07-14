@@ -1,3 +1,32 @@
 <div ng-controller="KeeNewCtrl">
-    {{pane.content}}
+    <div class="kee-top-area">
+        <div class="kee-top-area-message"> Top area</div>
+        <div class="kee-top-area-menu">
+            <span class="pnd-icon-gear"></span>
+        </div>
+    </div> <!-- End top area-->
+
+    <div class="kee-new-content">
+        <div class="kee-new-languages">
+            <div kee-languages="tabs"></div>
+        </div>
+        <div class="kee-right-content">
+            <div class="kee-new-original-url">
+                <label>Original URL</label>
+                <input type="text" ng-model="imageUrl">
+                <span class="pnd-icon-external-link"></span>
+            </div>
+            <div class="kee-new-image-url">
+                <label>Image URL</label>
+                <input type="text">
+            </div>
+            <div class="kee-new-types">
+                <label>Types</label>
+            </div>
+        </div>
+    </div><!-- End new content-->
+
+    <div class>
+        <button type="button" class="btn btn-xs btn-success" ng-show="showSaveAndAdd.visibility"ng-click="save()">Save and add</button>
+    </div>
 </div>
