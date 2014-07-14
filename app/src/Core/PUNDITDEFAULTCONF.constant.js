@@ -110,7 +110,7 @@ angular.module('Pundit2.Core')
         /**
          * @module punditConfig
          * @ngdoc object
-         * @name useBasicRelations
+         * @name useTemplates
          * @description
          * `boolean`
          * Load configured templates.
