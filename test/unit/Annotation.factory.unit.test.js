@@ -179,5 +179,24 @@ describe('Annotation', function() {
         });
         $httpBackend.flush();
     });
+
+    it("should annotation be broken before consolidation", function() {
+        var testId = 'foo';
+        $httpBackend
+            .when('GET', NameSpace.get('asOpenAnn', {id: testId}))
+            .respond(testAnnotations.simple2);
+
+        var ann,
+            promise = new Annotation(testId);
+        waitsFor(function() { return ann; }, 2000);
+        runs(function() {
+            expect(ann.isBroken()).toBe(true);
+
+        });
+        promise.then(function(ret) {
+            ann = ret;
+        });
+        $httpBackend.flush();
+    });
     
 });

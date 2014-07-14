@@ -96,43 +96,6 @@ angular.module('Pundit2.Communication')
     };
 
     Annotation.prototype.isBroken = function() {
-        // var graph = this.graph;
-        // var currentItem;
-        // var list;
-        // var broken = true;
-
-        // // TODO: add support for web pages and external text/image fragment
-
-        // for (var subject in graph){
-        //     currentItem = ItemsExchange.getItemByUri(subject);
-        //     if (currentItem.isTextFragment() || currentItem.isImageFragment()){
-        //         if (Consolidation.isConsolidated(currentItem)){
-        //             broken = false;
-        //             return broken;
-        //         }
-        //     }
-
-        //     for (var predicate in graph[subject]){
-
-        //         list = graph[subject][predicate];
-        //         for (var object in list){
-        //             objectValue = list[object].value;
-        //             objectType = list[object].type;
-
-        //             if (objectType === 'uri'){
-        //                 currentItem = ItemsExchange.getItemByUri(objectValue);
-        //                 if (currentItem.isTextFragment() || currentItem.isImageFragment()){
-        //                     if (Consolidation.isConsolidated(currentItem)){
-        //                         broken = false;
-        //                         return broken;;
-        //                     }
-        //                 }
-        //             } 
-        //         }
-        //     }
-        // }
-        // return broken;
-
         var items = this.items;
 
         // TODO: add support for web pages and external text/image fragment
