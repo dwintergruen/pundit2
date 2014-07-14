@@ -105,7 +105,7 @@ angular.module('Pundit2.Annotators')
         $document.on('mousedown', function(downEvt) {
 
             var target = downEvt.target;
-            if (isToBeIgnored(target)) {
+            if (tfh.isToBeIgnored(target)) {
                 tfh.log('ABORT: ignoring mouse DOWN event on document: ignore class spotted.');
                 if (tfh.options.removeSelectionOnAbort) {
                     $document.on('mouseup', mouseUpHandlerToRemove);
@@ -132,7 +132,7 @@ angular.module('Pundit2.Annotators')
             $document.off('mouseup', mouseUpHandler);
 
             var target = upEvt.target;
-            if (isToBeIgnored(target)) {
+            if (tfh.isToBeIgnored(target)) {
                 tfh.log('ABORT: ignoring mouse UP event on document: ignore class spotted.');
                 removeSelection();
                 return;
@@ -149,7 +149,7 @@ angular.module('Pundit2.Annotators')
             var nodes = range.cloneContents().querySelectorAll("*"),
                 nodesLen = nodes.length;
             while (nodesLen--) {
-                if (isToBeIgnored(nodes[nodesLen])) {
+                if (tfh.isToBeIgnored(nodes[nodesLen])) {
                     tfh.log('ABORT: ignoring range: ignore class spotted inside it, somewhere.');
                     removeSelection();
                     return;
@@ -185,7 +185,7 @@ angular.module('Pundit2.Annotators')
         tfh.createItemFromRange = function(range) {
             var values = {};
 
-            values.uri = range2xpointer(range);
+            values.uri = tfh.range2xpointer(range);
             values.type = [NameSpace.fragments.text];
             values.description = range.toString();
 
@@ -239,7 +239,7 @@ angular.module('Pundit2.Annotators')
         };
 
         // Checks if the node (or any parent) is a node which needs to be ignored
-        var isToBeIgnored = function(node) {
+        tfh.isToBeIgnored = function(node) {
             var classes = tfh.options.ignoreClasses,
                 ignoreLen = classes.length;
 
@@ -266,7 +266,7 @@ angular.module('Pundit2.Annotators')
         // - correct any wrong number inside xpaths (node number, offsets)
         // - build the xpointer starting from a named content, if present
         // - build the xpointer strings
-        var range2xpointer = function(dirtyRange) {
+        tfh.range2xpointer = function(dirtyRange) {
             var cleanRange = dirtyRange2cleanRange(dirtyRange),
                 cleanStartXPath = correctXPathFinalNumber(calculateCleanXPath(cleanRange.startContainer), cleanRange.cleanStartNumber),
                 cleanEndXPath = correctXPathFinalNumber(calculateCleanXPath(cleanRange.endContainer), cleanRange.cleanEndNumber),

@@ -1,5 +1,6 @@
 angular.module('Pundit2.Annotators')
-.service('ImageFragmentAnnotator', function(NameSpace, BaseComponent, Consolidation) {
+.service('ImageFragmentAnnotator', function(NameSpace, BaseComponent, $location,
+    Consolidation, ImageFragmentHandler, XpointersHelper) {
 
     // Create the component and declare what we deal with: text
     var ifa = new BaseComponent('ImageFragmentAnnotator');
@@ -33,9 +34,33 @@ angular.module('Pundit2.Annotators')
         return false;
     };
 
-    ifa.getAvailableTargets = function() {
-        // TODO
-        return [];
+    ifa.getAvailableTargets = function(onlyNamedContents) {
+        var ret = [],
+            nc = XpointersHelper.options.namedContentClasses;
+
+        // The page URL is for xpointers out of named contents
+        if (typeof(onlyNamedContents) === "undefined" || onlyNamedContents !== true) {
+            ret.push($location.absUrl());
+        }
+
+        // Look for named content: an element with a class listed in .namedContentClasses
+        // then get its about attribute
+        for (var l=nc.length; l--;) {
+            var className = nc[l],
+                nodes = angular.element('.'+className);
+
+            for (var n=nodes.length; n--;) {
+                // If it doesnt have the attribute, dont add it
+                var uri = angular.element(nodes[n]).attr('about');
+                // TODO: better checks of what we find inside about attributes? A lil regexp
+                // or we let do this at the server?
+                if (uri) {
+                    ret.push(uri);
+                }
+            }
+        }
+
+        return ret;
     };
 
     ifa.wipe = function() {
