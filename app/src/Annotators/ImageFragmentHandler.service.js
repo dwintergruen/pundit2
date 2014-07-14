@@ -82,14 +82,12 @@ angular.module('Pundit2.Annotators')
 
         ContextualMenu.addAction({
             type: [
-                ifh.options.cMenuType,
-                Config.modules.PageItemsContainer.cMenuType,
-                Config.modules.MyItemsContainer.cMenuType
+                ifh.options.cMenuType
             ],
             name: 'addImageToSubject',
             label: 'Annotate this Image',
             showIf: function(item) {
-                return !Toolbar.isActiveTemplateMode() && item.isImage() && TripleComposer.canAddItemAsSubject();
+                return !Toolbar.isActiveTemplateMode() && item.isImage() && TripleComposer.canAddItemAsSubject(item);
             },
             priority: 20,
             action: function(item) {
@@ -124,7 +122,10 @@ angular.module('Pundit2.Annotators')
             // NOT shown on every dashboard open/close ?
             var item = ifh.createItemFromImage(target);
             ItemsExchange.addItemToContainer(item, ifh.options.container);
+
             ifh.log('Valid selection ended on document. Text fragment Item produced: '+ item.label);
+
+            ContextualMenu.show(clickEvt.pageX, clickEvt.pageY, item, ifh.options.cMenuType);
         }        
 
         /*if (Toolbar.isActiveTemplateMode()) {
@@ -133,8 +134,6 @@ angular.module('Pundit2.Annotators')
             $rootScope.$emit('pnd-save-annotation');
             return;
         }*/
-
-        ContextualMenu.show(clickEvt.pageX, clickEvt.pageY, item, ifh.options.cMenuType);
     });
 
     var getXpFromNode = function(node) {

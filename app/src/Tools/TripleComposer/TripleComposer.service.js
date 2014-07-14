@@ -180,8 +180,8 @@ angular.module('Pundit2.TripleComposer')
     debug: false
     
 })
-.service('TripleComposer', function($rootScope, BaseComponent, TRIPLECOMPOSERDEFAULTS, TypesHelper, NameSpace,
-    AnnotationsExchange, ItemsExchange, Dashboard, TemplatesExchange) {
+.service('TripleComposer', function($rootScope, BaseComponent, TRIPLECOMPOSERDEFAULTS, TypesHelper, NameSpace, Config,
+    AnnotationsExchange, ItemsExchange, Dashboard, ContextualMenu, TemplatesExchange) {
 
     var tripleComposer = new BaseComponent('TripleComposer', TRIPLECOMPOSERDEFAULTS);
 
@@ -192,6 +192,47 @@ angular.module('Pundit2.TripleComposer')
 
     var editMode = false,
         editAnnID;
+
+    // Contextual Menu actions for my items and page items
+    var initContextualMenu = function() {
+        ContextualMenu.addAction({
+            type: [
+                Config.modules.PageItemsContainer.cMenuType,
+                Config.modules.MyItemsContainer.cMenuType
+            ],
+            name: 'useAsSubject',
+            label: 'Use as Subject',
+            showIf: function(item) {
+                return /*!Toolbar.isActiveTemplateMode() &&*/ tripleComposer.canAddItemAsSubject(item);
+            },
+            priority: 101,
+            action: function(item) {
+                tripleComposer.addToSubject(item);
+            }
+        });
+
+        ContextualMenu.addAction({
+            type: [
+                Config.modules.PageItemsContainer.cMenuType,
+                Config.modules.MyItemsContainer.cMenuType
+            ],
+            name: 'useAsObject',
+            label: 'Use as Object',
+            showIf: function(item) {
+                return /*!Toolbar.isActiveTemplateMode() &&*/ tripleComposer.canAddItemAsObject(item);
+            },
+            priority: 100,
+            action: function(item) {
+                tripleComposer.addToObject(item);
+            }
+        });
+
+    }; // initContextualMenu()
+
+    // When all modules have been initialized, services are up, Config are setup etc..
+    $rootScope.$on('pundit-boot-done', function() {
+        initContextualMenu();
+    });
 
     tripleComposer.getStatements = function(){
         return statements;
@@ -304,9 +345,60 @@ angular.module('Pundit2.TripleComposer')
 
     };
 
-    tripleComposer.canAddItemAsSubject = function(){
+    tripleComposer.canAddItemAsSubject = function(item){
+        // TODO find first triple with empty object
         if (statements.length === 1 && !statements[0].scope.subjectFound && !editMode) {
-            return true;
+            var domainFound = false,
+            predicate = statements[0].scope.get().predicate;
+            
+
+            if (predicate === null || predicate.domain.length === 0) {
+                return true;
+            }
+            console.log('domain:',predicate.domain);
+
+            item.type.some(function(type, i){
+                if (predicate.domain.indexOf(type) > -1) {
+                    domainFound = true;
+                    return domainFound;
+                }
+            });
+
+            if (!domainFound) {
+                tripleComposer.log('Impossible to add item as Subject: predicate domain not match');
+            } else {
+                tripleComposer.log('Predicate domain match.');
+            }
+            return domainFound;
+        } else {
+            return false;
+        }
+    };
+
+    tripleComposer.canAddItemAsObject = function(item){
+        // TODO find first triple with empty object
+        if (statements.length === 1 && !statements[0].scope.objectFound && !editMode) {
+            var rangeFound = false,
+            predicate = statements[0].scope.get().predicate;
+
+            if (predicate === null || predicate.range === 0) {
+                return true;
+            }
+            console.log('range', predicate.range);
+
+            item.type.some(function(type, i){
+                if (predicate.range.indexOf(type) > -1) {
+                    rangeFound = true;
+                    return rangeFound;
+                }
+            });
+
+            if (!rangeFound) {
+                tripleComposer.log('Impossible to add item as Object: predicate range not match');
+            } else {
+                tripleComposer.log('Predicate range match.');
+            }
+            return rangeFound;
         } else {
             return false;
         }
@@ -320,16 +412,24 @@ angular.module('Pundit2.TripleComposer')
         $rootScope.$emit('pnd-dashboard-show-tab', tripleComposer.options.clientDashboardTabTitle);
     };
 
+    // Used to add a object from outside of triple composer
+    tripleComposer.addToObject = function(item) {
+        tripleComposer.openTripleComposer();
+        
+        statements[0].scope.setObject(item);
+        $rootScope.$$phase || $rootScope.$digest();
+        tripleComposer.log('Add item as object: '+item.label);
+        
+    };
+
     // Used to add a subject from outside of triple composer
     tripleComposer.addToSubject = function(item) {
         tripleComposer.openTripleComposer();
-        if (tripleComposer.canAddItemAsSubject()) {
-            statements[0].scope.setSubject(item);
-            $rootScope.$$phase || $rootScope.$digest();
-            tripleComposer.log('Add item as subject');
-        } else {
-            tripleComposer.log('Impossible to add this item as subject, subject already present or more than one triple');
-        }
+        
+        statements[0].scope.setSubject(item);
+        $rootScope.$$phase || $rootScope.$digest();
+        tripleComposer.log('Add item as subject: '+item.label);
+        
     };
 
     tripleComposer.addToAllSubject = function(item) {

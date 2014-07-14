@@ -92,7 +92,7 @@ angular.module('Pundit2.Annotators')
 
 .service('TextFragmentAnnotator',
     function(TEXTFRAGMENTANNOTATORDEFAULTS, NameSpace, BaseComponent, Consolidation,
-             XpointersHelper, ContextualMenu, ItemsExchange, Config, TripleComposer, Dashboard, Toolbar,
+             XpointersHelper, ContextualMenu, ItemsExchange, Config, TripleComposer, Toolbar,
              $compile, $rootScope, $location) {
 
     // Create the component and declare what we deal with: text
@@ -107,18 +107,15 @@ angular.module('Pundit2.Annotators')
     // Contextual Menu actions for text fragments??
     var initContextualMenu = function() {
 
-        // TODO: move this to TripleComposer !!!
         ContextualMenu.addAction({
             type: [
                 tfa.options.cMenuType,
-                Config.modules.TextFragmentHandler.cMenuType,
-                Config.modules.PageItemsContainer.cMenuType,
-                Config.modules.MyItemsContainer.cMenuType
+                Config.modules.TextFragmentHandler.cMenuType
             ],
             name: 'addToSubject',
             label: 'Annotate this text fragment',
             showIf: function(item) {
-                return !Toolbar.isActiveTemplateMode() && item.isTextFragment() && TripleComposer.canAddItemAsSubject();
+                return !Toolbar.isActiveTemplateMode() && item.isTextFragment() && TripleComposer.canAddItemAsSubject(item);
             },
             priority: 20,
             action: function(item) {
