@@ -7,23 +7,44 @@
 .modal-dialog {
 
 	.kee-modal-body {
-		padding: 10px 0px 0px 0px;
-		overflow-y: hidden;
+		padding: 0px 0px 0px 0px;
+		/*overflow-y: hidden;
+		height: 500px;*/
 	}
 	
+	.kee-modal-footer  {
+		margin-top: 0px;
+		background-color: darken(@gray-lighter, 10%);
+	}
+
+	
 }
+
+.kee-wrp {
+	background-color: @gray-lighter;
+	
+	// TABS ----- //
+	
+	.nav-tabs {
+		margin: 0px 0px 1px 0px;
+		}
+	
+	// VERTICAL TABS ----- //
+	
+	.tabs-left > .nav-tabs {
+		margin-bottom: 0px;
+		margin-right: 0px;
+		}
+}
+
 
 //
 // Search
 // --------------------------------------------------
 
 .kee-search {
-	background-color: darken(@gray-lighter, 10%);
+	background-color: darken(@gray-lighter, 5%);
 	padding: 8px;
-	
-	input {
-		width: 90% !important;
-	}
 }
 
 //
@@ -31,21 +52,28 @@
 // --------------------------------------------------
 
 .pnd-vertical-tabs  {
-	height: 400px!important;
+	height: 400px;
 }
+
+.tab-content > .tab-pane {
+	margin-bottom: 0px;
+}
+
 
 
 .pnd-vertical-tab-list-content {
 	width: 200px;
-	height: 400px;
+	height: 410px !important;
+	background-color: #fff;
+	overflow-y: auto !important;
+	overflow-x: hidden !important;
 }
 
-.pnd-preview {
-	width: 230px;
-	height: 400px;
-	background-color: @gray-lighter;
-	display: inline-block;
-}
+.pnd-panel-tab-content-content {
+	height: 360px;
+	}
+
+
 
 //
 // Input and icon
@@ -113,15 +141,8 @@
 		overflow-y: scroll;
 		}
 		
-	.pnd-vertical-tabs  {
-		height: 200px;
-		}
 
-	.pnd-vertical-tab-list-content {
-		height: 200px;
-		overflow-y: auto;
-		padding-top: 8px;
-		}
+
 
 	.pnd-vertical-tab-footer-content {
 		display: block;
