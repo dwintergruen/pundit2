@@ -1,50 +1,57 @@
 
 //
-// Modal
+// MODAL AND WRAPPER
 // --------------------------------------------------
 
 
-.modal-dialog {
-
-	.kee-modal-body {
-		padding: 0px 0px 0px 0px;
-		border-top: 4px solid @gray-light;
+.kee-modal-body {
+	padding: 0px 0px 0px 0px;
+	border-top: 4px solid @gray-light;
 	}
 		
-}
-
 .kee-wrp {
 	//background-color: @gray-lighter; // gray skin
 	background-color: #fff;
+	}
 	
-	// TABS ----- //
 	
-	.nav-tabs {
-		margin: 0px 0px 1px 0px;
-		}
-	
-	// VERTICAL TABS ----- //
-	
-	.tabs-left > .nav-tabs {
-		margin-bottom: 0px;
-		margin-right: 0px;
-		}
-		
-	// BADGE ----- //
-	
-	.badge {
-		margin: 0px 0px 0px 5px;
-		}
-		
-	// ITEM ----- //
-	
-	.pnd-item .pnd-item-typeLabel { display: none;}
-		
-}
+//
+// COMPONENTS
+// --------------------------------------------------
 
+	
+// TABS ----- //
+	
+.nav-tabs {
+	margin: 0px 0px 1px 0px !important;
+	}
+	
+// VERTICAL TABS ----- //
+	
+.tabs-left > .nav-tabs {
+	margin-bottom: 0px;
+	margin-right: 0px;
+	}
+		
+// BADGE ----- //
+	
+.badge {
+	margin: 0px 0px 0px 5px;
+	}
+		
+// ITEM ----- //
+	
+.pnd-item { // no animation
+	margin-left: 0px;
+		
+	.pnd-item-typeLabel {
+		display: none;
+		}
+	}
+		
 
 //
-// Search
+// SEARCH
 // --------------------------------------------------
 
 .kee-search {
@@ -85,7 +92,7 @@
 }
 
 //
-// Footer
+// FOOTER
 // --------------------------------------------------
 
 .kee-footer {
@@ -95,35 +102,43 @@
 	padding: 5px;
 	margin: 0px;
 	clear: both;
-}
-
-
-.kee-error {
-  color: @brand-danger;
-}
-
-.kee-input-error-server{
-  background-color: red !important;
-  opacity: 0.5 !important;
-}
-
-.kee-autocomplete-list{
-
-}
+	}
 
 
 //
-// Columns
+// MESSAGES
 // --------------------------------------------------
+
+
+.kee-error {
+	color: @brand-danger;
+	}
+
+.kee-input-error-server{
+	background-color: @brand-danger !important;
+	opacity: 0.5 !important;
+	}
+
+.kee-autocomplete-list{
+
+	}
+
+
+//
+// CONTENT
+// --------------------------------------------------
+
+// COL LEFT ----- //
 
 .pnd-vertical-tabs  {
 	height: 400px;
-}
+	}
 
 .tab-content > .tab-pane {
 	margin-bottom: 0px;
-}
+	}
 
+// COL CENTER ----- //
 
 .pnd-vertical-tab-list-content {
 	width: 200px;
@@ -131,7 +146,9 @@
 	background-color: #fff;
 	overflow-y: auto !important;
 	overflow-x: hidden !important;
-}
+	}
+
+// COL RIGHT ----- //
 
 .pnd-panel-tab-content-content {
 	height: 360px;
@@ -144,7 +161,7 @@
 	.pnd-panel-tab-content-header {
 		margin-top: 0px;
 		}
-}
+	}
 
 
 
