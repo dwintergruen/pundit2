@@ -1,7 +1,7 @@
 <div class="tabbable tabs-left"> <!-- tabs left -->
 
     <ul class="nav nav-tabs pnd-vertical-tabs">
-        <li ng-repeat="pane in panes" ng-class="{active: $index == active}" ng-show="pane.isVisible">
+        <li ng-repeat="pane in panes" ng-class="{active: $index == active, 'kee-error' : panes[$index].hasError}" ng-show="pane.isVisible">
             <a data-toggle="tab" ng-click="setActive($index, $event)" data-index="{{$index}}" ng-bind-html="pane.title"></a>
         </li>
         <li class="pull-right show-tabs" ng-class="{active: hiddenTabIsActive}" placement="bottom-right" template="{{hiddenTabsDropdownTemplate}}" bs-dropdown="hiddenTabs" ng-show="hiddenTabsToShow()">
@@ -13,11 +13,22 @@
 
     <div>
         <div class="pnd-vertical-tab-content tab-content">
-            <div ng-repeat="pane in panes" class="tab-pane pnd-vertical-tab-list-content" ng-class="[$index == active ? 'active' : '']">
-                <label>Title</label>
-                <input type="text">
-                <label>Description</label>
-                <input type="textarea">
+            <div ng-repeat="pane in tabs" class="tab-pane pnd-vertical-tab-list-content" ng-class="[$index == active ? 'active' : '']">
+                <div class="kee-title" ng-class="{'kee-error' : tabs[$index].hasError}">
+                <label>Title
+                    <span> * </span>
+                    <span ng-show="!tabs[$index].hasError" class="pnd-icon-exclamation-circle" data-title="{{tabs[$index].tooltipMessageTitle}}" bs-tooltip></span>
+                    <span ng-show="tabs[$index].hasError" class="pnd-icon-exclamation-circle" data-title="{{tabs[$index].tooltipMessageError}}" bs-tooltip></span>
+                </label>
+                <input type="text" ng-model="tabs[$index].label">
+                </div>
+                <div class="kee-description" ng-class="{'kee-error' : tabs[$index].hasError}">
+                <label>
+                    Description
+                    <span class="pnd-icon-exclamation-circle" data-title="{{tabs[$index].tooltipMessageDescription}}" bs-tooltip></span>
+                </label>
+                <textarea class="form-control" rows="3" ng-model="tabs[$index].description"></textarea>
+                </div>
             </div>
 
         </div>
