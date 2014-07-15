@@ -238,7 +238,92 @@ describe("Client interaction when user is logged in", function() {
                 expect(classes.indexOf('ng-hide')).toBe(-1);
             });
         });
-        
+    });
+
+    it("should correctly show ctx menu voice when triple composer is empty", function(){
+        // dbclick (simulate a selection) on text
+        var el = p.findElement(protractor.By.css('.pnd-test-init-selection'));
+        p.actions().doubleClick(el).perform();
+
+        // check triple composer statement subject text
+        p.findElements(protractor.By.css('.dropdown-menu li a')).then(function(a){
+            expect(a.length).toBe(3);
+            expect(a[0].getText()).toBe('Use as Subject');
+            expect(a[1].getText()).toBe('Use as Object');
+            expect(a[2].getText()).toBe('Add to My Items');
+        });
+    });
+
+    it("should correctly add as subject by ctx menu voice when triple composer is empty", function(){
+        // dbclick (simulate a selection) on text
+        var el = p.findElement(protractor.By.css('.pnd-test-init-selection'));
+        p.actions().doubleClick(el).perform();
+
+        // check triple composer statement subject text
+        p.findElements(protractor.By.css('.dropdown-menu li a')).then(function(a){
+            expect(a.length).toBe(3);
+            expect(a[0].getText()).toBe('Use as Subject');
+            a[0].click();
+        });
+
+        // check triple composer statement subject text
+        p.findElement(protractor.By.css('triple-composer statement .pnd-statement-subject .pnd-statement-label')).then(function(t){
+            expect(t.getText()).toBe('Boccaccio');
+            // it must be visible
+            t.getAttribute('class').then(function(classes){
+                expect(classes.indexOf('ng-hide')).toBe(-1);
+            });
+        });
+    });
+
+    it("should correctly add as subject by ctx menu voice when triple composer is empty", function(){
+        // dbclick (simulate a selection) on text
+        var el = p.findElement(protractor.By.css('.pnd-test-init-selection'));
+        p.actions().doubleClick(el).perform();
+
+        // check triple composer statement subject text
+        p.findElements(protractor.By.css('.dropdown-menu li a')).then(function(a){
+            expect(a.length).toBe(3);
+            expect(a[1].getText()).toBe('Use as Object');
+            a[1].click();
+        });
+
+        // check triple composer statement object text
+        p.findElement(protractor.By.css('triple-composer statement .pnd-statement-object .pnd-statement-label')).then(function(t){
+            expect(t.getText()).toBe('Boccaccio');
+            // it must be visible
+            t.getAttribute('class').then(function(classes){
+                expect(classes.indexOf('ng-hide')).toBe(-1);
+            });
+        });
+    });
+
+    it("should correctly show ctx menu voice when triple composer is empty", function(){
+
+        p.driver.manage().window().setSize(1200, 960);
+
+        // open dashboard
+        p.findElement(protractor.By.css('toolbar .pnd-toolbar-dashboard-button')).click();
+        // collapse tools panel
+        p.findElement(protractor.By.css('dashboard-panel[paneltitle=tools] .btn.btn-default')).click();
+        // open page items tab
+        p.findElement(protractor.By.css("dashboard dashboard-panel .pnd-tab-header li [data-index='2']")).click();
+        // mouseover on item
+        var item = p.findElement(protractor.By.css("dashboard dashboard-panel .pnd-tab-content item")),
+            menuBtn = p.findElement(protractor.By.css("dashboard dashboard-panel .pnd-tab-content item .pnd-icon-bars"));
+        p.actions().mouseMove(item).perform();
+        // wait animation
+        p.sleep(500);
+        // open ctx menu
+        menuBtn.click();
+
+        // check triple composer statement subject text
+        p.findElements(protractor.By.css('.dropdown-menu li a')).then(function(a){
+            expect(a.length).toBe(3);
+            expect(a[0].getText()).toBe('Use as Subject');
+            expect(a[1].getText()).toBe('Use as Object');
+            expect(a[2].getText()).toBe('Add to My Items');
+        });
     });
 
 });
