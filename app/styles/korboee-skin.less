@@ -8,6 +8,7 @@
 
 	.kee-modal-body {
 		padding: 0px 0px 0px 0px;
+		border-top: 4px solid @gray-light;
 		/*overflow-y: hidden;
 		height: 500px;*/
 	}
@@ -15,7 +16,8 @@
 }
 
 .kee-wrp {
-	background-color: @gray-lighter; // gray skin
+	//background-color: @gray-lighter; // gray skin
+	background-color: #fff;
 	
 	// TABS ----- //
 	
@@ -41,6 +43,34 @@
 	background-color: #fff;
 	border-bottom: 1px solid @gray-light;
 	padding: 5px;
+	margin-bottom: 5px;
+	
+	label {
+		display: inline-block;
+		}	
+	
+	.left-inner-icon {
+		display: inline-block;	
+		position: relative;
+		padding: 0px;
+		
+		input {
+	  		padding-right: 20px;
+	  		font-weight: normal;
+	  		}
+
+  		.pnd-icon {
+		  	position: absolute;
+		  	color: @gray-light;
+		  	right: 0px;
+		  	top: 0px;
+		  	padding: 7px;
+		  	-moz-box-sizing: border-box;
+		  	-webkit-box-sizing: border-box;
+		  	box-sizing: border-box;
+		  	}
+	}
+	
 }
 
 //
@@ -69,10 +99,9 @@
 }
 
 
-
 .pnd-vertical-tab-list-content {
 	width: 200px;
-	height: 410px !important;
+	height: 405px !important;
 	background-color: #fff;
 	overflow-y: auto !important;
 	overflow-x: hidden !important;
@@ -83,12 +112,20 @@
 	}
 
 
+.pnd-preview {
+	background-color: lighten(@gray-lighter, 5%);
+	
+	.pnd-panel-tab-content-header {
+		margin-top: 0px;
+		}
+}
+
 
 //
 // Input and icon
 // --------------------------------------------------
 
-
+/*
 .left-inner-icon {
   position: relative;
   padding: 0px;
@@ -110,6 +147,7 @@
   box-sizing: border-box;
 }
 
+*/
 .kee-input-error-server{
   background-color: red !important;
   opacity: 0.5 !important;
