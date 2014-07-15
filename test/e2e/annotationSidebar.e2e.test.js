@@ -9,7 +9,10 @@ describe("AnnotationSidebar interaction", function() {
         suggestionsPanelActive = false,
         annotationHeigth = 25,
         startTop = 55
-        sidebarHeight = 300;
+        sidebarExpandedWidth = 300;
+
+    var firstAnnotation = "annid123",
+        secondAnnotation = "annid124";
 
     
     var httpMock = function() {
@@ -75,6 +78,53 @@ describe("AnnotationSidebar interaction", function() {
                     }
                 };
 
+                var annResponse2 = {
+                    graph: {
+                        "http://fake-url.it/empty.html#xpointer(start-point(string-range(//DIV[@about='http://fake-url.it/empty.html']/DIV[1]/P[2]/B[2]/text()[1],'',0))/range-to(string-range(//DIV[@about='http://fake-url.it/empty.html']/DIV[1]/P[2]/B[2]/text()[1],'',5)))": {
+                            "http://schema.org/comment": [{ value: "poeta italiano del 1300", type: "literal"}]
+                        }
+                    },
+                    items: {
+                        "http://fake-url.it/empty.html#xpointer(start-point(string-range(//DIV[@about='http://fake-url.it/empty.html']/DIV[1]/P[2]/B[2]/text()[1],'',0))/range-to(string-range(//DIV[@about='http://fake-url.it/empty.html']/DIV[1]/P[2]/B[2]/text()[1],'',5)))": {
+                            "http://purl.org/dc/terms/isPartOf":
+                                [{type: "uri", value: "http://fake-url.it/empty.html"}],
+                            "http://purl.org/pundit/ont/ao#hasPageContext":
+                                [{type: "uri", value: "http://localhost:9000/app/examples/client-TEST.html"}],
+                            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type":
+                                [{type: "uri", value: "http://purl.org/pundit/ont/ao#fragment-text"}],
+                            "http://www.w3.org/2000/01/rdf-schema#label":
+                                [{type: "literal", value: "Dante"}],
+                        },
+                        "http://schema.org/comment": {
+                            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": [{type: "uri", value: NameSpace.rdf.property}],
+                            "http://www.w3.org/2000/01/rdf-schema#label": [{type: "literal", value: "has comment (free text)"}]
+
+                        },
+                        "http://purl.org/pundit/ont/ao#fragment-text": {
+                            "http://www.w3.org/2000/01/rdf-schema#label": 
+                                [{type: "literal", value: "Text fragment"}]
+                        },
+                        "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property": {
+                            "http://www.w3.org/2000/01/rdf-schema#label": 
+                                [{type: "literal", value: "Property"}]
+                        }
+                    },
+                    metadata: {
+                        "http://purl.org/pundit/demo-cloud-server/annotation/annid124": {
+                            // TODO others property if necessary
+                            "http://purl.org/pundit/ont/ao#hasPageContext":
+                                [{type: "uri", value: "http://localhost:9000/app/examples/client-TEST.html"}],
+                            "http://purl.org/pundit/ont/ao#isIncludedIn":
+                                [{type: "uri", value: "http://purl.org/pundit/demo-cloud-server/notebook/ntid123"}],
+                            "http://purl.org/dc/terms/creator":
+                                [{type: "uri", value: "http://purl.org/pundit/demo-cloud-server/user/userid123"}],
+                            "http://purl.org/dc/elements/1.1/creator":
+                                [{type: "literal", value: "Creator User Name"}]
+                        }
+
+                    }
+                };
+
                 var userLoggedIn = {
                     loginStatus: 1,
                     id: "userid123",
@@ -91,6 +141,9 @@ describe("AnnotationSidebar interaction", function() {
 
                 var annMedatadaSearch = {
                     "http://sever.url/annotation/annid123": {
+                        // annotation medatada here if necessary
+                    },
+                    "http://sever.url/annotation/annid124": {
                         // annotation medatada here if necessary
                     }
                 };
@@ -143,6 +196,7 @@ describe("AnnotationSidebar interaction", function() {
                 // get annotations on annotations API
                 $httpBackend.whenGET(new RegExp("http://test.config.url/api/annotations/metadata/search")).respond(annMedatadaSearch);
                 $httpBackend.whenGET(new RegExp("http://test.config.url/api/annotations/annid123")).respond(annResponse);
+                $httpBackend.whenGET(new RegExp("http://test.config.url/api/annotations/annid124")).respond(annResponse2);
                 // get notebooks metadata
                 $httpBackend.whenGET(NameSpace.get('asNBMeta', {id: "ntid123"})).respond(notebookMedatada);
                 // get current notebook
@@ -172,10 +226,97 @@ describe("AnnotationSidebar interaction", function() {
 
         var container = p.findElement(protractor.By.css('.pnd-annotation-sidebar-container'));
         container.getSize().then(function(size){
-            expect(size.width).toBe(sidebarHeight);
+            expect(size.width).toBe(sidebarExpandedWidth);
         });
 
     });
 
+    it('should toggle the filers list', function() {
+        p.findElement(protractor.By.css('.pnd-toolbar-annotations-button')).click();
+        p.findElements(protractor.By.css('.pnd-annotation-sidebar-filters-list.ng-hide')).then(function(elements) {       
+            expect(elements.length).toBe(1);
+        });
+        p.findElement(protractor.By.css('.pnd-annotation-sidebar-btn-show-filter')).click();
+        p.findElements(protractor.By.css('.pnd-annotation-sidebar-filters-list.ng-hide')).then(function(elements) {       
+            expect(elements.length).toBe(0);
+        });
+    });
+
+    it('should create annotation details', function() {
+        p.findElements(protractor.By.css('#'+firstAnnotation)).then(function(elements) {       
+            expect(elements.length).toBe(1);
+        });
+    });
+
+    it('should open the sidebar and details after click on annotation', function() {
+        p.findElements(protractor.By.css('#'+firstAnnotation)).then(function(elements) {       
+            expect(elements.length).toBe(1);
+        });
+
+        p.findElement(protractor.By.css('#'+firstAnnotation+' .pnd-annotation-details-header')).click();
+
+        var container = p.findElement(protractor.By.css('.pnd-annotation-sidebar-container'));
+        container.getSize().then(function(size){
+            expect(size.width).toBe(sidebarExpandedWidth);
+        });
+
+        p.findElements(protractor.By.css('#'+firstAnnotation+' .pnd-annotation-details-container')).then(function(elements) {       
+            expect(elements.length).toBe(1);
+        });
+    });
+
+    it('should close annotation details after the close of the sidebar', function() {
+        p.findElement(protractor.By.css('.pnd-toolbar-annotations-button')).click();
+        p.findElement(protractor.By.css('#'+firstAnnotation+' .pnd-annotation-details-header')).click();
+
+        p.findElements(protractor.By.css('#'+firstAnnotation+' .pnd-annotation-details-container')).then(function(elements) {       
+            expect(elements.length).toBe(1);
+        });
+
+        p.findElement(protractor.By.css('.pnd-toolbar-annotations-button')).click();
+
+        p.findElements(protractor.By.css('#'+firstAnnotation+' .pnd-annotation-details-container')).then(function(elements) {       
+            expect(elements.length).toBe(0);
+        });
+    });    
+
+    it('should toggle annotation details', function() {
+        p.findElement(protractor.By.css('.pnd-toolbar-annotations-button')).click();
+        p.findElement(protractor.By.css('#'+firstAnnotation+' .pnd-annotation-details-header')).click();
+
+        p.findElements(protractor.By.css('#'+firstAnnotation+' .pnd-annotation-details-container')).then(function(elements) {       
+            expect(elements.length).toBe(1);
+        });
+    });
+
+    it('should hide broken annotations', function() {
+        p.findElements(protractor.By.css('#'+firstAnnotation)).then(function(elements) {       
+            expect(elements.length).toBe(1);
+        });
+        p.findElement(protractor.By.css('.pnd-toolbar-annotations-button')).click();
+        p.findElement(protractor.By.css('.pnd-annotation-sidebar-btn-show-filter')).click();
+        p.findElement(protractor.By.css('.pnd-annotation-sidebar-btn-toggle-broken')).click();
+        
+        p.findElements(protractor.By.css('#'+firstAnnotation)).then(function(elements) {       
+            expect(elements.length).toBe(0);
+        });
+    });
+
+    it('should remove all filters', function() {
+        p.findElement(protractor.By.css('.pnd-toolbar-annotations-button')).click();
+        p.findElement(protractor.By.css('.pnd-annotation-sidebar-btn-show-filter')).click();
+        p.findElement(protractor.By.css('.pnd-annotation-sidebar-btn-toggle-broken')).click();
+        
+        p.findElements(protractor.By.css('#'+firstAnnotation)).then(function(elements) {       
+            expect(elements.length).toBe(0);
+        });
+
+        p.findElement(protractor.By.css('.pnd-annotation-sidebar-btn-close-filters')).click();
+        p.findElement(protractor.By.css('.pnd-annotation-sidebar-btn-remove-filters')).click();
+
+        p.findElements(protractor.By.css('#'+firstAnnotation)).then(function(elements) {       
+            expect(elements.length).toBe(1);
+        });
+    });
 
 });
