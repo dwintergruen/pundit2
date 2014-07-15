@@ -4,26 +4,55 @@
         <div class="kee-top-area-menu">
             <span class="pnd-icon-gear"></span>
         </div>
-    </div> <!-- End top area-->
+    </div> <!-- End top area -->
 
+    <!-- content -->
     <div class="kee-new-content">
+        <!-- Languages -->
         <div class="kee-new-languages">
             <div kee-languages="tabs"></div>
         </div>
+        <!-- End languages -->
+        <!-- content on the right -->
         <div class="kee-right-content">
+            <!-- original url-->
             <div class="kee-new-original-url">
                 <label>Original URL</label>
                 <input type="text" >
                 <span class="pnd-icon-external-link"></span>
             </div>
+            <!-- End original url -->
+
+            <!-- image url -->
             <div class="kee-new-image-url">
-                <label>Image URL</label>
+                <label ng-class="{'kee-error' : imageUrlHasError}">
+                    Image URL
+                    <span ng-show="!imageUrlHasError" class="pnd-icon-exclamation-circle" data-title="{{imageUrlTooltipeMessage}}" bs-tooltip></span>
+                    <span class="kee-error" ng-show="imageUrlHasError" class="pnd-icon-exclamation-circle" data-title="{{imageUrlErrorMessage}}" bs-tooltip></span>
+                </label>
                 <input type="text" ng-model="imageUrl">
             </div>
+            <!-- End image url -->
+
+            <!-- Types -->
             <div class="kee-new-types">
-                <label>Types</label>
+                <label ng-class="{'kee-error' : typesHasError}">
+                    Types
+                    <span> * </span>
+                    <span ng-show="!typesHasError" class="pnd-icon-exclamation-circle" data-title="{{typesTooltipeMessage}}" bs-tooltip></span>
+                    <span ng-show="typesHasError" class="kee-error pnd-icon-exclamation-circle" data-title="{{typesErrorMessage}}" bs-tooltip></span>
+                </label>
+                <div ng-repeat="item in types"
+                     class="checkbox">
+                    <label>
+                        <input type="checkbox" class="kee-type-input" name="items" ng-change="updateTypes()" ng-model="item.checked" value="{{item.uri}}" />
+                        {{item.label}}
+                        <span class="pnd-icon-external-link"></span>
+                    </label>
+                </div> <!-- div ng-repeat item  -->
             </div>
-        </div>
+            <!-- End Types -->
+        </div> <!-- End content on the right -->
     </div><!-- End new content-->
 
     <div class="kee-footer">

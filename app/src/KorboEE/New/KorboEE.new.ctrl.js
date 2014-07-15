@@ -3,12 +3,30 @@ angular.module('KorboEE')
 
         $scope.tabs = [];
         $scope.imageUrl = "";
+        $scope.saveClicked = false;
 
+        // tooltip message for image url
+        $scope.imageUrlErrorMessage = "Invalid URL";
+        $scope.imageUrlTooltipeMessage = "Depiction URL";
+        $scope.imageUrlHasError = false;
+        var urlPattern = new RegExp('(http|ftp|https)://[a-z0-9\-_]+(\.[a-z0-9\-_]+)+([a-z0-9\-\.,@\?^=%&;:/~\+#]*[a-z0-9\-@\?^=%&;/~\+#])?', 'i');
+
+        // tooltip messages for languages
         var tooltipMessageTitle = "Insert title of the entity in ";
         var tooltipMessageDescription = "Insert description of the entity in ";
         var errorMandatory = "The Title field is mandatory and must be filled";
         var errorLabelTooShort = " The Title must be contain at least " + $scope.conf.labelMinLength +" characters";
 
+        // build types
+        $scope.types = angular.copy($scope.conf.type);
+        $scope.typesHasError = false;
+        $scope.typesErrorMessage = "You must select at least one type";
+        $scope.typesTooltipeMessage = "Select at least one type";
+
+        // Setting checked defaults copying .state
+        for (var i in $scope.types) {
+            $scope.types[i].checked = $scope.types[i].state || false;
+        }
 
         //build languages tabs
         for(var i=0; i< $scope.conf.languages.length; i++){
@@ -25,7 +43,8 @@ angular.module('KorboEE')
                     'hasError': false,
                     'tooltipMessageTitle': tooltipMessageTitle + name,
                     'tooltipMessageDescription': tooltipMessageDescription + name,
-                    'tooltipMessageError': "message"
+                    'tooltipMessageError': "message",
+                    'tooltipMessageErrorTab': "There are some errors in the "+name+" languages fields"
                 };
 
                 $scope.tabs.push(lang);
@@ -58,13 +77,52 @@ angular.module('KorboEE')
         return allLangAreOk;
     };
 
+    $scope.updateTypes = function(){
+        var count = 0;
+        for (var i in $scope.types) {
+            if ($scope.types[i].checked){
+                count++;
+            }
+        }
+        if($scope.saveClicked){
+            if(count === 0){
+                $scope.typesHasError = true;
+            } else {
+                $scope.typesHasError = false;
+            }
+        }
+
+        return count;
+    };
+
+    // return true if url is valid, false otherwise
+    $scope.checkUrl = function(){
+        console.log("url ",$scope.imageUrl);
+        if($scope.imageUrl === '' || urlPattern.test($scope.imageUrl)){console.log("qui");
+            if($scope.saveClicked){
+                $scope.imageUrlHasError = false;
+            }
+
+            return true;
+        } else {
+            if($scope.saveClicked){
+                $scope.imageUrlHasError = true;
+            }
+
+            return false;
+        }
+    };
+
     $scope.save = function(){
-        /*for(var i=0; $scope.tabs.length; i++){
-            console.log($scope.tabs[i]);
-        }*/
+        $scope.saveClicked = true;
         var checkLang = checkLanguages();
-        console.log("saved ", checkLang);
-        checkLanguages();
+        var checkTypes = $scope.updateTypes();
+        var checkUrl = $scope.checkUrl();
+        console.log("check lang ", checkLang);
+        console.log("check types ", checkTypes);
+        console.log("check url ", checkUrl);
+
+
     };
 
 
