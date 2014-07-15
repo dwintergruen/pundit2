@@ -5,7 +5,7 @@ angular.module('Pundit2.Core')
     active: false,
     debug: false
 })
-.service('Fp3', function(BaseComponent, FP3DEFAULTS, $http, $q, $window) {
+.service('Fp3', function(BaseComponent, FP3DEFAULTS, Config, $http, $q, $window) {
     
     var fp3 = new BaseComponent("Fp3", FP3DEFAULTS);
 
@@ -44,7 +44,8 @@ angular.module('Pundit2.Core')
             url: fp3.options.link+'?fp=on',
             data: {
                 punditContent: fp3.getPunditContentUrl(),
-                punditPage: fp3.getNodeContent()
+                punditPage: fp3.getNodeContent(),
+                annotationServerBaseURL: Config.annotationServerBaseURL
             },
             withCredentials: true
         }).success(function(data) {
