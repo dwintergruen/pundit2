@@ -4,6 +4,7 @@ angular.module('KorboEE')
         $scope.tabs = [];
         $scope.imageUrl = "";
         $scope.saveClicked = false;
+        $scope.activeFilter = false;
 
         // tooltip message for image url
         $scope.imageUrlErrorMessage = "Invalid URL";
@@ -97,8 +98,7 @@ angular.module('KorboEE')
 
     // return true if url is valid, false otherwise
     $scope.checkUrl = function(){
-        console.log("url ",$scope.imageUrl);
-        if($scope.imageUrl === '' || urlPattern.test($scope.imageUrl)){console.log("qui");
+        if($scope.imageUrl === '' || urlPattern.test($scope.imageUrl)){
             if($scope.saveClicked){
                 $scope.imageUrlHasError = false;
             }
@@ -113,6 +113,24 @@ angular.module('KorboEE')
         }
     };
 
+   $scope.updateTitleField = function(index){
+     console.log($scope.tabs[index].label, index);
+
+       if($scope.tabs[index].label === ''){
+           $scope.tabs[index].tooltipMessageError = errorMandatory;
+       }
+
+       else if($scope.tabs[index].label !== '' && $scope.tabs[index].label.length < $scope.conf.labelMinLength){
+           $scope.tabs[index].tooltipMessageError = errorLabelTooShort;
+       }
+
+       else if($scope.tabs[index].label !== '' && $scope.tabs[index].label.length >= $scope.conf.labelMinLength){
+           $scope.tabs[index].hasError = false;
+       }
+
+   };
+
+
     $scope.save = function(){
         $scope.saveClicked = true;
         var checkLang = checkLanguages();
@@ -121,7 +139,6 @@ angular.module('KorboEE')
         console.log("check lang ", checkLang);
         console.log("check types ", checkTypes);
         console.log("check url ", checkUrl);
-
 
     };
 
