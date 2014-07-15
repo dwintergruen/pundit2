@@ -77,7 +77,7 @@ angular.module('Pundit2.Annotators')
 
 .service('TextFragmentAnnotator',
     function(TEXTFRAGMENTANNOTATORDEFAULTS, NameSpace, BaseComponent, Consolidation,
-             XpointersHelper, ContextualMenu, ItemsExchange, Config, TripleComposer, Toolbar,
+             XpointersHelper, ItemsExchange, Config, TripleComposer, Toolbar,
              $compile, $rootScope, $location) {
 
     // Create the component and declare what we deal with: text
