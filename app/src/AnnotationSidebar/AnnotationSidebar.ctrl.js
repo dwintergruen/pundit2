@@ -193,7 +193,7 @@ angular.module('Pundit2.AnnotationSidebar')
         $timeout.cancel(delay);
         delay = $timeout(function(){
             AnnotationSidebar.filters.freeText.expression = freeText;
-        }, 1500);
+        }, 1000);
     });
 
     $scope.$watch('annotationSidebar.filters', function(currentFilters) {
