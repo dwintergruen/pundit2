@@ -9,8 +9,6 @@
 	.kee-modal-body {
 		padding: 0px 0px 0px 0px;
 		border-top: 4px solid @gray-light;
-		/*overflow-y: hidden;
-		height: 500px;*/
 	}
 	
 }
@@ -31,6 +29,13 @@
 		margin-bottom: 0px;
 		margin-right: 0px;
 		}
+		
+	// BADGE ----- //
+	
+	.badge {
+		margin: 0px 0px 0px 5px;
+		}
+		
 }
 
 
@@ -53,6 +58,8 @@
 		display: inline-block;	
 		position: relative;
 		padding: 0px;
+		margin-left: 5px;
+		width: 74%;
 		
 		input {
 	  		padding-right: 20px;
@@ -121,33 +128,6 @@
 }
 
 
-//
-// Input and icon
-// --------------------------------------------------
-
-/*
-.left-inner-icon {
-  position: relative;
-  padding: 0px;
-}
-
-.left-inner-icon input {
-  padding-right: 20px;
-  font-weight: normal;
-}
-
-.left-inner-icon .pnd-icon {
-  position: absolute;
-  color: @gray-light;
-  right: 0px;
-  top: 0px;
-  padding: 7px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-}
-
-*/
 .kee-input-error-server{
   background-color: red !important;
   opacity: 0.5 !important;
@@ -156,67 +136,3 @@
 .kee-autocomplete-list{
 
 }
-
-//
-// Resource panel
-// --------------------------------------------------
-
-
-
-  	.pnd-item {
-    	transition: margin-left 250ms 150ms linear;
-    	margin-left: -30px;
-    	
-    	&:hover {
-	    	transition: margin-left 250ms 150ms linear;
-	    	margin-left: 0px; 
-	    	}
-    	}
-			
-	.pnd-item-buttons {
-		
-		.pnd-icon-check {
-			color: @brand-success;
-			}
-		}
-	
-	.list-group-item {
-		overflow: hidden;
-		}
-	
-	.pnd-resource-panel-popover-content {
-		overflow-y: scroll;
-		}
-		
-
-
-
-	.pnd-vertical-tab-footer-content {
-		display: block;
-		border-top: 1px solid @gray-light;
-		background-color: #fff;
-		height: 30px;
-		padding: 5px;
-		position: absolute;
-		bottom: 0;
-		right: 0px;
-		left: 0;
-		}
-		
-	.pnd-vertical-tab-header-content{
-		display: block;
-		border-bottom: 1px solid @gray-light;
-		background-color: #fff;
-		height: 30px;
-		padding: 5px;
-		}
-
-
-.pnd-popover-literal {
-	  position: fixed !important;
-	  }
-
-.pnd-popover-calendar {
-	  position: fixed !important;
-	  }
-
