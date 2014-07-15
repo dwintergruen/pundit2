@@ -352,62 +352,79 @@ angular.module('Pundit2.TripleComposer')
     };
 
     tripleComposer.canAddItemAsSubject = function(item){
-        // TODO find first triple with empty object
-        if (statements.length === 1 && !statements[0].scope.subjectFound && !editMode) {
-            var domainFound = false,
-            predicate = statements[0].scope.get().predicate;
-            
-
-            if (predicate === null || predicate.domain.length === 0) {
+        
+        // search first empty subject
+        var index = -1;
+        statements.some(function(s, i){
+            if (!s.scope.subjectFound) {
+                index = i;
                 return true;
             }
-            console.log('domain:',predicate.domain);
-
-            item.type.some(function(type, i){
-                if (predicate.domain.indexOf(type) > -1) {
-                    domainFound = true;
-                    return domainFound;
-                }
-            });
-
-            if (!domainFound) {
-                tripleComposer.log('Impossible to add item as Subject: predicate domain not match');
-            } else {
-                tripleComposer.log('Predicate domain match.');
-            }
-            return domainFound;
-        } else {
+        });
+        // all subject are full
+        if (index === -1) {
             return false;
         }
+        
+        var domainFound = false,
+        predicate = statements[index].scope.get().predicate;        
+
+        if (predicate === null || predicate.domain.length === 0) {
+            return true;
+        }
+        // chek if subject type match predicate domain
+        item.type.some(function(type, i){
+            if (predicate.domain.indexOf(type) > -1) {
+                domainFound = true;
+                return domainFound;
+            }
+        });
+
+        if (!domainFound) {
+            tripleComposer.log('Impossible to add item as Subject: predicate domain not match');
+        } else {
+            tripleComposer.log('Predicate domain match.');
+        }
+
+        return domainFound;        
     };
 
     tripleComposer.canAddItemAsObject = function(item){
-        // TODO find first triple with empty object
-        if (statements.length === 1 && !statements[0].scope.objectFound && !editMode) {
-            var rangeFound = false,
-            predicate = statements[0].scope.get().predicate;
 
-            if (predicate === null || predicate.range.length === 0) {
+        // search first empty subject
+        var index = -1;
+        statements.some(function(s, i){
+            if (!s.scope.objectFound) {
+                index = i;
                 return true;
             }
-            console.log('range', predicate.range);
-
-            item.type.some(function(type, i){
-                if (predicate.range.indexOf(type) > -1) {
-                    rangeFound = true;
-                    return rangeFound;
-                }
-            });
-
-            if (!rangeFound) {
-                tripleComposer.log('Impossible to add item as Object: predicate range not match');
-            } else {
-                tripleComposer.log('Predicate range match.');
-            }
-            return rangeFound;
-        } else {
+        });
+        // all object are full
+        if (index === -1) {
             return false;
         }
+        
+        var rangeFound = false,
+        predicate = statements[index].scope.get().predicate;
+
+        if (predicate === null || predicate.range.length === 0) {
+            return true;
+        }
+        // check if object type match predicate range
+        item.type.some(function(type, i){
+            if (predicate.range.indexOf(type) > -1) {
+                rangeFound = true;
+                return rangeFound;
+            }
+        });
+
+        if (!rangeFound) {
+            tripleComposer.log('Impossible to add item as Object: predicate range not match');
+        } else {
+            tripleComposer.log('Predicate range match.');
+        }
+
+        return rangeFound;
     };
 
     tripleComposer.openTripleComposer = function() {
@@ -421,21 +438,35 @@ angular.module('Pundit2.TripleComposer')
     // Used to add a object from outside of triple composer
     tripleComposer.addToObject = function(item) {
         tripleComposer.openTripleComposer();
-        
-        statements[0].scope.setObject(item);
-        $rootScope.$$phase || $rootScope.$digest();
-        tripleComposer.log('Add item as object: '+item.label);
-        
+
+        for (var i in statements) {
+            // find the first empty subject
+            if (!statements[i].scope.objectFound) {
+                // set it
+                statements[i].scope.setObject(item);
+                $rootScope.$$phase || $rootScope.$digest();
+                tripleComposer.log('Add item as object: '+item.label);
+                return;
+            }
+        }
+        tripleComposer.log('Error: impossible to add object (all full)');
     };
 
     // Used to add a subject from outside of triple composer
     tripleComposer.addToSubject = function(item) {
         tripleComposer.openTripleComposer();
-        
-        statements[0].scope.setSubject(item);
-        $rootScope.$$phase || $rootScope.$digest();
-        tripleComposer.log('Add item as subject: '+item.label);
-        
+
+        for (var i in statements) {
+            // find the first empty subject
+            if (!statements[i].scope.subjectFound) {
+                // set it
+                statements[i].scope.setSubject(item);
+                $rootScope.$$phase || $rootScope.$digest();
+                tripleComposer.log('Add item as subject: '+item.label);
+                return;
+            }
+        }
+        tripleComposer.log('Error: impossible to add subject (all full)');        
     };
 
     tripleComposer.addToAllSubject = function(item) {
