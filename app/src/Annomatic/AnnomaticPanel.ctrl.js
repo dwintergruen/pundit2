@@ -3,7 +3,7 @@ angular.module('Pundit2.Annomatic')
                                            TextFragmentAnnotator, XpointersHelper,
                                            $window, $q) {
 
-    $scope.targets = TextFragmentAnnotator.getAvailableTargets(true);
+    $scope.targets = Consolidation.getAvailableTargets(true);
 
     var gotAnnotations = false;
     $scope.getSuggestions = function() {

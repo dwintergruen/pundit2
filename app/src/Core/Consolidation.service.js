@@ -1,8 +1,8 @@
 angular.module('Pundit2.Core')
     .constant('CONSOLIDATIONDEFAULTS', {
     })
-    .service('Consolidation', function($rootScope, CONSOLIDATIONDEFAULTS, BaseComponent, NameSpace, Config,
-                                       Item, ItemsExchange) {
+    .service('Consolidation', function($rootScope, $location, CONSOLIDATIONDEFAULTS, BaseComponent, NameSpace, Config,
+                                       Item, ItemsExchange, XpointersHelper) {
 
         var cc = new BaseComponent('Consolidation', CONSOLIDATIONDEFAULTS),
             state = {};
@@ -127,12 +127,32 @@ angular.module('Pundit2.Core')
 
         // Gets the available targets or resources on the current page. They will most likely
         // be passed to the server looking for annotations.
-        // This method must be implemented by every Annotator
-        cc.getAvailableTargets = function() {
-            var ret = [];
-            for (var a in state.annotators) {
-                ret = ret.concat(state.annotators[a].getAvailableTargets());
+        cc.getAvailableTargets = function(onlyNamedContents) {
+            var ret = [],
+            nc = XpointersHelper.options.namedContentClasses;
+
+            // The page URL is for xpointers out of named contents
+            if (typeof(onlyNamedContents) === "undefined" || onlyNamedContents !== true) {
+                ret.push($location.absUrl());
             }
+
+            // Look for named content: an element with a class listed in .namedContentClasses
+            // then get its about attribute
+            for (var l=nc.length; l--;) {
+                var className = nc[l],
+                    nodes = angular.element('.'+className);
+
+                for (var n=nodes.length; n--;) {
+                    // If it doesnt have the attribute, dont add it
+                    var uri = angular.element(nodes[n]).attr('about');
+                    // TODO: better checks of what we find inside about attributes? A lil regexp
+                    // or we let do this at the server?
+                    if (uri) {
+                        ret.push(uri);
+                    }
+                }
+            }
+
             return ret;
         };
 
