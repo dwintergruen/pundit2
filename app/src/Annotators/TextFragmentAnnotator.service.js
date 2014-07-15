@@ -27,21 +27,6 @@ angular.module('Pundit2.Annotators')
      */
     cMenuType: 'annotatedTextFragment',
 
-    /**
-     * @module punditConfig
-     * @ngdoc property
-     * @name modules#TextFragmentAnnotator.initContextualMenu
-     *
-     * @description
-     * `boolean`
-     *
-     * Set to true to initialize a contextual menu for text fragment annotation
-     *
-     * Default value:
-     * <pre> initContextualMenu: true </pre>
-     */
-    initContextualMenu: true,
-
     // Class to get the consolidated icon: normal consolidated fragment
     /**
      * @module punditConfig
@@ -103,68 +88,6 @@ angular.module('Pundit2.Annotators')
     // The orchestrator will be called by the consolidation service as single point of
     // interaction when it comes to deal with fragments. Let's subscribe the text type.
     Consolidation.addAnnotator(tfa);
-
-    // Contextual Menu actions for text fragments??
-    var initContextualMenu = function() {
-
-        ContextualMenu.addAction({
-            type: [
-                tfa.options.cMenuType,
-                Config.modules.TextFragmentHandler.cMenuType
-            ],
-            name: 'addToSubject',
-            label: 'Annotate this text fragment',
-            showIf: function(item) {
-                return !Toolbar.isActiveTemplateMode() && item.isTextFragment() && TripleComposer.canAddItemAsSubject(item);
-            },
-            priority: 20,
-            action: function(item) {
-                TripleComposer.addToSubject(item);
-            }
-        });
-
-        // ContextualMenu.addAction({
-        //     type: [tfa.options.cMenuType],
-        //     name: 'showAllAnnotations',
-        //     label: 'Show all annotations for this fragment',
-        //     showIf: function() {
-        //         return true;
-        //     },
-        //     priority: 10,
-        //     action: function(item) {
-        //         // TODO: ask the ann sidebar to add a filter showing all annotations involving
-        //         // this item, then let the sidebar call hideAll() and show() on every item
-        //         // which belongs to filtered annotations
-        //         tfa.hideAll();
-        //         tfa.showByUri(item.uri);
-        //     }
-        // });
-
-        // ContextualMenu.addAction({
-        //     type: [tfa.options.cMenuType],
-        //     name: 'hideAllAnnotations',
-        //     label: 'Hide all annotations for this fragment',
-        //     showIf: function() {
-        //         // TODO: show just if there is some ann open
-        //         return true;
-        //     },
-        //     priority: 11,
-        //     action: function(item) {
-        //         // TODO: ask the Annotation Sidebar to add a filter hiding this item
-        //         // .. is this "hide all" action needed?
-        //         tfa.hideByUri(item.uri);
-        //     }
-        // });
-
-    }; // initContextualMenu()
-
-    // When all modules have been initialized, services are up, Config are setup etc..
-    $rootScope.$on('pundit-boot-done', function() {
-        if (tfa.options.initContextualMenu) {
-            initContextualMenu();
-        }
-    });
-
 
     tfa.isConsolidable = function(item) {
         if (!angular.isArray(item.type)) {

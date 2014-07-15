@@ -52,9 +52,6 @@ angular.module('Pundit2.Annotators')
      */
     cMenuType: "imageFragmentHandlerItem",
 
-    // show ctx menu by click over image
-    initContextualMenu: true,
-
     /**
      * @module punditConfig
      * @ngdoc property
@@ -77,33 +74,6 @@ angular.module('Pundit2.Annotators')
 
     var ifh = new BaseComponent('ImageFragmentHandler', IMAGEHANDLERDEFAULTS);
 
-    // Contextual Menu actions for image
-    var initContextualMenu = function() {
-
-        ContextualMenu.addAction({
-            type: [
-                ifh.options.cMenuType
-            ],
-            name: 'addImageToSubject',
-            label: 'Annotate this Image',
-            showIf: function(item) {
-                return !Toolbar.isActiveTemplateMode() && item.isImage() && TripleComposer.canAddItemAsSubject(item);
-            },
-            priority: 20,
-            action: function(item) {
-                TripleComposer.addToSubject(item);
-            }
-        });
-
-    }; // initContextualMenu()
-
-    // When all modules have been initialized, services are up, Config are setup etc..
-    $rootScope.$on('pundit-boot-done', function() {
-        if (ifh.options.initContextualMenu) {
-            initContextualMenu();
-        }
-    });
-
     $document.on('click', function(clickEvt) {
         var target = clickEvt.target;
         if (TextFragmentHandler.isToBeIgnored(target)) {
@@ -125,15 +95,15 @@ angular.module('Pundit2.Annotators')
 
             ifh.log('Valid selection ended on document. Text fragment Item produced: '+ item.label);
 
-            ContextualMenu.show(clickEvt.pageX, clickEvt.pageY, item, ifh.options.cMenuType);
-        }        
+            if (Toolbar.isActiveTemplateMode()) {
+                //tfh.log('Item used as subject inside triple composer (template mode active).');
+                //TripleComposer.addToAllSubject(item);
+                //$rootScope.$emit('pnd-save-annotation');
+                return;
+            }
 
-        /*if (Toolbar.isActiveTemplateMode()) {
-            ifh.log('Item used as subject inside triple composer (template mode active).');
-            TripleComposer.addToAllSubject(item);
-            $rootScope.$emit('pnd-save-annotation');
-            return;
-        }*/
+            ContextualMenu.show(clickEvt.pageX, clickEvt.pageY, item, ifh.options.cMenuType);
+        }
     });
 
     var getXpFromNode = function(node) {
