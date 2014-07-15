@@ -18,12 +18,13 @@
     <div ng-show="previewIsLoading">
         Loading preview...
     </div>
-
-    <div class="kee-search-footer">
+<!-- footer -->
+    <div class="kee-footer">
         <button type="button" class="btn btn-xs btn-success" ng-click="closeKeeModal()">Close</button>
         <button type="button" class="btn btn-xs btn-success" ng-show="showMoreInfo.visibility" ng-class="{'disabled': showMoreInfo.disabled}" ng-click="moreInfo()">More Info</button>
         <button type="button" class="btn btn-xs btn-success" ng-show="showCopyInEditor.visibility" ng-class="{'disabled': showCopyInEditor.disabled}" ng-click="copyInEditor()">Copy in editor</button>
         <button type="button" class="btn btn-xs btn-success" ng-show="showUse.visibility" ng-class="{'disabled': showUse.disabled}" ng-click="use()">Use</button>
         <button type="button" class="btn btn-xs btn-success" ng-show="showUseAndCopy.visibility" ng-class="{'disabled': showUseAndCopy.disabled}" ng-click="copyAndUse()">Copy and Use</button>
     </div>
+<!-- / end footer -->
 </div>
