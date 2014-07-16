@@ -135,7 +135,7 @@ angular.module('KorboEE')
 
     $scope.save = function(){
         $scope.saveClicked = true;
-        $scope.topAreaMessage = "Saving entity...";
+
         var checkLang = checkLanguages();
         $scope.updateTypes();
         $scope.checkUrl();
@@ -143,6 +143,7 @@ angular.module('KorboEE')
         if(!$scope.imageUrlHasError && !$scope.typesHasError && checkLang){
 
             $scope.isSaving = true;
+            $scope.topAreaMessage = "Saving entity...";
 
             // get checked types
             var newTypes = [];
@@ -251,7 +252,29 @@ angular.module('KorboEE')
         $scope.imageUrl = "";
     };
 
+    $scope.previewImage = "";
+    var timer;
 
+    //TODO controllare che l'image url risponda con un contenuto valido oppure no
+    $scope.$watch('imageUrl', function(val){
+        if(val !== '' && urlPattern.test(val)){
+            $timeout.cancel(timer);
+            timer = $timeout(function(){
+                $scope.showImg = true;
+                $scope.previewImage = val;
+                console.log(val);
+            }, 1000);
+            // if input type is empty
+        } else {
+            $scope.showImg = false;
+        }
+    });
+
+    $scope.removeImage = function(){
+        $scope.showImg = false;
+        $scope.previewImage = "";
+        $scope.imageUrl = "";
+    };
 
 
     });
