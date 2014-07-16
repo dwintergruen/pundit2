@@ -1,5 +1,5 @@
 angular.module('KorboEE')
-    .controller('KeeNewCtrl', function($scope, $modal, KorboCommunicationService, $q, KorboCommunicationFactory, korboConf, $timeout, $modal) {
+    .controller('KeeNewCtrl', function($scope, $modal, KorboCommunicationService, $q, KorboCommunicationFactory, korboConf, $timeout, $http) {
 
         $scope.tabs = [];
         $scope.disactiveLanguages = [];
@@ -258,20 +258,37 @@ angular.module('KorboEE')
     };
 
     $scope.previewImage = "";
+    $scope.errorImage = false;
+    $scope.loadingImage = false;
     var timer;
 
-    //TODO controllare che l'image url risponda con un contenuto valido oppure no
     $scope.$watch('imageUrl', function(val){
         if(val !== '' && urlPattern.test(val)){
             $timeout.cancel(timer);
             timer = $timeout(function(){
-                $scope.showImg = true;
-                $scope.previewImage = val;
-                console.log(val);
+                $scope.loadingImage = true;
+                $http({
+                    //headers: { 'Content-Type': 'application/json' },
+                    method: 'GET',
+                    url: val,
+                    cache: false
+                }).success(function(){
+                    $scope.showImg = true;
+                    $scope.previewImage = val;
+                    $scope.errorImage = false;
+                    $scope.loadingImage = false;
+                }).error(function(){
+                    $scope.showImg = false;
+                    $scope.errorImage = true;
+                    $scope.loadingImage = false;
+                });
             }, 1000);
-            // if input type is empty
+
+        // if input type is empty
         } else {
             $scope.showImg = false;
+            $scope.errorImage = false;
+            $scope.loadingImage = false;
         }
     });
 

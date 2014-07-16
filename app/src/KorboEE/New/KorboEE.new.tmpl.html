@@ -31,9 +31,11 @@
 	                    <span ng-show="imageUrlHasError" class="kee-error pnd-icon-exclamation-circle" data-title="{{imageUrlErrorMessage}}" bs-tooltip></span>
 	                </label>
 	                <input type="text" ng-model="imageUrl" ng-change="checkUrl()" class="form-control">
-                    <div class="kee-preview-image" ng-show="showImg">
+                    <div class="kee-preview-image">
                     <img ng-show="showImg" ng-src="{{previewImage}}"/>
                     <a ng-show="showImg" ng-click="removeImage()">Remove image</a>
+                    <span ng-show="errorImage">Impossible to load image</span>
+                    <span ng-show="loadingImage">Loading image...</span>
                     </div>
 	            </div>
             </div>
