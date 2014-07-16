@@ -300,14 +300,12 @@ describe("Client interaction when user is logged in", function() {
 
     it("should correctly show ctx menu voice when triple composer is empty", function(){
 
-        p.driver.manage().window().setSize(1200, 960);
-
         // open dashboard
         p.findElement(protractor.By.css('toolbar .pnd-toolbar-dashboard-button')).click();
         // collapse tools panel
         p.findElement(protractor.By.css('dashboard-panel[paneltitle=tools] .btn.btn-default')).click();
         // open page items tab
-        p.findElement(protractor.By.css("dashboard dashboard-panel .pnd-tab-header li [data-index='2']")).click();
+        p.findElement(protractor.By.css("dashboard dashboard-panel .pnd-tab-header li [data-index='1']")).click();
         // mouseover on item
         var item = p.findElement(protractor.By.css("dashboard dashboard-panel .pnd-tab-content item")),
             menuBtn = p.findElement(protractor.By.css("dashboard dashboard-panel .pnd-tab-content item .pnd-icon-bars"));

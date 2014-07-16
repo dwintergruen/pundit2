@@ -12,7 +12,7 @@ angular.module('Pundit2.PageItemsContainer')
 
     $scope.message = {
         flag: true,
-        text: "I'm a welcome message"
+        text: "No page items found."
     };    
 
     // items property used to compare
@@ -121,7 +121,7 @@ angular.module('Pundit2.PageItemsContainer')
 
         // update text messagge
         if(str === ''){
-            $scope.message.text = "I'm a welcome message";
+            $scope.message.text = "No page items found.";
         } else {
             $scope.message.text = "No item found to: "+str;
         }
