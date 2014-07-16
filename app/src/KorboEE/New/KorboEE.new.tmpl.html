@@ -1,13 +1,13 @@
 <div ng-controller="KeeNewCtrl">
     <div class="kee-top-area">
-        <div class="kee-top-area-message"> Top area</div>
+        <div class="kee-top-area-message">{{topAreaMessage}}</div>
         <div class="kee-top-area-menu">
             <span class="pnd-icon-gear"></span>
         </div>
     </div> <!-- End top area -->
 
     <!-- content -->
-    <div class="kee-new-content">
+    <div class="kee-new-content" ng-hide="isSaving">
         <!-- Languages -->
         <div class="kee-new-languages">
             <div kee-languages="tabs"></div>
@@ -57,6 +57,10 @@
             <!-- End Types -->
         </div> <!-- End content on the right -->
     </div><!-- End new content-->
+    <!-- content -->
+    <div class="kee-new-saving" ng-show="isSaving">
+    Saving...
+    </div>
 
     <div class="kee-footer">
         <button type="button" class="btn btn-xs btn-success" ng-click="closeKeeModal()">Close</button>

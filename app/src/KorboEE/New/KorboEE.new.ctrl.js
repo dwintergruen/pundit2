@@ -1,11 +1,12 @@
 angular.module('KorboEE')
-    .controller('KeeNewCtrl', function($scope, $modal, KorboCommunicationService, $q, KorboCommunicationFactory, korboConf) {
+    .controller('KeeNewCtrl', function($scope, $modal, KorboCommunicationService, $q, KorboCommunicationFactory, korboConf, $timeout) {
 
         $scope.tabs = [];
         $scope.imageUrl = "";
         $scope.saveClicked = false;
         $scope.activeFilter = false;
         $scope.isSaving = false;
+        $scope.topAreaMessage = "You are creating a new entity";
         var korboComm = new KorboCommunicationFactory();
 
         // tooltip message for image url
@@ -134,6 +135,7 @@ angular.module('KorboEE')
 
     $scope.save = function(){
         $scope.saveClicked = true;
+        $scope.topAreaMessage = "Saving entity...";
         var checkLang = checkLanguages();
         $scope.updateTypes();
         $scope.checkUrl();
@@ -185,13 +187,19 @@ angular.module('KorboEE')
                     }
 
                     $q.all(allPromises).then(function(res){
+                        $scope.isSaving = false;
                         $scope.directiveScope.location = location;
                         $scope.directiveScope.elemToSearch = $scope.tabs[0].label;
                         $scope.directiveScope.label = $scope.tabs[0].label;
-                        // close modal
-                        KorboCommunicationService.closeModal();
-                        // set modal as close in configuration
-                        korboConf.setIsOpenModal(false);
+                        $scope.topAreaMessage = "Entity saved!";
+                        $timeout(function(){
+                            KorboCommunicationService.closeModal();
+                            // set modal as close in configuration
+                            korboConf.setIsOpenModal(false);
+                        }, 1000);
+                    },
+                    function(err){
+                        $scope.topAreaMessage = "Entity saving error because: "+err;
                     });
 
                 } else {
@@ -199,11 +207,19 @@ angular.module('KorboEE')
                     $scope.directiveScope.location = location;
                     $scope.directiveScope.elemToSearch = $scope.tabs[0].label;
                     $scope.directiveScope.label = $scope.tabs[0].label;
+                    $scope.isSaving = false;
+                    $scope.topAreaMessage = "Entity saved!";
                     // close modal
-                    KorboCommunicationService.closeModal();
-                    // set modal as close in configuration
-                    korboConf.setIsOpenModal(false);
+                    $timeout(function(){
+                        KorboCommunicationService.closeModal();
+                        // set modal as close in configuration
+                        korboConf.setIsOpenModal(false);
+                    }, 1000);
+
                 }
+            },
+            function(err){
+                $scope.topAreaMessage = "Entity saving error because: "+err;
             });
 
 
