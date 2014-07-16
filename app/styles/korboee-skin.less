@@ -1,4 +1,3 @@
-
 //
 // MODAL AND WRAPPER
 // --------------------------------------------------
@@ -11,7 +10,7 @@
 		
 .kee-wrp {
 	//background-color: @gray-lighter; // gray skin
-	background-color: #fff;
+	background-color: lighten(@gray-lighter, 5%);
 	}
 	
 	
@@ -145,42 +144,38 @@
 // CONTENT
 // --------------------------------------------------
 
-// COL LEFT ----- //
+// COL LEFT - PROVIDERS ----- //
 
 .pnd-vertical-tabs  {
-	height: 400px;
+	height: @providers-height;
 	}
 
 .tab-content > .tab-pane {
 	margin-bottom: 0px;
 	}
 
-// COL CENTER ----- //
+// COL CENTER - RESULTS ----- //
 
 .pnd-vertical-tab-list-content {
 	width: 200px;
-	height: 405px !important;
+	height: @results-height !important;
 	background-color: #fff;
 	overflow-y: auto !important;
 	overflow-x: hidden !important;
 	}
 
-// COL RIGHT ----- //
-
-.pnd-panel-tab-content-content {
-	height: 360px;
-	}
-
-.pnd-panel-tab-content-header {
-	white-space: normal;
-	line-height: normal;
-	}
+// COL RIGHT - PREVIEW ----- //
 
 .pnd-preview {
-	background-color: lighten(@gray-lighter, 5%);
+	
+	.pnd-panel-tab-content-content {
+		height: @preview-height;
+		}
 	
 	.pnd-panel-tab-content-header {
 		margin-top: 0px;
+		white-space: normal;
+		line-height: normal;
 		}
 	}
 
