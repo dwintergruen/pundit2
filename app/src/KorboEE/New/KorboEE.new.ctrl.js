@@ -1,5 +1,5 @@
 angular.module('KorboEE')
-    .controller('KeeNewCtrl', function($scope, $modal, KorboCommunicationService, $q, KorboCommunicationFactory, korboConf, $timeout) {
+    .controller('KeeNewCtrl', function($scope, $modal, KorboCommunicationService, $q, KorboCommunicationFactory, korboConf, $timeout, $modal) {
 
         $scope.tabs = [];
         $scope.imageUrl = "";
@@ -27,7 +27,7 @@ angular.module('KorboEE')
         $scope.typesErrorMessage = "You must select at least one type";
         $scope.typesTooltipeMessage = "Select at least one type";
 
-        // Setting checked defaults copying .state
+        // Setting checked defaults copying state
         for (var i in $scope.types) {
             $scope.types[i].checked = $scope.types[i].state || false;
         }
@@ -230,5 +230,29 @@ angular.module('KorboEE')
 
     };
 
+    $scope.clearForm = function(){
+        $scope.saveClicked = false;
+        // reset all title and description for each languages
+        for(var l=0; l<$scope.tabs.length; l++){
+            (function(index) {
+                $scope.tabs[index].label = "";
+                $scope.tabs[index].description = "";
+
+            })(l);
+        } // end for
+
+        // Reset types
+        $scope.types = angular.copy($scope.conf.type);
+        for (var i in $scope.types) {
+            $scope.types[i].checked = $scope.types[i].state || false;
+        }
+
+        // reset image url
+        $scope.imageUrl = "";
+    };
+
+
+
 
     });
+

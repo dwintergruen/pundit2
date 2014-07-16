@@ -27,6 +27,35 @@ angular.module('KorboEE')
             scope: KeeModalScope
         });
 
+        // CONFIRM MODAL
+        var confirmModalScope = $rootScope.$new();
+        confirmModalScope.titleMessage = "Are you sure?";
+        confirmModalScope.notifyMessage = "Are you sure you want to close the editor? You will lose any unsaved changes";
+
+        confirmModalScope.cancel = function() {
+            confirmModal.hide();
+        };
+
+        confirmModalScope.confirm = function() {
+            confirmModal.hide();
+            korboConf.setIsOpenModal(false);
+            KeeModal.hide();
+            korboConf.setIsOpenModal(false);
+        };
+
+        var confirmModal = $modal({
+            container: "[data-ng-app='Pundit2']",
+            template: 'src/Core/confirm.modal.tmpl.html',
+            show: false,
+            backdrop: 'static',
+            scope: confirmModalScope
+        });
+
+        korboCommunication.showConfirmModal = function(){
+            confirmModal.$promise.then(confirmModal.show);
+        };
+
+
         // open korbo modal on New tab
         // if an entity is defined, the form in New tab will be fill with entity passed values
         korboCommunication.openModalOnNew = function(conf, entity, directiveScope){

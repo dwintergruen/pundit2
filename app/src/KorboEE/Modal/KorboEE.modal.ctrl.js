@@ -1,8 +1,9 @@
 angular.module('KorboEE')
-    .controller('KeeModalCtrl', function($scope, $modal, KorboCommunicationService, APIService, korboConf, KorboCommunicationFactory) {
+    .controller('KeeModalCtrl', function($scope, $modal, KorboCommunicationService, APIService, korboConf, KorboCommunicationFactory, $rootScope) {
 
         var api = APIService.get($scope.conf.globalObjectName);
         var korboComm = new KorboCommunicationFactory();
+
         
         // set default language
         $scope.defaultLan = $scope.conf.languages[0];
@@ -75,7 +76,8 @@ angular.module('KorboEE')
 
         // close modal
         $scope.closeKeeModal = function(){
-            KorboCommunicationService.closeModal();
+            KorboCommunicationService.showConfirmModal();
+            //KorboCommunicationService.closeModal();
         };
 
         $scope.copyAndUse = function(){
