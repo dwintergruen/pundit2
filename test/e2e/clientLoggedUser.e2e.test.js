@@ -1,5 +1,7 @@
 describe("Client interaction when user is logged in", function() {
 
+    var pageItemsNumber = 1;
+
     var httpMock = function() {
         angular.module('httpBackendMock', ['ngMockE2E'])
             .run(function($httpBackend, NameSpace) {
@@ -117,7 +119,9 @@ describe("Client interaction when user is logged in", function() {
                 // get user status (user logged)
                 $httpBackend.whenGET(NameSpace.get('asUsersCurrent')).respond(userLoggedIn);
                 // get my items
-                $httpBackend.whenGET(new RegExp("http://test.config.url/api/services/preferences/favorites")).respond(undefined);
+                $httpBackend.whenGET(NameSpace.get('asPref', {key: 'favorites'})).respond(undefined);
+                // post my items
+                $httpBackend.whenPOST(NameSpace.get('asPref', {key: 'favorites'})).respond({});
                 // get my notebooks
                 $httpBackend.whenGET(NameSpace.get('asNBOwned')).respond(notebooksOwned);
                 // get annotations on annotations API
@@ -321,6 +325,130 @@ describe("Client interaction when user is logged in", function() {
             expect(a[0].getText()).toBe('Use as Subject');
             expect(a[1].getText()).toBe('Use as Object');
             expect(a[2].getText()).toBe('Add to My Items');
+        });
+    });
+
+    it("should add my items by ctx menu showed on text selection", function(){
+
+        // dbclick (simulate a selection) on text
+        var el = p.findElement(protractor.By.css('.pnd-test-init-selection'));
+        p.actions().doubleClick(el).perform();
+        // click add my items
+        p.findElements(protractor.By.css('.dropdown-menu li')).then(function(voices){
+           voices[2].click();
+        });
+
+        // open dashboard
+        p.findElement(protractor.By.css('toolbar .pnd-toolbar-dashboard-button')).click();
+        // collapse tools panel
+        p.findElement(protractor.By.css('dashboard-panel[paneltitle=tools] .btn.btn-default')).click();
+        // open my items tab
+        p.findElement(protractor.By.css("dashboard dashboard-panel .pnd-tab-header li [data-index='0']")).click();
+        
+        // chek item content
+        p.findElements(protractor.By.css("dashboard my-items-container .pnd-panel-tab-content-content .pnd-tab-content > .active li .pnd-item-text")).then(function(items){
+            expect(items.length).toBe(1);
+            expect(items[0].getText()).toBe("Text fragment Boccaccio");
+        });
+    });
+
+    it("should open resource panel on subject", function(){
+
+        p.driver.manage().window().setSize(1200, 960);
+
+        // open dashboard
+        p.findElement(protractor.By.css('toolbar .pnd-toolbar-dashboard-button')).click();
+        // open resource panel on subject
+        p.findElement(protractor.By.css(".pnd-statement-object input")).click();
+        // check if popover is showed
+        p.findElements(protractor.By.css(".pnd-resource-panel-popover")).then(function(popover) {
+            expect(popover.length).toBe(1);
+        });
+        // check popover vertical tabs number and names
+        p.findElements(protractor.By.css(".pnd-resource-panel-popover .pnd-vertical-tabs li")).then(function(tabs) {
+            expect(tabs.length).toBe(5);
+        });
+        // check popover vertical tabs showed items number
+        p.findElements(protractor.By.css(".pnd-resource-panel-popover .pnd-vertical-tabs li a span[ng-show='!pane.isLoading']")).then(function(spans) {
+            expect(spans.length).toBe(5);
+            expect(spans[0].getText()).toEqual(pageItemsNumber.toString());
+            expect(spans[1].getText()).toEqual("0");
+        });
+    });
+
+    it("should open resource panel on predicate", function(){
+
+        p.driver.manage().window().setSize(1200, 960);
+
+        // open dashboard
+        p.findElement(protractor.By.css('toolbar .pnd-toolbar-dashboard-button')).click();
+        // open resource panel on predicate
+        p.findElement(protractor.By.css(".pnd-statement-predicate input")).click();
+        // check if popover is showed
+        p.findElements(protractor.By.css(".pnd-resource-panel-popover")).then(function(popover) {
+            expect(popover.length).toBe(1);
+        });
+        // check popover vertical tabs number and names
+        p.findElements(protractor.By.css(".pnd-resource-panel-popover .pnd-vertical-tabs li")).then(function(tabs) {
+            expect(tabs.length).toBe(1);
+        });
+        // check popover vertical tabs showed items number
+        p.findElements(protractor.By.css(".pnd-resource-panel-popover .pnd-vertical-tabs li a span[ng-show='!pane.isLoading'")).then(function(spans) {
+            expect(spans.length).toBe(1);
+            expect(spans[0].getText()).toEqual("15");
+        });
+    });
+
+    it("should correctly use resource panel item", function(){
+
+        p.driver.manage().window().setSize(1200, 960);
+
+        // open dashboard
+        p.findElement(protractor.By.css('toolbar .pnd-toolbar-dashboard-button')).click();
+        // open resource panel on subject
+        p.findElement(protractor.By.css(".pnd-statement-subject input")).click();
+        // check if popover is showed
+        p.findElements(protractor.By.css(".pnd-resource-panel-popover")).then(function(popover) {
+            expect(popover.length).toBe(1);
+        });
+        // click item
+        p.findElement(protractor.By.css(".pnd-resource-panel-popover .pnd-vertical-tab-content > .active li .pnd-item")).click();
+        // check if item have check icon
+        p.findElements(protractor.By.css(".pnd-resource-panel-popover .pnd-vertical-tab-content > .active li .pnd-item .pnd-item-buttons span.pnd-icon-check")).then(function(check) {
+            expect(check.length).toBe(1);
+        });
+        // check if use button is enabled
+        p.findElement(protractor.By.css(".pnd-resource-panel-popover .pnd-vertical-tab-footer-content .pnd-resource-panel-use-button")).then(function(useBtn) {
+            useBtn.getAttribute('class').then(function(classes){
+                expect(classes.indexOf('disabled')).toBe(-1);
+            });
+            useBtn.click();
+        });
+        // check if popover is closed
+        p.findElements(protractor.By.css(".pnd-resource-panel-popover")).then(function(popover) {
+            expect(popover.length).toBe(0);
+        });
+    });
+
+    it("should filter resource panel items", function(){
+
+        p.driver.manage().window().setSize(1200, 960);
+
+        // open dashboard
+        p.findElement(protractor.By.css('toolbar .pnd-toolbar-dashboard-button')).click();
+        // open resource panel on predicate
+        p.findElement(protractor.By.css(".pnd-statement-predicate input")).click();
+        // add text inside input to filter predicates
+        // add text to popover
+        p.findElement(protractor.By.css(".pnd-statement-predicate input")).sendKeys('has');
+        
+        // check popover vertical tabs showed number
+        p.findElements(protractor.By.css(".pnd-resource-panel-popover .pnd-vertical-tabs li a span")).then(function(spans) {
+            expect(spans[0].getText()).toEqual("2");
+        });
+        // check popover vertical tabs showed items
+        p.findElements(protractor.By.css(".pnd-resource-panel-popover .pnd-vertical-tab-content > .active item")).then(function(items) {
+            expect(items.length).toBe(2);
         });
     });
 

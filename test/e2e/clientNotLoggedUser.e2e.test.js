@@ -106,8 +106,30 @@ describe("Client interaction when user is not logged in", function() {
         p.removeMockModule('httpBackendMock');
     });
 
-    it("test", function(){
+    it("should open resource panel on subject", function(){
 
+        p.driver.manage().window().setSize(1200, 960);
+
+        // open dashboard
+        p.findElement(protractor.By.css('toolbar .pnd-toolbar-dashboard-button')).click();
+        // open resource panel on subject
+        p.findElement(protractor.By.css(".pnd-statement-subject input")).click();
+        // check if popover is showed
+        p.findElements(protractor.By.css(".pnd-resource-panel-popover")).then(function(popover) {
+            expect(popover.length).toBe(1);
+        });
+        // check popover vertical tabs number and names
+        p.findElements(protractor.By.css(".pnd-resource-panel-popover .pnd-vertical-tabs li:not(.ng-hide)")).then(function(tabs) {
+            expect(tabs.length).toBe(4);
+        });
+        // check popover vertical tabs showed items number
+        p.findElements(protractor.By.css(".pnd-resource-panel-popover .pnd-vertical-tabs li:not(.ng-hide) a span[ng-show='!pane.isLoading']")).then(function(spans) {
+            expect(spans.length).toBe(4);
+            expect(spans[0].getText()).toEqual("1");
+            expect(spans[1].getText()).toEqual("0");
+            expect(spans[2].getText()).toEqual("0");
+            expect(spans[3].getText()).toEqual("0");
+        });
     });
 
 });

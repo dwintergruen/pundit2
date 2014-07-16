@@ -2,7 +2,8 @@
 
 <script>
 
-    var TripleComposerDemoCtrl = function($scope, $http, NameSpace, ItemsExchange, Item, CLIENTDEFAULTS, PAGEITEMSCONTAINERDEFAULTS) {
+    var TripleComposerDemoCtrl = function($scope, $http, NameSpace, ItemsExchange, Item, MyPundit,
+        CLIENTDEFAULTS, PAGEITEMSCONTAINERDEFAULTS, MYITEMSDEFAULTS) {
 
         var loadBasicRelations = function() {
             var num = 0, relations = CLIENTDEFAULTS.basicRelations;
@@ -12,17 +13,34 @@
             }
         }();
 
-        var items = [
+        var pageItems = [
             { 
                 uri: "item1",
                 label: "item1Label",
                 type: ["http://purl.org/pundit/ont/ao#fragment-text"]
+            },
+            { 
+                uri: "item3",
+                label: "label of page item 3",
+                type: ["http://purl.org/pundit/ont/ao#fragment-text"]
+            }
+        ];
+        var myItems = [
+            {
+                uri: "item2",
+                label: "label of my item 2",
+                type: ["http://purl.org/pundit/ont/ao#fragment-text"]
             }
         ];
         var loadMockedItems = function(){
-            for (var j in items) {
-                var item = new Item(items[j].uri, items[j]);
+            var j, item;
+            for (j in pageItems) {
+                item = new Item(pageItems[j].uri, pageItems[j]);
                 ItemsExchange.addItemToContainer(item, PAGEITEMSCONTAINERDEFAULTS.container);
+            }
+            for (j in myItems) {
+                item = new Item(myItems[j].uri, myItems[j]);
+                ItemsExchange.addItemToContainer(item, MYITEMSDEFAULTS.container);
             }
         }();
 
@@ -31,7 +49,7 @@
 </script>
 
 <div data-ng-app="Pundit2" class="pnd-wrp" ng-controller="TripleComposerDemoCtrl">
-    <div style="width:800px">
+    <div style="width:800px; margin-left: auto; margin-right: auto; border: 1px solid blue;">
         <triple-composer></triple-composer>
     </div>
 </div>
