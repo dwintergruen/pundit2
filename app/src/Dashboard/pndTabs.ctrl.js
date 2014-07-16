@@ -1,5 +1,6 @@
 angular.module('Pundit2.Dashboard')
-.controller('pndTabsCtrl', function($document, $window, $rootScope, $scope, Dashboard, $element) {
+.controller('pndTabsCtrl', function($document, $window, $rootScope, $scope, $element,
+    Dashboard, ResourcePanel) {
 
     var options = {
         animation: 'am-fade',
@@ -214,6 +215,8 @@ angular.module('Pundit2.Dashboard')
 
     // set a tab as active
     $scope.setActive = function(index) {
+
+        ResourcePanel.hide();
 
         // reset state for hidden tabs if present
         if($scope.hiddenTabs.length !== 0){
