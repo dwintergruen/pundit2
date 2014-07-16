@@ -22,12 +22,12 @@
         	<!-- messages 3 -->
         	<div ng-show="!contentTabs[$index].isLoading && contentTabs[$index].items.length === 0 && elemToSearch === ''">Type a label to search...</div>
         	<!-- / end messages 3 -->
-        	<!-- messages 4 -->
-        	<div ng-if="contentTabs[$index].serverError">
-        		<div ng-show="contentTabs[$index].serverError">Server error</div>
-        	</div>
-        	<!-- / end messages 4 -->
         </div>
+        <!-- messages 4 -->
+        <div ng-if="contentTabs[$index].serverError">
+            <div ng-show="contentTabs[$index].serverError">Server error</div>
+        </div>
+        <!-- / end messages 4 -->
         
             <div ng-repeat="pane in contentTabs" class="tab-pane pnd-vertical-tab-list-content" ng-class="[$index == active ? 'active' : '']" style="float: left; height: 400px; overflow: scroll">
                 <ul class="list-group">
