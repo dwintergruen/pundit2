@@ -41,6 +41,8 @@
     <script src="../src/Annotators/ItemsExchange.service.js"></script>
     <script src="../src/Annotators/TextFragmentHandler.service.js"></script>
     <script src="../src/Annotators/ImageFragmentHandler.service.js"></script>
+    <script src="../src/Annotators/ImageFragmentIcon.dir.js"></script>
+    
 
     <script src="../src/Communication/Communication.js"></script>
     <script src="../src/Communication/Notebook.factory.js"></script>

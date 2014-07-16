@@ -266,7 +266,7 @@ angular.module('Pundit2.Client')
                                 Toolbar, Annomatic, NotebookCommunication, NotebookExchange,
                                 SelectorsManager, FreebaseSelector, MurucaSelector, KorboBasketSelector, PredicateSelector,
                                 TemplatesSelector,
-                                $injector, $templateCache, $rootScope) {
+                                $injector, $templateCache, $rootScope, $compile) {
 
         var client = new BaseComponent('Client', CLIENTDEFAULTS),
 
@@ -371,12 +371,22 @@ angular.module('Pundit2.Client')
             });
         };
 
+        // add img-menu directive to all image inside page
+        // discard image that have a parent with pnd-ignore class
+        var addMenuToImages = function() {
+
+            var images = angular.element('img').after('<image-fragment-icon></image-fragment-icon>');
+            $compile(angular.element('image-fragment-icon'))($rootScope);
+        };
+
 
         // Reads the conf and initializes the active components, bootstrap what needs to be
         // bootstrapped (gets annotations, check if the user is logged in, etc)
         client.boot = function() {
 
             fixRootNode();
+
+            addMenuToImages();
 
             if (Config.useBasicRelations) {
                 loadBasicRelations();
