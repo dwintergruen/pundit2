@@ -34,7 +34,6 @@ angular.module('KorboEE')
             $scope.types[i].checked = $scope.types[i].state || false;
         }
 
-        console.log("controller run (!!!)");
         //build languages tabs
         for(var i=0; i< $scope.conf.languages.length; i++){
 
@@ -287,7 +286,6 @@ angular.module('KorboEE')
         $scope.disactiveLanguages.splice(langIndex, 1);
         $scope.tabs.push(lang);
     };
-
 
 });
 
