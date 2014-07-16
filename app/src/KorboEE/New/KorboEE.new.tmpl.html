@@ -53,14 +53,15 @@
 	                </label>
 	                <span ng-show="activeFilter" class="pnd-icon-times" ng-click="activeFilter = false; typeFilter.label=''"></span>
 	                <input ng-show="activeFilter" type="text" ng-model="typeFilter.label">
-	                <div ng-repeat="item in types | filter:typeFilter"
-	                     class="checkbox">
-	                    <label>
-	                        <input type="checkbox" class="kee-type-input" name="items" ng-change="updateTypes()" ng-model="item.checked" value="{{item.uri}}" />
-	                        {{item.label}}
-	                        <span class="pnd-icon-external-link"></span>
-	                    </label>
-	                </div> <!-- div ng-repeat item  -->
+                    <!-- types list -->
+                    <ul class="list-group">
+                        <li ng-repeat="item in types | filter:typeFilter" class="list-group-item">
+                            <input type="checkbox" class="kee-type-input" name="items" ng-change="updateTypes()" ng-model="item.checked" value="{{item.uri}}" />
+                            {{item.label}}
+                            <span class="pnd-icon-external-link"></span>
+                        </li>
+                    </ul>
+
 	            </div>
             </div>
             <!-- End Types -->
