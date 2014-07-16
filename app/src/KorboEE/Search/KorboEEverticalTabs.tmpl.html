@@ -11,25 +11,23 @@
     </ul>
     <div>
         <div class="pnd-vertical-tab-content tab-content">
-        
-        <div class="kee-server-message" ng-if="!contentTabs[$index].serverError">
-        	<!-- messages 1 -->
-        	<div ng-show="!contentTabs[$index].isLoading && contentTabs[$index].items.length === 0 && elemToSearch !== ''">No results found</div>
-        	<!-- / end messages 1 -->
-        	<!-- messages 2 -->
-        	<div ng-show="contentTabs[$index].isLoading && elemToSearch !== ''">Searching...<span class="pnd-icon pnd-icon-refresh pnd-icon-spin pull-right"></span></div>
-        	<!-- / end messages 2 -->
-        	<!-- messages 3 -->
-        	<div ng-show="!contentTabs[$index].isLoading && contentTabs[$index].items.length === 0 && elemToSearch === ''">Type a label to search...</div>
-        	<!-- / end messages 3 -->
-        </div>
-        <!-- messages 4 -->
-        <div ng-if="contentTabs[$index].serverError">
-            <div ng-show="contentTabs[$index].serverError">Server error</div>
-        </div>
-        <!-- / end messages 4 -->
-        
-            <div ng-repeat="pane in contentTabs" class="tab-pane pnd-vertical-tab-list-content" ng-class="[$index == active ? 'active' : '']" style="float: left; height: 400px; overflow: scroll">
+        	<div ng-repeat="pane in contentTabs" class="tab-pane pnd-vertical-tab-list-content" ng-class="[$index == active ? 'active' : '']" style="float: left; height: 400px; overflow: scroll">
+		        <div class="kee-server-messages" ng-if="!contentTabs[$index].serverError">
+		        	<!-- messages 1 -->
+		        	<div ng-show="!contentTabs[$index].isLoading && contentTabs[$index].items.length === 0 && elemToSearch !== ''">No results found</div>
+		        	<!-- / end messages 1 -->
+		        	<!-- messages 2 -->
+		        	<div class="kee-server-searching" ng-show="contentTabs[$index].isLoading && elemToSearch !== ''"><span class="pnd-icon pnd-icon-refresh pnd-icon-spin "></span></div>
+		        	<!-- / end messages 2 -->
+		        	<!-- messages 3 -->
+		        	<div ng-show="!contentTabs[$index].isLoading && contentTabs[$index].items.length === 0 && elemToSearch === ''">Type a label to search...</div>
+		        	<!-- / end messages 3 -->
+		        </div>
+		        <!-- messages 4 -->
+		        <div ng-if="contentTabs[$index].serverError">
+		            <div ng-show="contentTabs[$index].serverError">Server error</div>
+		        </div>
+		        <!-- / end messages 4 -->
                 <ul class="list-group">
                     <li class="list-group-item" ng-repeat="mi in contentTabs[$index].items | orderBy:getOrderProperty" >
                         <item uri="{{mi.uri}}" hide-options="true" hide-sticky-button="true" ng-click="select(mi)" is-selected="{{isSelected(mi)}}" ng-mouseover="getItem(mi)"></item>
