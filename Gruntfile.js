@@ -347,8 +347,8 @@ module.exports = function(grunt) {
                     paths: ["<%= conf.app %>/css"]
                 },
                 files: {
-                    "<%= conf.app %>/css/pundit2.css": "<%= conf.app %>/styles/pundit2.less",
-                    "<%= conf.app %>/css/korboee.css": "<%= conf.app %>/styles/korboee.less"
+                    "<%= conf.app %>/css/pundit2.css": "<%= conf.app %>/styles/pundit/pundit2.less",
+                    "<%= conf.app %>/css/korboee.css": "<%= conf.app %>/styles/korboee/korboee.less"
                 }
             },
             dist: {
@@ -357,8 +357,8 @@ module.exports = function(grunt) {
                     cleancss: true
                 },
                 files: {
-                    "<%= conf.app %>/css/pundit2.css": "<%= conf.app %>/styles/pundit2.less",
-                    "<%= conf.app %>/css/korboee.css": "<%= conf.app %>/styles/korboee.less"
+                    "<%= conf.app %>/css/pundit2.css": "<%= conf.app %>/styles/pundit/pundit2.less",
+                    "<%= conf.app %>/css/korboee.css": "<%= conf.app %>/styles/korboee/korboee.less"
                 }
             }
         },
@@ -387,7 +387,7 @@ module.exports = function(grunt) {
 
         watch: {
             less: {
-                files: ['<%= conf.app %>/styles/*.less'],
+                files: ['<%= conf.app %>/styles/*/*.less'],
                 tasks: ['less:dev', 'copy:fonts']
             },
             unit: {
