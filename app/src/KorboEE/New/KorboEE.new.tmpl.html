@@ -56,9 +56,11 @@
                     <!-- types list -->
                     <ul class="list-group">
                         <li ng-repeat="item in types | filter:typeFilter" class="list-group-item">
+                        	<div class="pnd-item">
                             <input type="checkbox" class="kee-type-input" name="items" ng-change="updateTypes()" ng-model="item.checked" value="{{item.uri}}" />
                             {{item.label}}
                             <span class="pnd-icon-external-link"></span>
+                        	</div>
                         </li>
                     </ul>
 
