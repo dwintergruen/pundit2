@@ -386,7 +386,7 @@ angular.module('Pundit2.Client')
 
             fixRootNode();
 
-            addMenuToImages();
+            //addMenuToImages();
 
             if (Config.useBasicRelations) {
                 loadBasicRelations();
