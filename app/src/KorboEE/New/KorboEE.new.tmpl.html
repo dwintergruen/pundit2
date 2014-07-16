@@ -13,42 +13,49 @@
         <div class="kee-right-content">
             <!-- original url-->
             <div class="kee-new-original-url">
-                <label>Original URL</label>
-                <input type="text" class="form-control">
-                <span class="pnd-icon-external-link"></span>
+	            <div class="form-group">
+	                <label>Original URL</label>
+	                <div class="left-inner-icon"><span class="pnd-icon pnd-icon-external-link"></span>
+	                	<input type="text" class="form-control">
+	                </div>
+	            </div>
             </div>
             <!-- End original url -->
 
             <!-- image url -->
             <div class="kee-new-image-url">
-                <label ng-class="{'kee-error' : imageUrlHasError}">
-                    Image URL
-                    <span ng-show="!imageUrlHasError" class="pnd-icon-exclamation-circle" data-title="{{imageUrlTooltipeMessage}}" bs-tooltip></span>
-                    <span ng-show="imageUrlHasError" class="kee-error pnd-icon-exclamation-circle" data-title="{{imageUrlErrorMessage}}" bs-tooltip></span>
-                </label>
-                <input type="text" ng-model="imageUrl" ng-change="checkUrl()" class="form-control">
+	            <div class="form-group">
+	                <label ng-class="{'kee-error' : imageUrlHasError}">
+	                    Image URL
+	                    <span ng-show="!imageUrlHasError" class="pnd-icon-exclamation-circle" data-title="{{imageUrlTooltipeMessage}}" bs-tooltip></span>
+	                    <span ng-show="imageUrlHasError" class="kee-error pnd-icon-exclamation-circle" data-title="{{imageUrlErrorMessage}}" bs-tooltip></span>
+	                </label>
+	                <input type="text" ng-model="imageUrl" ng-change="checkUrl()" class="form-control">
+	            </div>
             </div>
             <!-- End image url -->
 
             <!-- Types -->
             <div class="kee-new-types">
-                <label ng-class="{'kee-error' : typesHasError}">
-                    Types
-                    <span> * </span>
-                    <span ng-show="!typesHasError" class="pnd-icon-exclamation-circle" data-title="{{typesTooltipeMessage}}" bs-tooltip></span>
-                    <span ng-show="typesHasError" class="kee-error pnd-icon-exclamation-circle" data-title="{{typesErrorMessage}}" bs-tooltip></span>
-                    <span class="pnd-icon-search" ng-click="activeFilter = true"></span>
-                </label>
-                <span ng-show="activeFilter" class="pnd-icon-times" ng-click="activeFilter = false; typeFilter.label=''"></span>
-                <input ng-show="activeFilter" type="text" ng-model="typeFilter.label">
-                <div ng-repeat="item in types | filter:typeFilter"
-                     class="checkbox">
-                    <label>
-                        <input type="checkbox" class="kee-type-input" name="items" ng-change="updateTypes()" ng-model="item.checked" value="{{item.uri}}" />
-                        {{item.label}}
-                        <span class="pnd-icon-external-link"></span>
-                    </label>
-                </div> <!-- div ng-repeat item  -->
+	            <div class="form-group">
+	                <label ng-class="{'kee-error' : typesHasError}">
+	                    Types
+	                    <span> * </span>
+	                    <span ng-show="!typesHasError" class="pnd-icon-exclamation-circle" data-title="{{typesTooltipeMessage}}" bs-tooltip></span>
+	                    <span ng-show="typesHasError" class="kee-error pnd-icon-exclamation-circle" data-title="{{typesErrorMessage}}" bs-tooltip></span>
+	                    <span class="pnd-icon-search" ng-click="activeFilter = true"></span>
+	                </label>
+	                <span ng-show="activeFilter" class="pnd-icon-times" ng-click="activeFilter = false; typeFilter.label=''"></span>
+	                <input ng-show="activeFilter" type="text" ng-model="typeFilter.label">
+	                <div ng-repeat="item in types | filter:typeFilter"
+	                     class="checkbox">
+	                    <label>
+	                        <input type="checkbox" class="kee-type-input" name="items" ng-change="updateTypes()" ng-model="item.checked" value="{{item.uri}}" />
+	                        {{item.label}}
+	                        <span class="pnd-icon-external-link"></span>
+	                    </label>
+	                </div> <!-- div ng-repeat item  -->
+	            </div>
             </div>
             <!-- End Types -->
         </div> <!-- End content on the right -->
