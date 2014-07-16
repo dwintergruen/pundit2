@@ -28,7 +28,7 @@
 		            <div ng-show="contentTabs[$index].serverError">Server error</div>
 		        </div>
 		        <!-- / end messages 4 -->
-                <ul class="list-group">
+                <ul class="list-group pnd-inner-scrollable">
                     <li class="list-group-item" ng-repeat="mi in contentTabs[$index].items | orderBy:getOrderProperty" >
                         <item uri="{{mi.uri}}" hide-options="true" hide-sticky-button="true" ng-click="select(mi)" is-selected="{{isSelected(mi)}}" ng-mouseover="getItem(mi)"></item>
                     </li>

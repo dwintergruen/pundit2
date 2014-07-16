@@ -43,28 +43,36 @@
 
             <!-- Types -->
             <div class="kee-new-types">
+            
 	            <div class="form-group">
 	                <label ng-class="{'kee-error' : typesHasError}">
 	                    Types
 	                    <span> * </span>
-	                    <span ng-show="!typesHasError" class="pnd-icon-exclamation-circle" data-title="{{typesTooltipeMessage}}" bs-tooltip></span>
-	                    <span ng-show="typesHasError" class="kee-error pnd-icon-exclamation-circle" data-title="{{typesErrorMessage}}" bs-tooltip></span>
+	                    <span ng-show="!typesHasError" class="pnd-icon pnd-icon-exclamation-circle" data-title="{{typesTooltipeMessage}}" bs-tooltip></span>
+	                    <span ng-show="typesHasError" class="pnd-icon pnd-icon-exclamation-circle kee-error" data-title="{{typesErrorMessage}}" bs-tooltip></span>
 	                    <span class="pnd-icon-search" ng-click="activeFilter = true"></span>
 	                </label>
-	                <span ng-show="activeFilter" class="pnd-icon-times" ng-click="activeFilter = false; typeFilter.label=''"></span>
-	                <input ng-show="activeFilter" type="text" ng-model="typeFilter.label">
+	               <!-- filter input -->
+	               <div class="left-inner-icon pull-right" ng-show="activeFilter" >
+		               <span class="pnd-icon pnd-icon-filter"></span>
+		               <input ng-show="activeFilter" type="text" ng-model="typeFilter.label"  class="form-control">
+	               </div>
+	               <!-- end filter input -->
+	                <span ng-show="activeFilter" class="pnd-icon pnd-icon-times" ng-click="activeFilter = false; typeFilter.label=''"></span>
+	            </div>
                     <!-- types list -->
+                    <div class="kee-list-types">
                     <ul class="list-group">
                         <li ng-repeat="item in types | filter:typeFilter" class="list-group-item">
                         	<div class="pnd-item">
                             <input type="checkbox" class="kee-type-input" name="items" ng-change="updateTypes()" ng-model="item.checked" value="{{item.uri}}" />
                             {{item.label}}
-                            <span class="pnd-icon-external-link"></span>
+                            <span class="pnd-icon pnd-icon-external-link pull-right"></span>
                         	</div>
                         </li>
                     </ul>
-
-	            </div>
+                    </div>
+                    <!-- end types list -->        
             </div>
             <!-- End Types -->
         </div> <!-- End content on the right -->
