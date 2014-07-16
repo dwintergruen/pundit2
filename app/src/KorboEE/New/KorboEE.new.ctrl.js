@@ -2,6 +2,8 @@ angular.module('KorboEE')
     .controller('KeeNewCtrl', function($scope, $modal, KorboCommunicationService, $q, KorboCommunicationFactory, korboConf, $timeout, $modal) {
 
         $scope.tabs = [];
+        $scope.disactiveLanguages = [];
+        $scope.disactiveLanguagesPopoverTemplate = 'src/KorboEE/New/KorboEE.languagesPopover.tmpl.html';
         $scope.imageUrl = "";
         $scope.saveClicked = false;
         $scope.activeFilter = false;
@@ -32,27 +34,31 @@ angular.module('KorboEE')
             $scope.types[i].checked = $scope.types[i].state || false;
         }
 
+        console.log("controller run (!!!)");
         //build languages tabs
         for(var i=0; i< $scope.conf.languages.length; i++){
 
-            if($scope.conf.languages[i].state){
-                var title = angular.uppercase($scope.conf.languages[i].value);
-                var name = angular.lowercase($scope.conf.languages[i].name);
-                var lang = {
-                    'title': title,
-                    'name' : $scope.conf.languages[i].name,
-                    'description': "",
-                    'label': "",
-                    'mandatory': true,
-                    'hasError': false,
-                    'tooltipMessageTitle': tooltipMessageTitle + name,
-                    'tooltipMessageDescription': tooltipMessageDescription + name,
-                    'tooltipMessageError': "message",
-                    'tooltipMessageErrorTab': "There are some errors in the "+name+" languages fields"
-                };
+            var title = angular.uppercase($scope.conf.languages[i].value);
+            var name = angular.lowercase($scope.conf.languages[i].name);
+            var lang = {
+                'title': title,
+                'name' : $scope.conf.languages[i].name,
+                'description': "",
+                'label': "",
+                'mandatory': true,
+                'hasError': false,
+                'tooltipMessageTitle': tooltipMessageTitle + name,
+                'tooltipMessageDescription': tooltipMessageDescription + name,
+                'tooltipMessageError': "message",
+                'tooltipMessageErrorTab': "There are some errors in the "+name+" languages fields"
+            };
 
+            if($scope.conf.languages[i].state){
                 $scope.tabs.push(lang);
+            } else {
+                $scope.disactiveLanguages.push(lang);
             }
+
         }
 
     // check if language field are all right filled
@@ -276,6 +282,12 @@ angular.module('KorboEE')
         $scope.imageUrl = "";
     };
 
+    $scope.addLanguage = function(lang) {
+        var langIndex = $scope.disactiveLanguages.indexOf(lang);
+        $scope.disactiveLanguages.splice(langIndex, 1);
+        $scope.tabs.push(lang);
+    };
 
-    });
+
+});
 
