@@ -1,10 +1,12 @@
 angular.module('KorboEE')
-    .controller('KeeNewCtrl', function($scope, $modal, KorboCommunicationService) {
+    .controller('KeeNewCtrl', function($scope, $modal, KorboCommunicationService, $q, KorboCommunicationFactory, korboConf) {
 
         $scope.tabs = [];
         $scope.imageUrl = "";
         $scope.saveClicked = false;
         $scope.activeFilter = false;
+        $scope.isSaving = false;
+        var korboComm = new KorboCommunicationFactory();
 
         // tooltip message for image url
         $scope.imageUrlErrorMessage = "Invalid URL";
@@ -114,7 +116,6 @@ angular.module('KorboEE')
     };
 
    $scope.updateTitleField = function(index){
-     console.log($scope.tabs[index].label, index);
 
        if($scope.tabs[index].label === ''){
            $scope.tabs[index].tooltipMessageError = errorMandatory;
@@ -134,11 +135,82 @@ angular.module('KorboEE')
     $scope.save = function(){
         $scope.saveClicked = true;
         var checkLang = checkLanguages();
-        var checkTypes = $scope.updateTypes();
-        var checkUrl = $scope.checkUrl();
-        console.log("check lang ", checkLang);
-        console.log("check types ", checkTypes);
-        console.log("check url ", checkUrl);
+        $scope.updateTypes();
+        $scope.checkUrl();
+
+        if(!$scope.imageUrlHasError && !$scope.typesHasError && checkLang){
+
+            $scope.isSaving = true;
+
+            // get checked types
+            var newTypes = [];
+            for(var i=0; i<$scope.types.length; i++){
+                if ($scope.types[i].checked){
+                    newTypes.push($scope.types[i].URI);
+                }
+            }
+            var lang = angular.lowercase($scope.tabs[0].title);
+
+            var entityToSave = {
+                "label": $scope.tabs[0].label,
+                "abstract": $scope.tabs[0].description,
+                "depiction": $scope.imageUrl,
+                "type": newTypes
+            };
+
+            var promise = korboComm.save(entityToSave, lang, $scope.conf.endpoint, $scope.conf.basketID );
+            promise.then(function(res){
+
+                // get id from location of entity just created// All other label types, take the last part
+                var id = res.substring(res.lastIndexOf('/') + 1);
+                var location = res;
+
+                // check if there are more than 1 languages
+                if($scope.tabs.length > 1){
+                    var allPromises = [];
+                    for(var i=1; i<$scope.tabs.length; i++){
+
+                        (function(index) {
+
+                            var lang = angular.lowercase($scope.tabs[index].title);
+                            var entityToEdit = {
+                                "id": id,
+                                "label": $scope.tabs[index].label,
+                                "abstract": $scope.tabs[index].description
+                            };
+                            var langPromise = korboComm.save(entityToEdit, lang, $scope.conf.endpoint, $scope.conf.basketID );
+                            allPromises.push(langPromise);
+                        })(i);
+
+                    }
+
+                    $q.all(allPromises).then(function(res){
+                        $scope.directiveScope.location = location;
+                        $scope.directiveScope.elemToSearch = $scope.tabs[0].label;
+                        $scope.directiveScope.label = $scope.tabs[0].label;
+                        // close modal
+                        KorboCommunicationService.closeModal();
+                        // set modal as close in configuration
+                        korboConf.setIsOpenModal(false);
+                    });
+
+                } else {
+                    // non ho altre lingue da aggiungere, quindi posso chiudere la modale
+                    $scope.directiveScope.location = location;
+                    $scope.directiveScope.elemToSearch = $scope.tabs[0].label;
+                    $scope.directiveScope.label = $scope.tabs[0].label;
+                    // close modal
+                    KorboCommunicationService.closeModal();
+                    // set modal as close in configuration
+                    korboConf.setIsOpenModal(false);
+                }
+            });
+
+
+
+        } else {
+            console.log("ci sono errori");
+        }
 
     };
 

@@ -96,7 +96,7 @@ angular.module('KorboEE')
 
                     // declare object returned onSave() call
                     var obj = {};
-                    obj.value = res.location;
+                    obj.value = res;
                     obj.label = itemToCopyInKorbo.label;
                     obj.type = itemToCopyInKorbo.type;
                     obj.image = itemToCopyInKorbo.depiction;
