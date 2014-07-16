@@ -124,7 +124,10 @@ angular.module('KorboEE')
 
         $scope.copyInEditor = function(){
             //TODO
-            console.log("vuoi copiare ", $scope.itemSelected);
+            $scope.korboModalTabs.activeTab = 1;
+            //$scope.korboModalTabs[1].entityToCreate = $scope.itemSelected;
+            KorboCommunicationService.setEntityToCopy($scope.itemSelected);
+
         };
 
         // set location, label and elemToSearch values of directive

@@ -60,6 +60,7 @@ angular.module('KorboEE')
         // if an entity is defined, the form in New tab will be fill with entity passed values
         korboCommunication.openModalOnNew = function(conf, entity, directiveScope){
             // open only if modal is not open yet
+
             if(korboConf.getIsOpenModal() === false){
                 korboConf.setIsOpenModal(true);
                 // if an entity is passed, set in the scope
@@ -206,12 +207,24 @@ angular.module('KorboEE')
         // set selected entity
         korboCommunication.setSelectedEntity = function(e){
             entity = e;
-        }
+        };
 
         // get selected entity
         korboCommunication.getSelectedEntity = function(){
             return entity;
-        }
+        };
+
+        var entityToCopy = null;
+
+        // set entity to copy
+        korboCommunication.setEntityToCopy = function(e){
+            entityToCopy = e;
+        };
+
+        // get selected entity
+        korboCommunication.getEntityToCopy = function(){
+            return entityToCopy;
+        };
 
         return korboCommunication;
     })

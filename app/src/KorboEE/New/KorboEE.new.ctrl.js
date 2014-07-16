@@ -1,6 +1,13 @@
 angular.module('KorboEE')
     .controller('KeeNewCtrl', function($scope, $modal, KorboCommunicationService, $q, KorboCommunicationFactory, korboConf, $timeout, $http) {
 
+        //entityToCreate
+        $scope.$watch(function(){
+            return KorboCommunicationService.getEntityToCopy();
+        }, function(entity){
+            console.log("aaa", entity);
+        });
+
         $scope.tabs = [];
         $scope.disactiveLanguages = [];
         $scope.disactiveLanguagesPopoverTemplate = 'src/KorboEE/New/KorboEE.languagesPopover.tmpl.html';
