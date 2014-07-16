@@ -157,7 +157,7 @@
 // COL CENTER - RESULTS ----- //
 
 .pnd-vertical-tab-list-content {
-	width: 200px;
+	width: @results-width;
 	height: @results-height !important;
 	background-color: #fff;
 	overflow-y: auto !important;
@@ -180,4 +180,29 @@
 	}
 
 
+//
+// NEW
+// --------------------------------------------------
 
+
+.kee-new-languages {
+
+	.pnd-vertical-tab-list-content {
+		margin-left: 60px !important;
+	}
+}
+
+
+.kee-right-content {
+	background-color: aqua;
+	width: 200px;
+	display: inline-block;
+	float: right;
+	}
+	
+.kee-new-languages {
+
+	.tabs-left > .nav-tabs > li > a {
+		  min-width: @language-width;
+		  }
+	  }
