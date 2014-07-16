@@ -9,7 +9,6 @@
 	}
 		
 .kee-wrp {
-	//background-color: @gray-lighter; // gray skin
 	background-color: lighten(@gray-lighter, 5%);
 	}
 	
@@ -54,7 +53,6 @@
 // --------------------------------------------------
 
 .kee-search {
-	// background-color: darken(@gray-lighter, 5%); // gray skin
 	background-color: #fff;
 	border-bottom: 1px solid @gray-light;
 	padding: 5px;
@@ -185,22 +183,34 @@
 // --------------------------------------------------
 
 
-.kee-new-languages {
-
-	.pnd-vertical-tab-list-content {
-		margin-left: 60px !important;
+.kee-top-area {
+	background-color: #fff;
+	border-bottom: 1px solid @gray-light;
+	padding: 5px;
+	margin-bottom: 5px;
+	
+	.kee-top-area-menu {
+		
 	}
 }
 
+.kee-new-languages {
+
+	.pnd-vertical-tab-list-content {
+		width: @content-width;
+		padding: 0px 10px 0px 10px;
+	}
+}
 
 .kee-right-content {
-	background-color: aqua;
-	width: 200px;
-	display: inline-block;
+	width: @content-width;
+	height: @preview-height;
 	float: right;
+	padding: 0px 10px 0px 10px;
 	}
 	
 .kee-new-languages {
+	background-color: lighten(@gray-lighter, 5%);
 
 	.tabs-left > .nav-tabs > li > a {
 		  min-width: @language-width;

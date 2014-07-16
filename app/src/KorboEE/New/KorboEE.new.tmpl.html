@@ -1,24 +1,20 @@
 <div ng-controller="KeeNewCtrl">
     <div class="kee-top-area">
-        <div class="kee-top-area-message">{{topAreaMessage}}</div>
-        <div class="kee-top-area-menu">
+        <div class="kee-top-area-menu pull-right">
             <span class="pnd-icon-gear"></span>
         </div>
+        <div class="kee-top-area-message">{{topAreaMessage}}</div>
+
     </div> <!-- End top area -->
 
     <!-- content -->
     <div class="kee-new-content" ng-hide="isSaving">
-        <!-- Languages -->
-        <div class="kee-new-languages">
-            <div kee-languages="tabs"></div>
-        </div>
-        <!-- End languages -->
-        <!-- content on the right -->
+    <!-- content on the right -->
         <div class="kee-right-content">
             <!-- original url-->
             <div class="kee-new-original-url">
                 <label>Original URL</label>
-                <input type="text" >
+                <input type="text" class="form-control">
                 <span class="pnd-icon-external-link"></span>
             </div>
             <!-- End original url -->
@@ -30,7 +26,7 @@
                     <span ng-show="!imageUrlHasError" class="pnd-icon-exclamation-circle" data-title="{{imageUrlTooltipeMessage}}" bs-tooltip></span>
                     <span ng-show="imageUrlHasError" class="kee-error pnd-icon-exclamation-circle" data-title="{{imageUrlErrorMessage}}" bs-tooltip></span>
                 </label>
-                <input type="text" ng-model="imageUrl" ng-change="checkUrl()">
+                <input type="text" ng-model="imageUrl" ng-change="checkUrl()" class="form-control">
             </div>
             <!-- End image url -->
 
@@ -56,7 +52,13 @@
             </div>
             <!-- End Types -->
         </div> <!-- End content on the right -->
-    </div><!-- End new content-->
+
+        <!-- Languages -->
+        <div class="kee-new-languages">
+            <div kee-languages="tabs"></div>
+        </div>
+        <!-- End languages -->
+            </div><!-- End new content-->
     <!-- content -->
     <div class="kee-new-saving" ng-show="isSaving">
     Saving...

@@ -22,7 +22,7 @@
                     <span ng-show="!tabs[$index].hasError" class="pnd-icon-exclamation-circle" data-title="{{tabs[$index].tooltipMessageTitle}}" bs-tooltip></span>
                     <span ng-show="tabs[$index].hasError" class="kee-error pnd-icon-exclamation-circle" data-title="{{tabs[$index].tooltipMessageError}}" bs-tooltip></span>
                 </label>
-                <input type="text" ng-model="tabs[$index].label" ng-change = updateTitleField($index)>
+                <input type="text" ng-model="tabs[$index].label" ng-change = updateTitleField($index) class="form-control">
                 </div>
                 <!-- end entity title -->
 
@@ -32,7 +32,7 @@
                     Description
                     <span class="pnd-icon-exclamation-circle" data-title="{{tabs[$index].tooltipMessageDescription}}" bs-tooltip></span>
                 </label>
-                <textarea class="form-control" rows="3" ng-model="tabs[$index].description"></textarea>
+                <textarea class="form-control" rows="3" ng-model="tabs[$index].description" class="form-control"></textarea>
                 </div>
                 <!-- end entity description -->
             </div>
