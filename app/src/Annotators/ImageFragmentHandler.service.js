@@ -68,43 +68,10 @@ angular.module('Pundit2.Annotators')
     labelMaxLength: 40
 
 })
-.service('ImageFragmentHandler', function(IMAGEHANDLERDEFAULTS, NameSpace, BaseComponent, Config, TextFragmentHandler,
-                                         ContextualMenu, XpointersHelper, Item, ItemsExchange, Toolbar, TripleComposer,
-                                         $document, $rootScope) {
+.service('ImageFragmentHandler', function(IMAGEHANDLERDEFAULTS, NameSpace, BaseComponent, Config, 
+    TextFragmentHandler, XpointersHelper, Item ) {
 
     var ifh = new BaseComponent('ImageFragmentHandler', IMAGEHANDLERDEFAULTS);
-
-    $document.on('click', function(clickEvt) {
-        var target = clickEvt.target;
-        if (TextFragmentHandler.isToBeIgnored(target)) {
-            ifh.log('ABORT: ignoring mouse DOWN event on document: ignore class spotted.');
-            return;
-        }
-
-        // check if click on image
-        if (typeof(target.src) !== 'undefined') {
-            // TODO: this will create a new item in our container at each valid user selection.
-            // how to wipe them up? If the user keeps selecting stuff we end up with LOADS and
-            // LOADS of unused items.
-            // Problem: the item might be used by the triple composer, or added to my items or
-            // discarded at all.
-            // Possible solution: wipe the container when triple composer is empty, ctx menu is
-            // NOT shown on every dashboard open/close ?
-            var item = ifh.createItemFromImage(target);
-            ItemsExchange.addItemToContainer(item, ifh.options.container);
-
-            ifh.log('Valid selection ended on document. Text fragment Item produced: '+ item.label);
-
-            if (Toolbar.isActiveTemplateMode()) {
-                //tfh.log('Item used as subject inside triple composer (template mode active).');
-                //TripleComposer.addToAllSubject(item);
-                //$rootScope.$emit('pnd-save-annotation');
-                return;
-            }
-
-            ContextualMenu.show(clickEvt.pageX, clickEvt.pageY, item, ifh.options.cMenuType);
-        }
-    });
 
     var getXpFromNode = function(node) {
         var range = document.createRange();

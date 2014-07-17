@@ -372,11 +372,16 @@ angular.module('Pundit2.Client')
         };
 
         // add img-menu directive to all image inside page
-        // discard image that have a parent with pnd-ignore class
+        // must invoke this function before creating pundit 
         var addMenuToImages = function() {
 
-            var images = angular.element('img').after('<image-fragment-icon></image-fragment-icon>');
-            $compile(angular.element('image-fragment-icon'))($rootScope);
+            angular.element('img').each(function(index){
+                var className = 'pnd-image-ref-'+index;
+                angular.element(this)
+                    .addClass(className)
+                    .after('<img-menu ref="'+ className +'"></img-menu>');
+            });
+            $compile(angular.element('img-menu'))($rootScope);
         };
 
 
@@ -386,7 +391,7 @@ angular.module('Pundit2.Client')
 
             fixRootNode();
 
-            //addMenuToImages();
+            addMenuToImages();
 
             if (Config.useBasicRelations) {
                 loadBasicRelations();
