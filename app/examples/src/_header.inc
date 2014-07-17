@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="../css/pundit2.css">
     <link rel="stylesheet" href="../css/korboee.css">
     <!-- endbuild -->
+    <link rel="stylesheet" href="../../bower_components/bootstrap/dist/css/bootstrap.css" >
     
 </head>
 <body>
