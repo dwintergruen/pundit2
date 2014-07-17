@@ -149,6 +149,7 @@ angular.module('KorboEE')
             }
         };
 
+        $scope.previewError = false;
 
         // get a single entity to retriew all information to show in preview
         $scope.getItem = function(item){
@@ -156,6 +157,7 @@ angular.module('KorboEE')
 
             // build param to get call
             $scope.previewIsLoading = true;
+            $scope.previewError = false;
             var param = {};
             param.endpoint = $scope.conf.endpoint;
             if($scope.contentTabs[$scope.contentTabs.activeTab].provider === 'korbo'){
@@ -190,6 +192,12 @@ angular.module('KorboEE')
                         updatedItem.resource = r.resource;
                         // set preview loading status to false
                         $scope.previewIsLoading = false;
+                        $scope.previewError = false;
+                    },
+                    // IN CASE OF ERROR
+                    function(){
+                        $scope.previewIsLoading = false;
+                        $scope.previewError = true;
                     })
 
                     // if label is not empty, results get all items info
@@ -202,8 +210,14 @@ angular.module('KorboEE')
                     updatedItem.location = res.uri;
                     updatedItem.resource = res.resource;
                     $scope.previewIsLoading = false;
+                    $scope.previewError = false;
                 }
 
+            },
+            // IN CASE OF ERROR
+            function(){
+                $scope.previewIsLoading = false;
+                $scope.previewError = true;
             });
 
         };

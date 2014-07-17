@@ -14,12 +14,15 @@
 <!-- // end search -->
     <div ng-model="contentTabs.activeTab" bs-tabs="contentTabs" data-template = "src/KorboEE/Search/KorboEEverticalTabs.tmpl.html"></div>
 
-    <div ng-hide="previewIsLoading">
+    <div ng-hide="previewIsLoading || previewError">
         <preview use-in-korbo="true"></preview>
     </div>
 
     <div ng-show="previewIsLoading">
         Loading preview...
+    </div>
+    <div ng-show="previewError">
+        Impossible loading preview...
     </div>
 <!-- footer -->
     <div class="kee-footer">

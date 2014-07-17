@@ -1,5 +1,5 @@
 angular.module('KorboEE')
-    .controller('KeeNewCtrl', function($scope, $modal, KorboCommunicationService, $q, KorboCommunicationFactory, korboConf, $timeout, $http, TypesHelper) {
+    .controller('KeeNewCtrl', function($scope, $modal, KorboCommunicationService, $q, KorboCommunicationFactory, korboConf, $timeout, $http, TypesHelper, ItemsExchange) {
 
         $scope.tabs = [];
         $scope.disactiveLanguages = [];
@@ -259,6 +259,7 @@ angular.module('KorboEE')
         // reset image url
         $scope.imageUrl = "";
         $scope.originalUrl = "";
+        KorboCommunicationService.setEntityToCopy(null);
     };
 
     $scope.previewImage = "";
@@ -313,21 +314,28 @@ angular.module('KorboEE')
         return KorboCommunicationService.getEntityToCopy();
     }, function(entity){
         if(entity !== null){
+            console.log("selected", entity);
+            var e = ItemsExchange.getItemByUri(entity.uri);
+            console.log("ItemsExchange", e);
+            $scope.imageUrl = e.image;
+            $scope.originalUrl = e.resource;
 
-            $scope.imageUrl = entity.image;
-            $scope.originalUrl = entity.resource;
-            
+            // Reset types
+            $scope.types = angular.copy($scope.conf.type);
+            for (var i in $scope.types) {
+                $scope.types[i].checked = $scope.types[i].state || false;
+            }
             // get types
-            for(var i=0; i<entity.type.length; i++){
+            for(var i=0; i<e.type.length; i++){
                 var t = {};
-                t.uri = entity.type[i];
-                t.label = TypesHelper.getLabel(entity.type[i]);
+                t.URI = e.type[i];
+                t.label = TypesHelper.getLabel(e.type[i]);
                 t.checked = true;
                 $scope.types.push(t);
             }
 
-            $scope.tabs[0].label = entity.label;
-            $scope.tabs[0].description = entity.description;
+            $scope.tabs[0].label = e.label;
+            $scope.tabs[0].description = e.description;
 
         }
 
