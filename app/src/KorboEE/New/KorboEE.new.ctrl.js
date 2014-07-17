@@ -245,7 +245,7 @@ angular.module('KorboEE')
             (function(index) {
                 $scope.tabs[index].label = "";
                 $scope.tabs[index].description = "";
-                $scope.tabs[index].hasError = "false";
+                $scope.tabs[index].hasError = false;
 
             })(l);
         } // end for
