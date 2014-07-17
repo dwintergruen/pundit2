@@ -25,6 +25,7 @@ angular.module('KorboEE')
         // initialize providers tabs
         $scope.contentTabs = [];
 
+        // TODO in edit mode, non devo aggiungere korbo nella lista dei provider
         // push korbo provider
         $scope.contentTabs.push({
             title: 'Korbo',

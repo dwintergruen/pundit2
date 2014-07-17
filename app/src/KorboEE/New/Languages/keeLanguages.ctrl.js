@@ -7,10 +7,6 @@ angular.module('KorboEE')
             offsetButton: 40
         };
 
-        $scope.errors = {
-            'title': "some errors occurred"
-        };
-
         $scope.hiddenTabsDropdownTemplate = 'src/ContextualMenu/dropdown.tmpl.html';
 
         // Support animations

@@ -30,7 +30,7 @@ angular.module('KorboEE')
             }
         ];
 
-        // button states
+        // BUTTONS STATE
         $scope.showUse = {
             "visibility":  false,
             "disabled":    true
@@ -82,6 +82,7 @@ angular.module('KorboEE')
 
         $scope.copyAndUse = function(){
 
+            // build item to copy in korbo
             var itemToCopyInKorbo = {
                 "label": $scope.itemSelected.label,
                 "abstract": $scope.itemSelected.description,
@@ -89,27 +90,36 @@ angular.module('KorboEE')
                 "depiction": $scope.itemSelected.image,
                 "resourceUrl": $scope.itemSelected.resource
             };
+
+            // save item
             var promise = korboComm.save(itemToCopyInKorbo, $scope.defaultLan.value, $scope.conf.endpoint, $scope.conf.basketID );
+
+            // if item is saved correctly
             promise.then(function(res){
 
-                    $scope.directiveScope.label = itemToCopyInKorbo.label;
-                    $scope.directiveScope.elemToSearch = itemToCopyInKorbo.label;
-                    $scope.directiveScope.location = res;
+                // udpdate directive fields
+                // TODO questo va fatto solo se korbo è utilizzato in modalità tafony compatibility
+                // TODO ricordarsi di mettere un if sul parametro di configurazione
+                $scope.directiveScope.label = itemToCopyInKorbo.label;
+                $scope.directiveScope.elemToSearch = itemToCopyInKorbo.label;
+                $scope.directiveScope.location = res;
 
-                    // declare object returned onSave() call
-                    var obj = {};
-                    obj.value = res;
-                    obj.label = itemToCopyInKorbo.label;
-                    obj.type = itemToCopyInKorbo.type;
-                    obj.image = itemToCopyInKorbo.depiction;
-                    obj.description = itemToCopyInKorbo.abstract;
-                    obj.language = $scope.defaultLan.value;
-                    api.fireOnSave(obj);
-                    api.fireOnCancel();
-                    // close modal
-                    KorboCommunicationService.closeModal();
-                    // set modal as close in configuration
-                    korboConf.setIsOpenModal(false);
+                // declare object returned onSave() call
+                var obj = {};
+                obj.value = res;
+                obj.label = itemToCopyInKorbo.label;
+                obj.type = itemToCopyInKorbo.type;
+                obj.image = itemToCopyInKorbo.depiction;
+                obj.description = itemToCopyInKorbo.abstract;
+                obj.language = $scope.defaultLan.value;
+                // fire save callback
+                api.fireOnSave(obj);
+                // fire cancel callback
+                api.fireOnCancel();
+                // close modal
+                KorboCommunicationService.closeModal();
+                // set modal as close in configuration
+                korboConf.setIsOpenModal(false);
 
             },
             function(){
@@ -123,15 +133,15 @@ angular.module('KorboEE')
         };
 
         $scope.copyInEditor = function(){
-            //TODO
-            $scope.korboModalTabs.activeTab = 1;
-            //$scope.korboModalTabs[1].entityToCreate = $scope.itemSelected;
+            // memorize the entity to copy
             KorboCommunicationService.setEntityToCopy($scope.itemSelected);
-
+            // open new tab
+            $scope.korboModalTabs.activeTab = 1;
         };
 
         // set location, label and elemToSearch values of directive
         $scope.use = function(){
+            // TODO aggiornare i campi della direttiva solamente se korbo è configurato per l'utilizzo in tafony compatibility
             // if is a korbo entity
             if($scope.itemSelected.providerFrom === 'korbo'){
                 $scope.directiveScope.location = $scope.itemSelected.location;
