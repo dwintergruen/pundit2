@@ -50,7 +50,8 @@
 	                    <span> * </span>
 	                    <span ng-show="!typesHasError" class="pnd-icon pnd-icon-exclamation-circle" data-title="{{typesTooltipeMessage}}" bs-tooltip></span>
 	                    <span ng-show="typesHasError" class="pnd-icon pnd-icon-exclamation-circle kee-error" data-title="{{typesErrorMessage}}" bs-tooltip></span>
-	                    <!--<span class="pnd-icon-search" ng-click="activeFilter = true"></span>-->
+	                    <span ng-show="!activeFilter" class="pnd-icon-filter" ng-click="activeFilter = true"></span>
+                        <span ng-show="activeFilter" class="pnd-icon pnd-icon-times" ng-click="activeFilter = false; typeFilter.label=''"></span>
 	                </label>
 	               <!-- filter input -->
 	               <div class="left-inner-icon pull-right" ng-show="activeFilter" >

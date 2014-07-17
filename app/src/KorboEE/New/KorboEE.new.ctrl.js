@@ -10,7 +10,7 @@ angular.module('KorboEE')
         $scope.isSaving = false;
         $scope.topAreaMessage = "You are creating a new entity";
         $scope.typeFilter = {'label': ""};
-        $scope.activeFilter = true;
+        //$scope.activeFilter = true;
         var korboComm = new KorboCommunicationFactory();
 
         // tooltip message for image url
@@ -314,6 +314,7 @@ angular.module('KorboEE')
 
             $scope.imageUrl = entity.image;
             $scope.originalUrl = entity.resource;
+            
             // get types
             for(var i=0; i<entity.type.length; i++){
                 var t = {};
