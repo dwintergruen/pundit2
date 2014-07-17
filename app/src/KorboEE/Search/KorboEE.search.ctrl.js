@@ -3,8 +3,6 @@ angular.module('KorboEE')
 
         var korboComm = new KorboCommunicationFactory();
 
-        console.log($scope.directiveScope);
-
         // preview loading status
         $scope.previewIsLoading = false;
 

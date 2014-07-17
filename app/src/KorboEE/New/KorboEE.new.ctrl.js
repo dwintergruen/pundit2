@@ -245,6 +245,7 @@ angular.module('KorboEE')
             (function(index) {
                 $scope.tabs[index].label = "";
                 $scope.tabs[index].description = "";
+                $scope.tabs[index].hasError = "false";
 
             })(l);
         } // end for
@@ -257,6 +258,7 @@ angular.module('KorboEE')
 
         // reset image url
         $scope.imageUrl = "";
+        $scope.originalUrl = "";
     };
 
     $scope.previewImage = "";
@@ -323,6 +325,9 @@ angular.module('KorboEE')
                 t.checked = true;
                 $scope.types.push(t);
             }
+
+            $scope.tabs[0].label = entity.label;
+            $scope.tabs[0].description = entity.description;
 
         }
 
