@@ -1,6 +1,6 @@
 <div class="pnd-korbo-languages-popover popover">
-    <div ng-repeat="lang in disactiveLanguages">
-        <div ng-click="addLanguage(lang); $hide()">
+    <div ng-repeat="lang in disactiveLanguages" class="kee-popover-item">
+        <div ng-click="addLanguage(lang); $hide()" >
             <span class="pnd-icon pnd-icon-plus"></span> {{lang.name}} ({{lang.title}})
         </div>
     </div>
