@@ -300,6 +300,25 @@ angular.module('Pundit2.ContextualMenu')
         return true;
     };
 
+    contextualMenu.removeActionByName = function(name){
+        var foundEl;
+        state.menuElements.some(function(el){
+            if(name === el.name){
+                foundEl = el;
+            }
+            return;
+        });
+        if ( typeof(foundEl) !== 'undefined' ) {
+            var actionIndex = state.menuElements.indexOf(foundEl);
+            state.menuElements.splice(actionIndex, 1);
+            contextualMenu.log('Remove action '+foundEl.name+' for types '+foundEl.type);
+            return true;
+        }
+
+        contextualMenu.err('Action '+name+' not found');
+        return false;
+    };
+
     // add submenu element to menu
     contextualMenu.addSubMenu = function(subMenuObj){
 
