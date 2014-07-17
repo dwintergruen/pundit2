@@ -28,6 +28,9 @@ angular.module('Pundit2.Annotators')
                     left: imgPos.left,
                     top: imgPos.top
                 });
+                scope.image.css({
+                    border: '1px solid khaki'
+                });
             };
             $rootScope.$on('consolidation-completed', placeMenu);
             

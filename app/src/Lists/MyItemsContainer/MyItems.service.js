@@ -74,6 +74,7 @@ angular.module("Pundit2.MyItemsContainer")
             Config.modules.PageItemsContainer.cMenuType,
             Config.modules.MyItemsContainer.cMenuType,
             Config.modules.TextFragmentAnnotator.cMenuType,
+            Config.modules.ImageFragmentHandler.cMenuType,
             Config.modules.SelectorsManager.cMenuType
         ];
 
