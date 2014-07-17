@@ -31,7 +31,7 @@
 	                    <span ng-show="!imageUrlHasError" class="pnd-icon-exclamation-circle" data-title="{{imageUrlTooltipeMessage}}" bs-tooltip></span>
 	                    <span ng-show="imageUrlHasError" class="kee-error pnd-icon-exclamation-circle" data-title="{{imageUrlErrorMessage}}" bs-tooltip></span>
 	                </label>
-	                <input type="text" ng-model="imageUrl" ng-change="checkUrl()" class="form-control">
+	                <input ng-hide="showImg" type="text" ng-model="imageUrl" ng-change="checkUrl()" class="form-control">
                     <div class="kee-preview-image">
                     <img ng-show="showImg" ng-src="{{previewImage}}"/>
                     <a ng-show="showImg" ng-click="removeImage()">Remove image</a>
@@ -70,9 +70,9 @@
                     <ul class="list-group">
                         <li ng-repeat="item in types | filter:typeFilter" class="list-group-item">
                         	<div class="pnd-item">
-                            <input type="checkbox" class="kee-type-input" name="items" ng-change="updateTypes()" ng-model="item.checked" value="{{item.uri}}" />
+                            <input type="checkbox" class="kee-type-input" name="items" ng-change="updateTypes()" ng-model="item.checked" value="{{item.URI}}" />
                             {{item.label}} {{item.length}}
-                            <span class="pnd-icon pnd-icon-external-link pull-right"></span>
+                            <span class="pnd-icon pnd-icon-external-link pull-right" ng-click="moreInfo(item.URI)"></span>
                         	</div>
                         </li>
                     </ul>

@@ -1,5 +1,5 @@
 angular.module('KorboEE')
-    .controller('KeeModalCtrl', function($scope, $modal, KorboCommunicationService, APIService, korboConf, KorboCommunicationFactory, $rootScope) {
+    .controller('KeeModalCtrl', function($scope, $modal, KorboCommunicationService, APIService, korboConf, KorboCommunicationFactory, $window) {
 
         var api = APIService.get($scope.conf.globalObjectName);
         var korboComm = new KorboCommunicationFactory();
@@ -127,9 +127,19 @@ angular.module('KorboEE')
             });
         };
 
-        $scope.moreInfo = function(){
-            //TODO
-            console.log("vuoi more info di ", $scope.itemSelected);
+        $scope.moreInfo = function(url){
+
+            if(url === null || typeof(url) === 'undefined'){
+                console.log("vuoi more info di ", $scope.itemSelected);
+            } else {
+                $window.open(url);
+            }
+
+        };
+
+        // open item url in a new window when click on More Info button in a preview
+        $scope.openUrl = function(url) {
+
         };
 
         $scope.copyInEditor = function(){
