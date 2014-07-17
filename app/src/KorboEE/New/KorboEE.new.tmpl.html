@@ -46,13 +46,11 @@
             <div class="kee-new-types">
             
 	            <div class="form-group">
-	            <!-- <span ng-show="!activeFilter" class="pnd-icon pnd-icon-filter pull-right" ng-click="activeFilter = true"></span>-->
 	            <button type="button" class="btn btn-xs btn-link pull-right" ng-show="!activeFilter" ng-click="activeFilter = true"><span class="pnd-icon pnd-icon-filter"></span></button>
 	                <label ng-class="{'kee-error' : typesHasError}">                    
 	                    Types<span> * </span>
 	                    <span ng-show="!typesHasError" class="pnd-icon pnd-icon-exclamation-circle" data-title="{{typesTooltipeMessage}}" bs-tooltip></span>
 	                    <span ng-show="typesHasError" class="pnd-icon pnd-icon-exclamation-circle kee-error" data-title="{{typesErrorMessage}}" bs-tooltip></span>
-                        <!-- <span ng-show="activeFilter" class="pnd-icon pnd-icon-times" ng-click="activeFilter = false; typeFilter.label=''"></span> -->
 	                </label>
 	               <!-- filter input -->
 	               <div class="kee-active-filter">
@@ -66,7 +64,6 @@
 	               </div>
 	               </div>
 	               <!-- end filter input -->
-	                <!--<span ng-show="activeFilter" class="pnd-icon pnd-icon-times" ng-click="activeFilter = false; typeFilter.label=''"></span>-->
 	            </div>
                     <!-- types list -->
                     <div class="kee-list-types">
