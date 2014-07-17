@@ -1,5 +1,5 @@
 angular.module('KorboEE')
-    .controller('KeeNewCtrl', function($scope, $modal, KorboCommunicationService, $q, KorboCommunicationFactory, korboConf, $timeout, $http, TypesHelper, ItemsExchange) {
+    .controller('KeeNewCtrl', function($scope, $rootScope, $dropdown, $modal, KorboCommunicationService, $q, KorboCommunicationFactory, korboConf, $timeout, $http, TypesHelper, ItemsExchange, ContextualMenu) {
 
         $scope.tabs = [];
         $scope.disactiveLanguages = [];
@@ -8,6 +8,7 @@ angular.module('KorboEE')
         $scope.saveClicked = false;
         $scope.activeFilter = false;
         $scope.isSaving = false;
+        $scope.originalUrlCheck = true;
         $scope.topArea = {
             'message': 'You are creating a new entity',
             'status': 'info'
@@ -60,11 +61,45 @@ angular.module('KorboEE')
 
             if($scope.conf.languages[i].state){
                 $scope.tabs.push(lang);
+                ContextualMenu.addAction({
+                    name: 'rml'+lang.name,
+                    type: ['advancedMenu'],
+                    label: 'Remove '+lang.name,
+                    priority: 1,
+                    showIf: function(){
+                        return true;
+                    },
+                    action: function(_lang){
+                        return function(){
+                            $scope.removeLanguage(_lang);
+                        };
+                    }(lang)
+                });
+
             } else {
                 $scope.disactiveLanguages.push(lang);
             }
 
         }
+
+        ContextualMenu.addAction({
+            name: 'editURL',
+            type: ['advancedMenu'],
+            label: 'Edit original URL',
+            priority: 3,
+            showIf: function(){
+                return true;
+            },
+            action: function(resource){
+                $scope.originalUrlCheck = false;
+            }
+        });
+
+        ContextualMenu.addDivider({
+            priority: 3,
+            type: 'advancedMenu'
+        });
+
 
     // check if language field are all right filled
     var checkLanguages = function(){
@@ -312,16 +347,37 @@ angular.module('KorboEE')
         }
     });
 
-    $scope.removeImage = function(){
-        $scope.showImg = false;
-        $scope.previewImage = "";
-        $scope.imageUrl = "";
-    };
-
     $scope.addLanguage = function(lang) {
         var langIndex = $scope.disactiveLanguages.indexOf(lang);
         $scope.disactiveLanguages.splice(langIndex, 1);
         $scope.tabs.push(lang);
+        ContextualMenu.addAction({
+            name: 'rml'+lang.name,
+            type: ['advancedMenu'],
+            label: 'Remove '+lang.name,
+            priority: 1,
+            showIf: function(){
+                return true;
+            },
+            action: function(_lang){
+                return function(){
+                    $scope.removeLanguage(_lang);
+                };
+            }(lang)
+        });
+    };
+
+    $scope.removeLanguage = function(lang) {
+        var langIndex = $scope.tabs.indexOf(lang);
+        $scope.tabs.splice(langIndex, 1);
+        $scope.disactiveLanguages.push(lang);
+        ContextualMenu.removeActionByName('rml'+_lang.name);
+    };
+
+    $scope.showDropdown = function($event){
+        var resource = {name:'resourceName'};
+        ContextualMenu.show($event.pageX, $event.pageY, resource, 'advancedMenu');
+        $event.stopPropagation();
     };
 
     //entityToCreate

@@ -1,7 +1,7 @@
 <div ng-controller="KeeNewCtrl">
     <div class="kee-top-area">
         <div class="kee-top-area-menu pull-right">
-            <button type="button" class="btn btn-xs btn-link"> <span class="pnd-icon pnd-icon-gear"></span></button>
+            <button type="button" class="btn btn-xs btn-link" ng-click="showDropdown($event)"><span class="pnd-icon pnd-icon-gear"></span></button>
         </div>
         <div class="kee-top-area-message" ng-class="{'kee-error' : topArea.status == 'error'}">{{topArea.message}}</div>
 
@@ -17,7 +17,7 @@
 	                <label>Original URL</label>
 	                <div class="left-inner-icon">
                         <span class="pnd-icon pnd-icon-external-link"></span>
-	                	<input type="text" class="form-control" ng-model="originalUrl" disabled>
+                        <input type="text" class="form-control" ng-model="originalUrl" ng-disabled="originalUrlCheck">
 	                </div>
 	            </div>
             </div>
