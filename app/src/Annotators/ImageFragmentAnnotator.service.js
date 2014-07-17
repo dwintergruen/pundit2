@@ -5,16 +5,26 @@ angular.module('Pundit2.Annotators')
     // Create the component and declare what we deal with: text
     var ifa = new BaseComponent('ImageFragmentAnnotator');
     ifa.label = "image";
-    ifa.type = NameSpace.fragments[ifa.label];
+    ifa.type = NameSpace.types[ifa.label];
 
-    //Consolidation.addAnnotator(ifa);
+    Consolidation.addAnnotator(ifa);
     
     ifa.isConsolidable = function(item) {
+
         if (!angular.isArray(item.type)) {
-            ifa.log("Item not valid: malformed");
+            ifa.log("Item not valid: malformed type"+ item.uri);
             return false;
         } else if (item.type.length === 0) {
-            ifa.log("Item not valid: types len 0");
+            ifa.log("Item not valid: types len 0"+ item.uri);
+            return false;
+        } else if (item.type.indexOf(ifa.type) === -1) {
+            ifa.log("Item not valid: not have type image"+ item.uri);
+            return false;
+        } else if (!XpointersHelper.isValidXpointerURI(item.uri)) {
+            ifa.log("Item not valid: not a valid xpointer uri: "+ item.uri);
+            return false;
+        } else if (!XpointersHelper.isValidXpointer(item.uri)) {
+            ifa.log("Item not valid: not consolidable on this page: "+ item.uri);
             return false;
         }
         
@@ -23,15 +33,13 @@ angular.module('Pundit2.Annotators')
         // - has a part of
         // - .selector contains something
         // ... etc etc
-        if (item.type.indexOf(ifa.type) !== -1) {
-            ifa.log("Item is a fragment! "+ ifa.label);
-            return true;
-        }
-        
-        // TODO: check if it is consolidable ON THIS PAGE
 
-        ifa.log("Item not valid: not recognized as a consolidable "+ ifa.label);
-        return false;
+        ifa.log("Item valid: "+ item.label);
+        return true;
+    };
+
+    ifa.consolidate = function(items) {
+        // TODO
     };
 
     ifa.wipe = function() {

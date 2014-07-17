@@ -111,7 +111,7 @@ angular.module('Pundit2.Annotators')
         // - has a part of
         // - has a page context
 
-        tfa.log("Item not valid: not recognized as a consolidable "+ tfa.label);
+        tfa.log("Item valid: try to consolidate "+ item.label);
         return true;
     };
 
