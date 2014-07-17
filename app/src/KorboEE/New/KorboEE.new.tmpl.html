@@ -46,19 +46,24 @@
             <div class="kee-new-types">
             
 	            <div class="form-group">
-	                <label ng-class="{'kee-error' : typesHasError}">
-	                    Types
-	                    <span> * </span>
+	            <!-- <span ng-show="!activeFilter" class="pnd-icon pnd-icon-filter pull-right" ng-click="activeFilter = true"></span>-->
+	            <button type="button" class="btn btn-xs btn-link pull-right" ng-show="!activeFilter" ng-click="activeFilter = true"><span class="pnd-icon pnd-icon-filter"></span></button>
+	                <label ng-class="{'kee-error' : typesHasError}">                    
+	                    Types<span> * </span>
 	                    <span ng-show="!typesHasError" class="pnd-icon pnd-icon-exclamation-circle" data-title="{{typesTooltipeMessage}}" bs-tooltip></span>
 	                    <span ng-show="typesHasError" class="pnd-icon pnd-icon-exclamation-circle kee-error" data-title="{{typesErrorMessage}}" bs-tooltip></span>
-	                    <span ng-show="!activeFilter" class="pnd-icon-filter" ng-click="activeFilter = true"></span>
-                        <span ng-show="activeFilter" class="pnd-icon pnd-icon-times" ng-click="activeFilter = false; typeFilter.label=''"></span>
+                        <!-- <span ng-show="activeFilter" class="pnd-icon pnd-icon-times" ng-click="activeFilter = false; typeFilter.label=''"></span> -->
 	                </label>
 	               <!-- filter input -->
-	               <div class="left-inner-icon pull-right" ng-show="activeFilter" >
+	               <div class="kee-active-filter">
+	               <button type="button" class="btn btn-xs btn-link" ng-show="activeFilter" ng-click="activeFilter = false; typeFilter.label=''"><span class="pnd-icon pnd-icon-times"></span></button>
+	               <!-- <span ng-show="activeFilter" class="pnd-icon pnd-icon-times" ng-click="activeFilter = false; typeFilter.label=''"></span> -->
+	               <div class="left-inner-icon" ng-show="activeFilter" >
+	               
 		               <span ng-show="typeFilter.label == ''" class="pnd-icon pnd-icon-filter"></span>
                        <span ng-show="!typeFilter.label == ''" class="pnd-icon pnd-icon-times" ng-click="typeFilter.label=''"></span>
-		               <input ng-show="activeFilter" type="text" ng-model="typeFilter.label"  class="form-control">
+		               <input ng-show="activeFilter" type="text" placeholder="filter types..." ng-model="typeFilter.label"  class="form-control">
+	               </div>
 	               </div>
 	               <!-- end filter input -->
 	                <!--<span ng-show="activeFilter" class="pnd-icon pnd-icon-times" ng-click="activeFilter = false; typeFilter.label=''"></span>-->
