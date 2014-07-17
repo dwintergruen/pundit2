@@ -72,6 +72,7 @@ angular.module('KorboEE')
                     action: function(_lang){
                         return function(){
                             $scope.removeLanguage(_lang);
+                            ContextualMenu.removeActionByName('rml'+_lang.name);
                         };
                     }(lang)
                 });
@@ -362,6 +363,7 @@ angular.module('KorboEE')
             action: function(_lang){
                 return function(){
                     $scope.removeLanguage(_lang);
+                    ContextualMenu.removeActionByName('rml'+_lang.name);
                 };
             }(lang)
         });
@@ -371,7 +373,6 @@ angular.module('KorboEE')
         var langIndex = $scope.tabs.indexOf(lang);
         $scope.tabs.splice(langIndex, 1);
         $scope.disactiveLanguages.push(lang);
-        ContextualMenu.removeActionByName('rml'+_lang.name);
     };
 
     $scope.showDropdown = function($event){
