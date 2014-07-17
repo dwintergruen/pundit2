@@ -50,15 +50,16 @@
 	                    <span> * </span>
 	                    <span ng-show="!typesHasError" class="pnd-icon pnd-icon-exclamation-circle" data-title="{{typesTooltipeMessage}}" bs-tooltip></span>
 	                    <span ng-show="typesHasError" class="pnd-icon pnd-icon-exclamation-circle kee-error" data-title="{{typesErrorMessage}}" bs-tooltip></span>
-	                    <span class="pnd-icon-search" ng-click="activeFilter = true"></span>
+	                    <!--<span class="pnd-icon-search" ng-click="activeFilter = true"></span>-->
 	                </label>
 	               <!-- filter input -->
 	               <div class="left-inner-icon pull-right" ng-show="activeFilter" >
-		               <span class="pnd-icon pnd-icon-filter"></span>
+		               <span ng-show="typeFilter.label == ''" class="pnd-icon pnd-icon-filter"></span>
+                       <span ng-show="!typeFilter.label == ''" class="pnd-icon pnd-icon-times" ng-click="typeFilter.label=''"></span>
 		               <input ng-show="activeFilter" type="text" ng-model="typeFilter.label"  class="form-control">
 	               </div>
 	               <!-- end filter input -->
-	                <span ng-show="activeFilter" class="pnd-icon pnd-icon-times" ng-click="activeFilter = false; typeFilter.label=''"></span>
+	                <!--<span ng-show="activeFilter" class="pnd-icon pnd-icon-times" ng-click="activeFilter = false; typeFilter.label=''"></span>-->
 	            </div>
                     <!-- types list -->
                     <div class="kee-list-types">
@@ -66,11 +67,12 @@
                         <li ng-repeat="item in types | filter:typeFilter" class="list-group-item">
                         	<div class="pnd-item">
                             <input type="checkbox" class="kee-type-input" name="items" ng-change="updateTypes()" ng-model="item.checked" value="{{item.uri}}" />
-                            {{item.label}}
+                            {{item.label}} {{item.length}}
                             <span class="pnd-icon pnd-icon-external-link pull-right"></span>
                         	</div>
                         </li>
                     </ul>
+
                     </div>
                     <!-- end types list -->        
             </div>

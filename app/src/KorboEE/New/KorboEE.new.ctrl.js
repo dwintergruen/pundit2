@@ -1,12 +1,5 @@
 angular.module('KorboEE')
-    .controller('KeeNewCtrl', function($scope, $modal, KorboCommunicationService, $q, KorboCommunicationFactory, korboConf, $timeout, $http) {
-
-        //entityToCreate
-        $scope.$watch(function(){
-            return KorboCommunicationService.getEntityToCopy();
-        }, function(entity){
-            console.log("aaa", entity);
-        });
+    .controller('KeeNewCtrl', function($scope, $modal, KorboCommunicationService, $q, KorboCommunicationFactory, korboConf, $timeout, $http, TypesHelper) {
 
         $scope.tabs = [];
         $scope.disactiveLanguages = [];
@@ -16,6 +9,8 @@ angular.module('KorboEE')
         $scope.activeFilter = false;
         $scope.isSaving = false;
         $scope.topAreaMessage = "You are creating a new entity";
+        $scope.typeFilter = {'label': ""};
+        $scope.activeFilter = true;
         var korboComm = new KorboCommunicationFactory();
 
         // tooltip message for image url
@@ -310,6 +305,27 @@ angular.module('KorboEE')
         $scope.disactiveLanguages.splice(langIndex, 1);
         $scope.tabs.push(lang);
     };
+
+    //entityToCreate
+    $scope.$watch(function(){
+        return KorboCommunicationService.getEntityToCopy();
+    }, function(entity){
+        if(entity !== null){
+
+            $scope.imageUrl = entity.image;
+            $scope.originalUrl = entity.resource;
+            // get types
+            for(var i=0; i<entity.type.length; i++){
+                var t = {};
+                t.uri = entity.type[i];
+                t.label = TypesHelper.getLabel(entity.type[i]);
+                t.checked = true;
+                $scope.types.push(t);
+            }
+
+        }
+
+    });
 
 });
 
