@@ -314,9 +314,7 @@ angular.module('KorboEE')
         return KorboCommunicationService.getEntityToCopy();
     }, function(entity){
         if(entity !== null){
-            console.log("selected", entity);
             var e = ItemsExchange.getItemByUri(entity.uri);
-            console.log("ItemsExchange", e);
             $scope.imageUrl = e.image;
             $scope.originalUrl = e.resource;
 
