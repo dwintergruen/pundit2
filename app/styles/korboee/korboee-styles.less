@@ -93,7 +93,6 @@
 // --------------------------------------------------
 
 .kee-footer {
-	// background-color: darken(@gray-lighter, 5%); // gray skin
 	background-color: #fff;
 	border-top: 1px solid @gray-light;
 	padding: 5px;
@@ -203,18 +202,34 @@
 		  	-webkit-box-sizing: border-box;
 		  	box-sizing: border-box;
 		  	}
+		}
+}
+	
+// NEW RIGHT CONTENT ----- //
+
+.kee-right-content {
+	width: @content-width;
+	height: @preview-height;
+	float: right;
+	padding: 0px 10px 0px 10px;
+	
+	// TYPES ----- //
+	
+	.kee-new-types {
+	
+		.kee-list-types {
+			overflow-y: auto;
+			height: @types-height;
+			border: 1px solid @gray-extra-light;
+			}
 	}
 	
 }
 
-.kee-new-types {
 
-	.kee-list-types {
-		overflow-y: auto;
-		height: @types-height;
-		border: 1px solid @gray-extra-light;
-		}
-}
+
+
+// TOP BAR ----- //
 
 .kee-top-area {
 	background-color: #fff;
@@ -230,8 +245,14 @@
 		}
 }
 
-.kee-new-languages {
 
+
+
+// + LANGUAGES ----- //
+
+.kee-new-languages {
+	background-color: lighten(@gray-lighter, 5%);
+	
 	.btn {
 		position: absolute;
 		left: 8px;
@@ -241,25 +262,18 @@
 	.pnd-vertical-tab-list-content {
 		width: @content-width;
 		padding: 0px 10px 0px 10px;
-	}
+		}
+		
+	.tabs-left > .nav-tabs > li > a {
+		 min-width: @language-width;
+		}	
+		
 }
 
-.kee-right-content {
-	width: @content-width;
-	height: @preview-height;
-	float: right;
-	padding: 0px 10px 0px 10px;
-	}
-	
-.kee-new-languages {
-	background-color: lighten(@gray-lighter, 5%);
 
-	.tabs-left > .nav-tabs > li > a {
-		  min-width: @language-width;
-		  }
-	  }
 
-// POPOVER ----- //	  
+// LANGUAGES POPOVER ----- //
+
 	  
 .pnd-korbo-languages-popover {
 	
@@ -277,10 +291,9 @@
 			
 		.pnd-icon {
 			margin-right: 5px;
-			color: @gray;			}
+			color: @gray;
+			}
 		
 		}
 		
-
-	
 }
