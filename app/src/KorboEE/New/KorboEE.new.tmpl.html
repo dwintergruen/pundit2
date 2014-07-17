@@ -3,7 +3,7 @@
         <div class="kee-top-area-menu pull-right">
             <button type="button" class="btn btn-xs btn-link"> <span class="pnd-icon pnd-icon-gear"></span></button>
         </div>
-        <div class="kee-top-area-message">{{topAreaMessage}}</div>
+        <div class="kee-top-area-message" ng-class="{'kee-error' : topArea.status == 'error'}">{{topArea.message}}</div>
 
     </div> <!-- End top area -->
 

@@ -8,9 +8,13 @@ angular.module('KorboEE')
         $scope.saveClicked = false;
         $scope.activeFilter = false;
         $scope.isSaving = false;
-        $scope.topAreaMessage = "You are creating a new entity";
+        $scope.topArea = {
+            'message': 'You are creating a new entity',
+            'status': 'info'
+        };
         $scope.typeFilter = {'label': ""};
-        //$scope.activeFilter = true;
+
+
         var korboComm = new KorboCommunicationFactory();
 
         // tooltip message for image url
@@ -135,6 +139,7 @@ angular.module('KorboEE')
 
        else if($scope.tabs[index].label !== '' && $scope.tabs[index].label.length >= $scope.conf.labelMinLength){
            $scope.tabs[index].hasError = false;
+
        }
 
    };
@@ -150,7 +155,8 @@ angular.module('KorboEE')
         if(!$scope.imageUrlHasError && !$scope.typesHasError && checkLang){
 
             $scope.isSaving = true;
-            $scope.topAreaMessage = "Saving entity...";
+            $scope.topArea.message = "Saving entity...";
+            $scope.topArea.status = "info";
 
             // get checked types
             var newTypes = [];
@@ -200,6 +206,8 @@ angular.module('KorboEE')
                         $scope.directiveScope.elemToSearch = $scope.tabs[0].label;
                         $scope.directiveScope.label = $scope.tabs[0].label;
                         $scope.topAreaMessage = "Entity saved!";
+                        $scope.topArea.message = "Entity saved!";
+                        $scope.topArea.status = "info";
                         $timeout(function(){
                             KorboCommunicationService.closeModal();
                             // set modal as close in configuration
@@ -207,7 +215,8 @@ angular.module('KorboEE')
                         }, 1000);
                     },
                     function(err){
-                        $scope.topAreaMessage = "Entity saving error because: "+err;
+                        $scope.topArea.message = "Entity saving error!";
+                        $scope.topArea.status = "error";
                     });
 
                 } else {
@@ -216,7 +225,8 @@ angular.module('KorboEE')
                     $scope.directiveScope.elemToSearch = $scope.tabs[0].label;
                     $scope.directiveScope.label = $scope.tabs[0].label;
                     $scope.isSaving = false;
-                    $scope.topAreaMessage = "Entity saved!";
+                    $scope.topArea.message = "Entity saved!";
+                    $scope.topArea.status = "info";
                     // close modal
                     $timeout(function(){
                         KorboCommunicationService.closeModal();
@@ -227,13 +237,16 @@ angular.module('KorboEE')
                 }
             },
             function(err){
-                $scope.topAreaMessage = "Entity saving error because: "+err;
+                $scope.topArea.message = "Entity saving error!";
+                $scope.topArea.status = "error";
             });
 
 
 
         } else {
-            console.log("ci sono errori");
+
+            $scope.topArea.message = "Some errors occurred! Check the fields and try to save again...!";
+            $scope.topArea.status = "error";
         }
 
     };
@@ -260,6 +273,8 @@ angular.module('KorboEE')
         $scope.imageUrl = "";
         $scope.originalUrl = "";
         KorboCommunicationService.setEntityToCopy(null);
+        $scope.topArea.message = "You are creating a new entity";
+        $scope.topArea.status = "info";
     };
 
     $scope.previewImage = "";
@@ -338,6 +353,7 @@ angular.module('KorboEE')
         }
 
     });
+
 
 });
 

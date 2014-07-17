@@ -3,7 +3,7 @@ angular.module('KorboEE')
 
         var api = APIService.get($scope.conf.globalObjectName);
         var korboComm = new KorboCommunicationFactory();
-
+        console.log("apro");
         
         // set default language
         $scope.defaultLan = $scope.conf.languages[0];
