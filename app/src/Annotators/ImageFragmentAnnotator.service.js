@@ -7,6 +7,8 @@ angular.module('Pundit2.Annotators')
     ifa.label = "image";
     ifa.type = NameSpace.types[ifa.label];
 
+    var imgConsClass = "pnd-cons-img";
+
     Consolidation.addAnnotator(ifa);
     
     ifa.isConsolidable = function(item) {
@@ -39,11 +41,22 @@ angular.module('Pundit2.Annotators')
     };
 
     ifa.consolidate = function(items) {
-        // TODO
+        ifa.log('Consolidating!');
+
+        var uri, xpointers = [];
+        for (uri in items) {
+            xpointers.push(uri);
+        }
+        var xpaths = XpointersHelper.getXPathsFromXPointers(xpointers);
+        for (uri in xpaths) {
+            angular.element(xpaths[uri].startNode.firstChild).addClass(imgConsClass);
+        }
+        // TODO : if an img is inside a consolidate text selection this not work
+        // the img is not the first child. we can get the first img from all node childrens?
     };
 
     ifa.wipe = function() {
-        // TODO
+        angular.element('.'+imgConsClass).removeClass(imgConsClass);
     };
 
     ifa.log("Component up and running");

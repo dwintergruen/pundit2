@@ -129,7 +129,7 @@ angular.module('Pundit2.Annotators')
     // consolidation service, gathering all annotators
     // TODO: better check twice? :|
     tfa.consolidate = function(items) {
-
+        
         tfa.log('Consolidating!');
 
         var xpointers = [],
