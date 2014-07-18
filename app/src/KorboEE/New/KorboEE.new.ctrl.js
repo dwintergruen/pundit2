@@ -71,8 +71,10 @@ angular.module('KorboEE')
                     },
                     action: function(_lang){
                         return function(){
-                            $scope.removeLanguage(_lang);
-                            ContextualMenu.removeActionByName('rml'+_lang.name);
+                            if($scope.tabs.length > 1){
+                                $scope.removeLanguage(_lang);
+                                ContextualMenu.removeActionByName('rml'+_lang.name);
+                            }
                         };
                     }(lang)
                 });
@@ -362,8 +364,10 @@ angular.module('KorboEE')
             },
             action: function(_lang){
                 return function(){
-                    $scope.removeLanguage(_lang);
-                    ContextualMenu.removeActionByName('rml'+_lang.name);
+                    if($scope.tabs.length > 1){
+                        $scope.removeLanguage(_lang);
+                        ContextualMenu.removeActionByName('rml'+_lang.name);
+                    }
                 };
             }(lang)
         });

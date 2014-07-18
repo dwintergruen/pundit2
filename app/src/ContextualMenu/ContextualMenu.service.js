@@ -302,14 +302,15 @@ angular.module('Pundit2.ContextualMenu')
 
     contextualMenu.removeActionByName = function(name){
         var foundEl;
-        state.menuElements.some(function(el){
+        var actionIndex;
+        state.menuElements.some(function(el, index){
             if(name === el.name){
                 foundEl = el;
+                actionIndex = index;
             }
             return;
         });
         if ( typeof(foundEl) !== 'undefined' ) {
-            var actionIndex = state.menuElements.indexOf(foundEl);
             state.menuElements.splice(actionIndex, 1);
             contextualMenu.log('Remove action '+foundEl.name+' for types '+foundEl.type);
             return true;
