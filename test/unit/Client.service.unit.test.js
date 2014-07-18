@@ -1,4 +1,4 @@
-describe('Client service', function() {
+ddescribe('Client service', function() {
     
     var Client, NameSpace, SelectorsManager, ItemsExchange,
         $rootScope, $httpBackend, $templateCache, $compile;

@@ -45,7 +45,7 @@ angular.module('Pundit2.AnnotationSidebar')
      */
     debug: false
 })
-.service('AnnotationDetails', function($rootScope, $filter, $document, BaseComponent, Annotation, AnnotationSidebar, AnnotationsExchange, TemplatesExchange, Consolidation, ContextualMenu, ItemsExchange, MyPundit, TextFragmentAnnotator, TypesHelper, ANNOTATIONDETAILSDEFAULTS) {
+.service('AnnotationDetails', function($rootScope, $filter, $timeout, $document, BaseComponent, Annotation, AnnotationSidebar, AnnotationsExchange, TemplatesExchange, Consolidation, ContextualMenu, Dashboard, ItemsExchange, MyPundit, TextFragmentAnnotator, TypesHelper, ANNOTATIONDETAILSDEFAULTS) {
     
     var annotationDetails = new BaseComponent('AnnotationDetails', ANNOTATIONDETAILSDEFAULTS);
 
@@ -323,6 +323,7 @@ angular.module('Pundit2.AnnotationSidebar')
         var targetAnnotation;
         var currentAnnotation;
         if(typeof(annotationId) !== 'undefined'){
+
             currentAnnotation = AnnotationsExchange.getAnnotationById(annotationId);
             targetAnnotation = {
                 id: annotationId,
@@ -333,6 +334,15 @@ angular.module('Pundit2.AnnotationSidebar')
             }
             annotationDetails.closeAllAnnotationView(annotationId);
             annotationDetails.addAnnotationReference(targetAnnotation, true);
+            
+            // TODO: improve the update of the annotations in the sidebar
+            $timeout(function(){
+                var currentElement = angular.element('#'+annotationId);
+                if (currentElement.length>0){
+                    $('body').animate({scrollTop: currentElement.offset().top - Dashboard.getContainerHeight() - 30}, 'slow');
+                }
+            }, 100);  
+  
         }
     });
 
