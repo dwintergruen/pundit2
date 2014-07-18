@@ -18,10 +18,10 @@
         <notebook-preview ng-if="!isItemEmpty() && isNotebook()" id="{{itemDashboardPreview.id}}"></notebook-preview>
 
         <!-- loading preview in korboEE -->
-        <div ng-show="isLoading"><span class="pnd-icon pnd-icon-refresh pnd-icon-spin "></span></div>
+        <div class="kee-server-searching" ng-show="isLoading"><span class="pnd-icon pnd-icon-refresh pnd-icon-spin "></span></div>
         <!-- / end loading preview in korboEE -->
         <!-- error loading preview in korboEE -->
-        <div ng-show="errorLoading">Impossible loading preview...</div>
+        <div class="kee-server-error" ng-show="errorLoading">Impossible loading preview...</div>
         <!-- / end error loading preview in korboEE -->
 
     </div> <!-- end pnd-panel-tab-content-content -->

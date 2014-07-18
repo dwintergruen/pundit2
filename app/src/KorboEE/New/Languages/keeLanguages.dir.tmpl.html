@@ -19,7 +19,7 @@
                 <div class="kee-title">
 	                <div class="form-group">
 	                <label ng-class="{'kee-error' : tabs[$index].hasError}">Title
-	                    <span ng-class="{'kee-error' : tabs[$index].hasError}"> * </span>
+	                    <span class="kee-error" ng-class="{'kee-error' : tabs[$index].hasError}"> * </span>
 	                    <span ng-show="!tabs[$index].hasError" class="pnd-icon-exclamation-circle" data-title="{{tabs[$index].tooltipMessageTitle}}" bs-tooltip></span>
 	                    <span ng-show="tabs[$index].hasError" class="kee-error pnd-icon-exclamation-circle" data-title="{{tabs[$index].tooltipMessageError}}" bs-tooltip></span>
 	                </label>
