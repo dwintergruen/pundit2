@@ -115,6 +115,7 @@ angular.module('Pundit2.ContextualMenu')
                 // standard content
                 content.push({
                     text: filteredActions[i].label,
+                    header: (filteredActions[i].header ? true : false),
                     click: function(_i){
                         return function(){
                             filteredActions[_i].action(state.menuResource);
@@ -313,6 +314,26 @@ angular.module('Pundit2.ContextualMenu')
         if ( typeof(foundEl) !== 'undefined' ) {
             state.menuElements.splice(actionIndex, 1);
             contextualMenu.log('Remove action '+foundEl.name+' for types '+foundEl.type);
+            return true;
+        }
+
+        contextualMenu.err('Action '+name+' not found');
+        return false;
+    };
+
+    contextualMenu.modifyHeaderActionByName = function(name, header){
+        var foundEl;
+        var actionIndex;
+        state.menuElements.some(function(el, index){
+            if(name === el.name){
+                foundEl = el;
+                actionIndex = index;
+            }
+            return;
+        });
+        if ( typeof(foundEl) !== 'undefined' ) {
+            state.menuElements[actionIndex].header = header;
+            contextualMenu.log('Disactive '+foundEl.name);
             return true;
         }
 
