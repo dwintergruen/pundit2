@@ -349,7 +349,12 @@ angular.module('Pundit2.Client')
 
             } // for l=client.options.bootModules.length
 
-        }; // addComponents() 
+        }; // addComponents()
+
+        var addKorbo = function(dir){
+            root.append(dir);
+            console.log("APPENDI KORBO ", dir);
+        };
 
         // Loads the basic relations into some special ItemsExchange container
         var loadBasicRelations = function() {
@@ -442,6 +447,12 @@ angular.module('Pundit2.Client')
             SelectorsManager.init();
 
             addComponents();
+
+            // IF KORBO.ACTIVE IS TRUE, ADD KORBO DIRECTIVE
+            if(Config.korbo.active){
+                var dir = "<korbo-entity-editor conf-name='"+Config.korbo.confName+"'></korbo-entity-editor>";
+                addKorbo(dir);
+            }
 
             client.log('Boot is completed, emitting pundit-boot-done event');
             $rootScope.$emit('pundit-boot-done');

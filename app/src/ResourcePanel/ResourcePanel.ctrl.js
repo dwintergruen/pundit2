@@ -1,5 +1,5 @@
 angular.module('Pundit2.ResourcePanel')
-    .controller('ResourcePanelCtrl', function($rootScope, $scope, MyItems, PageItemsContainer, ItemsExchange, MyPundit, $filter, Client, SelectorsManager, ResourcePanel) {
+    .controller('ResourcePanelCtrl', function($rootScope, $scope, MyItems, PageItemsContainer, ItemsExchange, MyPundit, $filter, Client, SelectorsManager, ResourcePanel, Config, $window) {
 
         var myItemsContainer = MyItems.options.container;
         var pageItemsContainer = PageItemsContainer.options.container;
@@ -111,6 +111,13 @@ angular.module('Pundit2.ResourcePanel')
             } else {
                 return false;
             }
+        };
+
+        $scope.createNew = function(){
+            var name = $window[Config.korbo.confName].globalObjectName;
+            $window[name].callOpenSearch();
+            //$window.EE.callOpenSearch();
+            console.log($window);
         };
 
     });

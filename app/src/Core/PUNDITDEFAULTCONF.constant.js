@@ -1,5 +1,11 @@
 angular.module('Pundit2.Core')
     .constant('PUNDITDEFAULTCONF', {
+
+        korbo : {
+            active: true,
+            confName: 'KORBODEFAULTCONF'
+        },
+
         /**
          * @module punditConfig
          * @ngdoc object
