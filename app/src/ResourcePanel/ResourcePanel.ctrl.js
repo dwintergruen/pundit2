@@ -34,13 +34,6 @@ angular.module('Pundit2.ResourcePanel')
             }
         });
 
-        $scope.$watch(function() {
-            return ItemsExchange.getItemsByContainer(actualContainer);
-        }, function(newItems) {
-            $scope.contentTabs[$scope.contentTabs.activeTab].items = newItems;
-        }, true);
-
-
         $rootScope.$watch(function() {
             return MyPundit.isUserLogged();
         }, function(newStatus) {
@@ -57,19 +50,40 @@ angular.module('Pundit2.ResourcePanel')
             return removeSpace(item.label);
         };
 
-        $scope.$watch('label', function(newLabel) {
-            for(var i=0; i<$scope.contentTabs.length; i++){
-
-                if($scope.contentTabs[i].title === 'My Items'){
-                    $scope.contentTabs[i].items = $filter('filterByLabel')(ItemsExchange.getItemsByContainer(myItemsContainer), $scope.label);
+        // TODO the items list are not always updated
+        // if we open the resource panel during pundit loading
+        // is not guaranteed that all items is showed
+        var allItemsArrays = [];
+        var copyItemsArray = function() {
+            for (var j=0; j<$scope.contentTabs.length; j++) {
+                var title = $scope.contentTabs[j].title;
+                if (title === 'My Items' ||  title === 'Page Items' || title === 'Properties') {
+                    allItemsArrays.push(angular.copy($scope.contentTabs[j].items));
+                } else {
+                    // vocab is not necessary they are never filtered
+                    // make a fake copy only to sync arrays index
+                    allItemsArrays.push([]);
                 }
+                
+            }
+        };
+        copyItemsArray();
+        
+        $scope.$watch('label', function(newLabel, oldLabel) {
+            if (newLabel !== oldLabel) {
+                for(var i=0; i<$scope.contentTabs.length; i++){
+                    
+                    if($scope.contentTabs[i].title === 'My Items'){
+                        $scope.contentTabs[i].items = $filter('filterByLabel')(allItemsArrays[i], newLabel);
+                    }
 
-                if($scope.contentTabs[i].title === 'Page Items'){
-                    $scope.contentTabs[i].items = $filter('filterByLabel')(ItemsExchange.getItemsByContainer(pageItemsContainer), $scope.label);
-                }
+                    if($scope.contentTabs[i].title === 'Page Items'){
+                        $scope.contentTabs[i].items = $filter('filterByLabel')(allItemsArrays[i], newLabel);
+                    }
 
-                if($scope.contentTabs[i].title === 'Properties'){
-                    $scope.contentTabs[i].items = $filter('filterByLabel')(ItemsExchange.getItemsByContainer(propertiesContainer), $scope.label);
+                    if($scope.contentTabs[i].title === 'Properties'){
+                        $scope.contentTabs[i].items = $filter('filterByLabel')(allItemsArrays[i], newLabel);
+                    }
                 }
             }
         });
@@ -98,11 +112,5 @@ angular.module('Pundit2.ResourcePanel')
                 return false;
             }
         };
-
-
-        $scope.showCreateNewButton = function(){
-        };
-
-
 
     });

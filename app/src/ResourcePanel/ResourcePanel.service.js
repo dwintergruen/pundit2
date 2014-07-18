@@ -722,7 +722,7 @@ angular.module('Pundit2.ResourcePanel')
         state.popoverOptions.scope.vocabStatus = '';
         state.popoverOptions.scope.vocab = [];
 
-        if(state.popover !== null && state.popover.clickTarget === target && state.popoverOptions.scope.label !== label){
+        if(state.popover !== null && state.popover.clickTarget === target){
             setLabelToSearch(label);
 
         } else {

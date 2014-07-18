@@ -63,8 +63,9 @@ describe('Client service', function() {
         module('Pundit2');
     });
 
+    var ImageHandler;
     beforeEach(inject(function( _$rootScope_, _$httpBackend_, _$templateCache_, _$compile_,
-        _Client_, _NameSpace_, _SelectorsManager_, _ItemsExchange_ ){
+        _Client_, _NameSpace_, _SelectorsManager_, _ItemsExchange_, _ImageHandler_ ){
 
         $rootScope = _$rootScope_;
         $httpBackend = _$httpBackend_;
@@ -74,6 +75,7 @@ describe('Client service', function() {
         NameSpace = _NameSpace_;
         SelectorsManager = _SelectorsManager_;
         ItemsExchange = _ItemsExchange_;
+        ImageHandler = _ImageHandler_;
 
     }));
 
