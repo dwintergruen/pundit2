@@ -2,7 +2,7 @@
 
     <!-- HEADER -->
 
-    <div class="pnd-panel-tab-content-header">
+    <div class="pnd-panel-tab-content-header" ng-if="!useInKorbo || (useInKorbo && !isItemEmpty())">
         <span ng-if="!isItemEmpty()" class="{{getItemIcon()}}"></span>
         <span class="pnd-dashboard-preview-panel-heading" ng-if="isItemEmpty() && !useInKorbo">{{getWelcomeHeaderMessage()}}</span>
         <span class="pnd-dashboard-preview-panel-label" ng-if="!isItemEmpty()">{{itemDashboardPreview.label}}</span>
@@ -12,10 +12,11 @@
 
     <!-- show welcome content when preview is empty -->
     <div class="pnd-panel-tab-content-content pnd-inner-scrollable">
-        <span class="pnd-dashboard-welcome" ng-if="isItemEmpty() && !useInKorbo">{{getWelcomeBodyMessage()}}</span>
-
-        <item-preview ng-if="!isItemEmpty() && !isNotebook()" uri="{{itemDashboardPreview.uri}}" sticking="true"></item-preview>
-        <notebook-preview ng-if="!isItemEmpty() && isNotebook()" id="{{itemDashboardPreview.id}}"></notebook-preview>
+        <div>
+            <span class="pnd-dashboard-welcome" ng-if="isItemEmpty() && !useInKorbo">{{getWelcomeBodyMessage()}}</span>
+            <item-preview ng-if="!isItemEmpty() && !isNotebook()" uri="{{itemDashboardPreview.uri}}" sticking="true"></item-preview>
+            <notebook-preview ng-if="!isItemEmpty() && isNotebook()" id="{{itemDashboardPreview.id}}"></notebook-preview>
+        </div>
 
         <!-- loading preview in korboEE -->
         <div class="kee-server-searching" ng-show="isLoading"><span class="pnd-icon pnd-icon-refresh pnd-icon-spin "></span></div>

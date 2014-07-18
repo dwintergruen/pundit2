@@ -50,9 +50,11 @@
         <ul class="list-group">
             <li ng-if="pane.module == 'Pundit2' && contentTabs[$index].items.length === 0 && label !== ''">No results found</li>
             <li ng-if="pane.module == 'Pundit2' && contentTabs[$index].items.length === 0 && label === ''">Type a label to search...</li>
-            <li class="list-group-item" ng-repeat="mi in contentTabs[$index].items | orderBy:getOrderProperty" >
+            <li class="list-group-item" ng-repeat="mi in contentTabs[$index].items | orderBy:getOrderProperty" ng-if="moduleName == 'Pundit2'">
                 <item uri="{{mi.uri}}" is-selected="{{isSelected(mi)}}" ng-click="select(mi)" hide-options="true" ng-if="moduleName == 'Pundit2'"></item>
-                <item uri="{{mi.uri}}" hide-options="true" hide-sticky-button="true" ng-click="select(mi)" is-selected="{{isSelected(mi)}}" ng-mouseover="getItem(mi)" ng-if="moduleName == 'KorboEE'"></item>
+            </li>
+            <li class="list-group-item" ng-repeat="mi in contentTabs[$index].items | orderBy:getOrderProperty" ng-if="moduleName == 'KorboEE'" ng-mouseenter="getItem(mi);$event.stopPropagation()" ng-mouseleave="onMouseLeave()">
+                <item uri="{{mi.uri}}" hide-options="true" hide-sticky-button="true" ng-click="select(mi)" is-selected="{{isSelected(mi)}}" use-in-korbo="true" ng-if="moduleName == 'KorboEE'"></item>
             </li>
         </ul>
         </div>

@@ -158,8 +158,12 @@ angular.module('KorboEE')
 
         // get a single entity to retriew all information to show in preview
         $scope.getItem = function(item){
-            // set loading preview status to true
+            console.log("mouseover");
+        };
 
+        $scope.getItem = function(item){
+            // set loading preview status to true
+            console.log("get item: ", item);
             // build param to get call
             $scope.previewIsLoading = true;
             $scope.previewError = false;
@@ -196,11 +200,13 @@ angular.module('KorboEE')
                         updatedItem.location = r.uri;
                         updatedItem.resource = r.resource;
                         // set preview loading status to false
+                        Preview.showDashboardPreview(updatedItem);
                         $scope.previewIsLoading = false;
                         $scope.previewError = false;
                     },
                     // IN CASE OF ERROR
                     function(){
+                        Preview.hideDashboardPreview();
                         $scope.previewIsLoading = false;
                         $scope.previewError = true;
                     })
@@ -214,6 +220,7 @@ angular.module('KorboEE')
                     updatedItem.image = res.depiction;
                     updatedItem.location = res.uri;
                     updatedItem.resource = res.resource;
+                    Preview.showDashboardPreview(updatedItem);
                     $scope.previewIsLoading = false;
                     $scope.previewError = false;
                 }
@@ -221,6 +228,7 @@ angular.module('KorboEE')
             },
             // IN CASE OF ERROR
             function(){
+                Preview.hideDashboardPreview();
                 $scope.previewIsLoading = false;
                 $scope.previewError = true;
             });
@@ -282,5 +290,13 @@ angular.module('KorboEE')
                 return false;
             }
         };
+
+        $scope.onMouseLeave = function(){
+            Preview.hideDashboardPreview();
+            $scope.previewIsLoading = false;
+            $scope.previewError = false;
+
+            //$scope.errorLoading = false;
+        }
 
     });

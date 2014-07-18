@@ -7,7 +7,8 @@ angular.module('Pundit2.Item')
             menuType: '@',
             isSelected: '@',
             hideOptions: '@',
-            hideStickyButton: '@'
+            hideStickyButton: '@',
+            useInKorbo: '@'
         },
         templateUrl: "src/Item/Item.dir.tmpl.html",
         controller: "ItemCtrl"
