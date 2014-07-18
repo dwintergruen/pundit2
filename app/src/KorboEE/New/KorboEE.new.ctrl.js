@@ -17,6 +17,7 @@ angular.module('KorboEE')
 
 
         var korboComm = new KorboCommunicationFactory();
+        var delay;
 
         // tooltip message for image url
         $scope.imageUrlErrorMessage = "Invalid URL";
@@ -376,6 +377,17 @@ angular.module('KorboEE')
             var resource = {name:'resourceName'};
             ContextualMenu.show($event.pageX, $event.pageY, resource, 'advancedMenu');
             $event.stopPropagation();
+        };
+
+        $scope.typesMouseLeave = function(){
+            $timeout.cancel(delay);
+            delay = $timeout(function(){
+                $scope.activeFilter = false;
+                $scope.typeFilter.label = '';
+            }, 1000);  
+        };
+        $scope.typesMouseEnter = function(){
+            $timeout.cancel(delay);
         };
 
         //entityToCreate
