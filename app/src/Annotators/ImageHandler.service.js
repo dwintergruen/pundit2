@@ -4,7 +4,7 @@ angular.module('Pundit2.Annotators')
     /**
      * @module punditConfig
      * @ngdoc property
-     * @name modules#ImageFragmentHandler.ignoreClasses
+     * @name modules#ImageHandler.ignoreClasses
      *
      * @description
      * `array of string`
@@ -22,12 +22,12 @@ angular.module('Pundit2.Annotators')
     /**
      * @module punditConfig
      * @ngdoc property
-     * @name modules#ImageFragmentHandler.container
+     * @name modules#ImageHandler.container
      *
      * @description
      * `string`
      *
-     * Name of the container used to store the text fragment in the itemsExchange
+     * Name of the container used to store the image in the itemsExchange
      *
      * Default value:
      * <pre> container: 'createdTextFragments' </pre>
@@ -40,27 +40,27 @@ angular.module('Pundit2.Annotators')
     /**
      * @module punditConfig
      * @ngdoc property
-     * @name modules#ImageFragmentHandler.cMenuType
+     * @name modules#ImageHandler.cMenuType
      *
      * @description
      * `string`
      *
-     * Contextual menu type shown by the text fragment handler
+     * Contextual menu type shown over image
      *
      * Default value:
      * <pre> cMenuType: 'ImageHandlerItem' </pre>
      */
-    cMenuType: "imageFragmentHandlerItem",
+    cMenuType: "imageHandlerItem",
 
     /**
      * @module punditConfig
      * @ngdoc property
-     * @name modules#ImageFragmentHandler.labelMaxLength
+     * @name modules#ImageHandler.labelMaxLength
      *
      * @description
      * `number`
      *
-     * Maximum characters number of selected text used to create the label for annotation.
+     * Maximum characters number of image src used to create the label for annotation.
      *
      * Default value:
      * <pre> labelMaxLength: 40 </pre>
@@ -68,10 +68,10 @@ angular.module('Pundit2.Annotators')
     labelMaxLength: 40
 
 })
-.service('ImageFragmentHandler', function(IMAGEHANDLERDEFAULTS, NameSpace, BaseComponent, Config, 
+.service('ImageHandler', function(IMAGEHANDLERDEFAULTS, NameSpace, BaseComponent, Config, 
     TextFragmentHandler, XpointersHelper, Item ) {
 
-    var ifh = new BaseComponent('ImageFragmentHandler', IMAGEHANDLERDEFAULTS);
+    var ih = new BaseComponent('ImageHandler', IMAGEHANDLERDEFAULTS);
 
     var getXpFromNode = function(node) {
         var range = document.createRange();
@@ -79,7 +79,7 @@ angular.module('Pundit2.Annotators')
         return TextFragmentHandler.range2xpointer(range); 
     };
 
-    ifh.createItemFromImage = function(img) {
+    ih.createItemFromImage = function(img) {
         var values = {};
 
         values.uri = getXpFromNode(img);
@@ -88,8 +88,8 @@ angular.module('Pundit2.Annotators')
         values.image = img.src;
 
         values.label = values.description;
-        if (values.label.length > ifh.options.labelMaxLength) {
-            values.label = values.label.substr(0, ifh.options.labelMaxLength) + ' ..';
+        if (values.label.length > ih.options.labelMaxLength) {
+            values.label = values.label.substr(0, ih.options.labelMaxLength) + ' ..';
         }
 
         values.pageContext = XpointersHelper.getSafePageContext();
@@ -98,6 +98,6 @@ angular.module('Pundit2.Annotators')
         return new Item(values.uri, values);
     };
 
-    return ifh;
+    return ih;
 
 });

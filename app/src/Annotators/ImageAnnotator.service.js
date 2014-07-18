@@ -1,32 +1,32 @@
 angular.module('Pundit2.Annotators')
-.service('ImageFragmentAnnotator', function(NameSpace, BaseComponent, $location,
-    Consolidation, ImageFragmentHandler, XpointersHelper) {
+.service('ImageAnnotator', function(NameSpace, BaseComponent, $location,
+    Consolidation, XpointersHelper) {
 
     // Create the component and declare what we deal with: text
-    var ifa = new BaseComponent('ImageFragmentAnnotator');
-    ifa.label = "image";
-    ifa.type = NameSpace.types[ifa.label];
+    var ia = new BaseComponent('ImageAnnotator');
+    ia.label = "image";
+    ia.type = NameSpace.types[ia.label];
 
     var imgConsClass = "pnd-cons-img";
 
-    Consolidation.addAnnotator(ifa);
+    Consolidation.addAnnotator(ia);
     
-    ifa.isConsolidable = function(item) {
+    ia.isConsolidable = function(item) {
 
         if (!angular.isArray(item.type)) {
-            ifa.log("Item not valid: malformed type"+ item.uri);
+            ia.log("Item not valid: malformed type"+ item.uri);
             return false;
         } else if (item.type.length === 0) {
-            ifa.log("Item not valid: types len 0"+ item.uri);
+            ia.log("Item not valid: types len 0"+ item.uri);
             return false;
-        } else if (item.type.indexOf(ifa.type) === -1) {
-            ifa.log("Item not valid: not have type image"+ item.uri);
+        } else if (item.type.indexOf(ia.type) === -1) {
+            ia.log("Item not valid: not have type image"+ item.uri);
             return false;
         } else if (!XpointersHelper.isValidXpointerURI(item.uri)) {
-            ifa.log("Item not valid: not a valid xpointer uri: "+ item.uri);
+            ia.log("Item not valid: not a valid xpointer uri: "+ item.uri);
             return false;
         } else if (!XpointersHelper.isValidXpointer(item.uri)) {
-            ifa.log("Item not valid: not consolidable on this page: "+ item.uri);
+            ia.log("Item not valid: not consolidable on this page: "+ item.uri);
             return false;
         }
         
@@ -36,12 +36,12 @@ angular.module('Pundit2.Annotators')
         // - .selector contains something
         // ... etc etc
 
-        ifa.log("Item valid: "+ item.label);
+        ia.log("Item valid: "+ item.label);
         return true;
     };
 
-    ifa.consolidate = function(items) {
-        ifa.log('Consolidating!');
+    ia.consolidate = function(items) {
+        ia.log('Consolidating!');
 
         var uri, xpointers = [];
         for (uri in items) {
@@ -55,10 +55,10 @@ angular.module('Pundit2.Annotators')
         // the img is not the first child. we can get the first img from all node childrens?
     };
 
-    ifa.wipe = function() {
+    ia.wipe = function() {
         angular.element('.'+imgConsClass).removeClass(imgConsClass);
     };
 
-    ifa.log("Component up and running");
-    return ifa;
+    ia.log("Component up and running");
+    return ia;
 });

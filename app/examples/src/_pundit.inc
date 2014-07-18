@@ -35,12 +35,12 @@
     <script src="../src/Annotators/Annotators.js"></script>
     <script src="../src/Annotators/XpointersHelper.service.js"></script>
     <script src="../src/Annotators/TextFragmentAnnotator.service.js"></script>
-    <script src="../src/Annotators/ImageFragmentAnnotator.service.js"></script>
+    <script src="../src/Annotators/ImageAnnotator.service.js"></script>
     <script src="../src/Annotators/TextFragmentBit.dir.js"></script>
     <script src="../src/Annotators/TextFragmentIcon.dir.js"></script>
     <script src="../src/Annotators/ItemsExchange.service.js"></script>
     <script src="../src/Annotators/TextFragmentHandler.service.js"></script>
-    <script src="../src/Annotators/ImageFragmentHandler.service.js"></script>
+    <script src="../src/Annotators/ImageHandler.service.js"></script>
 
     <script src="../src/Annotators/ImgMenu.dir.js"></script>
     

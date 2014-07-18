@@ -1,5 +1,5 @@
 angular.module('Pundit2.Annotators')
-.directive('imgMenu', function($rootScope, ContextualMenu, Toolbar, ImageFragmentHandler, ItemsExchange) {
+.directive('imgMenu', function($rootScope, ContextualMenu, Toolbar, ImageHandler, ItemsExchange) {
     return {
         restrict: 'E',
         scope: {
@@ -35,8 +35,8 @@ angular.module('Pundit2.Annotators')
                 
                 if (scope.item === null) {
                     // create item only once
-                    scope.item = ImageFragmentHandler.createItemFromImage(scope.image[0]);
-                    ItemsExchange.addItemToContainer(scope.item, ImageFragmentHandler.options.container);
+                    scope.item = ImageHandler.createItemFromImage(scope.image[0]);
+                    ItemsExchange.addItemToContainer(scope.item, ImageHandler.options.container);
                 }
 
                 // TODO what to do in template mode?
@@ -44,7 +44,7 @@ angular.module('Pundit2.Annotators')
                     return;
                 }
 
-                ContextualMenu.show(evt.pageX, evt.pageY, scope.item, ImageFragmentHandler.options.cMenuType);
+                ContextualMenu.show(evt.pageX, evt.pageY, scope.item, ImageHandler.options.cMenuType);
                 
             };
 
