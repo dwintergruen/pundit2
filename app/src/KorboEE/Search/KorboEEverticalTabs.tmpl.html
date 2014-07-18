@@ -11,7 +11,7 @@
     </ul>
     <div>
         <div class="pnd-vertical-tab-content tab-content">
-        	<div ng-repeat="pane in contentTabs" class="tab-pane pnd-vertical-tab-list-content" ng-class="[$index == active ? 'active' : '']" style="float: left; height: 400px; overflow: scroll">
+        	<div ng-repeat="pane in contentTabs" class="tab-pane pnd-vertical-tab-list-content" ng-class="[$index == active ? 'active' : '']">
 		        <div class="kee-server-messages" ng-if="!contentTabs[$index].serverError">
 		        	<!-- messages 1 -->
 		        	<div ng-show="!contentTabs[$index].isLoading && contentTabs[$index].items.length === 0 && elemToSearch !== ''">No results found</div>

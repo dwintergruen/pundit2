@@ -1,29 +1,23 @@
 <div class="kee-wrp" ng-controller="KeeSearchCtrl">
 <!-- search -->
 <div class="kee-search">
-	<!-- <form class="form-inline"> -->
-	    <!-- <div class="form-group"> -->
 	        <label>Search entity to use:</label>
 	        <div class="left-inner-icon">
 		        <span class="pnd-icon pnd-icon-search" ng-click="search.term = ''"></span>
 		        <input class="form-control" type="text" ng-model="elemToSearch" placeholder="Type at least {{conf.labelMinLength}} characters...">
 	        </div>
-	    <!-- </div> -->
-	<!-- </form> -->
 </div>
 <!-- // end search -->
-    <div ng-model="contentTabs.activeTab" bs-tabs="contentTabs" data-template = "src/ResourcePanel/verticalTabs.tmpl.html"></div>
-
     <div ng-hide="previewIsLoading || previewError">
         <preview use-in-korbo="true"></preview>
     </div>
-
-    <div ng-show="previewIsLoading">
+    <!-- <div ng-show="previewIsLoading">
         Loading preview...
     </div>
     <div ng-show="previewError">
         Impossible loading preview...
-    </div>
+    </div> -->
+    <div ng-model="contentTabs.activeTab" bs-tabs="contentTabs" data-template = "src/ResourcePanel/verticalTabs.tmpl.html"></div>
 <!-- footer -->
     <div class="kee-footer">
         <button type="button" class="btn btn-xs btn-success" ng-click="closeKeeModal()">Close</button>
