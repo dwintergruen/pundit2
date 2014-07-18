@@ -3,6 +3,8 @@ angular.module('KorboEE')
 
         var korboComm = new KorboCommunicationFactory();
 
+        $scope.moduleName = 'KorboEE';
+
         // preview loading status
         $scope.previewIsLoading = false;
 
@@ -32,7 +34,8 @@ angular.module('KorboEE')
             template: 'src/Lists/itemList.tmpl.html',
             items: [],
             itemsContainer: 'kee-korbo',
-            provider: 'korbo'
+            provider: 'korbo',
+            module: 'KorboEE'
         });
 
         // for each provider set in configuration, push it on tabs
@@ -44,7 +47,8 @@ angular.module('KorboEE')
                     template: 'src/Lists/itemList.tmpl.html',
                     items: [],
                     itemsContainer: 'kee-'+obj,
-                    provider: obj
+                    provider: obj,
+                    module: 'KorboEE'
                 });
             }
         };

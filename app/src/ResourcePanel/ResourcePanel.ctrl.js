@@ -4,6 +4,7 @@ angular.module('Pundit2.ResourcePanel')
         var myItemsContainer = MyItems.options.container;
         var pageItemsContainer = PageItemsContainer.options.container;
         var propertiesContainer = Client.options.relationsContainer;
+        $scope.moduleName = 'Pundit2';
 
         var actualContainer;
 
@@ -18,7 +19,8 @@ angular.module('Pundit2.ResourcePanel')
                     title: selectors[j].config.label,
                     template: 'src/Lists/itemList.tmpl.html',
                     itemsContainer: selectors[j].config.container,
-                    items: []
+                    items: [],
+                    module: 'Pundit2'
                 });
             }
         }
