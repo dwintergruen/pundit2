@@ -213,38 +213,6 @@ angular.module('Pundit2.AnnotationSidebar')
         return results;
     };
 
-    var getFragments = function(currentAnnotation) {
-        var annotation = currentAnnotation;
-        var graph = annotation.graph;
-        var results = [];
-        var currentItem;
-
-        for (var subject in graph){
-            currentItem = ItemsExchange.getItemByUri(subject);
-            if (Consolidation.isConsolidated(currentItem)){
-                results.push(TextFragmentAnnotator.getFragmentIdByUri(subject));
-            }
-
-            for (var predicate in graph[subject]){
-
-                var objectList = graph[subject][predicate];
-                for (var object in objectList){
-                    objectValue = objectList[object].value;
-                    objectType = objectList[object].type;
-
-                    if (objectType === 'uri'){
-                        currentItem = ItemsExchange.getItemByUri(objectValue);
-                        if (Consolidation.isConsolidated(currentItem)){
-                            results.push(TextFragmentAnnotator.getFragmentIdByUri(objectValue));
-                        }
-                    }
-
-                }
-            }
-        }
-        return results;
-    };
-
     annotationDetails.getAnnotationDetails = function(currentId) {
         if (currentId in state.annotations) {
             return state.annotations[currentId];
@@ -343,7 +311,6 @@ angular.module('Pundit2.AnnotationSidebar')
                 broken: isBroken,
                 expanded: expandedState,
                 ghosted: false,
-                fragments: getFragments(currentAnnotation),
                 color: currentColor,
                 hasTemplate: template
             };
