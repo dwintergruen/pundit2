@@ -67,6 +67,14 @@ angular.module('Pundit2.Annotators')
         // TODO
     };
 
+    ia.highlightByUri = function() {
+        // TODO
+    };
+
+    ia.clearHighlightByUri = function() {
+        // TODO
+    };
+
     ia.log("Component up and running");
     return ia;
 });

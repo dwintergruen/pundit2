@@ -3,7 +3,7 @@
 angular.module('Pundit2.AnnotationSidebar')
 .controller('AnnotationDetailsCtrl', function($scope, $rootScope, $element, $modal, $timeout,
         AnnotationSidebar, AnnotationDetails, AnnotationsExchange, AnnotationsCommunication,
-        NotebookExchange, ItemsExchange, TripleComposer, Dashboard,
+        NotebookExchange, ItemsExchange, TripleComposer, Dashboard, ImageAnnotator,
         TextFragmentAnnotator, Toolbar, TypesHelper, MyPundit) {
 
     var currentId = $scope.id;
@@ -132,29 +132,63 @@ angular.module('Pundit2.AnnotationSidebar')
     };
 
     $scope.mouseoverHandler = function() {
-        var fragments = $scope.annotation.fragments;
-        if(fragments.length > 0){
-            for (var fragment in fragments){
-                TextFragmentAnnotator.highlightById(fragments[fragment]);
+        var currentItem;
+        var items = $scope.annotation.itemsUriArray;
+        for (var index in items){
+            currentItem = ItemsExchange.getItemByUri(items[index]);
+            if (typeof(currentItem) !== 'undefined'){
+                if (currentItem.isTextFragment()) {
+                    TextFragmentAnnotator.highlightByUri(items[index]);
+                } else if (currentItem.isImageFragment()) {
+                    //ImageFragmentAnnotator.highlightByUri(items[index]);
+                } else if (currentItem.isImage()) {
+                    ImageAnnotator.highlightByUri(items[index]);
+                }
             }
         }
     };
 
     $scope.mouseoutHandler = function() {
-        var fragments = $scope.annotation.fragments;
-        if(fragments.length > 0){
-            for (var fragment in fragments){
-                TextFragmentAnnotator.clearHighlightById(fragments[fragment]);
+        var currentItem;
+        var items = $scope.annotation.itemsUriArray;
+        for (var index in items){
+            currentItem = ItemsExchange.getItemByUri(items[index]);
+            if (typeof(currentItem) !== 'undefined'){
+                if (currentItem.isTextFragment()) {
+                    TextFragmentAnnotator.clearHighlightByUri(items[index]);
+                } else if (currentItem.isImageFragment()) {
+                    //ImageFragmentAnnotator.clearHighlightByUri(items[index]);
+                } else if (currentItem.isImage()) {
+                    ImageAnnotator.clearHighlightByUri(items[index]);
+                }
             }
         }
     };
 
     $scope.mouseoverItemHandler = function(itemUri) {
-        TextFragmentAnnotator.highlightByUri(itemUri);
+        var currentItem = ItemsExchange.getItemByUri(itemUri);
+        if (typeof(currentItem) !== 'undefined'){
+            if (currentItem.isTextFragment()) {
+                TextFragmentAnnotator.highlightByUri(itemUri);
+            } else if (currentItem.isImageFragment()) {
+                //ImageFragmentAnnotator.highlightByUri(itemUri);
+            } else if (currentItem.isImage()) {
+                ImageAnnotator.highlightByUri(itemUri);
+            }
+        }
     };
 
     $scope.mouseoutItemHandler = function(itemUri) {
-        TextFragmentAnnotator.clearHighlightByUri(itemUri);
+        var currentItem = ItemsExchange.getItemByUri(itemUri);
+        if(typeof(currentItem) !== 'undefined'){
+            if (currentItem.isTextFragment()) {
+                TextFragmentAnnotator.clearHighlightByUri(itemUri);
+            } else if (currentItem.isImageFragment()) {
+                //ImageFragmentAnnotator.clearHighlightByUri(itemUri);
+            } else if (currentItem.isImage()) {
+                ImageAnnotator.clearHighlightByUri(itemUri);
+            }
+        }
     };
 
     AnnotationDetails.log('Controller Details Run');
