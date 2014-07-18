@@ -357,7 +357,7 @@ describe("AnnotationSidebar interaction", function() {
         });
     });
 
-    iit('should apply correctly the filters', function() {
+    it('should apply correctly the filters', function() {
         p.findElements(protractor.By.css('.pnd-annotation-details-wrap')).then(function(elements) {       
             expect(elements.length).toBe(2);
         });
