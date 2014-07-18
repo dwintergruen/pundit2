@@ -369,10 +369,10 @@ describe("Client interaction when user is logged in", function() {
             expect(tabs.length).toBe(5);
         });
         // check popover vertical tabs showed items number
-        p.findElements(protractor.By.css(".pnd-resource-panel-popover .pnd-vertical-tabs li a span[ng-show='!pane.isLoading']")).then(function(spans) {
-            expect(spans.length).toBe(5);
+        p.findElements(protractor.By.css(".pnd-resource-panel-popover .pnd-vertical-tabs li a span")).then(function(spans) {
+            expect(spans.length).toBe(10);
             expect(spans[0].getText()).toEqual(pageItemsNumber.toString());
-            expect(spans[1].getText()).toEqual("0");
+            expect(spans[2].getText()).toEqual("0");
         });
     });
 
@@ -393,8 +393,8 @@ describe("Client interaction when user is logged in", function() {
             expect(tabs.length).toBe(1);
         });
         // check popover vertical tabs showed items number
-        p.findElements(protractor.By.css(".pnd-resource-panel-popover .pnd-vertical-tabs li a span[ng-show='!pane.isLoading'")).then(function(spans) {
-            expect(spans.length).toBe(1);
+        p.findElements(protractor.By.css(".pnd-resource-panel-popover .pnd-vertical-tabs li a span")).then(function(spans) {
+            expect(spans.length).toBe(2);
             expect(spans[0].getText()).toEqual("15");
         });
     });
