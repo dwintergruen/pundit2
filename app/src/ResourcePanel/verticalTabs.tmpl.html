@@ -1,6 +1,6 @@
 <div class="tabbable tabs-left"> <!-- tabs left -->
     	<!-- header -->
-        <div class="pnd-vertical-tab-header-content" ng-if=" moduleName == 'Pundit2'">
+        <div class="pnd-vertical-tab-header-content" ng-if="moduleName == 'Pundit2'">
             <strong ng-if="type === 'sub'">Choose your subject...</strong>
             <strong ng-if="type === 'obj'">Choose your object...</strong>
             <strong ng-if="type === 'pr'">Choose your predicate...</strong>
@@ -8,15 +8,24 @@
         </div>
         <!-- // end header -->
 
-<ul class="nav nav-tabs pnd-vertical-tabs">
-  <li ng-repeat="pane in contentTabs" ng-class="{active: $index == active}" ng-show="(pane.module == 'Pundit2' && (pane.title != 'My Items' || (pane.title == 'My Items' && userLoggedIn))) || (pane.module=='KorboEE')">
+<ul class="nav nav-tabs pnd-vertical-tabs" ng-if = "moduleName == 'Pundit2'">
+    <li ng-repeat="pane in contentTabs" ng-class="{active: $index == active}" ng-if="pane.title != 'My Items' || (pane.title == 'My Items' && userLoggedIn)">
     <a data-toggle="tab" ng-click="setActive($index, $event)" data-index="{{$index}}" >
-        <span class="badge pull-right" ng-show="pane.module == 'Pundit2' && !pane.isLoading">{{pane.items.length}}</span>
-        <span class="badge pull-right" ng-show="pane.module == 'KorboEE' && !pane.isLoading && pane.items.length>0 && elemToSearch!==''">{{pane.items.length}}</span>
+        <span class="badge pull-right" ng-show="moduleName == 'Pundit2' && !pane.isLoading">{{pane.items.length}}</span>
         <span class="pnd-icon pnd-icon-refresh pnd-icon-spin pull-right" ng-show="pane.isLoading"></span>
         {{pane.title}}
     </a>
   </li>
+</ul>
+
+<ul class="nav nav-tabs pnd-vertical-tabs" ng-if = "moduleName == 'KorboEE'">
+    <li ng-repeat="pane in contentTabs" ng-class="{active: $index == active}">
+        <a data-toggle="tab" ng-click="setActive($index, $event)" data-index="{{$index}}" >
+            <span class="badge pull-right" ng-show="moduleName == 'KorboEE' && !pane.isLoading && pane.items.length>0 && elemToSearch!==''">{{pane.items.length}}</span>
+            <span class="pnd-icon pnd-icon-refresh pnd-icon-spin pull-right" ng-show="pane.isLoading"></span>
+            {{pane.title}}
+        </a>
+    </li>
 </ul>
 
 <div>
@@ -42,8 +51,8 @@
             <li ng-if="pane.module == 'Pundit2' && contentTabs[$index].items.length === 0 && label !== ''">No results found</li>
             <li ng-if="pane.module == 'Pundit2' && contentTabs[$index].items.length === 0 && label === ''">Type a label to search...</li>
             <li class="list-group-item" ng-repeat="mi in contentTabs[$index].items | orderBy:getOrderProperty" >
-                <item uri="{{mi.uri}}" is-selected="{{isSelected(mi)}}" ng-click="select(mi)" hide-options="true" ng-if="pane.module == 'Pundit2'"></item>
-                <item uri="{{mi.uri}}" hide-options="true" hide-sticky-button="true" ng-click="select(mi)" is-selected="{{isSelected(mi)}}" ng-mouseover="getItem(mi)" ng-if="pane.module == 'KorboEE'"></item>
+                <item uri="{{mi.uri}}" is-selected="{{isSelected(mi)}}" ng-click="select(mi)" hide-options="true" ng-if="moduleName == 'Pundit2'"></item>
+                <item uri="{{mi.uri}}" hide-options="true" hide-sticky-button="true" ng-click="select(mi)" is-selected="{{isSelected(mi)}}" ng-mouseover="getItem(mi)" ng-if="moduleName == 'KorboEE'"></item>
             </li>
         </ul>
         </div>
