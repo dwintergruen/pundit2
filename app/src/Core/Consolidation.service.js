@@ -119,9 +119,7 @@ angular.module('Pundit2.Core')
         };
 
         cc.isConsolidated = function(item) {
-
             if (item instanceof Item) {
-                console.log(item, item.uri in state.itemListByURI)
                 return item.uri in state.itemListByURI;
             }
             return false;
