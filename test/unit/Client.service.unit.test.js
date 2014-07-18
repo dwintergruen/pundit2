@@ -4,6 +4,9 @@ describe('Client service', function() {
         $rootScope, $httpBackend, $templateCache, $compile;
 
     var testPunditConfig = {
+        korbo : {
+            active: false
+        },
         templates: [],
         modules: {
             "Client": {
