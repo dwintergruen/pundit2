@@ -35,7 +35,20 @@
 .tabs-left > .nav-tabs {
 	margin-bottom: 0px;
 	margin-right: 0px;
+	
+	&> li {
+	
+		  .badge {
+			  background-color: @gray-darker;
+			  }
+			
+		   &.active .badge {
+			  background-color: @brand-success;
+			  }
+	
+		}
 	}
+		
 		
 // BADGE ----- //
 	
@@ -52,6 +65,20 @@
 		display: none;
 		}
 	}
+
+
+// TABS ----- //
+
+.nav-tabs > li {
+  	  
+	  .badge {
+		  background-color: @gray-darker;
+		  }
+		
+	   &.active .badge {
+		  background-color: lighten(@gray, 20%);
+		  }
+	  }
 		
 
 //
@@ -143,6 +170,7 @@
 	}
 
 
+
 //
 // CONTENT
 // --------------------------------------------------
@@ -191,8 +219,9 @@
 
 
 	textarea {
-		resize: vertical;
-	}
+		resize: none;
+		height:@textarea-height !important; 
+		}
 
 	.left-inner-icon {	
 		position: relative;
@@ -235,12 +264,10 @@
 			
 			.btn {
 				padding-right:0px;
-			}
-			
+				}
 			}
 	
 		.left-inner-icon {
-			//margin-top: -4px;
 			display: inherit;
 			}
 	
@@ -248,6 +275,11 @@
 			overflow-y: auto;
 			height: @types-height;
 			border: 1px solid @gray-extra-light;
+			
+			.pnd-icon {
+				margin-top: 4px;
+				}
+			
 			}
 	}
 	
@@ -277,7 +309,6 @@
 
 
 
-
 // + LANGUAGES ----- //
 
 .kee-new-languages {
@@ -295,11 +326,10 @@
 		}
 		
 	.tabs-left > .nav-tabs > li > a {
-		 min-width: @language-width;
-		}	
+		min-width: @language-width;	 
+		}		
 		
 }
-
 
 
 // LANGUAGES POPOVER ----- //
