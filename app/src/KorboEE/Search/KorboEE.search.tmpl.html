@@ -8,8 +8,8 @@
 	        </div>
 </div>
 <!-- // end search -->
-    <div ng-hide="previewIsLoading || previewError">
-        <preview use-in-korbo="true"></preview>
+    <div>
+        <preview use-in-korbo="true" is-loading="{{previewIsLoading}}" error-loading="{{previewError}}"></preview>
     </div>
     <!-- <div ng-show="previewIsLoading">
         Loading preview...
