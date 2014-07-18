@@ -102,7 +102,7 @@ angular.module('Pundit2.Communication')
 
         for (var i in items){
             currentItem = ItemsExchange.getItemByUri(items[i].uri);
-            if (currentItem.isTextFragment() || currentItem.isImageFragment()){
+            if (currentItem.isTextFragment() || currentItem.isImage() || currentItem.isImageFragment()){
                 if (Consolidation.isConsolidated(currentItem)){
                     return false;
                 }

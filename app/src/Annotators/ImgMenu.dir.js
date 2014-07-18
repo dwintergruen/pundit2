@@ -31,7 +31,10 @@ angular.module('Pundit2.Annotators')
             };
             $rootScope.$on('consolidation-completed', placeMenu);
             
-            scope.clickHandler = function(evt) {                
+            scope.clickHandler = function(evt) {
+
+                evt.preventDefault();
+                evt.stopPropagation();               
                 
                 if (scope.item === null) {
                     // create item only once

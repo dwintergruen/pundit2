@@ -59,6 +59,14 @@ angular.module('Pundit2.Annotators')
         angular.element('.'+imgConsClass).removeClass(imgConsClass);
     };
 
+    ia.highlightById = function() {
+        // TODO
+    };
+
+    ia.clearHighlightById = function() {
+        // TODO
+    };
+
     ia.log("Component up and running");
     return ia;
 });
