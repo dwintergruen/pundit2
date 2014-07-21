@@ -342,7 +342,11 @@ angular.module('Pundit2.TripleComposer')
     };
 
     $scope.onClickObjectLiteral = function($event){
-        ResourcePanel.showPopoverLiteral('', $event.target).then(function(text){
+        var str = '';
+        if (typeof(triple.object) === 'string') {
+            str = triple.object;
+        }
+        ResourcePanel.showPopoverLiteral(str, $event.target).then(function(text){
             $scope.objectFound = true;
             $scope.objectLabel = text;
             $scope.objectTypeLabel = TypesHelper.getLabel(NameSpace.rdfs.literal);

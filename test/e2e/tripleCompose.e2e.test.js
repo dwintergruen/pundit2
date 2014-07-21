@@ -108,13 +108,17 @@ describe("TripleComposer interaction", function() {
         // open literal resource panel (second times)
         p.findElement(protractor.By.css(".pnd-statement-object .pnd-row-button-object [title='text']")).click();
         // add second text to popover
-        p.findElement(protractor.By.css(".pnd-popover-literal .popover-content textarea")).sendKeys('testo modificato');
+        p.findElement(protractor.By.css(".pnd-popover-literal .popover-content textarea")).then(function(textarea){
+            expect(textarea.getAttribute('value')).toBe('testo');
+            textarea.sendKeys(' altro testo...');
+        });
+            
 
         // click save TODO add class to save btn
         p.findElement(protractor.By.css(".pnd-popover-literal .popover-content button")).click();
         // second item label
         p.findElement(protractor.By.css(".pnd-statement-object .pnd-statement-label")).then(function(label) {
-            expect(label.getText()).toEqual("testo modificato");
+            expect(label.getText()).toEqual("testo altro testo...");
         });
     });
 
