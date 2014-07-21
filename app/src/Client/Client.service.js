@@ -84,10 +84,181 @@ angular.module('Pundit2.Client')
          *
          * Basic Relations list, this items are loaded at boot
          * and are used as predicates in the construction of the annotations.
+         * If you want to use only your predicates you can set {@link #!/api/punditConfig/object/useBasicRelations useBasicRelations} as false
+         * and load your data from the {@link #!/api/punditConfig/object/vocabularies vocabularies} property.
          *
          * Default value:
          *
-         * TODO extern link (array is very large)
+         * <pre>
+         *  basicRelations: [
+         *   {
+         *       "type": ["http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"],
+         *       "label": "has comment (free text)",
+         *       "description": "Any comment related to the selected fragment of text or image",
+         *       "domain": [
+         *           "http://purl.org/pundit/ont/ao#fragment-image",
+         *           "http://purl.org/pundit/ont/ao#fragment-text",
+         *           "http://xmlns.com/foaf/0.1/Image"
+         *       ],
+         *       "range": ["http://www.w3.org/2000/01/rdf-schema#Literal"],
+         *       "uri": "http://schema.org/comment"
+         *   },
+         *   {
+         *       "type": ["http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"],
+         *       "label": "depicts",
+         *       "description": "An image or part of an image depicts something",
+         *       "domain": [
+         *           "http://xmlns.com/foaf/0.1/Image",
+         *           "http://purl.org/pundit/ont/ao#fragment-image"
+         *       ],
+         *       "range": [],
+         *       "uri": "http://xmlns.com/foaf/0.1/depicts"
+         *   },
+         *   {
+         *       "type": ["http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"],
+         *       "label": "is similar to",
+         *       "description": "The selected fragment (text or image fragment) is similar to another fragment (of the same or of different types)",
+         *       "domain": [
+         *           "http://purl.org/pundit/ont/ao#fragment-text",
+         *           "http://purl.org/pundit/ont/ao#fragment-image",
+         *           "http://xmlns.com/foaf/0.1/Image"
+         *       ],
+         *       "range": [
+         *           "http://purl.org/pundit/ont/ao#fragment-text",
+         *           "http://purl.org/pundit/ont/ao#fragment-image",
+         *           "http://xmlns.com/foaf/0.1/Image"
+         *       ],
+         *       "uri": "http://purl.org/pundit/vocab#similarTo"
+         *   },
+         *   {
+         *       "type": ["http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"],
+         *      "label": "has creator",
+         *       "description": "The selected text fragment has been created by a specific Person",
+         *       "domain": [
+         *           "http://purl.org/pundit/ont/ao#fragment-text",
+         *           "http://purl.org/pundit/ont/ao#fragment-image",
+         *           "http://xmlns.com/foaf/0.1/Image"
+         *       ],
+         *       "range": [
+         *           "http://www.freebase.com/schema/people/person",
+         *           "http://xmlns.com/foaf/0.1/Person",
+         *           "http://dbpedia.org/ontology/Person"
+         *       ],
+         *       "uri": "http://purl.org/dc/terms/creator"
+         *   },
+         *   {
+         *       "type": ["http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"],
+         *       "label": "cites",
+         *       "description": "The selected text fragment cites another text fragment, or a Work or a Person",
+         *       "domain": ["http://purl.org/pundit/ont/ao#fragment-text"],
+         *       "range": [
+         *           "http://purl.org/pundit/ont/ao#fragment-text",
+         *           "http://www.freebase.com/schema/people/person",
+         *           "http://xmlns.com/foaf/0.1/Person",
+         *           "http://dbpedia.org/ontology/Person",
+         *           "http://www.freebase.com/schema/book/written_work",
+         *           "http://www.freebase.com/schema/book/book"
+         *       ],
+         *       "uri": "http://purl.org/spar/cito/cites"
+         *   },
+         *   {
+         *       "type": ["http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"],
+         *       "label": "quotes",
+         *       "description": "The selected text fragment is a sentence from a Person or a Work, usually enclosed by quotations (eg: '')",
+         *       "domain": ["http://purl.org/pundit/ont/ao#fragment-text"],
+         *       "range": [
+         *           "http://www.freebase.com/schema/people/person",
+         *           "http://xmlns.com/foaf/0.1/Person",
+         *           "http://dbpedia.org/ontology/Person",
+         *           "http://www.freebase.com/schema/book/written_work",
+         *           "http://www.freebase.com/schema/book/book"
+         *       ],
+         *       "uri": "http://purl.org/spar/cito/includesQuotationFrom"
+         *   },
+         *   {
+         *       "type": ["http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"],
+         *       "label": "talks about",
+         *       "description": "The selected text fragment talks about some other text, Entity, Person or any other kind of concept",
+         *       "domain": ["http://purl.org/pundit/ont/ao#fragment-text"],
+         *       "range": [],
+         *       "uri": "http://purl.org/pundit/ont/oa#talksAbout"
+         *   },
+         *   {
+         *       "type": ["http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"],
+         *       "label": "is related to",
+         *       "description": "The selected text fragment is someway related to another text, Entity, Person or any other kind of concept",
+         *       "domain": ["http://purl.org/pundit/ont/ao#fragment-text"],
+         *       "range": [],
+         *       "uri": "http://purl.org/pundit/ont/oa#isRelatedTo"
+         *   },
+         *   {
+         *       "type": ["http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"],
+         *       "label": "identifies",
+         *       "description": "The selected text fragment is a Person, a Work, a Place or a well defined Entity",
+         *       "domain": ["http://purl.org/pundit/ont/ao#fragment-text"],
+         *       "range": [
+         *           "http://www.freebase.com/schema/location/location",
+         *           "http://dbpedia.org/ontology/Place",
+         *           "http://schema.org/Place",
+         *           "http://www.w3.org/2003/01/geo/wgs84_pos#SpatialThing",
+         *           "http://www.freebase.com/schema/people/person",
+         *           "http://dbpedia.org/ontology/Person",
+         *           "http://xmlns.com/foaf/0.1/Person",
+         *           "http://www.freebase.com/schema/book/written_work",
+         *           "http://www.freebase.com/schema/book/book"
+         *       ],
+         *       "uri": "http://purl.org/pundit/ont/oa#identifies"
+         *   },
+         *   {
+         *       "type": ["http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"],
+         *       "label": "is date",
+         *       "description": "The selected text fragment corresponds to the specified Date",
+         *       "domain": ["http://purl.org/pundit/ont/ao#fragment-text"],
+         *       "range": ["http://www.w3.org/2001/XMLSchema#dateTime"],
+         *       "uri": "http://purl.org/pundit/ont/oa#isDate"
+         *   },
+         *   {
+         *       "type": ["http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"],
+         *       "label": "period of dates starts at",
+         *       "description": "The selected text fragment corresponds to the specified date period which starts at the specified Date",
+         *       "domain": ["http://purl.org/pundit/ont/ao#fragment-text"],
+         *       "range": ["http://www.w3.org/2001/XMLSchema#dateTime"],
+         *       "uri": "http://purl.org/pundit/ont/oa#periodStartDate"
+         *  },
+         *   {
+         *       "type": ["http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"],
+         *       "label": "period of dates ends at",
+         *       "description": "The selected text fragment corresponds to the specified date period which ends at the specified Date",
+         *       "domain": ["http://purl.org/pundit/ont/ao#fragment-text"],
+         *       "range": ["http://www.w3.org/2001/XMLSchema#dateTime"],
+         *       "uri": "http://purl.org/pundit/ont/oa#periodEndDate"
+         *   },
+         *   {
+         *       "type": ["http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"],
+         *       "label": "translates to",
+         *       "description": "The selected text fragment translation is given as free text",
+         *       "domain": ["http://purl.org/pundit/ont/ao#fragment-text"],
+         *       "range": ["http://www.w3.org/2000/01/rdf-schema#Literal"],
+         *       "uri": "http://purl.org/pundit/ont/oa#translatesTo"
+         *   },
+         *   {
+         *       "type": ["http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"],
+         *       "label": "is translation of",
+         *       "description": "The selected text fragment is the translation of another text fragment",
+         *       "domain": ["http://purl.org/pundit/ont/ao#fragment-text"],
+         *       "range": ["http://purl.org/pundit/ont/ao#fragment-text"],
+         *       "uri": "http://purl.org/pundit/ont/oa#isTranslationOf"
+         *   },
+         *   {
+         *       "type": ["http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"],
+         *       "label": "is written in",
+         *       "description": "The selected text fragment is written in the specified language (french, german, english etc)",
+         *       "domain": ["http://purl.org/pundit/ont/ao#fragment-text"],
+         *       "range": ["http://www.freebase.com/schema/language/human_language"],
+         *       "uri": "http://purl.org/pundit/ont/oa#isWrittenIn"
+         *   }
+         * ]
+         * </pre>
          */
         basicRelations: [
             {

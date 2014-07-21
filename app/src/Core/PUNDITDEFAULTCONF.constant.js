@@ -132,7 +132,7 @@ angular.module('Pundit2.Core')
          * @name useBasicRelations
          * @description
          * `boolean`
-         * Load basic relations configured in Client module.
+         * Load basic relations configured in Client {@link #!/api/punditConfig/object/modules#Client modules}
          *
          * Default:
          * <pre> useBasicRelations: true </pre>
