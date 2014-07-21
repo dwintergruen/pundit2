@@ -46,6 +46,29 @@ angular.module('Pundit2.Core')
          *
          * Default:
          * <pre> vocabularies: [] </pre>
+         *
+         * URL Response Example:
+         * <pre> {
+         *      result: {
+         *          items: [
+         *              "value": "http://purl.org/dc/terms/creator",
+         *              "rdftype":["http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"],
+         *              "label":"has creator",
+         *              "description":"The selected text fragment has been created by a specific Person",
+         *              "domain":[
+         *                  "http://xmlns.com/foaf/0.1/Image",
+         *                  "http://purl.org/pundit/ont/ao#fragment-image",
+         *                  "http://purl.org/pundit/ont/ao#fragment-text"
+         *               ],
+         *               "range":[
+         *                  "http://dbpedia.org/ontology/Person",
+         *                  "http://xmlns.com/foaf/0.1/Person",
+         *                  "http://www.freebase.com/schema/people/person"
+         *               ],
+         *          ...other items...
+         *          ]
+         *      }
+         * }</pre>
          */
         vocabularies: [],
 
