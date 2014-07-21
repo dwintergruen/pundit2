@@ -18,7 +18,7 @@ angular.module('Pundit2.Client')
          * `object`
          *
          * Configuration object for Client module. Client service has the task of managing the boot process:
-         * loading the basic relations,hips (from "basicRelations"), downloading from the server user annotations and
+         * loading the basic relationships (from "basicRelations"), downloading from the server user annotations and
          * adding to the DOM modules configured "bootModules".
          */
 
@@ -82,7 +82,7 @@ angular.module('Pundit2.Client')
          * @description
          * `Array`
          *
-         * Basic Relations, list, this items are loaded at boot
+         * Basic Relations list, this items are loaded at boot
          * and are used as predicates in the construction of the annotations.
          * If you want to use only your predicates you can set {@link #!/api/punditConfig/object/useBasicRelations useBasicRelations} as false
          * and load your data from the {@link #!/api/punditConfig/object/vocabularies vocabularies} property.
@@ -541,7 +541,7 @@ angular.module('Pundit2.Client')
             root.append(dir);
         };
 
-        // Loads the basic relations, into some special ItemsExchange container
+        // Loads the basic relations into some special ItemsExchange container
         var loadBasicRelations = function() {
             var num = 0,
                 relations = client.options.basicRelations;
@@ -549,7 +549,7 @@ angular.module('Pundit2.Client')
                 var item = new Item(relations[p].uri, relations[p]);
                 ItemsExchange.addItemToContainer(item, client.options.relationsContainer);
             }
-            client.log('Loaded '+num+' basic relations,');
+            client.log('Loaded '+num+' basic relations');
         };
 
         // Loads configured relations into some special ItemsExchange container
