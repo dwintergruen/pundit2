@@ -73,30 +73,58 @@ angular.module('Pundit2.MyItemsContainer')
     // index of the active tab (the tab that currently shows its content)
     $scope.tabs.activeTab = MyItemsContainer.options.initialActiveTab;
 
+
+    var setActive = function(index) {
+        for(var i in $scope.dropdownOrdering){
+            $scope.dropdownOrdering[i].isActive = false;
+        }
+        $scope.dropdownOrdering[index].isActive = true;
+    };
+
     // sort button dropdown content
     $scope.dropdownOrdering = [
-        { text: 'Label Asc', click: function(){
-            order = 'label';
-            $scope.reverse = false;
-        }},
-        { text: 'Label Desc', click: function(){
-            order = 'label';
-            $scope.reverse = true;
-        }},
-        { text: 'Type Asc', click: function(){
-            if ($scope.dropdownOrdering[2].disable) {
-                return;
-            }
-            order = 'type';
-            $scope.reverse = false;
-        }},
-        { text: 'Type Desc', click: function(){
-            if ($scope.dropdownOrdering[3].disable) {
-                return;
-            }
-            order = 'type';
-            $scope.reverse = true;
-        }}
+        {
+            text: 'Label Asc', 
+            click: function(){
+                order = 'label';
+                $scope.reverse = false;
+                setActive(0);
+            },
+            isActive: order === 'label' && $scope.reverse === false
+        },
+        {
+            text: 'Label Desc', 
+            click: function(){
+                order = 'label';
+                $scope.reverse = true;
+                setActive(1);
+            },
+            isActive: order === 'label' && $scope.reverse === true
+        },
+        {
+            text: 'Type Asc', 
+            click: function(){
+                if ($scope.dropdownOrdering[2].disable) {
+                    return;
+                }
+                order = 'type';
+                $scope.reverse = false;
+                setActive(2);
+            },
+            isActive: order === 'type' && $scope.reverse === false
+        },
+        {
+            text: 'Type Desc', 
+            click: function(){
+                if ($scope.dropdownOrdering[3].disable) {
+                    return;
+                }
+                order = 'type';
+                $scope.reverse = true;
+                setActive(3);
+            },
+            isActive: order === 'type' && $scope.reverse === true
+        }
     ];
 
     var removeSpace = function(str){
