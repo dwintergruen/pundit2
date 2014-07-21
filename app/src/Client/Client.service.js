@@ -353,7 +353,6 @@ angular.module('Pundit2.Client')
 
         var addKorbo = function(dir){
             root.append(dir);
-            console.log("APPENDI KORBO ", dir);
         };
 
         // Loads the basic relations into some special ItemsExchange container
@@ -449,7 +448,7 @@ angular.module('Pundit2.Client')
             addComponents();
 
             // IF KORBO.ACTIVE IS TRUE, ADD KORBO DIRECTIVE
-            if(Config.korbo.active){
+            if(typeof(Config.korbo) !== 'undefined' && Config.korbo.active){
                 var dir = "<korbo-entity-editor conf-name='"+Config.korbo.confName+"'></korbo-entity-editor>";
                 addKorbo(dir);
             }

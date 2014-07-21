@@ -2,7 +2,7 @@ angular.module('Pundit2.Core')
     .constant('PUNDITDEFAULTCONF', {
 
         korbo : {
-            active: true,
+            active: false,
             confName: 'KORBODEFAULTCONF'
         },
 

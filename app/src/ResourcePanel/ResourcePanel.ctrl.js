@@ -106,7 +106,15 @@ angular.module('Pundit2.ResourcePanel')
 
         $scope.showUseAndCopyButton = function(){
             var currTab = $scope.contentTabs[$scope.contentTabs.activeTab].title;
-            if(ResourcePanel.options.basketKorboID !== -1 && (currTab !== 'KorboBasket' && currTab !== 'Page Items' && currTab !== 'My Items')){
+            if(Config.korbo.active && (currTab !== 'KorboBasket' && currTab !== 'Page Items' && currTab !== 'My Items')){
+                return true;
+            } else {
+                return false;
+            }
+        };
+
+        $scope.showNewButton = function(){
+            if(typeof(Config.korbo) !== 'undefined' && Config.korbo.active){
                 return true;
             } else {
                 return false;
@@ -116,8 +124,7 @@ angular.module('Pundit2.ResourcePanel')
         $scope.createNew = function(){
             var name = $window[Config.korbo.confName].globalObjectName;
             $window[name].callOpenSearch();
-            //$window.EE.callOpenSearch();
-            console.log($window);
         };
+
 
     });
