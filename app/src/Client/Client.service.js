@@ -70,7 +70,7 @@ angular.module('Pundit2.Client')
          */
         bootModules: [
             'Toolbar', 'Dashboard', 'AnnotationSidebar', 'Preview',
-            'SelectorsManager', 'MyNotebooksContainer', 'PageItemsContainer', 'MyItemsContainer',
+            'MyNotebooksContainer', 'SelectorsManager', 'PageItemsContainer', 'MyItemsContainer',
             'NotebookComposer', 'TripleComposer'
         ],
 
