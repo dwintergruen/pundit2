@@ -468,18 +468,19 @@ angular.module('Pundit2.Dashboard')
                 newCurrentTotal = newCurrentTotal + resizable[i].width;
             }
 
-            for(i=0; i<resizable.length; i++) {
-                resizable[i].ratio = resizable[i].width / newCurrentTotal;
-                var newWidth = resizable[i].width + (resizable[i].ratio * delta);
+            resizable = resizable.filter(function(el, index){
+                el.ratio = el.width / newCurrentTotal;
+                var newWidth = el.width + (el.ratio * delta);
                 // check if after dispense delta the panel go to min-width
-                if (newWidth < resizable[i].minWidth){
-                    newDelta = newDelta + (newWidth - resizable[i].minWidth);
-                    resizable[i].width = resizable[i].minWidth;
-                    resizable.splice(i, 1);
+                if (newWidth < el.minWidth){
+                    newDelta = newDelta + (newWidth - el.minWidth);
+                    el.width = el.minWidth;
+                    return false;
                 } else {
-                    resizable[i].width = newWidth;
+                    el.width = newWidth;
+                    return true;
                 }
-            }
+            });
 
             for (i=0; i<panels.length; i++) {
                 panels[i].left = currentLeft;
