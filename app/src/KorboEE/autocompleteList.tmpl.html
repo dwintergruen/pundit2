@@ -1,11 +1,11 @@
-<ul tabindex="-1" class="typeahead dropdown-menu kee-autocomplete-list" ng-show="$isVisible() && !serverNotRunning" role="select">
-  <li role="presentation" ng-repeat="match in $matches" ng-class="{active: $index == $activeIndex}">
+<ul tabindex="-1" class="typeahead dropdown-menu kee-autocomplete-list list-group" ng-show="$isVisible() && !serverNotRunning" role="select">
+  <li role="presentation" ng-repeat="match in $matches" ng-class="{active: $index == $activeIndex}" class="list-group-item">
     <!-- <a role="menuitem" tabindex="-1" ng-click="$select($index, $event);selectEntity(match)" ng-bind="match.label" ng-show="match.label!== 'no found'"></a> -->
     <!-- </spam> -->
     <item uri="{{match.value.uri}}" ng-click="$select($index, $event);selectEntity(match)" ng-if="match.label !== 'no found'"></item>
     <a role="menuitem" tabindex="-1" disabled ng-bind="noFound" ng-show="match.value.noResult === true"></a>
   </li>
-    <li ng-show="showNewButton() || showSearchButton()" class="divider"></li>
+    <li ng-show="showNewButton() || showSearchButton()"  class="divider"></li>
     <li>
     <!-- footer -->
     <div class="kee-footer-autocomplete">

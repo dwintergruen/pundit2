@@ -401,30 +401,89 @@
 // AUTOCOMPLETE
 // --------------------------------------------------
 
+.left-inner-icon {
+	position: relative;
+	padding: 0px;
+	}
+		
+.left-inner-icon input {
+	padding-right: 20px;
+	font-weight: normal;   
+	}
+		    
+.left-inner-icon .pnd-icon {
+	position: absolute;
+	color: @gray-light;
+	right: 0px;
+	top: 0px;
+	padding: 7px;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	}
+	
+	// .pnd-icon-times is configured in *ItemsContainer.service.js defaults with
+	// inputIconClear: 'pnd-icon-times'
+.left-inner-icon .pnd-icon.pnd-icon-times:hover {
+	color:  @brand-success;
+	cursor: pointer;
+	}
+	
 
 .kee-autocomplete-list {
-	width: 500px !important;
-	background-color: aqua;
+
+	&.list-group {
 	
+		.list-group-item {
+		background-color: aqua;
+		}
+		
+		.list-group-item:first-child {
+		background-color: red;
+		}
+		
+		.list-group-item:last-child {
+		background-color: #000;
+
+		.pnd-item {
+    	border-bottom:0px solid @gray-extra-light;
+		}
+		}
+	}
+
+
+	
+	.pnd-item {
+	    white-space: nowrap;
+    	overflow: hidden;
+    	text-overflow: ellipsis;
+    	transition: margin-left 250ms 150ms linear;
+    	margin-left: 0px;
+    	padding: 4px 8px;
+    	border-bottom: 1px solid @gray-extra-light;
+    	
+    	
+    	.pnd-item-buttons {
+	    	display: none;
+    	}
+    	
+		}
+	
+	
+	
+	/*
 	.dropdown-menu {
-		width: 500px !important;
 	}
 	
 	.dropdown-menu li,
 	.dropdown-menu li a {
-	max-width: 500px !important;
-	width: 500px !important;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	
-	&:last-child {
-		border: 0px;
-		background-color: aqua!important;
-	}
+
 }
 		
-
+*/
 
 .kee-footer-autocomplete {
 	background-color: #fff;
@@ -436,6 +495,9 @@
 	.btn {
 	.pnd-icon {
 		font-size: 12px;
+		position: relative;
+		padding: 0px;
+		color: #fff;
 		}
 		}
 	
