@@ -10,7 +10,13 @@ angular.module('Pundit2.Item')
             hideStickyButton: '@',
             useInKorbo: '@'
         },
-        templateUrl: "src/Item/Item.dir.tmpl.html",
+        templateUrl: function(el, attr){
+            if (attr.useInKorbo) {
+                return "src/Item/KorboItem.dir.tmpl.html"
+            } else {
+                return "src/Item/Item.dir.tmpl.html";
+            }
+        },
         controller: "ItemCtrl"
     };
 });
