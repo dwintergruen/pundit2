@@ -41,7 +41,6 @@ describe("Preview interaction", function() {
         p.get('/app/examples/preview.html');
 
         p.findElements(protractor.By.css('.pnd-example-ul li')).then(function(items) {
-            expect(items.length).toBe(3);
             p.actions().mouseMove(items[1]).perform();
             //p.sleep(500);
 
@@ -77,6 +76,38 @@ describe("Preview interaction", function() {
                 expect(elem.length).toBe(1);
                 expect(elem[0].getText()).toBe('Item Label');
             });
+        });
+
+    });
+
+    it('should show predicate preview on mouseover', function() {
+
+        p.driver.manage().window().setSize(1200, 960);
+        p.get('/app/examples/preview.html');
+
+        p.findElements(protractor.By.css('.pnd-example-ul li')).then(function(items) {
+            p.actions().mouseMove(items[3]).perform();
+
+            p.findElements(protractor.By.css('.pnd-dashboard-preview-panel-label')).then(function(elem) {
+                expect(elem.length).toBe(1);
+                expect(elem[0].getText()).toBe('has comment (free text)');
+            });
+
+            p.findElements(protractor.By.css('.pnd-preview-item-description')).then(function(elem) {
+                expect(elem.length).toBe(1);
+                expect(elem[0].getText()).toBe('Any comment related to the selected fragment of text or image');
+            });
+
+            //pnd-preview-item-types-ul
+            p.findElement(protractor.By.css('.pnd-preview-item-types-ul li.pnd-preview-single-type')).then(function(type) {
+                expect(type.getText()).toBe('Property');
+            });
+
+            p.findElements(protractor.By.css('.pnd-preview-item-predicate')).then(function(elem) {
+                expect(elem.length).toBe(1);
+            });
+
+            
         });
 
     });

@@ -17,10 +17,6 @@
         $templateCache.get(Preview.options.clientDashboardTemplate);
         Dashboard.addContent(Preview.options.clientDashboardPanel, Preview.options.clientDashboardTabTitle, Preview.options.clientDashboardTemplate);
 
-        /*var p = new Annotation("da128c73");
-        p.then(function() {
-            $scope.items = ItemsExchange.getItemsHash();
-        });*/
         var item1 = {
             uri: "http://testItemUri",
             label: "Item Label",
@@ -43,6 +39,20 @@
             type: ["http://xmlns.com/foaf/0.1/Image"]
         };
 
+        var item4 = {
+            "type": ["http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"],
+            "label": "has comment (free text)",
+            "description": "Any comment related to the selected fragment of text or image",
+            "domain": [
+                "http://purl.org/pundit/ont/ao#fragment-image",
+                "http://purl.org/pundit/ont/ao#fragment-text",
+                "http://xmlns.com/foaf/0.1/Image"
+            ],
+            "range": ["http://www.w3.org/2000/01/rdf-schema#Literal"],
+            "vocabulary": "Basic Relation",
+            "uri": "http://schema.org/comment"
+        };
+
         var i1 = new Item(item1.uri, item1);
         ItemsExchange.addItemToContainer(i1, PageItemsContainer.options.container);
 
@@ -51,6 +61,9 @@
 
         var i3 = new Item(item3.uri, item3);
         ItemsExchange.addItemToContainer(i3, PageItemsContainer.options.container);
+
+        var i4 = new Item(item4.uri, item4);
+        ItemsExchange.addItemToContainer(i4, PageItemsContainer.options.container);
 
         $scope.items = ItemsExchange.getItemsByContainer(PageItemsContainer.options.container);
 
