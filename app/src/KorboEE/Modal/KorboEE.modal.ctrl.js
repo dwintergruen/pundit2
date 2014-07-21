@@ -3,7 +3,6 @@ angular.module('KorboEE')
 
         var api = APIService.get($scope.conf.globalObjectName);
         var korboComm = new KorboCommunicationFactory();
-        console.log("apro");
         
         // set default language
         $scope.defaultLan = $scope.conf.languages[0];
@@ -97,12 +96,12 @@ angular.module('KorboEE')
             // if item is saved correctly
             promise.then(function(res){
 
-                // udpdate directive fields
-                // TODO questo va fatto solo se korbo è utilizzato in modalità tafony compatibility
-                // TODO ricordarsi di mettere un if sul parametro di configurazione
-                $scope.directiveScope.label = itemToCopyInKorbo.label;
-                $scope.directiveScope.elemToSearch = itemToCopyInKorbo.label;
-                $scope.directiveScope.location = res;
+                // udpdate directive fields if widget is set to be used as tafony compatibility
+                if($scope.conf.useTafonyCompatibility){
+                    $scope.directiveScope.label = itemToCopyInKorbo.label;
+                    $scope.directiveScope.elemToSearch = itemToCopyInKorbo.label;
+                    $scope.directiveScope.location = res;
+                }
 
                 // declare object returned onSave() call
                 var obj = {};
@@ -151,18 +150,21 @@ angular.module('KorboEE')
 
         // set location, label and elemToSearch values of directive
         $scope.use = function(){
-            // TODO aggiornare i campi della direttiva solamente se korbo è configurato per l'utilizzo in tafony compatibility
-            // if is a korbo entity
-            if($scope.itemSelected.providerFrom === 'korbo'){
-                $scope.directiveScope.location = $scope.itemSelected.location;
-                $scope.directiveScope.elemToSearch = $scope.itemSelected.label;
-                $scope.directiveScope.label = $scope.itemSelected.label;
-            // if is a no-korbo entity
-            } else {
-                //TODO controllare la location nel caso di entità non di korbo
-                $scope.directiveScope.location = "fake location?";
-                $scope.directiveScope.elemToSearch = $scope.itemSelected.label;
-                $scope.directiveScope.label = $scope.itemSelected.label;
+
+            // udpdate directive fields if widget is set to be used as tafony compatibility
+            if($scope.conf.useTafonyCompatibility){
+                // if is a korbo entity
+                if($scope.itemSelected.providerFrom === 'korbo'){
+                    $scope.directiveScope.location = $scope.itemSelected.location;
+                    $scope.directiveScope.elemToSearch = $scope.itemSelected.label;
+                    $scope.directiveScope.label = $scope.itemSelected.label;
+                    // if is a no-korbo entity
+                } else {
+                    //TODO controllare la location nel caso di entità non di korbo
+                    $scope.directiveScope.location = "fake location?";
+                    $scope.directiveScope.elemToSearch = $scope.itemSelected.label;
+                    $scope.directiveScope.label = $scope.itemSelected.label;
+                }
             }
 
             // declare object returned onSave() call
