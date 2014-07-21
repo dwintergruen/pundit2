@@ -70,7 +70,8 @@
                 state: false
             }
 
-        ]
+        ],
+        autoCompleteOptions: 'all'
 
     };
 
@@ -105,8 +106,6 @@
         console.log($scope.conf);
         $scope.openSearch = function(){
             $window.KK.callOpenSearch();
-
-            //KorboCommunicationService.openModalOnSearch($window[myConf]);
         };
     };
 
