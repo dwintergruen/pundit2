@@ -301,12 +301,9 @@ angular.module('KorboEE')
         //   language
         // }
         //
-        // container: where add items
-        //
 
         KorboCommFactory.prototype.getItem = function(param){
             var promise = $q.defer();
-
             $http({
                 headers: { 'Accept-Language': param.language },
                 method: 'GET',
@@ -316,7 +313,6 @@ angular.module('KorboEE')
                     p: param.provider
                 }
             }).success(function(res){
-
                 promise.resolve(res);
             }).error(function(){
                 promise.reject();

@@ -166,7 +166,6 @@ angular.module('KorboEE')
 
         $scope.getItem = function(item){
             // set loading preview status to true
-            console.log("get item: ", item);
             // build param to get call
             $scope.previewIsLoading = true;
             $scope.previewError = false;

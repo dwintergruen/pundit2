@@ -20,12 +20,35 @@ angular.module('KorboEE')
             ContextualMenu.wipeActionsByType('advancedMenu');
         });
 
+        // set default language
+        $scope.defaultLan = $scope.conf.languages[0];
+        for (var j in $scope.conf.languages){
+            if($scope.conf.languages[j].state === true) {
+                $scope.defaultLan = $scope.conf.languages[j];
+                break;
+            } // end if
+        } // end for
+
+        var korboComm = new KorboCommunicationFactory();
 
         if(typeof($scope.idEntityToEdit) !== 'undefined' &&$scope.idEntityToEdit !== null){
             console.log("vuoi modificare l'entità con id ", $scope.idEntityToEdit);
+            $scope.topArea = {
+                'message': 'Loading entity...',
+                'status': 'info'
+            };
+            var promises = [];
+            var p;
+            var param = {};
+            param.endpoint = $scope.conf.endpoint;
+            param.basketID = $scope.conf.basketID;
+            param.language = $scope.defaultLan.value;
+            param.provider = 'korbo';
+            param.item = {uri: $scope.idEntityToEdit};
+            
         }
 
-        var korboComm = new KorboCommunicationFactory();
+
         var delay;
 
         // tooltip message for image url
@@ -104,39 +127,42 @@ angular.module('KorboEE')
         }
 
         //build languages tabs
-        for(var i=0; i< $scope.conf.languages.length; i++){
+        if(!$scope.editMode){
+            for(var i=0; i< $scope.conf.languages.length; i++){
 
-            var title = angular.uppercase($scope.conf.languages[i].value);
-            var name = angular.lowercase($scope.conf.languages[i].name);
-            var lang = {
-                'title': title,
-                'name' : $scope.conf.languages[i].name,
-                'description': "",
-                'label': "",
-                'mandatory': true,
-                'hasError': false,
-                'tooltipMessageTitle': tooltipMessageTitle + name,
-                'tooltipMessageDescription': tooltipMessageDescription + name,
-                'tooltipMessageError': "message",
-                'tooltipMessageErrorTab': "There are some errors in the "+name+" languages fields"
-            };
+                var title = angular.uppercase($scope.conf.languages[i].value);
+                var name = angular.lowercase($scope.conf.languages[i].name);
+                var lang = {
+                    'title': title,
+                    'name' : $scope.conf.languages[i].name,
+                    'description': "",
+                    'label': "",
+                    'mandatory': true,
+                    'hasError': false,
+                    'tooltipMessageTitle': tooltipMessageTitle + name,
+                    'tooltipMessageDescription': tooltipMessageDescription + name,
+                    'tooltipMessageError': "message",
+                    'tooltipMessageErrorTab': "There are some errors in the "+name+" languages fields"
+                };
 
-            if($scope.conf.languages[i].state){
-                $scope.tabs.push(lang);
-                if($scope.tabs.length == 1){
-                    addActionToContextualMenu(lang);
-                    ContextualMenu.modifyHeaderActionByName('rml'+$scope.tabs[0].name, true);
-                } else if($scope.tabs.length == 2){
-                    addActionToContextualMenu(lang);
-                    ContextualMenu.modifyHeaderActionByName('rml'+$scope.tabs[0].name, false);
-                } else if($scope.tabs.length > 2){
-                    addActionToContextualMenu(lang);
+                if($scope.conf.languages[i].state){
+                    $scope.tabs.push(lang);
+                    if($scope.tabs.length == 1){
+                        addActionToContextualMenu(lang);
+                        ContextualMenu.modifyHeaderActionByName('rml'+$scope.tabs[0].name, true);
+                    } else if($scope.tabs.length == 2){
+                        addActionToContextualMenu(lang);
+                        ContextualMenu.modifyHeaderActionByName('rml'+$scope.tabs[0].name, false);
+                    } else if($scope.tabs.length > 2){
+                        addActionToContextualMenu(lang);
+                    }
+                } else {
+                    $scope.disactiveLanguages.push(lang);
                 }
-            } else {
-                $scope.disactiveLanguages.push(lang);
-            }
 
+            }
         }
+
 
         // check if language field are all right filled
         var checkLanguages = function(){
