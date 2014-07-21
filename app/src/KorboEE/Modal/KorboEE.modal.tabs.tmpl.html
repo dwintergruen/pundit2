@@ -1,4 +1,4 @@
-<ul class="nav nav-tabs">
+<ul class="nav nav-tabs" ng-hide="editMode">
     <li ng-repeat="pane in panes" ng-class="{active: $index == active}">
         <a data-toggle="tab" ng-click="setActive($index, $event)" data-index="{{$index}}">{{pane.title}}<span class="badge pull-right" ng-show="pane.totalResults > 0 && elemToSearch !== ''">{{pane.totalResults}}</span>
         </a>

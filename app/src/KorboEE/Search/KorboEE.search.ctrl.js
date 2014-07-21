@@ -29,14 +29,17 @@ angular.module('KorboEE')
 
         // TODO in edit mode, non devo aggiungere korbo nella lista dei provider
         // push korbo provider
-        $scope.contentTabs.push({
-            title: 'Korbo',
-            template: 'src/Lists/itemList.tmpl.html',
-            items: [],
-            itemsContainer: 'kee-korbo',
-            provider: 'korbo',
-            module: 'KorboEE'
-        });
+        if(!$scope.editMode){
+            $scope.contentTabs.push({
+                title: 'Korbo',
+                template: 'src/Lists/itemList.tmpl.html',
+                items: [],
+                itemsContainer: 'kee-korbo',
+                provider: 'korbo',
+                module: 'KorboEE'
+            });
+        }
+
 
         // for each provider set in configuration, push it on tabs
         for(obj in $scope.conf.providers){

@@ -1,5 +1,6 @@
 angular.module('KorboEE')
-    .controller('KeeNewCtrl', function($scope, $rootScope, $dropdown, $modal, KorboCommunicationService, $q, KorboCommunicationFactory, korboConf, $timeout, $http, TypesHelper, ItemsExchange, ContextualMenu) {
+    .controller('KeeNewCtrl', function($scope, $rootScope, $dropdown, $modal, KorboCommunicationService, $q, KorboCommunicationFactory,
+                                       korboConf, $timeout, $http, TypesHelper, ItemsExchange, ContextualMenu, $window, Config) {
 
         $scope.tabs = [];
         $scope.disactiveLanguages = [];
@@ -15,6 +16,15 @@ angular.module('KorboEE')
         };
         $scope.typeFilter = {'label': ""};
 
+        var name = $window[Config.korbo.confName].globalObjectName;
+        $window[name].onCancel(function(){
+            console.log("svuoto il contextual menu");
+        });
+
+
+        if(typeof($scope.idEntityToEdit) !== 'undefined' &&$scope.idEntityToEdit !== null){
+            console.log("vuoi modificare l'entità con id ", $scope.idEntityToEdit);
+        }
 
         var korboComm = new KorboCommunicationFactory();
         var delay;
@@ -69,6 +79,20 @@ angular.module('KorboEE')
                 ContextualMenu.modifyHeaderActionByName('editURL', true);
             }
         });
+
+        ContextualMenu.addAction({
+            name: 'SearchOriginalURL',
+            type: ['advancedMenu'],
+            label: 'Search original URL',
+            priority: 3,
+            showIf: function(){
+                return $scope.editMode;
+            },
+            action: function(){
+                $scope.korboModalTabs.activeTab = 0;
+            }
+        });
+
 
         ContextualMenu.addDivider({
             priority: 3,

@@ -29,6 +29,7 @@ angular.module('KorboEE')
                     return 'src/KorboEE/Korboee-error-config.tmpl.html';
                 }
 
+                //TODO: ricontrollare i parametri di configurazione per l'utilizzo con autocomplete
                 if(conf.useAutocompleteWithSearch && conf.useAutocompleteWithNew){
                     attrs.error = true;
                     attrs.errorType = 'autoComplete';

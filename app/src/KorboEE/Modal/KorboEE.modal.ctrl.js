@@ -3,6 +3,7 @@ angular.module('KorboEE')
 
         var api = APIService.get($scope.conf.globalObjectName);
         var korboComm = new KorboCommunicationFactory();
+        $scope.editMode = false;
         
         // set default language
         $scope.defaultLan = $scope.conf.languages[0];
@@ -65,6 +66,11 @@ angular.module('KorboEE')
             } else if(val === 'new'){
                 $scope.korboModalTabs.activeTab = 1;
                 $scope.korboModalTabs[1].entityToCreate = $scope.entityToCreate;
+
+            } else if (val === 'edit'){
+                $scope.korboModalTabs.activeTab = 1;
+                $scope.korboModalTabs[1].idEntityToEdit = $scope.idEntityToEdit;
+                $scope.editMode = true;
             }
         });
 
@@ -133,11 +139,6 @@ angular.module('KorboEE')
             } else {
                 $window.open(url);
             }
-
-        };
-
-        // open item url in a new window when click on More Info button in a preview
-        $scope.openUrl = function(url) {
 
         };
 
