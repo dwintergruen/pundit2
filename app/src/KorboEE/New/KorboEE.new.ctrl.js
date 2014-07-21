@@ -100,7 +100,15 @@ angular.module('KorboEE')
 
             if($scope.conf.languages[i].state){
                 $scope.tabs.push(lang);
-                addActionToContextualMenu(lang);
+                if($scope.tabs.length == 1){
+                    addActionToContextualMenu(lang);
+                    ContextualMenu.modifyHeaderActionByName('rml'+$scope.tabs[0].name, true);
+                } else if($scope.tabs.length == 2){
+                    addActionToContextualMenu(lang);
+                    ContextualMenu.modifyHeaderActionByName('rml'+$scope.tabs[0].name, false);
+                } else if($scope.tabs.length > 2){
+                    addActionToContextualMenu(lang);
+                }
             } else {
                 $scope.disactiveLanguages.push(lang);
             }
