@@ -617,7 +617,7 @@ angular.module('Pundit2.Client')
             SelectorsManager.init();
 
             addComponents();
-
+            console.log("ciaooo ",Config);
             // IF KORBO.ACTIVE IS TRUE, ADD KORBO DIRECTIVE
             if(typeof(Config.korbo) !== 'undefined' && Config.korbo.active){
                 var dir = "<korbo-entity-editor conf-name='"+Config.korbo.confName+"'></korbo-entity-editor>";

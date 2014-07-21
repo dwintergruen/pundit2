@@ -24,7 +24,8 @@ angular.module('KorboEE')
             template: 'src/KorboEE/Modal/KorboEE.modal.tmpl.html',
             show: false,
             backdrop: 'static',
-            scope: KeeModalScope
+            scope: KeeModalScope,
+            keyboard: false
         });
 
         // CONFIRM MODAL
