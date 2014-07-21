@@ -16,9 +16,8 @@ angular.module('KorboEE')
         };
         $scope.typeFilter = {'label': ""};
 
-        var name = $window[Config.korbo.confName].globalObjectName;
-        $window[name].onCancel(function(){
-            console.log("svuoto il contextual menu");
+        $window[$scope.conf.globalObjectName].onCancel(function(){
+            ContextualMenu.wipeActionsByType('advancedMenu');
         });
 
 
@@ -50,7 +49,7 @@ angular.module('KorboEE')
         var addActionToContextualMenu = function(lang){
             ContextualMenu.addAction({
                 name: 'rml'+lang.name,
-                type: ['advancedMenu'],
+                type: 'advancedMenu',
                 label: 'Remove '+lang.name,
                 priority: 1,
                 showIf: function(){
@@ -68,7 +67,7 @@ angular.module('KorboEE')
 
         ContextualMenu.addAction({
             name: 'editURL',
-            type: ['advancedMenu'],
+            type: 'advancedMenu',
             label: 'Edit original URL',
             priority: 3,
             showIf: function(){
@@ -82,7 +81,7 @@ angular.module('KorboEE')
 
         ContextualMenu.addAction({
             name: 'SearchOriginalURL',
-            type: ['advancedMenu'],
+            type: 'advancedMenu',
             label: 'Search original URL',
             priority: 3,
             showIf: function(){
