@@ -1,5 +1,5 @@
 //
-// MODAL AND WRAPPER
+// MODAL
 // --------------------------------------------------
 
 
@@ -8,10 +8,6 @@
 	border-top: 4px solid @gray-light;
 	}
 		
-.kee-wrp {
-	background-color: lighten(@gray-lighter, 5%);
-	}
-	
 	
 //
 // COMPONENTS
@@ -352,5 +348,45 @@
 			}
 		
 		}
-		
 }
+
+
+// IMAGE URL ----- //
+
+.kee-new-image-url {
+	height: 50px;
+	margin-bottom: 15px;
+	
+	.kee-preview-image {
+	width: 50px;
+	overflow: hidden;
+	float: right;
+	background-color: @gray-lighter;
+	text-align: center;
+	
+		img {
+		max-width: 100%;
+		max-height: 100%;	
+		}
+		
+	}
+	
+	label {
+		display: block;
+		}
+
+	.message-remove-image {
+		font-size: 12px;
+		cursor: pointer;
+		}
+		
+	.message-loading-image,
+	.message-error-image  {
+		font-size: 12px;
+		color: @brand-danger;
+		float: right;
+		}
+
+	
+}
+
