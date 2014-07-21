@@ -1,5 +1,5 @@
 angular.module('KorboEE')
-    .service('KorboCommunicationService', function($q, $http, BaseComponent, ItemsExchange, Item, $rootScope, $modal, korboConf){
+    .service('KorboCommunicationService', function($q, $http, BaseComponent, ItemsExchange, Item, $rootScope, $modal, korboConf, APIService){
 
         var korboCommunication = new BaseComponent("KorboCommunication");
 
@@ -38,10 +38,12 @@ angular.module('KorboEE')
         };
 
         confirmModalScope.confirm = function() {
+            var api = APIService.get(this.globalObjectName);
             confirmModal.hide();
             korboConf.setIsOpenModal(false);
             KeeModal.hide();
             korboConf.setIsOpenModal(false);
+            api.fireOnCancel();
         };
 
         var confirmModal = $modal({
@@ -52,8 +54,10 @@ angular.module('KorboEE')
             scope: confirmModalScope
         });
 
-        korboCommunication.showConfirmModal = function(){
+        korboCommunication.showConfirmModal = function(globalObjectName){
+            confirmModalScope.globalObjectName = globalObjectName;
             confirmModal.$promise.then(confirmModal.show);
+
         };
 
 

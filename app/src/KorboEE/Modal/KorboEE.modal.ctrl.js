@@ -81,7 +81,7 @@ angular.module('KorboEE')
 
         // close modal
         $scope.closeKeeModal = function(){
-            KorboCommunicationService.showConfirmModal();
+            KorboCommunicationService.showConfirmModal($scope.conf.globalObjectName);
             //KorboCommunicationService.closeModal();
         };
 
