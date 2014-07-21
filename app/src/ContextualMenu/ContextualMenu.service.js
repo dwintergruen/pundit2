@@ -126,6 +126,7 @@ angular.module('Pundit2.ContextualMenu')
             
         }
 
+        // TODO: verificare uso degli splice
         // remove divider in bad position
         var j;
         for (j=content.length-1; j>=0; j--) {
@@ -286,7 +287,6 @@ angular.module('Pundit2.ContextualMenu')
      *
     */
     contextualMenu.addAction = function(actionObj){
-
         var found = state.menuElements.some(function(el){
             return actionObj.name === el.name;
         });
@@ -319,6 +319,15 @@ angular.module('Pundit2.ContextualMenu')
 
         contextualMenu.err('Action '+name+' not found');
         return false;
+    };
+
+    contextualMenu.wipeActionsByType = function(type){
+        state.menuElements = state.menuElements.filter(function(el, index){
+            if (type === state.menuElements[index].type){
+                return false;
+            }
+            return true;
+        });
     };
 
     contextualMenu.modifyHeaderActionByName = function(name, header){
