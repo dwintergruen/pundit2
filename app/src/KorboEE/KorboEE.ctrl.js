@@ -48,13 +48,13 @@ angular.module('KorboEE')
         }); // watch conf
 
 
-        $scope.$watch(function() {
+        /*$scope.$watch(function() {
             return angular.element('.kee-autocomplete-list').outerWidth();
         }, function() {
             angular.element('.kee-autocomplete-list').css({
                 width:$scope.inputWidth
             });
-        });
+        });*/
 
         var callOnReayd = function(){
             $scope.inputWidth = angular.element('.kee-input-elem-to-search').outerWidth();
