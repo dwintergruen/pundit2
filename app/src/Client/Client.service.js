@@ -18,7 +18,7 @@ angular.module('Pundit2.Client')
          * `object`
          *
          * Configuration object for Client module. Client service has the task of managing the boot process:
-         * loading the basic relationships (from "basicRelations"), downloading from the server user annotations and
+         * loading the basic relations,hips (from "basicRelations"), downloading from the server user annotations and
          * adding to the DOM modules configured "bootModules".
          */
 
@@ -82,7 +82,7 @@ angular.module('Pundit2.Client')
          * @description
          * `Array`
          *
-         * Basic Relations list, this items are loaded at boot
+         * Basic Relations, list, this items are loaded at boot
          * and are used as predicates in the construction of the annotations.
          * If you want to use only your predicates you can set {@link #!/api/punditConfig/object/useBasicRelations useBasicRelations} as false
          * and load your data from the {@link #!/api/punditConfig/object/vocabularies vocabularies} property.
@@ -271,6 +271,7 @@ angular.module('Pundit2.Client')
                     "http://xmlns.com/foaf/0.1/Image"
                 ],
                 "range": ["http://www.w3.org/2000/01/rdf-schema#Literal"],
+                "vocabulary": "Basic Relation",
                 "uri": "http://schema.org/comment"
             },
             {
@@ -282,6 +283,7 @@ angular.module('Pundit2.Client')
                     "http://purl.org/pundit/ont/ao#fragment-image"
                 ],
                 "range": [],
+                "vocabulary": "Basic Relation",
                 "uri": "http://xmlns.com/foaf/0.1/depicts"
             },
             {
@@ -298,6 +300,7 @@ angular.module('Pundit2.Client')
                     "http://purl.org/pundit/ont/ao#fragment-image",
                     "http://xmlns.com/foaf/0.1/Image"
                 ],
+                "vocabulary": "Basic Relation",
                 "uri": "http://purl.org/pundit/vocab#similarTo"
             },
             {
@@ -314,6 +317,7 @@ angular.module('Pundit2.Client')
                     "http://xmlns.com/foaf/0.1/Person",
                     "http://dbpedia.org/ontology/Person"
                 ],
+                "vocabulary": "Basic Relation",
                 "uri": "http://purl.org/dc/terms/creator"
             },
             {
@@ -329,6 +333,7 @@ angular.module('Pundit2.Client')
                     "http://www.freebase.com/schema/book/written_work",
                     "http://www.freebase.com/schema/book/book"
                 ],
+                "vocabulary": "Basic Relation",
                 "uri": "http://purl.org/spar/cito/cites"
             },
             {
@@ -343,6 +348,7 @@ angular.module('Pundit2.Client')
                     "http://www.freebase.com/schema/book/written_work",
                     "http://www.freebase.com/schema/book/book"
                 ],
+                "vocabulary": "Basic Relation",
                 "uri": "http://purl.org/spar/cito/includesQuotationFrom"
             },
             {
@@ -351,6 +357,7 @@ angular.module('Pundit2.Client')
                 "description": "The selected text fragment talks about some other text, Entity, Person or any other kind of concept",
                 "domain": ["http://purl.org/pundit/ont/ao#fragment-text"],
                 "range": [],
+                "vocabulary": "Basic Relation",
                 "uri": "http://purl.org/pundit/ont/oa#talksAbout"
             },
             {
@@ -359,6 +366,7 @@ angular.module('Pundit2.Client')
                 "description": "The selected text fragment is someway related to another text, Entity, Person or any other kind of concept",
                 "domain": ["http://purl.org/pundit/ont/ao#fragment-text"],
                 "range": [],
+                "vocabulary": "Basic Relation",
                 "uri": "http://purl.org/pundit/ont/oa#isRelatedTo"
             },
             {
@@ -377,6 +385,7 @@ angular.module('Pundit2.Client')
                     "http://www.freebase.com/schema/book/written_work",
                     "http://www.freebase.com/schema/book/book"
                 ],
+                "vocabulary": "Basic Relation",
                 "uri": "http://purl.org/pundit/ont/oa#identifies"
             },
             {
@@ -385,6 +394,7 @@ angular.module('Pundit2.Client')
                 "description": "The selected text fragment corresponds to the specified Date",
                 "domain": ["http://purl.org/pundit/ont/ao#fragment-text"],
                 "range": ["http://www.w3.org/2001/XMLSchema#dateTime"],
+                "vocabulary": "Basic Relation",
                 "uri": "http://purl.org/pundit/ont/oa#isDate"
             },
             {
@@ -393,6 +403,7 @@ angular.module('Pundit2.Client')
                 "description": "The selected text fragment corresponds to the specified date period which starts at the specified Date",
                 "domain": ["http://purl.org/pundit/ont/ao#fragment-text"],
                 "range": ["http://www.w3.org/2001/XMLSchema#dateTime"],
+                "vocabulary": "Basic Relation",
                 "uri": "http://purl.org/pundit/ont/oa#periodStartDate"
             },
             {
@@ -401,6 +412,7 @@ angular.module('Pundit2.Client')
                 "description": "The selected text fragment corresponds to the specified date period which ends at the specified Date",
                 "domain": ["http://purl.org/pundit/ont/ao#fragment-text"],
                 "range": ["http://www.w3.org/2001/XMLSchema#dateTime"],
+                "vocabulary": "Basic Relation",
                 "uri": "http://purl.org/pundit/ont/oa#periodEndDate"
             },
             {
@@ -409,6 +421,7 @@ angular.module('Pundit2.Client')
                 "description": "The selected text fragment translation is given as free text",
                 "domain": ["http://purl.org/pundit/ont/ao#fragment-text"],
                 "range": ["http://www.w3.org/2000/01/rdf-schema#Literal"],
+                "vocabulary": "Basic Relation",
                 "uri": "http://purl.org/pundit/ont/oa#translatesTo"
             },
             {
@@ -417,6 +430,7 @@ angular.module('Pundit2.Client')
                 "description": "The selected text fragment is the translation of another text fragment",
                 "domain": ["http://purl.org/pundit/ont/ao#fragment-text"],
                 "range": ["http://purl.org/pundit/ont/ao#fragment-text"],
+                "vocabulary": "Basic Relation",
                 "uri": "http://purl.org/pundit/ont/oa#isTranslationOf"
             },
             {
@@ -425,6 +439,7 @@ angular.module('Pundit2.Client')
                 "description": "The selected text fragment is written in the specified language (french, german, english etc)",
                 "domain": ["http://purl.org/pundit/ont/ao#fragment-text"],
                 "range": ["http://www.freebase.com/schema/language/human_language"],
+                "vocabulary": "Basic Relation",
                 "uri": "http://purl.org/pundit/ont/oa#isWrittenIn"
             }
         ]
@@ -526,7 +541,7 @@ angular.module('Pundit2.Client')
             root.append(dir);
         };
 
-        // Loads the basic relations into some special ItemsExchange container
+        // Loads the basic relations, into some special ItemsExchange container
         var loadBasicRelations = function() {
             var num = 0,
                 relations = client.options.basicRelations;
@@ -534,7 +549,7 @@ angular.module('Pundit2.Client')
                 var item = new Item(relations[p].uri, relations[p]);
                 ItemsExchange.addItemToContainer(item, client.options.relationsContainer);
             }
-            client.log('Loaded '+num+' basic relations');
+            client.log('Loaded '+num+' basic relations,');
         };
 
         // Loads configured relations into some special ItemsExchange container

@@ -14,5 +14,17 @@
     <div class="pnd-preview-item-description">
         <p>{{item.description}}</p>
     </div>
+
+    <div ng-if="item.isProperty()" class="pnd-preview-item-predicate">
+        <ul>
+            <li>Vocabulary: {{item.vocabulary}}</li>
+            <li>Domain:
+                <span ng-repeat="domain in item.domain">{{domain}}</span>
+            </li>
+            <li>Range:
+                <span ng-repeat="range in item.range">{{range}}</span>
+            </li>
+        </ul>
+    </div>
     
 </div>
