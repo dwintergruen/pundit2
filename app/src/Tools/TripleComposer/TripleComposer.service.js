@@ -201,6 +201,7 @@ angular.module('Pundit2.TripleComposer')
                 Config.modules.MyItemsContainer.cMenuType,
                 Config.modules.SelectorsManager.cMenuType,
                 Config.modules.TextFragmentHandler.cMenuType,
+                Config.modules.TextFragmentAnnotator.cMenuType,
                 Config.modules.ImageHandler.cMenuType
             ],
             name: 'useAsSubject',
@@ -220,6 +221,7 @@ angular.module('Pundit2.TripleComposer')
                 Config.modules.MyItemsContainer.cMenuType,
                 Config.modules.SelectorsManager.cMenuType,
                 Config.modules.TextFragmentHandler.cMenuType,
+                Config.modules.TextFragmentAnnotator.cMenuType,
                 Config.modules.ImageHandler.cMenuType
             ],
             name: 'useAsObject',
