@@ -64,6 +64,8 @@ angular.module('KorboEE')
                         'tooltipMessageErrorTab': "There are some errors in the "+name+" languages fields"
                     };
                     $scope.tabs.push(lang);
+                    pushCurrentLang(lang);
+                    buildLanguageTabs();
 
                     $scope.imageUrl = res.depiction;
                     $scope.originalUrl = res.resource;
@@ -97,6 +99,8 @@ angular.module('KorboEE')
                                     'tooltipMessageErrorTab': "There are some errors in the "+name+" languages fields"
                                 };
                                 $scope.tabs.push(lang);
+                                pushCurrentLang(lang);
+                                buildLanguageTabs();
                             })(j)
                         } // end for
                         $scope.topArea = {
@@ -163,6 +167,18 @@ angular.module('KorboEE')
             });
         };
 
+        var pushCurrentLang = function(lang){
+            if($scope.tabs.length == 1){
+                addActionToContextualMenu(lang);
+                ContextualMenu.modifyHeaderActionByName('rml'+$scope.tabs[0].name, true);
+            } else if($scope.tabs.length == 2){
+                addActionToContextualMenu(lang);
+                ContextualMenu.modifyHeaderActionByName('rml'+$scope.tabs[0].name, false);
+            } else if($scope.tabs.length > 2){
+                addActionToContextualMenu(lang);
+            }
+        };
+
         ContextualMenu.addAction({
             name: 'editURL',
             type: 'advancedMenu',
@@ -202,7 +218,7 @@ angular.module('KorboEE')
         }
 
         //build languages tabs
-        if(!$scope.editMode){
+        var buildLanguageTabs = function(){
             for(var i=0; i< $scope.conf.languages.length; i++){
 
                 var title = angular.uppercase($scope.conf.languages[i].value);
@@ -220,23 +236,25 @@ angular.module('KorboEE')
                     'tooltipMessageErrorTab': "There are some errors in the "+name+" languages fields"
                 };
 
-                if($scope.conf.languages[i].state){
-                    $scope.tabs.push(lang);
-                    if($scope.tabs.length == 1){
-                        addActionToContextualMenu(lang);
-                        ContextualMenu.modifyHeaderActionByName('rml'+$scope.tabs[0].name, true);
-                    } else if($scope.tabs.length == 2){
-                        addActionToContextualMenu(lang);
-                        ContextualMenu.modifyHeaderActionByName('rml'+$scope.tabs[0].name, false);
-                    } else if($scope.tabs.length > 2){
-                        addActionToContextualMenu(lang);
+                if(!$scope.editMode){ 
+                    if($scope.conf.languages[i].state){
+                        $scope.tabs.push(lang);
+                        pushCurrentLang(lang);
+                    } else {
+                        $scope.disactiveLanguages.push(lang);
                     }
                 } else {
-                    $scope.disactiveLanguages.push(lang);
+                    var indexFind = $scope.tabs.map(function(e){ return e.title }).indexOf(lang.title);
+                    if(indexFind === -1){
+                        $scope.disactiveLanguages.push(lang);
+                    }
                 }
-
             }
+        };
+        if(!$scope.editMode){
+            buildLanguageTabs();
         }
+
 
 
         // check if language field are all right filled
