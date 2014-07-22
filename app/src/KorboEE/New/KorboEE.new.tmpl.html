@@ -150,20 +150,28 @@
                         <li 
                             ng-repeat="item in types | filter:typeFilter" 
                             class="list-group-item">
-                            	<div class="pnd-item">
-                                    <input 
-                                        type="checkbox" 
-                                        class="kee-type-input" 
-                                        name="items" 
-                                        ng-change="updateTypes()" 
-                                        ng-model="item.checked" 
-                                        value="{{item.URI}}" />
-                                    {{item.label}} {{item.length}}
-                                    <span 
-                                        class="pnd-icon pnd-icon-external-link pull-right" 
-                                        ng-click="moreInfo(item.URI)">
-                                    </span>
-                            	</div>
+                            	<div 
+                                    class="pnd-item" 
+                                    ng-class="{'pnd-sticky-item': item.checked}" 
+                                    ng-click="item.checked = !item.checked; updateTypes()">
+                                        <div class="pnd-item-buttons">
+                                            <span 
+                                                class="pnd-icon pnd-icon-check ng-scope"
+                                                ng-show="item.check">
+                                            </span>
+                                        </div>
+
+                                        <div class="pnd-item-text">
+                                            <span class="pnd-item-label">
+                                                {{item.label}}
+                                            </span>
+                                        </div>
+
+                                        <span 
+                                            class="pnd-icon pnd-icon-external-link pull-right" 
+                                            ng-click="moreInfo(item.URI)">
+                                        </span>
+                                </div>
                         </li>
                     </ul>
                 </div>
