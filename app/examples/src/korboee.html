@@ -103,13 +103,16 @@
     }
 
     var KeeDemoCtrl = function($scope, KorboCommunicationService, $window) {
-        console.log($scope.conf);
+
+        var name = $window['myConf'].globalObjectName;
         $scope.openSearch = function(){
-            $window.KK.callOpenSearch();
+            //$window.KK.callOpenSearch();
+            $window[name].callOpenSearch();
         };
 
         $scope.edit = function(){
-            $window.KK.callEdit(2597);
+            //$window.KK.callEdit(2597);
+            $window[name].callEdit(2597);
         };
     };
 
