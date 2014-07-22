@@ -509,9 +509,11 @@ angular.module('Pundit2.TripleComposer')
         }, function(newScope) {
             if (typeof(newScope) !== 'undefined'){
                 tripleComposer.log('Now the last statement is populated with relative scope');
+
                 // read triples from template and fix items
                 for (i=0; i<statements.length; i++) {
                     var triple = tmpl.triples[i];
+                    
                     if (typeof(triple.predicate)!== 'undefined') {
                         statements[i].scope.setPredicate(triple.predicate, true);
                     }
@@ -522,8 +524,8 @@ angular.module('Pundit2.TripleComposer')
                         statements[i].scope.setObject(triple.object.value, true);
                     }
                     // check if the triple is mandatory (if must be completed or if can be skipped when save annotation)
-                    if (typeof(triple.predicate.mandatory) !== 'undefined') {
-                        statements[i].scope.isMandatory = triple.predicate.mandatory;
+                    if (typeof(triple.mandatory) !== 'undefined') {
+                        statements[i].scope.isMandatory = triple.mandatory;
                     }
                     tripleComposer.log('New statement populated with', triple);
                 }

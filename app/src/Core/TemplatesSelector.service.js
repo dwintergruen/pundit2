@@ -94,7 +94,7 @@ angular.module('Pundit2.Core')
                                     tmpl.triples[_i].object.type = 'item';
                                     tmpl.triples[_i].object.value = ret;
                                     // TODO how label use?
-                                    tmpl.triples[_i].object.value.label = tmpl.triples[_i].object.value.description;
+                                    tmpl.triples[_i].object.value.label = tmpl.triples[_i].object.label;
                                     tmpl.triples[_i].object.value = new Item(tmpl.triples[_i].object.value.uri, tmpl.triples[_i].object.value);
                                 });
                                 selector.getItemDetails(item, p);

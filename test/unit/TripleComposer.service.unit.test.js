@@ -312,8 +312,8 @@ describe('TripleComposer service', function() {
         var currentTmpl = new Template('testID', {
             triples: [
                 {
+                    mandatory: true,
                     predicate: {
-                        mandatory: true,
                         label: 'predicate label',
                         id: 'predicateTestID',
                         range: [],
