@@ -1,4 +1,4 @@
-describe("TripleComposer interaction", function() {
+ddescribe("TripleComposer interaction", function() {
     var p = protractor.getInstance();
 
     beforeEach(function(){
@@ -55,6 +55,38 @@ describe("TripleComposer interaction", function() {
         p.findElement(protractor.By.css(".pnd-statement-object .pnd-row-button-object")).then(function(div) {
             expect(div.getText()).toEqual("Text fragment");
         });   
+    });
+
+    it("should correctly show predicate when object is already present", function(){
+
+        p.driver.manage().window().setSize(1200, 960);
+
+        // open resource panel on object
+        p.findElement(protractor.By.css(".pnd-statement-object input")).click();
+        // check if is opened
+        p.findElements(protractor.By.css(".pnd-resource-panel-popover")).then(function(popover) {
+            expect(popover.length).toBe(1);
+        });
+        // add item (image) by click on resource panel item and use btn
+        p.findElements(protractor.By.css(".pnd-resource-panel-popover .pnd-item")).then(function(items){
+            items[2].click();
+        })
+        p.findElement(protractor.By.css(".pnd-resource-panel-popover .pnd-vertical-tab-footer-content .pnd-resource-panel-use-button")).click();
+
+        // open resource panel on predicate
+        p.findElement(protractor.By.css(".pnd-statement-predicate input")).click();
+        // check if is opened
+        p.findElements(protractor.By.css(".pnd-resource-panel-popover")).then(function(popover) {
+            expect(popover.length).toBe(1);
+        });
+        // check propeties number
+        p.findElements(protractor.By.css(".pnd-resource-panel-popover .pnd-vertical-tabs > li > a span")).then(function(spans) {
+            expect(spans[0].getText()).toBe('0');
+        });
+        p.findElements(protractor.By.css(".pnd-resource-panel-popover .pnd-vertical-tab-content item")).then(function(items) {
+            expect(items.length).toBe(0);
+        });
+
     });
 
     it("should correctly add literal item", function(){

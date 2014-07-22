@@ -5,13 +5,17 @@
     var TripleComposerDemoCtrl = function($scope, $http, NameSpace, ItemsExchange, Item, MyPundit,
         CLIENTDEFAULTS, PAGEITEMSCONTAINERDEFAULTS, MYITEMSDEFAULTS) {
 
-        var loadBasicRelations = function() {
-            var num = 0, relations = CLIENTDEFAULTS.basicRelations;
-            for (var p in relations) {
-                var item = new Item(relations[p].uri, relations[p]);
-                ItemsExchange.addItemToContainer(item, CLIENTDEFAULTS.relationsContainer);
-            }
-        }();
+        var predicate = {
+            "type": ["http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"],
+            "label": "is translation of",
+            "description": "The selected text fragment is the translation of another text fragment",
+            "domain": ["http://purl.org/pundit/ont/ao#fragment-text"],
+            "range": ["http://purl.org/pundit/ont/ao#fragment-text"],
+            "vocabulary": "Basic Relation",
+            "uri": "http://purl.org/pundit/ont/oa#isTranslationOf"
+        };
+        var item = new Item(predicate.uri, predicate);
+        ItemsExchange.addItemToContainer(item, CLIENTDEFAULTS.relationsContainer);
 
         var pageItems = [
             { 
@@ -23,6 +27,11 @@
                 uri: "item3",
                 label: "label of page item 3",
                 type: ["http://purl.org/pundit/ont/ao#fragment-text"]
+            },
+            { 
+                uri: "item4",
+                label: "label of page item 4(image)",
+                type: ["http://xmlns.com/foaf/0.1/Image"]
             }
         ];
         var myItems = [
