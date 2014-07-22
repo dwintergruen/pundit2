@@ -105,8 +105,6 @@ angular.module('Pundit2.ContextualMenu')
 
             } else if ( filteredActions[i].divider ){
 
-                // add divider only if it is preceded or followed
-                // by a real action element
                 content.push({
                         divider: true
                     });
@@ -128,18 +126,22 @@ angular.module('Pundit2.ContextualMenu')
 
         // TODO: verificare uso degli splice
         // remove divider in bad position
-        var j;
-        for (j=content.length-1; j>=0; j--) {
+        // more than one in first position
+        // or more than one in last position
+        var lastIndex = 0;
+        content.some(function(el, index){
+            if (typeof(el.divider) === 'undefined') {
+                lastIndex = index;
+                return true;
+            }
+        });
+        content.splice(0, lastIndex);
+
+        for (var j=content.length-1; j>=0; j--) {
             if (typeof(content[j].divider) === 'undefined') {
                 break;
             }
-            content.splice(j, 1);
-        }
-        for (j=0; j<content.length; j++) {
-            if (typeof(content[j].divider) === 'undefined') {
-                break;
-            }
-            content.splice(j, 1);
+            content.pop();
         }
 
         contextualMenu.log('buildContent built '+content.length+' elements for type='+state.menuType);
