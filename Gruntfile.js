@@ -277,6 +277,12 @@ module.exports = function(grunt) {
                     {
                         src: './pundit2_conf.js',
                         dest: '<%= customDir %>/pundit2_conf.js'
+                    },
+                    {
+                        expand: true,
+                        cwd: '<%= conf.build %>/docs/',
+                        dest: '<%= customDir %>/docs/',
+                        src: '**/*'
                     }
                 ]
             },
@@ -593,6 +599,8 @@ module.exports = function(grunt) {
 
     grunt.registerTask('doc', 'create documentation', ['clean:docs', 'dgeni', 'copy:docs', 'concat:docApp', 'open:doc']);
 
+    grunt.registerTask('docNoOpen', 'create documentation', ['clean:docs', 'dgeni', 'copy:docs', 'concat:docApp']);
+
     grunt.registerTask('install', 'Installs js (non-node) dependencies like bower etc',
         ['bower', 'shell:protractorInstall']);
 
@@ -622,6 +630,7 @@ module.exports = function(grunt) {
     grunt.registerTask('prod', 'Take as parameter a path or directory when to copy files ready to be included in the HTML page',
         function(){
             grunt.task.run('build');
+            grunt.task.run('docNoOpen');
             grunt.config.set('customDir', arguments[0]);
             grunt.task.run('copy:prod');
         });
