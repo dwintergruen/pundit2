@@ -182,7 +182,7 @@ angular.module('KorboEE')
             param.item = item;
 
             // call get HTTP
-            var promise = korboComm.getItem(param);
+            var promise = korboComm.getItem(param, true);
 
             // when promise is resolved
             promise.then(function(res){
@@ -193,7 +193,7 @@ angular.module('KorboEE')
                     param.language = res.available_languages[0];
 
                     // when the new promise is resolved
-                    korboComm.getItem(param).then(function(r){
+                    korboComm.getItem(param, true).then(function(r){
                         // get item from ItemExchange and update it
                         var updatedItem = ItemsExchange.getItemByUri(item.uri);
                         updatedItem.description = r.abstract;

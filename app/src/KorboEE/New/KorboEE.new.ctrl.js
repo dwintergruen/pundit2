@@ -41,12 +41,87 @@ angular.module('KorboEE')
             var p;
             var param = {};
             param.endpoint = $scope.conf.endpoint;
-            param.basketID = $scope.conf.basketID;
+            param.basketID = "null";
             param.language = $scope.defaultLan.value;
             param.provider = 'korbo';
             param.item = {uri: $scope.idEntityToEdit};
-            
-        }
+
+            korboComm.getItem(param, false).then(function(res){
+
+                if(res.label !== ''){
+                    var title = angular.uppercase(res.language_code);
+                    var name = angular.lowercase(res.language_code);
+                    var lang = {
+                        'title': title,
+                        'name' : name,
+                        'description': res.abstract,
+                        'label': res.label,
+                        'mandatory': true,
+                        'hasError': false,
+                        'tooltipMessageTitle': tooltipMessageTitle + name,
+                        'tooltipMessageDescription': tooltipMessageDescription + name,
+                        'tooltipMessageError': "message",
+                        'tooltipMessageErrorTab': "There are some errors in the "+name+" languages fields"
+                    };
+                    $scope.tabs.push(lang);
+
+                    $scope.imageUrl = res.depiction;
+                    $scope.originalUrl = res.resource;
+                    console.log(res);
+                }
+
+                if(res.available_languages.length >= 1){
+                    for(var i = 0; i < res.available_languages.length; i++){
+                        if(res.available_languages[i] !== $scope.defaultLan.value){
+                            param.language = res.available_languages[i];
+                            p = korboComm.getItem(param, false);
+                            promises.push(p);
+                        }
+                    }
+
+                    $q.all(promises).then(function(r){
+                        for(var j=0; j< r.length; j++){
+                            (function(index){
+                                var title = angular.uppercase(r[index].language_code);
+                                var name = angular.lowercase(r[index].language_code);
+                                var lang = {
+                                    'title': title,
+                                    'name' : name,
+                                    'description': r[index].abstract,
+                                    'label': r[index].label,
+                                    'mandatory': true,
+                                    'hasError': false,
+                                    'tooltipMessageTitle': tooltipMessageTitle + name,
+                                    'tooltipMessageDescription': tooltipMessageDescription + name,
+                                    'tooltipMessageError': "message",
+                                    'tooltipMessageErrorTab': "There are some errors in the "+name+" languages fields"
+                                };
+                                $scope.tabs.push(lang);
+                            })(j)
+                        } // end for
+                        $scope.topArea = {
+                            'message': 'You are editing the entity...',
+                            'status': 'info'
+                        };
+                    });
+
+                } else {
+                    $scope.topArea = {
+                        'message': 'You are editing the entity...',
+                        'status': 'info'
+                    };
+                }
+
+            },
+            function(error){
+                console.log("server error");
+                $scope.topArea = {
+                    'message': 'Error getting entity info!',
+                    'status': 'error'
+                };
+            });
+
+        };
 
 
         var delay;

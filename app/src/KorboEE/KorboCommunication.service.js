@@ -265,7 +265,8 @@ angular.module('KorboEE')
                     limit: param.limit,
                     offset: param.offset,
                     lang: param.language
-                }
+                },
+
             }).success(function(res){
                 // wipe container
                 ItemsExchange.wipeContainer(container);
@@ -302,13 +303,13 @@ angular.module('KorboEE')
         // }
         //
 
-        KorboCommFactory.prototype.getItem = function(param){
+        KorboCommFactory.prototype.getItem = function(param, useCache){
             var promise = $q.defer();
             $http({
                 headers: { 'Accept-Language': param.language },
                 method: 'GET',
                 url: param.endpoint + "/baskets/"+param.basketID+"/items/"+param.item.uri+"",
-                cache: true,
+                cache: useCache,
                 params: {
                     p: param.provider
                 }
