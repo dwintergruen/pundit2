@@ -239,7 +239,9 @@ angular.module("Pundit2.MyItemsContainer")
             promise = $q.defer();
 
         // remove item from the copied array
-        copiedItems.splice(index, 1);
+        if(index > -1) {
+            copiedItems.splice(index, 1);            
+        }
 
         Toolbar.setLoading(true);
 

@@ -47,7 +47,8 @@ angular.module('Pundit2.Annotators')
                     return;
                 }
 
-                ContextualMenu.show(evt.pageX, evt.pageY, scope.item, ImageHandler.options.cMenuType);
+                var item = ItemsExchange.getItemByUri(scope.item.uri);
+                ContextualMenu.show(evt.pageX, evt.pageY, item, ImageHandler.options.cMenuType);
                 
             };
 
