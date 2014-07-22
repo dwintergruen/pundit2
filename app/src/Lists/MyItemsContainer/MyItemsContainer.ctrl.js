@@ -74,7 +74,8 @@ angular.module('Pundit2.MyItemsContainer')
     $scope.tabs.activeTab = MyItemsContainer.options.initialActiveTab;
 
 
-    var setActive = function(index) {
+    // set as active a label in contextual menu
+    var setLabelActive = function(index) {
         for(var i in $scope.dropdownOrdering){
             $scope.dropdownOrdering[i].isActive = false;
         }
@@ -88,7 +89,7 @@ angular.module('Pundit2.MyItemsContainer')
             click: function(){
                 order = 'label';
                 $scope.reverse = false;
-                setActive(0);
+                setLabelActive(0);
             },
             isActive: order === 'label' && $scope.reverse === false
         },
@@ -97,7 +98,7 @@ angular.module('Pundit2.MyItemsContainer')
             click: function(){
                 order = 'label';
                 $scope.reverse = true;
-                setActive(1);
+                setLabelActive(1);
             },
             isActive: order === 'label' && $scope.reverse === true
         },
@@ -109,7 +110,7 @@ angular.module('Pundit2.MyItemsContainer')
                 }
                 order = 'type';
                 $scope.reverse = false;
-                setActive(2);
+                setLabelActive(2);
             },
             isActive: order === 'type' && $scope.reverse === false
         },
@@ -121,7 +122,7 @@ angular.module('Pundit2.MyItemsContainer')
                 }
                 order = 'type';
                 $scope.reverse = true;
-                setActive(3);
+                setLabelActive(3);
             },
             isActive: order === 'type' && $scope.reverse === true
         }

@@ -38,24 +38,52 @@ angular.module('Pundit2.Vocabularies')
     // index of the active tab (the tab that actualy show it content) 
     $scope.tabs.activeTab = SelectorsManager.options.initialActiveTab;
 
+    // set as active a label in contextual menu
+    var setLabelActive = function(index) {
+        for(var i in $scope.dropdownOrdering){
+            $scope.dropdownOrdering[i].isActive = false;
+        }
+        $scope.dropdownOrdering[index].isActive = true;
+    };
+
     // sort button dropdown content
     $scope.dropdownOrdering = [
-        { text: 'Label Asc', click: function(){
-            order = 'label';
-            $scope.reverse = false;
-        }},
-        { text: 'Label Desc', click: function(){
-            order = 'label';
-            $scope.reverse = true;
-        }},
-        { text: 'Type Asc', click: function(){
-            order = 'type';
-            $scope.reverse = false;
-        }},
-        { text: 'Type Desc', click: function(){
-            order = 'type';
-            $scope.reverse = true;
-        }}
+        { 
+            text: 'Label Asc', 
+            click: function(){
+                order = 'label';
+                $scope.reverse = false;
+                setLabelActive(0);
+            },
+            isActive: order === 'label' && $scope.reverse === false
+        },
+        { 
+            text: 'Label Desc', 
+            click: function(){
+                order = 'label';
+                $scope.reverse = true;
+                setLabelActive(1);
+            },
+            isActive: order === 'label' && $scope.reverse === true
+        },
+        { 
+            text: 'Type Asc', 
+            click: function(){
+                order = 'type';
+                $scope.reverse = false;
+                setLabelActive(2);
+            },
+            isActive: order === 'type' && $scope.reverse === false
+        },
+        { 
+            text: 'Type Desc', 
+            click: function(){
+                order = 'type';
+                $scope.reverse = true;
+                setLabelActive(3);
+            },
+            isActive: order === 'type' && $scope.reverse === true
+        }
     ];
 
     var removeSpace = function(str){
