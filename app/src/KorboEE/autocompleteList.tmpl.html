@@ -1,7 +1,7 @@
 <ul tabindex="-1" class="typeahead dropdown-menu kee-autocomplete-list list-group" ng-show="$isVisible() && !serverNotRunning" role="select">
   <li role="presentation" ng-repeat="match in $matches"  class="list-group-item">
     <item uri="{{match.value.uri}}" ng-click="$select($index, $event);selectEntity(match)" ng-if="match.label !== 'no found'"></item>
-    <a role="menuitem" tabindex="-1" disabled ng-bind="noFound" ng-show="match.value.noResult === true"></a>
+    <span class="kee-not-found" role="menuitem" tabindex="-1" disabled ng-bind="noFound" ng-show="match.value.noResult === true"></span>
   </li>
     <li ng-show="showNewButton() || showSearchButton()"></li>
     <li>
