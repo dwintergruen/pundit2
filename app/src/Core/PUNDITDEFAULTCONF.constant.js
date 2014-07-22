@@ -152,6 +152,19 @@ angular.module('Pundit2.Core')
         /**
          * @module punditConfig
          * @ngdoc object
+         * @name useOnlyTemplateMode
+         * @description
+         * `boolean`
+         * Use only template mode. In this mode pundit allows you to make annotations using only the templates.
+         *
+         * Default:
+         * <pre> useOnlyTemplateMode: false </pre>
+         */
+        useOnlyTemplateMode: false,
+
+        /**
+         * @module punditConfig
+         * @ngdoc object
          * @name useBasicRelations
          * @description
          * `boolean`

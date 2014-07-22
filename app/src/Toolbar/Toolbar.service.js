@@ -88,7 +88,7 @@ angular.module('Pundit2.Toolbar')
     debug: false
 })
 
-    .service('Toolbar', function(BaseComponent, TOOLBARDEFAULTS, MyPundit, TripleComposer) {
+    .service('Toolbar', function(BaseComponent, TOOLBARDEFAULTS, Config, MyPundit, TripleComposer) {
 
     var toolbar = new BaseComponent('Toolbar', TOOLBARDEFAULTS);
     
@@ -98,7 +98,7 @@ angular.module('Pundit2.Toolbar')
         isErrorShown = false,
         errorMessageDropdown = [],
         // tell to other components if is active the template mode
-        templateMode = false;
+        templateMode = Config.useOnlyTemplateMode;
 
     toolbar.getErrorShown = function() {
         return isErrorShown;
@@ -182,6 +182,11 @@ angular.module('Pundit2.Toolbar')
     };
 
     toolbar.toggleTemplateMode = function() {
+
+        if (Config.useOnlyTemplateMode) {
+            return;
+        }
+        
         TripleComposer.reset();
         templateMode = !templateMode;
         if (templateMode) {
