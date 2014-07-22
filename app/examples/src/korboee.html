@@ -107,6 +107,10 @@
         $scope.openSearch = function(){
             $window.KK.callOpenSearch();
         };
+
+        $scope.edit = function(){
+            $window.KK.callEdit(1886);
+        };
     };
 
 
@@ -121,5 +125,6 @@
     <br>
     <korbo-entity-editor></korbo-entity-editor>
     <button class="btn btn-xs btn-success" style="margin-left: 50px; margin-bottom: 30px;" ng-click="openSearch()">Search</button>
+    <button class="btn btn-xs btn-success" style="margin-left: 50px; margin-bottom: 30px;" ng-click="edit()">Edit</button>
 </div>
 <!-- buildexamples:section footer --><!-- /buildexamples -->
