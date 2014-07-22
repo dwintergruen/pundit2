@@ -135,17 +135,28 @@
 // --------------------------------------------------
 
 
-.kee-error {
+.kee-error,
+.kee-server-error {
 	color: @brand-danger;
 	}
 
 .kee-input-error-server{
-	background-color: @brand-danger !important;
-	opacity: 0.5 !important;
+	background-color: lighten(@brand-danger, 45%) !important;
+	border-color: lighten(@brand-danger, 30%) !important;
+	
+	&::-webkit-input-placeholder {
+		color: @brand-danger !important;
+		}
+		
+	&:-moz-placeholder, textarea:-moz-placeholder {
+		color: grey;
+		}
+		
+	&:-ms-input-placeholder, textarea:-ms-input-placeholder {
+		color: grey;
+		}
 	}
 
-.kee-autocomplete-list{
-	}
 	
 .kee-server-messages {
 	padding: 5px 0px 0px 10px;	
@@ -163,10 +174,6 @@
 		}
 	}
 
-.kee-server-error {
-	color: @brand-danger;
-	}
-	
 	
 
 //
@@ -407,7 +414,7 @@
 			
 	input {
 		padding-right: 20px;
-		font-weight: normal;   
+		font-weight: normal; 
 		}
 			    
 	.pnd-icon {
