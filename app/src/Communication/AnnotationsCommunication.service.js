@@ -25,6 +25,8 @@ angular.module('Pundit2.Communication')
             annotationsCommunication.log('Found '+ids.length+' annotations on the current page.');
             
             if (ids.length === 0) {
+                // TODO: use wipe (not consolidateAll) and specific event in other component (like sidebar)
+                Consolidation.consolidateAll();
                 Toolbar.setLoading(false);
                 return;
             }
