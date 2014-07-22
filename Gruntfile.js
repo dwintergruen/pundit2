@@ -279,10 +279,17 @@ module.exports = function(grunt) {
                         dest: '<%= customDir %>/pundit2_conf.js'
                     },
                     {
+
                         expand: true,
                         cwd: '<%= conf.build %>/docs/',
                         dest: '<%= customDir %>/docs/',
                         src: '**/*'
+                    },
+
+                    {
+                        src: './korboee_conf.js',
+                        dest: '<%= customDir %>/korboee_conf.js'
+                            
                     }
                 ]
             },
