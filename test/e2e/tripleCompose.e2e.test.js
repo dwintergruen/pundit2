@@ -1,4 +1,4 @@
-ddescribe("TripleComposer interaction", function() {
+describe("TripleComposer interaction", function() {
     var p = protractor.getInstance();
 
     beforeEach(function(){
