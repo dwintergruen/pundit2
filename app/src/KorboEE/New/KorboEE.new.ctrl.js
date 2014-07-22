@@ -20,6 +20,43 @@ angular.module('KorboEE')
             ContextualMenu.wipeActionsByType('advancedMenu');
         });
 
+        var initTypes = function(){
+            $scope.types = [];
+        };
+
+        var buildTypesFromConfiguration = function(){
+            var tmp = angular.copy($scope.conf.type);
+            for (var i in tmp) {
+                var indexFind = $scope.types.map(function(e){ return e.URI }).indexOf(tmp[i].URI);
+                if(indexFind === -1){
+                    var t = {};
+                    t.URI = tmp[i].URI;
+                    t.label = tmp[i].label;
+                    t.checked = tmp[i].state || false;
+                    $scope.types.push(t);
+                } else {
+                    $scope.types[indexFind].checked = true;
+                }
+
+            }
+        };
+
+        var buildTypesFromArray = function(typesToAdd){
+            for(var i=0; i<typesToAdd.length; i++){
+                var indexFind = $scope.types.map(function(e){ return e.URI }).indexOf(typesToAdd[i]);
+                if(indexFind === -1){
+                    var t = {};
+                    t.URI = typesToAdd[i];
+                    t.label = TypesHelper.getLabel(typesToAdd[i]);
+                    t.checked = true;
+                    $scope.types.push(t);
+                } else {
+                    $scope.types[indexFind].checked = true;
+                }
+            }
+        };
+
+
         // set default language
         $scope.defaultLan = $scope.conf.languages[0];
         for (var j in $scope.conf.languages){
@@ -69,7 +106,9 @@ angular.module('KorboEE')
 
                     $scope.imageUrl = res.depiction;
                     $scope.originalUrl = res.resource;
-                    console.log(res);
+                    initTypes();
+                    buildTypesFromArray(res.type);
+                    buildTypesFromConfiguration();
                 }
 
                 if(res.available_languages.length >= 1){
@@ -142,11 +181,15 @@ angular.module('KorboEE')
         var errorMandatory = "The Title field is mandatory and must be filled";
         var errorLabelTooShort = " The Title must be contain at least " + $scope.conf.labelMinLength +" characters";
 
-        // build types
-        $scope.types = angular.copy($scope.conf.type);
+
         $scope.typesHasError = false;
         $scope.typesErrorMessage = "You must select at least one type";
         $scope.typesTooltipeMessage = "Select at least one type";
+
+        if(!$scope.editMode){
+            initTypes();
+            buildTypesFromConfiguration();
+        }
 
         var addActionToContextualMenu = function(lang){
             ContextualMenu.addAction({
@@ -212,11 +255,6 @@ angular.module('KorboEE')
             type: 'advancedMenu'
         });
 
-        // Setting checked defaults copying state
-        for (var i in $scope.types) {
-            $scope.types[i].checked = $scope.types[i].state || false;
-        }
-
         //build languages tabs
         var buildLanguageTabs = function(){
             for(var i=0; i< $scope.conf.languages.length; i++){
@@ -254,7 +292,6 @@ angular.module('KorboEE')
         if(!$scope.editMode){
             buildLanguageTabs();
         }
-
 
 
         // check if language field are all right filled
@@ -454,11 +491,8 @@ angular.module('KorboEE')
                 })(l);
             } // end for
 
-            // Reset types
-            $scope.types = angular.copy($scope.conf.type);
-            for (var i in $scope.types) {
-                $scope.types[i].checked = $scope.types[i].state || false;
-            }
+            initTypes();
+            buildTypesFromConfiguration();
 
             // reset image url
             $scope.imageUrl = "";
@@ -548,20 +582,9 @@ angular.module('KorboEE')
                 var e = ItemsExchange.getItemByUri(entity.uri);
                 $scope.imageUrl = e.image;
                 $scope.originalUrl = e.resource;
-
-                // Reset types
-                $scope.types = angular.copy($scope.conf.type);
-                for (var i in $scope.types) {
-                    $scope.types[i].checked = $scope.types[i].state || false;
-                }
-                // get types
-                for(var i=0; i<e.type.length; i++){
-                    var t = {};
-                    t.URI = e.type[i];
-                    t.label = TypesHelper.getLabel(e.type[i]);
-                    t.checked = true;
-                    $scope.types.push(t);
-                }
+                initTypes();
+                buildTypesFromArray(e.type);
+                buildTypesFromConfiguration();
 
                 $scope.tabs[0].label = e.label;
                 $scope.tabs[0].description = e.description;
@@ -569,5 +592,6 @@ angular.module('KorboEE')
             }
 
         });
+
 });
 

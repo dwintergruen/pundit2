@@ -44,6 +44,8 @@ angular.module('KorboEE')
             KeeModal.hide();
             korboConf.setIsOpenModal(false);
             api.fireOnCancel();
+            entityToCopy = null;
+            entity = null;
         };
 
         var confirmModal = $modal({
@@ -265,7 +267,7 @@ angular.module('KorboEE')
                     limit: param.limit,
                     offset: param.offset,
                     lang: param.language
-                },
+                }
 
             }).success(function(res){
                 // wipe container

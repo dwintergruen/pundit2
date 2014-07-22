@@ -41,7 +41,7 @@ angular.module('Pundit2.Item')
     };
 
     $scope.isItemSelected = function(){
-      if($scope.isSelected === false || typeof($scope.isSelected) === 'undefined'){console.log("false");
+      if($scope.isSelected === false || typeof($scope.isSelected) === 'undefined'){
           return false;
       } else {
           return true;
