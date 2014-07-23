@@ -336,4 +336,33 @@ describe('TripleComposer service', function() {
         angular.element('triple-composer').remove();
     });
 
+    it('should correctly show current template with not mandatory triple', function(){
+        compileDirective();
+        var currentTmpl = new Template('testID', {
+            triples: [
+                {
+                    mandatory: false,
+                    predicate: {
+                        label: 'predicate label',
+                        id: 'predicateTestID',
+                        range: [],
+                        domain: []
+                    }
+                }
+            ]
+        });
+        TemplatesExchange.setCurrent(currentTmpl.id);
+        TripleComposer.showCurrentTemplate();
+        $rootScope.$digest();
+
+        var s = TripleComposer.getStatements();        
+        var scope = s[0].scope;
+        expect(scope.predicateLabel).toBe('predicate label');
+        expect(scope.predicateFound).toBe(true);
+        expect(scope.predicateFixed).toBe(true);
+        expect(scope.isMandatory).toBe(false);
+
+        angular.element('triple-composer').remove();
+    });
+
 });

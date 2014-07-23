@@ -63,6 +63,7 @@ describe('TemplatesSelector service', function() {
         $httpBackend.expectJSONP(new RegExp(Config.templates[0])).respond({
             triples: [
                 {
+                    mandatory: false,
                     predicate: {uri: 'predicateTestUri', label: 'predicate label'} // uri, label, range, domain
                 }
             ]
