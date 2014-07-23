@@ -442,7 +442,7 @@ angular.module('Pundit2.ResourcePanel')
         });
 
         // if showItemsForSubject is call from the same target but with different label, get a search on vocabs and filter myItems and pageItems results
-        if(state.popover !== null && state.popover.clickTarget === target && state.popoverOptions.scope.label !== label){
+        if(state.popover !== null && state.popover.clickTarget === target /*&& state.popoverOptions.scope.label !== label*/){
             state.popoverOptions.scope.vocabSubStatus = 'loading';
             $timeout.cancel(searchTimer);
             setLabelToSearch(label);
@@ -452,7 +452,7 @@ angular.module('Pundit2.ResourcePanel')
 
         } else {
             // if open a new popover and label is not empty, get a search on vocab
-            if(typeof(label) !== 'undefined' && label !== '' && state.popoverOptions.scope.label !== label){
+            if(typeof(label) !== 'undefined' && label !== '' /*&& state.popoverOptions.scope.label !== label*/){
                 state.popoverOptions.scope.vocabSubStatus = 'loading';
                 $timeout.cancel(searchTimer);
                 searchTimer = $timeout(function(){
@@ -601,7 +601,7 @@ angular.module('Pundit2.ResourcePanel')
             state.popoverOptions.scope.selectors.push(sel.config.container);
         });
 
-        if(state.popover !== null && state.popover.clickTarget === target && state.popoverOptions.scope.label !== label){
+        if(state.popover !== null && state.popover.clickTarget === target /*&& state.popoverOptions.scope.label !== label*/){
             //state.popoverOptions.scope.vocabObjStatus = 'loading';
             $timeout.cancel(searchTimer);
             setLabelToSearch(label);
@@ -612,7 +612,7 @@ angular.module('Pundit2.ResourcePanel')
         } else {
             $timeout.cancel(searchTimer);
 
-            if(typeof(label) !== 'undefined' && label !== '' && state.popoverOptions.scope.label !== label){
+            if(typeof(label) !== 'undefined' && label !== '' /*&& state.popoverOptions.scope.label !== label*/){
                 //state.popoverOptions.scope.vocabObjStatus = 'loading';
                 $timeout.cancel(searchTimer);
                 searchTimer = $timeout(function(){

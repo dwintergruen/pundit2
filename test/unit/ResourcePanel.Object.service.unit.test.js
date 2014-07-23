@@ -595,13 +595,13 @@ describe('Object Popover Resource Panel service', function() {
         var selectors = SelectorsManager.getActiveSelectors();
         var selContainer = selectors[0].config.container;
 
-        // open same popover, from same target and same label
+        /*// open same popover, from same target and same label
         ResourcePanel.showItemsForObject(triple, anchor, label);
         $rootScope.$digest();
         $timeout.flush();
 
         // no http request shold be start
-        $httpBackend.verifyNoOutstandingRequest();
+        $httpBackend.verifyNoOutstandingRequest();*/
 
         // open same popover, from same target and empty label
         ResourcePanel.showItemsForObject(triple, anchor, "");
