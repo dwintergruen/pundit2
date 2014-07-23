@@ -69,12 +69,12 @@ angular.module('Pundit2.Core')
         cc.consolidateAll = function() {
             var allItems = [];
             if (typeof(Config.modules.PageItemsContainer) !== 'undefined') {
-                allItems.concat(ItemsExchange.getItemsByContainer(Config.modules.PageItemsContainer.container));
+                allItems = allItems.concat(ItemsExchange.getItemsByContainer(Config.modules.PageItemsContainer.container));
             }
             if (typeof(Config.modules.MyItems) !== 'undefined') {
-                allItems.concat(ItemsExchange.getItemsByContainer(Config.modules.MyItems.container));
+                allItems = allItems.concat(ItemsExchange.getItemsByContainer(Config.modules.MyItems.container));
             }
-
+            console.log(ItemsExchange.getAll(), allItems)
             cc.log('Consolidating ALL items');
             cc.consolidate(allItems);
             $rootScope.$emit('consolidation-completed');
