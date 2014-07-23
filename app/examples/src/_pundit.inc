@@ -15,6 +15,9 @@
     <script src="../src/Client/Client.js"></script>
     <script src="../src/Client/Client.service.js"></script>
 
+    <script src="../src/Client/SimplifiedClient.js"></script>
+    <script src="../src/Client/SimplifiedClient.service.js"></script>
+
     <script src="../src/Core/Core.js"></script>
     <script src="../src/Core/Utils.service.js"></script>
     <script src="../src/Core/BaseComponent.service.js"></script>

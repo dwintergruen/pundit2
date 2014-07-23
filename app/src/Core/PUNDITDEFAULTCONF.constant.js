@@ -225,6 +225,13 @@ angular.module('Pundit2.Core')
                 active: false
             },
 
+            // Simplified version of pundit client, do only consolidation
+            // and show the annotations on the page
+            SimplifiedClient: {
+                // SimplifiedClient by default MUST NOT BE ACTIVE
+                active: false
+            },
+
             Dashboard: {
                 /**
                  * @ngdoc property
