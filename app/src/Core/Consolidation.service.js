@@ -74,7 +74,7 @@ angular.module('Pundit2.Core')
             if (typeof(Config.modules.MyItems) !== 'undefined') {
                 allItems = allItems.concat(ItemsExchange.getItemsByContainer(Config.modules.MyItems.container));
             }
-            console.log(ItemsExchange.getAll(), allItems)
+            
             cc.log('Consolidating ALL items');
             cc.consolidate(allItems);
             $rootScope.$emit('consolidation-completed');
