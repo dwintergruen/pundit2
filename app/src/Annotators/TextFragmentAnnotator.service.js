@@ -170,7 +170,7 @@ angular.module('Pundit2.Annotators')
     var placeIcons = function() {
         var n = 0;
             // To see what kind of fragment item is it, check which container it belongs to
-            amContainer = Config.modules.Annomatic.container;
+            //amContainer = Config.modules.Annomatic.container;
 
         for (var c in fragmentIds) {
             var id = fragmentIds[c],
@@ -178,7 +178,7 @@ angular.module('Pundit2.Annotators')
                 // TODO: put this name in .options ?
                 directive = "text-fragment-icon";
 
-            if (ItemsExchange.isItemInContainer(fragmentById[id].item, amContainer)) {
+            if (fragmentById[id].item.isAnnomatic) {
                 // TODO: put this name in .options, in Annomatic ?
                 directive = "suggestion-fragment-icon";
             }

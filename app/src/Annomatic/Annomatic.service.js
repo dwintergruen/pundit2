@@ -453,6 +453,7 @@ angular.module('Pundit2.Annomatic')
                 for (var l=validAnnotations.length, i=0; i<l; i++) {
                     var currentIndex = oldAnnotationNumber + i;
                     item = TextFragmentHandler.createItemFromRange(validAnnotations[i].range);
+                    item.isAnnomatic = true;
                     annomatic.ann.byNum[currentIndex] = validAnnotations[i].annotation;
                     annomatic.ann.numToUriMap[currentIndex] = item.uri;
                     annomatic.ann.uriToNumMap[item.uri] = currentIndex;
@@ -460,6 +461,7 @@ angular.module('Pundit2.Annomatic')
                     ItemsExchange.addItemToContainer(item, annomatic.options.container);
 
                     item = createItemFromDataTXTAnnotation(validAnnotations[i].annotation);
+                    item.isAnnomatic = true;
                     ItemsExchange.addItemToContainer(item, annomatic.options.container);
                 }
 
@@ -480,6 +482,7 @@ angular.module('Pundit2.Annomatic')
         var values = {};
 
         values.uri = ann.uri;
+        values.isAnnomatic = true;
 
         // TODO: DataTXT gives back resources with no types ... like http://it.dbpedia.org/page/Dio
         if (typeof(ann.types) === "undefined") {

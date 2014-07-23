@@ -106,6 +106,8 @@ angular.module('Pundit2.Core')
         this.type = [];
         this.label = 'default item label';
 
+        this.isAnnomatic = false;
+
         if (angular.isObject(values)) {
             itemComponent.log('Extending new Item with values '+this.uri, values);
             Utils.deepExtend(this, values);
