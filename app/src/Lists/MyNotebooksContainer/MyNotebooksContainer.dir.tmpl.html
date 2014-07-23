@@ -26,6 +26,14 @@
         <button type="button" class="btn btn-xs btn-link my-notebooks-btn-order" template="{{dropdownTemplate}}"
                 placement="top-left"
                 bs-dropdown="dropdownOrdering" title="Order my notebooks"><span class="pnd-icon pnd-icon-sort-amount-asc"></span></button>
+        <button 
+            type="button" 
+            class="btn btn-xs btn-link my-notebooks-btn-new"
+            placement="top-left" 
+            title="Create new notebook"
+            ng-click="createNewNotebook()">
+                <span class="pnd-icon pnd-icon-file-o"></span>
+        </button>
     </div> <!-- end pnd-panel-tab-content-footer -->
 
 </div>

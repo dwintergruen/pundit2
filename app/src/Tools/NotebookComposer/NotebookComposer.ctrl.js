@@ -27,6 +27,8 @@ angular.module('Pundit2.NotebookComposer')
                     $scope.notebook.current = false;
                 }
                 $scope.notebookComposerHeader = "Edit your notebook";
+            } else{
+                $scope.clear();
             }
 
         });

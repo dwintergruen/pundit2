@@ -1,5 +1,5 @@
 angular.module('Pundit2.MyNotebooksContainer')
-.controller('MyNotebooksContainerCtrl', function($scope, $element, MyNotebooksContainer, NotebookExchange) {
+.controller('MyNotebooksContainerCtrl', function($scope, $rootScope, $element, MyNotebooksContainer, NotebookExchange, NotebookComposer) {
 
     var inputIconSearch = 'pnd-icon-search',
         inputIconClear = 'pnd-icon-times';
@@ -65,6 +65,11 @@ angular.module('Pundit2.MyNotebooksContainer')
     // return the notebooks property value used to order
     $scope.getOrderProperty = function(ns){
         return removeSpace(ns.label);
+    };
+
+    $scope.createNewNotebook = function(){
+        $rootScope.$emit('pnd-dashboard-show-tab', NotebookComposer.options.clientDashboardTabTitle);
+        NotebookComposer.setNotebookToEdit(null);
     };
 
     // Filter notebooks which are shown
