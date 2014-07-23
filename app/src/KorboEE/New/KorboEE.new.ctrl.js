@@ -508,15 +508,16 @@ angular.module('KorboEE')
         var timer;
 
         $scope.$watch('imageUrl', function(val){
+
             if(val !== '' && urlPattern.test(val)){
                 $timeout.cancel(timer);
                 timer = $timeout(function(){
                     $scope.loadingImage = true;
                     $http({
-                        //headers: { 'Content-Type': 'application/json' },
+                        headers: { 'Accept': 'image/jpeg' },
                         method: 'GET',
                         url: val,
-                        cache: false
+                        cache: true
                     }).success(function(){
                         $scope.showImg = true;
                         $scope.previewImage = val;
