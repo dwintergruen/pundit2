@@ -60,12 +60,16 @@ describe('TripleComposer service', function() {
         expect(s.length).toBe(2);
         expect(s[1].id).toBe(2);
 
+        // at least one statement must be present
+        s[0].scope = { 
+            isStatementEmpty: function(){ return; },
+            wipe: function(){ return; }
+        };
+
         TripleComposer.removeStatement(2);
         expect(s.length).toBe(1);
         expect(s[0].id).toBe(1);
 
-        // at least one statement must be present
-        s[0].scope = { wipe: function(){ return; } };
         TripleComposer.removeStatement(1);
         expect(s.length).toBe(1);
 
