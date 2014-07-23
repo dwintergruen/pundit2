@@ -87,7 +87,7 @@ angular.module('KorboEE')
 
             korboComm.getItem(param, false).then(function(res){
 
-                if(res.label !== ''){
+                //if(res.label !== ''){
                     var title = angular.uppercase(res.language_code);
                     var name = angular.lowercase(res.language_code);
                     var lang = {
@@ -111,7 +111,7 @@ angular.module('KorboEE')
                     initTypes();
                     buildTypesFromArray(res.type);
                     buildTypesFromConfiguration();
-                }
+                //}
 
                 if(res.available_languages.length >= 1){
                     for(var i = 0; i < res.available_languages.length; i++){
@@ -419,11 +419,21 @@ angular.module('KorboEE')
                     "type": newTypes
                 };
 
+                if($scope.editMode){
+                    entityToSave.id = $scope.idEntityToEdit;
+                }
+
                 var promise = korboComm.save(entityToSave, lang, $scope.conf.endpoint, $scope.conf.basketID );
                 promise.then(function(res){
 
                     // get id from location of entity just created// All other label types, take the last part
-                    var id = res.substring(res.lastIndexOf('/') + 1);
+                    var id;
+                        if($scope.editMode){
+                            id = $scope.idEntityToEdit;
+                        }else{
+                            id = res.substring(res.lastIndexOf('/') + 1);
+                        }
+
                     var location = res;
 
                     // check if there are more than 1 languages
@@ -466,6 +476,7 @@ angular.module('KorboEE')
 
                     } else {
                         // non ho altre lingue da aggiungere, quindi posso chiudere la modale
+                        //TODO aggiornare la direttiva solo se korbo è in modalità tafony
                         $scope.directiveScope.location = location;
                         $scope.directiveScope.elemToSearch = $scope.tabs[0].label;
                         $scope.directiveScope.label = $scope.tabs[0].label;
