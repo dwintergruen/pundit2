@@ -83,8 +83,9 @@
         <button 
             ng-show="editMode" 
             type="button" 
-            class="btn btn-xs btn-success" 
-            ng-click="copyInEditor()">
+            class="btn btn-xs btn-success"
+            ng-disabled="!itemSelected"
+            ng-click="copyInEditor(); elemToSearch = ''">
                 Select URL
         </button>
     </div>
