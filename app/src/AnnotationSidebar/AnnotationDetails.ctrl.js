@@ -12,13 +12,16 @@ angular.module('Pundit2.AnnotationSidebar')
     AnnotationDetails.addAnnotationReference($scope);
 
     $scope.annotation = AnnotationDetails.getAnnotationDetails(currentId);
-    if (AnnotationDetails.isUserToolShowed($scope.annotation.creator)){
-        $scope.askLink = Toolbar.options.askLinkDefault + '#/myNotebooks/';    
-    } else {
-        $scope.askLink = Toolbar.options.askLinkDefault + '#/notebooks/';    
+    if(typeof($scope.annotation) !== 'undefined'){
+        if (AnnotationDetails.isUserToolShowed($scope.annotation.creator)){
+            $scope.askLink = Toolbar.options.askLinkDefault + '#/myNotebooks/';    
+        } else {
+            $scope.askLink = Toolbar.options.askLinkDefault + '#/notebooks/';    
+        }
+        
+        var notebookId = $scope.annotation.notebookId;
     }
 
-    var notebookId = $scope.annotation.notebookId;
 
     $scope.notebookName = 'Downloading notebook in progress'
     var cancelWatchNotebookName = $scope.$watch(function() {

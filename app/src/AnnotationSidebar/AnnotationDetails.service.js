@@ -289,31 +289,38 @@ angular.module('Pundit2.AnnotationSidebar')
     annotationDetails.addAnnotationReference = function(scope, force) {
         var currentId = scope.id;
         var isBroken = scope.broken;
-        var currentAnnotation = AnnotationsExchange.getAnnotationById(currentId);
-        var expandedState = (force ? true : state.defaultExpanded);
-        var template = TemplatesExchange.getTemplateById(currentAnnotation.hasTemplate);
+        var currentAnnotation;
+        var expandedState;
+        var template;
         var currentColor;
-        if (typeof(template) !== 'undefined') {
-            currentColor = template.color;
-        }
 
-        if(typeof(state.annotations[currentId]) === 'undefined' || typeof(force) !== 'undefined'){
-            state.annotations[currentId] = {
-                id: currentId,
-                creator: currentAnnotation.creator,
-                creatorName: currentAnnotation.creatorName,
-                created: currentAnnotation.created,
-                notebookId: currentAnnotation.isIncludedIn,
-                scopeReference: scope,
-                mainItem: buildMainItem(currentAnnotation),
-                itemsArray: buildItemsArray(currentAnnotation),
-                itemsUriArray: buildItemsUriArray(currentAnnotation),
-                broken: isBroken,
-                expanded: expandedState,
-                ghosted: false,
-                color: currentColor,
-                hasTemplate: template
-            };
+        if(typeof(currentId) !== 'undefined'){
+            currentAnnotation = AnnotationsExchange.getAnnotationById(currentId);
+            expandedState = (force ? true : state.defaultExpanded);
+            template = TemplatesExchange.getTemplateById(currentAnnotation.hasTemplate);
+            
+            if (typeof(template) !== 'undefined') {
+                currentColor = template.color;
+            }
+
+            if(typeof(state.annotations[currentId]) === 'undefined' || typeof(force) !== 'undefined'){
+                state.annotations[currentId] = {
+                    id: currentId,
+                    creator: currentAnnotation.creator,
+                    creatorName: currentAnnotation.creatorName,
+                    created: currentAnnotation.created,
+                    notebookId: currentAnnotation.isIncludedIn,
+                    scopeReference: scope,
+                    mainItem: buildMainItem(currentAnnotation),
+                    itemsArray: buildItemsArray(currentAnnotation),
+                    itemsUriArray: buildItemsUriArray(currentAnnotation),
+                    broken: isBroken,
+                    expanded: expandedState,
+                    ghosted: false,
+                    color: currentColor,
+                    hasTemplate: template
+                };
+            }
         }
     };
 

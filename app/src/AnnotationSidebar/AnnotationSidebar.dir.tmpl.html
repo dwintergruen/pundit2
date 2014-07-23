@@ -276,7 +276,16 @@
             <div ng-repeat="ann in filtered = (annotations)">
                 <!-- <annotation-details id="{{ann.id}}"></annotation-details> -->
                 <annotation-details id="{{ann.id}}" broken="ann.broken" style="position: absolute; top: {{annotationSidebar.annotationPositionReal[ann.id].top}}px"></annotation-details>
-            </div>  
+            </div>
+            
+            <!-- 
+                TODO: need to delegate the management of 
+                annotations in the service of the sidebar
+                to avoid forcing the instance of details
+            -->
+            <div ng-if="allAnnotations.length == 0">
+                <annotation-details ng-show="false"></annotation-details>
+            </div>
         </div>
     </div>
 </div>
