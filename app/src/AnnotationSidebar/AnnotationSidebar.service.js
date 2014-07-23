@@ -154,6 +154,21 @@ angular.module('Pundit2.AnnotationSidebar')
     /**
      * @module punditConfig
      * @ngdoc property
+     * @name modules#AnnotationSidebar.inputIconFilter
+     *
+     * @description
+     * `string`
+     *
+     * Icon shown in the filter input when it's empty
+     *
+     * Default value:
+     * <pre> inputIconFilter: 'pnd-icon-filter' </pre>
+     */
+    inputIconFilter: 'pnd-icon-filter',
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
      * @name modules#AnnotationSidebar.inputIconClear
      *
      * @description

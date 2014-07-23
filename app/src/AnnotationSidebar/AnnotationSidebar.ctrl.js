@@ -21,7 +21,8 @@ angular.module('Pundit2.AnnotationSidebar')
     };
 
     var search = {
-        icon: AnnotationSidebar.options.inputIconSearch,
+        iconMagnifier: AnnotationSidebar.options.inputIconSearch,
+        iconFilter: AnnotationSidebar.options.inputIconFilter,
         clean: AnnotationSidebar.options.inputIconClear
     };
 
@@ -247,7 +248,15 @@ angular.module('Pundit2.AnnotationSidebar')
 
     $scope.setSearchIcon = function(str) {
         if (typeof(str) === 'undefined' || str === '') {
-            return search.icon;
+            return search.iconMagnifier;
+        } else {
+            return search.clean;
+        }
+    };
+
+    $scope.setFilterIcon = function(str) {
+        if (typeof(str) === 'undefined' || str === '') {
+            return search.iconFilter;
         } else {
             return search.clean;
         }
