@@ -293,6 +293,15 @@ module.exports = function(grunt) {
                     }
                 ]
             },
+            uncompressed: {
+                files: [
+                    {
+                        src: '.tmp/concat/scripts/pundit2.js',
+                        dest: '<%= customDir %>/uncompressed/pundit2.js'
+
+                    }
+                ]
+            },
             bookmarklet: {
                 files: [
                     {
@@ -640,6 +649,15 @@ module.exports = function(grunt) {
             grunt.task.run('docNoOpen');
             grunt.config.set('customDir', arguments[0]);
             grunt.task.run('copy:prod');
+        });
+
+    grunt.registerTask('uncompressedProd', 'Take as parameter a path or directory when to copy files ready to be included in the HTML page',
+        function(){
+            grunt.task.run('build');
+            grunt.task.run('docNoOpen');
+            grunt.config.set('customDir', arguments[0]);
+            grunt.task.run('copy:prod');
+            grunt.task.run('copy:uncompressed');
         });
 
 };
