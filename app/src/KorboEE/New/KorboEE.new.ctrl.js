@@ -527,14 +527,15 @@ angular.module('KorboEE')
         $scope.$watch('imageUrl', function(val){
 
             if(val !== '' && urlPattern.test(val)){
+
                 $timeout.cancel(timer);
                 timer = $timeout(function(){
                     $scope.loadingImage = true;
                     $http({
-                        headers: { 'Accept': 'image/jpeg' },
-                        method: 'GET',
+                        headers: {'Accept': 'image/webp,*/*;q=0.8'},
+                        method: 'HEAD',
                         url: val,
-                        cache: true
+                        cache: false
                     }).success(function(){
                         $scope.showImg = true;
                         $scope.previewImage = val;
@@ -590,6 +591,11 @@ angular.module('KorboEE')
         };
         $scope.typesMouseEnter = function(){
             $timeout.cancel(delay);
+        };
+
+        $scope.removeImage = function(){
+            // reset image url
+            $scope.imageUrl = "";
         };
 
         //entityToCreate
