@@ -1,9 +1,10 @@
 
 angular.module('Pundit2.Client')
 
-    .run(function(Config, Client) {
+    .run(function($injector, Config) {
         if (Config.isModuleActive('Client')) {
-            Client.boot();
+            var client = $injector.get('Client');
+            client.boot();
         }
     })
 

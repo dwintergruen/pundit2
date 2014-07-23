@@ -1,8 +1,9 @@
 angular.module('Pundit2.SimplifiedClient')
 
-.run(function(Config, SimplifiedClient) {
+.run(function($injector, Config) {
     if (Config.isModuleActive('SimplifiedClient')) {
-        SimplifiedClient.boot();
+        var sc = $injector.get('SimplifiedClient');
+        sc.boot();
     }
 })
 
