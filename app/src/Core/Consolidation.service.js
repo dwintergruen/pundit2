@@ -67,9 +67,13 @@ angular.module('Pundit2.Core')
 
         // Will consolidate every possible item found in the ItemsExchange
         cc.consolidateAll = function() {
-            var pageItems = ItemsExchange.getItemsByContainer(Config.modules.PageItemsContainer.container),
-                myItems = ItemsExchange.getItemsByContainer(Config.modules.MyItems.container),
-                allItems = pageItems.concat(myItems);
+            var allItems = [];
+            if (typeof(Config.modules.PageItemsContainer) !== 'undefined') {
+                allItems.concat(ItemsExchange.getItemsByContainer(Config.modules.PageItemsContainer.container));
+            }
+            if (typeof(Config.modules.MyItems) !== 'undefined') {
+                allItems.concat(ItemsExchange.getItemsByContainer(Config.modules.MyItems.container));
+            }
 
             cc.log('Consolidating ALL items');
             cc.consolidate(allItems);
