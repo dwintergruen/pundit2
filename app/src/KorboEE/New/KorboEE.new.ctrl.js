@@ -24,6 +24,8 @@ angular.module('KorboEE')
             $scope.types = [];
         };
 
+        var copyCheck = false;
+
         var buildTypesFromConfiguration = function(){
             var tmp = angular.copy($scope.conf.type);
             for (var i in tmp) {
@@ -237,7 +239,7 @@ angular.module('KorboEE')
         });
 
         ContextualMenu.addAction({
-            name: 'SearchOriginalURL',
+            name: 'searchOriginalURL',
             type: 'advancedMenu',
             label: 'Search original URL',
             priority: 3,
@@ -246,6 +248,21 @@ angular.module('KorboEE')
             },
             action: function(){
                 $scope.korboModalTabs.activeTab = 0;
+                copyCheck = false;
+            }
+        });
+
+        ContextualMenu.addAction({
+            name: 'searchAndCopy',
+            type: 'advancedMenu',
+            label: 'Search and copy from LOD',
+            priority: 3,
+            showIf: function(){
+                return $scope.editMode;
+            },
+            action: function(){
+                $scope.korboModalTabs.activeTab = 0;
+                copyCheck = true;
             }
         });
 
@@ -582,9 +599,7 @@ angular.module('KorboEE')
             if(entity !== null){
                 var e = ItemsExchange.getItemByUri(entity.uri);
 
-                if($scope.editMode){
-                    $scope.originalUrl = e.resource;
-                } else{
+                if(!$scope.editMode || copyCheck){
                     $scope.imageUrl = e.image;
                     $scope.originalUrl = e.resource;
                     initTypes();
@@ -593,8 +608,11 @@ angular.module('KorboEE')
 
                     $scope.tabs[0].label = e.label;
                     $scope.tabs[0].description = e.description;
-                }
 
+                    copyCheck = false;
+                } else{
+                    $scope.originalUrl = e.resource;
+                }
             }
 
         });
