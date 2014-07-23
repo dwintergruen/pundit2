@@ -1,27 +1,92 @@
 <div class="kee-wrp" ng-controller="KeeSearchCtrl">
-<!-- search -->
-<div class="kee-search">
-	        <label>Search entity to use:</label>
-	        <div class="left-inner-icon">
-		        <span class="pnd-icon pnd-icon-search" ng-click="search.term = ''"></span>
-		        <input class="form-control" type="text" ng-model="elemToSearch" placeholder="Type at least {{conf.labelMinLength}} characters...">
-	        </div>
-</div>
-<!-- // end search -->
-    <div>
-        <preview use-in-korbo="true" is-loading="{{previewIsLoading}}" error-loading="{{previewError}}"></preview>
+    <!-- Search -->
+    <div class="kee-search">
+            <label>
+                Search entity to use:
+            </label>
+            <div class="left-inner-icon">
+    	        <span 
+                    class="pnd-icon pnd-icon-search" 
+                    ng-click="search.term = ''">
+                </span>
+    	        <input 
+                    class="form-control" 
+                    type="text" 
+                    ng-model="elemToSearch" 
+                    placeholder="Type at least {{conf.labelMinLength}} characters...">
+            </div>
     </div>
-    <div ng-model="contentTabs.activeTab" bs-tabs="contentTabs" data-template = "src/ResourcePanel/verticalTabs.tmpl.html"></div>
-<!-- footer -->
-    <div class="kee-footer">
-        <button ng-hide="editMode" type="button" class="btn btn-xs btn-success" ng-click="closeKeeModal()">Close</button>
-        <button type="button" class="btn btn-xs btn-success" ng-show="!editMode && showMoreInfo.visibility" ng-class="{'disabled': showMoreInfo.disabled}" ng-click="moreInfo()">More Info</button>
-        <button type="button" class="btn btn-xs btn-success" ng-show="!editMode && showCopyInEditor.visibility" ng-class="{'disabled': showCopyInEditor.disabled}" ng-click="copyInEditor()">Copy in editor</button>
-        <button type="button" class="btn btn-xs btn-success" ng-show="!editMode && showUse.visibility" ng-class="{'disabled': showUse.disabled}" ng-click="use()">Use</button>
-        <button type="button" class="btn btn-xs btn-success" ng-show="!editMode && showUseAndCopy.visibility" ng-class="{'disabled': showUseAndCopy.disabled}" ng-click="copyAndUse()">Copy and Use</button>
+    <!-- // End search -->
 
-        <button ng-show="editMode" type="button" class="btn btn-xs btn-success" ng-click="korboModalTabs.activeTab = 1">Back</button>
-        <button ng-show="editMode" type="button" class="btn btn-xs btn-success" ng-click="">Select URL</button>
+    <div>
+        <preview 
+            use-in-korbo="true" 
+            is-loading="{{previewIsLoading}}" 
+            error-loading="{{previewError}}">
+        </preview>
     </div>
-<!-- / end footer -->
+
+    <div 
+        ng-model="contentTabs.activeTab" 
+        bs-tabs="contentTabs" 
+        data-template = "src/ResourcePanel/verticalTabs.tmpl.html">
+    </div>
+
+    <!-- Footer -->
+    <div class="kee-footer">
+        <button 
+            ng-hide="editMode" 
+            type="button" 
+            class="btn btn-xs btn-success" 
+            ng-click="closeKeeModal()">
+                Close
+        </button>
+        <button 
+            type="button" 
+            class="btn btn-xs btn-success" 
+            ng-show="!editMode && showMoreInfo.visibility" 
+            ng-class="{'disabled': showMoreInfo.disabled}" 
+            ng-click="moreInfo()">
+                More Info
+        </button>
+        <button 
+            type="button" 
+            class="btn btn-xs btn-success" 
+            ng-show="!editMode && showCopyInEditor.visibility" 
+            ng-class="{'disabled': showCopyInEditor.disabled}" 
+            ng-click="copyInEditor()">
+                Copy in editor
+        </button>
+        <button 
+            type="button" 
+            class="btn btn-xs btn-success" 
+            ng-show="!editMode && showUse.visibility" 
+            ng-class="{'disabled': showUse.disabled}" 
+            ng-click="use()">
+                Use
+        </button>
+        <button 
+            type="button" 
+            class="btn btn-xs btn-success" 
+            ng-show="!editMode && showUseAndCopy.visibility" 
+            ng-class="{'disabled': showUseAndCopy.disabled}" 
+            ng-click="copyAndUse()">
+                Copy and Use
+        </button>
+
+        <button 
+            ng-show="editMode" 
+            type="button" class="btn btn-xs btn-success" 
+            ng-click="korboModalTabs.activeTab = 1">
+                Back
+        </button>
+        <button 
+            ng-show="editMode" 
+            type="button" 
+            class="btn btn-xs btn-success" 
+            ng-click="">
+                Select URL
+        </button>
+    </div>
+    <!-- // End footer -->
 </div>
