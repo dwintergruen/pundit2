@@ -17,6 +17,7 @@
 
     <script src="../src/Client/SimplifiedClient.js"></script>
     <script src="../src/Client/SimplifiedClient.service.js"></script>
+    <script src="../src/Client/ItemPopover.service.js"></script>
 
     <script src="../src/Core/Core.js"></script>
     <script src="../src/Core/Utils.service.js"></script>

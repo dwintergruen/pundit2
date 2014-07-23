@@ -8,7 +8,7 @@ angular.module('Pundit2.SimplifiedClient')
 })
 
 .service('SimplifiedClient', function(BaseComponent, $rootScope,
-    MyPundit, MyItems, AnnotationsCommunication, TextFragmentAnnotator, ContextualMenu, Consolidation){
+    MyPundit, MyItems, AnnotationsCommunication, TextFragmentAnnotator, Consolidation){
 
     // This service only make a consolidation of the annotation on the page
     // it not have: toolbar, dashboard and siderbar
@@ -39,19 +39,6 @@ angular.module('Pundit2.SimplifiedClient')
     sc.boot = function() {
 
         fixRootNode();
-
-        ContextualMenu.addAction({
-            name: 'showInfo',
-            type: [TextFragmentAnnotator.options.cMenuType],
-            label: "Show Info",
-            priority: 10,
-            showIf: function(item) {
-                return true;
-            },
-            action: function(item) {
-
-            }
-        });
 
         AnnotationsCommunication.getAnnotations();
 

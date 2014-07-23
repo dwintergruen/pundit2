@@ -1,6 +1,6 @@
 angular.module('Pundit2.Annotators')
 .directive('textFragmentIcon', function(TextFragmentAnnotator, ContextualMenu,
-                                        XpointersHelper, Config, ItemsExchange) {
+                                        XpointersHelper, Config, ItemsExchange, ItemPopover) {
     return {
         restrict: 'E',
         scope: {
@@ -42,7 +42,12 @@ angular.module('Pundit2.Annotators')
             };
 
             scope.clickHandler = function(event) {
-                ContextualMenu.show(event.pageX, event.pageY, scope.item, TextFragmentAnnotator.options.cMenuType);
+                if (Config.modules.Client.active) {
+                    ContextualMenu.show(event.pageX, event.pageY, scope.item, TextFragmentAnnotator.options.cMenuType);
+                } else if (Config.modules.SimplifiedClient) {
+                    ItemPopover.show(scope.element, scope.item.label);
+                }
+                
             };
 
         } // link()

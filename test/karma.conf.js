@@ -34,6 +34,7 @@ module.exports = function(config) {
             'app/src/Communication/Communication.js',
             'app/src/Notebook/Notebook.js',
             'app/src/KorboEE/KorboEE.js',
+            'app/src/Client/SimplifiedClient.js',
             'app/src/**/*.js',
             'test/unit/**/*.js'
         ],
