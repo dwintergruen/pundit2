@@ -6,11 +6,15 @@ var punditConfig = {
     debugAllModules: false,
     annotationServerBaseURL: 'http://test.config.url',
     // vocabularies: ['http://manager.korbo.org/91', "http://manager.korbo.org/106"],
+    templates: ["http://conf.thepund.it/V2/templates/tagFixed?label=ALESSIO%20PICCIOLI&resource=http://www.freebase.com/m/0hp2k9c"],
     modules: {
         "NameSpace": {
             debug: false
         },
         "PredicateSelector": {
+            debug: true
+        },
+        "TemplatesSelector": {
             debug: true
         }
     }
