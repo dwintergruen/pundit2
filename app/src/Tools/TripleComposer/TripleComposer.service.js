@@ -274,7 +274,7 @@ angular.module('Pundit2.TripleComposer')
         if (statements.length === 1) {
             statements[0].scope.wipe();
             return;
-        }
+        } 
 
         var index = -1;
         statements.some(function(s, i){
@@ -285,6 +285,12 @@ angular.module('Pundit2.TripleComposer')
         });        
         if (index > -1) {
             statements.splice(index, 1);
+        }
+
+        if(statements.length === 1) {
+            if(statements[0].scope.isStatementEmpty()){
+                statements[0].scope.isDeleteDisabled = true;
+            }
         }
         tripleComposer.log('Try to remove statement at index', index);
     };
@@ -326,6 +332,11 @@ angular.module('Pundit2.TripleComposer')
             scope.editMode = editMode;
             statements[index].scope = scope;
         }
+
+        if(statements.length > 1){
+            statements[0].scope.isDeleteDisabled = false;
+        }
+
         tripleComposer.log('statement extended with scope', statements[index]);
     };
 
@@ -349,6 +360,10 @@ angular.module('Pundit2.TripleComposer')
                     duplicated: statements[index].scope.copy()
                 }
             });
+        }
+
+        if(statements.length > 1){
+            statements[0].scope.isDeleteDisabled = false;
         }
 
     };
@@ -480,7 +495,7 @@ angular.module('Pundit2.TripleComposer')
         tripleComposer.log('Add item: '+item.uri+ 'as subject of all triples');
     };
 
-    tripleComposer.isAnnotationComplete = function(isTemplateMode){
+    tripleComposer.isAnnotationComplete = function(){
         var complete = true;
         statements.some(function(s){
             if (s.scope.isMandatory && !s.scope.isStatementComplete()) {
@@ -489,6 +504,16 @@ angular.module('Pundit2.TripleComposer')
             }
         });
         return complete;
+    };
+
+    tripleComposer.isTripleErasable = function(){
+        if(statements.length === 1){
+            if(!statements[0].scope.isStatementEmpty()){
+                statements[0].scope.isDeleteDisabled = false;
+            } else{
+                statements[0].scope.isDeleteDisabled = true;
+            }
+        }
     };
 
     tripleComposer.showCurrentTemplate = function() {

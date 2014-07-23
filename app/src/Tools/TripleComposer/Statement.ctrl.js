@@ -29,6 +29,12 @@ angular.module('Pundit2.TripleComposer')
     $scope.canBeObjectDate = true;
     $scope.canBeObjectLiteral = true;
 
+    if(TripleComposer.getStatements().length < 2){
+        $scope.isDeleteDisabled = true;
+    } else{
+        $scope.isDeleteDisabled = false;
+    }
+
     // if is true the triple must be completed before save annotation (in template mode)
     // if is false the triple can not ben completed and when save the annotation
     // the triple simply is skipped and not included
@@ -77,6 +83,14 @@ angular.module('Pundit2.TripleComposer')
             return true;
         } else {
             return false;
+        }
+    };
+
+    $scope.isStatementEmpty = function(){
+        if (triple.subject!==null || triple.predicate!==null || triple.object!==null) {
+            return false;
+        } else {
+            return true;
         }
     };
 
@@ -166,6 +180,7 @@ angular.module('Pundit2.TripleComposer')
         triple.subject = null;
         ResourcePanel.hide();
         angular.element('.pnd-triplecomposer-save').addClass('disabled');
+        $scope.tripleComposerCtrl.isTripleErasable();
     };
     $scope.clearSubjectSearch = function(){
         if ($scope.subjectSearch === "" || typeof($scope.subjectSearch) === 'undefined'){
@@ -186,6 +201,7 @@ angular.module('Pundit2.TripleComposer')
         triple.predicate = null;
         ResourcePanel.hide();
         angular.element('.pnd-triplecomposer-save').addClass('disabled');
+        $scope.tripleComposerCtrl.isTripleErasable();
     };
     $scope.clearPredicateSearch = function(){
         if ($scope.predicateSearch === "" || typeof($scope.predicateSearch) === 'undefined'){
@@ -207,6 +223,7 @@ angular.module('Pundit2.TripleComposer')
         triple.object = null; 
         ResourcePanel.hide();
         angular.element('.pnd-triplecomposer-save').addClass('disabled');
+        $scope.tripleComposerCtrl.isTripleErasable();
     };
     $scope.clearObjectSearch = function(){
         if ($scope.objectSearch === "" || typeof($scope.objectSearch) === 'undefined'){
@@ -256,6 +273,7 @@ angular.module('Pundit2.TripleComposer')
         }
 
         $scope.tripleComposerCtrl.isAnnotationComplete();
+        $scope.tripleComposerCtrl.isTripleErasable();
     };
     $scope.onClickSubject = function($event){
         if ($scope.templateMode) {
@@ -286,6 +304,7 @@ angular.module('Pundit2.TripleComposer')
             $scope.canBeObjectDate = false;
         }
         $scope.tripleComposerCtrl.isAnnotationComplete();
+        $scope.tripleComposerCtrl.isTripleErasable();
     };
     $scope.onClickPredicate = function($event){
         ResourcePanel.showProperties(buildUrisArray(), $event.target, $scope.predicateSearch).then($scope.setPredicate);
@@ -321,6 +340,7 @@ angular.module('Pundit2.TripleComposer')
         }
 
         $scope.tripleComposerCtrl.isAnnotationComplete();
+        $scope.tripleComposerCtrl.isTripleErasable();
         
     };
     $scope.onClickObject = function($event){        
@@ -338,6 +358,7 @@ angular.module('Pundit2.TripleComposer')
             $scope.objectDate = true;
             $scope.objectFound = true;
             $scope.tripleComposerCtrl.isAnnotationComplete();
+            $scope.tripleComposerCtrl.isTripleErasable();
         });
     };
 
@@ -353,6 +374,7 @@ angular.module('Pundit2.TripleComposer')
             $scope.objectLiteral = true;
             triple.object = text;
             $scope.tripleComposerCtrl.isAnnotationComplete();
+            $scope.tripleComposerCtrl.isTripleErasable();
         });
     };
 

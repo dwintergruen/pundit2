@@ -72,9 +72,13 @@ angular.module('Pundit2.TripleComposer')
     };
 
     this.isAnnotationComplete = function(){
-        if (TripleComposer.isAnnotationComplete($scope.templateMode)) {
+        if (TripleComposer.isAnnotationComplete()) {
             angular.element('.pnd-triplecomposer-save').removeClass('disabled');
         }
+    };
+
+    this.isTripleErasable = function(){
+        TripleComposer.isTripleErasable();
     };
 
     $scope.onClickAddStatement = function(){
