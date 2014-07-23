@@ -580,14 +580,19 @@ angular.module('KorboEE')
         }, function(entity){
             if(entity !== null){
                 var e = ItemsExchange.getItemByUri(entity.uri);
-                $scope.imageUrl = e.image;
-                $scope.originalUrl = e.resource;
-                initTypes();
-                buildTypesFromArray(e.type);
-                buildTypesFromConfiguration();
 
-                $scope.tabs[0].label = e.label;
-                $scope.tabs[0].description = e.description;
+                if($scope.editMode){
+                    $scope.originalUrl = e.resource;
+                } else{
+                    $scope.imageUrl = e.image;
+                    $scope.originalUrl = e.resource;
+                    initTypes();
+                    buildTypesFromArray(e.type);
+                    buildTypesFromConfiguration();
+
+                    $scope.tabs[0].label = e.label;
+                    $scope.tabs[0].description = e.description;
+                }
 
             }
 
