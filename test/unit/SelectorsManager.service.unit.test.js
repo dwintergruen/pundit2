@@ -4,6 +4,7 @@ describe('SelectorsManager service', function() {
     $httpBackend,
     $q,
     $rootScope,
+    $injector,
     SELECTORMANAGERDEFAULTS,
     ItemsExchange;
 
@@ -53,13 +54,14 @@ describe('SelectorsManager service', function() {
     });
 
     beforeEach(inject(function(_SELECTORMANAGERDEFAULTS_, _SelectorsManager_, _ItemsExchange_,
-        _$httpBackend_, _$q_, _$rootScope_){
+        _$httpBackend_, _$q_, _$rootScope_, _$injector_){
         SELECTORMANAGERDEFAULTS = _SELECTORMANAGERDEFAULTS_;
         SelectorsManager = _SelectorsManager_;
         $httpBackend = _$httpBackend_;
         $q = _$q_;
         $rootScope = _$rootScope_;
         ItemsExchange = _ItemsExchange_;
+        $injector = _$injector_;
     }));
 
     afterEach(function(){
@@ -67,6 +69,7 @@ describe('SelectorsManager service', function() {
     });
 
     it('should correctly load selector', function(){
+        $injector.get('MurucaSelector');
         // during the init process each selector read its config
         // then if active property is true is added to selectorsManager
         SelectorsManager.init();
@@ -76,6 +79,7 @@ describe('SelectorsManager service', function() {
     });
 
     it('should correctly resolve get items promise', function(){
+        $injector.get('MurucaSelector');
         var resolved = false;
         var fakePromise = {then: function(){}};
         SelectorsManager.init();
@@ -92,6 +96,7 @@ describe('SelectorsManager service', function() {
     });
 
     it('should correctly wipe items container when promise is resolved', function(){
+        $injector.get('MurucaSelector');
         var resolved = false;
         var promise = $q.defer();
         SelectorsManager.init();
