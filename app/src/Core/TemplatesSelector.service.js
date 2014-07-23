@@ -10,7 +10,7 @@ angular.module('Pundit2.Core')
 
     // TODO generate color indipendently from template number
     // this array must have the same number of element of the Config.templates array
-    var colors = ["#FF00FF", "#0000FF", "#00FFFF", "#00FF00", "#FFFF00"];
+    var colors = ["#FF00FF", "#0000FF", "#00FFFF", "#00FF00", "#FFFF00", "#FF0000", "#008800", "#822222"];
 
     // by convention the template initially used as current
     // is the first of the urls list
