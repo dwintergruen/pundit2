@@ -61,7 +61,7 @@
                             ng-class="{'pnd-annotation-details-sub-open': subInfo}">
                             <!-- <span class="{{item.subject.icon}}"></span> -->
                             <div class="pnd-annotation-item-header-text">
-	                            <span class="pnd-icon pnd-icon-certificate"></span>
+	                            <span class="pnd-icon pnd-icon-circle"></span>
 	                            <span ng-bind-html="item.subject.label">{{item.subject.label}}</span>
                             </div>
                             <button type="button" class="btn btn-link pull-right">
@@ -83,7 +83,7 @@
                             ng-click="preInfo = !preInfo"
                             ng-class="{'pnd-annotation-details-sub-open': preInfo}">
                         	<div class="pnd-annotation-item-header-text">
-    	                    	<span class="pnd-icon pnd-icon-certificate"></span>
+    	                    	<span class="pnd-icon pnd-icon-circle"></span>
     	                    	<span ng-bind-html="item.predicate.label">{{item.predicate.label}}</span>
                         	</div>
                             <button type="button" class="btn  btn-link pull-right">
@@ -109,7 +109,7 @@
                                 ng-class="{'pnd-annotation-details-sub-open': objInfo}">
                                 <!-- <span class="{{object.icon}}"></span> -->
                                 <div class="pnd-annotation-item-header-text">
-	                                <span class="pnd-icon pnd-icon-certificate"></span>
+	                                <span class="pnd-icon pnd-icon-circle"></span>
 	                                <span ng-bind-html="object.label">{{object.label}}</span>
                                 </div>
                                 <button type="button" class="btn  btn-link pull-right" ng-if="object.typeClass=='uri'">
