@@ -38,6 +38,27 @@ body.pnd-annotation-sidebar-expanded {
 
 .pnd-annotation-sidebar-annotations {
 	margin-top: 26px;
+
+	.pnd-saving-content {	
+		text-align: center;
+		position: absolute;
+		z-index: 99;
+		background-color: @gray-dark;
+		left: 0px;
+		right: 0px;
+		top: 32px;
+		bottom: 0;
+		padding-top: 40px;
+		color: @gray-lighter;
+		-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=85)";
+		filter: alpha(opacity=85);
+		opacity:0.85;
+		
+			.pnd-icon {
+				color: #fff!important;
+			}
+		
+		}
 	} 
 
 .pnd-annotation-details-delete-in-progress {
