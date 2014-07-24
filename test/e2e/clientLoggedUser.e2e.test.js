@@ -25,7 +25,7 @@ describe("Client interaction when user is logged in", function() {
                             "http://www.w3.org/1999/02/22-rdf-syntax-ns#type":
                                 [{type: "uri", value: "http://purl.org/pundit/ont/ao#fragment-text"}],
                             "http://www.w3.org/2000/01/rdf-schema#label":
-                                [{type: "literal", value: "Dante"}],
+                                [{type: "literal", value: "Dante"}]
                         },
                         "http://schema.org/comment": {
                             "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": [{type: "uri", value: NameSpace.rdf.property}],
@@ -376,7 +376,7 @@ describe("Client interaction when user is logged in", function() {
         });
     });
 
-    it("should open resource panel on predicate", function(){
+    iit("should open resource panel on predicate", function(){
 
         p.driver.manage().window().setSize(1200, 960);
 

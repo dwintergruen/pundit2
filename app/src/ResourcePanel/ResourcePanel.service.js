@@ -361,14 +361,16 @@ angular.module('Pundit2.ResourcePanel')
         if(type === 'sub' || type === 'obj'){
             var pageItemsForTabs = {
               title: 'Page Items',
-              items: pageItems
+              items: pageItems,
+              isStarted: true
             };
             contentTabs.push(pageItemsForTabs);
             content.pageItems = pageItems;
 
             var myItemsForTabs = {
                 title: 'My Items',
-                items: myItems
+                items: myItems,
+                isStarted: true
             };
             contentTabs.push(myItemsForTabs);
             content.myItems = myItems;
@@ -378,7 +380,8 @@ angular.module('Pundit2.ResourcePanel')
         if (type === 'pr') {
             var prop = {
                 title: 'Properties',
-                items: properties
+                items: properties,
+                isStarted: true
             };
             contentTabs.push(prop);
 
@@ -528,6 +531,7 @@ angular.module('Pundit2.ResourcePanel')
                         if(state.popoverOptions.scope.contentTabs[t].title === selectors[index].config.label){
                             state.popoverOptions.scope.contentTabs[t].items = [];
                             state.popoverOptions.scope.contentTabs[t].isLoading = false;
+                            state.popoverOptions.scope.contentTabs[t].isStarted = false;
                         }
                     }
                 })(i);
@@ -543,6 +547,7 @@ angular.module('Pundit2.ResourcePanel')
                     for(var t=0; t<state.popoverOptions.scope.contentTabs.length; t++){
                         if(state.popoverOptions.scope.contentTabs[t].title === selectors[index].config.label){
                             state.popoverOptions.scope.contentTabs[t].isLoading = true;
+                            state.popoverOptions.scope.contentTabs[t].isStarted = true;
                         }
                     }
                     // ... and search label for each selector

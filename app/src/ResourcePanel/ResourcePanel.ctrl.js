@@ -20,7 +20,8 @@ angular.module('Pundit2.ResourcePanel')
                     template: 'src/Lists/itemList.tmpl.html',
                     itemsContainer: selectors[j].config.container,
                     items: [],
-                    module: 'Pundit2'
+                    module: 'Pundit2',
+                    isStarted: false
                 });
             }
         }

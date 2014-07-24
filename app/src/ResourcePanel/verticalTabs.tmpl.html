@@ -11,7 +11,7 @@
 <ul class="nav nav-tabs pnd-vertical-tabs" ng-if = "moduleName == 'Pundit2'">
     <li ng-repeat="pane in contentTabs" ng-class="{active: $index == active}" ng-if="pane.title != 'My Items' || (pane.title == 'My Items' && userLoggedIn)">
     <a data-toggle="tab" ng-click="setActive($index, $event)" data-index="{{$index}}" >
-        <span class="badge pull-right" ng-show="moduleName == 'Pundit2' && !pane.isLoading">{{pane.items.length}}</span>
+        <span class="badge pull-right" ng-show="moduleName == 'Pundit2' && !pane.isLoading && pane.isStarted">{{pane.items.length}}</span>
         <span class="pnd-icon pnd-icon-refresh pnd-icon-spin pull-right" ng-show="pane.isLoading"></span>
         {{pane.title}}
     </a>
