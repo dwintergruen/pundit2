@@ -21,7 +21,7 @@
 <ul class="nav nav-tabs pnd-vertical-tabs" ng-if = "moduleName == 'KorboEE'">
     <li ng-repeat="pane in contentTabs" ng-class="{active: $index == active}">
         <a data-toggle="tab" ng-click="setActive($index, $event)" data-index="{{$index}}" >
-            <span class="badge pull-right" ng-show="moduleName == 'KorboEE' && !pane.isLoading && pane.items.length>0 && elemToSearch!==''">{{pane.items.length}}</span>
+            <span class="badge pull-right" ng-show="moduleName == 'KorboEE' && !pane.isLoading && pane.isStarted">{{pane.items.length}}</span>
             <span class="pnd-icon pnd-icon-refresh pnd-icon-spin pull-right" ng-show="pane.isLoading"></span>
             {{pane.title}}
         </a>

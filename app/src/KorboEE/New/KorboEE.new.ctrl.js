@@ -293,6 +293,10 @@ angular.module('KorboEE')
                     'tooltipMessageErrorTab': "There are some errors in the "+name+" languages fields"
                 };
 
+                if(typeof($scope.entityToCreate) !== 'undefined' && $scope.entityToCreate !== null){
+                    lang.label = $scope.entityToCreate.label;
+                }
+
                 if(!$scope.editMode){ 
                     if($scope.conf.languages[i].state){
                         $scope.tabs.push(lang);

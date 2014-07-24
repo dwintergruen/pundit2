@@ -22,7 +22,8 @@ angular.module('KorboEE')
             {
                 "title": "Search",
                 "template": "src/KorboEE/Search/KorboEE.search.tmpl.html",
-                "totalResults": 0
+                "totalResults": 0,
+                "isStarted": false
             },
             {
                 "title": "New",

@@ -36,7 +36,8 @@ angular.module('KorboEE')
                 items: [],
                 itemsContainer: 'kee-korbo',
                 provider: 'korbo',
-                module: 'KorboEE'
+                module: 'KorboEE',
+                isStarted: false
             });
         }
 
@@ -51,7 +52,8 @@ angular.module('KorboEE')
                     items: [],
                     itemsContainer: 'kee-'+obj,
                     provider: obj,
-                    module: 'KorboEE'
+                    module: 'KorboEE',
+                    isStarted: false
                 });
             }
         };
@@ -106,6 +108,8 @@ angular.module('KorboEE')
 
         // search a string in each providers
         var searchOnProviders = function(label){
+            $scope.korboModalTabs[0].totalResults = 0;
+            $scope.korboModalTabs[0].isStarted = true;
             // iterate providers list and start searching for each in separate way
             for(var j=0; j<$scope.contentTabs.length; j++){
                 (function(index) {
@@ -121,6 +125,7 @@ angular.module('KorboEE')
                     param.index = index;
                     // set loading status for current provider
                     $scope.contentTabs[index].isLoading = true;
+                    $scope.contentTabs[index].isStarted = true;
                     // let start searching
                     korboComm.search(param, $scope.contentTabs[index].itemsContainer).then(
                         // when search is finished without errors
@@ -147,10 +152,12 @@ angular.module('KorboEE')
 
         // wipe search results
         var wipeResults = function(){
+            $scope.korboModalTabs[0].isStarted = false;
             for(var j=0; j<$scope.contentTabs.length; j++){
                 (function(index) {
                     // wipe current provider results ...
                     $scope.contentTabs[index].items = [];
+                    $scope.contentTabs[index].isStarted = false;
                     // ...and its container in ItemsExchange
                     ItemsExchange.wipeContainer($scope.contentTabs[index].itemsContainer);
                 })(j)
