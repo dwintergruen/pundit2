@@ -1,10 +1,10 @@
 @font-face {
 	font-family: 'pundit-font';
-	src:url('fonts/pundit-font.eot?-ymu2ux');
-	src:url('fonts/pundit-font.eot?#iefix-ymu2ux') format('embedded-opentype'),
-		url('fonts/pundit-font.woff?-ymu2ux') format('woff'),
-		url('fonts/pundit-font.ttf?-ymu2ux') format('truetype'),
-		url('fonts/pundit-font.svg?-ymu2ux#pundit-font') format('svg');
+	src:url('fonts/pundit-font.eot?-6feftv');
+	src:url('fonts/pundit-font.eot?#iefix-6feftv') format('embedded-opentype'),
+		url('fonts/pundit-font.woff?-6feftv') format('woff'),
+		url('fonts/pundit-font.ttf?-6feftv') format('truetype'),
+		url('fonts/pundit-font.svg?-6feftv#pundit-font') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
@@ -334,37 +334,4 @@
 }
 .pnd-icon-archive:before {
 	content: "\f187";
-}
-.pnd-icon-question-circle:before {
-	content: "\f059";
-}
-.pnd-icon-info-circle:before {
-	content: "\f05a";
-}
-.pnd-icon-globe:before {
-	content: "\f0ac";
-}
-.pnd-icon-quote-left:before {
-	content: "\f10d";
-}
-.pnd-icon-quote-right:before {
-	content: "\f10e";
-}
-.pnd-icon-circle:before {
-	content: "\f111";
-}
-.pnd-icon-unlink:before {
-	content: "\f127";
-}
-.pnd-icon-sort-alpha-desc:before {
-	content: "\f15e";
-}
-.pnd-icon-sort-numeric-asc:before {
-	content: "\f162";
-}
-.pnd-icon-sort-numeric-desc:before {
-	content: "\f163";
-}
-.pnd-icon-bug:before {
-	content: "\f188";
 }
