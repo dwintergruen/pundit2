@@ -8,16 +8,13 @@ KORBODEFAULTCONF = {
 
     updateTime: 1000,
 
-
     labelMinLength: 3,
-
 
     copyToKorboBeforeUse: false,
 
     tafonyId: 'default_tafony_id',
 
     tafonyName: 'default_tafony_name',
-
 
     nameInputHiddenUri: 'default_korbo_uri',
 
@@ -59,7 +56,6 @@ KORBODEFAULTCONF = {
             URI:'http://www.w3.org/2003/01/geo/wgs84_pos#SpatialThing'
         }
     ],
-
 
     languages: [
         {
