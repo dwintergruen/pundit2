@@ -43,14 +43,16 @@
         }
     };
 
-    var VocabDemoCtrl = function(SelectorsManager) {
+    var VocabDemoCtrl = function(SelectorsManager, FreebaseSelector, MurucaSelector, KorboBasketSelector) {
         SelectorsManager.init();
     };
 
 </script>
 
-<div data-ng-app="Pundit2" class="pnd-wrp" ng-controller="VocabDemoCtrl">
-    <vocabularies-container></vocabularies-container>
+<div data-ng-app="Pundit2" class="pnd-wrp">
+    <div ng-controller="VocabDemoCtrl">
+        <vocabularies-container></vocabularies-container>
+    </div>
 </div>
 
 <!-- buildexamples:section footer --><!-- /buildexamples -->
