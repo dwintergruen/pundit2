@@ -1,7 +1,19 @@
 //
-// Buttons
+// Buttons full height 
 // --------------------------------------------------
 
-.pnd-btn-full {
-	height: 30px;
+
+.btn {
+
+	&.pnd-btn-full {
+		height: inherit;
+		margin-top: -5px;
+		margin-left: -5px;
+		padding: 0px 10px;
+		border: 0px;
+		
+		& + .pnd-btn-full {
+			border-left: 1px solid #fff;
+			}
+		}
 }
