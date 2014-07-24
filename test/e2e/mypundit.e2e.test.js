@@ -1,4 +1,4 @@
-describe("OpenID Login", function() {
+xdescribe("OpenID Login", function() {
 
     var p = protractor.getInstance();
 
