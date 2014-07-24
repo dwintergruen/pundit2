@@ -1,7 +1,7 @@
 /*jshint strict: false*/
 
 angular.module('Pundit2.AnnotationSidebar')
-.controller('AnnotationSidebarCtrl', function($scope, $filter, $timeout, $window, AnnotationSidebar, Dashboard, Toolbar) {
+.controller('AnnotationSidebarCtrl', function($scope, $filter, $timeout, $document, $window, AnnotationSidebar, Dashboard, Toolbar) {
     var bodyClasses = AnnotationSidebar.options.bodyExpandedClass + ' ' + AnnotationSidebar.options.bodyCollapsedClass;
     var sidebarClasses = AnnotationSidebar.options.sidebarExpandedClass + ' ' + AnnotationSidebar.options.sidebarCollapsedClass;
 
@@ -106,25 +106,47 @@ angular.module('Pundit2.AnnotationSidebar')
     });
 
     // Annotation sidebar height
-    var resizeSidebarHeight = function(bodyHeight, windowHeight, contentHeight) {
-        state.sidebarNewHeight = Math.max(bodyHeight, windowHeight - state.toolbarHeight, contentHeight);
-        state.sidebarCurrentHeight = container.innerHeight();
-        if (state.sidebarNewHeight !== state.sidebarCurrentHeight) {
-            container.css('height', state.sidebarNewHeight + 'px');
+    var resizeSidebarHeight = function(){ // Work in progress .. 
+        var newHeight;
+        var minHeightSidebar = AnnotationSidebar.minHeightRequired;
+        var bodyHeight = body.innerHeight();
+        var windowHeight = $window.innerHeight;
+        var documentHeight = $document.innerHeight();
+        if (Dashboard.isDashboardVisible()){
+            documentHeight = documentHeight - state.toolbarHeight - Dashboard.getContainerHeight();
+        } else {
+            documentHeight = documentHeight - state.toolbarHeight;
         }
+
+        if (minHeightSidebar < bodyHeight){
+            newHeight = bodyHeight;
+        } else {
+            newHeight = Math.max(documentHeight, windowHeight, bodyHeight);
+        }
+
+        container.css('height', newHeight + 'px');
     };
+
+    $scope.$watch(function() {
+        return AnnotationSidebar.minHeightRequired;
+    }, function(heightValue) {
+        resizeSidebarHeight();
+    });
+
     $scope.$watch(function() {
         return body.innerHeight();
     }, function(heightValue) {
-        resizeSidebarHeight(heightValue, $window.innerHeight, content.innerHeight());
+        resizeSidebarHeight();
     });
+
     $scope.$watch(function() {
-        return content.innerHeight();
+        return $document.innerHeight();
     }, function(heightValue) {
-        resizeSidebarHeight(body.innerHeight(), $window.innerHeight, heightValue);
+        resizeSidebarHeight();
     });
+
     angular.element($window).bind('resize', function () {
-        resizeSidebarHeight(body.innerHeight(), $window.innerHeight, content.innerHeight());
+        resizeSidebarHeight();
     });
 
 

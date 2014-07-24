@@ -304,6 +304,8 @@ angular.module('Pundit2.AnnotationSidebar')
 
     var timeoutPromise;
 
+    annotationSidebar.minHeightRequired = startPosition;
+
     // Contains the values ​​of active filters
     annotationSidebar.filters = {
         freeText: {
@@ -489,6 +491,8 @@ angular.module('Pundit2.AnnotationSidebar')
                 startPosition += pos[ann].height;
             }
         }
+
+        annotationSidebar.minHeightRequired = startPosition + annotationSidebar.options.annotationHeigth;
 
     };
 
