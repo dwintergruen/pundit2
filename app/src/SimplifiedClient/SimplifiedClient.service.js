@@ -8,7 +8,7 @@ angular.module('Pundit2.SimplifiedClient')
 })
 
 .service('SimplifiedClient', function(BaseComponent, $rootScope,
-    MyPundit, MyItems, AnnotationsCommunication, TextFragmentAnnotator, Consolidation){
+    MyPundit, MyItems, AnnotationsCommunication, TextFragmentAnnotator, Consolidation, ItemPopover){
 
     // This service only make a consolidation of the annotation on the page
     // it not have: toolbar, dashboard and siderbar
@@ -28,6 +28,7 @@ angular.module('Pundit2.SimplifiedClient')
 
     var isAnnotationVisible = true;
     $rootScope.toggleAnnotation = function() {
+        ItemPopover.hide();
         if (isAnnotationVisible) {
             Consolidation.wipe();
         } else {

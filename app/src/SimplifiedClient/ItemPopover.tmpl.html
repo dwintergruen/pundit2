@@ -1,4 +1,4 @@
-<div class="popover" ng-controller="ItemPopoverCtrl" style="width: 300px;">
+<div class="popover pnd-item-popover" ng-controller="ItemPopoverCtrl" style="min-width: 330px;">
 
     <div class="arrow"></div>
 
@@ -7,6 +7,8 @@
             <span class="pull-right pnd-icon pnd-icon-times" ng-click="hide()"></span>
         </h3>
 
-    <div class="popover-content"></div>
+    <div class="popover-content">
+        <annotation-details ng-repeat="ann in annotations" id="{{ann.id}}"></annotation-details>
+    </div>
 
 </div>

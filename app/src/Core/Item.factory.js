@@ -93,7 +93,7 @@ angular.module('Pundit2.Core')
     classWebPage: 'pnd-item-web-page',
     classEntity: 'pnd-item-entity'
 })
-.factory('Item', function(BaseComponent, NameSpace, Utils, ItemsExchange, ITEMDEFAULTS) {
+.factory('Item', function(BaseComponent, NameSpace, Utils, ItemsExchange, AnnotationsExchange, ITEMDEFAULTS) {
     var itemComponent = new BaseComponent("Item", ITEMDEFAULTS);
 
     var ItemFactory = function(uri, values) {
@@ -286,7 +286,18 @@ angular.module('Pundit2.Core')
         return itemComponent.options.classDefault;
     };
 
+    ItemFactory.prototype.getAnnotations = function() {
+        var ret = [],
+            annotations = AnnotationsExchange.getAnnotations();
 
+        for (var i in annotations) {
+            if (typeof(annotations[i].items[this.uri]) !== 'undefined') {
+                ret.push(annotations[i]);
+            }
+        }
+        
+        return ret;
+    };
 
     itemComponent.log('Component up and running');
 
