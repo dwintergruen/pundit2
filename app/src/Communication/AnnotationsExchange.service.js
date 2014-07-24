@@ -107,6 +107,18 @@ angular.module('Pundit2.Communication')
             // If the item is not found, it will return undefined
         };
 
+        annotationExchange.getAnnotationsByItem = function(uri) {
+            var ret = [];
+
+            for (var i in annList) {
+                if (typeof(annList[i].items[uri]) !== 'undefined') {
+                    ret.push(annList[i]);
+                }
+            }
+            
+            return ret;
+        };
+
         annotationExchange.getAnnotationsHash = function() {
             return annListById;
         };

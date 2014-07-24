@@ -1,6 +1,6 @@
 angular.module('Pundit2.SimplifiedClient')
 
-.service('ItemPopover', function(BaseComponent, $rootScope, $popover){
+.service('ItemPopover', function(BaseComponent, $rootScope, $popover, AnnotationsExchange){
 
     var ip = new BaseComponent('ItemPopover');
 
@@ -57,7 +57,7 @@ angular.module('Pundit2.SimplifiedClient')
 
     ip.getAnnotation = function() {
         if (item !== null) {
-            return item.getAnnotations();            
+            return AnnotationsExchange.getAnnotationsByItem(item.uri);
         }
     };
 
