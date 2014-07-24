@@ -75,6 +75,8 @@ angular.module('Pundit2.AnnotationSidebar')
         if (currentState !== oldState) {
             body.toggleClass(bodyClasses);
             container.toggleClass(sidebarClasses);
+
+            AnnotationSidebar.setAnnotationsPosition();
         }
     });
 

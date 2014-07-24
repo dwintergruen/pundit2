@@ -302,6 +302,8 @@ angular.module('Pundit2.AnnotationSidebar')
     var toolbarHeight = 30;
     var annotationPosition = [];
 
+    var timeoutPromise;
+
     // Contains the values ​​of active filters
     annotationSidebar.filters = {
         freeText: {
@@ -359,6 +361,7 @@ angular.module('Pundit2.AnnotationSidebar')
     annotationSidebar.toggle = function(){
         state.isSidebarExpanded = !state.isSidebarExpanded;
     };
+
     // Show / hide the list of the filters in the sidebar
     annotationSidebar.toggleFiltersContent = function(){
         state.isFiltersExpanded = !state.isFiltersExpanded;
@@ -770,6 +773,10 @@ angular.module('Pundit2.AnnotationSidebar')
                 annotationPosition[currentIndex].height = optHeight;
             }
         } 
+    };
+
+    annotationSidebar.setAnnotationsPosition = function(){
+        setAnnotationsPosition();
     };
 
     // Check if some filters are active

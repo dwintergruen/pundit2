@@ -117,7 +117,6 @@ angular.module('Pundit2.AnnotationSidebar')
         if (newState!=oldState){
             if(!AnnotationSidebar.isAnnotationSidebarExpanded()){
                 AnnotationDetails.closeViewAndReset();
-                AnnotationSidebar.setAllPosition();
             }
         }
     });
