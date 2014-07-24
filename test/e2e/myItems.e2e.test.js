@@ -43,7 +43,7 @@ describe("My Items interaction", function() {
         // check tab content (welcome messagge)
         p.findElements(protractor.By.css('.pnd-tab-content .active .pnd-dashboard-welcome')).then(function(items){
             expect(items.length).toBe(1);
-            expect(items[0].getText()).toEqual("No my items found.");
+            expect(items[0].getText()).toEqual("Please login to see your items.");
         });
     });
 

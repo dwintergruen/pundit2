@@ -20,6 +20,17 @@ angular.module('Pundit2.MyItemsContainer')
         text: "No my items found."
     };
 
+    $scope.$watch(function(){
+        return MyPundit.isUserLogged();
+    }, function(logged){
+        console.log(logged)
+        if (logged) {
+            $scope.message.text = "No my items found.";
+        } else {
+            $scope.message.text = "Please login to see your items.";
+        }
+    });
+
     // items property used to compare
     // legal value are: 'type' and 'label'
     var order = MyItemsContainer.options.order;
@@ -184,7 +195,11 @@ angular.module('Pundit2.MyItemsContainer')
 
         // update text messagge
         if(str === ''){
-            $scope.message.text = "No my items found.";
+            if (MyPundit.isUserLogged()) {
+                $scope.message.text = "No my items found.";
+            } else {
+                $scope.message.text = "Please login to see your items.";
+            }
         } else {
             $scope.message.text = "No item found to: "+str;
         }
