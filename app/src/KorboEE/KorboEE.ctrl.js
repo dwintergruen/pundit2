@@ -101,11 +101,7 @@ angular.module('KorboEE')
         // stop event propagation
         // and open the modal
         $scope.keyPressHandle = function($event){
-            if($event.keyCode === 13 && ($scope.conf.useAutocompleteWithSearch || $scope.conf.useAutocompleteWithNew) === false){
-                $event.stopPropagation();
-                $event.preventDefault();
-                $scope.open();
-            } else if($event.keyCode === 13 && ($scope.conf.useAutocompleteWithSearch || $scope.conf.useAutocompleteWithNew)){
+            if($event.keyCode === 13 && $scope.conf.useTafonyCompatibility){
                 $event.stopPropagation();
                 $event.preventDefault();
 

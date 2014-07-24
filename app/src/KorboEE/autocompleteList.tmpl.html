@@ -9,11 +9,11 @@
     <div class="kee-footer-autocomplete">
         <span class="kee-elem-to-search" ng-show="showNewButton() || showSearchButton()">"{{elemToSearch}}"</span>
         <!-- <div class="kee-footer-btn"> -->
-        <button class="kee-btn-new btn btn-success btn-xs" ng-show="showNewButton()" ng-click="openKeeModal()">
+        <button class="kee-btn-new btn btn-success btn-xs" ng-show="showNewButton()" ng-click="openKeeModal();$event.preventDefault();$event.stopPropagation();">
             <i class="pnd-icon pnd-icon-plus"></i>
             Create new
         </button>
-        <button class="kee-btn-search btn btn-success btn-xs" ng-show="showSearchButton()" ng-click="searchOnLOD()">
+        <button class="kee-btn-search btn btn-success btn-xs" ng-show="showSearchButton()" ng-click="searchOnLOD();$event.preventDefault();$event.stopPropagation();">
             <i class="pnd-icon pnd-icon-search"></i>
             Search in LOD
         </button>
