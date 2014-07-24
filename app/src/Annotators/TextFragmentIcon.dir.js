@@ -45,7 +45,7 @@ angular.module('Pundit2.Annotators')
                 if (Config.modules.Client.active) {
                     ContextualMenu.show(event.pageX, event.pageY, scope.item, TextFragmentAnnotator.options.cMenuType);
                 } else if (Config.modules.SimplifiedClient.active) {
-                    ItemPopover.show(scope.element, scope.item.label);
+                    ItemPopover.show(scope.element, scope.item);
                 }
                 
             };
