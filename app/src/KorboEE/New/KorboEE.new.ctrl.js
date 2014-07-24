@@ -89,7 +89,7 @@ angular.module('KorboEE')
 
                 //if(res.label !== ''){
                     var title = angular.uppercase(res.language_code);
-                    var name = angular.lowercase(res.language_code);
+                    var name = (res.language_code);
                     var lang = {
                         'title': title,
                         'name' : name,
@@ -104,7 +104,7 @@ angular.module('KorboEE')
                     };
                     $scope.tabs.push(lang);
                     pushCurrentLang(lang);
-                    buildLanguageTabs();
+                    // buildLanguageTabs();
 
                     $scope.imageUrl = res.depiction;
                     $scope.originalUrl = res.resource;
@@ -141,9 +141,10 @@ angular.module('KorboEE')
                                 };
                                 $scope.tabs.push(lang);
                                 pushCurrentLang(lang);
-                                buildLanguageTabs();
+                                // buildLanguageTabs();
                             })(j)
                         } // end for
+                        buildLanguageTabs();
                         $scope.topArea = {
                             'message': 'You are editing the entity...',
                             'status': 'info'
@@ -151,6 +152,7 @@ angular.module('KorboEE')
                     });
 
                 } else {
+                    buildLanguageTabs();
                     $scope.topArea = {
                         'message': 'You are editing the entity...',
                         'status': 'info'
@@ -299,7 +301,7 @@ angular.module('KorboEE')
                         $scope.disactiveLanguages.push(lang);
                     }
                 } else {
-                    var indexFind = $scope.tabs.map(function(e){ return e.title }).indexOf(lang.title);
+                    var indexFind = $scope.tabs.map(function(e){ return angular.lowercase(e.title) }).indexOf(angular.lowercase(lang.title));
                     if(indexFind === -1){
                         $scope.disactiveLanguages.push(lang);
                     }
@@ -420,7 +422,7 @@ angular.module('KorboEE')
                 };
 
                 if($scope.editMode){
-                    entityToSave.id = $scope.idEntityToEdit;
+                    entityToSave.id = String($scope.idEntityToEdit);
                 }
 
                 var promise = korboComm.save(entityToSave, lang, $scope.conf.endpoint, $scope.conf.basketID );
@@ -429,7 +431,7 @@ angular.module('KorboEE')
                     // get id from location of entity just created// All other label types, take the last part
                     var id;
                         if($scope.editMode){
-                            id = $scope.idEntityToEdit;
+                            id = String($scope.idEntityToEdit);
                         }else{
                             id = res.substring(res.lastIndexOf('/') + 1);
                         }
