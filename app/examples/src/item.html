@@ -2,7 +2,16 @@
 
 <script>
 
-    var ItemContainerDemoCtrl = function(Item, ItemsExchange, ContextualMenu) {
+    var punditConfig = {
+        /*modules: {
+            Client: {
+                active: true
+            }
+        }*/
+        debugAllModules: true
+    };
+
+    var ItemContainerDemoCtrl = function(Item, ContextualMenu) {
 
         var item = {
             uri: "testItemUri",
@@ -28,8 +37,10 @@
 
 </script>
 
-<div data-ng-app="Pundit2" class="pnd-wrp" ng-controller="ItemContainerDemoCtrl">
-    <item uri="testItemUri" menu-type="testMenuType"></item>
+<div data-ng-app="Pundit2" class="pnd-wrp">
+    <div ng-controller="ItemContainerDemoCtrl">
+        <item uri="testItemUri" menu-type="testMenuType"></item>
+    </div>
 </div>
 
 <!-- buildexamples:section footer --><!-- /buildexamples -->
