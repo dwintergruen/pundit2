@@ -23,7 +23,7 @@ describe("Client interaction when user is not logged in", function() {
                             "http://www.w3.org/1999/02/22-rdf-syntax-ns#type":
                                 [{type: "uri", value: "http://purl.org/pundit/ont/ao#fragment-text"}],
                             "http://www.w3.org/2000/01/rdf-schema#label":
-                                [{type: "literal", value: "Dante"}],
+                                [{type: "literal", value: "Dante"}]
                         },
                         "http://schema.org/comment": {
                             "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": [{type: "uri", value: NameSpace.rdf.property}],
@@ -126,9 +126,9 @@ describe("Client interaction when user is not logged in", function() {
         p.findElements(protractor.By.css(".pnd-resource-panel-popover .pnd-vertical-tabs li:not(.ng-hide) a span")).then(function(spans) {
             expect(spans.length).toBe(8);
             expect(spans[0].getText()).toEqual("1");
-            expect(spans[2].getText()).toEqual("0");
-            expect(spans[4].getText()).toEqual("0");
-            expect(spans[6].getText()).toEqual("0");
+            expect(spans[2].getText()).toEqual("");
+            expect(spans[4].getText()).toEqual("");
+            expect(spans[6].getText()).toEqual("");
         });
     });
 

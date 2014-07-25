@@ -217,60 +217,32 @@ describe('MyPundit service', function() {
 
 	});
 
-	it("should set loginStatus = loggedOff and open the modal if user is not logged in and login() is executed", function() {
+    it("should set loginStatus = loggedOff and open the modal if user is not logged in and login() is executed", function() {
 
-		var promiseValue;
+        var promiseValue;
 
-		//angular.element($document[0].body).append('<div data-ng-app="Pundit2" class="pnd-wrp"></div>');
-		$rootScope.$digest();
-		$httpBackend.whenGET(NameSpace.get('asUsersCurrent')).respond(userNotLogged);
+        $httpBackend.whenGET(NameSpace.get('asUsersCurrent')).respond(userNotLogged);
 
-		var promise = MyPundit.login();
+        var promise = MyPundit.login();
 
-		// wait for promise....
-		waitsFor(function() { return typeof(promiseValue) !== 'undefined'; }, 2000);
+        // wait for promise....
+        waitsFor(function() { return typeof(promiseValue) !== 'undefined'; }, 2000);
 
-		// promise should be return false
-		runs(function() {
-			expect(promiseValue).toBe(false);
-		});
+        // promise should be return false
+        runs(function() {
+            expect(promiseValue).toBe(false);
+        });
 
-		// loginPromise should be resolved as false when cancel button is clicked
-		promise.then(function(value) {
-			promiseValue = value;
-		});
+        // loginPromise should be resolved as false when login popup is closed
+        promise.then(function(value) {
+            promiseValue = value;
+        });
 
-		$rootScope.$digest();
-		$httpBackend.flush();
+        $rootScope.$digest();
+        $httpBackend.flush();
+        $timeout.flush();
 
-		// login status should be loggedOff
-		expect(MyPundit.getLoginStatus()).toBe("loggedOff");
-        
-        // modal should be open
-		var modalContainer = angular.element.find('div.pnd-login-modal-container');
-		expect(modalContainer.length).toBe(1);
-        
-		// modal should contain cancel button and should be shown
-		var cancelButton = angular.element.find('.pnd-login-modal-cancel');
-		expect(cancelButton.length).toBe(1);
-		expect(angular.element(cancelButton).hasClass('ng-hide')).toBe(false);
-        
-		// modal should contain open login popup button and should be shown
-		var openPopUpButton = angular.element.find('.pnd-login-modal-openPopUp');
-		expect(openPopUpButton.length).toBe(1);
-		expect(angular.element(openPopUpButton).hasClass('ng-hide')).toBe(false);
-
-		// close button should be hide
-		var closeButton = angular.element.find('.pnd-login-modal-close');
-		expect(closeButton.length).toBe(1);
-		expect(angular.element(closeButton).hasClass('ng-hide')).toBe(true);
-
-		// click cancel button and resolve promise as false
-		var cancel = angular.element('.pnd-login-modal-cancel');
-		cancel.trigger('click');
-		$rootScope.$digest();
-        
-	});
+    });
     
 	it("should correctly get logout when user is logged in", function() {
 
@@ -378,6 +350,47 @@ describe('MyPundit service', function() {
 		$httpBackend.flush();
 	});
 
+    it("should log error if openLoginPopUp is called and loginPromise is not defined ", function() {
+
+        $log.reset();
+
+        // at the beginning no error messages are shown
+        expect($log.error.logs.length).toBe(0);
+
+        // calling openLoginPopUp should log an error message because at this time loginPromise is not defined
+        MyPundit.openLoginPopUp();
+
+        // an error message is shown
+        expect($log.error.logs.length).toBe(1);
+
+    });
+
+    it("should reject loginPromise", function() {
+
+        var serverError = false;
+
+        $httpBackend
+            .expectGET(NameSpace.get('asUsersCurrent'))
+            .respond(userNotLogged);
+
+        var loginPromise = MyPundit.login();
+
+        loginPromise.then(function() {
+            //if everything is ok do nothing
+        }, function(){
+            // if error is occurred
+            serverError = true;
+        });
+
+        // reject checkedLoggedIn promise
+        $httpBackend.expectGET(NameSpace.get('asUsersCurrent')).respond(505);
+
+        $httpBackend.flush();
+
+        expect(serverError).toBe(true);
+
+    });
+
     it("should start login polling timer ", function() {
 
         $httpBackend
@@ -385,24 +398,6 @@ describe('MyPundit service', function() {
             .respond(userNotLogged);
 
         MyPundit.login();
-
-        $httpBackend.flush();
-
-        // login status should be loggedOff
-        expect(MyPundit.getLoginStatus()).toBe("loggedOff");
-
-        // modal should be open
-        var modalContainer = angular.element.find('div.pnd-login-modal-container');
-        expect(modalContainer.length).toBe(1);
-
-        $httpBackend.expectGET(NameSpace.get('asUsersCurrent')).respond(userNotLogged);
-        // click open login popup
-        var openPopUpButton = angular.element('.pnd-login-modal-openPopUp');
-        openPopUpButton.trigger('click');
-        $httpBackend.flush();
-        $rootScope.$digest();
-
-        expect(MyPundit.getLoginStatus()).toBe("waitingForLogIn");
 
         //start polling
 
@@ -431,98 +426,6 @@ describe('MyPundit service', function() {
         // at this time should be not timeout tasks pending
         expect(function() {$timeout.verifyNoPendingTasks();}).not.toThrow();
 
-    });
-
-    it("should log error if openLoginPopUp is called and loginPromise is not defined ", function() {
-
-        $log.reset();
-
-        // at the beginning no error messages are shown
-        expect($log.error.logs.length).toBe(0);
-
-        // calling openLoginPopUp should log an error message because at this time loginPromise is not defined
-        MyPundit.openLoginPopUp();
-
-        // an error message is shown
-        expect($log.error.logs.length).toBe(1);
-
-    });
-
-    it("should close the modal when user is logged in ", function() {
-
-        $httpBackend
-            .expectGET(NameSpace.get('asUsersCurrent'))
-            .respond(userNotLogged);
-
-        MyPundit.login();
-
-        $httpBackend.flush();
-
-        // modal should be open
-        var modalContainer = angular.element.find('div.pnd-login-modal-container');
-        expect(modalContainer.length).toBe(1);
-
-
-        $httpBackend.expectGET(NameSpace.get('asUsersCurrent')).respond(userLoggedIn);
-        // click open login popup
-        var openPopUpButton = angular.element('.pnd-login-modal-openPopUp');
-        openPopUpButton.trigger('click');
-        $rootScope.$digest();
-        $httpBackend.flush();
-
-        $rootScope.$digest();
-
-        // close button should be shown
-        var closeButton = angular.element.find('.pnd-login-modal-close');
-        expect(closeButton.length).toBe(1);
-        expect(angular.element(closeButton).hasClass('ng-hide')).toBe(false);
-
-        // click close button
-        var close = angular.element('.pnd-login-modal-close');
-        close.trigger('click');
-        $rootScope.$digest();
-
-        // modal should be closed
-        modalContainer = angular.element.find('div.pnd-login-modal-container');
-        expect(modalContainer.length).toBe(0);
-
-    });
-
-    it("should reject loginPromise", function() {
-
-        var serverError = false;
-
-        $httpBackend
-            .expectGET(NameSpace.get('asUsersCurrent'))
-            .respond(userNotLogged);
-
-        var loginPromise = MyPundit.login();
-
-        loginPromise.then(function() {
-            //if everything is ok do nothing
-
-        }, function(){
-            // if error is occurred
-            serverError = true;
-
-        });
-
-        $httpBackend.flush();
-
-        // modal should be open
-        var modalContainer = angular.element.find('div.pnd-login-modal-container');
-        expect(modalContainer.length).toBe(1);
-
-        // reject checkedLoggedIn promise
-        $httpBackend.expectGET(NameSpace.get('asUsersCurrent')).respond(505);
-
-        // click open login popup
-        var openPopUpButton = angular.element('.pnd-login-modal-openPopUp');
-        openPopUpButton.trigger('click');
-        $rootScope.$digest();
-        $httpBackend.flush();
-
-        expect(serverError).toBe(true);
     });
 
 });

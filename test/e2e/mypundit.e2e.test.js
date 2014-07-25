@@ -1,8 +1,8 @@
-xdescribe("OpenID Login", function() {
+describe("OpenID Login", function() {
 
     var p = protractor.getInstance();
 
-    it('should show popup login modal', function() {
+    xit('should show popup login modal', function() {
 
         // google account credentials
         var myPassword = "netseven";

@@ -14,14 +14,14 @@ describe("The toolbar module", function() {
             expect(loginButton.length).toBe(1);
 
             // click login button
-            loginButton[0].click().then(function() {
+            /*loginButton[0].click().then(function() {
                 // dropdown-menu should be visible
                 p.findElements(protractor.By.css('.pnd-toolbar-login-button .dropdown-menu li')).then(function(dropdownMenu) {
                     expect(dropdownMenu.length).toBe(2);
                     expect(dropdownMenu[0].getText()).toBe("Please sign in to use Pundit");
                     expect(dropdownMenu[1].getText()).toBe("Sign in");
                 });
-            });
+            });*/
         });
 
         // status button ok should be visible

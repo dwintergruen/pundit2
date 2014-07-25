@@ -16,6 +16,7 @@ describe("The annomatic module", function() {
 
     it('should accept an annotation clicking on accept and removing it by clicking on remove', function() {
         p.get('/app/examples/annomatic.html');
+        p.driver.manage().window().setSize(1200, 960);
 
         // Get annotations
         p.findElement(protractor.By.css('.pnd-button-suggestion')).click();
