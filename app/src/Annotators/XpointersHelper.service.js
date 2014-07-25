@@ -6,6 +6,12 @@ angular.module('Pundit2.Annotators')
     wrapNodeName: 'span',
     wrapNodeClass: 'pnd-cons',
 
+    // This class is used only to correctly build xpointer for image
+    // images are treated as text fragment but have theirs dedicate service
+    // that wrap and consolidate its (slightly different from text fragment)
+    imgWrapNodeName: 'div',
+    imgWrapNodeClass: 'pnd-img-wrp',
+
     // Added by TextFragmentIcon directive, ignored when building xpointers
     textFragmentIconClass: "pnd-text-fragment-icon",
 
@@ -451,12 +457,14 @@ angular.module('Pundit2.Annotators')
         }
 
         // If the node name is wrong.. return false
-        if (node.nodeName.toUpperCase() !== xp.options.wrapNodeName.toUpperCase()) {
+        if (node.nodeName.toUpperCase() !== xp.options.wrapNodeName.toUpperCase()
+            && node.nodeName.toUpperCase() !== xp.options.imgWrapNodeName.toUpperCase()) {
             return false;
         }
 
         // It is an element, with the right name: if it has the wrap class, it is a wrap node!
-        if (angular.element(node).hasClass(xp.options.wrapNodeClass)) {
+        var el = angular.element(node);
+        if (el.hasClass(xp.options.wrapNodeClass) || el.hasClass(xp.options.imgWrapNodeClass)) {
             return true;
         }
 
@@ -471,7 +479,7 @@ angular.module('Pundit2.Annotators')
             return false;
         }
 
-        var toIgnore = [xp.options.textFragmentIconClass, xp.options.wrapNodeClass];
+        var toIgnore = [xp.options.textFragmentIconClass, xp.options.wrapNodeClass, xp.options.imgWrapNodeClass];
         toIgnore = toIgnore.concat(xp.options.consolidationClasses);
 
         for (var i = toIgnore.length; i--;) {

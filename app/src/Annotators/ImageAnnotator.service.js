@@ -1,5 +1,5 @@
 angular.module('Pundit2.Annotators')
-.service('ImageAnnotator', function(NameSpace, BaseComponent, $location,
+.service('ImageAnnotator', function(NameSpace, BaseComponent, $location, $compile, $rootScope,
     Consolidation, XpointersHelper) {
 
     // Create the component and declare what we deal with: text
@@ -8,8 +8,42 @@ angular.module('Pundit2.Annotators')
     ia.type = NameSpace.types[ia.label];
 
     var imgConsClass = "pnd-cons-img";
+    var imgContainerClass = "pnd-img-wrp";
 
-    Consolidation.addAnnotator(ia);
+    //Consolidation.addAnnotator(ia);
+
+    ia.wrapImages = function() {
+
+        angular.element('img')
+            .filter(function(index, el){
+                // Traverse every parent and check if it has one of the classes we
+                // need to ignore. As soon as we find one, return true: must ignore.
+                var node = el;
+                while (node.nodeName.toLowerCase() !== 'body') {
+                    
+                    if (angular.element(node).hasClass('pnd-ignore')) {
+                        return false;
+                    }            
+
+                    // If there's no parent node .. even better, we didnt find anything wrong!
+                    if (node.parentNode === null) {
+                        return true;
+                    }
+                    node = node.parentNode;
+                }
+                return true;
+            })
+            .wrap('<div class="'+imgContainerClass+'"></div>')
+            .each(function(index){
+                var className = 'pnd-image-ref-'+index;
+                angular.element(this)
+                    .addClass(className)
+                    .after('<img-menu ref="'+ className +'"></img-menu>');
+            });
+        $compile(angular.element('img-menu'))($rootScope);
+    };
+
+    //$rootScope.$on('consolidation-completed', ia.wrapImages);
     
     ia.isConsolidable = function(item) {
 
@@ -51,12 +85,11 @@ angular.module('Pundit2.Annotators')
         for (uri in xpaths) {
             angular.element(xpaths[uri].startNode.firstChild).addClass(imgConsClass);
         }
-        // TODO : if an img is inside a consolidate text selection this not work
-        // the img is not the first child. we can get the first img from all node childrens?
     };
 
     ia.wipe = function() {
-        angular.element('.'+imgConsClass).removeClass(imgConsClass);
+        angular.element('.'+imgConsClass).removeClass(imgConsClass).unwrap();
+        angular.element('.pnd-image-icon').remove();
     };
 
     ia.highlightById = function() {

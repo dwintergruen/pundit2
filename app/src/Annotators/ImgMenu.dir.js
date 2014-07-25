@@ -29,7 +29,7 @@ angular.module('Pundit2.Annotators')
                     top: imgPos.top
                 });
             };
-            $rootScope.$on('consolidation-completed', placeMenu);
+            placeMenu();
             
             scope.clickHandler = function(evt) {
 
@@ -40,6 +40,7 @@ angular.module('Pundit2.Annotators')
                     // create item only once
                     scope.item = ImageHandler.createItemFromImage(scope.image[0]);
                     ItemsExchange.addItemToContainer(scope.item, ImageHandler.options.container);
+                    console.log(scope.item);
                 }
 
                 // TODO what to do in template mode?

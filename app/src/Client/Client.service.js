@@ -564,27 +564,11 @@ angular.module('Pundit2.Client')
             });
         };
 
-        // add img-menu directive to all image inside page
-        // must invoke this function before creating pundit 
-        var addMenuToImages = function() {
-
-            angular.element('img').each(function(index){
-                var className = 'pnd-image-ref-'+index;
-                angular.element(this)
-                    .addClass(className)
-                    .after('<img-menu ref="'+ className +'"></img-menu>');
-            });
-            $compile(angular.element('img-menu'))($rootScope);
-        };
-
-
         // Reads the conf and initializes the active components, bootstrap what needs to be
         // bootstrapped (gets annotations, check if the user is logged in, etc)
         client.boot = function() {
 
             fixRootNode();
-
-            addMenuToImages();
 
             if (Config.useBasicRelations) {
                 loadBasicRelations();
