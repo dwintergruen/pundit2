@@ -23,7 +23,8 @@
 
                 <!-- Login button -->
                 <li ng-show="showLogin()" class="pnd-toolbar-login-button pnd-toolbar-button-active">
-                    <a href="javascript:void(0)" template="{{dropdownTemplate}}" bs-dropdown="userNotLoggedDropdown"><span>Login</span></a>
+                    <!-- <a href="javascript:void(0)" template="{{dropdownTemplate}}" bs-dropdown="userNotLoggedDropdown"><span>Login</span></a> -->
+                    <a href="javascript:void(0)" ng-click="login()"><span>Login</span></a>
                 </li>
                 
                 <!-- User button -->

@@ -201,7 +201,8 @@ angular.module('Pundit2.Core')
             function(isUserLoggedIn) {
                 if(isUserLoggedIn === false){
                     loginStatus = "loggedOff";
-                    openLoginModal();
+                    //openLoginModal();
+                    myPundit.openLoginPopUp();
                 } else {
                     loginPromise.resolve(true);
                 }
@@ -239,7 +240,7 @@ angular.module('Pundit2.Core')
             loginStatus = "waitingForLogIn";
 
             // open popup to get login
-            $window.open(loginServer, 'loginpopup', 'left=260,top=120,width=480,height=360');
+            var loginpopup = $window.open(loginServer, 'loginpopup', 'left=260,top=120,width=480,height=360');
 
             // polls for login happened
             var check = function() {
@@ -251,7 +252,7 @@ angular.module('Pundit2.Core')
                         if (isUserLogged){
                             $timeout.cancel(loginPollTimer);
                             loginPromise.resolve(true);
-                            $timeout(myPundit.closeLoginModal, myPundit.options.loginModalCloseTimer);
+                            //$timeout(myPundit.closeLoginModal, myPundit.options.loginModalCloseTimer);
                         }
                     },
                     function(){
@@ -263,6 +264,13 @@ angular.module('Pundit2.Core')
             };
 
             check();
+
+            $timeout(function(){
+                $timeout.cancel(loginPollTimer);
+                //loginPromise.reject('login error');
+                loginPromise.resolve(false);
+                loginpopup.close();
+            }, 100000000);
         }
 
     };

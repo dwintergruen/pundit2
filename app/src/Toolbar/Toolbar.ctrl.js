@@ -6,10 +6,12 @@ angular.module('Pundit2.Toolbar')
     $scope.dropdownTemplateMyNotebook = "src/Toolbar/myNotebooksDropdown.tmpl.html";
     $scope.dropdownTemplateTemplates = "src/Toolbar/templatesDropdown.tmpl.html";
     
-    var login = function() {
+    $scope.login = function() {
         ResourcePanel.hide();
         MyPundit.login();
     };
+
+
     
     var logout = function() {
         ResourcePanel.hide();
@@ -126,7 +128,7 @@ angular.module('Pundit2.Toolbar')
 
     $scope.userNotLoggedDropdown = [
         { text: 'Please sign in to use Pundit', header: true },
-        { text: 'Sign in', click: login }
+        { text: 'Sign in', click: $scope.login }
     ];
 
     $scope.infoDropdown = [
