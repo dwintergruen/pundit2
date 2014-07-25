@@ -98,6 +98,7 @@ angular.module('Pundit2.AnnotationSidebar')
     $scope.editAnnotation = function() {
         TripleComposer.editAnnotation($scope.annotation.id);
         if(!Dashboard.isDashboardVisible()){
+            TripleComposer.closeAfterOp();
             Dashboard.toggle();
         }
         $rootScope.$emit('pnd-dashboard-show-tab', TripleComposer.options.clientDashboardTabTitle);

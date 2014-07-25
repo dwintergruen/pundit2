@@ -23,7 +23,6 @@ angular.module('Pundit2.MyItemsContainer')
     $scope.$watch(function(){
         return MyPundit.isUserLogged();
     }, function(logged){
-        console.log(logged)
         if (logged) {
             $scope.message.text = "No my items found.";
         } else {

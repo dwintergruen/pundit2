@@ -143,6 +143,7 @@ angular.module('Pundit2.TripleComposer')
             TripleComposer.setEditMode(false);
             angular.element('.pnd-triplecomposer-cancel').removeClass('disabled');
             $scope.saving = false;
+            TripleComposer.updateVisibility();
         }, time);
     };
 
@@ -248,13 +249,13 @@ angular.module('Pundit2.TripleComposer')
     }; // end save function
 
     $rootScope.$on('pnd-save-annotation', function(){
-        var open = $scope.statements.some(function(el){
+        var uncomplete = $scope.statements.some(function(el){
             var t = el.scope.get();
             if (t.subject===null || t.predicate===null || t.object===null) {
                 return true;
             }
         });
-        if (open) {
+        if (uncomplete) {
             TripleComposer.openTripleComposer();
         } else {
             $scope.saveAnnotation().catch(function(){

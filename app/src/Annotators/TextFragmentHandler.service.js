@@ -171,6 +171,7 @@ angular.module('Pundit2.Annotators')
             if (Toolbar.isActiveTemplateMode()) {
                 tfh.log('Item used as subject inside triple composer (template mode active).');
                 TripleComposer.addToAllSubject(item);
+                TripleComposer.closeAfterOp();
                 $rootScope.$emit('pnd-save-annotation');
                 return;
             }

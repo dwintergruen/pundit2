@@ -193,6 +193,8 @@ angular.module('Pundit2.TripleComposer')
     var editMode = false,
         editAnnID;
 
+    var closeAfterOp = false;
+
     // Contextual Menu actions for my items and page items
     var initContextualMenu = function() {
         ContextualMenu.addAction({
@@ -242,15 +244,26 @@ angular.module('Pundit2.TripleComposer')
         initContextualMenu();
     });
 
-    tripleComposer.getStatements = function(){
+    tripleComposer.getStatements = function() {
         return statements;
     };
 
-    tripleComposer.isEditMode = function(){
+    tripleComposer.isEditMode = function() {
         return editMode;
     };
 
-    tripleComposer.getEditAnnID = function(){
+    tripleComposer.closeAfterOp = function() {
+        closeAfterOp = true;
+    };
+
+    tripleComposer.updateVisibility = function() {
+        if (closeAfterOp && Dashboard.isDashboardVisible()) {            
+            Dashboard.toggle();
+        }
+        closeAfterOp = false;
+    };
+
+    tripleComposer.getEditAnnID = function() {
         return editAnnID;
     };
 
@@ -263,13 +276,13 @@ angular.module('Pundit2.TripleComposer')
         }
     };
 
-    tripleComposer.addStatement = function(){
+    tripleComposer.addStatement = function() {
         nextId = nextId + 1;
         var l = statements.push({id: nextId});
         return statements[l-1];
     };
 
-    tripleComposer.removeStatement = function(id){
+    tripleComposer.removeStatement = function(id) {
         // at least one statetement must be present
         if (statements.length === 1) {
             statements[0].scope.wipe();
@@ -454,6 +467,7 @@ angular.module('Pundit2.TripleComposer')
 
     // Used to add a object from outside of triple composer
     tripleComposer.addToObject = function(item) {
+        tripleComposer.closeAfterOp();
         tripleComposer.openTripleComposer();
 
         for (var i in statements) {
@@ -471,6 +485,7 @@ angular.module('Pundit2.TripleComposer')
 
     // Used to add a subject from outside of triple composer
     tripleComposer.addToSubject = function(item) {
+        tripleComposer.closeAfterOp();
         tripleComposer.openTripleComposer();
 
         for (var i in statements) {
