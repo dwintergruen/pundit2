@@ -2,7 +2,8 @@
 var KORBODEFAULTCONF;
 KORBODEFAULTCONF = {
 
-    endpoint: "http://demo-cloud.api.korbo.org/v1",
+    //endpoint: "http://demo-cloud.api.korbo.org/v1",
+    endpoint: "http://korbo2.local:80/v1",
 
     basketID: 1,
 
