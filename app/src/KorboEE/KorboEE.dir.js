@@ -43,7 +43,7 @@ angular.module('KorboEE')
 
                 // Initialize API, registering features and events.
                 var api = APIService.init(conf),
-                    features = ['OpenSearch', 'OpenNew', 'Cancel', 'ClearForm', 'Edit'],
+                    features = ['OpenSearch', 'OpenNew', 'Cancel', 'ClearForm', 'Edit', 'CopyAndUse'],
                     events = ['Open','Cancel','Save'];
 
                 /**

@@ -76,7 +76,7 @@ angular.module('Pundit2.ResourcePanel')
  */
 .service('ResourcePanel', function(BaseComponent, RESOURCEPANELDEFAULTS,
                                    ItemsExchange, MyItems, PageItemsContainer, Client, NameSpace, SelectorsManager,
-                                   $filter, $rootScope, $popover, $q, $timeout, Preview) {
+                                   $filter, $rootScope, $popover, $q, $timeout, Preview, $window, Config, Item) {
 
     var resourcePanel = new BaseComponent('ResourcePanel', RESOURCEPANELDEFAULTS);
     var state = {};
@@ -172,6 +172,29 @@ angular.module('Pundit2.ResourcePanel')
 
             // initialize a resource panel popover
         } else if(type === 'resourcePanel'){
+
+            // TODO registrare la callback onSave che prende l'entità salvata su korbo, la salva nell'item exchange e la ritorna come promise
+            var name = $window[Config.korbo.confName].globalObjectName;
+            $window[name].onSave(
+                function(obj){
+                    console.log("entità salvata su korbo ",obj)
+                    var options = {
+                        'label': obj.label,
+                        'type': obj.type
+                    };
+
+                    if(typeof(obj.description) !== 'undefined' && obj.description !== ''){
+                        options.description = obj.description;
+                    }
+
+                    if(typeof(obj.image) !== 'undefined' && obj.image !== ''){
+                        options.image = obj.image;
+                    }
+
+                    var item = new Item(obj.value, options);
+                    state.resourcePromise.resolve(item);
+                }
+            );
 
             state.popoverOptions.template = 'src/ResourcePanel/popoverResourcePanel.tmpl.html';
 

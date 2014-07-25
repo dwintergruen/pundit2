@@ -1,7 +1,7 @@
 angular.module('KorboEE')
     .controller('KeeNewCtrl', function($scope, $rootScope, $dropdown, $modal, KorboCommunicationService, $q, KorboCommunicationFactory,
                                        korboConf, $timeout, $http, TypesHelper, ItemsExchange, ContextualMenu, $window, Config) {
-
+        var basketIDforEdit;
         $scope.tabs = [];
         $scope.disactiveLanguages = [];
         $scope.disactiveLanguagesPopoverTemplate = 'src/KorboEE/New/KorboEE.languagesPopover.tmpl.html';
@@ -86,7 +86,8 @@ angular.module('KorboEE')
             param.item = {uri: $scope.idEntityToEdit};
 
             korboComm.getItem(param, false).then(function(res){
-
+                    basketIDforEdit = res.basket_id;
+                    console.log(basketIDforEdit);
                 //if(res.label !== ''){
                     var title = angular.uppercase(res.language_code);
                     var name = (res.language_code);
@@ -425,11 +426,15 @@ angular.module('KorboEE')
                     "type": newTypes
                 };
 
+                var basketID;
                 if($scope.editMode){
                     entityToSave.id = String($scope.idEntityToEdit);
+                    basketID = basketIDforEdit;
+                } else {
+                    basketID = $scope.conf.basketID;
                 }
 
-                var promise = korboComm.save(entityToSave, lang, $scope.conf.endpoint, $scope.conf.basketID );
+                var promise = korboComm.save(entityToSave, lang, $scope.conf.endpoint, basketID );
                 promise.then(function(res){
 
                     // get id from location of entity just created// All other label types, take the last part
@@ -455,7 +460,7 @@ angular.module('KorboEE')
                                     "label": $scope.tabs[index].label,
                                     "abstract": $scope.tabs[index].description
                                 };
-                                var langPromise = korboComm.save(entityToEdit, lang, $scope.conf.endpoint, $scope.conf.basketID );
+                                var langPromise = korboComm.save(entityToEdit, lang, $scope.conf.endpoint, basketID );
                                 allPromises.push(langPromise);
                             })(i);
 

@@ -60,7 +60,7 @@
         </div>
         <div class="pnd-vertical-tab-footer-content" ng-if=" moduleName == 'Pundit2'">
             <button class="pnd-resource-panel-use-button btn btn-xs btn-success" ng-class="{'disabled': !isUseActive}" ng-click="save(itemSelected)">Use</button>
-            <button class="pnd-resource-panel-copy-button btn btn-xs btn-success disabled" ng-show="showUseAndCopyButton()">Copy and Use</button>
+            <button class="pnd-resource-panel-copy-button btn btn-xs btn-success" ng-class="{'disabled': !isUseActive}" ng-show="showUseAndCopyButton()" ng-click="useAndCopy(itemSelected)">Copy and Use</button>
             <button class="pnd-resource-panel-new-button btn btn-xs btn-success" ng-show="showNewButton()" ng-click="createNew()">Create New</button>
         </div>
     </div>

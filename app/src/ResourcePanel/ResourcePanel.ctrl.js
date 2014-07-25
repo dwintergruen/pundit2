@@ -127,5 +127,10 @@ angular.module('Pundit2.ResourcePanel')
             $window[name].callOpenSearch();
         };
 
+        $scope.useAndCopy = function(elem){
+            var name = $window[Config.korbo.confName].globalObjectName;
+            $window[name].callCopyAndUse(elem);
+        }
+
 
     });

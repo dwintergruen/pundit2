@@ -87,8 +87,37 @@ angular.module('KorboEE')
 
                 api.exposeCancel(function(){
                     //TODO
-
                     KorboCommunicationService.closeModal();
+                });
+
+                api.exposeCopyAndUse(function(entity){
+                    var korboComm = new KorboCommunicationFactory();
+
+                    if(typeof(entity) !== 'undefined' && entity !== null){
+                        var entityToSave = {
+                            "label": entity.label,
+                            "abstract": entity.description,
+                            "depiction": entity.image,
+                            "type": entity.type,
+                            "resource": entity.uri
+                        };
+
+                        var promise = korboComm.save(entityToSave, $scope.defaultLan.value, $scope.conf.endpoint, $scope.conf.basketID);
+                        promise.then(function(res){
+                            // declare object returned onSave() call
+                            var obj = {};
+                            obj.value = res;
+                            obj.label = entityToSave.label;
+                            obj.type = entityToSave.type;
+                            obj.image = entityToSave.depiction;
+                            obj.description = entityToSave.abstract;
+                            obj.language = $scope.defaultLan.value;
+                            // fire save callback
+                            api.fireOnSave(obj);
+                        });
+
+                    }
+
                 });
 
 
