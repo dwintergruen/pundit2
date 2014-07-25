@@ -17,11 +17,11 @@
 
     <div ng-if="item.isProperty()" class="pnd-preview-item-predicate">
         <ul>
-            <li><strong>Vocabulary:</strong> {{item.vocabulary}}</li>
-            <li><strong>Domain:</strong> 
+            <li ng-if="item.vocabulary"><strong>Vocabulary:</strong> {{item.vocabulary}}</li>
+            <li ng-if="item.domain"><strong>Domain:</strong> 
                 <span ng-repeat="domain in item.domain">{{domain}}</span>
             </li>
-            <li><strong>Range:</strong> 
+            <li ng-if="item.range"><strong>Range:</strong> 
                 <span ng-repeat="range in item.range">{{range}}</span>
             </li>
         </ul>
