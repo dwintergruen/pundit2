@@ -36,15 +36,15 @@ angular.module('Pundit2.Core')
      * @description
      * `number`
      *
-     * Time interval for closing login modal, after user has logged in correctly.
+     * Time interval for closing login popup window.
      * Time is expressed in milliseconds.
-     * When user is logged in, if modal isn't close by user clicking Close button, after <loginModalCloseTimer> millisecond,
-     * modal will close automatically
+     * After user open login popup window, after <loginModalCloseTimer> millisecond,
+     * popup will close automatically
      *
      * Default value:
-     * <pre> loginModalCloseTimer: 1000 </pre>
+     * <pre> loginModalCloseTimer: 300000 </pre>
      */
-    loginModalCloseTimer: 1000
+    loginModalCloseTimer: 300000 // 5 minutes
 })
 
 /**
@@ -59,7 +59,7 @@ angular.module('Pundit2.Core')
  *
  *
  */
-.service('MyPundit', function(BaseComponent, MYPUNDITDEFAULTS, NameSpace, $http, $q, $timeout, $modal, $window) {
+.service('MyPundit', function(BaseComponent, MYPUNDITDEFAULTS, NameSpace, $http, $q, $timeout, $modal, $window, $interval) {
     
     var myPundit = new BaseComponent('MyPundit', MYPUNDITDEFAULTS);
     
@@ -232,6 +232,7 @@ angular.module('Pundit2.Core')
      */
     myPundit.openLoginPopUp = function(){
 
+        $timeout.cancel(loginPollTimer);
         if (typeof(loginPromise) === 'undefined') {
             myPundit.err("Login promise not defined, you should call login() first");
             return;
@@ -241,6 +242,14 @@ angular.module('Pundit2.Core')
 
             // open popup to get login
             var loginpopup = $window.open(loginServer, 'loginpopup', 'left=260,top=120,width=480,height=360');
+
+            var stopTime = $interval(function() {
+                if (loginpopup.closed || loginpopup === null) {
+                    console.log("popup chiuso");
+                    $timeout.cancel(loginPollTimer);
+                    $interval.cancel(stopTime);
+                }
+            }, 1000);
 
             // polls for login happened
             var check = function() {
@@ -270,7 +279,7 @@ angular.module('Pundit2.Core')
                 //loginPromise.reject('login error');
                 loginPromise.resolve(false);
                 loginpopup.close();
-            }, 100000000);
+            }, myPundit.options.loginModalCloseTimer);
         }
 
     };
