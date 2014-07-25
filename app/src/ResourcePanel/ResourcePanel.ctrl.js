@@ -107,7 +107,8 @@ angular.module('Pundit2.ResourcePanel')
 
         $scope.showUseAndCopyButton = function(){
             var currTab = $scope.contentTabs[$scope.contentTabs.activeTab].title;
-            if(Config.korbo.active && (currTab !== 'KorboBasket' && currTab !== 'Page Items' && currTab !== 'My Items')){
+            //if(Config.korbo.active && (currTab !== 'KorboBasket' && currTab !== 'Page Items' && currTab !== 'My Items')){
+            if(Config.korbo.active && currTab === 'Freebase'){
                 return true;
             } else {
                 return false;
@@ -115,7 +116,8 @@ angular.module('Pundit2.ResourcePanel')
         };
 
         $scope.showNewButton = function(){
-            if(typeof(Config.korbo) !== 'undefined' && Config.korbo.active){
+            
+            if(typeof(Config.korbo) !== 'undefined' && Config.korbo.active && $scope.type !== 'pr'){
                 return true;
             } else {
                 return false;

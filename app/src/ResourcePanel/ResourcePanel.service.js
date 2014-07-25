@@ -174,27 +174,28 @@ angular.module('Pundit2.ResourcePanel')
         } else if(type === 'resourcePanel'){
 
             // TODO registrare la callback onSave che prende l'entità salvata su korbo, la salva nell'item exchange e la ritorna come promise
-            var name = $window[Config.korbo.confName].globalObjectName;
-            $window[name].onSave(
-                function(obj){
-                    console.log("entità salvata su korbo ",obj)
-                    var options = {
-                        'label': obj.label,
-                        'type': obj.type
-                    };
+            if(typeof(Config.korbo) !== 'undefined' && Config.korbo.active){
+                var name = $window[Config.korbo.confName].globalObjectName;
+                $window[name].onSave(
+                    function(obj){
+                        var options = {
+                            'label': obj.label,
+                            'type': obj.type
+                        };
 
-                    if(typeof(obj.description) !== 'undefined' && obj.description !== ''){
-                        options.description = obj.description;
+                        if(typeof(obj.description) !== 'undefined' && obj.description !== ''){
+                            options.description = obj.description;
+                        }
+
+                        if(typeof(obj.image) !== 'undefined' && obj.image !== ''){
+                            options.image = obj.image;
+                        }
+
+                        var item = new Item(obj.value, options);
+                        state.resourcePromise.resolve(item);
                     }
-
-                    if(typeof(obj.image) !== 'undefined' && obj.image !== ''){
-                        options.image = obj.image;
-                    }
-
-                    var item = new Item(obj.value, options);
-                    state.resourcePromise.resolve(item);
-                }
-            );
+                );
+            }
 
             state.popoverOptions.template = 'src/ResourcePanel/popoverResourcePanel.tmpl.html';
 
