@@ -229,7 +229,7 @@ angular.module('Pundit2.AnnotationSidebar')
     /**
      * @module punditConfig
      * @ngdoc property
-     * @name modules#AnnotationSidebar.annotationHeigth
+     * @name modules#AnnotationSidebar.startTop
      *
      * @description
      * `number`
@@ -237,7 +237,7 @@ angular.module('Pundit2.AnnotationSidebar')
      * First top position of annotations in the sidebar
      *
      * Default value:
-     * <pre> annotationHeigth: 25 </pre>
+     * <pre> startTop: 55 </pre>
      */
     startTop: 55,
 

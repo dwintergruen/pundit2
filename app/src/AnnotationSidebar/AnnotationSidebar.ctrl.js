@@ -107,37 +107,32 @@ angular.module('Pundit2.AnnotationSidebar')
     });
 
     // Annotation sidebar height
-    var resizeSidebarHeight = function(){ // Work in progress .. 
-        var newHeight;
+    var resizeSidebarHeight = function(){
         var minHeightSidebar = AnnotationSidebar.minHeightRequired;
-        var htmlHeight = html.innerHeight();
         var bodyHeight = body.innerHeight();
-        var windowHeight = $window.innerHeight;
-        var documentHeight = $document.innerHeight();
-        var documentHeightMod;
-        if (Dashboard.isDashboardVisible()){
-            documentHeightMod = documentHeight - state.toolbarHeight - Dashboard.getContainerHeight();
-        } else {
-            documentHeightMod = documentHeight - state.toolbarHeight;
-        }
+        // var htmlHeight = html.innerHeight();
+        
+        var newHeight = Math.max(minHeightSidebar, bodyHeight);;
+        container.css('height', newHeight + 'px');      
 
-        if (documentHeight === htmlHeight){
-            newHeight = documentHeightMod;
-        } else {
-            newHeight = Math.max(documentHeightMod, windowHeight, bodyHeight);
-        }
+        // var difference;
+        // var documentHeight = $document.innerHeight();
+        
+        // if (documentHeight > minHeightSidebar && documentHeight > htmlHeight){
+        //     console.log("questo caso");
+        //     if (Dashboard.isDashboardVisible()){
+        //         difference = state.toolbarHeight + Dashboard.getContainerHeight();
+        //     } else {
+        //         difference = state.toolbarHeight;
+        //     }
 
-        container.css('height', newHeight + 'px');
+        //     newHeight = documentHeight - difference;
+        //     container.css('height', newHeight + 'px');      
+        // }
     };
 
     $scope.$watch(function() {
         return AnnotationSidebar.minHeightRequired;
-    }, function(heightValue) {
-        resizeSidebarHeight();
-    });
-
-    $scope.$watch(function() {
-        return body.innerHeight();
     }, function(heightValue) {
         resizeSidebarHeight();
     });
