@@ -5,6 +5,7 @@ angular.module('Pundit2.AnnotationSidebar')
     var bodyClasses = AnnotationSidebar.options.bodyExpandedClass + ' ' + AnnotationSidebar.options.bodyCollapsedClass;
     var sidebarClasses = AnnotationSidebar.options.sidebarExpandedClass + ' ' + AnnotationSidebar.options.sidebarCollapsedClass;
 
+    var html = angular.element('html');
     var body = angular.element('body');
     var container = angular.element('.pnd-annotation-sidebar-container');
     var content = angular.element('.pnd-annotation-sidebar-content');
@@ -109,19 +110,21 @@ angular.module('Pundit2.AnnotationSidebar')
     var resizeSidebarHeight = function(){ // Work in progress .. 
         var newHeight;
         var minHeightSidebar = AnnotationSidebar.minHeightRequired;
+        var htmlHeight = html.innerHeight();
         var bodyHeight = body.innerHeight();
         var windowHeight = $window.innerHeight;
         var documentHeight = $document.innerHeight();
+        var documentHeightMod;
         if (Dashboard.isDashboardVisible()){
-            documentHeight = documentHeight - state.toolbarHeight - Dashboard.getContainerHeight();
+            documentHeightMod = documentHeight - state.toolbarHeight - Dashboard.getContainerHeight();
         } else {
-            documentHeight = documentHeight - state.toolbarHeight;
+            documentHeightMod = documentHeight - state.toolbarHeight;
         }
 
-        if (minHeightSidebar < bodyHeight){
-            newHeight = bodyHeight;
+        if (documentHeight === htmlHeight){
+            newHeight = documentHeightMod;
         } else {
-            newHeight = Math.max(documentHeight, windowHeight, bodyHeight);
+            newHeight = Math.max(documentHeightMod, windowHeight, bodyHeight);
         }
 
         container.css('height', newHeight + 'px');
