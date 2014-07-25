@@ -7,7 +7,7 @@
             <span class="pull-right pnd-icon pnd-icon-times" ng-click="hide()"></span>
         </h3>
 
-    <div class="popover-content">
+    <div class="popover-content" ng-click="onContentClick()">
         <annotation-details ng-repeat="ann in annotations" id="{{ann.id}}"></annotation-details>
     </div>
 
