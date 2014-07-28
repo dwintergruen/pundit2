@@ -59,6 +59,9 @@ describe('Subject Popover Resource Panel service', function() {
             },
             "FreebaseSelector": {
                 active: false
+            },
+            "Korbo2Selector": {
+                active: false
             }
         }
     };
