@@ -1,6 +1,28 @@
 angular.module('Pundit2.Core')
     .constant('PUNDITDEFAULTCONF', {
 
+        /**
+         * @module punditConfig
+         * @ngdoc object
+         * @name korbo
+         * @description
+         * `object`
+         *
+         * Define is use korbo Entity Editor widget in pundit. Object has the follow fields:
+         *
+         * * `active`: true to active korbo in pundit, false otherwise
+         * * `confName`: name of korboEE configuration object
+         *
+         * Default:
+         * <pre>
+         *
+         * {
+            active: false,
+            confName: 'KORBODEFAULTCONF'
+            }
+
+         * </pre>
+         */
         korbo : {
             active: false,
             confName: 'KORBODEFAULTCONF'
