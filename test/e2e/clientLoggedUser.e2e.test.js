@@ -366,11 +366,11 @@ describe("Client interaction when user is logged in", function() {
         });
         // check popover vertical tabs number and names
         p.findElements(protractor.By.css(".pnd-resource-panel-popover .pnd-vertical-tabs li")).then(function(tabs) {
-            expect(tabs.length).toBe(5);
+            expect(tabs.length).toBe(6);
         });
         // check popover vertical tabs showed items number
         p.findElements(protractor.By.css(".pnd-resource-panel-popover .pnd-vertical-tabs li a span")).then(function(spans) {
-            expect(spans.length).toBe(10);
+            expect(spans.length).toBe(12);
             expect(spans[0].getText()).toEqual(pageItemsNumber.toString());
             expect(spans[2].getText()).toEqual("0");
         });

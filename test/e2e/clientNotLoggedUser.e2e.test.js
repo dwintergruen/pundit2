@@ -120,11 +120,11 @@ describe("Client interaction when user is not logged in", function() {
         });
         // check popover vertical tabs number and names
         p.findElements(protractor.By.css(".pnd-resource-panel-popover .pnd-vertical-tabs li:not(.ng-hide)")).then(function(tabs) {
-            expect(tabs.length).toBe(4);
+            expect(tabs.length).toBe(5);
         });
         // check popover vertical tabs showed items number
         p.findElements(protractor.By.css(".pnd-resource-panel-popover .pnd-vertical-tabs li:not(.ng-hide) a span")).then(function(spans) {
-            expect(spans.length).toBe(8);
+            expect(spans.length).toBe(10);
             expect(spans[0].getText()).toEqual("1");
             expect(spans[2].getText()).toEqual("");
             expect(spans[4].getText()).toEqual("");
