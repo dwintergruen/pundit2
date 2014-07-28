@@ -211,7 +211,7 @@ angular.module('KorboEE')
         };
 
         // param: itemUri, provider, endpoint, basketID, language
-        korboCommunication.buildLanguagesObject = function(param, itemSelected){
+        korboCommunication.buildLanguagesObject = function(param, langConf){
             var promise = $q.defer();
             var promises = [];
             var results = {};
@@ -220,7 +220,6 @@ angular.module('KorboEE')
 
             var tooltipMessageTitle = "Insert title of the entity in ";
             var tooltipMessageDescription = "Insert description of the entity in ";
-            var errorMandatory = "The Title field is mandatory and must be filled";
 
             results.languages = [];
 
@@ -243,21 +242,24 @@ angular.module('KorboEE')
                     $q.all(promises).then(function(r){
                         for(var j=0; j< r.length; j++){
                             (function(index){
-                                var title = angular.uppercase(r[index].reqLanguage);
-                                var name = angular.lowercase(r[index].reqLanguage);
-                                var lang = {
-                                    'title': title,
-                                    'name' : name,
-                                    'description': r[index].abstract,
-                                    'label': r[index].label,
-                                    'mandatory': true,
-                                    'hasError': false,
-                                    'tooltipMessageTitle': tooltipMessageTitle + name,
-                                    'tooltipMessageDescription': tooltipMessageDescription + name,
-                                    'tooltipMessageError': "message",
-                                    'tooltipMessageErrorTab': "There are some errors in the "+name+" languages fields"
-                                };
-                                results.languages.push(lang);
+                                var indexFind = langConf.map(function(e){ return angular.lowercase(e.value) }).indexOf(angular.lowercase(r[index].reqLanguage));
+                                if(indexFind !== -1){
+                                    var title = angular.uppercase(r[index].reqLanguage);
+                                    var name = angular.lowercase(langConf[indexFind].name);
+                                    var lang = {
+                                        'title': title,
+                                        'name' : name,
+                                        'description': r[index].abstract,
+                                        'label': r[index].label,
+                                        'mandatory': true,
+                                        'hasError': false,
+                                        'tooltipMessageTitle': tooltipMessageTitle + name,
+                                        'tooltipMessageDescription': tooltipMessageDescription + name,
+                                        'tooltipMessageError': "message",
+                                        'tooltipMessageErrorTab': "There are some errors in the "+name+" languages fields"
+                                    };
+                                    results.languages.push(lang);
+                                }
                             })(j)
                         } // end for
                         promise.resolve(results);
@@ -336,7 +338,8 @@ angular.module('KorboEE')
                     p: param.provider,
                     limit: param.limit,
                     offset: param.offset,
-                    lang: param.language
+                    lang: param.language,
+                    basketId: param.basketID
                 }
 
             }).success(function(res){

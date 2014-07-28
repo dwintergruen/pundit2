@@ -650,7 +650,8 @@ angular.module('KorboEE')
                         basketID: null, 
                         language: $scope.defaultLan.value
                     }
-                    KorboCommunicationService.buildLanguagesObject(param, entity).then(function(res){
+                    var langConf = $scope.conf.languages;
+                    KorboCommunicationService.buildLanguagesObject(param, langConf).then(function(res){
                         $scope.imageUrl = res.imageUrl;
                         $scope.originalUrl = res.originalUrl;
                         initTypes();
@@ -658,12 +659,8 @@ angular.module('KorboEE')
                         buildTypesFromConfiguration();
 
                         for (var i in res.languages){
-                            var indexFind = $scope.conf.languages.map(function(e){ return angular.lowercase(e.value) }).indexOf(angular.lowercase(res.languages[i].title));
-                            if(indexFind !== -1){
-                                res.languages[i].name = $scope.conf.languages[indexFind].name;
-                                $scope.tabs.push(res.languages[i]);
-                                pushCurrentLang(res.languages[i]);
-                            }
+                            $scope.tabs.push(res.languages[i]);
+                            pushCurrentLang(res.languages[i]);
                         }
 
                         $scope.topArea = {
