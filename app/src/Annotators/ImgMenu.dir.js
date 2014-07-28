@@ -1,12 +1,12 @@
 angular.module('Pundit2.Annotators')
-.directive('imgMenu', function($rootScope, ContextualMenu, Toolbar, ImageHandler, ItemsExchange) {
+.directive('imgMenu', function($rootScope, ContextualMenu, Toolbar, ImageHandler, ImageAnnotator, ItemsExchange) {
     return {
         restrict: 'E',
         scope: {
             ref: '@'
         },
         templateUrl: 'src/Annotators/ImgMenu.dir.tmpl.html',
-        replace: true,
+        //replace: true,
         link: function(scope, element , attrs) {
 
             // reference to image dom element
@@ -34,7 +34,9 @@ angular.module('Pundit2.Annotators')
             scope.clickHandler = function(evt) {
 
                 evt.preventDefault();
-                evt.stopPropagation();               
+                evt.stopPropagation();
+
+                ImageAnnotator.clearTimeout();              
                 
                 if (scope.item === null) {
                     // create item only once
@@ -50,6 +52,14 @@ angular.module('Pundit2.Annotators')
                 var item = ItemsExchange.getItemByUri(scope.item.uri);
                 ContextualMenu.show(evt.pageX, evt.pageY, item, ImageHandler.options.cMenuType);
                 
+            };
+
+            scope.onMouseOver = function(evt) {
+                ImageAnnotator.clearTimeout();
+            };
+
+            scope.onMouseLeave = function(evt) {
+                ImageAnnotator.removeDirective(evt);
             };
 
         } // link()

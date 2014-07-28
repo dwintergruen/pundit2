@@ -1,5 +1,5 @@
 angular.module('Pundit2.Annotators')
-.service('ImageAnnotator', function(NameSpace, BaseComponent, $location,
+.service('ImageAnnotator', function(NameSpace, BaseComponent, $location, $compile, $rootScope, $timeout,
     Consolidation, XpointersHelper) {
 
     // Create the component and declare what we deal with: text
@@ -13,37 +13,37 @@ angular.module('Pundit2.Annotators')
 
     Consolidation.addAnnotator(ia);
 
-    /*ia.wrapImages = function() {
+    // This function must be executed before than pundit is appended to DOM
+    var timeoutPromise,
+        alreadyExisting = false,
+        mouseInside = false;
+    angular.element('img').hover(function(evt){
+        if (!alreadyExisting) {
+            angular.element(evt.target)
+                .addClass('pnd-pointed-img')
+                .after('<img-menu ref="pnd-pointed-img"></img-menu>');
+            $compile(angular.element('img-menu'))($rootScope);
+            alreadyExisting = true;
+        }
+        mouseInside = true;
+    }, function(evt){
+        timeoutPromise = ia.removeDirective(evt);
+        mouseInside = false;
+    });
 
-        angular.element('img')
-            .filter(function(index, el){
-                // Traverse every parent and check if it has one of the classes we
-                // need to ignore. As soon as we find one, return true: must ignore.
-                var node = el;
-                while (node.nodeName.toLowerCase() !== 'body') {
-                    
-                    if (angular.element(node).hasClass('pnd-ignore')) {
-                        return false;
-                    }            
+    ia.clearTimeout = function() {
+        $timeout.cancel(timeoutPromise);
+    };
 
-                    // If there's no parent node .. even better, we didnt find anything wrong!
-                    if (node.parentNode === null) {
-                        return true;
-                    }
-                    node = node.parentNode;
-                }
-                return true;
-            })
-            .wrap('<div class="'+imgContainerClass+'"></div>')
-            .each(function(index){
-                var className = 'pnd-image-ref-'+index;
-                angular.element(this)
-                    .addClass(className)
-                    .after('<img-menu ref="'+ className +'"></img-menu>');
-            });
-        $compile(angular.element('img-menu'))($rootScope);
-    };*/
-    //$rootScope.$on('consolidation-completed', ia.wrapImages);
+    ia.removeDirective = function(evt) {
+        return $timeout(function(){
+            if (!mouseInside) {
+                angular.element(evt.target).removeClass('pnd-pointed-img');
+                angular.element('img-menu').remove();
+                alreadyExisting = false;
+            }
+        }, 250);
+    };
     
     ia.isConsolidable = function(item) {
 
@@ -88,34 +88,6 @@ angular.module('Pundit2.Annotators')
     };
 
     ia.wipe = function() {
-        /*angular.element('img')
-            .filter(function(index, el){
-                // Traverse every parent and check if it has one of the classes we
-                // need to ignore. As soon as we find one, return true: must ignore.
-                var node = el;
-                while (node.nodeName.toLowerCase() !== 'body') {
-                    
-                    if (angular.element(node).hasClass('pnd-ignore')) {
-                        return false;
-                    }            
-
-                    // If there's no parent node .. even better, we didnt find anything wrong!
-                    if (node.parentNode === null) {
-                        return true;
-                    }
-                    node = node.parentNode;
-                }
-                return true;
-            })
-            .unwrap()
-            .each(function(index){
-                angular.element(this)
-                    .removeClass(function(index, classes){
-                        return (classes.match('pnd-image-ref-') || []).join(' ');
-                    });
-            });
-
-        angular.element('.pnd-image-icon').remove();*/
         angular.element('.'+imgConsClass).removeClass(imgConsClass);
     };
 
