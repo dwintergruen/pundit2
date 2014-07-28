@@ -658,8 +658,12 @@ angular.module('KorboEE')
                         buildTypesFromConfiguration();
 
                         for (var i in res.languages){
-                            $scope.tabs.push(res.languages[i]);
-                            pushCurrentLang(res.languages[i]);
+                            var indexFind = $scope.conf.languages.map(function(e){ return angular.lowercase(e.value) }).indexOf(angular.lowercase(res.languages[i].title));
+                            if(indexFind !== -1){
+                                res.languages[i].name = $scope.conf.languages[indexFind].name;
+                                $scope.tabs.push(res.languages[i]);
+                                pushCurrentLang(res.languages[i]);
+                            }
                         }
 
                         $scope.topArea = {
