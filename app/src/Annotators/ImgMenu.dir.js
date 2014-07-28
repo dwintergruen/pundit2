@@ -1,5 +1,5 @@
 angular.module('Pundit2.Annotators')
-.directive('imgMenu', function($rootScope, ContextualMenu, Toolbar, ImageHandler, ImageAnnotator, ItemsExchange) {
+.directive('imgMenu', function($rootScope, ContextualMenu, Toolbar, ImageHandler, ImageAnnotator, ItemsExchange, TripleComposer) {
     return {
         restrict: 'E',
         scope: {
@@ -17,6 +17,16 @@ angular.module('Pundit2.Annotators')
             scope.visible = false;
             // item generated from image reference
             scope.item = null;
+
+            scope.$watch(function() {
+                return Toolbar.isActiveTemplateMode();
+            }, function(active) {
+                if (active) {
+                    scope.icon = "pnd-icon-plus-circle";
+                } else {
+                    scope.icon = "pnd-icon-gear";
+                }
+            });
 
             // read image coordinate and position the directive
             var placeMenu = function() {
@@ -44,8 +54,12 @@ angular.module('Pundit2.Annotators')
                     ItemsExchange.addItemToContainer(scope.item, ImageHandler.options.container);
                 }
 
-                // TODO what to do in template mode?
+                // TODO check if predicate domain accept image type
+                // remember to modify (alessio) existing template config to satisfy this condition
                 if (Toolbar.isActiveTemplateMode()) {
+                    TripleComposer.addToAllSubject(ItemsExchange.getItemByUri(scope.item.uri));
+                    TripleComposer.closeAfterOp();
+                    $rootScope.$emit('pnd-save-annotation');
                     return;
                 }
 
