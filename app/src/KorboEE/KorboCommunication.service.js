@@ -228,6 +228,7 @@ angular.module('KorboEE')
                 results.originalUrl = res.resource;
 
                 results.types = res.type;
+                results.basketId = res.basket_id;
 
                 if(res.available_languages.length >= 0){
                     for(var i = 0; i < res.available_languages.length; i++){

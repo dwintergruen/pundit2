@@ -58,37 +58,23 @@ angular.module('KorboEE')
             }
         };
 
+        var buildLanguagesModel = function(entityUri, provider){
 
-        // set default language
-        $scope.defaultLan = $scope.conf.languages[0];
-        for (var j in $scope.conf.languages){
-            if($scope.conf.languages[j].state === true) {
-                $scope.defaultLan = $scope.conf.languages[j];
-                break;
-            } // end if
-        } // end for
-
-        var korboComm = new KorboCommunicationFactory();
-
-        if(typeof($scope.idEntityToEdit) !== 'undefined' &&$scope.idEntityToEdit !== null){
-            console.log("vuoi modificare l'entità con id ", $scope.idEntityToEdit);
-            
             $scope.topArea = {
                 'message': 'Loading entity...',
                 'status': 'info'
             };
 
             var param = {
-                item: {uri: $scope.idEntityToEdit},
-                provider: 'korbo',
+                item: {uri: entityUri},
+                provider: provider,
                 endpoint: $scope.conf.endpoint, 
                 basketID: null, 
                 language: $scope.defaultLan.value
             }
             var langConf = $scope.conf.languages;
             KorboCommunicationService.buildLanguagesObject(param, langConf).then(function(res){
-                    console.log(res);
-                basketIDforEdit = res.basket_id;
+                basketIDforEdit = res.basketId;
                 $scope.imageUrl = res.imageUrl;
                 $scope.originalUrl = res.originalUrl;
                 initTypes();
@@ -99,6 +85,8 @@ angular.module('KorboEE')
                     $scope.tabs.push(res.languages[i]);
                     pushCurrentLang(res.languages[i]);
                 }
+
+                buildLanguageTabs();
 
                 $scope.topArea = {
                     'message': 'You are editing the entity...',
@@ -113,6 +101,23 @@ angular.module('KorboEE')
                 };
             });
 
+        };
+
+
+        // set default language
+        $scope.defaultLan = $scope.conf.languages[0];
+        for (var j in $scope.conf.languages){
+            if($scope.conf.languages[j].state === true) {
+                $scope.defaultLan = $scope.conf.languages[j];
+                break;
+            } // end if
+        } // end for
+
+        var korboComm = new KorboCommunicationFactory();
+
+        if(typeof($scope.idEntityToEdit) !== 'undefined' &&$scope.idEntityToEdit !== null){
+            console.log("vuoi modificare l'entità con id ", $scope.idEntityToEdit);
+            buildLanguagesModel($scope.idEntityToEdit, 'korbo');
         };
 
 
@@ -398,7 +403,8 @@ angular.module('KorboEE')
                     var location = res;
 
                     // check if there are more than 1 languages
-                    if($scope.tabs.length > 1){
+                    // TODO: rimuovere il controllo?
+                    if($scope.tabs.length >= 1){
                         var allPromises = [];
                         for(var i=0; i<$scope.tabs.length; i++){
 
@@ -433,6 +439,7 @@ angular.module('KorboEE')
                             $scope.topArea.message = "Entity saved!";
                             $scope.topArea.status = "info";
                             $timeout(function(){
+                                ContextualMenu.wipeActionsByType('advancedMenu');                                
                                 KorboCommunicationService.closeModal();
                                 // set modal as close in configuration
                                 korboConf.setIsOpenModal(false);
@@ -585,52 +592,15 @@ angular.module('KorboEE')
             if(entity !== null){
 
                 if(!$scope.editMode || copyCheck){
-                    $scope.topArea = {
-                        'message': 'Loading entity...',
-                        'status': 'info'
-                    };
-
                     ContextualMenu.wipeActionsByType('advancedMenu');
                     buildContextualMenu();
                     $scope.tabs = [];
                     $scope.disactiveLanguages = [];
 
-                    var param = {
-                        item: {uri: entity.uri},
-                        provider: entity.providerFrom,
-                        endpoint: $scope.conf.endpoint, 
-                        basketID: null, 
-                        language: $scope.defaultLan.value
-                    }
-                    var langConf = $scope.conf.languages;
-                    KorboCommunicationService.buildLanguagesObject(param, langConf).then(function(res){
-                        $scope.imageUrl = res.imageUrl;
-                        $scope.originalUrl = res.originalUrl;
-                        initTypes();
-                        buildTypesFromArray(res.types);
-                        buildTypesFromConfiguration();
-
-                        for (var i in res.languages){
-                            $scope.tabs.push(res.languages[i]);
-                            pushCurrentLang(res.languages[i]);
-                        }
-
-                        $scope.topArea = {
-                            'message': 'You are editing the entity...',
-                            'status': 'info'
-                        };
-
-                    },
-                    function(error){
-                        $scope.topArea = {
-                            'message': 'Error getting entity info!',
-                            'status': 'error'
-                        };
-                    });
+                    buildLanguagesModel(entity.uri, entity.providerFrom);
 
                     copyCheck = false;
                 } else{
-                    // var e = ItemsExchange.getItemByUri(entity.uri);
                     $scope.originalUrl = entity.resource;
                 }
             }
