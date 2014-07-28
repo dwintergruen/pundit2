@@ -227,53 +227,59 @@ angular.module('KorboEE')
             }
         };
 
-        ContextualMenu.addAction({
-            name: 'editURL',
-            type: 'advancedMenu',
-            label: 'Edit original URL',
-            priority: 3,
-            showIf: function(){
-                return true;
-            },
-            action: function(resource){
-                $scope.originalUrlCheck = false;
-                ContextualMenu.modifyHeaderActionByName('editURL', true);
-            }
-        });
+        var buildContextualMenu = function(){
+            ContextualMenu.addAction({
+                name: 'editURL',
+                type: 'advancedMenu',
+                label: 'Edit original URL',
+                priority: 3,
+                showIf: function(){
+                    return true;
+                },
+                action: function(resource){
+                    $scope.originalUrlCheck = false;
+                    ContextualMenu.modifyHeaderActionByName('editURL', true);
+                }
+            });
 
-        ContextualMenu.addAction({
-            name: 'searchOriginalURL',
-            type: 'advancedMenu',
-            label: 'Search original URL',
-            priority: 3,
-            showIf: function(){
-                return $scope.editMode;
-            },
-            action: function(){
-                $scope.korboModalTabs.activeTab = 0;
-                copyCheck = false;
-            }
-        });
+            ContextualMenu.addAction({
+                name: 'searchOriginalURL',
+                type: 'advancedMenu',
+                label: 'Search original URL',
+                priority: 3,
+                showIf: function(){
+                    return $scope.editMode;
+                },
+                action: function(){
+                    $scope.korboModalTabs.activeTab = 0;
+                    copyCheck = false;
+                }
+            });
 
-        ContextualMenu.addAction({
-            name: 'searchAndCopy',
-            type: 'advancedMenu',
-            label: 'Search and copy from LOD',
-            priority: 3,
-            showIf: function(){
-                return $scope.editMode;
-            },
-            action: function(){
-                $scope.korboModalTabs.activeTab = 0;
-                copyCheck = true;
-            }
-        });
+            ContextualMenu.addAction({
+                name: 'searchAndCopy',
+                type: 'advancedMenu',
+                label: 'Search and copy from LOD',
+                priority: 3,
+                showIf: function(){
+                    return $scope.editMode;
+                },
+                action: function(){
+                    $scope.korboModalTabs.activeTab = 0;
+                    copyCheck = true;
+                }
+            });
 
 
-        ContextualMenu.addDivider({
-            priority: 3,
-            type: 'advancedMenu'
-        });
+            ContextualMenu.addDivider({
+                priority: 3,
+                type: 'advancedMenu'
+            });
+        };
+
+        buildContextualMenu();
+
+        
 
         //build languages tabs
         var buildLanguageTabs = function(){
@@ -633,7 +639,9 @@ angular.module('KorboEE')
                     };
 
                     ContextualMenu.wipeActionsByType('advancedMenu');
+                    buildContextualMenu();
                     $scope.tabs = [];
+                    $scope.disactiveLanguages = [];
 
                     var param = {
                         item: {uri: entity.uri},
@@ -650,13 +658,14 @@ angular.module('KorboEE')
                         buildTypesFromConfiguration();
 
                         for (var i in res.languages){
-                            // $scope.tabs[i].label = res.languages[i].label;
-                            // $scope.tabs[i].description = res.languages[i].description;
-                            // console.log(res.languages[i]);
                             $scope.tabs.push(res.languages[i]);
                             pushCurrentLang(res.languages[i]);
                         }
 
+                        $scope.topArea = {
+                            'message': 'You are editing the entity...',
+                            'status': 'info'
+                        };
 
                     },
                     function(error){
