@@ -1,5 +1,5 @@
 angular.module('KorboEE')
-    .service('KorboCommunicationService', function($q, $http, BaseComponent, ItemsExchange, Item, $rootScope, $modal, korboConf, APIService){
+    .service('KorboCommunicationService', function($q, $http, BaseComponent, ItemsExchange, Item, $rootScope, $modal, korboConf, KorboCommunicationFactory, APIService){
 
         var korboCommunication = new BaseComponent("KorboCommunication");
 
@@ -208,6 +208,93 @@ angular.module('KorboEE')
             });
 
 
+        };
+
+        // param: itemUri, provider, endpoint, basketID, language
+        korboCommunication.buildLanguagesObject = function(param, itemSelected){
+            var promise = $q.defer();
+            var promises = [];
+            var p;
+            var results = {};
+            var defaultLanguage = param.language;
+            var korboComm = new KorboCommunicationFactory();
+
+            var tooltipMessageTitle = "Insert title of the entity in ";
+            var tooltipMessageDescription = "Insert description of the entity in ";
+            var errorMandatory = "The Title field is mandatory and must be filled";
+
+            results.languages = [];
+
+            korboComm.getItem(param, false).then(function(res){
+
+                var title = angular.uppercase(res.language_code);
+                var name = (res.language_code);
+                var lang = {
+                    'title': title,
+                    'name' : name,
+                    'description': res.abstract,
+                    'label': res.label,
+                    'mandatory': true,
+                    'hasError': false,
+                    'tooltipMessageTitle': tooltipMessageTitle + name,
+                    'tooltipMessageDescription': tooltipMessageDescription + name,
+                    'tooltipMessageError': "message",
+                    'tooltipMessageErrorTab': "There are some errors in the "+name+" languages fields"
+                };
+                results.mainLanguage = lang;
+
+                results.imageUrl = res.depiction;
+                results.originalUrl = res.resource;
+
+                results.types = res.type;
+
+                if(res.available_languages.length >= 1){
+                    for(var i = 0; i < res.available_languages.length; i++){
+                        if(res.available_languages[i] !== defaultLanguage){
+                            param.language = res.available_languages[i];
+                            p = korboComm.getItem(param, false);
+                            promises.push(p);
+                        }
+                    }
+
+                    $q.all(promises).then(function(r){
+                        for(var j=0; j< r.length; j++){
+                            (function(index){
+                                var title = angular.uppercase(r[index].language_code);
+                                var name = angular.lowercase(r[index].language_code);
+                                var lang = {
+                                    'title': title,
+                                    'name' : name,
+                                    'description': r[index].abstract,
+                                    'label': r[index].label,
+                                    'mandatory': true,
+                                    'hasError': false,
+                                    'tooltipMessageTitle': tooltipMessageTitle + name,
+                                    'tooltipMessageDescription': tooltipMessageDescription + name,
+                                    'tooltipMessageError': "message",
+                                    'tooltipMessageErrorTab': "There are some errors in the "+name+" languages fields"
+                                };
+                                results.languages.push(lang);
+                            })(j)
+                        } // end for
+                        promise.resolve(results);
+                    },
+                    function(error){
+                        console.log("server error");
+                        results = null;
+                        promise.reject();
+                    });
+                } else{
+                    promise.resolve(results);
+                }
+            },
+            function(error){
+                console.log("server error");
+                results = null;
+                promise.reject();
+            });
+
+            return promise.promise;
         };
 
         var entity = null;
