@@ -72,97 +72,39 @@ angular.module('KorboEE')
 
         if(typeof($scope.idEntityToEdit) !== 'undefined' &&$scope.idEntityToEdit !== null){
             console.log("vuoi modificare l'entità con id ", $scope.idEntityToEdit);
+            
             $scope.topArea = {
                 'message': 'Loading entity...',
                 'status': 'info'
             };
-            var promises = [];
-            var p;
-            var param = {};
-            param.endpoint = $scope.conf.endpoint;
-            param.basketID = "null";
-            param.language = $scope.defaultLan.value;
-            param.provider = 'korbo';
-            param.item = {uri: $scope.idEntityToEdit};
 
-            korboComm.getItem(param, false).then(function(res){
-                basketIDforEdit = res.basket_id;
-                console.log(basketIDforEdit);
-
-                var title = angular.uppercase(res.language_code);
-                var name = (res.language_code);
-                var lang = {
-                    'title': title,
-                    'name' : name,
-                    'description': res.abstract,
-                    'label': res.label,
-                    'mandatory': true,
-                    'hasError': false,
-                    'tooltipMessageTitle': tooltipMessageTitle + name,
-                    'tooltipMessageDescription': tooltipMessageDescription + name,
-                    'tooltipMessageError': "message",
-                    'tooltipMessageErrorTab': "There are some errors in the "+name+" languages fields"
-                };
-                $scope.tabs.push(lang);
-                pushCurrentLang(lang);
-                // buildLanguageTabs();
-
-                $scope.imageUrl = res.depiction;
-                $scope.originalUrl = res.resource;
+            var param = {
+                item: {uri: $scope.idEntityToEdit},
+                provider: 'korbo',
+                endpoint: $scope.conf.endpoint, 
+                basketID: null, 
+                language: $scope.defaultLan.value
+            }
+            var langConf = $scope.conf.languages;
+            KorboCommunicationService.buildLanguagesObject(param, langConf).then(function(res){
+                $scope.imageUrl = res.imageUrl;
+                $scope.originalUrl = res.originalUrl;
                 initTypes();
-                buildTypesFromArray(res.type);
+                buildTypesFromArray(res.types);
                 buildTypesFromConfiguration();
 
-
-                if(res.available_languages.length >= 1){
-                    for(var i = 0; i < res.available_languages.length; i++){
-                        if(res.available_languages[i] !== $scope.defaultLan.value){
-                            param.language = res.available_languages[i];
-                            p = korboComm.getItem(param, false);
-                            promises.push(p);
-                        }
-                    }
-
-                    $q.all(promises).then(function(r){
-                        for(var j=0; j< r.length; j++){
-                            (function(index){
-                                var title = angular.uppercase(r[index].language_code);
-                                var name = angular.lowercase(r[index].language_code);
-                                var lang = {
-                                    'title': title,
-                                    'name' : name,
-                                    'description': r[index].abstract,
-                                    'label': r[index].label,
-                                    'mandatory': true,
-                                    'hasError': false,
-                                    'tooltipMessageTitle': tooltipMessageTitle + name,
-                                    'tooltipMessageDescription': tooltipMessageDescription + name,
-                                    'tooltipMessageError': "message",
-                                    'tooltipMessageErrorTab': "There are some errors in the "+name+" languages fields"
-                                };
-                                $scope.tabs.push(lang);
-                                pushCurrentLang(lang);
-                                // buildLanguageTabs();
-                            })(j)
-                        } // end for
-                        buildLanguageTabs();
-                        $scope.topArea = {
-                            'message': 'You are editing the entity...',
-                            'status': 'info'
-                        };
-                    });
-
-                } else {
-                    buildLanguageTabs();
-                    $scope.topArea = {
-                        'message': 'You are editing the entity...',
-                        'status': 'info'
-                    };
+                for (var i in res.languages){
+                    $scope.tabs.push(res.languages[i]);
+                    pushCurrentLang(res.languages[i]);
                 }
+
+                $scope.topArea = {
+                    'message': 'You are editing the entity...',
+                    'status': 'info'
+                };
 
             },
             function(error){
-                console.log("server error");
                 $scope.topArea = {
                     'message': 'Error getting entity info!',
                     'status': 'error'
