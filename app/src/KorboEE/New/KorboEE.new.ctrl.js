@@ -87,6 +87,8 @@ angular.module('KorboEE')
             }
             var langConf = $scope.conf.languages;
             KorboCommunicationService.buildLanguagesObject(param, langConf).then(function(res){
+                    console.log(res);
+                basketIDforEdit = res.basket_id;
                 $scope.imageUrl = res.imageUrl;
                 $scope.originalUrl = res.originalUrl;
                 initTypes();
@@ -368,8 +370,8 @@ angular.module('KorboEE')
                 var lang = angular.lowercase($scope.tabs[0].title);
 
                 var entityToSave = {
-                    "label": $scope.tabs[0].label,
-                    "abstract": $scope.tabs[0].description,
+                    //"label": $scope.tabs[0].label,
+                    //"abstract": $scope.tabs[0].description,
                     "depiction": $scope.imageUrl,
                     "type": newTypes
                 };
@@ -398,18 +400,26 @@ angular.module('KorboEE')
                     // check if there are more than 1 languages
                     if($scope.tabs.length > 1){
                         var allPromises = [];
-                        for(var i=1; i<$scope.tabs.length; i++){
+                        for(var i=0; i<$scope.tabs.length; i++){
 
                             (function(index) {
-
                                 var lang = angular.lowercase($scope.tabs[index].title);
-                                var entityToEdit = {
+
+                                var entityToEditWithLabel = {
                                     "id": id,
-                                    "label": $scope.tabs[index].label,
+                                    "label": $scope.tabs[index].label
+                                };
+
+                                var entityToEditWithAbstract = {
+                                    "id": id,
                                     "abstract": $scope.tabs[index].description
                                 };
-                                var langPromise = korboComm.save(entityToEdit, lang, $scope.conf.endpoint, basketID );
-                                allPromises.push(langPromise);
+
+                                var langLabelPromise = korboComm.save(entityToEditWithLabel, lang, $scope.conf.endpoint, basketID );
+                                var langAbstractPromise = korboComm.save(entityToEditWithAbstract, lang, $scope.conf.endpoint, basketID );
+
+                                allPromises.push(langLabelPromise);
+                                allPromises.push(langAbstractPromise);
                             })(i);
 
                         }

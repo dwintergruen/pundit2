@@ -117,6 +117,7 @@ angular.module('KorboEE')
                     var param = {};
                     param.label = label;
                     param.endpoint = $scope.conf.endpoint;
+                    param.basketID = $scope.conf.basketID;
                     param.offset = 0;
                     param.limit = $scope.conf.limitSearchResult;
                     param.language = $scope.defaultLan.value;

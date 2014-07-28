@@ -338,8 +338,8 @@ angular.module('KorboEE')
                     p: param.provider,
                     limit: param.limit,
                     offset: param.offset,
-                    lang: param.language,
-                    basketId: param.basketID
+                    lang: param.language//,
+                    //basketId: param.basketID
                 }
 
             }).success(function(res){
