@@ -76,7 +76,8 @@
     };
 
     var myConf1 = {
-        endpoint: "http://korbo2.local:80/v1",
+        //endpoint: "http://korbo2.local:80/v1",
+        endpoint: "http://dev.korbo2.org/v1",
         labelMinLength: 5,
         limitSearchResult: 3,
         globalObjectName : 'FF',
@@ -91,7 +92,8 @@
     }
 
     var myConf2 = {
-        endpoint: "http://korbo2.local:80/v1",
+        //endpoint: "http://korbo2.local:80/v1",
+        endpoint: "http://dev.korbo2.org/v1",
         limitSearchResult: 20,
         labelMinLength: 6,
         globalObjectName : 'GG',
@@ -118,7 +120,7 @@
 
 
 </script>
-<div data-ng-app="Pundit2" class="kee-wrp" ng-controller="KeeDemoCtrl">
+<div data-ng-app="Pundit2" ng-controller="KeeDemoCtrl">
     <br>
     <korbo-entity-editor conf-name="myConf"></korbo-entity-editor>
     <br>
