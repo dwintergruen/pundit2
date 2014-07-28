@@ -86,33 +86,33 @@ angular.module('KorboEE')
             param.item = {uri: $scope.idEntityToEdit};
 
             korboComm.getItem(param, false).then(function(res){
-                    basketIDforEdit = res.basket_id;
-                    console.log(basketIDforEdit);
-                //if(res.label !== ''){
-                    var title = angular.uppercase(res.language_code);
-                    var name = (res.language_code);
-                    var lang = {
-                        'title': title,
-                        'name' : name,
-                        'description': res.abstract,
-                        'label': res.label,
-                        'mandatory': true,
-                        'hasError': false,
-                        'tooltipMessageTitle': tooltipMessageTitle + name,
-                        'tooltipMessageDescription': tooltipMessageDescription + name,
-                        'tooltipMessageError': "message",
-                        'tooltipMessageErrorTab': "There are some errors in the "+name+" languages fields"
-                    };
-                    $scope.tabs.push(lang);
-                    pushCurrentLang(lang);
-                    // buildLanguageTabs();
+                basketIDforEdit = res.basket_id;
+                console.log(basketIDforEdit);
 
-                    $scope.imageUrl = res.depiction;
-                    $scope.originalUrl = res.resource;
-                    initTypes();
-                    buildTypesFromArray(res.type);
-                    buildTypesFromConfiguration();
-                //}
+                var title = angular.uppercase(res.language_code);
+                var name = (res.language_code);
+                var lang = {
+                    'title': title,
+                    'name' : name,
+                    'description': res.abstract,
+                    'label': res.label,
+                    'mandatory': true,
+                    'hasError': false,
+                    'tooltipMessageTitle': tooltipMessageTitle + name,
+                    'tooltipMessageDescription': tooltipMessageDescription + name,
+                    'tooltipMessageError': "message",
+                    'tooltipMessageErrorTab': "There are some errors in the "+name+" languages fields"
+                };
+                $scope.tabs.push(lang);
+                pushCurrentLang(lang);
+                // buildLanguageTabs();
+
+                $scope.imageUrl = res.depiction;
+                $scope.originalUrl = res.resource;
+                initTypes();
+                buildTypesFromArray(res.type);
+                buildTypesFromConfiguration();
+
 
                 if(res.available_languages.length >= 1){
                     for(var i = 0; i < res.available_languages.length; i++){
@@ -625,21 +625,51 @@ angular.module('KorboEE')
             return KorboCommunicationService.getEntityToCopy();
         }, function(entity){
             if(entity !== null){
-                var e = ItemsExchange.getItemByUri(entity.uri);
 
                 if(!$scope.editMode || copyCheck){
-                    $scope.imageUrl = e.image;
-                    $scope.originalUrl = e.resource;
-                    initTypes();
-                    buildTypesFromArray(e.type);
-                    buildTypesFromConfiguration();
+                    $scope.topArea = {
+                        'message': 'Loading entity...',
+                        'status': 'info'
+                    };
 
-                    $scope.tabs[0].label = e.label;
-                    $scope.tabs[0].description = e.description;
+                    ContextualMenu.wipeActionsByType('advancedMenu');
+                    $scope.tabs = [];
+
+                    var param = {
+                        item: {uri: entity.uri},
+                        provider: entity.providerFrom,
+                        endpoint: $scope.conf.endpoint, 
+                        basketID: null, 
+                        language: $scope.defaultLan.value
+                    }
+                    KorboCommunicationService.buildLanguagesObject(param, entity).then(function(res){
+                        $scope.imageUrl = res.imageUrl;
+                        $scope.originalUrl = res.originalUrl;
+                        initTypes();
+                        buildTypesFromArray(res.types);
+                        buildTypesFromConfiguration();
+
+                        for (var i in res.languages){
+                            // $scope.tabs[i].label = res.languages[i].label;
+                            // $scope.tabs[i].description = res.languages[i].description;
+                            // console.log(res.languages[i]);
+                            $scope.tabs.push(res.languages[i]);
+                            pushCurrentLang(res.languages[i]);
+                        }
+
+
+                    },
+                    function(error){
+                        $scope.topArea = {
+                            'message': 'Error getting entity info!',
+                            'status': 'error'
+                        };
+                    });
 
                     copyCheck = false;
                 } else{
-                    $scope.originalUrl = e.resource;
+                    // var e = ItemsExchange.getItemByUri(entity.uri);
+                    $scope.originalUrl = entity.resource;
                 }
             }
 

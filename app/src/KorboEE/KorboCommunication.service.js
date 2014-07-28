@@ -214,7 +214,6 @@ angular.module('KorboEE')
         korboCommunication.buildLanguagesObject = function(param, itemSelected){
             var promise = $q.defer();
             var promises = [];
-            var p;
             var results = {};
             var defaultLanguage = param.language;
             var korboComm = new KorboCommunicationFactory();
@@ -226,42 +225,26 @@ angular.module('KorboEE')
             results.languages = [];
 
             korboComm.getItem(param, false).then(function(res){
-
-                var title = angular.uppercase(res.language_code);
-                var name = (res.language_code);
-                var lang = {
-                    'title': title,
-                    'name' : name,
-                    'description': res.abstract,
-                    'label': res.label,
-                    'mandatory': true,
-                    'hasError': false,
-                    'tooltipMessageTitle': tooltipMessageTitle + name,
-                    'tooltipMessageDescription': tooltipMessageDescription + name,
-                    'tooltipMessageError': "message",
-                    'tooltipMessageErrorTab': "There are some errors in the "+name+" languages fields"
-                };
-                results.mainLanguage = lang;
-
                 results.imageUrl = res.depiction;
                 results.originalUrl = res.resource;
 
                 results.types = res.type;
 
-                if(res.available_languages.length >= 1){
+                if(res.available_languages.length >= 0){
                     for(var i = 0; i < res.available_languages.length; i++){
-                        if(res.available_languages[i] !== defaultLanguage){
-                            param.language = res.available_languages[i];
+                        (function(index){
+                            var p;
+                            param.language = res.available_languages[index];
                             p = korboComm.getItem(param, false);
                             promises.push(p);
-                        }
+                        })(i)
                     }
 
                     $q.all(promises).then(function(r){
                         for(var j=0; j< r.length; j++){
                             (function(index){
-                                var title = angular.uppercase(r[index].language_code);
-                                var name = angular.lowercase(r[index].language_code);
+                                var title = angular.uppercase(r[index].reqLanguage);
+                                var name = angular.lowercase(r[index].reqLanguage);
                                 var lang = {
                                     'title': title,
                                     'name' : name,
@@ -394,6 +377,7 @@ angular.module('KorboEE')
 
         KorboCommFactory.prototype.getItem = function(param, useCache){
             var promise = $q.defer();
+            var currentLanguage = angular.copy(param.language);
             $http({
                 headers: { 'Accept-Language': param.language },
                 method: 'GET',
@@ -403,7 +387,8 @@ angular.module('KorboEE')
                     p: param.provider
                 }
             }).success(function(res){
-                promise.resolve(res);
+                res.reqLanguage = currentLanguage;
+                promise.resolve(res);                
             }).error(function(){
                 promise.reject();
             });
