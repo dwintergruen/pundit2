@@ -210,8 +210,29 @@ body.pnd-annotation-sidebar-expanded {
 			padding: 0px 10px;
 			border-top: 1px solid @gray-extra-light;
 			width: @annotation-sidebar-filter-width;
+			}
 			
-	}
+	.pnd-annotation-sidebar-filter-broken {
+		padding: 6px 6px 6px 10px;
+		border-top: 1px solid @gray-extra-light;
+		width: @annotation-sidebar-filter-width;
+		font-weight: bold;
+		cursor: pointer;
+			
+			&:hover {
+				background-color: @gray-lighter; 
+				}
+				
+			&:after {
+				content: "\f06a";
+				font-family: 'pundit-font';
+				display: inline-block;
+				float: right;
+				color: @brand-warning;
+				}
+			
+			}
+
 
 	// ---------- PANELS
 

@@ -230,18 +230,24 @@
                     </div>
                     
                     <!-- Broken -->
-                    <div 
+                    <!-- <div 
                         class="pnd-annotation-sidebar-filter-broken"
                         ng-class="{'pnd-annotation-sidebar-current-filter-active': annotationSidebar.filters.broken.expression.length>0}">
-                        <button
+                      
+                        <div
                             ng-click="toggleBrokenAnnotations()"
-                            class="btn btn-link pnd-annotation-sidebar-btn-toggle-broken">
-                                <span class="pnd-icon pnd-icon-exclamation-circle"></span> 
+                            class="pnd-annotation-sidebar-btn-toggle-broken">
+                                 
                                 <span ng-show="annotationSidebar.filters.broken.expression.length>0">Show broken annotations</span>
                                 <span ng-show="annotationSidebar.filters.broken.expression.length == 0">Hide broken annotations</span>
-                        </button>
-                    </div>
-
+                        </div>
+                        <span class="pnd-icon pnd-icon-exclamation-circle pull-right"></span>
+                    </div> -->
+					<div class="pnd-annotation-sidebar-filter-broken"
+					                        ng-class="{'pnd-annotation-sidebar-current-filter-active': annotationSidebar.filters.broken.expression.length>0}" ng-click="toggleBrokenAnnotations()">
+					<span ng-show="annotationSidebar.filters.broken.expression.length>0">Show broken annotations</span>
+					<span ng-show="annotationSidebar.filters.broken.expression.length == 0">Hide broken annotations</span>
+					</div>
 
 
                     <!-- buttons -->
