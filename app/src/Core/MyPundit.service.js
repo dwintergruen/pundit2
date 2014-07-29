@@ -244,7 +244,7 @@ angular.module('Pundit2.Core')
             var loginpopup = $window.open(loginServer, 'loginpopup', 'left=260,top=120,width=480,height=360');
 
             var stopTime = $interval(function() {
-                if (loginpopup.closed || loginpopup === null) {
+                if (typeof(loginpopup) !== 'undefined' && (loginpopup.closed || loginpopup === null) ) {
                     $timeout.cancel(loginPollTimer);
                     $interval.cancel(stopTime);
                 }
