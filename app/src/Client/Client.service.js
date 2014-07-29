@@ -454,7 +454,7 @@ angular.module('Pundit2.Client')
                                 TextFragmentHandler, ImageHandler,
                                 Toolbar, Annomatic, NotebookCommunication, NotebookExchange,
                                 SelectorsManager, FreebaseSelector, MurucaSelector, KorboBasketSelector, Korbo2Selector, PredicateSelector,
-                                TemplatesSelector, TripleComposer,
+                                TemplatesSelector, TripleComposer, ImageFragmentAnnotatorHelper,
                                 $injector, $templateCache, $rootScope, $compile) {
 
         var client = new BaseComponent('Client', CLIENTDEFAULTS),

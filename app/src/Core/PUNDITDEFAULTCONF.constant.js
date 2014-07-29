@@ -31,6 +31,27 @@ angular.module('Pundit2.Core')
         /**
          * @module punditConfig
          * @ngdoc object
+         * @name imageFragmentAnnotator
+         * @description
+         * `object`
+         *
+         * Define if is use image fragment annotator widget in pundit.
+         * The widget is opened in a new tab by contextual menu of the images.
+         *
+         * Default:
+         * <pre>
+         * imageFragmentAnnotator: {
+         *   active: false
+         * }
+         * </pre>
+         */
+        imageFragmentAnnotator: {
+            active: false
+        },
+
+        /**
+         * @module punditConfig
+         * @ngdoc object
          * @name annotationServerBaseURL
          * @description
          * `string`
