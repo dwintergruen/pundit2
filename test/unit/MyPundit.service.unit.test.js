@@ -369,10 +369,6 @@ describe('MyPundit service', function() {
 
         var serverError = false;
 
-        $httpBackend
-            .expectGET(NameSpace.get('asUsersCurrent'))
-            .respond(userNotLogged);
-
         var loginPromise = MyPundit.login();
 
         loginPromise.then(function() {
