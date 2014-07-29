@@ -7,6 +7,8 @@ angular.module('KorboEE')
             offsetButton: 40
         };
 
+        $scope.tabs.activeTab = 0;
+
         $scope.hiddenTabsDropdownTemplate = 'src/ContextualMenu/dropdown.tmpl.html';
 
         // Support animations
@@ -22,7 +24,20 @@ angular.module('KorboEE')
         $scope.hiddenTabs = [];
 
 
-        $scope.$watch('tabs', function(newValue) {
+        $scope.$watch('tabs', function(newValue, oldValue) {
+
+            // Change active tabs if current language was removed
+            if(newValue.length < oldValue.length){
+                var removedLanguage = oldValue.filter(function(obj) {
+                    return !newValue.some(function(obj2) {
+                        return obj.title == obj2.title;
+                    });
+                });
+                if(oldValue[$scope.tabs.activeTab].title === removedLanguage[0].title){
+                    $scope.setActive(0);
+                }
+            }
+
             // If $scope.panes has already been set to tabs value, skip this watch
             if (angular.equals(newValue, $scope.panes)) {
                 return;
