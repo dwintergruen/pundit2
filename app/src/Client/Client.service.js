@@ -454,7 +454,7 @@ angular.module('Pundit2.Client')
                                 TextFragmentHandler, ImageHandler,
                                 Toolbar, Annomatic, NotebookCommunication, NotebookExchange,
                                 SelectorsManager, FreebaseSelector, MurucaSelector, KorboBasketSelector, Korbo2Selector, PredicateSelector,
-                                TemplatesSelector,
+                                TemplatesSelector, TripleComposer,
                                 $injector, $templateCache, $rootScope, $compile) {
 
         var client = new BaseComponent('Client', CLIENTDEFAULTS),
@@ -576,7 +576,12 @@ angular.module('Pundit2.Client')
             loadConfiguredRelations();
 
             if (Config.useTemplates) {
-                TemplatesSelector.getAll();
+                TemplatesSelector.getAll().then(function(){
+                    // show immediatly the first template
+                    if (Config.useOnlyTemplateMode) {
+                        TripleComposer.showCurrentTemplate();
+                    }
+                });
             }
 
             // Check if we're logged in, other components should $watch MyPundit
