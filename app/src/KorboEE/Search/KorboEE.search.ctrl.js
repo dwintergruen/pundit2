@@ -259,8 +259,11 @@ angular.module('KorboEE')
             // set selected item in korbo communication service
             KorboCommunicationService.setSelectedEntity($scope.itemSelected);
 
-            // active more info button
-            $scope.showMoreInfo.disabled = false;
+            if($scope.itemSelected.providerFrom === 'freebase'){
+                $scope.showMoreInfo.disabled = false;
+            } else {
+                $scope.showMoreInfo.disabled = true;
+            }
 
             // if item selected is a korbo-item, show and set active only Use button, and hide Use and Copy Button
             if($scope.itemSelected.providerFrom === 'korbo'){

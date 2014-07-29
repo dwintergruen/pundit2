@@ -133,14 +133,8 @@ angular.module('KorboEE')
             });
         };
 
-        $scope.moreInfo = function(url){
-
-            if(url === null || typeof(url) === 'undefined'){
-                console.log("vuoi more info di ", $scope.itemSelected);
-            } else {
-                $window.open(url);
-            }
-
+        $scope.moreInfo = function(){
+            $window.open($scope.itemSelected.resource);
         };
 
         $scope.copyInEditor = function(){
@@ -163,7 +157,7 @@ angular.module('KorboEE')
                     // if is a no-korbo entity
                 } else {
                     //TODO controllare la location nel caso di entità non di korbo
-                    $scope.directiveScope.location = "fake location?";
+                    $scope.directiveScope.location = $scope.itemSelected.resource;
                     $scope.directiveScope.elemToSearch = $scope.itemSelected.label;
                     $scope.directiveScope.label = $scope.itemSelected.label;
                 }

@@ -83,7 +83,6 @@ angular.module('KorboEE')
                  *
                  */
                 api.exposeOpenSearch(function(val){
-                    //TODO
                     KorboCommunicationService.openModalOnSearch($scope.conf, val, $scope);
                 });
 
@@ -107,7 +106,6 @@ angular.module('KorboEE')
                  ** `language`: language value of entity to create
                  */
                 api.exposeOpenNew(function(entity){
-                    //TODO
                     KorboCommunicationService.openModalOnNew($scope.conf, entity, $scope);
                 });
 
@@ -124,7 +122,6 @@ angular.module('KorboEE')
                  *
                  */
                 api.exposeEdit(function(id){
-                    //TODO
                     KorboCommunicationService.openModalOnEdit($scope.conf, id, $scope);
                 });
 
@@ -136,7 +133,6 @@ angular.module('KorboEE')
                  * If a modal is open, close the modal
                  */
                 api.exposeCancel(function(){
-                    //TODO
                     KorboCommunicationService.closeModal();
                 });
 
@@ -189,6 +185,7 @@ angular.module('KorboEE')
         // if no autocomplete search is set
         // stop event propagation
         // and open the modal
+        //TODO forse si può togliere perchè non serve più
         $scope.keyPressHandle = function($event){
             if($event.keyCode === 13 && $scope.conf.useTafonyCompatibility){
                 $event.stopPropagation();
