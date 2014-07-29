@@ -1,15 +1,19 @@
 angular.module('KorboEE')
 /**
+ * @ngdoc directive
+ * @name korboEntityEditor
+ * @restrict E
+ * @module KorboEE
  *
- *
+ * @description
  * korbo Entity Editor directive will be rendered in two different way, in according to usage defined in configuration object.
  *
- * In case of Tafony Compatibility usage, it will be rendered with an input text and a button.
+ * In case of Tafony Compatibility usage, it will be rendered with an input text. For details see {@link #!/tafony-compatibility Tafony Compatibility}
  *
  * In case of Use Only Callback usage, no GUI elements are rendered, but will get called function onLoad() defined in configuration object when
- * component is ready to use with callback.
+ * component is ready to use with callback. For details see {@link #!/only-callback Use Only Callback}
  *
- * param {string} conf-name Object configuration name.
+ * @param {string} conf-name Object configuration name.
  **/
 .directive('korboEntityEditor', function(korboConf, APIService, $window){
         return {
@@ -29,13 +33,6 @@ angular.module('KorboEE')
                     return 'src/KorboEE/Korboee-error-config.tmpl.html';
                 }
 
-                //TODO: ricontrollare i parametri di configurazione per l'utilizzo con autocomplete
-                if(conf.useAutocompleteWithSearch && conf.useAutocompleteWithNew){
-                    attrs.error = true;
-                    attrs.errorType = 'autoComplete';
-                    return 'src/KorboEE/Korboee-error-config.tmpl.html';
-                }
-
                 // if it doesn't exist, set error attribute to false
                 // and APIService is initialized
 
@@ -47,36 +44,47 @@ angular.module('KorboEE')
                     events = ['Open','Cancel','Save'];
 
                 /**
-                 * method
-                 * onCancel
+                 * @ngdoc object
+                 * @name EE
+                 * @module KorboEE
+                 * @description
+                 * Global Object exposed by the Entity Editor to interact with callbacks and features.
+                 */
 
+                /**
+                 * @ngdoc method
+                 * @name EE#onCancel
+                 * @module KorboEE
+                 * @description
                  * Register a callback function on the Cancel event. When the modal is closed, Cancel event is fired and
                  * registered function will get called
                  *
-                 * param {function} callback The callback function gets called when the Cancel event is fired
+                 * @param {function} callback The callback function gets called when the Cancel event is fired
                  */
 
                 /**
-                 * method
-                 * onOpen
+                 * @ngdoc method
+                 * @name EE#onOpen
+                 * @module KorboEE
                  *
+                 * @description
                  * Register a function on the Open event. When the modal is opened, the Open event is fired and
                  * registered function will get called
                  *
-                 * param {function} callback The callback function gets called when the Open event is fired
+                 * @param {function} callback The callback function gets called when the Open event is fired
                  *
                  */
 
                 /**
-                 * method
-                 * onSave
-                 *
-                 * description
+                 * @ngdoc method
+                 * @name EE#onSave
+                 * @module KorboEE
+                 * @description
                  * Register a callback function on the Save event.
                  * A Save event is fired when a new entity is saved, or copied or just used.
                  * To the registered function will be passed the use/saved entity with the `entity` parameter.
                  *
-                 * param {function} callback The callback function gets called when the Save event is fired,
+                 * @param {function} callback The callback function gets called when the Save event is fired,
                  * passing the `entity` object which is the saved/used semantic entity having the following properties:
                  *
                  ** `value`: entity URL
@@ -87,6 +95,7 @@ angular.module('KorboEE')
                  ** `language`: entity language
                  *
                  */
+
                 api.addEvent(events);
                 api.addFeature(features);
 

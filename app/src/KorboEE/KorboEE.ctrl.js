@@ -70,26 +70,86 @@ angular.module('KorboEE')
             // add events and features to APIService
             if (typeof(api) !== "undefined"){
 
+                /**
+                 * @ngdoc method
+                 * @name EE#callOpenSearch
+                 * @module KorboEE
+                 * @description
+                 * Open the modal on 'Search' page and start searching the given string.
+                 *
+                 * If no string is supplied, open the modal on 'Search' page and no search get start.
+                 *
+                 * @param {String=} label Reference to search.
+                 *
+                 */
                 api.exposeOpenSearch(function(val){
                     //TODO
                     KorboCommunicationService.openModalOnSearch($scope.conf, val, $scope);
                 });
 
+                /**
+                 * @ngdoc method
+                 * @name EE#callOpenNew
+                 * @module KorboEE
+                 * @description
+                 * Open the modal on 'New' page.
+                 *
+                 * If an object is supplied, the fields of the form are filled with object values.
+                 * If no object is supplied, the fields of the form are empty
+                 *
+                 * @param {Object=} entity An entity to create. It has to be, optionally, the follow properties:
+                 *
+                 ** `value`: entity URL
+                 ** `label`: entity label
+                 ** `type`: array of types
+                 ** `image`: entity depiction URL
+                 ** `description`: abstract of entity
+                 ** `language`: language value of entity to create
+                 */
                 api.exposeOpenNew(function(entity){
                     //TODO
                     KorboCommunicationService.openModalOnNew($scope.conf, entity, $scope);
                 });
 
+                /**
+                 * @ngdoc method
+                 * @name EE#callEdit
+                 * @module KorboEE
+                 * @description
+                 * Open the modal on 'New' page.
+                 *
+                 * The fields of the form are filled with all values of entity to edit.
+                 *
+                 * @param {String=} entity ID to edit.
+                 *
+                 */
                 api.exposeEdit(function(id){
                     //TODO
                     KorboCommunicationService.openModalOnEdit($scope.conf, id, $scope);
                 });
 
+                /**
+                 * @ngdoc method
+                 * @name EE#callCancel
+                 * @module KorboEE
+                 * @description
+                 * If a modal is open, close the modal
+                 */
                 api.exposeCancel(function(){
                     //TODO
                     KorboCommunicationService.closeModal();
                 });
 
+                /**
+                 * @ngdoc method
+                 * @name EE#callCopyAndUse
+                 * @module KorboEE
+                 * @description
+                 * Given a non-korbo entity, copy that entity in Korbo and return the new one.
+                 *
+                 * @param {Object} entity entity to copy in Korbo and use.
+                 *
+                 */
                 api.exposeCopyAndUse(function(entity){
                     var korboComm = new KorboCommunicationFactory();
 
