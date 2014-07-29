@@ -40,13 +40,13 @@ angular.module('Pundit2.Toolbar')
 
     infoModalScope.titleMessage = "About Pundit";
     infoModalScope.info = [
-        "Pundit Version: "+PUNDITVERSION.version,
-        "Annotation server URL: "+NameSpace.as,
-        "Korbo basket: ", // is always defined? read from korbo selector instance? if i have more than one instance?
-        "Contact the Pundit team punditdev@netseven.it",
-        "License: http://url3.com",
-        "Developed by Net7 Srl",
-        "Credits"
+        {label: "Pundit Version: ", value: PUNDITVERSION.version},
+        {label: "Annotation server URL: ", value: NameSpace.as},
+        {label: "Korbo basket: ", value: "-"}, // is always defined? read from korbo selector instance? if i have more than one instance}?
+        {label: "Contact the Pundit team:", value: "punditdev@netseven.it"},
+        {label: "License: ", value: "http://url3.com"},
+        {label: "Developed by: ", value: " Net7 Srl"},
+        {label: "Credits: ", value: "-"}
     ];
 
     infoModalScope.links = [];
@@ -58,16 +58,16 @@ angular.module('Pundit2.Toolbar')
     }
 
     if (Config.vocabularies.length > 0) {
-        infoModalScope.info.push("Predicates vocabularies: "+Config.vocabularies.toString());
+        infoModalScope.info.push({label: "Predicates vocabularies: ", value: Config.vocabularies.toString()});
     } else if (Config.useBasicRelations) {
-        infoModalScope.info.push("Predicates vocabularies: Pundit default basic relations");   
+        infoModalScope.info.push({label: "Predicates vocabularies: ", value: "Pundit default basic relations"});   
     }
 
     var str = "", providers = SelectorsManager.getActiveSelectors();
     for (var p in providers) {
         str += " "+providers[p].config.label;
     }
-    infoModalScope.info.push("Providers:"+str);
+    infoModalScope.info.push({label: "Providers:", value: str});
 
     sendModalScope.titleMessage = "Found a bug? tell us!";
     sendModalScope.text = {msg: "", subject: ""};
@@ -132,6 +132,11 @@ angular.module('Pundit2.Toolbar')
     var showInfo = function() {
         infoModal.$promise.then(infoModal.show);
     };
+
+    // open bug modal
+    var showBug = function() {
+        infoModalScope.send();
+    };
     
     $scope.errorMessageDropdown = Toolbar.getErrorMessageDropdown();
 
@@ -142,6 +147,7 @@ angular.module('Pundit2.Toolbar')
 
     $scope.infoDropdown = [
         { text: 'About Pundit', click: showInfo },
+        { text: 'Report a bug', click: showBug },
     ];
     if (Fp3.options.active) {
         $scope.infoDropdown.push({ text: Fp3.options.label, click: Fp3.post });
