@@ -29,6 +29,89 @@ angular.module('KorboEE')
 
         var copyCheck = false;
 
+        var addActionToContextualMenu = function(lang){
+            ContextualMenu.addAction({
+                name: 'rml'+lang.name,
+                type: 'advancedMenu',
+                label: 'Remove '+lang.name,
+                priority: 1,
+                showIf: function(){
+                    return true;
+                },
+                action: function(_lang){
+                    return function(){
+                        if($scope.tabs.length > 1){
+                            $scope.removeLanguage(_lang); 
+                        }
+                    };
+                }(lang)
+            });
+        };
+
+        var pushCurrentLang = function(lang){
+            if($scope.tabs.length == 1){
+                addActionToContextualMenu(lang);
+                ContextualMenu.modifyHeaderActionByName('rml'+$scope.tabs[0].name, true);
+            } else if($scope.tabs.length == 2){
+                addActionToContextualMenu(lang);
+                ContextualMenu.modifyHeaderActionByName('rml'+$scope.tabs[0].name, false);
+            } else if($scope.tabs.length > 2){
+                addActionToContextualMenu(lang);
+            }
+        };
+
+        var buildContextualMenu = function(){
+            ContextualMenu.addAction({
+                name: 'editURL',
+                type: 'advancedMenu',
+                label: 'Edit original URL',
+                priority: 3,
+                showIf: function(){
+                    return true;
+                },
+                action: function(resource){
+                    $scope.originalUrlCheck = false;
+                    ContextualMenu.modifyHeaderActionByName('editURL', true);
+                }
+            });
+
+            ContextualMenu.addAction({
+                name: 'searchOriginalURL',
+                type: 'advancedMenu',
+                label: 'Search original URL',
+                priority: 3,
+                showIf: function(){
+                    return $scope.editMode;
+                },
+                action: function(){
+                    $scope.korboModalTabs.activeTab = 0;
+                    copyCheck = false;
+                }
+            });
+
+            ContextualMenu.addAction({
+                name: 'searchAndCopy',
+                type: 'advancedMenu',
+                label: 'Search and copy from LOD',
+                priority: 3,
+                showIf: function(){
+                    return $scope.editMode;
+                },
+                action: function(){
+                    $scope.korboModalTabs.activeTab = 0;
+                    copyCheck = true;
+                }
+            });
+
+
+            ContextualMenu.addDivider({
+                priority: 3,
+                type: 'advancedMenu'
+            });
+        };
+
+        buildContextualMenu();
+
         var buildTypesFromConfiguration = function(){
             var tmp = angular.copy($scope.conf.type);
             for (var i in tmp) {
@@ -57,6 +140,45 @@ angular.module('KorboEE')
                     $scope.types.push(t);
                 } else {
                     $scope.types[indexFind].checked = true;
+                }
+            }
+        };
+
+        //build languages tabs
+        var buildLanguageTabs = function(){
+            for(var i=0; i< $scope.conf.languages.length; i++){
+
+                var title = angular.uppercase($scope.conf.languages[i].value);
+                var name = angular.lowercase($scope.conf.languages[i].name);
+                var lang = {
+                    'title': title,
+                    'name' : $scope.conf.languages[i].name,
+                    'description': "",
+                    'label': "",
+                    'mandatory': true,
+                    'hasError': false,
+                    'tooltipMessageTitle': tooltipMessageTitle + name,
+                    'tooltipMessageDescription': tooltipMessageDescription + name,
+                    'tooltipMessageError': "message",
+                    'tooltipMessageErrorTab': "There are some errors in the "+name+" languages fields"
+                };
+
+                if(typeof($scope.entityToCreate) !== 'undefined' && $scope.entityToCreate !== null){
+                    lang.label = $scope.entityToCreate.label;
+                }
+
+                if(!$scope.editMode){ 
+                    if($scope.conf.languages[i].state){
+                        $scope.tabs.push(lang);
+                        pushCurrentLang(lang);
+                    } else {
+                        $scope.disactiveLanguages.push(lang);
+                    }
+                } else {
+                    var indexFind = $scope.tabs.map(function(e){ return angular.lowercase(e.title) }).indexOf(angular.lowercase(lang.title));
+                    if(indexFind === -1){
+                        $scope.disactiveLanguages.push(lang);
+                    }
                 }
             }
         };
@@ -144,134 +266,8 @@ angular.module('KorboEE')
 
         if(!$scope.editMode){
             initTypes();
-            buildTypesFromConfiguration();
-        }
-
-        var addActionToContextualMenu = function(lang){
-            ContextualMenu.addAction({
-                name: 'rml'+lang.name,
-                type: 'advancedMenu',
-                label: 'Remove '+lang.name,
-                priority: 1,
-                showIf: function(){
-                    return true;
-                },
-                action: function(_lang){
-                    return function(){
-                        if($scope.tabs.length > 1){
-                            $scope.removeLanguage(_lang); 
-                        }
-                    };
-                }(lang)
-            });
-        };
-
-        var pushCurrentLang = function(lang){
-            if($scope.tabs.length == 1){
-                addActionToContextualMenu(lang);
-                ContextualMenu.modifyHeaderActionByName('rml'+$scope.tabs[0].name, true);
-            } else if($scope.tabs.length == 2){
-                addActionToContextualMenu(lang);
-                ContextualMenu.modifyHeaderActionByName('rml'+$scope.tabs[0].name, false);
-            } else if($scope.tabs.length > 2){
-                addActionToContextualMenu(lang);
-            }
-        };
-
-        var buildContextualMenu = function(){
-            ContextualMenu.addAction({
-                name: 'editURL',
-                type: 'advancedMenu',
-                label: 'Edit original URL',
-                priority: 3,
-                showIf: function(){
-                    return true;
-                },
-                action: function(resource){
-                    $scope.originalUrlCheck = false;
-                    ContextualMenu.modifyHeaderActionByName('editURL', true);
-                }
-            });
-
-            ContextualMenu.addAction({
-                name: 'searchOriginalURL',
-                type: 'advancedMenu',
-                label: 'Search original URL',
-                priority: 3,
-                showIf: function(){
-                    return $scope.editMode;
-                },
-                action: function(){
-                    $scope.korboModalTabs.activeTab = 0;
-                    copyCheck = false;
-                }
-            });
-
-            ContextualMenu.addAction({
-                name: 'searchAndCopy',
-                type: 'advancedMenu',
-                label: 'Search and copy from LOD',
-                priority: 3,
-                showIf: function(){
-                    return $scope.editMode;
-                },
-                action: function(){
-                    $scope.korboModalTabs.activeTab = 0;
-                    copyCheck = true;
-                }
-            });
-
-
-            ContextualMenu.addDivider({
-                priority: 3,
-                type: 'advancedMenu'
-            });
-        };
-
-        buildContextualMenu();
-
-        
-
-        //build languages tabs
-        var buildLanguageTabs = function(){
-            for(var i=0; i< $scope.conf.languages.length; i++){
-
-                var title = angular.uppercase($scope.conf.languages[i].value);
-                var name = angular.lowercase($scope.conf.languages[i].name);
-                var lang = {
-                    'title': title,
-                    'name' : $scope.conf.languages[i].name,
-                    'description': "",
-                    'label': "",
-                    'mandatory': true,
-                    'hasError': false,
-                    'tooltipMessageTitle': tooltipMessageTitle + name,
-                    'tooltipMessageDescription': tooltipMessageDescription + name,
-                    'tooltipMessageError': "message",
-                    'tooltipMessageErrorTab': "There are some errors in the "+name+" languages fields"
-                };
-
-                if(typeof($scope.entityToCreate) !== 'undefined' && $scope.entityToCreate !== null){
-                    lang.label = $scope.entityToCreate.label;
-                }
-
-                if(!$scope.editMode){ 
-                    if($scope.conf.languages[i].state){
-                        $scope.tabs.push(lang);
-                        pushCurrentLang(lang);
-                    } else {
-                        $scope.disactiveLanguages.push(lang);
-                    }
-                } else {
-                    var indexFind = $scope.tabs.map(function(e){ return angular.lowercase(e.title) }).indexOf(angular.lowercase(lang.title));
-                    if(indexFind === -1){
-                        $scope.disactiveLanguages.push(lang);
-                    }
-                }
-            }
-        };
-        if(!$scope.editMode){
             buildLanguageTabs();
+            buildTypesFromConfiguration();
         }
 
 
