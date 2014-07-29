@@ -8,6 +8,11 @@ angular.module('Pundit2.Core')
     if (typeof($window.punditConfig) !== "undefined" && angular.isObject($window.punditConfig)) {
         Utils.deepExtend(Config, $window.punditConfig);
     }
+
+    Config.isValid = function() {
+        // TODO: set the rules for checking
+        return true;
+    };
     
     // TODO: doc
     Config.isModuleActive = function(moduleName) {
