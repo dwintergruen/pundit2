@@ -46,6 +46,22 @@ angular.module('Pundit2.Core')
         /**
          * @module punditConfig
          * @ngdoc object
+         * @name confURL
+         * @description
+         * `string`
+         * Pundit configuration file URL if exist, otherwise tha value is 'local'.
+         * The configuration file is always available at run time inside 'PUNDIT' global variable.
+         * Inside 'PUNDIT.config' is visible the actual configuration of the client instantiated.
+         * Default:
+         * <pre>
+         * confURL: 'local'
+         * </pre>
+         */
+        confURL: 'local',
+
+        /**
+         * @module punditConfig
+         * @ngdoc object
          * @name debugAllModules
          * @description
          * `boolean`

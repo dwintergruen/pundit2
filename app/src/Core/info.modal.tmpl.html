@@ -13,6 +13,9 @@
                     <li ng-repeat="label in info">
                         {{label}}
                     </li>
+                    <li ng-repeat="link in links">
+                        {{link.label}} : <a href="{{link.ref}}">here</a>
+                    </li>
                 </ul>
             </div>
 

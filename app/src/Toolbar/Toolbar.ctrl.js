@@ -49,6 +49,14 @@ angular.module('Pundit2.Toolbar')
         "Credits"
     ];
 
+    infoModalScope.links = [];
+    if (Config.confURL !== 'local') {
+        infoModalScope.links.push({
+            label: 'Configuration file',
+            ref: Config.confURL
+        });
+    }
+
     if (Config.vocabularies.length > 0) {
         infoModalScope.info.push("Predicates vocabularies: "+Config.vocabularies.toString());
     } else if (Config.useBasicRelations) {
@@ -71,6 +79,7 @@ angular.module('Pundit2.Toolbar')
             + "&subject=" + escape(subject)
             + "&body=" + escape(body)
             + "%0A%0A" + "Pundit Version: "+ PUNDITVERSION.version
+            + "%0A%0A" + "Configuration file: "+ Config.confURL
             + "%0A" + "Broswer info: " + window.navigator.userAgent
             + "%0A%0A" + "User openid: " + user.openid
             + "%0A" + "User uri: " + user.uri
