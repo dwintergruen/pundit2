@@ -197,7 +197,7 @@ angular.module('Pundit2.Core')
 
         loginPromise = $q.defer();
         
-        myPundit.checkLoggedIn().then(
+        /*myPundit.checkLoggedIn().then(
             function(isUserLoggedIn) {
                 if(isUserLoggedIn === false){
                     loginStatus = "loggedOff";
@@ -207,7 +207,13 @@ angular.module('Pundit2.Core')
                     loginPromise.resolve(true);
                 }
             }
-        );
+        );*/
+        if(myPundit.isUserLogged()){
+            loginPromise.resolve(true);
+        } else {
+            loginStatus = "loggedOff";
+            myPundit.openLoginPopUp();
+        }
         
         return loginPromise.promise;
     };
@@ -245,7 +251,6 @@ angular.module('Pundit2.Core')
 
             var stopTime = $interval(function() {
                 if (typeof(loginpopup) !== 'undefined' && (loginpopup.closed || loginpopup === null) ) {
-                    $timeout.cancel(loginPollTimer);
                     $interval.cancel(stopTime);
                 }
             }, 1000);
@@ -258,9 +263,8 @@ angular.module('Pundit2.Core')
                     // success
                     function(isUserLogged){
                         if (isUserLogged){
-                            $timeout.cancel(loginPollTimer);
                             loginPromise.resolve(true);
-                            //$timeout(myPundit.closeLoginModal, myPundit.options.loginModalCloseTimer);
+                            $timeout.cancel(loginPollTimer);
                         }
                     },
                     function(){
@@ -355,7 +359,7 @@ angular.module('Pundit2.Core')
     // close modal, cancel timeout and resolve loginPromise
     /**
      * @ngdoc method
-     * @name MyPundit#closeLoginModal
+     * @name MyPundit#cancelLoginModal
      * @module Pundit2.Core
      * @function
      *
