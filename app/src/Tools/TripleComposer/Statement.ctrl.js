@@ -329,7 +329,7 @@ angular.module('Pundit2.TripleComposer')
             $scope.objectLiteral = true;
         } else if( item instanceof Date) {
             // date item
-            triple.object = item.toString();
+            triple.object = parseDate(item);
             $scope.objectLabel = triple.object;
             $scope.objectTypeLabel = TypesHelper.getLabel(NameSpace.dateTime);
             $scope.objectDate = true;
@@ -352,7 +352,7 @@ angular.module('Pundit2.TripleComposer')
 
     $scope.onClickObjectCalendar = function($event){
         ResourcePanel.showPopoverCalendar(undefined, $event.target).then(function(date){
-            triple.object = date.toString();
+            triple.object = parseDate(date);
             $scope.objectLabel = triple.object;
             $scope.objectTypeLabel = TypesHelper.getLabel(NameSpace.dateTime);
             $scope.objectDate = true;
@@ -376,6 +376,19 @@ angular.module('Pundit2.TripleComposer')
             $scope.tripleComposerCtrl.isAnnotationComplete();
             $scope.tripleComposerCtrl.isTripleErasable();
         });
+    };
+
+    var parseDate = function(date) {
+        var month = date.getMonth() + 1,
+            day = date.getDate();
+
+        if (month<10) {
+            month = "0"+month;
+        }
+        if (day<10) {
+            day = "0"+day;
+        }
+        return date.getFullYear()+"-"+month+"-"+day;
     };
 
 });
