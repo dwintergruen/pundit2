@@ -1,6 +1,9 @@
 angular.module('KorboEE')
     .controller('KeeNewCtrl', function($scope, $rootScope, $dropdown, $modal, KorboCommunicationService, $q, KorboCommunicationFactory,
-                                       korboConf, $timeout, $http, TypesHelper, ItemsExchange, ContextualMenu, $window, Config) {
+                                       korboConf, $timeout, $http, TypesHelper, ItemsExchange, ContextualMenu, $window, Config, APIService) {
+
+
+        var api = APIService.get($scope.conf.globalObjectName);
         var basketIDforEdit;
         $scope.tabs = [];
         $scope.disactiveLanguages = [];
@@ -116,7 +119,6 @@ angular.module('KorboEE')
         var korboComm = new KorboCommunicationFactory();
 
         if(typeof($scope.idEntityToEdit) !== 'undefined' &&$scope.idEntityToEdit !== null){
-            console.log("vuoi modificare l'entità con id ", $scope.idEntityToEdit);
             buildLanguagesModel($scope.idEntityToEdit, 'korbo');
         };
 
@@ -381,6 +383,14 @@ angular.module('KorboEE')
                     "type": newTypes
                 };
 
+                // declare object returned onSave() call
+                var obj = {};
+                obj.label = $scope.tabs[0].label;
+                obj.type = newTypes;
+                obj.image = $scope.imageUrl;
+                obj.description = $scope.tabs[0].label;
+                obj.language = $scope.defaultLan.value;
+
                 var basketID;
                 if($scope.editMode){
                     entityToSave.id = String($scope.idEntityToEdit);
@@ -432,15 +442,26 @@ angular.module('KorboEE')
 
                         $q.all(allPromises).then(function(res){
                             $scope.isSaving = false;
-                            $scope.directiveScope.location = location;
-                            $scope.directiveScope.elemToSearch = $scope.tabs[0].label;
-                            $scope.directiveScope.label = $scope.tabs[0].label;
+                            if($scope.conf.useTafonyCompatibility){
+                                $scope.directiveScope.location = location;
+                                $scope.directiveScope.elemToSearch = $scope.tabs[0].label;
+                                $scope.directiveScope.label = $scope.tabs[0].label;
+                            }
                             $scope.topAreaMessage = "Entity saved!";
                             $scope.topArea.message = "Entity saved!";
                             $scope.topArea.status = "info";
+
+                            //TODO fire onSave
+                            obj.value = location;
+                            // fire save callback
+                            api.fireOnSave(obj);
+
+
                             $timeout(function(){
                                 ContextualMenu.wipeActionsByType('advancedMenu');                                
                                 KorboCommunicationService.closeModal();
+                                // fire cancel callback
+                                api.fireOnCancel();
                                 // set modal as close in configuration
                                 korboConf.setIsOpenModal(false);
                             }, 1000);
@@ -451,14 +472,21 @@ angular.module('KorboEE')
                         });
 
                     } else {
-                        // non ho altre lingue da aggiungere, quindi posso chiudere la modale
-                        //TODO aggiornare la direttiva solo se korbo è in modalità tafony
-                        $scope.directiveScope.location = location;
-                        $scope.directiveScope.elemToSearch = $scope.tabs[0].label;
-                        $scope.directiveScope.label = $scope.tabs[0].label;
+                        // udpdate directive fields if widget is set to be used as tafony compatibility
+                        if($scope.conf.useTafonyCompatibility){
+                            $scope.directiveScope.location = location;
+                            $scope.directiveScope.elemToSearch = $scope.tabs[0].label;
+                            $scope.directiveScope.label = $scope.tabs[0].label;
+                        }
                         $scope.isSaving = false;
                         $scope.topArea.message = "Entity saved!";
                         $scope.topArea.status = "info";
+
+                        //TODO fire onSave
+                        obj.value = location;
+                        // fire save callback
+                        api.fireOnSave(obj);
+
                         // close modal
                         $timeout(function(){
                             KorboCommunicationService.closeModal();
