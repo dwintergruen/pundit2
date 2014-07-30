@@ -28,14 +28,21 @@ angular.module('KorboEE')
 
             // Change active tabs if current language was removed
             if(newValue.length < oldValue.length){
-                var removedLanguage = oldValue.filter(function(obj) {
-                    return !newValue.some(function(obj2) {
-                        return obj.title == obj2.title;
-                    });
-                });
-                if(oldValue[$scope.tabs.activeTab].title === removedLanguage[0].title){
-                    $scope.setActive(0);
-                }
+                $scope.setActive(0);
+
+                // var removedLanguage = oldValue.filter(function(obj) {
+                //     return !newValue.some(function(obj2) {
+                //         return obj.title == obj2.title;
+                //     });
+                // });
+                // // TODO check old position (up level)
+                // if(typeof(oldValue[$scope.tabs.activeTab]) !== 'undefined'){
+                //     if(oldValue[$scope.tabs.activeTab].title === removedLanguage[0].title){
+                //         $scope.setActive(0);
+                //     }
+                // } else {
+                //     $scope.setActive(0);
+                // }
             }
 
             // If $scope.panes has already been set to tabs value, skip this watch

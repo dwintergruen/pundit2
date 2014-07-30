@@ -149,10 +149,16 @@ angular.module('KorboEE')
 
         //build languages tabs
         var buildLanguageTabs = function(){
-            for(var i=0; i< $scope.conf.languages.length; i++){
+            for(var i=0; i< $scope.conf.languages.length; i++){             
 
                 var title = angular.uppercase($scope.conf.languages[i].value);
                 var name = angular.lowercase($scope.conf.languages[i].name);
+
+                var indexFind = $scope.tabs.map(function(e){ return angular.lowercase(e.title) }).indexOf(angular.lowercase(title));
+                if(indexFind !== -1){
+                    return;
+                }
+
                 var lang = {
                     'title': title,
                     'name' : $scope.conf.languages[i].name,
@@ -170,19 +176,26 @@ angular.module('KorboEE')
                     lang.label = $scope.entityToCreate.label;
                 }
 
-                if(!$scope.editMode){ 
-                    if($scope.conf.languages[i].state){
-                        $scope.tabs.push(lang);
-                        pushCurrentLang(lang);
-                    } else {
-                        $scope.disactiveLanguages.push(lang);
-                    }
+                if($scope.conf.languages[i].state){
+                    $scope.tabs.push(lang);
+                    pushCurrentLang(lang);
                 } else {
-                    var indexFind = $scope.tabs.map(function(e){ return angular.lowercase(e.title) }).indexOf(angular.lowercase(lang.title));
-                    if(indexFind === -1){
-                        $scope.disactiveLanguages.push(lang);
-                    }
+                    $scope.disactiveLanguages.push(lang);
                 }
+
+                // if(!$scope.editMode){ 
+                //     if($scope.conf.languages[i].state){
+                //         $scope.tabs.push(lang);
+                //         pushCurrentLang(lang);
+                //     } else {
+                //         $scope.disactiveLanguages.push(lang);
+                //     }
+                // } else {
+                //     var indexFind = $scope.tabs.map(function(e){ return angular.lowercase(e.title) }).indexOf(angular.lowercase(lang.title));
+                //     if(indexFind === -1){
+                //         $scope.disactiveLanguages.push(lang);
+                //     }
+                // }
             }
         };
 
