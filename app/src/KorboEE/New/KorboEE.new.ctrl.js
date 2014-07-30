@@ -107,11 +107,10 @@ angular.module('KorboEE')
                 }
             });
 
-
-            // ContextualMenu.addDivider({
-            //     priority: 3,
-            //     type: 'advancedMenu'
-            // });
+            ContextualMenu.addDivider({
+                priority: 3,
+                type: 'advancedMenu'
+            });
         };
 
         buildContextualMenu();
