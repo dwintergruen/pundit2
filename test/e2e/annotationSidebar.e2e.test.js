@@ -1,4 +1,4 @@
-describe("AnnotationSidebar interaction", function() {
+ddescribe("AnnotationSidebar interaction", function() {
 
     // Constant
     // TODO: read from service
@@ -333,7 +333,7 @@ describe("AnnotationSidebar interaction", function() {
         });
         p.findElement(protractor.By.css('.pnd-toolbar-annotations-button')).click();
         p.findElement(protractor.By.css('.pnd-annotation-sidebar-btn-show-filter')).click();
-        p.findElement(protractor.By.css('.pnd-annotation-sidebar-btn-toggle-broken')).click();
+        p.findElement(protractor.By.css('.pnd-annotation-sidebar-filter-broken')).click();
         
         p.findElements(protractor.By.css('#'+firstAnnotation)).then(function(elements) {       
             expect(elements.length).toBe(0);
@@ -343,7 +343,7 @@ describe("AnnotationSidebar interaction", function() {
     it('should remove all filters', function() {
         p.findElement(protractor.By.css('.pnd-toolbar-annotations-button')).click();
         p.findElement(protractor.By.css('.pnd-annotation-sidebar-btn-show-filter')).click();
-        p.findElement(protractor.By.css('.pnd-annotation-sidebar-btn-toggle-broken')).click();
+        p.findElement(protractor.By.css('.pnd-annotation-sidebar-filter-broken')).click();
         
         p.findElements(protractor.By.css('#'+firstAnnotation)).then(function(elements) {       
             expect(elements.length).toBe(0);

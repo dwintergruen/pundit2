@@ -230,25 +230,19 @@
                     </div>
                     
                     <!-- Broken -->
-                    <!-- <div 
+					<div 
                         class="pnd-annotation-sidebar-filter-broken"
-                        ng-class="{'pnd-annotation-sidebar-current-filter-active': annotationSidebar.filters.broken.expression.length>0}">
-                      
-                        <div
-                            ng-click="toggleBrokenAnnotations()"
-                            class="pnd-annotation-sidebar-btn-toggle-broken">
-                                 
-                                <span ng-show="annotationSidebar.filters.broken.expression.length>0">Show broken annotations</span>
-                                <span ng-show="annotationSidebar.filters.broken.expression.length == 0">Hide broken annotations</span>
-                        </div>
-                        <span class="pnd-icon pnd-icon-exclamation-circle pull-right"></span>
-                    </div> -->
-					<div class="pnd-annotation-sidebar-filter-broken"
-					                        ng-class="{'pnd-annotation-sidebar-current-filter-active': annotationSidebar.filters.broken.expression.length>0}" ng-click="toggleBrokenAnnotations()">
-					<span ng-show="annotationSidebar.filters.broken.expression.length>0">Show broken annotations</span>
-					<span ng-show="annotationSidebar.filters.broken.expression.length == 0">Hide broken annotations</span>
+                        ng-class="{'pnd-annotation-sidebar-current-filter-active': annotationSidebar.filters.broken.expression.length>0}" 
+                        ng-click="toggleBrokenAnnotations()">
+    					<span 
+                            ng-show="annotationSidebar.filters.broken.expression.length>0">
+                                Show broken annotations
+                        </span>
+    					<span 
+                            ng-show="annotationSidebar.filters.broken.expression.length == 0">
+                                Hide broken annotations
+                        </span>
 					</div>
-
 
                     <!-- buttons -->
                     <div class="pnd-annotation-footer-sidebar-filter">
