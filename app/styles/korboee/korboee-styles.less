@@ -334,9 +334,20 @@ button {
 	background-color: lighten(@gray-lighter, 5%);
 	
 	.btn {
+		box-shadow: none;
+		text-shadow: none;
 		position: absolute;
 		left: 8px;
 		bottom: 40px;
+		
+		  &:active,
+		  &.active {
+		    box-shadow: none;
+		    text-shadow: none;
+		    left: 8px;
+		    bottom: 40px;
+		    }
+				
 		}
 		
 	.pnd-vertical-tab-list-content {
