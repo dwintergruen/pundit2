@@ -376,7 +376,8 @@ angular.module('KorboEE')
                     //"label": $scope.tabs[0].label,
                     //"abstract": $scope.tabs[0].description,
                     "depiction": $scope.imageUrl,
-                    "type": newTypes
+                    "type": newTypes,
+                    "resourceUrl": $scope.originalUrl
                 };
 
                 // declare object returned onSave() call

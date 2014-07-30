@@ -155,7 +155,7 @@ angular.module('KorboEE')
                             "abstract": entity.description,
                             "depiction": entity.image,
                             "type": entity.type,
-                            "resource": entity.uri
+                            "resourceUrl": entity.uri
                         };
 
                         var promise = korboComm.save(entityToSave, $scope.defaultLan.value, $scope.conf.endpoint, $scope.conf.basketID);
@@ -200,7 +200,7 @@ angular.module('KorboEE')
             if(viewValue.length >= $scope.conf.labelMinLength){
                 $scope.isSearching = true;
 
-                $scope.results = KorboCommunicationService.autocompleteSearch(viewValue, $scope.conf.endpoint, 'korbo', $scope.conf.limitSearchResult, 0, $scope.defaultLan.value);
+                $scope.results = KorboCommunicationService.autocompleteSearch(viewValue, $scope.conf.endpoint, 'korbo', $scope.conf.limitSearchResult, 0, $scope.defaultLan.value, $scope.conf.basketID);
                 $scope.results.then(function(res){
                     if(typeof(res[0]) !== 'undefined' && res[0].errorServer){
                         $scope.serverNotRunning = true;

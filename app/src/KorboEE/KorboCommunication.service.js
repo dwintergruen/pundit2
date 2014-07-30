@@ -148,7 +148,7 @@ angular.module('KorboEE')
         };
 
         // get a searching of a given label
-        korboCommunication.autocompleteSearch = function(val, endpoint, prov, limit, offset, lang) {
+        korboCommunication.autocompleteSearch = function(val, endpoint, prov, limit, offset, lang, basketID) {
             isAutocompleteLoading = true;
             // return an http Promise
             return $http({
@@ -161,7 +161,8 @@ angular.module('KorboEE')
                     p: prov,
                     limit: limit,
                     offset: offset,
-                    lang: lang
+                    lang: lang,
+                    basketId: basketID
                 }
                 // if no server error occures
             }).then(function(res) {
@@ -339,8 +340,8 @@ angular.module('KorboEE')
                     p: param.provider,
                     limit: param.limit,
                     offset: param.offset,
-                    lang: param.language//,
-                    //basketId: param.basketID
+                    lang: param.language,
+                    basketId: param.basketID
                 }
 
             }).success(function(res){
