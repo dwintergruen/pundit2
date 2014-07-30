@@ -1,9 +1,11 @@
 angular.module('Pundit2.Core')
-.service('ImageFragmentAnnotatorHelper', function($rootScope, $modal, BaseComponent, Config, ContextualMenu) {
+.service('ImageFragmentAnnotatorHelper', function($rootScope, $modal, $window, BaseComponent, Config, ContextualMenu) {
     
     var imageFragmentHelper = new BaseComponent("ImageFragmentAnnotatorHelper");
 
-    var windowCallback;
+    var msg = {
+        close: 'ia-closed'
+    };
 
     var template = '<iframe class="pnd-image-fragment-frame" width="620" height="500" src="http://demo-image-fragment-annotator.kissr.com" scrolling="no" frameborder="0" allowfullscreen></iframe>';
 
@@ -30,15 +32,26 @@ angular.module('Pundit2.Core')
         }
     });
 
+    $window.addEventListener('message', function(e) {
+        if (e.data === msg.close) {
+            close();
+        }
+    });
+
+    var overflow;
     var open = function() {
-        // add ifram to the page
+        // add iframe to the page
         angular.element("[data-ng-app='Pundit2']").after(template);
         // disable page scroll
+        overflow = angular.element('body').css('overflow');
         angular.element('body').css('overflow', 'hidden');
     };
 
     var close = function() {
-
+        // restore overflow
+        angular.element('body').css('overflow', overflow);
+        // remove iframe
+        angular.element('.pnd-image-fragment-frame').remove();
     };
 
     return imageFragmentHelper;
