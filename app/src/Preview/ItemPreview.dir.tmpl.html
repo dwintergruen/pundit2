@@ -7,8 +7,12 @@
         <div ng-show="typeHiddenPresent" ng-class="{'pnd-icon-caret-down': typeHidden, 'pnd-icon-caret-up': !typeHidden}" class="pnd-icon" ng-click="showAlltypes()"></div>
     </div>
 
-    <div ng-if="item.image" class="pnd-preview-item-image">
+    <div ng-if="item.isImage()" class="pnd-preview-item-image">
         <img ng-src="{{item.image}}" />
+    </div>
+
+    <div ng-if="item.isImageFragment()" class="pnd-preview-item-image">
+        <img ng-src="{{item.isPartOf}}" />
     </div>
 
     <div class="pnd-preview-item-description">
