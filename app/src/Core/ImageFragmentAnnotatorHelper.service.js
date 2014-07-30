@@ -9,7 +9,11 @@ angular.module('Pundit2.Core')
         addPolygon: 'ia-add-polygon'
     };
 
-    var template = '<iframe class="pnd-image-fragment-frame" width="620" height="500" src="http://demo-image-fragment-annotator.kissr.com" scrolling="no" frameborder="0" allowfullscreen></iframe>';
+    // TODO append img url when open
+    // TODO check img url to control if have http://
+
+    var template1 = '<iframe class="pnd-image-fragment-frame" width="620" height="500" src="' + Config.imageFragmentAnnotator.baseUrl,
+        template2 = '" scrolling="no" frameborder="0" allowfullscreen></iframe>';
 
     var initContextualMenu = function() {
         ContextualMenu.addAction({
@@ -47,7 +51,7 @@ angular.module('Pundit2.Core')
     var overflow, imgItem;
     var open = function(item) {
         // add iframe to the page
-        angular.element("[data-ng-app='Pundit2']").after(template);
+        angular.element("[data-ng-app='Pundit2']").after(template1+item.image+template2);
         // disable page scroll
         overflow = angular.element('body').css('overflow');
         angular.element('body').css('overflow', 'hidden');

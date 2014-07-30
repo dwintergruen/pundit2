@@ -46,7 +46,8 @@ angular.module('Pundit2.Core')
          * </pre>
          */
         imageFragmentAnnotator: {
-            active: false
+            active: false,
+            baseUrl: 'http://dev.thepund.it/download/ia/last-beta/index.php?u='
         },
 
         /**
