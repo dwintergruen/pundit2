@@ -31,7 +31,7 @@ KORBODEFAULTCONF = {
      */
 
     //endpoint: "http://demo-cloud.api.korbo.org/v1",
-    endpoint: "http://korbo2.local:80/v1",
+    endpoint: 'http://dev.korbo2.org/v1',
 
     /**
      * @ngdoc property

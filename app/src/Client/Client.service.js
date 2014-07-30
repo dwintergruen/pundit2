@@ -457,7 +457,7 @@ angular.module('Pundit2.Client')
                                 Toolbar, Annomatic, NotebookCommunication, NotebookExchange,
                                 SelectorsManager, FreebaseSelector, MurucaSelector, KorboBasketSelector, Korbo2Selector, PredicateSelector,
                                 TemplatesSelector, TripleComposer, ImageFragmentAnnotatorHelper,
-                                $injector, $templateCache, $rootScope, $compile) {
+                                $injector, $templateCache, $rootScope, $compile, $window) {
 
         var client = new BaseComponent('Client', CLIENTDEFAULTS),
 
@@ -621,6 +621,7 @@ angular.module('Pundit2.Client')
             // otherwise the SelectorsManager.addSelector() is never called
             // and the selector manager can't show the selector
             // es: FreebaseSelector, MurucaSelector, KorboBasketSelector
+            addKorboEESelector();
             SelectorsManager.init();
 
             addComponents();
@@ -677,6 +678,37 @@ angular.module('Pundit2.Client')
                 loadBasicRelations();
             }
             loadConfiguredRelations();
+        };
+
+        var addKorboEESelector = function(){
+
+            if(!Config.korbo.active){
+                return;
+            }
+            var korboEEconfig = $window[Config.korbo.confName];
+            // set default language
+            var lang = korboEEconfig.languages[0];
+            for (var j in korboEEconfig.languages){
+                if(korboEEconfig.languages[j].state === true) {
+                    lang = korboEEconfig.languages[j];
+                    break;
+                } // end if
+            }
+            var config = {
+                container: 'kee-korbo2',
+                // instance label tab title
+                label: 'Korbo2EE',
+                // enable or disable the instance
+                active: true,
+
+                basketID: korboEEconfig.basketID,
+                url: korboEEconfig.endpoint,
+                language: lang.value
+            };
+            var a = new Korbo2Selector(config);
+            a.push(config);
+            delete a;
+
         };
 
         client.log("Component up and running");

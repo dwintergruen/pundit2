@@ -44,9 +44,9 @@ angular.module('Pundit2.Vocabularies')
      */
     limit: 15,
 
-    url: 'http://dev.korbo2.org/v1',
+    //url: 'http://dev.korbo2.org/v1',
 
-    language: 'en',
+    //language: 'en',
 
     /**
      * @module punditConfig
@@ -80,7 +80,11 @@ angular.module('Pundit2.Vocabularies')
             // instance label tab title
             label: 'Korbo2',
             // enable or disable the instance
-            active: true
+            active: true,
+
+            basketID: null,
+            url: 'http://dev.korbo2.org/v1',
+            language: 'en'
         }
     ],    
 
@@ -121,19 +125,25 @@ angular.module('Pundit2.Vocabularies')
         var self = this,
             promise = $q.defer(),
             container = self.config.container + term.split(' ').join('$');
+            // TODO se basketID è null non aggiungerlo tra i parametri, altrimenti passarlo nell'oggetto params
+            var params = {
+                q: term,
+                p: 'korbo',
+                limit: korbo2Selector.options.limit,
+                offset: 0,
+                lang: self.config.language
+            };
+
+            if(self.config.basketID !== null){
+                params.basketId = self.config.basketID;
+            }
 
             $http({
                 //headers: { 'Content-Type': 'application/json' },
                 method: 'GET',
-                url: korbo2Selector.options.url + "/search/items",
+                url: self.config.url + "/search/items",
                 cache: false,
-                params: {
-                    q: term,
-                    p: 'korbo',
-                    limit: korbo2Selector.options.limit,
-                    offset: 0,
-                    lang: korbo2Selector.options.language
-                }
+                params: params
 
             }).success(function(res){
                 korbo2Selector.log('Http success, get items '+self.config.label, res.data);
@@ -177,6 +187,10 @@ angular.module('Pundit2.Vocabularies')
         return promise.promise;
 
     };
+
+    Korbo2Factory.prototype.push = function(config){
+        korbo2Selector.options.instances.push(config);
+    }
 
     korbo2Selector.log('Factory init');
 
