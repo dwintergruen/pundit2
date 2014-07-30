@@ -128,6 +128,7 @@ angular.module("Pundit2.Core")
         rectangleType: "http://purl.org/pundit/ont/ao#selector-rectangle"
     };
 
+    ns.fragmentBaseUri = "http://purl.org/pundit/fragment/";
 
     // Annotation server API
     ns.as                  = Config.annotationServerBaseURL;
