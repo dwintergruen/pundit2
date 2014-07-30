@@ -9,8 +9,10 @@ var punditConfig = {
 var ToolbarDemoCtrl = function($scope, Toolbar, MyPundit, NotebookCommunication, TemplatesSelector) {
     
     var numberErrors = 0;
-    
+
+
     $scope.login = function() {
+        MyPundit.checkLoggedIn();
         MyPundit.login();
     };
     

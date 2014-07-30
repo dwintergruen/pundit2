@@ -11,7 +11,7 @@
     };
 
     var MyItemsDemoCtrl = function($scope, MyItems, MyPundit) {
-
+        MyPundit.checkLoggedIn();
         $scope.login = function() {
             MyPundit.login().then(function(value) {
                console.log("Is logged in is "+value);

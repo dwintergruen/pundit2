@@ -174,7 +174,6 @@ angular.module('Pundit2.Core')
         
         return promise.promise;
     };
-    
 
     var loginPromise;
 
