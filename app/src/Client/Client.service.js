@@ -685,6 +685,7 @@ angular.module('Pundit2.Client')
             if(!Config.korbo.active){
                 return;
             }
+
             var korboEEconfig = $window[Config.korbo.confName];
             // set default language
             var lang = korboEEconfig.languages[0];
@@ -705,9 +706,10 @@ angular.module('Pundit2.Client')
                 url: korboEEconfig.endpoint,
                 language: lang.value
             };
-            var a = new Korbo2Selector(config);
-            a.push(config);
-            delete a;
+
+            var keeSelector = new Korbo2Selector(config);
+            keeSelector.push(config);
+            delete keeSelector;
 
         };
 
