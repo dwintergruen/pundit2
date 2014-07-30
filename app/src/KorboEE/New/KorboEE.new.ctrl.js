@@ -3,8 +3,12 @@ angular.module('KorboEE')
                                        korboConf, $timeout, $http, TypesHelper, ItemsExchange, ContextualMenu, $window, Config, APIService) {
 
 
+        var copyCheck = false;
+        var korboComm = new KorboCommunicationFactory();
+        var delay;
         var api = APIService.get($scope.conf.globalObjectName);
         var basketIDforEdit;
+        
         $scope.tabs = [];
         $scope.disactiveLanguages = [];
         $scope.disactiveLanguagesPopoverTemplate = 'src/KorboEE/New/KorboEE.languagesPopover.tmpl.html';
@@ -13,21 +17,21 @@ angular.module('KorboEE')
         $scope.activeFilter = false;
         $scope.isSaving = false;
         $scope.originalUrlCheck = true;
+        $scope.loadingStatus = false;
         $scope.topArea = {
             'message': 'You are creating a new entity',
             'status': 'info'
         };
         $scope.typeFilter = {'label': ""};
 
-        $window[$scope.conf.globalObjectName].onCancel(function(){
+
+       $window[$scope.conf.globalObjectName].onCancel(function(){
             ContextualMenu.wipeActionsByType('advancedMenu');
         });
 
         var initTypes = function(){
             $scope.types = [];
         };
-
-        var copyCheck = false;
 
         var addActionToContextualMenu = function(lang){
             ContextualMenu.addAction({
@@ -189,6 +193,7 @@ angular.module('KorboEE')
                 'message': 'Loading entity...',
                 'status': 'info'
             };
+            $scope.loadingStatus = true;
 
             var param = {
                 item: {uri: entityUri},
@@ -217,6 +222,7 @@ angular.module('KorboEE')
                     'message': 'You are editing the entity...',
                     'status': 'info'
                 };
+                $scope.loadingStatus = false;
 
             },
             function(error){
@@ -225,51 +231,7 @@ angular.module('KorboEE')
                     'status': 'error'
                 };
             });
-
         };
-
-
-        // set default language
-        $scope.defaultLan = $scope.conf.languages[0];
-        for (var j in $scope.conf.languages){
-            if($scope.conf.languages[j].state === true) {
-                $scope.defaultLan = $scope.conf.languages[j];
-                break;
-            } // end if
-        } // end for
-
-        var korboComm = new KorboCommunicationFactory();
-
-        if(typeof($scope.idEntityToEdit) !== 'undefined' &&$scope.idEntityToEdit !== null){
-            buildLanguagesModel($scope.idEntityToEdit, 'korbo');
-        };
-
-
-        var delay;
-
-        // tooltip message for image url
-        $scope.imageUrlErrorMessage = "Invalid URL";
-        $scope.imageUrlTooltipeMessage = "Depiction URL";
-        $scope.imageUrlHasError = false;
-        var urlPattern = new RegExp('(http|ftp|https)://[a-z0-9\-_]+(\.[a-z0-9\-_]+)+([a-z0-9\-\.,@\?^=%&;:/~\+#]*[a-z0-9\-@\?^=%&;/~\+#])?', 'i');
-
-        // tooltip messages for languages
-        var tooltipMessageTitle = "Insert title of the entity in ";
-        var tooltipMessageDescription = "Insert description of the entity in ";
-        var errorMandatory = "The Title field is mandatory and must be filled";
-        var errorLabelTooShort = " The Title must be contain at least " + $scope.conf.labelMinLength +" characters";
-
-
-        $scope.typesHasError = false;
-        $scope.typesErrorMessage = "You must select at least one type";
-        $scope.typesTooltipeMessage = "Select at least one type";
-
-        if(!$scope.editMode){
-            initTypes();
-            buildLanguageTabs();
-            buildTypesFromConfiguration();
-        }
-
 
         // check if language field are all right filled
         var checkLanguages = function(){
@@ -293,9 +255,47 @@ angular.module('KorboEE')
                 })(l);
 
             }
-
             return allLangAreOk;
         };
+
+
+        // set default language
+        $scope.defaultLan = $scope.conf.languages[0];
+        for (var j in $scope.conf.languages){
+            if($scope.conf.languages[j].state === true) {
+                $scope.defaultLan = $scope.conf.languages[j];
+                break;
+            } // end if
+        } // end for
+
+
+        if(typeof($scope.idEntityToEdit) !== 'undefined' &&$scope.idEntityToEdit !== null){
+            buildLanguagesModel($scope.idEntityToEdit, 'korbo');
+        };
+
+
+        // tooltip message for image url
+        $scope.imageUrlErrorMessage = "Invalid URL";
+        $scope.imageUrlTooltipeMessage = "Depiction URL";
+        $scope.imageUrlHasError = false;
+        var urlPattern = new RegExp('(http|ftp|https)://[a-z0-9\-_]+(\.[a-z0-9\-_]+)+([a-z0-9\-\.,@\?^=%&;:/~\+#]*[a-z0-9\-@\?^=%&;/~\+#])?', 'i');
+
+        // tooltip messages for languages
+        var tooltipMessageTitle = "Insert title of the entity in ";
+        var tooltipMessageDescription = "Insert description of the entity in ";
+        var errorMandatory = "The Title field is mandatory and must be filled";
+        var errorLabelTooShort = " The Title must be contain at least " + $scope.conf.labelMinLength +" characters";
+
+
+        $scope.typesHasError = false;
+        $scope.typesErrorMessage = "You must select at least one type";
+        $scope.typesTooltipeMessage = "Select at least one type";
+
+        if(!$scope.editMode){
+            initTypes();
+            buildLanguageTabs();
+            buildTypesFromConfiguration();
+        }
 
         $scope.updateTypes = function(){
             var count = 0;
