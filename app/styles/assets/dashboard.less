@@ -94,19 +94,30 @@
     cursor: col-resize; 
 }
 
+.pnd-dashboard-footer-handler {
+	position: absolute;
+	left: 0px;
+	right: 20px;
+	height: 18px;
+	background-image: url(img/bg-dashboard-footer.png);
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    cursor: row-resize; 
+		
+}
+
 .pnd-dashboard-footer {
     width : 100%;
     position : absolute;
     bottom: 0px;
     background: @gray-light; /* Old browsers */
-    background-image: url(img/bg-dashboard-footer.png);
-    background-repeat: no-repeat;
-    background-position: 50% 50%;
-    background-image: url(img/bg-dashboard-footer.png), -moz-linear-gradient(top,  @gray-light 0%, @gray-light 84%, #7c7c7c 96%, #3d3d3d 100%); /* FF3.6+ */
-    background-image: url(img/bg-dashboard-footer.png), -webkit-gradient(linear, left top, left bottom, color-stop(0%,@gray-light), color-stop(84%,@gray-light), color-stop(96%,@gray-dark), color-stop(100%,@gray-darker)); /* Chrome,Safari4+ */
-    background-image: url(img/bg-dashboard-footer.png), -webkit-linear-gradient(top,  @gray-light 0%,@gray-light 84%,@gray-dark 96%,@gray-darker 100%); /* Chrome10+,Safari5.1+ */
-    background-image: url(img/bg-dashboard-footer.png), -o-linear-gradient(top,  @gray-light 0%,@gray-light 84%,@gray-dark 96%,@gray-darker 100%); /* Opera 11.10+ */
-    background-image: url(img/bg-dashboard-footer.png), -ms-linear-gradient(top,  @gray-light 0%,@gray-light 84%,@gray-dark 96%,@gray-darker 100%); /* IE10+ */
-    background-image: url(img/bg-dashboard-footer.png), linear-gradient(to bottom,  @gray-light 0%,@gray-light 84%,@gray-dark 96%,@gray-darker 100%); /* W3C */
+    background-image: -moz-linear-gradient(top,  @gray-light 0%, @gray-light 75%, lighten(@gray, 10%)); /* FF3.6+ */
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%,@gray-light), color-stop(75%,@gray-light), color-stop(lighten(@gray, 10%))); /* Chrome,Safari4+ */
+    background-image: -webkit-linear-gradient(top,  @gray-light 0%,@gray-light 75%,lighten(@gray, 10%) 100%); /* Chrome10+,Safari5.1+ */
+    background-image: -o-linear-gradient(top,  @gray-light 0%,@gray-light 75%,lighten(@gray, 10%) 100%); /* Opera 11.10+ */
+    background-image: -ms-linear-gradient(top,  @gray-light 0%,@gray-light 75%,lighten(@gray, 10%) 100%); /* IE10+ */
+    background-image: linear-gradient(to bottom,  @gray-light 0%,@gray-light 75%,lighten(@gray, 10%) 100%); /* W3C */
 
 }
+
+
