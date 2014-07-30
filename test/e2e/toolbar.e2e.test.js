@@ -1,4 +1,4 @@
-ddescribe("The toolbar module", function() {
+describe("The toolbar module", function() {
     var p = protractor.getInstance();
 
     // check buttons state where user is not logged in
