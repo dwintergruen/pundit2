@@ -50,7 +50,7 @@ angular.module('KorboEE')
 
         var confirmModal = $modal({
             container: "[data-ng-app='Pundit2']",
-            template: 'src/Core/confirm.modal.tmpl.html',
+            template: 'src/KorboEE/Modal/KorboEE.confirm.modal.tmpl.html',
             show: false,
             backdrop: 'static',
             scope: confirmModalScope
