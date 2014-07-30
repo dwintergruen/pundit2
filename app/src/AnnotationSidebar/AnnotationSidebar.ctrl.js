@@ -244,6 +244,12 @@ angular.module('Pundit2.AnnotationSidebar')
         var previousElement = angular.element('.pnd-annotation-sidebar-filter-show');
         var currentElement = angular.element(event.target.parentElement);
 
+        $scope.searchAuthors='';
+        $scope.searchNotebooks='';
+        $scope.searchTypes='';
+        $scope.searchPredicates='';
+        $scope.searchEntities='';
+
         // Close all filter list and toggle the current
         previousElement.not(currentElement).removeClass('pnd-annotation-sidebar-filter-show');
         currentElement.toggleClass('pnd-annotation-sidebar-filter-show');
