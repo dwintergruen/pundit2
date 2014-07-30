@@ -2,11 +2,11 @@
 @bspath: "../../bower_components/bootstrap/less/";
 
 // Core variables and mixins, imported again to being able to use them
-// outside of the .pnd-wrp import
+// outside of the .kee-wrp import
 
 @import "@{bspath}variables.less";
 @import "@{bspath}mixins.less";
-
+@import "../assets/variables.less";
 
 
 .kee-wrp {
@@ -49,17 +49,14 @@
   @import "@{bspath}popovers.less";
   //@import "@{bspath}carousel.less";
 
-  // KORBO ONLY
-  @import "../assets/variables.less";
-  @import "korboee-variables.less";
+  // KORBO ONLY 
   @import "../assets/page-item-container.less";
   @import "../assets/item.less";
   @import "../assets/preview.less";
   @import "../assets/vertical-tabs.less";
   @import "korboee-styles.less";
   @import "theme.less";
-
-  
+  @import "korboee-variables.less";
 
 }
 
