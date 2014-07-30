@@ -19,6 +19,7 @@ angular.module('Pundit2.Preview')
         $scope.$watch('uri', function() {
             // TODO: special initialization for certain kind of items, like image fragments?
             $scope.item = ItemsExchange.getItemByUri($scope.uri);
+            $scope.typeHidden = true;
 
             if(sticking){
                 if(Preview.getItemDashboardSticky() !== null && Preview.getItemDashboardSticky().uri === $scope.uri){
@@ -32,7 +33,6 @@ angular.module('Pundit2.Preview')
         $scope.$watch(function() {
             return currentElement.find('li.pnd-preview-single-type').css('width');
         }, function() {
-            $scope.typeHidden = true;
             var liList;
 
             // if preview sticky item,
