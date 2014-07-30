@@ -1,6 +1,6 @@
 angular.module('Pundit2.Core')
 .service('ImageFragmentAnnotatorHelper', function($rootScope, $modal, $window, BaseComponent, Config, NameSpace,
-    ContextualMenu, XpointersHelper, Item, ItemsExchange) {
+    ContextualMenu, XpointersHelper, Item, MyItems) {
     
     var imageFragmentHelper = new BaseComponent("ImageFragmentAnnotatorHelper");
 
@@ -15,7 +15,7 @@ angular.module('Pundit2.Core')
         ContextualMenu.addAction({
             type: [Config.modules.ImageHandler.cMenuType],
             name: 'openImageFragmentAnnotator',
-            label: 'Annotate a portion of this image',
+            label: 'Annotate a part of this image',
             showIf: function(item) {
                 return true;
             },
@@ -40,7 +40,7 @@ angular.module('Pundit2.Core')
         }
         if (e.data.type === msg.addPolygon) {
             var item = imageFragmentHelper.createItemFromPolygon(e.data.poly);
-            ItemsExchange.addItemToContainer(item, Config.modules.MyItems.container);
+            MyItems.addItem(item);
         }
     });
 
