@@ -105,19 +105,21 @@
                         ng-mouseout="mouseoutItemHandler(object.uri)">
                             <div 
                                 class="pnd-annotation-details-item-header" 
-                                ng-click="objInfo = toggleObjectInfo(object.typeClass, objInfo)"
+                                ng-click="objInfo = !objInfo"
                                 ng-class="{'pnd-annotation-details-sub-open': objInfo}">
                                 <!-- <span class="{{object.icon}}"></span> -->
                                 <div class="pnd-annotation-item-header-text">
 	                                <span class="pnd-icon pnd-icon-circle"></span>
 	                                <span ng-bind-html="object.label">{{object.label}}</span>
                                 </div>
-                                <button type="button" class="btn  btn-link pull-right" ng-if="object.typeClass=='uri'">
+                                <button type="button" class="btn  btn-link pull-right">
                                         <span ng-class="{true:'pnd-icon-caret-up', false:'pnd-icon-sort-down'}[objInfo]"></span>
                                 </button>
                             </div>
                             <div ng-show="objInfo" class="pnd-sub-info">
-                                <item-preview class="pnd-preview clearfix" uri="{{object.uri}}" sticking="false"></item-preview>
+                                <span ng-if="object.typeClass=='uri'">
+                                <item-preview class="pnd-preview clearfix" uri="{{object.uri}}" sticking="false"></item-preview></span>
+                                <span ng-if="object.typeClass!='uri'">{{object.label}}</span>
                             </div>
                     </div>
                 </div>
