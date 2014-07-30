@@ -251,6 +251,7 @@ angular.module('Pundit2.Core')
             var stopTime = $interval(function() {
                 if (typeof(loginpopup) !== 'undefined' && (loginpopup.closed || loginpopup === null) ) {
                     $interval.cancel(stopTime);
+                    $timeout.cancel(loginPollTimer);
                 }
             }, 1000);
 
