@@ -1,21 +1,10 @@
-body.pnd-annotation-sidebar-collapsed {
-    margin-right: @annotation-sidebar-coll-width;
-    background-position-x: -@annotation-sidebar-coll-width;
-    }
-    
-body.pnd-annotation-sidebar-expanded {
-    margin-right: @annotation-sidebar-exp-width;
-    background-position-x: -@annotation-sidebar-exp-width;
-    }
-
-
 .pnd-annotation-sidebar-container {
     position: absolute;
     right: 0px;
     top: @toolbar-height;
     bottom: 0px;
     height: 100%;
-    z-index: 99;
+    z-index: @zindex-pnd -1;
     display: block;
     background-color: @gray-dark;
 	}
