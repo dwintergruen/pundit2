@@ -1,5 +1,5 @@
 angular.module('KorboEE')
-    .factory('korboConf', function(){
+    .factory('korboConf', function(Utils){
 
         var ret = angular.copy(KORBODEFAULTCONF);
 
@@ -12,7 +12,8 @@ angular.module('KorboEE')
             }
 
             ret = angular.copy(KORBODEFAULTCONF);
-            angular.extend(ret, window[myConfig]);
+            //angular.extend(ret, window[myConfig]);
+            Utils.deepExtend(ret, window[myConfig]);
 
             return ret;
         };

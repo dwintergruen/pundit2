@@ -688,6 +688,7 @@ angular.module('Pundit2.Client')
 
             var korboEEconfig = $window[Config.korbo.confName];
             // set default language
+
             var lang = korboEEconfig.languages[0];
             for (var j in korboEEconfig.languages){
                 if(korboEEconfig.languages[j].state === true) {
@@ -698,7 +699,7 @@ angular.module('Pundit2.Client')
             var config = {
                 container: 'kee-korbo2',
                 // instance label tab title
-                label: 'Korbo2EE',
+                label: 'Korbo',
                 // enable or disable the instance
                 active: true,
 

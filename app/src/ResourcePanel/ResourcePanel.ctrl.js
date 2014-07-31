@@ -126,7 +126,7 @@ angular.module('Pundit2.ResourcePanel')
 
         $scope.createNew = function(){
             var name = $window[Config.korbo.confName].globalObjectName;
-            $window[name].callOpenSearch();
+            $window[name].callOpenNew();
         };
 
         $scope.useAndCopy = function(elem){
