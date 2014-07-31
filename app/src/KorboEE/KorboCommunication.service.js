@@ -214,7 +214,7 @@ angular.module('KorboEE')
         // param: itemUri, provider, endpoint, basketID, language
         korboCommunication.buildLanguagesObject = function(param, langConf){
             var promise = $q.defer();
-            var promises = [];
+            var settled = 0;
             var results = {};
             var defaultLanguage = param.language;
             var korboComm = new KorboCommunicationFactory();
@@ -237,22 +237,16 @@ angular.module('KorboEE')
                             var p;
                             param.language = res.available_languages[index];
                             p = korboComm.getItem(param, false);
-                            promises.push(p);
-                        })(i)
-                    }
-
-                    $q.all(promises).then(function(r){
-                        for(var j=0; j< r.length; j++){
-                            (function(index){
-                                var indexFind = langConf.map(function(e){ return angular.lowercase(e.value) }).indexOf(angular.lowercase(r[index].reqLanguage));
+                            p.then(function(res){
+                                var indexFind = langConf.map(function(e){ return angular.lowercase(e.value) }).indexOf(angular.lowercase(res.reqLanguage));
                                 if(indexFind !== -1){
-                                    var title = angular.uppercase(r[index].reqLanguage);
+                                    var title = angular.uppercase(res.reqLanguage);
                                     var name = angular.lowercase(langConf[indexFind].name);
                                     var lang = {
                                         'title': title,
                                         'name' : name,
-                                        'description': r[index].abstract,
-                                        'label': r[index].label,
+                                        'description': res.abstract,
+                                        'label': res.label,
                                         'mandatory': true,
                                         'hasError': false,
                                         'tooltipMessageTitle': tooltipMessageTitle + name,
@@ -262,15 +256,15 @@ angular.module('KorboEE')
                                     };
                                     results.languages.push(lang);
                                 }
-                            })(j)
-                        } // end for
-                        promise.resolve(results);
-                    },
-                    function(error){
-                        console.log("server error");
-                        results = null;
-                        promise.reject();
-                    });
+                            }).finally(function() {
+                                // TODO: fix api korbo and use q.all again
+                                settled++;
+                                if (settled === res.available_languages.length) {
+                                    promise.resolve(results);
+                                }
+                            });;
+                        })(i);
+                    }
                 } else{
                     promise.resolve(results);
                 }
