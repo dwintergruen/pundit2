@@ -98,7 +98,7 @@ angular.module('Pundit2.Core')
         var ofx = (img.outerWidth() - w)/2,
             ofy = (img.outerHeight() - h)/2;
 
-        var html = '<svg width='+w+' height='+h+'></svg>';
+        var html = '<svg class="pnd-polygon-layer" width='+w+' height='+h+'></svg>';
 
         // overlap and svg element to the image
         var svg = angular.element(html).insertBefore(img).css({
