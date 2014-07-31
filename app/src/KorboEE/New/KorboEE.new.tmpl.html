@@ -219,7 +219,8 @@
             type="button" 
             class="btn btn-xs btn-success" 
             ng-click="save()">
-                Save and add
+                <span ng-if="!editMode">Save and add</span>
+                <span ng-if="editMode">Save</span>
         </button>
     </div> 
     <!-- End Footer -->
