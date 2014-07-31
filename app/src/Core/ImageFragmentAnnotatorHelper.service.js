@@ -51,7 +51,11 @@ angular.module('Pundit2.Core')
     var overflow, imgItem;
     var open = function(item) {
         // add iframe to the page
-        angular.element("[data-ng-app='Pundit2']").after(template1+item.image+template2);
+        if(item.image.substring(0, 7) === "http://") {
+            angular.element("[data-ng-app='Pundit2']").after(template1+item.image+template2);
+        } else {
+            angular.element("[data-ng-app='Pundit2']").after(template1+"http://"+item.image+template2);
+        }
         // disable page scroll
         overflow = angular.element('body').css('overflow');
         angular.element('body').css('overflow', 'hidden');
