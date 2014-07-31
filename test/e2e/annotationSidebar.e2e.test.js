@@ -1,4 +1,4 @@
-ddescribe("AnnotationSidebar interaction", function() {
+describe("AnnotationSidebar interaction", function() {
 
     // Constant
     // TODO: read from service
