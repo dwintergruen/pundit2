@@ -11,7 +11,7 @@
         <img ng-src="{{item.image}}" />
     </div>
 
-    <div ng-if="item.isImageFragment()" class="pnd-preview-item-image">
+    <div ng-show="item.isImageFragment()" class="pnd-preview-item-image">
         <img ng-src="{{item.isPartOf}}" />
     </div>
 

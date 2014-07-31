@@ -1,5 +1,5 @@
 angular.module('Pundit2.Preview')
-    .controller('ItemPreviewCtrl', function($scope, TypesHelper, ItemsExchange, $element, Preview) {
+    .controller('ItemPreviewCtrl', function($scope, $timeout, TypesHelper, ItemsExchange, $element, Preview, ImageFragmentAnnotatorHelper) {
         var currentElement = angular.element($element).find(".pnd-annotation-preview-item-container");
         var sticking;
         $scope.typeHidden = true;
@@ -21,6 +21,18 @@ angular.module('Pundit2.Preview')
             $scope.item = ItemsExchange.getItemByUri($scope.uri);
             $scope.typeHidden = true;
 
+            if (typeof($scope.item) !== 'undefined' && $scope.item.isImageFragment()){
+                // TODO preview must be refactoring !!!!!
+                // if there is a sticky item the template is not removed and re-inserted during mouseover
+                // if there isn't a sticky item the template is removed and re-inserted during mouserover
+                // must be fixed and use only one behaviour
+                if (typeof($scope.item.polygon) !== 'undefined') {
+                    $timeout(function(){
+                        ImageFragmentAnnotatorHelper.drawPolygonOverImage($scope.item.polygon, angular.element($element).find(".pnd-preview-item-image > img"));    
+                    }, 50);
+                }
+            }
+            
             if(sticking){
                 if(Preview.getItemDashboardSticky() !== null && Preview.getItemDashboardSticky().uri === $scope.uri){
                     $scope.isSticky = true;

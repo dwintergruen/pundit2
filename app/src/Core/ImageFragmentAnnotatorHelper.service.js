@@ -4,14 +4,14 @@ angular.module('Pundit2.Core')
     
     var imageFragmentHelper = new BaseComponent("ImageFragmentAnnotatorHelper");
 
+    // events send by image fragment annotator
     var msg = {
         close: 'ia-closed',
         addPolygon: 'ia-add-polygon'
     };
 
-    // TODO append img url when open
-    // TODO check img url to control if have http://
-
+    // html node append to the DOM to load image fragment annotator page
+    // before open is appended to the src a composer url (baseUrl + imgUrl)
     var template1 = '<iframe class="pnd-image-fragment-frame" width="620" height="500" src="' + Config.imageFragmentAnnotator.baseUrl,
         template2 = '" scrolling="no" frameborder="0" allowfullscreen></iframe>';
 
@@ -32,12 +32,13 @@ angular.module('Pundit2.Core')
 
     // When all modules have been initialized, services are up, Config are setup etc..
     $rootScope.$on('pundit-boot-done', function() {
-        // check configuration
+        // check configuration and add ctx menu action
         if (Config.imageFragmentAnnotator.active) {
             initContextualMenu();
         }
     });
 
+    // listen events fired by iframe
     $window.addEventListener('message', function(e) {
         if (e.data.type === msg.close) {
             close();
@@ -63,12 +64,13 @@ angular.module('Pundit2.Core')
     };
 
     var close = function() {
-        // restore overflow
+        // restore page scrool
         angular.element('body').css('overflow', overflow);
         // remove iframe
         angular.element('.pnd-image-fragment-frame').remove();
     };
 
+    // create an item from the data (polygon) received from image fragment annotator
     // @param poly is a polygon made with image fragment annotator conventions
     imageFragmentHelper.createItemFromPolygon = function(poly) {
         var text = imgItem.image.substring(imgItem.image.lastIndexOf('/') + 1, imgItem.image.length);
@@ -85,7 +87,64 @@ angular.module('Pundit2.Core')
         };
 
         return new Item(item.uri, item);
+    };
 
+    imageFragmentHelper.drawPolygonOverImage = function(points, img) {
+
+        var w = img.width(),
+            h = img.height(),
+            i;
+
+        var ofx = (img.outerWidth() - w)/2,
+            ofy = (img.outerHeight() - h)/2;
+
+        var html = '<svg width='+w+' height='+h+'></svg>';
+
+        // overlap and svg element to the image
+        var svg = angular.element(html).insertBefore(img).css({
+            'position': 'absolute',
+            'margin-left': ofx,
+            'margin-top': ofy
+        });
+
+        var normPoints = [];
+        for (i=0; i<points.length; i++) {
+            normPoints.push({x: points[i].x*w, y: points[i].y*h})
+        }
+
+        var lines = [];
+        for (i=0; i<normPoints.length; i++) {
+            // last point is connected to the first point
+            var p, np;
+            if (i === normPoints.length-1) {
+                p = normPoints[i];
+                np = normPoints[0];
+            } else {
+                p = normPoints[i];
+                np = normPoints[i+1];
+            }
+            lines.push('<line x1='+p.x+' y1='+p.y+' x2='+np.x+' y2='+np.y+' ></line>');
+        }
+
+        var filling = '<polygon points="';
+        for (i=0; i<normPoints.length; i++) {
+            filling += normPoints[i].x+','+normPoints[i].y+' ';
+        }
+        filling += '"></polygon>';
+        
+        // add line and filling polygon inside svg element
+        svg.append(lines);
+        svg.find('line').css({
+            'stroke': 'red',
+            'stroke-width': 2
+        });
+        svg.prepend(filling);
+        svg.find('polygon').css({
+            'fill': 'red',
+            'opacity': 0.3
+        });
+
+        angular.element(svg).html(svg.html());
     };
 
     return imageFragmentHelper;
