@@ -9,40 +9,50 @@ angular.module('Pundit2.Annotators')
 
     var imgConsClass = "pnd-cons-img";
 
-    // var imgContainerClass = "pnd-img-wrp";
-
     Consolidation.addAnnotator(ia);
 
     // This function must be executed before than pundit is appended to DOM
-    var timeoutPromise,
-        alreadyExisting = false,
-        mouseInside = false;
+    var timeoutPromise = null, exist = false, el = null, dir = null;
     angular.element('img').hover(function(evt){
-        if (!alreadyExisting) {
-            angular.element(evt.target)
+        ia.clearTimeout();
+        if (el !== null && evt.target.src !== el[0].src) {
+            clear();
+        }
+        if (!exist) {
+            // store a target (img) reference
+            el = angular.element(evt.target)
                 .addClass('pnd-pointed-img')
                 .after('<img-menu ref="pnd-pointed-img"></img-menu>');
-            $compile(angular.element('img-menu'))($rootScope);
-            alreadyExisting = true;
+            // store a directive reference
+            dir = $compile(angular.element('img-menu'))($rootScope);
+            exist = true;
         }
-        mouseInside = true;
     }, function(evt){
-        timeoutPromise = ia.removeDirective(evt);
-        mouseInside = false;
+        // remove directive after 250ms
+        ia.removeDirective(evt);
     });
 
     ia.clearTimeout = function() {
-        $timeout.cancel(timeoutPromise);
+        if(timeoutPromise !== null) {
+            $timeout.cancel(timeoutPromise);
+            timeoutPromise = null;
+        }
     };
 
     ia.removeDirective = function(evt) {
-        return $timeout(function(){
-            if (!mouseInside) {
-                angular.element(evt.target).removeClass('pnd-pointed-img');
-                angular.element('img-menu').remove();
-                alreadyExisting = false;
-            }
-        }, 250);
+        timeoutPromise =  $timeout(function(){
+            clear();
+        }, 100);
+    };
+
+    var clear = function() {
+        // remove css class from img
+        el.removeClass('pnd-pointed-img');
+        // remove directive
+        dir.remove();
+        // update state var
+        exist = false;
+        el = null;
     };
     
     ia.isConsolidable = function(item) {
