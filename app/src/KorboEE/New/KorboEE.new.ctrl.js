@@ -370,7 +370,6 @@ angular.module('KorboEE')
             $scope.checkUrl();
 
             if(!$scope.imageUrlHasError && !$scope.typesHasError && checkLang){
-
                 $scope.isSaving = true;
                 $scope.topArea.message = "Saving entity...";
                 $scope.topArea.status = "info";
@@ -385,10 +384,10 @@ angular.module('KorboEE')
                 var lang = angular.lowercase($scope.tabs[0].title);
 
                 var entityToSave = {
-                    //"label": $scope.tabs[0].label,
+                    // "label": $scope.tabs[0].label,
                     //"abstract": $scope.tabs[0].description,
-                    "depiction": $scope.imageUrl,
-                    "type": newTypes,
+                    // "depiction": $scope.imageUrl,
+                    // "type": newTypes,
                     "resourceUrl": $scope.originalUrl
                 };
 
@@ -420,74 +419,55 @@ angular.module('KorboEE')
                         }
 
                     var location = res;
+                    var allPromises = [];
 
-                    // check if there are more than 1 languages
-                    // TODO: rimuovere il controllo?
-                    if($scope.tabs.length >= 1){
-                        var allPromises = [];
-                        for(var i=0; i<$scope.tabs.length; i++){
+                    var entityToEditWithDepiction = {
+                        "id": id,
+                        "depiction": $scope.imageUrl
+                    };
+                    var entityToEditWithTypes = {
+                        "id": id,
+                        "type": newTypes
+                    };
 
-                            (function(index) {
-                                var lang = angular.lowercase($scope.tabs[index].title);
+                    var depictionPromise = korboComm.save(entityToEditWithDepiction, lang, $scope.conf.endpoint, basketID);
+                    var typesPromise = korboComm.save(entityToEditWithTypes, lang, $scope.conf.endpoint, basketID);
 
-                                var entityToEditWithLabel = {
-                                    "id": id,
-                                    "label": $scope.tabs[index].label
-                                };
+                    allPromises.push(depictionPromise);
+                    allPromises.push(typesPromise);                    
 
-                                var entityToEditWithAbstract = {
-                                    "id": id,
-                                    "abstract": $scope.tabs[index].description
-                                };
+                    for(var i=0; i<$scope.tabs.length; i++){
 
-                                var langLabelPromise = korboComm.save(entityToEditWithLabel, lang, $scope.conf.endpoint, basketID );
-                                var langAbstractPromise = korboComm.save(entityToEditWithAbstract, lang, $scope.conf.endpoint, basketID );
+                        (function(index) {
+                            var lang = angular.lowercase($scope.tabs[index].title);
 
-                                allPromises.push(langLabelPromise);
-                                allPromises.push(langAbstractPromise);
-                            })(i);
+                            var entityToEditWithLabel = {
+                                "id": id,
+                                "label": $scope.tabs[index].label
+                            };
 
-                        }
+                            var entityToEditWithAbstract = {
+                                "id": id,
+                                "abstract": $scope.tabs[index].description
+                            };
 
-                        $q.all(allPromises).then(function(res){
-                            $scope.isSaving = false;
-                            if($scope.conf.useTafonyCompatibility){
-                                $scope.directiveScope.location = location;
-                                $scope.directiveScope.elemToSearch = $scope.tabs[0].label;
-                                $scope.directiveScope.label = $scope.tabs[0].label;
-                            }
-                            $scope.topAreaMessage = "Entity saved!";
-                            $scope.topArea.message = "Entity saved!";
-                            $scope.topArea.status = "info";
+                            var langLabelPromise = korboComm.save(entityToEditWithLabel, lang, $scope.conf.endpoint, basketID );
+                            var langAbstractPromise = korboComm.save(entityToEditWithAbstract, lang, $scope.conf.endpoint, basketID );
 
-                            //TODO fire onSave
-                            obj.value = location;
-                            // fire save callback
-                            api.fireOnSave(obj);
+                            allPromises.push(langLabelPromise);
+                            allPromises.push(langAbstractPromise);
+                        })(i);
 
+                    }
 
-                            $timeout(function(){
-                                ContextualMenu.wipeActionsByType('advancedMenu');                                
-                                KorboCommunicationService.closeModal();
-                                // fire cancel callback
-                                api.fireOnCancel();
-                                // set modal as close in configuration
-                                korboConf.setIsOpenModal(false);
-                            }, 1000);
-                        },
-                        function(err){
-                            $scope.topArea.message = "Entity saving error!";
-                            $scope.topArea.status = "error";
-                        });
-
-                    } else {
-                        // udpdate directive fields if widget is set to be used as tafony compatibility
+                    $q.all(allPromises).then(function(res){
+                        $scope.isSaving = false;
                         if($scope.conf.useTafonyCompatibility){
                             $scope.directiveScope.location = location;
                             $scope.directiveScope.elemToSearch = $scope.tabs[0].label;
                             $scope.directiveScope.label = $scope.tabs[0].label;
                         }
-                        $scope.isSaving = false;
+                        $scope.topAreaMessage = "Entity saved!";
                         $scope.topArea.message = "Entity saved!";
                         $scope.topArea.status = "info";
 
@@ -496,14 +476,20 @@ angular.module('KorboEE')
                         // fire save callback
                         api.fireOnSave(obj);
 
-                        // close modal
+
                         $timeout(function(){
+                            ContextualMenu.wipeActionsByType('advancedMenu');                                
                             KorboCommunicationService.closeModal();
+                            // fire cancel callback
+                            api.fireOnCancel();
                             // set modal as close in configuration
                             korboConf.setIsOpenModal(false);
                         }, 1000);
-
-                    }
+                    },
+                    function(err){
+                        $scope.topArea.message = "Entity saving error!";
+                        $scope.topArea.status = "error";
+                    });
                 },
                 function(err){
                     $scope.topArea.message = "Entity saving error!";
