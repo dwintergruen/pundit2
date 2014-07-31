@@ -53,9 +53,9 @@ angular.module('Pundit2.Core')
     var open = function(item) {
         // add iframe to the page
         if(item.image.substring(0, 7) === "http://") {
-            angular.element("[data-ng-app='Pundit2']").after(template1+item.image+template2);
+            angular.element("[data-ng-app='Pundit2']").append(template1+item.image+template2);
         } else {
-            angular.element("[data-ng-app='Pundit2']").after(template1+"http://"+item.image+template2);
+            angular.element("[data-ng-app='Pundit2']").append(template1+"http://"+item.image+template2);
         }
         // disable page scroll
         overflow = angular.element('body').css('overflow');
@@ -81,6 +81,7 @@ angular.module('Pundit2.Core')
             label: 'Fragment of ' + text,
             description: 'This fragment represents a part of the image ' + text,
             isPartOf: imgItem.image,
+            image: imgItem.image,
             pageContext: XpointersHelper.getSafePageContext(),
             polygon: angular.copy(poly.points),
             parentItemXP: imgItem.uri
