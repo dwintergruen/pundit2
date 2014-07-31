@@ -168,9 +168,8 @@ angular.module('KorboEE')
         $scope.previewError = false;
 
         // get a single entity to retriew all information to show in preview
-        $scope.getItem = function(item){
-            console.log("mouseover");
-        };
+        /*$scope.getItem = function(item){
+        };*/
 
         $scope.getItem = function(item){
             // set loading preview status to true

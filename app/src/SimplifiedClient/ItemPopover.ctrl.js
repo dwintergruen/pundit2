@@ -8,7 +8,6 @@ angular.module('Pundit2.SimplifiedClient')
     };
 
     $scope.onContentClick = function() {
-        console.log('clicked')
         ItemPopover.fix();
     };
 

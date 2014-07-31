@@ -91,7 +91,5 @@ angular.module('Pundit2.Preview')
             return $scope.itemDashboardPreview.getClass();
         }
     };
-//console.log((angular.element.find('.pnd-preview-item-types-ul')).css('width'));
-
 
 });
