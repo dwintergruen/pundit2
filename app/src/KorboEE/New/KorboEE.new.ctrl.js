@@ -207,11 +207,13 @@ angular.module('KorboEE')
             };
             $scope.loadingStatus = true;
 
+            var currentBasketID = (provider == 'korbo' ? null : $scope.conf.basketID);
+
             var param = {
                 item: {uri: entityUri},
                 provider: provider,
                 endpoint: $scope.conf.endpoint, 
-                basketID: null, 
+                basketID: currentBasketID, 
                 language: $scope.defaultLan.value
             }
             var langConf = $scope.conf.languages;
