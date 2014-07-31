@@ -23,7 +23,7 @@
 	            <div class="form-group">
 	                <label>Original URL</label>
 	                <div class="left-inner-icon">
-                        <span class="pnd-icon pnd-icon-external-link"></span>
+                        <span class="pnd-icon pnd-icon-external-link" ng-click="openWindow(originalUrl);$event.stopPropagation();$event.preventDefault();"></span>
                         <input 
                             type="text" 
                             class="form-control" 
@@ -169,7 +169,7 @@
 
                                         <span 
                                             class="pnd-icon pnd-icon-external-link pull-right" 
-                                            ng-click="moreInfo(item.URI)">
+                                            ng-click="openWindow(item.URI);$event.stopPropagation();$event.preventDefault();">
                                         </span>
                                 </div>
                         </li>

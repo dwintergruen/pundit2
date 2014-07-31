@@ -632,5 +632,12 @@ angular.module('KorboEE')
 
         });
 
+        $scope.openWindow = function(url){
+            if(typeof(url)!=='undefined' && url !== null){
+                $window.open(url);
+            }
+
+        };
+
 });
 
