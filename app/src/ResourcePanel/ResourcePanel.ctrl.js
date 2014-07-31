@@ -1,5 +1,5 @@
 angular.module('Pundit2.ResourcePanel')
-    .controller('ResourcePanelCtrl', function($rootScope, $scope, MyItems, PageItemsContainer, ItemsExchange, MyPundit, $filter, Client, SelectorsManager, ResourcePanel, Config, $window) {
+    .controller('ResourcePanelCtrl', function($rootScope, $scope, MyItems, PageItemsContainer, ItemsExchange, MyPundit, $filter, Client, SelectorsManager, ResourcePanel, Config, $window, KorboCommunicationService) {
 
         var myItemsContainer = MyItems.options.container;
         var pageItemsContainer = PageItemsContainer.options.container;
@@ -132,7 +132,30 @@ angular.module('Pundit2.ResourcePanel')
         $scope.useAndCopy = function(elem){
             var name = $window[Config.korbo.confName].globalObjectName;
             $window[name].callCopyAndUse(elem);
-        }
+        };
+
+        $scope.showCopyInEditorButton = function(){
+            var currTab = $scope.contentTabs[$scope.contentTabs.activeTab].title;
+            //if(Config.korbo.active && (currTab !== 'KorboBasket' && currTab !== 'Page Items' && currTab !== 'My Items')){
+            if(Config.korbo.active && currTab === 'Freebase'){
+                return true;
+            } else {
+                return false;
+            }
+        };
+
+        $scope.copyInEditor = function(){
+            var obj = {};
+            //TODO costruisce l'id di freebase, cambiare metodo nel caso vengano gestiti più provider
+            obj.uri = "__m__"+$scope.itemSelected.uri.substring($scope.itemSelected.uri.lastIndexOf('/') + 1);
+            obj.providerFrom = 'freebase';
+
+            KorboCommunicationService.setEntityToCopy(obj);
+
+            var name = $window[Config.korbo.confName].globalObjectName;
+            $window[name].callOpenNew();
+
+        };
 
 
     });
