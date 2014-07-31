@@ -199,6 +199,7 @@ angular.module('KorboEE')
             }
         };
 
+        $scope.prevBasketID;
         var buildLanguagesModel = function(entityUri, provider){
 
             $scope.topArea = {
@@ -218,7 +219,15 @@ angular.module('KorboEE')
             }
             var langConf = $scope.conf.languages;
             KorboCommunicationService.buildLanguagesObject(param, langConf).then(function(res){
-                basketIDforEdit = res.basketId;
+
+                if(typeof(res.basketId) !== 'undefined' && res.basketId !== null){
+                    $scope.prevBasketID = res.basketId;
+                    basketIDforEdit = res.basketId;
+                } else {
+                    basketIDforEdit = $scope.prevBasketID;
+                }
+
+                //basketIDforEdit = res.basketId;
                 $scope.imageUrl = res.imageUrl;
                 $scope.originalUrl = res.originalUrl;
                 initTypes();
@@ -405,6 +414,7 @@ angular.module('KorboEE')
                 if($scope.editMode){
                     entityToSave.id = String($scope.idEntityToEdit);
                     basketID = basketIDforEdit;
+                    console.log("dovrebbe stampare ",basketIDforEdit);
                 } else {
                     basketID = $scope.conf.basketID;
                 }
