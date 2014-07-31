@@ -84,6 +84,7 @@ angular.module('Pundit2.Core')
             image: imgItem.image,
             pageContext: XpointersHelper.getSafePageContext(),
             polygon: angular.copy(poly.points),
+            polygonUri: NameSpace.selectors.baseURI + 'polygon/' + (new Date().getTime()+1),
             parentItemXP: imgItem.uri
         };
 

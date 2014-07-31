@@ -248,6 +248,16 @@ angular.module('Pundit2.Core')
             i[NameSpace.item.isPartOf] = [{ type:'uri', value: this.isPartOf}];
         }
 
+        if (typeof(this.parentItemXP) !== 'undefined'){
+            i[NameSpace.item.parentItemXP] = [{ type:'uri', value: this.parentItemXP}];
+        }
+
+        if (typeof(this.polygonUri) !== 'undefined'){
+            i[NameSpace.item.selector] = [{ type:'uri', value: this.polygonUri}];
+        }
+
+        // TODO make a polygon selector uri and save
+
         return i;
     };
 

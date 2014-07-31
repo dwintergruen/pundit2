@@ -639,6 +639,23 @@ angular.module('Pundit2.TripleComposer')
                 return;
             }
 
+            // check if items are image fragment
+            // in this case add the polygon to the items list
+            if (typeof(triple.subject.polygon) !== 'undefined' && typeof(triple.subject.polygonUri) !== 'undefined') {
+                // make a polygon rdf object
+                res[triple.subject.polygonUri] = {};
+                res[triple.subject.polygonUri][NameSpace.item.type] = [{ type:'uri', value: NameSpace.selectors.polygonType}];
+                var val = {type: 'polygon', points: triple.subject.polygon}
+                res[triple.subject.polygonUri][NameSpace.rdf.value] = [{ type:'literal', value: angular.toJson(val) }];
+            }
+            if (typeof(triple.object.polygon) !== 'undefined' && typeof(triple.object.polygonUri) !== 'undefined') {
+                // make a polygon rdf object
+                res[triple.object.polygonUri] = {};
+                res[triple.object.polygonUri][NameSpace.item.type] = [{ type:'uri', value: NameSpace.selectors.polygonType}];
+                var val = {type: 'polygon', points: triple.object.polygon}
+                res[triple.object.polygonUri][NameSpace.rdf.value] = [{ type:'literal', value: angular.toJson(val) }];
+            }
+
             // add item and its rdf properties
             res[triple.subject.uri] = triple.subject.toRdf();
 
