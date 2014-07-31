@@ -8,6 +8,16 @@
 
 <script>
 
+    var keeConf = {
+        //endpoint: "http://korbo2.local:80/v1",
+        endpoint: "http://dev.korbo2.org/v1",
+        basketID: 1,
+        labelMinLength: 5,
+        limitSearchResult: 3,
+        globalObjectName : 'FF',
+        languages: [{ name:'English', value:'en', state: true }]
+    }
+
     var punditConfig = {
         // vocabularies: ['http://manager.korbo.org/91'],
         // useBasicRelations: false,
@@ -16,7 +26,8 @@
 
         korbo: {
             active: true,
-            confName: 'KORBODEFAULTCONF'
+            //confName: 'KORBODEFAULTCONF'
+            confName: 'keeConf'
         },
 
         modules: {

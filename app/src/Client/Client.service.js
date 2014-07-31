@@ -621,15 +621,18 @@ angular.module('Pundit2.Client')
             // otherwise the SelectorsManager.addSelector() is never called
             // and the selector manager can't show the selector
             // es: FreebaseSelector, MurucaSelector, KorboBasketSelector
-            addKorboEESelector();
-            SelectorsManager.init();
 
-            addComponents();
             // IF KORBO.ACTIVE IS TRUE, ADD KORBO DIRECTIVE
             if(typeof(Config.korbo) !== 'undefined' && Config.korbo.active){
                 var dir = "<korbo-entity-editor conf-name='"+Config.korbo.confName+"'></korbo-entity-editor>";
                 addKorbo(dir);
             }
+
+            addKorboEESelector();
+            SelectorsManager.init();
+
+            addComponents();
+
 
             client.log('Boot is completed, emitting pundit-boot-done event');
             $rootScope.$emit('pundit-boot-done');
