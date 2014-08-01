@@ -33,6 +33,7 @@ angular.module('Pundit2.AnnotationSidebar')
 
     $scope.filters = AnnotationSidebar.getFilters();
 
+    body.css('position', 'static');
     container.css('height', body.innerHeight() + 'px');
 
     // Start reading the default
@@ -93,16 +94,16 @@ angular.module('Pundit2.AnnotationSidebar')
         return Dashboard.getContainerHeight();
     }, function(dashboardHeight) {
         state.newMarginTopSidebar = state.toolbarHeight + dashboardHeight;
-        container.css('top', state.newMarginTopSidebar + 'px');
+        container.css('margin-top', state.newMarginTopSidebar + 'px');
     });
     $scope.$watch(function() {
         return Dashboard.isDashboardVisible();
     }, function(dashboardVisibility) {
         if (dashboardVisibility){
             state.newMarginTopSidebar = state.toolbarHeight + Dashboard.getContainerHeight();
-            container.css('top', state.newMarginTopSidebar + 'px');
+            container.css('margin-top', state.newMarginTopSidebar + 'px');
         } else {
-            container.css('top', state.toolbarHeight + 'px');
+            container.css('margin-top', state.toolbarHeight + 'px');
         }
     });
 
