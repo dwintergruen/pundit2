@@ -379,7 +379,7 @@ describe("AnnotationSidebar interaction", function() {
         });
     });
 
-    it('should sidebar top be dependent from toolbar height and dashboard height', function() {
+    it('should sidebar margin-top be dependent from toolbar height and dashboard height', function() {
         var toolbarHeight;
         var dashboardHeight;
         var globalHeight;
@@ -394,7 +394,7 @@ describe("AnnotationSidebar interaction", function() {
 
         toolbarContainer.getSize().then(function(size){
             toolbarHeight = size.height;
-            sidebarContainer.getCssValue('top').then(function(sidebarTop){
+            sidebarContainer.getCssValue('margin-top').then(function(sidebarTop){
                 expect(toolbarHeight + "px").toEqual(sidebarTop);
             });
 
@@ -403,14 +403,14 @@ describe("AnnotationSidebar interaction", function() {
             dashboardContainer.getSize().then(function(size){
                 dashboardHeight = size.height;
                 globalHeight = toolbarHeight + dashboardHeight;
-                sidebarContainer.getCssValue('top').then(function(sidebarTop){
+                sidebarContainer.getCssValue('margin-top').then(function(sidebarTop){
                     expect(globalHeight + "px").toEqual(sidebarTop);
                 });
             });
 
             p.findElement(protractor.By.css('.pnd-toolbar-dashboard-button')).click();
 
-            sidebarContainer.getCssValue('top').then(function(sidebarTop){
+            sidebarContainer.getCssValue('margin-top').then(function(sidebarTop){
                 expect(toolbarHeight + "px").toEqual(sidebarTop);
             });
 
@@ -420,7 +420,7 @@ describe("AnnotationSidebar interaction", function() {
             dashboardContainer.getSize().then(function(size){
                 dashboardHeight = size.height;
                 globalHeight = toolbarHeight + dashboardHeight;
-                sidebarContainer.getCssValue('top').then(function(sidebarTop){
+                sidebarContainer.getCssValue('margin-top').then(function(sidebarTop){
                     expect(globalHeight + "px").toEqual(sidebarTop);
                 });
             });
