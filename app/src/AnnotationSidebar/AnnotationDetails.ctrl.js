@@ -122,14 +122,6 @@ angular.module('Pundit2.AnnotationSidebar')
         }
     });
 
-    $scope.toggleObjectInfo = function(type, value){
-        if(type !== 'uri'){
-            return value;
-        } else {
-            return !value;
-        }
-    };
-
     $scope.isUserToolShowed = function() {
         return AnnotationDetails.isUserToolShowed($scope.annotation.creator);
     };

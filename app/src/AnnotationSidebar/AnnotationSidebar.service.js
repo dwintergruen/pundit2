@@ -493,7 +493,6 @@ angular.module('Pundit2.AnnotationSidebar')
         }
 
         annotationSidebar.minHeightRequired = startPosition + annotationSidebar.options.annotationHeigth;
-
     };
 
     var findFirstConsolidateItem = function(currentAnnotation){
@@ -502,7 +501,7 @@ angular.module('Pundit2.AnnotationSidebar')
 
         for (var subject in graph){
             currentItem = ItemsExchange.getItemByUri(subject);
-            if (currentItem.isTextFragment() || currentItem.isImageFragment()){
+            if (currentItem.isTextFragment() || currentItem.isImageFragment() || currentItem.isImage()){
                 if (Consolidation.isConsolidated(currentItem)){
                     return subject;
                 }
@@ -517,7 +516,7 @@ angular.module('Pundit2.AnnotationSidebar')
 
                     if (objectType === 'uri'){
                         currentItem = ItemsExchange.getItemByUri(objectValue);
-                        if (currentItem.isTextFragment() || currentItem.isImageFragment()){
+                        if (currentItem.isTextFragment() || currentItem.isImageFragment() || currentItem.isImage()){
                             if (Consolidation.isConsolidated(currentItem)){
                                 return objectValue;
                             }
@@ -567,30 +566,41 @@ angular.module('Pundit2.AnnotationSidebar')
 
                     annotationPosition.push({
                         id: annotation.id, 
-                        top: -1,
+                        top: -2,
                         height: annotationHeigth,
                         broken: true
                     });
                 } else{
+                    var top = -1;
                     currentItem = ItemsExchange.getItemByUri(firstValidUri);
-                    currentFragment = TextFragmentAnnotator.getFragmentIdByUri(firstValidUri);
 
-                    if (typeof(currentFragment) !== 'undefined'){
-                        var top = angular.element('.'+currentFragment).offset().top - toolbarHeight - dashboardHeight;
-                        // annotationSidebar.log("curr fr "+currentFragment + " alt "+ angular.element('.'+currentFragment).offset().top );
-                        annotationHeigth = annotationSidebar.options.annotationHeigth;
-                        if (optCheck && optId === annotation.id){
-                            annotationHeigth = optHeight;
+                    if(currentItem.isTextFragment()){
+                        currentFragment = TextFragmentAnnotator.getFragmentIdByUri(firstValidUri);
+
+                        if (typeof(currentFragment) !== 'undefined'){
+                            top = angular.element('.'+currentFragment).offset().top - toolbarHeight - dashboardHeight;
+                            // annotationSidebar.log("curr fr "+currentFragment + " alt "+ angular.element('.'+currentFragment).offset().top );
+                        } else {
+                            annotationSidebar.log("Something wrong with the fragments of this annotation: ",annotation);
                         }
-                        annotationPosition.push({
-                            id: annotation.id, 
-                            top: top, 
-                            height: annotationHeigth,                        
-                            broken: false
-                        });
-                    } else {
-                        annotationSidebar.log("Something wrong with this annotation: ",annotation);
+                    } else if(currentItem.isImage() || currentItem.isImageFragment()){
+                        // TODO: add icon during the consolidation for get the top of the specific image
+                        var firstValidImage = angular.element('img[src="'+currentItem.image+'"]');
+                        if (typeof(firstValidImage) !== 'undefined'){
+                            top = firstValidImage.offset().top - toolbarHeight - dashboardHeight;
+                        }
                     }
+
+                    annotationHeigth = annotationSidebar.options.annotationHeigth;
+                    if (optCheck && optId === annotation.id){
+                        annotationHeigth = optHeight;
+                    }
+                    annotationPosition.push({
+                        id: annotation.id, 
+                        top: top, 
+                        height: annotationHeigth,                        
+                        broken: false
+                    });
                 }
             });
             orderAndSetPos();

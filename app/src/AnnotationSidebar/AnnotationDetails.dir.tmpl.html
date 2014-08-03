@@ -23,10 +23,10 @@
                 <button type="button" class="btn btn-primary" ng-click="metaInfo = !metaInfo">
                     <span class="pnd-icon-exclamation-circle"></span>
                     Meta
-                </button><button type="button" class="btn btn-primary">
+                </button><button type="button" class="btn btn-primary" disabled>
                     <span class="pnd-icon-mail-forward"></span>
                     Reply
-                </button><button type="button" class="btn btn-primary">
+                </button><button type="button" class="btn btn-primary" disabled>
                     <span class="pnd-icon-share-square-o"></span>
                     Share
                 </button>
@@ -69,8 +69,10 @@
                             </button>
                         </div>
 
-                        <div ng-if="subInfo" class="pnd-sub-info">
-                            <item-preview uri="{{item.subject.uri}}" sticking="false"></item-preview>
+                        <div ng-show="subInfo" class="pnd-sub-info">
+                            <span ng-if="subInfo">
+                                <item-preview uri="{{item.subject.uri}}" sticking="false"></item-preview>
+                            </span>
                         </div>
                 </div>
              <!-- // end subject -->
@@ -91,8 +93,10 @@
                             </button>
                         </div>
 
-                        <div ng-if="preInfo"  class="pnd-sub-info">
-                            <item-preview uri="{{item.predicate.uri}}" sticking="false"></item-preview>
+                        <div ng-show="preInfo" class="pnd-sub-info">
+                            <span ng-if="preInfo">
+                                <item-preview uri="{{item.predicate.uri}}" sticking="false"></item-preview>
+                            </span>
                         </div>
                 </div>
              <!-- // end predicate -->
@@ -116,10 +120,12 @@
                                         <span ng-class="{true:'pnd-icon-caret-up', false:'pnd-icon-sort-down'}[objInfo]"></span>
                                 </button>
                             </div>
-                            <div ng-if="objInfo" class="pnd-sub-info">
-                                <span ng-if="object.typeClass=='uri'">
-                                <item-preview class="pnd-preview clearfix" uri="{{object.uri}}" sticking="false"></item-preview></span>
-                                <span ng-if="object.typeClass!='uri'">{{object.label}}</span>
+                            <div ng-show="objInfo" class="pnd-sub-info">
+                                <span ng-if="objInfo">
+                                    <span ng-if="object.typeClass=='uri'">
+                                    <item-preview class="pnd-preview clearfix" uri="{{object.uri}}" sticking="false"></item-preview></span>
+                                    <span ng-if="object.typeClass!='uri'">{{object.label}}</span>
+                                </span>
                             </div>
                     </div>
                 </div>
