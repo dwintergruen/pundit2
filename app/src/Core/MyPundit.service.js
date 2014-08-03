@@ -162,13 +162,13 @@ angular.module('Pundit2.Core')
             } else {
                 // user is logged in
                 isUserLogged = true;
-                loginStatus = "loggedIn";
+                loginStatus = 'loggedIn';
                 userData = data;
                 promise.resolve(true);
             }
         
         }).error(function() {
-            myPundit.err("Server error");
+            myPundit.err('Server error');
             promise.reject('check logged in promise error');
         });
         
@@ -196,21 +196,10 @@ angular.module('Pundit2.Core')
 
         loginPromise = $q.defer();
         
-        /*myPundit.checkLoggedIn().then(
-            function(isUserLoggedIn) {
-                if(isUserLoggedIn === false){
-                    loginStatus = "loggedOff";
-                    //openLoginModal();
-                    myPundit.openLoginPopUp();
-                } else {
-                    loginPromise.resolve(true);
-                }
-            }
-        );*/
         if(myPundit.isUserLogged()){
             loginPromise.resolve(true);
         } else {
-            loginStatus = "loggedOff";
+            loginStatus = 'loggedOff';
             myPundit.openLoginPopUp();
         }
         
@@ -239,11 +228,11 @@ angular.module('Pundit2.Core')
 
         $timeout.cancel(loginPollTimer);
         if (typeof(loginPromise) === 'undefined') {
-            myPundit.err("Login promise not defined, you should call login() first");
+            myPundit.err('Login promise not defined, you should call login() first');
             return;
         } else {
             // login status is waiting for login
-            loginStatus = "waitingForLogIn";
+            loginStatus = 'waitingForLogIn';
 
             // open popup to get login
             var loginpopup = $window.open(loginServer, 'loginpopup', 'left=260,top=120,width=480,height=360');
@@ -251,7 +240,9 @@ angular.module('Pundit2.Core')
             var stopTime = $interval(function() {
                 if (typeof(loginpopup) !== 'undefined' && (loginpopup.closed || loginpopup === null) ) {
                     $interval.cancel(stopTime);
-                    $timeout.cancel(loginPollTimer);
+                    $timeout(function(){
+                        $timeout.cancel(loginPollTimer);
+                    }, 5000);
                 }
             }, 1000);
 
@@ -264,6 +255,7 @@ angular.module('Pundit2.Core')
                     function(isUserLogged){
                         if (isUserLogged){
                             loginPromise.resolve(true);
+                            $interval.cancel(stopTime);
                             $timeout.cancel(loginPollTimer);
                         }
                     },
@@ -332,12 +324,6 @@ angular.module('Pundit2.Core')
         show: false,
         backdrop: 'static'
     });
-    
-    // open modal
-    var openLoginModal = function(){
-        // promise is needed to open modal when template is ready
-        loginModal.$promise.then(loginModal.show);
-    };
 
     /**
      * @ngdoc method
@@ -375,7 +361,5 @@ angular.module('Pundit2.Core')
         $timeout.cancel(loginPollTimer);
     };
 
-    
-    return myPundit;
-    
+    return myPundit;   
 });
