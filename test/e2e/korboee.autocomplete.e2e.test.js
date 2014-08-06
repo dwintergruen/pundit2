@@ -1,3 +1,5 @@
+/*global KorboEEHttpMock*/
+
 describe("KorboEE autocomplete", function() {
 
 

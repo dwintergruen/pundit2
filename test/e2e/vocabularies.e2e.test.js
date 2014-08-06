@@ -1,13 +1,15 @@
-describe("Vocabularies interaction", function() {
+/*global VocabHttpMock*/
+
+describe('Vocabularies interaction', function() {
     var p = protractor.getInstance();
 
     var fs = require('fs'),
         myHttpMock;
 
     // TODO mock as module that read from default config of vocabularies service
-    var freebaseItemUri = "http://www.freebase.com/m/02qtppz",
-        murucaItemsUri = ["http://purl.org/galassiariosto/resources/azione_illustrazione/7", "http://purl.org/galassiariosto/resources/azione_illustrazione/1149"],
-        menuType = "vocabItems";
+    var freebaseItemUri = 'http://www.freebase.com/m/02qtppz',
+        murucaItemsUri = ['http://purl.org/galassiariosto/resources/azione_illustrazione/7', 'http://purl.org/galassiariosto/resources/azione_illustrazione/1149'],
+        menuType = 'vocabItems';
 
     fs.readFile('test/e2e/VocabHttpMock.e2e.js', 'utf8', function(err, data) {
         if (err) {
@@ -39,7 +41,7 @@ describe("Vocabularies interaction", function() {
         // check tab content (welcome messagge)
         p.findElements(protractor.By.css('.pnd-tab-content .active .pnd-dashboard-welcome')).then(function(items){
             expect(items.length).toBe(1);
-            expect(items[0].getText()).toEqual("Enter text to search in the vocabularies.");
+            expect(items[0].getText()).toEqual('Enter text to search in the vocabularies.');
         });
 
     });
@@ -87,7 +89,7 @@ describe("Vocabularies interaction", function() {
         // check tab content (no found messagge)
         p.findElements(protractor.By.css('.pnd-tab-content .active .pnd-dashboard-welcome')).then(function(items){
             expect(items.length).toBe(1);
-            expect(items[0].getText()).toEqual("No item found to: anything");
+            expect(items[0].getText()).toEqual('No item found to: anything');
         });
 
     });

@@ -54,7 +54,7 @@ describe("TripleComposer interaction", function() {
         // type label
         p.findElement(protractor.By.css(".pnd-statement-object .pnd-row-button-object")).then(function(div) {
             expect(div.getText()).toEqual("Text fragment");
-        });   
+        });
     });
 
     it("should correctly show predicate when object is already present", function(){
@@ -70,7 +70,7 @@ describe("TripleComposer interaction", function() {
         // add item (image) by click on resource panel item and use btn
         p.findElements(protractor.By.css(".pnd-resource-panel-popover .pnd-item")).then(function(items){
             items[2].click();
-        })
+        });
         p.findElement(protractor.By.css(".pnd-resource-panel-popover .pnd-vertical-tab-footer-content .pnd-resource-panel-use-button")).click();
 
         // open resource panel on predicate
@@ -204,7 +204,7 @@ describe("TripleComposer interaction", function() {
         // che if have the same type label
         p.findElement(protractor.By.css("statement[id='2'] .pnd-statement-object .pnd-row-button-object")).then(function(div) {
             expect(div.getText()).toEqual("Text fragment");
-        });   
+        });
     });
 
     it("should correctly remove statement", function(){

@@ -23,11 +23,11 @@ annHttpMock = function() {
                 },
                 items: {
                     "http://purl.org/pundit/ont/ao#fragment-text": {
-                        "http://www.w3.org/2000/01/rdf-schema#label": 
+                        "http://www.w3.org/2000/01/rdf-schema#label":
                             [{type: "literal", value: "Text fragment"}]
                     },
                     "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property": {
-                        "http://www.w3.org/2000/01/rdf-schema#label": 
+                        "http://www.w3.org/2000/01/rdf-schema#label":
                             [{type: "literal", value: "Property"}]
                     },
                     "http://fake-url.it/release_bot/build/examples/dante-1.html": {
@@ -57,7 +57,7 @@ annHttpMock = function() {
                             [{type: "uri", value: "http://purl.org/pundit/demo-cloud-server/user/userid123"}],
                         "http://purl.org/dc/elements/1.1/creator":
                             [{type: "literal", value: "Creator User Name"}],
-                        "http://www.openannotation.org/ns/hasTarget": 
+                        "http://www.openannotation.org/ns/hasTarget":
                             [{type: 'uri', value: 'http://metasound.dibet.univpm.it/exmaple'}]
 
                     }
@@ -88,11 +88,11 @@ annHttpMock = function() {
 
                     },
                     "http://purl.org/pundit/ont/ao#fragment-text": {
-                        "http://www.w3.org/2000/01/rdf-schema#label": 
+                        "http://www.w3.org/2000/01/rdf-schema#label":
                             [{type: "literal", value: "Text fragment"}]
                     },
                     "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property": {
-                        "http://www.w3.org/2000/01/rdf-schema#label": 
+                        "http://www.w3.org/2000/01/rdf-schema#label":
                             [{type: "literal", value: "Property"}]
                     }
                 },
@@ -124,7 +124,7 @@ annHttpMock = function() {
                 loginServer: "http:\/\/demo-cloud.as.thepund.it:8080\/annotationserver\/login.jsp"
             };
 
-            var logoutOk = { logout: 1 };
+            // var logoutOk = { logout: 1 };
 
             var annMedatadaSearch = {
                 "http://sever.url/annotation/annid123": {

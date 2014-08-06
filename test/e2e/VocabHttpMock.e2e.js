@@ -9,7 +9,7 @@ VocabHttpMock = function () {
             // FREEBASE HTTP MOCK
             var freebaseItem = { result: [ {mid: "/m/02qtppz", name: "Pippo Baudo"} ] };
             var freebaseMqlItem = {
-                result: { 
+                result: {
                     mid: "/m/02qtppz",
                     type: [{id: "/common/topic"}, {id: "/people/person"}, {id: "/film/actor"}]
                 }
@@ -56,7 +56,7 @@ VocabHttpMock = function () {
             var korboEmptyResult = {
                 result: []
             };
-            var korboUrl = new RegExp(KORBOBASKETSELECTORDEFAULTS.korboBasketReconURL)
+            var korboUrl = new RegExp(KORBOBASKETSELECTORDEFAULTS.korboBasketReconURL);
             $httpBackend.whenJSONP(korboUrl).respond(korboEmptyResult);
 
         });

@@ -107,7 +107,7 @@ describe("Page Items interaction", function() {
         p.findElement(protractor.By.css('.pnd-tab-content .pnd-dashboard-welcome')).then(function(msg) {
             msg.getText().then(function(str){
                 expect(str.indexOf('testo impossibile da trovare')).toBeGreaterThan(-1);
-            }); 
+            });
         });
     });
 

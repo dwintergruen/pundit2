@@ -5,7 +5,7 @@ var KorboEEHttpMock;
 KorboEEHttpMock = function () {
     angular.module('httpBackendMock', ['ngMockE2E'])
         .run(function ($httpBackend) {
-            var inputString = "Dante";
+            // var inputString = "Dante";
             var itemResponse = {
                 data: [{available_languages:["en"],basket_id:1,id:114,label:"Label1",abstract:"Abstract1",type:["http:\/\/person.uri","http:\/\/scientist.uri"],"depiction":""},
                     {available_languages:["en"],basket_id:1,id:115,label:"Label2",abstract:"Abstract2",type:["http:\/\/person.uri","http:\/\/scientist.uri"],"depiction":""},
@@ -18,8 +18,8 @@ KorboEEHttpMock = function () {
                 data: itemResponse,
                 status: 200
             };
-            var lan = "en";
-            var offset = 0;
+            // var lan = "en";
+            // var offset = 0;
 
             var url = "http://korbo2.local:80/v1/search/items?lang=en&limit=11&offset=0&p=korbo&q=Dante";
 

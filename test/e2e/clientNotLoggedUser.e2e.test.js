@@ -31,11 +31,11 @@ describe("Client interaction when user is not logged in", function() {
 
                         },
                         "http://purl.org/pundit/ont/ao#fragment-text": {
-                            "http://www.w3.org/2000/01/rdf-schema#label": 
+                            "http://www.w3.org/2000/01/rdf-schema#label":
                                 [{type: "literal", value: "Text fragment"}]
                         },
                         "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property": {
-                            "http://www.w3.org/2000/01/rdf-schema#label": 
+                            "http://www.w3.org/2000/01/rdf-schema#label":
                                 [{type: "literal", value: "Property"}]
                         }
                     },
@@ -51,24 +51,24 @@ describe("Client interaction when user is not logged in", function() {
                     }
                 };
 
-                var userLoggedIn = {
-                    loginStatus: 1,
-                    id: "myFakeId",
-                    uri: "http://myUri.fake",
-                    openid: "http://myOpenId.fake",
-                    firstName: "Mario",
-                    lastName: "Rossi",
-                    fullName: "Mario Rossi",
-                    email: "mario@rossi.it",
-                    loginServer: "http:\/\/demo-cloud.as.thepund.it:8080\/annotationserver\/login.jsp"
-                };
+                // var userLoggedIn = {
+                //     loginStatus: 1,
+                //     id: "myFakeId",
+                //     uri: "http://myUri.fake",
+                //     openid: "http://myOpenId.fake",
+                //     firstName: "Mario",
+                //     lastName: "Rossi",
+                //     fullName: "Mario Rossi",
+                //     email: "mario@rossi.it",
+                //     loginServer: "http:\/\/demo-cloud.as.thepund.it:8080\/annotationserver\/login.jsp"
+                // };
 
                 var userNotLogged = {
                     loginStatus: 0,
                     loginServer: "http:\/\/demo-cloud.as.thepund.it:8080\/annotationserver\/login.jsp"
                 };
 
-                var logoutOk = { logout: 1 };
+                // var logoutOk = { logout: 1 };
 
                 var annMedatadaSearch = {
                     "http://sever.url/annotation/annid123": {

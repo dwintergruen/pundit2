@@ -25,7 +25,6 @@ describe("Dashboard interaction", function() {
     });
 
     it('should toggle dashboard', function() {
-        var panelNum = 3;
 
         p.get('/app/examples/dashboard.html');
 
@@ -42,7 +41,6 @@ describe("Dashboard interaction", function() {
     });
 
     it('should resize dashboard height (drag)', function() {
-        var panelNum = 3;
 
         p.get('/app/examples/dashboard.html');
 
@@ -64,12 +62,11 @@ describe("Dashboard interaction", function() {
                 expect(newSize.height).toBe(size.height - offset);
             });
 
-        });                
+        });
         
     });
 
     it('should collapse one specific dashboard panel', function() {
-        var panelNum = 3;
 
         p.get('/app/examples/dashboard.html');
 
@@ -89,7 +86,6 @@ describe("Dashboard interaction", function() {
     });
 
     it('should collapse two specific dashboard panel', function() {
-        var panelNum = 3;
 
         p.get('/app/examples/dashboard.html');
 
@@ -116,7 +112,6 @@ describe("Dashboard interaction", function() {
     });
 
     it('should try to collapse three dashboard panel', function() {
-        var panelNum = 3;
 
         p.get('/app/examples/dashboard.html');
         p.driver.manage().window().setSize(1200, 960);
@@ -145,7 +140,6 @@ describe("Dashboard interaction", function() {
     });
 
     it('should drag (increase width) of first dashboard panel', function() {
-        var panelNum = 3;
 
         p.driver.manage().window().setSize(1200, 960);
 
@@ -182,7 +176,7 @@ describe("Dashboard interaction", function() {
         });
 
         rightPanel.getCssValue('left').then(function(left){
-            left = parseInt(left.substring(0, left.length-2));
+            left = parseInt(left.substring(0, left.length-2), 10);
 
             // drag left
             var offset = 33;
@@ -190,12 +184,12 @@ describe("Dashboard interaction", function() {
 
             // check left 
             rightPanel.getCssValue('left').then(function(newLeft){
-                newLeft = parseInt(newLeft.substring(0, newLeft.length-2));
+                newLeft = parseInt(newLeft.substring(0, newLeft.length-2), 10);
                 expect(newLeft).toBeLessThan(left);
                 expect(newLeft).toBe(left - offset);
             });
 
-        });                       
+        });
         
     });
 
