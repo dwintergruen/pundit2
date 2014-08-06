@@ -77,8 +77,8 @@ angular.module('Pundit2.Annomatic')
     // given node. Finding them might be a very delicate and fun dance!
     // Returns an array of objects with range and annotation in them
     var findAnnotations = function(el, annotations) {
-        var node = el[0],
-            text = el.html();
+        var node = el[0];
+        // var text = el.html();
 
         annomatic.log('##### Wrapping annotations ', annotations.length, annotations);
 
@@ -486,7 +486,7 @@ angular.module('Pundit2.Annomatic')
 
         // TODO: DataTXT gives back resources with no types ... like http://it.dbpedia.org/page/Dio
         if (typeof(ann.types) === "undefined") {
-            values.type = ['http://dbpedia.org/ontology/Thing']
+            values.type = ['http://dbpedia.org/ontology/Thing'];
         } else {
             values.type = angular.copy(ann.types);
         }
@@ -494,7 +494,7 @@ angular.module('Pundit2.Annomatic')
 
         values.label = ann.label;
         if (values.label.length > TextFragmentHandler.options.labelMaxLength) {
-            values.label = values.label.substr(0, tfh.options.labelMaxLength) + ' ..';
+            values.label = values.label.substr(0, TextFragmentHandler.options.labelMaxLength) + ' ..';
         }
 
         if ('thumbnail' in ann.image) {

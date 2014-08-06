@@ -1,5 +1,3 @@
-/*jshint strict: false*/
-
 angular.module('Pundit2.AnnotationSidebar')
 .controller('AnnotationSidebarCtrl', function($scope, $filter, $timeout, $document, $window, AnnotationSidebar, Dashboard, Toolbar) {
     var bodyClasses = AnnotationSidebar.options.bodyExpandedClass + ' ' + AnnotationSidebar.options.bodyCollapsedClass;
@@ -113,7 +111,7 @@ angular.module('Pundit2.AnnotationSidebar')
         var bodyHeight = body.innerHeight();
         // var htmlHeight = html.innerHeight();
         
-        var newHeight = Math.max(minHeightSidebar, bodyHeight);;
+        var newHeight = Math.max(minHeightSidebar, bodyHeight);
         container.css('height', newHeight + 'px');      
 
         // var difference;
@@ -273,7 +271,7 @@ angular.module('Pundit2.AnnotationSidebar')
         } else{
             AnnotationSidebar.filters.broken.expression = '';
         }
-    }
+    };
 
     $scope.setSearchIcon = function(str) {
         if (typeof(str) === 'undefined' || str === '') {

@@ -1,5 +1,3 @@
-/*jshint strict: false*/
-
 angular.module('Pundit2.AnnotationSidebar')
 .constant('ANNOTATIONSIDEBARDEFAULTS', {
 
@@ -657,7 +655,7 @@ angular.module('Pundit2.AnnotationSidebar')
             if (typeof(elementsList.notebooks[notebookUri]) === 'undefined'){
                 var notebookName = "Downloading in progress";
                 var cancelWatchNotebookName = $rootScope.$watch(function() {
-                    return NotebookExchange.getNotebookById(notebookId);;
+                    return NotebookExchange.getNotebookById(notebookId);
                 }, function(nb) {
                     if (typeof(nb) !== 'undefined') {
                         notebookName = nb.label;

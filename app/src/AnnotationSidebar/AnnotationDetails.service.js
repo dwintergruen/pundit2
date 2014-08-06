@@ -1,4 +1,4 @@
-/*jshint strict: false*/
+/*jshint -W030 */
 
 angular.module('Pundit2.AnnotationSidebar')
 .constant('ANNOTATIONDETAILSDEFAULTS', {
@@ -121,8 +121,9 @@ angular.module('Pundit2.AnnotationSidebar')
 
     var buildItemDetails = function(currentUri) {
         var currentItem = ItemsExchange.getItemByUri(currentUri);
+        var result;
         if(typeof(currentItem) !== 'undefined'){
-            var result = {
+            result = {
                 uri: currentUri,
                 label: currentItem.label,
                 description: currentItem.description,
@@ -335,7 +336,7 @@ angular.module('Pundit2.AnnotationSidebar')
             targetAnnotation = {
                 id: annotationId,
                 broken: currentAnnotation.isBroken()
-            }
+            };
             if(!AnnotationSidebar.isAnnotationSidebarExpanded()){
                 AnnotationSidebar.toggle();
             }

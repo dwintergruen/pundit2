@@ -1,5 +1,3 @@
-/*jshint strict: false*/
-
 angular.module('Pundit2.AnnotationSidebar')
 .controller('AnnotationDetailsCtrl', function($scope, $rootScope, $element, $modal, $timeout,
         AnnotationSidebar, AnnotationDetails, AnnotationsExchange, AnnotationsCommunication,
@@ -23,9 +21,9 @@ angular.module('Pundit2.AnnotationSidebar')
     }
 
 
-    $scope.notebookName = 'Downloading notebook in progress'
+    $scope.notebookName = 'Downloading notebook in progress';
     var cancelWatchNotebookName = $scope.$watch(function() {
-        return NotebookExchange.getNotebookById(notebookId);;
+        return NotebookExchange.getNotebookById(notebookId);
     }, function(nb) {
         if (typeof(nb) !== 'undefined') {
             $scope.notebookName = nb.label;
@@ -49,7 +47,7 @@ angular.module('Pundit2.AnnotationSidebar')
 
     // confirm modal
     var modalScope = $rootScope.$new();
-    modalScope.titleMessage = "Delete Annotation"
+    modalScope.titleMessage = "Delete Annotation";
 
     // confirm btn click
     modalScope.confirm = function() {

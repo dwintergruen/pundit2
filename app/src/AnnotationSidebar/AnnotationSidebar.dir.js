@@ -1,5 +1,3 @@
-/*jshint strict: false*/
-
 angular.module('Pundit2.AnnotationSidebar')
 .directive('annotationSidebar', function(AnnotationSidebar) {
     return {

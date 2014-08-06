@@ -132,7 +132,7 @@ angular.module('Pundit2.Core')
             ga = $window[analytics.options.globalTracker];
         };
         m.parentNode.insertBefore(a, m);
-    })($window, $document[0], 'script', 'http://www.google-analytics.com/analytics.js', analytics.options.globalTracker); //TODO: rimuovere http: per versione finale
+    })($window, $document[0], 'script', '//www.google-analytics.com/analytics.js', analytics.options.globalTracker); //TODO: rimuovere http: per versione finale
 
     var ga = $window[analytics.options.globalTracker];
     ga('create', analytics.options.trackingCode, {
@@ -140,7 +140,7 @@ angular.module('Pundit2.Core')
         'cookieDomain': 'none' // no domain
         // 'clientId' : getClientID() // custom id
     });
-    ga('set', 'checkProtocolTask', function() {}); //HACK
+    // ga('set', 'checkProtocolTask', function() {}); //HACK
 
     var updateHits = function() {
         if (currentHits >= analytics.options.maxHits){

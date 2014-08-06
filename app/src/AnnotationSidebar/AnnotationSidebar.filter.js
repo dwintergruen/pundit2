@@ -1,5 +1,3 @@
-/*jshint strict: false*/
-
 angular.module('Pundit2.AnnotationSidebar')
 .filter('orderObjectBy', function(){
     return function(input, attribute, order) {
