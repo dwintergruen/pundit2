@@ -123,8 +123,11 @@
                             <div ng-show="objInfo" class="pnd-sub-info">
                                 <span ng-if="objInfo">
                                     <span ng-if="object.typeClass=='uri'">
-                                    <item-preview class="pnd-preview clearfix" uri="{{object.uri}}" sticking="false"></item-preview></span>
-                                    <span ng-if="object.typeClass!='uri'">{{object.label}}</span>
+                                        <item-preview class="pnd-preview clearfix" uri="{{object.uri}}" sticking="false"></item-preview>
+                                    </span>
+                                    <span ng-if="object.typeClass!='uri'">
+                                        <span ng-bind-html="object.label">{{object.label}}</span>
+                                    </span>
                                 </span>
                             </div>
                     </div>
