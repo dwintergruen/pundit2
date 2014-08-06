@@ -469,7 +469,11 @@ module.exports = function(grunt) {
                 "multistr": true,
                 "globals": {
                     angular: true
-                }
+                },
+                "predef": [
+                    "waitsFor",
+                    "runs"
+                ],
             },
             tests: {
                 options: {
@@ -481,6 +485,7 @@ module.exports = function(grunt) {
                         // ddescribe: true,
                         it: true,
                         // iit: true,
+                        xit: true,
                         expect: true,
                         beforeEach: true,
                         afterEach: true,
@@ -633,7 +638,7 @@ module.exports = function(grunt) {
     grunt.registerTask('test', 'Executes unit and e2e tests',
         ['jshint', 'karma:unit', 'connect:testserver', 'protractor:singlerun']);
     grunt.registerTask('test:unit', 'Executes unit tests',
-        ['jshint', 'karma:unit']);
+        ['jshint:tests', 'karma:unit']);
     grunt.registerTask('test:cov', 'Produces test coverage reports',
         ['karma:unitCoverage']);
     grunt.registerTask('test:e2e', 'Executes the e2e tests',
