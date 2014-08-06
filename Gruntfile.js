@@ -508,7 +508,12 @@ module.exports = function(grunt) {
                     }
                 },
                 files: {
-                    src: ['app/*.js', 'app/**/*.js']
+                    src: [
+                        'app/src/**/*.js',
+                        '!app/src/version.js',
+                        '!app/src/templates.js',
+                        '!app/src/korboee-template.js'
+                    ]
                 }
             }
         },
