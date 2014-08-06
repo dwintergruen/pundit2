@@ -11,9 +11,9 @@ angular.module('Pundit2.AnnotationSidebar')
         }
         results.sort( function(a, b) {
             // parseInt for textual attribute
-            a = parseInt(a[attribute]);
-            b = parseInt(b[attribute]);
-            return order == 'asc' ? a - b : b - a;
+            a = parseInt(a[attribute], 10);
+            b = parseInt(b[attribute], 10);
+            return order === 'asc' ? a - b : b - a;
         });
 
         return results;
@@ -154,7 +154,7 @@ angular.module('Pundit2.AnnotationSidebar')
                             results.push(annotation);
                             return;
                         }
-                    }   
+                    }
                 }
 
             });

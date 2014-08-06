@@ -300,7 +300,7 @@ angular.module('Pundit2.AnnotationSidebar')
     var toolbarHeight = 30;
     var annotationPosition = [];
 
-    var timeoutPromise;
+    // var timeoutPromise;
 
     annotationSidebar.minHeightRequired = startPosition;
 
@@ -473,7 +473,7 @@ angular.module('Pundit2.AnnotationSidebar')
         pos = annotationPosition;
         for (var ann in pos){
             annotationSidebar.annotationPositionReal[pos[ann].id] = {
-                id: pos[ann].id, 
+                id: pos[ann].id,
                 top: pos[ann].top,
                 height: pos[ann].height,
                 broken: pos[ann].broken
@@ -496,6 +496,9 @@ angular.module('Pundit2.AnnotationSidebar')
     var findFirstConsolidateItem = function(currentAnnotation){
         var graph = currentAnnotation.graph;
         var list;
+        var currentItem;
+        var objectValue;
+        var objectType;
 
         for (var subject in graph){
             currentItem = ItemsExchange.getItemByUri(subject);
@@ -519,7 +522,7 @@ angular.module('Pundit2.AnnotationSidebar')
                                 return objectValue;
                             }
                         }
-                    } 
+                    }
                 }
             }
         }
@@ -547,10 +550,10 @@ angular.module('Pundit2.AnnotationSidebar')
             }
 
             angular.forEach(annotations, function(annotation) {
-                var graph = annotation.graph;
+                // var graph = annotation.graph;
                 var firstValidUri;
                 var currentItem;
-                var currentId;
+                // var currentId;
 
                 var currentFragment;
 
@@ -563,7 +566,7 @@ angular.module('Pundit2.AnnotationSidebar')
                     }
 
                     annotationPosition.push({
-                        id: annotation.id, 
+                        id: annotation.id,
                         top: -2,
                         height: annotationHeigth,
                         broken: true
@@ -594,9 +597,9 @@ angular.module('Pundit2.AnnotationSidebar')
                         annotationHeigth = optHeight;
                     }
                     annotationPosition.push({
-                        id: annotation.id, 
-                        top: top, 
-                        height: annotationHeigth,                        
+                        id: annotation.id,
+                        top: top,
+                        height: annotationHeigth,
                         broken: false
                     });
                 }
@@ -637,9 +640,9 @@ angular.module('Pundit2.AnnotationSidebar')
             // Annotation authors
             if (typeof(elementsList.authors[annotation.creator]) === 'undefined'){
                 elementsList.authors[annotation.creator] = {
-                    uri: annotation.creator, 
-                    label: annotation.creatorName, 
-                    active: false, 
+                    uri: annotation.creator,
+                    label: annotation.creatorName,
+                    active: false,
                     count: 0
                 };
             }
@@ -667,7 +670,7 @@ angular.module('Pundit2.AnnotationSidebar')
                 elementsList.notebooks[notebookUri] = {
                     uri: notebookUri,
                     label: notebookName,
-                    notebookId: notebookId, 
+                    notebookId: notebookId,
                     active: false,
                     count: 0
                 };
@@ -680,12 +683,12 @@ angular.module('Pundit2.AnnotationSidebar')
                     uriList[predicateUri] = {uri: predicateUri};
                     if (typeof(elementsList.predicates[predicateUri]) === 'undefined'){
                         elementsList.predicates[predicateUri] = {
-                            uri: predicateUri, 
-                            label: annotation.items[predicateUri].label, 
+                            uri: predicateUri,
+                            label: annotation.items[predicateUri].label,
                             active: false,
                             count: 0
                         };
-                    } 
+                    }
                 }
             });
 
@@ -695,12 +698,12 @@ angular.module('Pundit2.AnnotationSidebar')
                     uriList[entUri] = {uri: entUri};
                     if (typeof(elementsList.entities[entUri]) === 'undefined'){
                         elementsList.entities[entUri] = {
-                            uri: entUri, 
-                            label: annotation.items[entUri].label, 
+                            uri: entUri,
+                            label: annotation.items[entUri].label,
                             active: false,
                             count: 0
                         };
-                    } 
+                    }
                 }
             });
             
@@ -711,12 +714,12 @@ angular.module('Pundit2.AnnotationSidebar')
                         uriList[typeUri] = {uri: typeUri};
                         if (typeof(elementsList.types[typeUri]) === 'undefined'){
                             elementsList.types[typeUri] = {
-                                uri: typeUri, 
-                                label: TypesHelper.getLabel(typeUri), 
+                                uri: typeUri,
+                                label: TypesHelper.getLabel(typeUri),
                                 active: false,
                                 count: 0
                             };
-                        } 
+                        }
                     }
                 });
             });
@@ -738,7 +741,7 @@ angular.module('Pundit2.AnnotationSidebar')
             currentFilterName = filterObj.filterName;
             currentFilterObjExpression = filterObj.expression;
             if (typeof(currentFilterObjExpression) === 'string' && currentFilterObjExpression !== '') {
-                state.filteredAnnotations = $filter(currentFilterName)(state.filteredAnnotations, currentFilterObjExpression);    
+                state.filteredAnnotations = $filter(currentFilterName)(state.filteredAnnotations, currentFilterObjExpression);
             } else if (angular.isArray(currentFilterObjExpression) && currentFilterObjExpression.length > 0) {
                 state.filteredAnnotations = $filter(currentFilterName)(state.filteredAnnotations, currentFilterObjExpression);
             }
@@ -756,7 +759,7 @@ angular.module('Pundit2.AnnotationSidebar')
     annotationSidebar.getMinDate = function(){
         if (elementsList.annotationsDate.length > 0){
             return elementsList.annotationsDate.reduce(
-                function(prev,current){ 
+                function(prev,current){
                     return prev < current ? prev:current;
                 }
             );
@@ -766,7 +769,7 @@ angular.module('Pundit2.AnnotationSidebar')
     annotationSidebar.getMaxDate = function(){
         if (elementsList.annotationsDate.length > 0){
             return elementsList.annotationsDate.reduce(
-                function(prev,current){ 
+                function(prev,current){
                     return prev > current ? prev:current;
                 }
             );
@@ -784,7 +787,7 @@ angular.module('Pundit2.AnnotationSidebar')
             if (currentIndex !== -1){
                 annotationPosition[currentIndex].height = optHeight;
             }
-        } 
+        }
     };
 
     annotationSidebar.setAnnotationsPosition = function(){
@@ -813,6 +816,7 @@ angular.module('Pundit2.AnnotationSidebar')
     // di impostarlo? es. nessuna annotazione con autore X
     annotationSidebar.setFilter = function(filterKey, uriValue) {
         var currentIndex;
+        var currentElementInList;
         var currentFilter = annotationSidebar.filters[filterKey].expression;
         if (typeof(currentFilter) === 'string'){
             annotationSidebar.filters[filterKey].expression = uriValue;
@@ -868,7 +872,7 @@ angular.module('Pundit2.AnnotationSidebar')
     //     }, annotationSidebar.options.annotationsRefresh);
     // }, true);
 
-    $rootScope.$on('consolidation-completed', function(e) {
+    $rootScope.$on('consolidation-completed', function() {
         annotationSidebar.log('Update annotations in sidebar');
 
         var annotations = AnnotationsExchange.getAnnotations();

@@ -5,16 +5,16 @@ angular.module('Pundit2.AnnotationSidebar')
         TextFragmentAnnotator, Toolbar, TypesHelper, MyPundit) {
 
     var currentId = $scope.id;
-    var currentElement = angular.element($element).find(".pnd-annotation-details-wrap");
+    var currentElement = angular.element($element).find('.pnd-annotation-details-wrap');
     var initialHeight = AnnotationSidebar.options.annotationHeigth;
     AnnotationDetails.addAnnotationReference($scope);
 
     $scope.annotation = AnnotationDetails.getAnnotationDetails(currentId);
     if(typeof($scope.annotation) !== 'undefined'){
         if (AnnotationDetails.isUserToolShowed($scope.annotation.creator)){
-            $scope.askLink = Toolbar.options.askLinkDefault + '#/myNotebooks/';    
+            $scope.askLink = Toolbar.options.askLinkDefault + '#/myNotebooks/';
         } else {
-            $scope.askLink = Toolbar.options.askLinkDefault + '#/notebooks/';    
+            $scope.askLink = Toolbar.options.askLinkDefault + '#/notebooks/';
         }
         
         var notebookId = $scope.annotation.notebookId;
@@ -47,7 +47,7 @@ angular.module('Pundit2.AnnotationSidebar')
 
     // confirm modal
     var modalScope = $rootScope.$new();
-    modalScope.titleMessage = "Delete Annotation";
+    modalScope.titleMessage = 'Delete Annotation';
 
     // confirm btn click
     modalScope.confirm = function() {
@@ -57,7 +57,7 @@ angular.module('Pundit2.AnnotationSidebar')
                 modalScope.notifyMessage = "Your annotation has been deleted successfully";
             }, function(){
                 currentElement.removeClass('pnd-annotation-details-delete-in-progress');
-                modalScope.notifyMessage = "Impossible to delete the annotation. Please reatry later.";
+                modalScope.notifyMessage = 'Impossible to delete the annotation. Please reatry later.';
             });
         }
         $timeout(function(){
@@ -71,7 +71,7 @@ angular.module('Pundit2.AnnotationSidebar')
     };
 
     var confirmModal = $modal({
-        container: "[data-ng-app='Pundit2']",
+        container: '[data-ng-app="Pundit2"]',
         template: 'src/Core/confirm.modal.tmpl.html',
         show: false,
         backdrop: 'static',
@@ -81,7 +81,7 @@ angular.module('Pundit2.AnnotationSidebar')
     // open modal
     var openConfirmModal = function(){
         // promise is needed to open modal when template is ready
-        modalScope.notifyMessage = "Are you sure you want to delete this annotation? After you can no longer recover.";
+        modalScope.notifyMessage = 'Are you sure you want to delete this annotation? After you can no longer recover.';
         confirmModal.$promise.then(confirmModal.show);
     };
 
@@ -105,7 +105,7 @@ angular.module('Pundit2.AnnotationSidebar')
     $scope.$watch(function() {
         return currentElement.height();
     }, function(newHeight, oldHeight) {
-        if (newHeight!=oldHeight && $scope.annotation.expanded){
+        if (newHeight !== oldHeight && $scope.annotation.expanded){
             AnnotationSidebar.setAllPosition(currentId, newHeight);
         }
     });
@@ -113,7 +113,7 @@ angular.module('Pundit2.AnnotationSidebar')
     $scope.$watch(function() {
         return AnnotationSidebar.isAnnotationSidebarExpanded();
     }, function(newState, oldState) {
-        if (newState!=oldState){
+        if (newState !== oldState){
             if(!AnnotationSidebar.isAnnotationSidebarExpanded()){
                 AnnotationDetails.closeViewAndReset();
             }

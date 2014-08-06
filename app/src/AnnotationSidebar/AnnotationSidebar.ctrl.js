@@ -3,10 +3,10 @@ angular.module('Pundit2.AnnotationSidebar')
     var bodyClasses = AnnotationSidebar.options.bodyExpandedClass + ' ' + AnnotationSidebar.options.bodyCollapsedClass;
     var sidebarClasses = AnnotationSidebar.options.sidebarExpandedClass + ' ' + AnnotationSidebar.options.sidebarCollapsedClass;
 
-    var html = angular.element('html');
+    // var html = angular.element('html');
     var body = angular.element('body');
     var container = angular.element('.pnd-annotation-sidebar-container');
-    var content = angular.element('.pnd-annotation-sidebar-content');
+    // var content = angular.element('.pnd-annotation-sidebar-content');
 
     // TODO: prelevare la dimensione reale
     // TODO: sarebbe meglio avere un metodo direttamente di toolbar?
@@ -85,7 +85,7 @@ angular.module('Pundit2.AnnotationSidebar')
         return AnnotationSidebar.isFiltersExpanded();
     }, function(currentState) {
         $scope.isFiltersShowed = currentState;
-    }); 
+    });
 
     // Watch dashboard height for top of sidebar
     $scope.$watch(function() {
@@ -112,7 +112,7 @@ angular.module('Pundit2.AnnotationSidebar')
         // var htmlHeight = html.innerHeight();
         
         var newHeight = Math.max(minHeightSidebar, bodyHeight);
-        container.css('height', newHeight + 'px');      
+        container.css('height', newHeight + 'px');
 
         // var difference;
         // var documentHeight = $document.innerHeight();
@@ -132,13 +132,13 @@ angular.module('Pundit2.AnnotationSidebar')
 
     $scope.$watch(function() {
         return AnnotationSidebar.minHeightRequired;
-    }, function(heightValue) {
+    }, function() {
         resizeSidebarHeight();
     });
 
     $scope.$watch(function() {
         return $document.innerHeight();
-    }, function(heightValue) {
+    }, function() {
         resizeSidebarHeight();
     });
 
@@ -172,7 +172,7 @@ angular.module('Pundit2.AnnotationSidebar')
         } else {
             $scope.annotations = currentAnnotations;
         }
-    }); 
+    });
 
     $scope.$watch(function() {
         return AnnotationSidebar.getMinDate();
@@ -184,7 +184,7 @@ angular.module('Pundit2.AnnotationSidebar')
                 $scope.toMinDate = setMin(newMinDate);
             }
         }
-    }); 
+    });
     $scope.$watch(function() {
         return AnnotationSidebar.getMaxDate();
     }, function(maxDate) {

@@ -92,11 +92,11 @@ angular.module('Pundit2.AnnotationSidebar')
         while (node.nodeName.toLowerCase() !== 'body') {
             if (angular.element(node).hasClass(annClass)) {
                 if (angular.element(node).find('.'+refClass).length === 0){
-                    return false;                   
+                    return false;
                 }
             }
             if (angular.element(node).hasClass(filterClass)) {
-                return false;                   
+                return false;
             }
             // If there's no parent node .. even better, we didnt find anything wrong!
             if (node.parentNode === null) {
@@ -152,7 +152,7 @@ angular.module('Pundit2.AnnotationSidebar')
         return mainItem;
     };
 
-    var buildObjectsArray = function(list, annotation) {
+    var buildObjectsArray = function(list) {
         var results = [];
         var objectValue;
         var objectType;
@@ -281,7 +281,7 @@ angular.module('Pundit2.AnnotationSidebar')
 
     annotationDetails.isAnnotationUser = function(creator) {
         return creator === state.userData.uri;
-    };    
+    };
 
     annotationDetails.isUserToolShowed = function(creator) {
         return state.isUserLogged === true && creator === state.userData.uri;
@@ -347,15 +347,15 @@ angular.module('Pundit2.AnnotationSidebar')
             $timeout(function(){
                 var currentElement = angular.element('#'+annotationId);
                 if (currentElement.length>0){
-                    $('body').animate({scrollTop: currentElement.offset().top - Dashboard.getContainerHeight() - 30}, 'slow');
+                    angular.element('body').animate({scrollTop: currentElement.offset().top - Dashboard.getContainerHeight() - 30}, 'slow');
                 }
-            }, 100);  
+            }, 100);
   
         }
     });
 
     $rootScope.$watch(function() {
-        return MyPundit.isUserLogged(); 
+        return MyPundit.isUserLogged();
     }, function(newStatus) {
         state.isUserLogged = newStatus;
         state.userData = MyPundit.getUserData();
