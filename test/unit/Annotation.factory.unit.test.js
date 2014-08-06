@@ -1,3 +1,5 @@
+/*global testAnnotations*/
+
 describe('Annotation', function() {
 
     var $httpBackend, $log,
@@ -6,7 +8,7 @@ describe('Annotation', function() {
 
     beforeEach(module('Pundit2'));
     beforeEach(function() {
-        inject(function($injector, _$httpBackend_, _$log_, _ItemsExchange_, _PAGEITEMSCONTAINERDEFAULTS_) {
+        inject(function($injector, _$httpBackend_, _$log_) {
             $httpBackend = _$httpBackend_;
             $log = _$log_;
             Annotation = $injector.get('Annotation');
@@ -25,18 +27,20 @@ describe('Annotation', function() {
     };
 
     it("should start an http call when passing an annotation ID", function() {
+        var ann;
         var testId = 'foo';
         $httpBackend
             .when('GET', NameSpace.get('asOpenAnn', {id: testId}))
             .respond({});
 
-        var ann = new Annotation(testId);
+        ann = new Annotation(testId);
         $httpBackend.flush();
     });
 
 
     it("should raise an error when the response from the server is undefined", function() {
-        var ann, promise,
+        var ann,
+            promise,
             testId = 'foo';
 
         promise = new Annotation(testId);

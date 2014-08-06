@@ -15,8 +15,8 @@ describe('FreebaseSelector service', function() {
         $httpBackend = _$httpBackend_;
         ItemsExchange = _ItemsExchange_;
 
-        url = new RegExp(FREEBASESELECTORDEFAULTS.freebaseSearchURL),
-        mqlUrl = new RegExp(FREEBASESELECTORDEFAULTS.freebaseMQLReadURL),
+        url = new RegExp(FREEBASESELECTORDEFAULTS.freebaseSearchURL);
+        mqlUrl = new RegExp(FREEBASESELECTORDEFAULTS.freebaseMQLReadURL);
         topicUrl = new RegExp(FREEBASESELECTORDEFAULTS.freebaseTopicURL);
     }));
 

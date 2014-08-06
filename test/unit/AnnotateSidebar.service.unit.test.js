@@ -1,9 +1,11 @@
+/*global testAnnotations*/
+
 describe('AnnotationSidebar service', function() {
     
     var AnnotationSidebar,
         $window,
         $timeout,
-        epsilon = 1, // ms to introduce a gap in $timeout.flush()
+        // epsilon = 1, // ms to introduce a gap in $timeout.flush()
         $compile,
         $log,
         $httpBackend,
@@ -11,6 +13,8 @@ describe('AnnotationSidebar service', function() {
         ANNOTATIONSIDEBARDEFAULTS,
         Annotation,
         NameSpace;
+
+    var myAnnotation;
 
     var fakeScope = {
         id: 'foo'
@@ -33,7 +37,6 @@ describe('AnnotationSidebar service', function() {
             ANNOTATIONSIDEBARDEFAULTS = _ANNOTATIONSIDEBARDEFAULTS_;
         });
 
-        var myAnnotation;
         var testId = fakeScope.id;
         $httpBackend
             .when('GET', NameSpace.get('asOpenAnn', {id: testId}))
@@ -116,7 +119,7 @@ describe('AnnotationSidebar service', function() {
 
     it('should reset the filters', function(){
         AnnotationSidebar.filters['authors'].expression.push('http://fakeuri.it/test');
-        var elementsList = AnnotationSidebar.getFilters();
+        // var elementsList = AnnotationSidebar.getFilters();
         AnnotationSidebar.resetFilters();
         angular.forEach(AnnotationSidebar.filters, function(filter) {
             if (typeof(filter.expression) === 'string'){

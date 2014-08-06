@@ -6,7 +6,7 @@ describe('PredicateSelector service', function() {
 
     beforeEach(module('Pundit2'));
 
-    var testUrl1 = "http://testUrl.jsonp"
+    var testUrl1 = "http://testUrl.jsonp";
     var testPunditConfig = {
         vocabularies: [testUrl1]
     };

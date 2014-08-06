@@ -1,9 +1,11 @@
+/*global testAnnotations*/
+
 describe('AnnotationDetails service', function() {
     
     var AnnotationDetails,
         $window,
         $timeout,
-        epsilon = 1, // ms to introduce a gap in $timeout.flush()
+        // epsilon = 1, // ms to introduce a gap in $timeout.flush()
         $compile,
         $log,
         $httpBackend,
@@ -48,7 +50,7 @@ describe('AnnotationDetails service', function() {
         });
 
         var promiseValue;
-        var myAnnotation;
+
         var testId = fakeScope.id;
 
         $httpBackend.whenGET(NameSpace.get('asUsersCurrent')).respond(userLoggedIn);
@@ -65,8 +67,8 @@ describe('AnnotationDetails service', function() {
         $httpBackend
             .when('GET', NameSpace.get('asOpenAnn', {id: testId}))
             .respond(testAnnotations.simple2);
-        var ann,
-            promise = new Annotation(testId);
+        var ann;
+        promise = new Annotation(testId);
         waitsFor(function() { return ann; }, 2000);
         promise.then(function(ret) {
             ann = ret;

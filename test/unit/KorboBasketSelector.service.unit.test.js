@@ -15,7 +15,7 @@ describe('KorboBasketSelector service', function() {
         $httpBackend = _$httpBackend_;
         ItemsExchange = _ItemsExchange_;
 
-        url = new RegExp(KORBOBASKETSELECTORDEFAULTS.korboBasketReconURL),
+        url = new RegExp(KORBOBASKETSELECTORDEFAULTS.korboBasketReconURL);
         detailsUrl = new RegExp(KORBOBASKETSELECTORDEFAULTS.korboBasketMetadataURL+KORBOBASKETSELECTORDEFAULTS.baskets[0]);
 
     }));
@@ -106,7 +106,7 @@ describe('KorboBasketSelector service', function() {
 
         // all details http calls
         $httpBackend.whenJSONP(url).respond(item1Details);
-        $httpBackend.flush();        
+        $httpBackend.flush();
         // promise is resolved when all http are completed
         expect(called).toBe(true);
 

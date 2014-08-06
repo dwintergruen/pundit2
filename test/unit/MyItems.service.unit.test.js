@@ -210,7 +210,7 @@ describe('MyItems service', function() {
         $httpBackend.flush();
 
         var items = ItemsExchange.getItemsByContainer(MYITEMSDEFAULTS.container);
-        var itemUri = items[0].uri;
+        // var itemUri = items[0].uri;
         expect(items.length).toBe(2);
 
         $httpBackend.whenPOST(NameSpace.get('asPref')).respond(201, redirectResponse);
@@ -229,7 +229,7 @@ describe('MyItems service', function() {
         $httpBackend.flush();
 
         var items = ItemsExchange.getItemsByContainer(MYITEMSDEFAULTS.container);
-        var itemUri = items[0].uri;
+        // var itemUri = items[0].uri;
         expect(items.length).toBe(2);
 
         $httpBackend.whenPOST(NameSpace.get('asPref')).respond(500, '');

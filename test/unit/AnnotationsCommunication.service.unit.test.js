@@ -12,9 +12,9 @@ describe('AnnotationsCommunication service', function() {
     var userLoggedIn = {
         loginStatus: 1
     };
-    var userNotLoggedIn = {
-        loginStatus: 0
-    };
+    // var userNotLoggedIn = {
+    //     loginStatus: 0
+    // };
 
     beforeEach(module('Pundit2'));
 
@@ -37,7 +37,7 @@ describe('AnnotationsCommunication service', function() {
             graph: {},
             items: {},
             isIncludedIn: "testNotebookID",
-            _q: $q.defer() 
+            _q: $q.defer()
         };
         var nt = {
             id : "testNotebookID",
@@ -159,7 +159,7 @@ describe('AnnotationsCommunication service', function() {
                 promise.resolve();
                 return promise.promise;
             },
-            _q: $q.defer() 
+            _q: $q.defer()
         };
         // http mock for edit annotation
         $httpBackend.expectPUT(new RegExp(NameSpace.get('asAnnContent', {id: ann.id}))).respond({});
@@ -170,7 +170,7 @@ describe('AnnotationsCommunication service', function() {
         ann._q.resolve(ann);
         $rootScope.$digest();
 
-        var resolved;        
+        var resolved;
         AnnotationsCommunication.editAnnotation(ann.id).then(function(){
             resolved = true;
         });

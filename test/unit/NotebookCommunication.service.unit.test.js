@@ -1,3 +1,5 @@
+/*global testNotebooks*/
+
 describe('Notebook Communication service', function() {
 
     var NotebookCommunication,
@@ -14,9 +16,9 @@ describe('Notebook Communication service', function() {
         loginStatus: 1
     };
 
-    var userNotLoggedIn = {
-        loginStatus: 0
-    };
+    // var userNotLoggedIn = {
+    //     loginStatus: 0
+    // };
 
     beforeEach(module('Pundit2'));
 
@@ -114,7 +116,7 @@ describe('Notebook Communication service', function() {
             .whenGET(NameSpace.get('asNBMeta', {id: "123456789"}))
             .respond(testNotebooks.notebookPublic);
 
-        var promiseValue;
+        // var promiseValue;
 
         // get login
         var promise = MyPundit.login();
@@ -601,7 +603,7 @@ describe('Notebook Communication service', function() {
 
     it("should reject get my notebook promise", function() {
 
-        var errorMessage = "server get error";
+        // var errorMessage = "server get error";
 
         // http mock for login
         $httpBackend.whenGET(NameSpace.get('asUsersCurrent')).respond(userLoggedIn);
@@ -625,7 +627,7 @@ describe('Notebook Communication service', function() {
 
     it("should reject get my notebook promise when get my notebooks return empty response", function() {
 
-        var errorMessage = "server get error";
+        // var errorMessage = "server get error";
 
         // http mock for login
         $httpBackend.whenGET(NameSpace.get('asUsersCurrent')).respond(userLoggedIn);
@@ -649,7 +651,7 @@ describe('Notebook Communication service', function() {
 
     it("should reject get my notebook promise when return empty notebooks response", function() {
 
-        var errorMessage = "server get error";
+        // var errorMessage = "server get error";
 
         // http mock for login
         $httpBackend.whenGET(NameSpace.get('asUsersCurrent')).respond(userLoggedIn);

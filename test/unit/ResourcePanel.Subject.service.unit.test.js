@@ -597,14 +597,14 @@ describe('Subject Popover Resource Panel service', function() {
         ResourcePanel.showItemsForSubject(triple, anchor, label);
         $rootScope.$digest();
 
-        var scope = getPopoverResourcePanelScope();
+        // var scope = getPopoverResourcePanelScope();
 
         $timeout.flush();
         $httpBackend.flush();
 
         // get active selectors
-        var selectors = SelectorsManager.getActiveSelectors();
-        var selContainer = selectors[0].config.container;
+        // var selectors = SelectorsManager.getActiveSelectors();
+        // var selContainer = selectors[0].config.container;
 
         // and results should be set in scope
 

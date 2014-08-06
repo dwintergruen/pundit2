@@ -1,3 +1,5 @@
+/*global testNotebooks*/
+
 describe('Notebook factory', function() {
     
     var Notebook, NOTEBOOKDEFAULTS, NameSpace,

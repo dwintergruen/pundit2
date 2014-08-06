@@ -589,14 +589,14 @@ describe('Object Popover Resource Panel service', function() {
         ResourcePanel.showItemsForObject(triple, anchor, label);
         $rootScope.$digest();
 
-        var scope = getPopoverResourcePanelScope();
+        // var scope = getPopoverResourcePanelScope();
 
         $timeout.flush();
         $httpBackend.flush();
 
         // get active selectors
-        var selectors = SelectorsManager.getActiveSelectors();
-        var selContainer = selectors[0].config.container;
+        // var selectors = SelectorsManager.getActiveSelectors();
+        // var selContainer = selectors[0].config.container;
 
         /*// open same popover, from same target and same label
         ResourcePanel.showItemsForObject(triple, anchor, label);

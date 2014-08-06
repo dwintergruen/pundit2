@@ -1,3 +1,5 @@
+/*global testPredicates*/
+
 describe('Subject Popover Resource Panel service', function() {
 
     var ResourcePanel,
@@ -96,7 +98,7 @@ describe('Subject Popover Resource Panel service', function() {
 
     var initPredicate = function() {
         // add some predicates
-        var hasComment = new Item(testPredicates.hasComment.uri, testPredicates.hasComment);
+        hasComment = new Item(testPredicates.hasComment.uri, testPredicates.hasComment);
         ItemsExchange.addItemToContainer(hasComment, Client.options.relationsContainer);
 
         similarTo = new Item(testPredicates.similarTo.uri, testPredicates.similarTo);
@@ -276,7 +278,7 @@ describe('Subject Popover Resource Panel service', function() {
 
         // should load only predicates matching with both object and subject
         // in this case, only depicts and similarTo
-        expect(scope.properties.length).toBe(1)
+        expect(scope.properties.length).toBe(1);
         expect(scope.properties[0].uri).toBe(testPredicates.similarTo.uri);
 
     });
@@ -352,7 +354,7 @@ describe('Subject Popover Resource Panel service', function() {
         var anchor = angular.element('.pnd-anchor')[0];
 
         // add a subject item with empty type
-        var sub = new Item("http://sub-uri", propNoType)
+        var sub = new Item("http://sub-uri", propNoType);
         ItemsExchange.addItemToContainer(sub, PageItemsContainer.options.container);
 
         // add an object item with valid type

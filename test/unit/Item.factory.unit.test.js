@@ -1,3 +1,5 @@
+/*global testItems*/
+
 describe('Item Factory', function() {
 
     var Item,

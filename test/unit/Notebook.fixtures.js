@@ -6,7 +6,7 @@ testNotebooks.simple1 = {
         "http://purl.org/dc/elements/1.1/creator": [{value: "Giacomo", type: "literal"}],
         "http://purl.org/pundit/ont/ao#id": [{value: "simple1ID", type: "literal"}],
         "http://purl.org/pundit/ont/ao#includes": [{
-            value: "http://purl.org/pundit/demo-cloud-server/annotation/testannid99", 
+            value: "http://purl.org/pundit/demo-cloud-server/annotation/testannid99",
             type: "uri"
         }],
         "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": [{

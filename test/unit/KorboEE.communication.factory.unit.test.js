@@ -143,7 +143,7 @@ describe('KorboEECommunication factory', function() {
 
         promise.then(function(location){
             expect(location).toBe(headerResponse.Location);
-        })
+        });
 
         $httpBackend.flush();
 
@@ -179,7 +179,7 @@ describe('KorboEECommunication factory', function() {
         function(){
             errorShown = true;
             expect(errorShown).toBe(true);
-        })
+        });
 
         $httpBackend.flush();
 

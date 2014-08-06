@@ -1,3 +1,5 @@
+/*global testItems*/
+
 describe('ImageAnnotator service', function() {
     
     var ImageAnnotator,

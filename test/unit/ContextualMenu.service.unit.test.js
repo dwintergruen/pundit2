@@ -3,6 +3,7 @@ describe('ContextualMenu service', function() {
     var ContextualMenu,
         $window,
         $rootScope,
+        $animate,
         CONTEXTUALMENUDEFAULTS,
         state,
         $log,
@@ -17,7 +18,7 @@ describe('ContextualMenu service', function() {
         // if not exist the service cannot pass element to $drodown serive
         // and cause "Cannot read property 'nodeName' of undefined"
         angular.element("body").append("<div data-ng-app='Pundit2'></div>");
-    });    
+    });
 
     beforeEach(inject(function(_$rootScope_, _$window_, _$animate_, _CONTEXTUALMENUDEFAULTS_,  _ContextualMenu_, _$log_, _$document_){
         $rootScope = _$rootScope_;
@@ -53,7 +54,7 @@ describe('ContextualMenu service', function() {
             },
             action: function(){
                 
-            }            
+            }
         },
         {
             name: 'action2',
@@ -67,7 +68,7 @@ describe('ContextualMenu service', function() {
                 if ( resource === 'pippo-resource' ) {
                     clickTest = true;
                 }
-            }            
+            }
         },
         {
             name: 'action3',
@@ -79,7 +80,7 @@ describe('ContextualMenu service', function() {
             },
             action: function(){
                 
-            }            
+            }
         },
         {
             name: 'action4',
@@ -91,7 +92,7 @@ describe('ContextualMenu service', function() {
             },
             action: function(){
                 
-            }            
+            }
         }
     ];
 
@@ -106,7 +107,7 @@ describe('ContextualMenu service', function() {
             },
             action: function(){
                 
-            }            
+            }
         },
         {
             name: "submenu",
@@ -121,8 +122,8 @@ describe('ContextualMenu service', function() {
             },
             leave: function(){
 
-            }               
-        }        
+            }
+        }
     ];
 
     var addActions = function(one, two){
@@ -174,7 +175,7 @@ describe('ContextualMenu service', function() {
         expect(state.content[0].text).toEqual(typeOneActions[0].label);
         expect(state.content[0].click).toBeDefined();
         expect(state.content[1].text).toEqual(typeOneActions[1].label);
-        expect(state.content[0].click).toBeDefined();      
+        expect(state.content[0].click).toBeDefined();
     });
 
     it('should correctly build action and submenu content ordered', function(){
@@ -182,7 +183,7 @@ describe('ContextualMenu service', function() {
         ContextualMenu.addAction(typeTwoActions[0]);
         ContextualMenu.addSubMenu(typeTwoActions[1]);
 
-        ContextualMenu.show(10, 10, {}, 'type2');        
+        ContextualMenu.show(10, 10, {}, 'type2');
 
         expect(state.content.length).toBe(2);
         expect(state.content[0].text).toEqual(typeTwoActions[1].label);

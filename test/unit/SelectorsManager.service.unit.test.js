@@ -21,7 +21,7 @@ describe('SelectorsManager service', function() {
                 active: true,
 
                 instances: [
-                    { 
+                    {
                         label: 'MurucaTestLabel'
                     }
                 ]

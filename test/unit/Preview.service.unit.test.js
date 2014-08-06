@@ -9,19 +9,20 @@ describe('Preview service', function() {
         Item,
         item1;
 
-    var imageItem = {
-        label: "image item label",
-        description: "image item description",
-        uri: "http://image-item-uri",
-        type: ["http://image-item-type", "http://xmlns.com/foaf/0.1/Image"] // or http://purl.org/pundit/ont/ao#fragment-image
-    };
+    // TODO: add imageItem and image fragment test
+    // var imageItem = {
+    //     label: "image item label",
+    //     description: "image item description",
+    //     uri: "http://image-item-uri",
+    //     type: ["http://image-item-type", "http://xmlns.com/foaf/0.1/Image"] // or http://purl.org/pundit/ont/ao#fragment-image
+    // };
 
-    var fragmentImageItem = {
-        label: "image item label",
-        description: "image item description",
-        uri: "http://image-item-uri",
-        type: ["http://image-item-type", "http://purl.org/pundit/ont/ao#fragment-image"]
-    };
+    // var fragmentImageItem = {
+    //     label: "image item label",
+    //     description: "image item description",
+    //     uri: "http://image-item-uri",
+    //     type: ["http://image-item-type", "http://purl.org/pundit/ont/ao#fragment-image"]
+    // };
 
 	var item2 = {
 		label: "sticky item label",

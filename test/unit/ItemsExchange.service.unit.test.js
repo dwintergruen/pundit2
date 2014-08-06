@@ -1,3 +1,5 @@
+/*global testItems*/
+
 describe('ItemsExchange service', function() {
 
     var ItemsExchange, Item;

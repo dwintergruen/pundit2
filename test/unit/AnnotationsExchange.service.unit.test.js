@@ -130,12 +130,7 @@ describe('AnnotationsExchange service', function() {
     });
 
     it('should correctly reject promise when search annotation by uri and not found it', function(){
-        var rejected = false,
-            httpRes = {
-            'http://purl.org/pundit/demo-cloud-server/annotation/0e097114': {
-                creator: [ {type: 'uri', value: 'http://purl.org/pundit/demo-cloud-server/user/00c16512'} ]
-            }
-        };
+        var rejected = false;
 
         $httpBackend.whenGET(url).respond(500, 'error msg');
 

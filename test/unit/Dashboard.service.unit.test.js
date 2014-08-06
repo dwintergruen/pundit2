@@ -135,10 +135,10 @@ describe('Dashboard service', function() {
         
         var totalWidth = 0;
         for ( var i in panels ) {
-            totalWidth = totalWidth + angular.element(panels[i]).isolateScope().width;   
+            totalWidth = totalWidth + angular.element(panels[i]).isolateScope().width;
         }
 
-        expect(width - totalWidth).toBeLessThan(maxError);        
+        expect(width - totalWidth).toBeLessThan(maxError);
     });
 
     it("should initialize total panels width to containerWidth when container is at minWidth", function(){
@@ -153,7 +153,7 @@ describe('Dashboard service', function() {
         
         var totalWidth = 0;
         for ( var j in panels ) {
-            totalWidth = totalWidth + angular.element(panels[j]).isolateScope().width;   
+            totalWidth = totalWidth + angular.element(panels[j]).isolateScope().width;
         }
 
         expect(totalWidth - minWidth).toBeLessThan(maxError);
@@ -168,7 +168,7 @@ describe('Dashboard service', function() {
 
         var preTotalWidth = 0;
         for ( var i in panels ) {
-            preTotalWidth = preTotalWidth + angular.element(panels[i]).isolateScope().width;   
+            preTotalWidth = preTotalWidth + angular.element(panels[i]).isolateScope().width;
         }
         expect(preTotalWidth - width).toBeLessThan(maxError);
 
@@ -177,7 +177,7 @@ describe('Dashboard service', function() {
         
         var totalWidth = 0;
         for ( var j in panels ) {
-            totalWidth = totalWidth + angular.element(panels[j]).isolateScope().width;   
+            totalWidth = totalWidth + angular.element(panels[j]).isolateScope().width;
         }
         expect(totalWidth - newWidth).toBeLessThan(maxError);
 
@@ -204,7 +204,7 @@ describe('Dashboard service', function() {
 
         var totalWidth = 0;
         for ( var i in panels ) {
-            totalWidth = totalWidth + angular.element(panels[i]).isolateScope().width;   
+            totalWidth = totalWidth + angular.element(panels[i]).isolateScope().width;
         }
         expect(totalWidth - width).toBeLessThan(maxError);
         
@@ -219,7 +219,7 @@ describe('Dashboard service', function() {
         
         var totalWidth = 0;
         for ( var i in panels ) {
-            totalWidth = totalWidth + angular.element(panels[i]).isolateScope().width;   
+            totalWidth = totalWidth + angular.element(panels[i]).isolateScope().width;
         }
         expect(totalWidth - newWidth).toBeLessThan(maxError);
 
@@ -234,13 +234,13 @@ describe('Dashboard service', function() {
         var width = Dashboard.getContainerWidth();
 
         expect(scope.isCollapsed).toBe(false);
-        scope.toggleCollapse();        
+        scope.toggleCollapse();
         expect(scope.isCollapsed).toBe(true);
         expect(scope.width).toBe(DASHBOARDDEFAULTS.panelCollapsedWidth);
         // after collapse dashboard call resizeAll
         var totalWidth = 0;
         for ( var i in panels ) {
-            totalWidth = totalWidth + angular.element(panels[i]).isolateScope().width;   
+            totalWidth = totalWidth + angular.element(panels[i]).isolateScope().width;
         }
         expect(totalWidth - width).toBeLessThan(maxError);
 
@@ -250,7 +250,7 @@ describe('Dashboard service', function() {
         // after collapse dashboard call resizeAll
         totalWidth = 0;
         for ( var j in panels ) {
-            totalWidth = totalWidth + angular.element(panels[j]).isolateScope().width;   
+            totalWidth = totalWidth + angular.element(panels[j]).isolateScope().width;
         }
         expect(totalWidth - width).toBeLessThan(maxError);
         
@@ -264,23 +264,23 @@ describe('Dashboard service', function() {
 
         // collapse
         expect(scope.isCollapsed).toBe(false);
-        scope.toggleCollapse();        
+        scope.toggleCollapse();
         expect(scope.isCollapsed).toBe(true);
         expect(scope.width).toBe(DASHBOARDDEFAULTS.panelCollapsedWidth);
 
         // collapse
         scope = angular.element(panels[1]).isolateScope();
         expect(scope.isCollapsed).toBe(false);
-        scope.toggleCollapse();        
+        scope.toggleCollapse();
         expect(scope.isCollapsed).toBe(true);
         expect(scope.width).toBe(DASHBOARDDEFAULTS.panelCollapsedWidth);
 
         // not collapse
         scope = angular.element(panels[2]).isolateScope();
         expect(scope.isCollapsed).toBe(false);
-        scope.toggleCollapse();        
+        scope.toggleCollapse();
         expect(scope.isCollapsed).toBe(false);
-        expect(scope.width).not.toBe(DASHBOARDDEFAULTS.panelCollapseWidth);        
+        expect(scope.width).not.toBe(DASHBOARDDEFAULTS.panelCollapseWidth);
         
     });
 
@@ -292,7 +292,7 @@ describe('Dashboard service', function() {
         var listsScope = angular.element(el).find('dashboard-panel[paneltitle="lists"]').isolateScope();
         var listsWidth = listsScope.width;
         var toolsScope = angular.element(el).find('dashboard-panel[paneltitle="tools"]').isolateScope();
-        var toolsWidth = toolsScope.width;        
+        var toolsWidth = toolsScope.width;
 
         expect(Dashboard.tryToResizeCouples(0,-30)).toBe(true);
         expect(listsScope.width).toBe(listsWidth-30);
@@ -311,7 +311,7 @@ describe('Dashboard service', function() {
         var listsScope = angular.element(el).find('dashboard-panel[paneltitle="lists"]').isolateScope();
         var listsWidth = listsScope.width;
         var toolsScope = angular.element(el).find('dashboard-panel[paneltitle="tools"]').isolateScope();
-        var toolsWidth = toolsScope.width;        
+        var toolsWidth = toolsScope.width;
 
         expect(Dashboard.tryToResizeCouples(0,-30)).toBe(false);
         expect(listsScope.width).toBe(listsWidth);
@@ -330,7 +330,7 @@ describe('Dashboard service', function() {
         var listsScope = angular.element(el).find('dashboard-panel[paneltitle="lists"]').isolateScope();
         var listsWidth = listsScope.width;
         var toolsScope = angular.element(el).find('dashboard-panel[paneltitle="tools"]').isolateScope();
-        var toolsWidth = toolsScope.width;        
+        var toolsWidth = toolsScope.width;
 
         expect(Dashboard.tryToResizeCouples(0,+30)).toBe(false);
         expect(listsScope.width).toBe(listsWidth);
@@ -350,7 +350,7 @@ describe('Dashboard service', function() {
         var listsWidth = listsScope.width;
         
         var detailsScope = angular.element(el).find('dashboard-panel[paneltitle="details"]').isolateScope();
-        var detailsWidth = detailsScope.width;             
+        var detailsWidth = detailsScope.width;
 
         expect(Dashboard.tryToResizeCouples(1,+54)).toBe(true);
 
@@ -371,7 +371,7 @@ describe('Dashboard service', function() {
         var listsWidth = listsScope.width;
         
         var detailsScope = angular.element(el).find('dashboard-panel[paneltitle="details"]').isolateScope();
-        var detailsWidth = detailsScope.width;             
+        var detailsWidth = detailsScope.width;
 
         expect(Dashboard.tryToResizeCouples(0,-54)).toBe(true);
 
@@ -389,7 +389,7 @@ describe('Dashboard service', function() {
         toolsScope.toggleCollapse();
 
         var detailsScope = angular.element(el).find('dashboard-panel[paneltitle="details"]').isolateScope();
-        detailsScope.toggleCollapse();            
+        detailsScope.toggleCollapse();
 
         var listsScope = angular.element(el).find('dashboard-panel[paneltitle="lists"]').isolateScope();
         var listsWidth = listsScope.width;
@@ -426,7 +426,7 @@ describe('Dashboard service', function() {
         toolsScope.toggleCollapse();
 
         var detailsScope = angular.element(el).find('dashboard-panel[paneltitle="details"]').isolateScope();
-        detailsScope.toggleCollapse();            
+        detailsScope.toggleCollapse();
 
         var listsScope = angular.element(el).find('dashboard-panel[paneltitle="lists"]').isolateScope();
         var listsWidth = listsScope.width;

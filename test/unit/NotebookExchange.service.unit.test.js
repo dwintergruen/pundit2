@@ -1,3 +1,5 @@
+/*global testNotebooks*/
+
 describe('NotebooksExchange factory', function() {
     
     var NotebookExchange, Notebook, NameSpace, $httpBackend;

@@ -1,3 +1,5 @@
+/*global testNotebooks*/
+
 describe('Notebook Composer service', function() {
 
     var NotebookComposer,

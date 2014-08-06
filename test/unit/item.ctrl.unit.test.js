@@ -43,7 +43,7 @@ describe("Item", function(){
     xit('should correctly get item', function(){
         var item, el;
         var p = new Annotation("8fd05a49");
-        p.then(function(ret) {
+        p.then(function() {
             item = ItemsExchange.getItems()[0];
             el = compileDirective(item);
         });
@@ -99,7 +99,7 @@ describe("Item", function(){
 
         var el = compileDirective(item1);
         var scope = el.isolateScope();
-        var evt = {preventDefault: function(){;}, stopPropagation: function(){;}}
+        var evt = {preventDefault: function(){ }, stopPropagation: function(){ }};
 
         scope.onClickSticky(evt);
 

@@ -16,7 +16,7 @@ describe('TripleComposer service', function() {
     };
 
     var predicateItem = {
-        uri: "http://purl.org/pundit/vocab#similarTo", 
+        uri: "http://purl.org/pundit/vocab#similarTo",
         label: "is similar to",
         type: ["http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"]
     };
@@ -61,7 +61,7 @@ describe('TripleComposer service', function() {
         expect(s[1].id).toBe(2);
 
         // at least one statement must be present
-        s[0].scope = { 
+        s[0].scope = {
             isStatementEmpty: function(){ return; },
             wipe: function(){ return; }
         };
@@ -114,7 +114,7 @@ describe('TripleComposer service', function() {
                     subject: new Item(item.uri, item),
                     predicate: new Item(predicateItem.uri, predicateItem),
                     object: new Item(item.uri, item)
-                }
+                };
             }
         });
         
@@ -153,7 +153,7 @@ describe('TripleComposer service', function() {
                     subject: {uri: 'testUri1', isTextFragment: function(){ return true;}},
                     predicate: {uri: 'testUri2', isTextFragment: function(){ return true;}},
                     object: {uri: 'testUri3', isTextFragment: function(){ return true;}}
-                }
+                };
             }
         });
         
@@ -175,7 +175,7 @@ describe('TripleComposer service', function() {
                     subject: {uri: 'subUri'},
                     predicate: {uri: 'predUri'},
                     object: {uri: 'objUri'}
-                }
+                };
             }
         });
 
@@ -197,7 +197,7 @@ describe('TripleComposer service', function() {
                     subject: {uri: 'subUri'},
                     predicate: {uri: 'predUri'},
                     object: {uri: 'objUri'}
-                }
+                };
             }
         });
 
@@ -208,7 +208,7 @@ describe('TripleComposer service', function() {
                     subject: {uri: 'subUri'},
                     predicate: {uri: 'predUri2'},
                     object: {uri: 'objUri'}
-                }
+                };
             }
         });
         
@@ -232,7 +232,7 @@ describe('TripleComposer service', function() {
                     subject: {uri: 'subUri'},
                     predicate: {uri: 'predUri'},
                     object: {uri: 'objUri1'}
-                }
+                };
             }
         });
 
@@ -243,7 +243,7 @@ describe('TripleComposer service', function() {
                     subject: {uri: 'subUri'},
                     predicate: {uri: 'predUri'},
                     object: {uri: 'objUri2'}
-                }
+                };
             }
         });
         
@@ -279,7 +279,7 @@ describe('TripleComposer service', function() {
 
     it('should correctly compile duplicated statement directive', function(){
         compileDirective();
-        var s = TripleComposer.getStatements();       
+        var s = TripleComposer.getStatements();
         
         var triple = s[0].scope.get();
         // extend triple object
@@ -330,7 +330,7 @@ describe('TripleComposer service', function() {
         TripleComposer.showCurrentTemplate();
         $rootScope.$digest();
 
-        var s = TripleComposer.getStatements();        
+        var s = TripleComposer.getStatements();
         var scope = s[0].scope;
         expect(scope.predicateLabel).toBe('predicate label');
         expect(scope.predicateFound).toBe(true);
@@ -359,7 +359,7 @@ describe('TripleComposer service', function() {
         TripleComposer.showCurrentTemplate();
         $rootScope.$digest();
 
-        var s = TripleComposer.getStatements();        
+        var s = TripleComposer.getStatements();
         var scope = s[0].scope;
         expect(scope.predicateLabel).toBe('predicate label');
         expect(scope.predicateFound).toBe(true);
