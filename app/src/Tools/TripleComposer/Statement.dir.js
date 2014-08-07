@@ -20,7 +20,7 @@ angular.module('Pundit2.TripleComposer')
             });
           
             // add statement scope to the relative element inside triple composer statemenst array
-            controllerInstance.addStatementScope(scope.id, scope);          
+            controllerInstance.addStatementScope(scope.id, scope);
 
         }
     };

@@ -164,9 +164,9 @@ angular.module('Pundit2.TripleComposer')
     };
 
     // reset scope to default
-    $scope.wipe = function(){ 
+    $scope.wipe = function(){
         $scope.wipeSubject();
-        $scope.wipePredicate(); 
+        $scope.wipePredicate();
         $scope.wipeObject();
     };
 
@@ -220,7 +220,7 @@ angular.module('Pundit2.TripleComposer')
         $scope.objectLiteral = false;
         $scope.objectDate = false;
         $scope.objectFixed = false;
-        triple.object = null; 
+        triple.object = null;
         ResourcePanel.hide();
         angular.element('.pnd-triplecomposer-save').addClass('disabled');
         $scope.tripleComposerCtrl.isTripleErasable();
@@ -343,7 +343,7 @@ angular.module('Pundit2.TripleComposer')
         $scope.tripleComposerCtrl.isTripleErasable();
         
     };
-    $scope.onClickObject = function($event){        
+    $scope.onClickObject = function($event){
         ResourcePanel.showItemsForObject(buildUrisArray(), $event.target, $scope.objectSearch).then($scope.setObject);
     };
     $scope.onKeyUpObject = function($event){

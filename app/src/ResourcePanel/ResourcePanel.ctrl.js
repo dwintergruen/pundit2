@@ -1,9 +1,9 @@
 angular.module('Pundit2.ResourcePanel')
     .controller('ResourcePanelCtrl', function($rootScope, $scope, MyItems, PageItemsContainer, ItemsExchange, MyPundit, $filter, Client, SelectorsManager, ResourcePanel, Config, $window, KorboCommunicationService) {
 
-        var myItemsContainer = MyItems.options.container;
-        var pageItemsContainer = PageItemsContainer.options.container;
-        var propertiesContainer = Client.options.relationsContainer;
+        // var myItemsContainer = MyItems.options.container;
+        // var pageItemsContainer = PageItemsContainer.options.container;
+        // var propertiesContainer = Client.options.relationsContainer;
         $scope.moduleName = 'Pundit2';
 
         var actualContainer;

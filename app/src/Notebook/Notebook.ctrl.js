@@ -2,7 +2,7 @@ angular.module('Pundit2.Notebook')
 .controller('NotebookCtrl', function($scope, NotebookExchange, Preview, ContextualMenu) {
 
     // get item by id (passed as directive nid param)
-    $scope.notebook = NotebookExchange.getNotebookById($scope.nid);    
+    $scope.notebook = NotebookExchange.getNotebookById($scope.nid);
 
     $scope.onItemMouseOver = function(){
         Preview.showDashboardPreview($scope.notebook);

@@ -257,7 +257,7 @@ angular.module('Pundit2.TripleComposer')
     };
 
     tripleComposer.updateVisibility = function() {
-        if (closeAfterOp && Dashboard.isDashboardVisible()) {            
+        if (closeAfterOp && Dashboard.isDashboardVisible()) {
             Dashboard.toggle();
         }
         closeAfterOp = false;
@@ -287,7 +287,7 @@ angular.module('Pundit2.TripleComposer')
         if (statements.length === 1) {
             statements[0].scope.wipe();
             return;
-        } 
+        }
 
         var index = -1;
         statements.some(function(s, i){
@@ -295,7 +295,7 @@ angular.module('Pundit2.TripleComposer')
                 index = i;
                 return true;
             }
-        });        
+        });
         if (index > -1) {
             statements.splice(index, 1);
         }
@@ -397,13 +397,13 @@ angular.module('Pundit2.TripleComposer')
         }
         
         var domainFound = false,
-        predicate = statements[index].scope.get().predicate;        
+        predicate = statements[index].scope.get().predicate;
 
         if (predicate === null || predicate.domain.length === 0) {
             return true;
         }
         // chek if subject type match predicate domain
-        item.type.some(function(type, i){
+        item.type.some(function(type){
             if (predicate.domain.indexOf(type) > -1) {
                 domainFound = true;
                 return domainFound;
@@ -416,7 +416,7 @@ angular.module('Pundit2.TripleComposer')
             tripleComposer.log('Predicate domain match.');
         }
 
-        return domainFound;        
+        return domainFound;
     };
 
     tripleComposer.canAddItemAsObject = function(item){
@@ -441,7 +441,7 @@ angular.module('Pundit2.TripleComposer')
             return true;
         }
         // check if object type match predicate range
-        item.type.some(function(type, i){
+        item.type.some(function(type){
             if (predicate.range.indexOf(type) > -1) {
                 rangeFound = true;
                 return rangeFound;
@@ -498,14 +498,14 @@ angular.module('Pundit2.TripleComposer')
                 return;
             }
         }
-        tripleComposer.log('Error: impossible to add subject (all full)');        
+        tripleComposer.log('Error: impossible to add subject (all full)');
     };
 
     tripleComposer.addToAllSubject = function(item) {
         // template have always a free subject ?
         for (var i in statements) {
             statements[i].scope.setSubject(item);
-        }        
+        }
         $rootScope.$$phase || $rootScope.$digest();
         tripleComposer.log('Add item: '+item.uri+ 'as subject of all triples');
     };
@@ -630,6 +630,7 @@ angular.module('Pundit2.TripleComposer')
     // build the items object used inside http call
     tripleComposer.buildItems = function(){
         var res = {};
+        var val;
         
         statements.forEach(function(el){
             var triple = el.scope.get();
@@ -645,14 +646,14 @@ angular.module('Pundit2.TripleComposer')
                 // make a polygon rdf object
                 res[triple.subject.polygonUri] = {};
                 res[triple.subject.polygonUri][NameSpace.item.type] = [{ type:'uri', value: NameSpace.selectors.polygonType}];
-                var val = {type: 'polygon', points: triple.subject.polygon}
+                val = {type: 'polygon', points: triple.subject.polygon};
                 res[triple.subject.polygonUri][NameSpace.rdf.value] = [{ type:'literal', value: angular.toJson(val) }];
             }
             if (typeof(triple.object.polygon) !== 'undefined' && typeof(triple.object.polygonUri) !== 'undefined') {
                 // make a polygon rdf object
                 res[triple.object.polygonUri] = {};
                 res[triple.object.polygonUri][NameSpace.item.type] = [{ type:'uri', value: NameSpace.selectors.polygonType}];
-                var val = {type: 'polygon', points: triple.object.polygon}
+                val = {type: 'polygon', points: triple.object.polygon};
                 res[triple.object.polygonUri][NameSpace.rdf.value] = [{ type:'literal', value: angular.toJson(val) }];
             }
 
@@ -670,7 +671,7 @@ angular.module('Pundit2.TripleComposer')
                     res[type] = { };
                     res[type][NameSpace.rdfs.label] = [{type: 'literal', value: TypesHelper.getLabel(e)}];
                 });
-            }                                
+            }
 
             // add subject types and its label
             triple.subject.type.forEach(function(e, i){

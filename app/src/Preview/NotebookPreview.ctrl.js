@@ -1,5 +1,5 @@
 angular.module('Pundit2.Preview')
-    .controller('NotebookPreviewCtrl', function($scope, NotebookExchange, AnnotationsExchange) {
+    .controller('NotebookPreviewCtrl', function($scope, NotebookExchange) {
 
         $scope.$watch('id', function() {
             // TODO: special initialization for certain kind of items, like image fragments?

@@ -43,7 +43,7 @@ angular.module('Pundit2.SimplifiedClient')
 
         AnnotationsCommunication.getAnnotations();
 
-    }
+    };
 
     return sc;
 });

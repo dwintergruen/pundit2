@@ -444,7 +444,7 @@ angular.module('Pundit2.ResourcePanel')
 
         if(typeof(target) === 'undefined'){
             target = state.popover.clickTarget;
-        }        
+        }
 
         var selectors = SelectorsManager.getActiveSelectors();
         state.popoverOptions.scope.selectors = [];
@@ -550,7 +550,7 @@ angular.module('Pundit2.ResourcePanel')
         // if label is a valid string
         } else {
             // for each selector...
-            for(var i=0; i<selectors.length; i++){
+            for(var j=0; j<selectors.length; j++){
 
                 (function(index) {
                     // ... set loading status...
@@ -574,12 +574,12 @@ angular.module('Pundit2.ResourcePanel')
                         }
 
                     });
-                })(i);
+                })(j);
             }
 
         }
 
-    }
+    };
 
     /**
      * @ngdoc method
@@ -744,6 +744,8 @@ angular.module('Pundit2.ResourcePanel')
             resourcePanel.hide();
             var propertiesContainer = Client.options.relationsContainer;
             var properties;
+            var itemSubject;
+            var itemObject;
 
             if(typeof(triple) !== 'undefined') {
 
@@ -762,7 +764,7 @@ angular.module('Pundit2.ResourcePanel')
                 } else if((typeof(subject) !== 'undefined' && subject !== "") && (typeof(object) === 'undefined' || object === "")) {
 
                     // get subject item
-                    var itemSubject = ItemsExchange.getItemByUri(subject);
+                    itemSubject = ItemsExchange.getItemByUri(subject);
                     // if subject item has no type
                     if(typeof(itemSubject) === 'undefined' || typeof(itemSubject.type) === 'undefined' || itemSubject.type.length === 0 || itemSubject.type[0] === "") {
                         // all properties are good
@@ -778,7 +780,7 @@ angular.module('Pundit2.ResourcePanel')
                     // if only object is defined
                 } else if((typeof(object) !== 'undefined' && object !== "") && (typeof(subject) === 'undefined' || subject === "")) {
                     // get object item
-                    var itemObject = ItemsExchange.getItemByUri(object);
+                    itemObject = ItemsExchange.getItemByUri(object);
                     // if oject has no type
                     if(typeof(itemObject) === 'undefined' || typeof(itemObject.type) === 'undefined' || itemObject.type.length === 0 || itemObject.type[0] === "") {
                         // all properties are good
@@ -792,8 +794,8 @@ angular.module('Pundit2.ResourcePanel')
 
                     // subject and object are both defined
                 } else if((typeof(object) !== 'undefined' && object !== "") && (typeof(subject) !== 'undefined' && subject !== "")) {
-                    var itemObject = ItemsExchange.getItemByUri(object);
-                    var itemSubject = ItemsExchange.getItemByUri(subject);
+                    itemObject = ItemsExchange.getItemByUri(object);
+                    itemSubject = ItemsExchange.getItemByUri(subject);
 
                     // both subject and object have empty types
                     if((typeof(itemSubject.type) === 'undefined' || itemSubject.type.length === 0 || itemSubject.type[0] === "") && (typeof(itemObject.type) === 'undefined' || itemObject.type.length === 0 || itemObject.type[0] === "")) {

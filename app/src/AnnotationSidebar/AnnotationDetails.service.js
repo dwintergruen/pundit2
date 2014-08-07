@@ -1,5 +1,3 @@
-/*jshint -W030 */
-
 angular.module('Pundit2.AnnotationSidebar')
 .constant('ANNOTATIONDETAILSDEFAULTS', {
     /**

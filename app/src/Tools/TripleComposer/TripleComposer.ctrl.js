@@ -58,16 +58,16 @@ angular.module('Pundit2.TripleComposer')
         TripleComposer.removeStatement(id);
         if (TripleComposer.isAnnotationComplete()) {
             angular.element('.pnd-triplecomposer-save').removeClass('disabled');
-        }    
+        }
     };
 
     this.addStatementScope = function(id, scope) {
-        id = parseInt(id, 10);        
+        id = parseInt(id, 10);
         TripleComposer.addStatementScope(id, scope);
     };
 
     this.duplicateStatement = function(id){
-        id = parseInt(id, 10);        
+        id = parseInt(id, 10);
         TripleComposer.duplicateStatement(id);
     };
 
@@ -90,7 +90,7 @@ angular.module('Pundit2.TripleComposer')
         if ($scope.editMode) {
             TripleComposer.reset();
             TripleComposer.setEditMode(false);
-        }        
+        }
     };
 
     $scope.editAnnotation = function(){
@@ -120,7 +120,7 @@ angular.module('Pundit2.TripleComposer')
                     TripleComposer.options.notificationMsgTime,
                     true
                 );
-            });            
+            });
         }
     };
 
@@ -221,7 +221,7 @@ angular.module('Pundit2.TripleComposer')
                                     TripleComposer.buildTargets());
                 }
                 
-                httpPromise.then(function(annID){
+                httpPromise.then(function(){
                     // resolved
                     stopSavingProcess(
                         savePromise,

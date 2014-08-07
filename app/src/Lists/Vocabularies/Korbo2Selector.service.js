@@ -86,7 +86,7 @@ angular.module('Pundit2.Vocabularies')
             url: 'http://dev.korbo2.org/v1',
             language: 'en'
         }
-    ],    
+    ],
 
     /**
      * @module punditConfig
@@ -190,7 +190,7 @@ angular.module('Pundit2.Vocabularies')
 
     Korbo2Factory.prototype.push = function(config){
         korbo2Selector.options.instances.push(config);
-    }
+    };
 
     korbo2Selector.log('Factory init');
 

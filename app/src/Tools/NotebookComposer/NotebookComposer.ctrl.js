@@ -93,7 +93,7 @@ angular.module('Pundit2.NotebookComposer')
             timeoutPromise = $timeout(function(){ timeoutIsDone = true; }, NotebookComposer.options.savingMsgTime);
             $scope.saving = true;
 
-            NotebookComposer.createNotebook($scope.notebook).then(function(v){
+            NotebookComposer.createNotebook($scope.notebook).then(function(){
                 // if you have gone at least 500ms
                 if (timeoutIsDone) {
                     updateMessagge(NotebookComposer.options.notificationSuccessMsg, NotebookComposer.options.notificationMsgTime, false);

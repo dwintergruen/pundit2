@@ -19,7 +19,7 @@ angular.module('Pundit2.NotebookComposer')
         // create a notebook
         notebookComposer.createNotebook = function(notebook){
             var promise = $q.defer();
-            var statePromise = {};
+            // var statePromise = {};
             var allPromises = [];
 
             // when the notebook is created, will be set the visibility as private and notebook as current

@@ -462,6 +462,7 @@ module.exports = function(grunt) {
                 "undef": true,
                 "unused": true,
                 "browser": true,
+                "expr": true,
                 "curly": true,
                 "trailing": true,
                 "camelcase": true,

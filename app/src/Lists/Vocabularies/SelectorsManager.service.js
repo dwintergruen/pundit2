@@ -226,7 +226,7 @@ angular.module('Pundit2.Vocabularies')
                     wipeContainersByName(termName);
                     delete researching[termName];
                 }
-            }            
+            }
         });
 
         // get items from actives selectors

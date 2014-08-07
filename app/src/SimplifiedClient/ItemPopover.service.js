@@ -14,7 +14,9 @@ angular.module('Pundit2.SimplifiedClient')
         fixPosition = true;
 
     // TODO fixed or check dinamically
-    var width = 330;
+    // var width = 330;
+
+    var top, height;
 
     var defaultPlacement = 'bottom';
 
@@ -36,7 +38,7 @@ angular.module('Pundit2.SimplifiedClient')
         // update state variables
         if (typeof(obj) !== 'undefined') {
             item = obj;
-        }        
+        }
         if (typeof(el) !== 'undefined') {
             element = el;
         }
@@ -108,7 +110,6 @@ angular.module('Pundit2.SimplifiedClient')
     // check if popover content go out of the page
     // than update placement to show popover content
     // inside the page
-    var top, height;
     options.scope.$on('tooltip.show', function(){
         var el = angular.element('.pnd-item-popover'),
             pos = el.position();
