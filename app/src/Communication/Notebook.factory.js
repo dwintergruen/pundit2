@@ -149,7 +149,7 @@ angular.module('Pundit2.Communication')
                     nb[property] = [nbData[propertyURI][0].value];
                 } else {
                     nb[property] = nbData[propertyURI][0].value;
-                }                
+                }
             } else {
                 nb[property] = '';
             }

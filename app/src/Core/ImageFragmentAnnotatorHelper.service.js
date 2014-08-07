@@ -1,3 +1,5 @@
+/*jshint unused: false*/
+
 angular.module('Pundit2.Core')
 .service('ImageFragmentAnnotatorHelper', function($rootScope, $modal, $window, BaseComponent, Config, NameSpace,
     ContextualMenu, XpointersHelper, Item, MyItems) {
@@ -20,7 +22,7 @@ angular.module('Pundit2.Core')
             type: [Config.modules.ImageHandler.cMenuType],
             name: 'openImageFragmentAnnotator',
             label: 'Annotate a part of this image',
-            showIf: function(item) {
+            showIf: function() {
                 return true;
             },
             priority: 99,
@@ -111,7 +113,7 @@ angular.module('Pundit2.Core')
 
         var normPoints = [];
         for (i=0; i<points.length; i++) {
-            normPoints.push({x: points[i].x*w, y: points[i].y*h})
+            normPoints.push({x: points[i].x*w, y: points[i].y*h});
         }
 
         var lines = [];

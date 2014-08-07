@@ -5,7 +5,7 @@ angular.module('Pundit2.Core')
     active: false,
     debug: false
 })
-.service('Fp3', function(BaseComponent, FP3DEFAULTS, Config, $http, $q, $window) {
+.service('Fp3', function(BaseComponent, FP3DEFAULTS, Config, $http, $q) {
     
     var fp3 = new BaseComponent("Fp3", FP3DEFAULTS);
 
@@ -48,7 +48,7 @@ angular.module('Pundit2.Core')
                 annotationServerBaseURL: Config.annotationServerBaseURL
             },
             withCredentials: true
-        }).success(function(data) {
+        }).success(function() {
             fp3.log("Success: fp3 post data");
             // TODO how close the window?
         }).error(function(msg) {

@@ -82,7 +82,7 @@ angular.module('Pundit2.Communication')
                         annListById[ann.id] = a;
                         annList.push(a);
                     }
-                }); 
+                });
             }
         };
 

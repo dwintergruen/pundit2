@@ -1,3 +1,4 @@
+/*jshint -W051 */ //Only properties should be deleted
 
 angular.module('Pundit2.Client')
 

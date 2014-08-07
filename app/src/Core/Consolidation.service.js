@@ -32,7 +32,7 @@ angular.module('Pundit2.Core')
 
         var addItems = function(items) {
             if (!angular.isArray(items)) {
-                items = [items]
+                items = [items];
             }
 
             for (var l=items.length; l--;) {

@@ -37,9 +37,9 @@ angular.module('Pundit2.Communication')
                 if (ns.id in myNsListById) {
                     notebookExchange.log('Not adding notebook '+ns.id+' to my notebook, already present.');
                 } else {
-                    ns._q.promise.then(function(n) {                    
+                    ns._q.promise.then(function(n) {
                         myNsListById[ns.id] = n;
-                        myNsList.push(n);                    
+                        myNsList.push(n);
                     });
                 }
             }
@@ -71,9 +71,9 @@ angular.module('Pundit2.Communication')
             index = -1;
 
             // find notebook in my notebook list
-            for(var i = 0; i< myNsList.length; i++){
-                if(myNsList[i].id === notebookID){
-                    index = i;
+            for(var j = 0; j< myNsList.length; j++){
+                if(myNsList[j].id === notebookID){
+                    index = j;
                     break;
                 }
             }
@@ -106,8 +106,8 @@ angular.module('Pundit2.Communication')
 
         notebookExchange.getCurrentNotebooks = function() {
             if (currentId !== null){
-                return nsListById[currentId];    
-            }            
+                return nsListById[currentId];
+            }
         };
 
         notebookExchange.setCurrentNotebooks = function(notebookID) {

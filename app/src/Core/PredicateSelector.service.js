@@ -1,3 +1,5 @@
+/*jshint camelcase: false*/
+
 angular.module('Pundit2.Core')
 .service('PredicateSelector', function(BaseComponent, Config, $http, $q) {
     
@@ -77,7 +79,7 @@ angular.module('Pundit2.Core')
                 }
 
                 predicateSelector.log("Loaded "+result.length+" predicates from: "+url);
-                promise.resolve(result);      
+                promise.resolve(result);
 
             });
 

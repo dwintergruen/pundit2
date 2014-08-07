@@ -97,6 +97,7 @@ angular.module('Pundit2.Communication')
 
     Annotation.prototype.isBroken = function() {
         var items = this.items;
+        var currentItem;
 
         // TODO: add support for web pages and external text/image fragment
 
@@ -236,8 +237,8 @@ angular.module('Pundit2.Communication')
             }
 
             // Help out by giving the types to the helper, UI will say thanks
-            for (var t in item.type) {
-                TypesHelper.addFromAnnotationRdf(item.type[t], data.items);
+            for (var z in item.type) {
+                TypesHelper.addFromAnnotationRdf(item.type[z], data.items);
             }
 
             ann.items[uri] = item;

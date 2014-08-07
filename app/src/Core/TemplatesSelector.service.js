@@ -1,6 +1,6 @@
 angular.module('Pundit2.Core')
 .service('TemplatesSelector', function(BaseComponent, Config, $http, $q,
-    Item, Template, ItemsExchange, TemplatesExchange, FreebaseSelector, SelectorsManager) {
+    Item, Template, ItemsExchange, TemplatesExchange, FreebaseSelector) {
     
     var templatesSelector = new BaseComponent("TemplatesSelector");
 
@@ -23,7 +23,7 @@ angular.module('Pundit2.Core')
 
         // set the first as current
         if (urls.length > 0) {
-            TemplatesExchange.setCurrent(urls[0]);            
+            TemplatesExchange.setCurrent(urls[0]);
         }
 
         for (var i in urls) {
@@ -46,7 +46,7 @@ angular.module('Pundit2.Core')
         // if url already contain a ? use &jsonp=JSON_CALLBACK instead of ?jsonp=JSON_CALLBACK
         var appenedUrl;
         if (url.indexOf('?') > -1) {
-            appenedUrl = "&jsonp=JSON_CALLBACK"; 
+            appenedUrl = "&jsonp=JSON_CALLBACK";
         } else {
             appenedUrl = "?jsonp=JSON_CALLBACK";
         }
@@ -62,7 +62,7 @@ angular.module('Pundit2.Core')
                 // url is used as id to identify the template
                 data.id = url;
                 if (typeof(color) !== 'undefined') {
-                    data.color = color;                    
+                    data.color = color;
                 }
 
                 var i,

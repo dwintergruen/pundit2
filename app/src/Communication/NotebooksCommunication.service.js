@@ -94,7 +94,7 @@ angular.module('Pundit2.Communication')
             } else {
                 notebookCommunication.log('Impossible to get current: you have to be logged in');
                 promise.reject('User not logged in');
-            }            
+            }
 
             return promise.promise;
         };

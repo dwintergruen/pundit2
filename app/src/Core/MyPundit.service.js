@@ -361,5 +361,5 @@ angular.module('Pundit2.Core')
         $timeout.cancel(loginPollTimer);
     };
 
-    return myPundit;   
+    return myPundit;
 });

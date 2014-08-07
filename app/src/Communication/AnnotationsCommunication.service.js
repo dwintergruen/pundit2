@@ -118,8 +118,8 @@ angular.module('Pundit2.Communication')
 
     annotationsCommunication.saveAnnotation = function(graph, items, targets, templateID){
 
-        var completed = 0,
-            promise = $q.defer();
+        // var completed = 0;
+        var promise = $q.defer();
 
         Toolbar.setLoading(true);
 
@@ -143,7 +143,7 @@ angular.module('Pundit2.Communication')
             },
             withCredentials: true,
             data: postData
-        }).success(function(data) {                    
+        }).success(function(data) {
 
             // TODO if is rejected ???
             new Annotation(data.AnnotationID).then(function(){
@@ -217,11 +217,11 @@ angular.module('Pundit2.Communication')
                     promise.resolve();
                 });
             }
-            Toolbar.setLoading(false);          
+            Toolbar.setLoading(false);
             completed++;
             annotationsCommunication.log("Graph correctly updated: "+annID);
         }).error(function() {
-            Toolbar.setLoading(false);            
+            Toolbar.setLoading(false);
             promise.reject();
             annotationsCommunication.log("Error during graph editing of "+annID);
         });
@@ -240,11 +240,11 @@ angular.module('Pundit2.Communication')
                     promise.resolve();
                 });
             }
-            Toolbar.setLoading(false);         
+            Toolbar.setLoading(false);
             completed++;
             annotationsCommunication.log("Items correctly updated: "+annID);
         }).error(function() {
-            Toolbar.setLoading(false);            
+            Toolbar.setLoading(false);
             promise.reject();
             annotationsCommunication.log("Error during items editing of "+annID);
         });

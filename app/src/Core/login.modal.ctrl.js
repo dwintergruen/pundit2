@@ -3,9 +3,9 @@ angular.module('Pundit2.Core')
     
     var statusMessage = { };
     
-    statusMessage['loggedOff'] = "To continue with this operation you must log in.";
-    statusMessage['waitingForLogIn'] = "Please complete the process in the login window.";
-    statusMessage['loggedIn'] = "You are logged in as: ";
+    statusMessage.loggedOff = "To continue with this operation you must log in.";
+    statusMessage.waitingForLogIn = "Please complete the process in the login window.";
+    statusMessage.loggedIn = "You are logged in as: ";
     
     // get message to display
     $scope.$watch(function(){ return MyPundit.getLoginStatus(); }, function(status){
