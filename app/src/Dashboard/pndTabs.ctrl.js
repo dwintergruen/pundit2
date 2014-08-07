@@ -56,7 +56,7 @@ angular.module('Pundit2.Dashboard')
     var panesWidth = 0;
 
     // when <ul> is ready, check is executed
-    var el = angular.element($element).children('ul.pnd-tab-header')
+    var el = angular.element($element).children('ul.pnd-tab-header');
     $scope.$watch(
         function() {
             //return angular.element($element).find('ul.pnd-tab-header').css('width');
@@ -207,7 +207,7 @@ angular.module('Pundit2.Dashboard')
                 // dashboardPanel controller
                 if ($scope.$parent.isCollapsed) {
                     $scope.$parent.toggleCollapse();
-                }             
+                }
                 return;
             }
         }

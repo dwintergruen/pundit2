@@ -1,3 +1,5 @@
+/*global PUNDITVERSION, escape*/
+
 angular.module('Pundit2.Toolbar')
 .controller('ToolbarCtrl', function($scope, $rootScope, $modal, $http, NameSpace, Config, Toolbar, SelectorsManager, Fp3,
     MyPundit, Dashboard, TripleComposer, AnnotationSidebar, ResourcePanel, NotebookExchange, NotebookCommunication, TemplatesExchange) {
@@ -60,7 +62,7 @@ angular.module('Pundit2.Toolbar')
     if (Config.vocabularies.length > 0) {
         infoModalScope.info.push({label: "Predicates vocabularies: ", value: Config.vocabularies.toString()});
     } else if (Config.useBasicRelations) {
-        infoModalScope.info.push({label: "Predicates vocabularies: ", value: "Pundit default basic relations"});   
+        infoModalScope.info.push({label: "Predicates vocabularies: ", value: "Pundit default basic relations"});
     }
 
     var str = "", providers = SelectorsManager.getActiveSelectors();
@@ -74,24 +76,24 @@ angular.module('Pundit2.Toolbar')
 
     var sendMail = function(subject, body) {
         var user = MyPundit.getUserData();
-        var link = "mailto:punditbug@netseven.it"
-            + "?cc="
-            + "&subject=" + escape(subject)
-            + "&body=" + escape(body)
-            + "%0A%0A" + "Pundit Version: "+ PUNDITVERSION.version
-            + "%0A%0A" + "Configuration file: "+ Config.confURL
-            + "%0A" + "Broswer info: " + window.navigator.userAgent
-            + "%0A%0A" + "User openid: " + user.openid
-            + "%0A" + "User uri: " + user.uri
-            + "%0A" + "User name: " + user.fullName
-            + "%0A" + "User mail: " + user.email;
+        var link = "mailto:punditbug@netseven.it" +
+            "?cc=" +
+            "&subject=" + escape(subject) +
+            "&body=" + escape(body) +
+            "%0A%0A" + "Pundit Version: "+ PUNDITVERSION.version +
+            "%0A%0A" + "Configuration file: "+ Config.confURL +
+            "%0A" + "Broswer info: " + window.navigator.userAgent +
+            "%0A%0A" + "User openid: " + user.openid +
+            "%0A" + "User uri: " + user.uri +
+            "%0A" + "User name: " + user.fullName +
+            "%0A" + "User mail: " + user.email;
 
         window.location.href = link;
     };
 
     sendModalScope.send = function() {
         // send a mail
-        sendMail(sendModalScope.text.subject, sendModalScope.text.msg)
+        sendMail(sendModalScope.text.subject, sendModalScope.text.msg);
         sendModal.hide();
     };
 
@@ -100,7 +102,7 @@ angular.module('Pundit2.Toolbar')
     };
 
     // found bug btn
-    var removeWatch;
+    // var removeWatch;
     infoModalScope.send = function() {
         // open a second modal to report a bug
         sendModal.$promise.then(function(){
@@ -192,7 +194,7 @@ angular.module('Pundit2.Toolbar')
                         return true;
                     } else {
                         return false;
-                    }                    
+                    }
                 }(),
                 visibility: notebooks[i].visibility,
                 click: function(_i){
@@ -200,7 +202,7 @@ angular.module('Pundit2.Toolbar')
                         NotebookCommunication.setCurrent(notebooks[_i].id);
                     };
                 }(i)
-            }
+            };
             j++;
         }
     };
@@ -263,7 +265,7 @@ angular.module('Pundit2.Toolbar')
                             return true;
                         } else {
                             return false;
-                        }                    
+                        }
                     }(),
                     click: function(_i){
                         return function(){
@@ -275,7 +277,7 @@ angular.module('Pundit2.Toolbar')
                             }
                         };
                     }(i)
-                }
+                };
                 j++;
             }
         };

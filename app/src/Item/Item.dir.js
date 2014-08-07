@@ -12,7 +12,7 @@ angular.module('Pundit2.Item')
         },
         templateUrl: function(el, attr){
             if (attr.useInKorbo) {
-                return "src/Item/KorboItem.dir.tmpl.html"
+                return "src/Item/KorboItem.dir.tmpl.html";
             } else {
                 return "src/Item/Item.dir.tmpl.html";
             }

@@ -6,7 +6,7 @@ angular.module('Pundit2.Item')
     // get item type label (then show it inside template)
     if ($scope.item.type.length > 0) {
         $scope.itemTypeLabel = TypesHelper.getLabel($scope.item.type[0]);
-    }    
+    }
 
     $scope.onItemMouseOver = function(){
         Preview.showDashboardPreview($scope.item);

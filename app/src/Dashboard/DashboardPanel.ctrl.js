@@ -21,7 +21,7 @@ angular.module('Pundit2.Dashboard')
     // TODO fix flickering and use better implementation
     $scope.$watch(function() {
         return $scope.tabs.activeTab;
-    }, function(active, oldActive) {
+    }, function() {
         $timeout(function(){
             $scope.setTabContentHeight();
         }, 30);

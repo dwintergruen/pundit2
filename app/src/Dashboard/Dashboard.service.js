@@ -370,7 +370,8 @@ angular.module('Pundit2.Dashboard')
 
         // When the last panel is added, resize them all
         var configuredPanelsLen = 0;
-        for (var p in dashboard.options.panels) {
+        var p;
+        for (p in dashboard.options.panels) {
             configuredPanelsLen++;
         }
         if (panels.length === configuredPanelsLen) {
@@ -381,7 +382,9 @@ angular.module('Pundit2.Dashboard')
 
     dashboard.resizeAll = function(skip) {
         var avail = dashboard.getContainerWidth(),
-            w, l, i,
+            // w,
+            l,
+            i,
             skipLength = 0;
 
         if (!angular.isObject(skip)) {
@@ -409,7 +412,7 @@ angular.module('Pundit2.Dashboard')
 
         // Cycle over all panels which will be interested in a change
         // of width and get their total sum, to calculate ratios
-        var currentTotal = expanded.reduce(function(total, panel, index){
+        var currentTotal = expanded.reduce(function(total, panel){
 
             // TODO: Getting back from a collapse, set to min width?
             if (panel.width < panel.minWidth){
@@ -468,7 +471,7 @@ angular.module('Pundit2.Dashboard')
                 newCurrentTotal = newCurrentTotal + resizable[i].width;
             }
 
-            resizable = resizable.filter(function(el, index){
+            resizable = resizable.filter(function(el){
                 el.ratio = el.width / newCurrentTotal;
                 var newWidth = el.width + (el.ratio * delta);
                 // check if after dispense delta the panel go to min-width
@@ -500,6 +503,8 @@ angular.module('Pundit2.Dashboard')
     dashboard.tryToResizeCouples = function(index, delta) {
         
         var panel = panels[index], i;
+        var realDelta;
+        var currentLeft;
 
         if ( panel.isCollapsed ) {
             // check if the next panel exist and is not collapsed
@@ -515,7 +520,7 @@ angular.module('Pundit2.Dashboard')
                 // all left panels are collapsed
                 if ( i < 0 ) {
                     return false;
-                }                
+                }
             } else {
                 return false;
             }
@@ -537,12 +542,12 @@ angular.module('Pundit2.Dashboard')
         // If it is shrinking
         if (delta < 0) {
             
-            var realDelta = panel.width - Math.max(panel.minWidth, panel.width + delta);
+            realDelta = panel.width - Math.max(panel.minWidth, panel.width + delta);
             panel.width = Math.max(panel.minWidth, panel.width + delta);
 
             if (realDelta > 0) {
 
-                var currentLeft = panel.left;
+                currentLeft = panel.left;
                 for ( i=index+1; i<panels.length; i++ ) {
                     if ( !panels[i].isCollapsed ) {
                         panels[i].width = panels[i].width + realDelta;
@@ -558,7 +563,7 @@ angular.module('Pundit2.Dashboard')
                   for(i=0; i<panels.length; i++) {
                     panels[i].$digest();
                   }
-                }                
+                }
                 return true;
 
             } else {
@@ -583,13 +588,13 @@ angular.module('Pundit2.Dashboard')
 
             var next = panels[nextIndex];
 
-            var realDelta = next.width - Math.max(next.minWidth, next.width - delta);
+            realDelta = next.width - Math.max(next.minWidth, next.width - delta);
             next.width = Math.max(next.minWidth, next.width - delta);
 
             if ( realDelta > 0 ) {
                 panel.width = panel.width + realDelta;
 
-                var currentLeft = panel.left + panel.width;
+                currentLeft = panel.left + panel.width;
                 for (i=index+1; i<nextIndex; i++) {
                     panels[i].left = currentLeft;
                     currentLeft = currentLeft + panels[i].width;
