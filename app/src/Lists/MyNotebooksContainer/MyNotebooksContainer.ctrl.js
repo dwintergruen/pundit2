@@ -38,7 +38,7 @@ angular.module('Pundit2.MyNotebooksContainer')
     // sort button dropdown content
     $scope.dropdownOrdering = [
         {
-            text: 'Label Asc', 
+            text: 'Label Asc',
             click: function(){
                 order = 'label';
                 $scope.reverse = false;
@@ -46,8 +46,8 @@ angular.module('Pundit2.MyNotebooksContainer')
             },
             isActive: order === 'label' && $scope.reverse === false
         },
-        { 
-            text: 'Label Desc', 
+        {
+            text: 'Label Desc',
             click: function(){
                 order = 'label';
                 $scope.reverse = true;
@@ -117,7 +117,7 @@ angular.module('Pundit2.MyNotebooksContainer')
             $scope.search.icon = inputIconClear;
         }
 
-        filterItems(str);        
+        filterItems(str);
 
     });
 

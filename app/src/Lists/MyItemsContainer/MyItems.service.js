@@ -145,7 +145,7 @@ angular.module("Pundit2.MyItemsContainer")
             headers: { 'Accept': 'application/json' },
             method: 'GET',
             url: NameSpace.get('asPref', { key: myItems.options.apiPreferencesKey }),
-            withCredentials: true         
+            withCredentials: true
         }).success(function(data) {
             var num = 0;
 
@@ -178,7 +178,7 @@ angular.module("Pundit2.MyItemsContainer")
                 }
 
                 // create new item (now is a pundit2 item) (implicit add to default container)
-                item = new Item(data.value[i].uri, data.value[i]);               
+                item = new Item(data.value[i].uri, data.value[i]);
                 
                 // add to myItems container
                 ItemsExchange.addItemToContainer(item, myItems.options.container);
@@ -204,7 +204,7 @@ angular.module("Pundit2.MyItemsContainer")
             method: 'POST',
             url: NameSpace.get('asPref', { key: myItems.options.apiPreferencesKey }),
             withCredentials: true,
-            data: angular.toJson({value: [], created: currentTime.getTime()})     
+            data: angular.toJson({value: [], created: currentTime.getTime()})
         }).success(function(data) {
 
             Toolbar.setLoading(false);
@@ -240,7 +240,7 @@ angular.module("Pundit2.MyItemsContainer")
 
         // remove item from the copied array
         if(index > -1) {
-            copiedItems.splice(index, 1);            
+            copiedItems.splice(index, 1);
         }
 
         Toolbar.setLoading(true);
@@ -253,7 +253,7 @@ angular.module("Pundit2.MyItemsContainer")
             method: 'POST',
             url: NameSpace.get('asPref', { key: myItems.options.apiPreferencesKey }),
             withCredentials: true,
-            data: angular.toJson({value: copiedItems, created: currentTime.getTime()})     
+            data: angular.toJson({value: copiedItems, created: currentTime.getTime()})
         }).success(function(data) {
 
             if (typeof(data.redirectTo) !== 'undefined') {
@@ -299,7 +299,7 @@ angular.module("Pundit2.MyItemsContainer")
             method: 'POST',
             url: NameSpace.get('asPref', { key: myItems.options.apiPreferencesKey }),
             withCredentials: true,
-            data: angular.toJson({value: items, created: currentTime.getTime()})     
+            data: angular.toJson({value: items, created: currentTime.getTime()})
         }).success(function(data) {
 
             if (typeof(data.redirectTo) !== 'undefined') {

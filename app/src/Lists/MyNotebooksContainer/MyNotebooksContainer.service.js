@@ -39,7 +39,7 @@ angular.module('Pundit2.MyNotebooksContainer')
             showIf: function(nt) {
                 return nt.visibility === "public";
             },
-            action: function(nt) {                
+            action: function(nt) {
                 NotebookCommunication.setPrivate(nt.id);
             }
         });
@@ -81,7 +81,7 @@ angular.module('Pundit2.MyNotebooksContainer')
             action: function(nt) {
                 // delete notebook is a dangerous action
                 // it also remove all contained annotation
-                openConfirmModal(nt);              
+                openConfirmModal(nt);
             }
         });
 
@@ -90,7 +90,7 @@ angular.module('Pundit2.MyNotebooksContainer')
             type: cMenuTypes,
             label: "Edit Notebook",
             priority: 101,
-            showIf: function(nt) {
+            showIf: function() {
                 return true;
             },
             action: function(nt) {
@@ -115,7 +115,7 @@ angular.module('Pundit2.MyNotebooksContainer')
     // confirm modal
     var modalScope = $rootScope.$new();
 
-    modalScope.titleMessage = "Delete Notebook"
+    modalScope.titleMessage = "Delete Notebook";
 
     // confirm btn click
     modalScope.confirm = function() {

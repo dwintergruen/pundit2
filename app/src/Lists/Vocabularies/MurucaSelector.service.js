@@ -1,3 +1,5 @@
+/*jshint camelcase: false*/
+
 angular.module('Pundit2.Vocabularies')
 .constant('MURUCASELECTORDEFAULTS', {
 
@@ -93,7 +95,7 @@ angular.module('Pundit2.Vocabularies')
     instances: [
         {
             // query type (legal value are: Azione, Scena, Influenza, Ecphrasis, ecc..)
-            queryType: 'http://purl.org/galassiariosto/types/Azione', 
+            queryType: 'http://purl.org/galassiariosto/types/Azione',
             // where items is stored inside itemsExchange service
             container: 'muruca',
             // instance label tab title
@@ -101,7 +103,7 @@ angular.module('Pundit2.Vocabularies')
             // enable or disable the instance
             active: true
         }
-    ],    
+    ],
 
     /**
      * @module punditConfig
@@ -120,7 +122,7 @@ angular.module('Pundit2.Vocabularies')
 
 })
 .factory('MurucaSelector', function(BaseComponent, MURUCASELECTORDEFAULTS, Item, ItemsExchange, SelectorsManager,
-    $http, $q, $timeout) {
+    $http, $q) {
 
     var murucaSelector = new BaseComponent('MurucaSelector', MURUCASELECTORDEFAULTS);
     murucaSelector.name = 'MurucaSelector';
@@ -186,13 +188,13 @@ angular.module('Pundit2.Vocabularies')
 
     MurucaFactory.prototype.getItemsDetails = function(result, promise, container){
 
-        var self = this;
+        // var self = this;
 
         for (var i=0; i<result.length; i++) {
             var current = result[i];
 
             var item = {
-                label: current.name, 
+                label: current.name,
                 uri: current.resource_url,
                 type: []
             };

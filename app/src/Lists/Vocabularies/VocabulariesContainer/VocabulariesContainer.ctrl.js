@@ -48,8 +48,8 @@ angular.module('Pundit2.Vocabularies')
 
     // sort button dropdown content
     $scope.dropdownOrdering = [
-        { 
-            text: 'Label Asc', 
+        {
+            text: 'Label Asc',
             click: function(){
                 order = 'label';
                 $scope.reverse = false;
@@ -57,8 +57,8 @@ angular.module('Pundit2.Vocabularies')
             },
             isActive: order === 'label' && $scope.reverse === false
         },
-        { 
-            text: 'Label Desc', 
+        {
+            text: 'Label Desc',
             click: function(){
                 order = 'label';
                 $scope.reverse = true;
@@ -66,8 +66,8 @@ angular.module('Pundit2.Vocabularies')
             },
             isActive: order === 'label' && $scope.reverse === true
         },
-        { 
-            text: 'Type Asc', 
+        {
+            text: 'Type Asc',
             click: function(){
                 order = 'type';
                 $scope.reverse = false;
@@ -75,8 +75,8 @@ angular.module('Pundit2.Vocabularies')
             },
             isActive: order === 'type' && $scope.reverse === false
         },
-        { 
-            text: 'Type Desc', 
+        {
+            text: 'Type Desc',
             click: function(){
                 order = 'type';
                 $scope.reverse = true;
@@ -125,7 +125,7 @@ angular.module('Pundit2.Vocabularies')
         $timeout.cancel(promise);
         promise = $timeout(function(){
             querySelectors();
-        }, 500);               
+        }, 500);
 
     });
 
@@ -175,7 +175,7 @@ angular.module('Pundit2.Vocabularies')
         if (newActive !== oldActive){
             actualContainer = $scope.tabs[$scope.tabs.activeTab].itemsContainer + $scope.search.term.split(' ').join('$');
             updateMessage();
-        }            
+        }
     });
 
 });

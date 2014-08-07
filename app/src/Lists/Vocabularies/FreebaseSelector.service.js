@@ -201,7 +201,7 @@ angular.module('Pundit2.Vocabularies')
     debug: false
 
 })
-.factory('FreebaseSelector', function(BaseComponent, FREEBASESELECTORDEFAULTS, TypesHelper, SelectorsManager, Item, ItemsExchange, 
+.factory('FreebaseSelector', function(BaseComponent, FREEBASESELECTORDEFAULTS, TypesHelper, SelectorsManager, Item, ItemsExchange,
                                         $http, $q) {
 
     var freebaseSelector = new BaseComponent('FreebaseSelector', FREEBASESELECTORDEFAULTS);
@@ -210,7 +210,7 @@ angular.module('Pundit2.Vocabularies')
     // add this selector to selector manager
     // then the configured instances are read an instantiated
     if (freebaseSelector.options.active) {
-        SelectorsManager.addSelector(freebaseSelector);        
+        SelectorsManager.addSelector(freebaseSelector);
     }
 
     // selector instance constructor
@@ -235,7 +235,7 @@ angular.module('Pundit2.Vocabularies')
                 key: freebaseSelector.options.freebaseAPIKey,
                 query: term,
                 limit: freebaseSelector.options.limit
-            }    
+            }
         }).success(function(data) {
 
             freebaseSelector.log('Http success, get items from freebase', data);
@@ -296,8 +296,8 @@ angular.module('Pundit2.Vocabularies')
 
     FreebaseFactory.prototype.getItemDetails = function(item, itemPromise){
 
-        var self = this,
-            error = 0;
+        // var self = this;
+        var error = 0;
 
         // get MQL
         $http({
@@ -310,7 +310,7 @@ angular.module('Pundit2.Vocabularies')
                     "mid": item.mid,
                     "type": [{}],
                 }
-            }    
+            }
         }).success(function(data) {
 
             item.uri = freebaseSelector.options.freebaseItemsBaseURL + data.result.mid;
@@ -348,15 +348,17 @@ angular.module('Pundit2.Vocabularies')
             params: {
                 key: freebaseSelector.options.freebaseAPIKey,
                 filter: '/common/topic/description'
-            }    
+            }
         }).success(function(data) {
 
             freebaseSelector.log('Http success, get TOPIC from freebase' + item.uri);
 
-            if (typeof(data.property) !== 'undefined' && data.property['/common/topic/description'].values.length > 0)
+            if (typeof(data.property) !== 'undefined' && data.property['/common/topic/description'].values.length > 0){
                 item.description = data.property['/common/topic/description'].values[0].value;
-            else
+            }
+            else{
                 item.description = item.label;
+            }
 
             // Uri != -1: this call is the last one, we're done
             if (item.uri !== -1) {

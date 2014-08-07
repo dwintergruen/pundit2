@@ -1,3 +1,5 @@
+/*jshint camelcase: false*/
+
 angular.module('Pundit2.Vocabularies')
 .constant('KORBOBASKETSELECTORDEFAULTS', {
 
@@ -127,7 +129,7 @@ angular.module('Pundit2.Vocabularies')
             // enable or disable the instance
             active: true
         }
-    ],    
+    ],
 
     /**
      * @module punditConfig
@@ -202,7 +204,7 @@ angular.module('Pundit2.Vocabularies')
                     var current = data.result[i];
 
                     var item = {
-                        label: current.name, 
+                        label: current.name,
                         uri: current.resource_url,
                         type: []
                     };
@@ -241,7 +243,7 @@ angular.module('Pundit2.Vocabularies')
 
     KorboBasketFactory.prototype.getItemDetails = function(item, itemPromise){
 
-        var self = this;
+        // var self = this;
 
         korboBasketSelector.log('Loading metadata for item '+ item.uri);
 
@@ -262,11 +264,11 @@ angular.module('Pundit2.Vocabularies')
 
                 if ('image' in o) {
                     item.image = o.image;
-                }                    
+                }
 
                 if ('description' in o) {
                     item.description = o.description;
-                }                    
+                }
                     
                 if (('rdftype' in o) && ('length' in o.rdftype)) {
                     for (var j = o.rdftype.length; j--;) {
