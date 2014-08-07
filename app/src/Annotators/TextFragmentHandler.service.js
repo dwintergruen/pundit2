@@ -120,7 +120,7 @@ angular.module('Pundit2.Annotators')
         // If we are configured to remove the selection, we cannot preventDefault() or
         // we will interfere with other clicks inside ignored containers (search inputs?!!).
         // So we bind this up handler and just remove the selection on mouseup, if there is one.
-        var mouseUpHandlerToRemove = function(upEvt) {
+        var mouseUpHandlerToRemove = function() {
             $document.off('mouseup', mouseUpHandlerToRemove);
             if (tfh.getSelectedRange() !== null) {
                 removeSelection();
@@ -280,8 +280,8 @@ angular.module('Pundit2.Annotators')
         }; // range2xpointer
 
         var getXPointerString = function(startUrl, startXPath, startOffset, endXPath, endOffset) {
-            return startUrl + "#xpointer(start-point(string-range(" + startXPath + ",''," + startOffset + "))"
-                + "/range-to(string-range(" + endXPath + ",''," + endOffset + ")))";
+            return startUrl + "#xpointer(start-point(string-range(" + startXPath + ",''," + startOffset + "))" +
+                "/range-to(string-range(" + endXPath + ",''," + endOffset + ")))";
         };
 
         // Will get a clean Range out of a dirty range: skipping nodes

@@ -78,7 +78,7 @@ angular.module('Pundit2.Annotators')
 .service('TextFragmentAnnotator',
     function(TEXTFRAGMENTANNOTATORDEFAULTS, NameSpace, BaseComponent, Consolidation,
              XpointersHelper, ItemsExchange, Config, TripleComposer, Toolbar,
-             $compile, $rootScope, $location) {
+             $compile, $rootScope) {
 
     // Create the component and declare what we deal with: text
     var tfa = new BaseComponent('TextFragmentAnnotator', TEXTFRAGMENTANNOTATORDEFAULTS);
@@ -219,8 +219,9 @@ angular.module('Pundit2.Annotators')
         var bits = angular.element('.'+ XpointersHelper.options.wrapNodeClass);
         angular.forEach(bits, function(node) {
             var parent = node.parentNode;
-            while (node.firstChild)
+            while (node.firstChild){
                 parent.insertBefore(node.firstChild, node);
+            }
             angular.element(node).remove();
         });
 
