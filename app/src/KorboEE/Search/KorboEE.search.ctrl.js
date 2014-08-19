@@ -1,3 +1,5 @@
+/*jshint camelcase: false*/
+
 angular.module('KorboEE')
     .controller('KeeSearchCtrl', function($scope, $modal, KorboCommunicationService, KorboCommunicationFactory, ItemsExchange, $timeout, Preview) {
 
@@ -43,7 +45,7 @@ angular.module('KorboEE')
 
 
         // for each provider set in configuration, push it on tabs
-        for(obj in $scope.conf.providers){
+        for(var obj in $scope.conf.providers){
 
             if($scope.conf.providers[obj]){
                 $scope.contentTabs.push({
@@ -56,7 +58,7 @@ angular.module('KorboEE')
                     isStarted: false
                 });
             }
-        };
+        }
 
         // set korbo tab as active tab
         $scope.active = $scope.contentTabs.activeTab = 0;
@@ -67,7 +69,7 @@ angular.module('KorboEE')
         $scope.$watch('elemToSearch', function(val){
             if(val.length >= $scope.conf.labelMinLength){
                 $timeout.cancel(updateTimer);
-                updateTimer = $timeout(function(){searchOnProviders(val)}, $scope.conf.updateTime);
+                updateTimer = $timeout(function(){searchOnProviders(val);}, $scope.conf.updateTime);
                 // if input type is empty
             } else if (val === ''){
                 // wipe all providers results
@@ -147,7 +149,7 @@ angular.module('KorboEE')
                             $scope.contentTabs[index].serverError = true;
                         });
 
-                })(j)
+                })(j);
             }
         };
 
@@ -161,7 +163,7 @@ angular.module('KorboEE')
                     $scope.contentTabs[index].isStarted = false;
                     // ...and its container in ItemsExchange
                     ItemsExchange.wipeContainer($scope.contentTabs[index].itemsContainer);
-                })(j)
+                })(j);
             }
         };
 
@@ -218,7 +220,7 @@ angular.module('KorboEE')
                         Preview.hideDashboardPreview();
                         $scope.previewIsLoading = false;
                         $scope.previewError = true;
-                    })
+                    });
 
                     // if label is not empty, results get all items info
                 } else {
@@ -309,6 +311,6 @@ angular.module('KorboEE')
             $scope.previewError = false;
 
             //$scope.errorLoading = false;
-        }
+        };
 
     });

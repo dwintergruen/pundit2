@@ -184,7 +184,7 @@ angular.module('KorboEE')
 
         $scope.itemSelected = null;
         // watching when an entity is selected
-        $scope.$watch(function(){return KorboCommunicationService.getSelectedEntity()},
+        $scope.$watch(function(){return KorboCommunicationService.getSelectedEntity();},
                     function(item){
                         if(item !== null){
                             $scope.itemSelected = item;

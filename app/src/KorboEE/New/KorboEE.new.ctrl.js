@@ -45,7 +45,7 @@ angular.module('KorboEE')
                 action: function(_lang){
                     return function(){
                         if($scope.tabs.length > 1){
-                            $scope.removeLanguage(_lang); 
+                            $scope.removeLanguage(_lang);
                         }
                     };
                 }(lang)
@@ -53,10 +53,10 @@ angular.module('KorboEE')
         };
 
         var pushCurrentLang = function(lang){
-            if($scope.tabs.length == 1){
+            if($scope.tabs.length === 1){
                 addActionToContextualMenu(lang);
                 ContextualMenu.modifyHeaderActionByName('rml'+$scope.tabs[0].name, true);
-            } else if($scope.tabs.length == 2){
+            } else if($scope.tabs.length === 2){
                 addActionToContextualMenu(lang);
                 ContextualMenu.modifyHeaderActionByName('rml'+$scope.tabs[0].name, false);
             } else if($scope.tabs.length > 2){
@@ -73,7 +73,7 @@ angular.module('KorboEE')
                 showIf: function(){
                     return true;
                 },
-                action: function(resource){
+                action: function(){
                     $scope.originalUrlCheck = false;
                     ContextualMenu.modifyHeaderActionByName('editURL', true);
                 }
@@ -118,7 +118,7 @@ angular.module('KorboEE')
         var buildTypesFromConfiguration = function(){
             var tmp = angular.copy($scope.conf.type);
             for (var i in tmp) {
-                var indexFind = $scope.types.map(function(e){ return e.URI }).indexOf(tmp[i].URI);
+                var indexFind = $scope.types.map(function(e){ return e.URI; }).indexOf(tmp[i].URI);
                 if(indexFind === -1){
                     var t = {};
                     t.URI = tmp[i].URI;
@@ -134,7 +134,7 @@ angular.module('KorboEE')
 
         var buildTypesFromArray = function(typesToAdd){
             for(var i=0; i<typesToAdd.length; i++){
-                var indexFind = $scope.types.map(function(e){ return e.URI }).indexOf(typesToAdd[i]);
+                var indexFind = $scope.types.map(function(e){ return e.URI; }).indexOf(typesToAdd[i]);
                 if(indexFind === -1){
                     var t = {};
                     t.URI = typesToAdd[i];
@@ -149,12 +149,12 @@ angular.module('KorboEE')
 
         //build languages tabs
         var buildLanguageTabs = function(){
-            for(var i=0; i< $scope.conf.languages.length; i++){             
+            for(var i=0; i< $scope.conf.languages.length; i++){
 
                 var title = angular.uppercase($scope.conf.languages[i].value);
                 var name = angular.lowercase($scope.conf.languages[i].name);
 
-                var indexFind = $scope.tabs.map(function(e){ return angular.lowercase(e.title) }).indexOf(angular.lowercase(title));
+                var indexFind = $scope.tabs.map(function(e){ return angular.lowercase(e.title); }).indexOf(angular.lowercase(title));
                 if(indexFind !== -1){
                     return;
                 }
@@ -208,15 +208,15 @@ angular.module('KorboEE')
             };
             $scope.loadingStatus = true;
 
-            var currentBasketID = (provider == 'korbo' ? null : $scope.conf.basketID);
+            var currentBasketID = (provider === 'korbo' ? null : $scope.conf.basketID);
 
             var param = {
                 item: {uri: entityUri},
                 provider: provider,
-                endpoint: $scope.conf.endpoint, 
-                basketID: currentBasketID, 
+                endpoint: $scope.conf.endpoint,
+                basketID: currentBasketID,
                 language: $scope.defaultLan.value
-            }
+            };
             var langConf = $scope.conf.languages;
             KorboCommunicationService.buildLanguagesObject(param, langConf).then(function(res){
 
@@ -248,7 +248,7 @@ angular.module('KorboEE')
                 $scope.loadingStatus = false;
 
             },
-            function(error){
+            function(){
                 $scope.topArea = {
                     'message': 'Error getting entity info!',
                     'status': 'error'
@@ -294,7 +294,7 @@ angular.module('KorboEE')
 
         if(typeof($scope.idEntityToEdit) !== 'undefined' &&$scope.idEntityToEdit !== null){
             buildLanguagesModel($scope.idEntityToEdit, 'korbo');
-        };
+        }
 
 
         // tooltip message for image url
@@ -446,7 +446,7 @@ angular.module('KorboEE')
                     var typesPromise = korboComm.save(entityToEditWithTypes, lang, $scope.conf.endpoint, basketID);
 
                     allPromises.push(depictionPromise);
-                    allPromises.push(typesPromise);                    
+                    allPromises.push(typesPromise);
 
                     for(var i=0; i<$scope.tabs.length; i++){
 
@@ -472,7 +472,7 @@ angular.module('KorboEE')
 
                     }
 
-                    $q.all(allPromises).then(function(res){
+                    $q.all(allPromises).then(function(){
                         $scope.isSaving = false;
                         if($scope.conf.useTafonyCompatibility){
                             $scope.directiveScope.location = location;
@@ -490,7 +490,7 @@ angular.module('KorboEE')
 
 
                         $timeout(function(){
-                            ContextualMenu.wipeActionsByType('advancedMenu');                                
+                            ContextualMenu.wipeActionsByType('advancedMenu');
                             KorboCommunicationService.closeModal();
                             // fire cancel callback
                             api.fireOnCancel();
@@ -498,12 +498,12 @@ angular.module('KorboEE')
                             korboConf.setIsOpenModal(false);
                         }, 1000);
                     },
-                    function(err){
+                    function(){
                         $scope.topArea.message = "Entity saving error!";
                         $scope.topArea.status = "error";
                     });
                 },
-                function(err){
+                function(){
                     $scope.topArea.message = "Entity saving error!";
                     $scope.topArea.status = "error";
                 });
@@ -583,7 +583,7 @@ angular.module('KorboEE')
             $scope.disactiveLanguages.splice(langIndex, 1);
             $scope.tabs.push(lang);
             addActionToContextualMenu(lang);
-            if($scope.tabs.length == 2){
+            if($scope.tabs.length === 2){
                 ContextualMenu.modifyHeaderActionByName('rml'+$scope.tabs[0].name, false);
             }
         };
@@ -609,7 +609,7 @@ angular.module('KorboEE')
             delay = $timeout(function(){
                 $scope.activeFilter = false;
                 $scope.typeFilter.label = '';
-            }, 1000);  
+            }, 1000);
         };
         $scope.typesMouseEnter = function(){
             $timeout.cancel(delay);

@@ -469,7 +469,8 @@ module.exports = function(grunt) {
                 "eqeqeq": true,
                 "multistr": true,
                 "globals": {
-                    angular: true
+                    angular: true,
+                    console: true
                 },
                 "predef": [
                     "waitsFor",
@@ -505,7 +506,8 @@ module.exports = function(grunt) {
                 options: {
                     "globals": {
                         punditConfig: true,
-                        angular: true
+                        angular: true,
+                        console: true
                     }
                 },
                 files: {

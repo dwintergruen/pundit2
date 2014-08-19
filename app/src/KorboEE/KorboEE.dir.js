@@ -131,5 +131,5 @@ angular.module('KorboEE')
 
             },
             controller: 'EEDirectiveCtrl'
-        }
+        };
     });

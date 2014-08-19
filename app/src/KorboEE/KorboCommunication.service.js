@@ -1,3 +1,5 @@
+/*jshint camelcase: false*/
+
 angular.module('KorboEE')
     .service('KorboCommunicationService', function($q, $http, BaseComponent, ItemsExchange, Item, $rootScope, $modal, korboConf, KorboCommunicationFactory, APIService){
 
@@ -186,7 +188,7 @@ angular.module('KorboEE')
                             description: res.data.data[i].abstract,
                             depiction: res.data.data[i].depiction,
                             type: []
-                        }
+                        };
 
                         for(var j=0; j<res.data.data[i].type.length; j++){
                             item.type.push(res.data.data[i].type[j]);
@@ -216,7 +218,7 @@ angular.module('KorboEE')
             var promise = $q.defer();
             var settled = 0;
             var results = {};
-            var defaultLanguage = param.language;
+            // var defaultLanguage = param.language;
             var korboComm = new KorboCommunicationFactory();
 
             var tooltipMessageTitle = "Insert title of the entity in ";
@@ -238,7 +240,7 @@ angular.module('KorboEE')
                             param.language = res.available_languages[index];
                             p = korboComm.getItem(param, false);
                             p.then(function(res){
-                                var indexFind = langConf.map(function(e){ return angular.lowercase(e.value) }).indexOf(angular.lowercase(res.reqLanguage));
+                                var indexFind = langConf.map(function(e){ return angular.lowercase(e.value); }).indexOf(angular.lowercase(res.reqLanguage));
                                 if(indexFind !== -1){
                                     var title = angular.uppercase(res.reqLanguage);
                                     var name = angular.lowercase(langConf[indexFind].name);
@@ -262,7 +264,7 @@ angular.module('KorboEE')
                                 if (settled === res.available_languages.length) {
                                     promise.resolve(results);
                                 }
-                            });;
+                            });
                         })(i);
                     }
                 } else{
@@ -270,7 +272,7 @@ angular.module('KorboEE')
                 }
             },
             function(error){
-                console.log("server error");
+                console.log("server error ", error);
                 results = null;
                 promise.reject();
             });
@@ -349,7 +351,7 @@ angular.module('KorboEE')
                             description: "",
                             depiction: "",
                             type: ['']
-                            }
+                            };
                     // ... create an item...
                     var itemToAdd = new Item(item.uri, item);
                     // ... and add it to container
@@ -387,7 +389,7 @@ angular.module('KorboEE')
                 }
             }).success(function(res){
                 res.reqLanguage = currentLanguage;
-                promise.resolve(res);                
+                promise.resolve(res);
             }).error(function(){
                 promise.reject();
             });

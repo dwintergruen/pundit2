@@ -1,5 +1,5 @@
 angular.module('KorboEE')
-    .controller('EEDirectiveCtrl', function($scope, APIService, korboConf, $http, KorboCommunicationFactory, $timeout, ItemsExchange, KorboCommunicationService, $modal, $rootScope) {
+    .controller('EEDirectiveCtrl', function($scope, APIService, korboConf, $http, KorboCommunicationFactory, $timeout, ItemsExchange, KorboCommunicationService) {
 
         $scope.autocompleteListTemplate = 'src/KorboEE/autocompleteList.tmpl.html';
         var api;
@@ -8,7 +8,7 @@ angular.module('KorboEE')
         $scope.elemToSearch = '';
         $scope.isSearching = false;
         $scope.serverNotRunning = false;
-        var containerPrefix = "kee-";
+        // var containerPrefix = "kee-";
 
 
 
@@ -196,7 +196,7 @@ angular.module('KorboEE')
 
 
         $scope.autoCompleteSearch = function(viewValue) {
-            var container = "kee-korbo";
+            // var container = "kee-korbo";
             if(viewValue.length >= $scope.conf.labelMinLength){
                 $scope.isSearching = true;
 
@@ -229,7 +229,7 @@ angular.module('KorboEE')
             api.fireOnSave(obj);
         };
 
-        var updateTimer;
+        // var updateTimer;
         // timer when input change
         $scope.$watch('elemToSearch', function() {
             //$timeout.cancel(updateTimer);
@@ -237,11 +237,11 @@ angular.module('KorboEE')
             $scope.autoCompleteSearch($scope.elemToSearch);
         });
 
-        var httpHandler = function() {
-            updateTimer = $timeout(function(){
-                $scope.autoCompleteSearch($scope.elemToSearch);
-            }, 1000);
-        };
+        // var httpHandler = function() {
+        //     updateTimer = $timeout(function(){
+        //         $scope.autoCompleteSearch($scope.elemToSearch);
+        //     }, 1000);
+        // };
 
         $scope.showSearchButton = function(){
             if($scope.conf.autoCompleteOptions === 'search' || $scope.conf.autoCompleteOptions === 'all' ){

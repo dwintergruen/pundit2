@@ -1,3 +1,5 @@
+/*global KORBODEFAULTCONF*/
+
 angular.module('KorboEE')
     .factory('korboConf', function(Utils){
 
