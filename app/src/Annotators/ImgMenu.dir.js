@@ -34,10 +34,28 @@ angular.module('Pundit2.Annotators')
                 scope.visible = true;
                 scope.element.css({
                     position: 'absolute',
-                    border: '1px solid khaki',
+                    color: '#fff',
+                    background: 'rgba(0, 0, 0, 0.2)',
+                    fontSize: '1.7em',
+                    height: '30px',
+                    width: '30px',
                     left: imgPos.left,
                     top: imgPos.top
                 });
+                scope.element.hover(
+                    function(){ 
+                        $(this).css({
+                            color: '#333333',
+                            // textShadow: '0px 0 25px #FFCC00'
+                        });
+                    },
+                    function(){ 
+                        $(this).css({
+                            color: '#fff',
+                            // textShadow: 'none'
+                        });
+                    }
+                );
             };
             placeMenu();
             
