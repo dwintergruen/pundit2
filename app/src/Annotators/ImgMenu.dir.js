@@ -7,7 +7,7 @@ angular.module('Pundit2.Annotators')
         },
         templateUrl: 'src/Annotators/ImgMenu.dir.tmpl.html',
         //replace: true,
-        link: function(scope, element , attrs) {
+        link: function(scope, element) {
 
             // reference to image dom element
             scope.image = angular.element('.'+scope.ref);
@@ -46,7 +46,7 @@ angular.module('Pundit2.Annotators')
                 evt.preventDefault();
                 evt.stopPropagation();
 
-                ImageAnnotator.clearTimeout();              
+                ImageAnnotator.clearTimeout();
                 
                 if (scope.item === null) {
                     // create item only once
@@ -68,12 +68,12 @@ angular.module('Pundit2.Annotators')
                 
             };
 
-            scope.onMouseOver = function(evt) {
+            scope.onMouseOver = function() {
                 ImageAnnotator.clearTimeout();
             };
 
-            scope.onMouseLeave = function(evt) {
-                ImageAnnotator.removeDirective(evt);
+            scope.onMouseLeave = function() {
+                ImageAnnotator.removeDirective();
             };
 
         } // link()

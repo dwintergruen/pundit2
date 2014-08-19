@@ -27,9 +27,9 @@ angular.module('Pundit2.Annotators')
             dir = $compile(angular.element('img-menu'))($rootScope);
             exist = true;
         }
-    }, function(evt){
+    }, function(){
         // remove directive after 250ms
-        ia.removeDirective(evt);
+        ia.removeDirective();
     });
 
     ia.clearTimeout = function() {
@@ -39,7 +39,7 @@ angular.module('Pundit2.Annotators')
         }
     };
 
-    ia.removeDirective = function(evt) {
+    ia.removeDirective = function() {
         timeoutPromise =  $timeout(function(){
             clear();
         }, 100);

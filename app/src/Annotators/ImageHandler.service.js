@@ -68,7 +68,7 @@ angular.module('Pundit2.Annotators')
     labelMaxLength: 40
 
 })
-.service('ImageHandler', function(IMAGEHANDLERDEFAULTS, NameSpace, BaseComponent, Config, 
+.service('ImageHandler', function(IMAGEHANDLERDEFAULTS, NameSpace, BaseComponent, Config,
     TextFragmentHandler, XpointersHelper, Item ) {
 
     var ih = new BaseComponent('ImageHandler', IMAGEHANDLERDEFAULTS);
@@ -76,7 +76,7 @@ angular.module('Pundit2.Annotators')
     var getXpFromNode = function(node) {
         var range = document.createRange();
         range.selectNode(node);
-        return TextFragmentHandler.range2xpointer(range); 
+        return TextFragmentHandler.range2xpointer(range);
     };
 
     ih.createItemFromImage = function(img) {

@@ -110,9 +110,8 @@ angular.module('Pundit2.Annotators')
     // first result of this iteration, the second should give null since we dont use general
     // purpose xpaths
     xp.getNodeFromXpath = function(xpath) {
-        var self = this,
-            iterator;
-        iterator = $document[0].evaluate(xpath, $document[0], null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+        // var self = this;
+        var iterator = $document[0].evaluate(xpath, $document[0], null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
 
         return iterator.singleNodeValue;
     };
@@ -179,9 +178,11 @@ angular.module('Pundit2.Annotators')
         // Erase doubled entries: they are sorted, just avoid copying the next
         // element if it's equal to the current one
         ret[0] = x[0];
-        for (var i=1, j=0, len=x.length; i<len; i++)
-            if (x[i].xpath != ret[j].xpath || x[i].offset != ret[j].offset)
+        for (var i=1, j=0, len=x.length; i<len; i++){
+            if (x[i].xpath !== ret[j].xpath || x[i].offset !== ret[j].offset){
                 ret[++j] = x[i];
+            }
+        }
 
         return ret;
     }; // splitAndSortXPaths()
@@ -196,8 +197,8 @@ angular.module('Pundit2.Annotators')
         // ending in the current xpath position
         for (var i=0; i<sortedXpaths.length-1; i++) {
             
+            // var end = sortedXpaths[i+1];
             var start = sortedXpaths[i],
-                end = sortedXpaths[i+1],
                 addXps = xp.getStartingXPs(xpointers, xpaths, start.xpath, start.offset),
                 remXps = xp.getEndingXPs(xpointers, xpaths, start.xpath, start.offset);
                 
@@ -225,9 +226,11 @@ angular.module('Pundit2.Annotators')
     // Removes the rem[] elements from arr[]
     var removeFromArray = function(arr, rem) {
         var ret = [];
-        for (var i = arr.length - 1; i >= 0; i--) 
-            if (rem.indexOf(arr[i]) === -1)
+        for (var i = arr.length - 1; i >= 0; i--){
+            if (rem.indexOf(arr[i]) === -1){
                 ret.push(arr[i]);
+            }
+        }
         return ret;
     };
 
@@ -238,8 +241,9 @@ angular.module('Pundit2.Annotators')
             
         for (var i=xpointers.length-1; i>=0; i--) {
             var x = xpointers[i];
-            if (xpaths[x].startXpath === xpath && xpaths[x].startOffset === offset)
+            if (xpaths[x].startXpath === xpath && xpaths[x].startOffset === offset){
                 ret.push(x);
+            }
         }
         return ret;
     };
@@ -251,8 +255,9 @@ angular.module('Pundit2.Annotators')
             
         for (var i=xpointers.length-1; i>=0; i--) {
             var x = xpointers[i];
-            if (xpaths[x].endXpath === xpath && xpaths[x].endOffset === offset) 
+            if (xpaths[x].endXpath === xpath && xpaths[x].endOffset === offset){
                 ret.push(x);
+            }
         }
         return ret;
     };
@@ -293,15 +298,19 @@ angular.module('Pundit2.Annotators')
         } else {
 
             // If it's not a textnode, set the start (or end) before (or after) it
-            if (!xp.isElementNode(startNode))
+            if (!xp.isElementNode(startNode)){
                 range.setStart(startNode, startXp.offset);
-            else
+            }
+            else{
                 range.setStart(startNode, startXp.offset);
+            }
 
-            if (!xp.isElementNode(endNode))
+            if (!xp.isElementNode(endNode)){
                 range.setEnd(endNode, endXp.offset);
-            else
+            }
+            else{
                 range.setEndAfter(endNode);
+            }
         }
 
         // Wrap the nearest element which contains the entire range
@@ -314,8 +323,9 @@ angular.module('Pundit2.Annotators')
     xp.wrapElement = function(element, range, htmlTag, htmlClass, parents) {
         // If there's childNodes, wrap them all
         if (element.childNodes && element.childNodes.length > 0) {
-            for (var i = (element.childNodes.length - 1); i >= 0 && element.childNodes[i]; i--)
+            for (var i = (element.childNodes.length - 1); i >= 0 && element.childNodes[i]; i--){
                 xp.wrapElement(element.childNodes[i], range, htmlTag, htmlClass, parents);
+            }
 
             // Else it's a leaf: if it's a valid text node, wrap it!
         } else if (xp.isTextNodeInsideRange(element, range)) {
@@ -333,27 +343,31 @@ angular.module('Pundit2.Annotators')
         var content;
 
         // Check: it must be a text node
-        if (node.nodeType !== Node.TEXT_NODE)
+        if (node.nodeType !== Node.TEXT_NODE){
             return false;
+        }
 
         // Check: the content must not be empty
         content = node.textContent.replace(/ /g, "").replace(/\n/, "");
-        if (!node.data || content === "" || content === " ")
+        if (!node.data || content === "" || content === " "){
             return false;
+        }
 
         // Finally check if it's in the range
-        return xp.isNodeInsideRange(node, range)
+        return xp.isNodeInsideRange(node, range);
     };
     xp.isImageNodeInsideRange = function(node, range) {
         // Check: it must be an element node
-        if (node.nodeType !== Node.ELEMENT_NODE)
+        if (node.nodeType !== Node.ELEMENT_NODE){
             return false;
+        }
 
         // Check: it must be an img
-        if (node.tagName.toLowerCase() !== 'img')
+        if (node.tagName.toLowerCase() !== 'img'){
             return false;
+        }
 
-        return xp.isNodeInsideRange(node, range)
+        return xp.isNodeInsideRange(node, range);
     };
 
     // Will check if the given node interesecates the given range somehow
@@ -364,8 +378,8 @@ angular.module('Pundit2.Annotators')
         } catch (e) {
             nodeRange.selectNodeContents(node);
         }
-        if (range.compareBoundaryPoints(Range.END_TO_START || 3, nodeRange) != -1 ||
-            range.compareBoundaryPoints(Range.START_TO_END || 1, nodeRange) != 1) {
+        if (range.compareBoundaryPoints(Range.END_TO_START || 3, nodeRange) !== -1 ||
+            range.compareBoundaryPoints(Range.START_TO_END || 1, nodeRange) !== 1) {
             return false;
         }
         return true;
@@ -385,8 +399,9 @@ angular.module('Pundit2.Annotators')
             r2.setEnd(element, (element === range.endContainer) ? range.endOffset : element.length);
 
             // Otherwise just select the entire node, and wrap it up
-        } else
+        } else{
             r2.selectNode(element);
+        }
 
         // Finally surround the range contents with an ad-hoc crafted html element
         r2.surroundContents(xp.createWrapNode(htmlTag, htmlClass, parents));
@@ -570,8 +585,12 @@ angular.module('Pundit2.Annotators')
         }
 
         // Build back the URI
-        if (query) uri += '?' + query;
-        if (fragment) uri += '#' + fragment;
+        if (query){
+            uri += '?' + query;
+        }
+        if (fragment){
+            uri += '#' + fragment;
+        }
 
         return uri;
     };
