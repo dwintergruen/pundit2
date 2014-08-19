@@ -164,6 +164,7 @@
     <script src="../src/KorboEE/APIModule/APIService.service.js"></script>
     <script src="../src/KorboEE/defaultKorboConf.js"></script>
     <script src="../src/KorboEE/KorboCommunication.service.js"></script>
+    <script src="../src/KorboEE/KorboCommunication.factory.js"></script>
     <script src="../src/KorboEE/Modal/KorboEE.modal.ctrl.js"></script>
     <script src="../src/KorboEE/New/KorboEE.new.ctrl.js"></script>
     <script src="../src/KorboEE/New/Languages/keeLanguages.dir.js"></script>
