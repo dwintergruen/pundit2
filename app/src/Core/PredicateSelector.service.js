@@ -39,7 +39,17 @@ angular.module('Pundit2.Core')
 
         var promise = $q.defer();
 
-        $http.jsonp(url+"?jsonp=JSON_CALLBACK")
+        // $http.jsonp(url+"?jsonp=JSON_CALLBACK")
+
+        // if url already contain a ? use &jsonp=JSON_CALLBACK instead of ?jsonp=JSON_CALLBACK
+        var appenedUrl;
+        if (url.indexOf('?') > -1) {
+          appenedUrl = "&jsonp=JSON_CALLBACK"; 
+        } else {
+          appenedUrl = "?jsonp=JSON_CALLBACK";
+        }
+        
+        $http.jsonp(url+appenedUrl)
             .success(function(data){
 
                 if (typeof(data) === 'undefined' || typeof(data.result) === 'undefined') {
