@@ -21,6 +21,7 @@
 
     <div ng-if="item.isProperty()" class="pnd-preview-item-predicate">
         <ul>
+            <li ng-if="item.uri"><strong>Uri:</strong> {{item.uri}}</li>
             <li ng-if="item.vocabulary"><strong>Vocabulary:</strong> {{item.vocabulary}}</li>
             <li ng-if="item.domain"><strong>Domain:</strong> 
                 <span ng-repeat="domain in item.domain">{{domain}}</span>
