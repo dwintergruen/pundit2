@@ -61,15 +61,15 @@
                         </div>
                         <div class="pnd-sidebar-filter-scroll">
     	                    <div 
-    	                        ng-repeat="elem in filters.authors | orderObjectBy:'count':'dsc' | filter:searchAuthors" 
-    	                        ng-class="{'pnd-annotation-sidebar-current-filter-active': elem.active}"
+    	                        ng-repeat="elem in filters.authors | orderObjectBy:'partial':'dsc' | filter:searchAuthors" 
+    	                        ng-class="{'pnd-annotation-sidebar-current-filter-active': elem.active && elem.partial !== 0, 'pnd-annotation-sidebar-current-filter-empt-red': elem.active && elem.partial === 0}"
     	                        class="pnd-annotation-sidebar-filter-element">
     	                            <div 
     	                                class="pnd-annotation-sidebar-filter-element-label"
     	                                ng-click="toggleFilter('authors', elem.uri)">
     	                                    <span class="pnd-icon pnd-icon-check"
     	                                        ng-show="elem.active"></span>
-    	                                    {{elem.label}} ({{elem.count}})
+    	                                    {{elem.label}} ({{elem.partial}})
     	                            </div>
     	                    </div>
                         </div>
@@ -89,15 +89,15 @@
                         </div>
                         <div class="pnd-sidebar-filter-scroll">
                             <div 
-                                ng-repeat="elem in filters.notebooks | orderObjectBy:'count':'dsc' | filter:searchNotebooks" 
-                                ng-class="{'pnd-annotation-sidebar-current-filter-active': elem.active}"
+                                ng-repeat="elem in filters.notebooks | orderObjectBy:'partial':'dsc' | filter:searchNotebooks" 
+                                ng-class="{'pnd-annotation-sidebar-current-filter-active': elem.active && elem.partial !== 0, 'pnd-annotation-sidebar-current-filter-empt-red': elem.active && elem.partial === 0}"
                                 class="pnd-annotation-sidebar-filter-element">
                                     <div 
                                         class="pnd-annotation-sidebar-filter-element-label"
                                         ng-click="toggleFilter('notebooks', elem.uri)">
                                             <span class="pnd-icon pnd-icon-check"
                                                 ng-show="elem.active"></span>
-                                            {{elem.label}} ({{elem.count}})
+                                            {{elem.label}} ({{elem.partial}})
                                     </div>
                             </div>
                         </div>
@@ -116,15 +116,15 @@
                             <input class="form-control" ng-model="searchTypes.label" placeholder="Filter">
                         </div>
                         <div class="pnd-sidebar-filter-scroll">
-    	                    <div ng-repeat="elem in filters.types | orderObjectBy:'count':'dsc' | filter:searchTypes" 
-    	                        ng-class="{'pnd-annotation-sidebar-current-filter-active': elem.active}"
+    	                    <div ng-repeat="elem in filters.types | orderObjectBy:'partial':'dsc' | filter:searchTypes" 
+    	                        ng-class="{'pnd-annotation-sidebar-current-filter-active': elem.active && elem.partial !== 0, 'pnd-annotation-sidebar-current-filter-empt-red': elem.active && elem.partial === 0}"
     	                        class="pnd-annotation-sidebar-filter-element">
     	                            <div 
     	                                class="pnd-annotation-sidebar-filter-element-label"
     	                                ng-click="toggleFilter('types', elem.uri)">
     	                                    <span class="pnd-icon pnd-icon-check"
     	                                          ng-show="elem.active"></span>
-    	                                {{elem.label}} ({{elem.count}})
+    	                                {{elem.label}} ({{elem.partial}})
     	                            </div>
     	                    </div>
                         </div>
@@ -144,15 +144,15 @@
                             <input class="form-control" ng-model="searchPredicates.label" placeholder="Filter">
                         </div>
                         <div 
-                            ng-repeat="elem in filters.predicates | orderObjectBy:'count':'dsc' | filter:searchPredicates" 
-                            ng-class="{'pnd-annotation-sidebar-current-filter-active': elem.active}"
+                            ng-repeat="elem in filters.predicates | orderObjectBy:'partial':'dsc' | filter:searchPredicates" 
+                            ng-class="{'pnd-annotation-sidebar-current-filter-active': elem.active && elem.partial !== 0, 'pnd-annotation-sidebar-current-filter-empt-red': elem.active && elem.partial === 0}"
                             class="pnd-annotation-sidebar-filter-element">
                                 <div 
                                     class="pnd-annotation-sidebar-filter-element-label"
                                     ng-click="toggleFilter('predicates', elem.uri)">
                                         <span class="pnd-icon pnd-icon-check"
                                               ng-show="elem.active"></span>
-                                    {{elem.label}} ({{elem.count}})
+                                    {{elem.label}} ({{elem.partial}})
                                 </div>
                         </div>
                     </div>
@@ -171,15 +171,15 @@
                         </div>
                         <div class="pnd-sidebar-filter-scroll">
     	                    <div 
-    	                        ng-repeat="elem in filters.entities | orderObjectBy:'count':'dsc' | filter:searchEntities" 
-    	                        ng-class="{'pnd-annotation-sidebar-current-filter-active': elem.active}"
+    	                        ng-repeat="elem in filters.entities | orderObjectBy:'partial':'dsc' | filter:searchEntities" 
+    	                        ng-class="{'pnd-annotation-sidebar-current-filter-active': elem.active && elem.partial !== 0, 'pnd-annotation-sidebar-current-filter-empt-red': elem.active && elem.partial === 0}"
     	                        class="pnd-annotation-sidebar-filter-element">
     	                            <div 
     	                                class="pnd-annotation-sidebar-filter-element-label"
     	                                ng-click="toggleFilter('entities', elem.uri)">
     	                                    <span class="pnd-icon pnd-icon-check"
     	                                          ng-show="elem.active"></span>
-    	                                {{elem.label}} ({{elem.count}})
+    	                                {{elem.label}} ({{elem.partial}})
     	                            </div>
     	                    </div>
                         </div>

@@ -401,12 +401,14 @@ angular.module('Pundit2.AnnotationSidebar')
     };
 
     var filtersCount = function(annotations) {
+
         annotationSidebar.filtersCount = {};
 
         angular.forEach(elementsList, function(element) {
             for(var key in element) {
                 if(typeof(element[key]) !== 'undefined'){
                     element[key].count = 0;
+                    element[key].partial = 0;
                 }
             }
         });
@@ -414,18 +416,25 @@ angular.module('Pundit2.AnnotationSidebar')
         angular.forEach(annotations, function(annotation) {
 
             var uriList = {};
+            var tempCount;
 
             // Annotation authors
-            elementsList.authors[annotation.creator].count = filterCountIncrement(annotation.creator);
+            tempCount = filterCountIncrement(annotation.creator);
+            elementsList.authors[annotation.creator].count = tempCount;
+            elementsList.authors[annotation.creator].partial = tempCount;
 
             // Notebooks
-            elementsList.notebooks[annotation.isIncludedInUri].count = filterCountIncrement(annotation.isIncludedIn);
+            tempCount = filterCountIncrement(annotation.isIncludedIn);
+            elementsList.notebooks[annotation.isIncludedInUri].count = tempCount;
+            elementsList.notebooks[annotation.isIncludedInUri].partial = tempCount;
 
             // Predicates
             angular.forEach(annotation.predicates, function(predicateUri) {
                 if (typeof(uriList[predicateUri]) === 'undefined'){
                     uriList[predicateUri] = {uri: predicateUri};
-                    elementsList.predicates[predicateUri].count = filterCountIncrement(predicateUri);
+                    tempCount = filterCountIncrement(predicateUri);
+                    elementsList.predicates[predicateUri].count = tempCount;
+                    elementsList.predicates[predicateUri].partial = tempCount;
                 }
             });
 
@@ -433,7 +442,9 @@ angular.module('Pundit2.AnnotationSidebar')
             angular.forEach(annotation.entities, function(entUri) {
                 if (typeof(uriList[entUri]) === 'undefined'){
                     uriList[entUri] = {uri: entUri};
-                    elementsList.entities[entUri].count = filterCountIncrement(entUri);
+                    tempCount = filterCountIncrement(entUri);
+                    elementsList.entities[entUri].count = tempCount;
+                    elementsList.entities[entUri].partial = tempCount;
                 }
             });
             
@@ -442,10 +453,81 @@ angular.module('Pundit2.AnnotationSidebar')
                 angular.forEach(singleItem.type, function(typeUri) {
                     if (typeof(uriList[typeUri]) === 'undefined'){
                         uriList[typeUri] = {uri: typeUri};
-                        elementsList.types[typeUri].count = filterCountIncrement(typeUri);
+                        tempCount = filterCountIncrement(typeUri);
+                        elementsList.types[typeUri].count = tempCount;
+                        elementsList.types[typeUri].partial = tempCount;
                     }
                 });
             });
+        });
+    };
+
+    var filtersCountPartial = function(annotations, elementName, overwrite) {
+        annotationSidebar.filtersCount = {};
+
+        if(overwrite){
+            for(var key in elementsList[elementName]) {
+                if(typeof(elementsList[elementName][key]) !== 'undefined'){
+                    elementsList[elementName][key].partial = 0;
+                }
+            }
+        } else{
+            for( var name in elementsList){
+                if(name !== elementName){
+                    for(var key in elementsList[name]) {
+                        if(typeof(elementsList[name][key]) !== 'undefined'){
+                            elementsList[name][key].partial = 0;
+                        }
+                    }
+                }
+            }
+        }
+
+        angular.forEach(annotations, function(annotation) {
+
+            var uriList = {};
+
+            // Annotation authors
+            if((elementName !== 'authors' && !overwrite) || (elementName === 'authors' && overwrite)) {
+                elementsList.authors[annotation.creator].partial = filterCountIncrement(annotation.creator);
+            }
+
+            // Notebooks
+            if((elementName !== 'notebooks' && !overwrite) || (elementName === 'notebooks' && overwrite)) {
+                elementsList.notebooks[annotation.isIncludedInUri].partial = filterCountIncrement(annotation.isIncludedIn);
+            }
+
+            // Predicates
+            if((elementName !== 'predicates' && !overwrite) || (elementName === 'predicates' && overwrite)) {
+                angular.forEach(annotation.predicates, function(predicateUri) {
+                    if (typeof(uriList[predicateUri]) === 'undefined'){
+                        uriList[predicateUri] = {uri: predicateUri};
+                        elementsList.predicates[predicateUri].partial = filterCountIncrement(predicateUri);
+                    }
+                });
+            }
+
+            // Entities
+            if((elementName !== 'entities' && !overwrite) || (elementName === 'entities' && overwrite)) {
+                angular.forEach(annotation.entities, function(entUri) {
+                    if (typeof(uriList[entUri]) === 'undefined'){
+                        uriList[entUri] = {uri: entUri};
+                        elementsList.entities[entUri].partial = filterCountIncrement(entUri);
+                    }
+                });
+            }
+            
+            // Types
+            if((elementName !== 'types' && !overwrite) || (elementName === 'types' && overwrite)) {
+                angular.forEach(annotation.items, function(singleItem) {
+                    angular.forEach(singleItem.type, function(typeUri) {
+                        if (typeof(uriList[typeUri]) === 'undefined'){
+                            uriList[typeUri] = {uri: typeUri};
+                            elementsList.types[typeUri].partial = filterCountIncrement(typeUri);
+                        }
+                    });
+                });
+            }
         });
     };
 
@@ -732,23 +814,58 @@ angular.module('Pundit2.AnnotationSidebar')
         return state.allAnnotations;
     };
 
+
+
     // Get the array just of the filtered annotations
     annotationSidebar.getAllAnnotationsFiltered = function(filters) {
+        var filteredAnnotationsObj = {};
+        var removedFilters = [];
         var currentFilterObjExpression;
         var currentFilterName;
         state.filteredAnnotations = angular.copy(state.allAnnotations);
         angular.forEach(filters, function(filterObj){
             currentFilterName = filterObj.filterName;
             currentFilterObjExpression = filterObj.expression;
-            if (typeof(currentFilterObjExpression) === 'string' && currentFilterObjExpression !== '') {
+            if ((typeof(currentFilterObjExpression) === 'string' && currentFilterObjExpression !== '') || (angular.isArray(currentFilterObjExpression) && currentFilterObjExpression.length > 0)) {
                 state.filteredAnnotations = $filter(currentFilterName)(state.filteredAnnotations, currentFilterObjExpression);
-            } else if (angular.isArray(currentFilterObjExpression) && currentFilterObjExpression.length > 0) {
-                state.filteredAnnotations = $filter(currentFilterName)(state.filteredAnnotations, currentFilterObjExpression);
+                filteredAnnotationsObj[currentFilterName] = $filter(currentFilterName)(state.allAnnotations, currentFilterObjExpression);
             }
         });
+
+        var getMatch = function(a, b) {
+            var matches = [];
+            for (var i in a){
+                for (var j in b){
+                    if (angular.equals(a[i], b[j])){
+                        matches.push(a[i]);
+                    }
+                }
+            }
+            return matches;
+        };
+
+        var sum = function(obj, exlude, start){
+            var results = start;
+            for (var kk in obj){
+                if(kk !== exlude){
+                    results = getMatch(results, obj[kk]);
+                }
+            }
+            return results;
+        };
+
+        filtersCountPartial(state.filteredAnnotations, 'none', false);        
+
+        var filteredAnnotationsObjPartial = {}; 
+        for (var filterName in filteredAnnotationsObj){
+            filteredAnnotationsObjPartial[filterName] = sum(filteredAnnotationsObj, filterName, angular.copy(state.allAnnotations));
+            filtersCountPartial(filteredAnnotationsObjPartial[filterName], filterName, true);
+        }
+
         setAnnotationInPage(state.filteredAnnotations);
         setAnnotationsPosition();
-        // filtersCount(state.filteredAnnotations); 
+        // filtersCount(state.filteredAnnotations, 'partial'); 
+
         return state.filteredAnnotations;
     };
 
