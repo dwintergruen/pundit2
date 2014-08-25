@@ -137,7 +137,7 @@ angular.module('Pundit2.Core')
 
             // The page URL is for xpointers out of named contents
             if (typeof(onlyNamedContents) === "undefined" || onlyNamedContents !== true) {
-                ret.push($location.absUrl());
+                ret.push(decodeURIComponent($location.absUrl()));
             }
 
             // Look for named content: an element with a class listed in .namedContentClasses

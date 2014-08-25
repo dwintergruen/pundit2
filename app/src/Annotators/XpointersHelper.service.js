@@ -592,7 +592,7 @@ angular.module('Pundit2.Annotators')
             uri += '#' + fragment;
         }
 
-        return uri;
+        return decodeURIComponent(uri);
     };
 
 
