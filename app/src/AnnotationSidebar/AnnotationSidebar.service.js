@@ -667,9 +667,9 @@ angular.module('Pundit2.AnnotationSidebar')
                             annotationSidebar.log("Something wrong with the fragments of this annotation: ",annotation);
                         }
                     } else if(currentItem.isImage() || currentItem.isImageFragment()){
-                        // TODO: add icon during the consolidation for get the top of the specific image
+                        // TODO: add icon during the consolidation and get the top of the specific image
                         var firstValidImage = angular.element('img[src="'+currentItem.image+'"]');
-                        if (typeof(firstValidImage) !== 'undefined'){
+                        if (typeof(firstValidImage.offset()) !== 'undefined'){
                             top = firstValidImage.offset().top - toolbarHeight - dashboardHeight;
                         }
                     }

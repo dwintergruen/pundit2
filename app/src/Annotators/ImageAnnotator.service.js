@@ -7,6 +7,9 @@ angular.module('Pundit2.Annotators')
     ia.label = "image";
     ia.type = NameSpace.types[ia.label];
 
+    ia.labelIF = "imagePart";
+    ia.typeIF = NameSpace.fragments[ia.labelIF];
+
     var imgConsClass = "pnd-cons-img";
 
     Consolidation.addAnnotator(ia);
@@ -56,6 +59,7 @@ angular.module('Pundit2.Annotators')
     };
     
     ia.isConsolidable = function(item) {
+        var xpointerURI;
 
         if (!angular.isArray(item.type)) {
             ia.log("Item not valid: malformed type"+ item.uri);
@@ -63,19 +67,27 @@ angular.module('Pundit2.Annotators')
         } else if (item.type.length === 0) {
             ia.log("Item not valid: types len 0"+ item.uri);
             return false;
-        } else if (item.type.indexOf(ia.type) === -1) {
-            ia.log("Item not valid: not have type image"+ item.uri);
+        } else if ((item.type.indexOf(ia.type) === -1) && (item.type.indexOf(ia.typeIF) === -1)) {
+            ia.log("Item not valid: not have type image "+ item.uri);
             return false;
-        } else if (!XpointersHelper.isValidXpointerURI(item.uri)) {
-            ia.log("Item not valid: not a valid xpointer uri: "+ item.uri);
-            return false;
-        } else if (!XpointersHelper.isValidXpointer(item.uri)) {
-            ia.log("Item not valid: not consolidable on this page: "+ item.uri);
-            return false;
+        } else{
+            if (item.type.indexOf(ia.type) !== -1) {
+                xpointerURI = item.uri;
+            } else if (item.type.indexOf(ia.typeIF) !== -1){
+                xpointerURI = item.parentItemXP;
+            }
+
+            if (!XpointersHelper.isValidXpointerURI(xpointerURI)) {
+                ia.log("Item not valid: not a valid xpointer uri: "+ xpointerURI);
+                return false;
+            } else if (!XpointersHelper.isValidXpointer(xpointerURI)) {
+                ia.log("Item not valid: not consolidable on this page: "+ xpointerURI);
+                return false;
+            }
         }
         
         // TODO: it's a valid image fragment if:
-        // - one of its types is the fragment-image type
+        // - one of its types is the fragment-image type [done]
         // - has a part of
         // - .selector contains something
         // ... etc etc
@@ -87,9 +99,14 @@ angular.module('Pundit2.Annotators')
     ia.consolidate = function(items) {
         ia.log('Consolidating!');
 
-        var uri, xpointers = [];
+        var uri, currentUri, xpointers = [];
         for (uri in items) {
-            xpointers.push(uri);
+            if (items[uri].type.indexOf(ia.type) !== -1) {
+                currentUri = items[uri].uri;
+            } else if (items[uri].type.indexOf(ia.typeIF) !== -1){
+                currentUri = items[uri].parentItemXP;
+            }
+            xpointers.push(currentUri);
         }
         var xpaths = XpointersHelper.getXPathsFromXPointers(xpointers);
         for (uri in xpaths) {
