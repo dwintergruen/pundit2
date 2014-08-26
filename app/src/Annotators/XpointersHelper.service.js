@@ -51,6 +51,11 @@ angular.module('Pundit2.Annotators')
     }; // getXPathsFromXPointers()
 
     xp.isValidXpointerURI = function(xpointer) {
+        // TODO: perché in client.html si verifica xpointer undefined?! 
+        if(typeof(xpointer) === 'undefined'){
+            xp.err("Xpointer is undefined: this should not happend!");
+            return false;
+        }
         if (xpointer.match(/#xpointer\(start-point\(string-range\(/) === null || xpointer.match(/range-to\(string-range\(/) === null) {
             return false;
         }

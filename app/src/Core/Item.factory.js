@@ -183,8 +183,8 @@ angular.module('Pundit2.Core')
 
         // Special item type: image fragment
         if (this.type.indexOf(NameSpace.fragments.imagePart) !== -1) {
+            // this.selector = [];
 
-            this.selector = [];
             // If there's a selector property in this item's RDF, cycle over
             // all of them, check if they're in the annotation RDF and extract
             // their value and append it to the item
@@ -196,19 +196,22 @@ angular.module('Pundit2.Core')
                     // Look for the RDF for this selector uri
                     if (selectorUri in annotationRDF) {
                         var selector = annotationRDF[selectorUri];
+                        this.polygonUri = selectorUri;
 
                         // Polygon type selector: parse the json and push the object
                         // to this item .selector
                         if (selector[NameSpace.rdf.type][0].value === NameSpace.selectors.polygonType) {
-                            this.selector.push(JSON.parse(selector[NameSpace.rdf.value][0].value));
+                            var selectorValue = JSON.parse(selector[NameSpace.rdf.value][0].value);
+                            this.polygon = selectorValue.points
+                            // this.selector.push(JSON.parse(selector[NameSpace.rdf.value][0].value));
                         }
                     }
                 }
             }
 
-            if (typeof(this.selector) !== "undefined" && this.selector in annotationRDF) {
-                this.selector = annotationRDF[this.selector][NameSpace.rdf.value][0].value;
-            }
+            // if (typeof(this.selector) !== "undefined" && this.selector in annotationRDF) {
+            //     this.selector = annotationRDF[this.selector][NameSpace.rdf.value][0].value;
+            // }
         } // if type: fragments.image
 
         // TODO: more special cases, named content, webpage, video fragment, other selectors?

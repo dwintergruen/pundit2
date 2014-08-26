@@ -77,6 +77,7 @@ angular.module('Pundit2.Core')
     imageFragmentHelper.createItemFromPolygon = function(poly) {
         var text = imgItem.image.substring(imgItem.image.lastIndexOf('/') + 1, imgItem.image.length);
         // TODO make a better uri generation (eg. md5(time+img.src))
+        // TODO use selector format for polygon
         var item = {
             uri: NameSpace.fragmentBaseUri + 'image/' + new Date().getTime(),
             type: [NameSpace.fragments.imagePart],

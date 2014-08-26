@@ -1,6 +1,6 @@
 angular.module('Pundit2.Annotators')
 .service('ImageAnnotator', function(NameSpace, BaseComponent, $location, $compile, $rootScope, $timeout,
-    Consolidation, XpointersHelper) {
+    Consolidation, XpointersHelper, ImageFragmentAnnotatorHelper) {
 
     // Create the component and declare what we deal with: text
     var ia = new BaseComponent('ImageAnnotator');
@@ -99,7 +99,7 @@ angular.module('Pundit2.Annotators')
     ia.consolidate = function(items) {
         ia.log('Consolidating!');
 
-        var uri, currentUri, xpointers = [];
+        var uri, currentUri, xpointers = [], parentItemXPList = {};
         for (uri in items) {
             if (items[uri].type.indexOf(ia.type) !== -1) {
                 currentUri = items[uri].uri;
@@ -107,10 +107,23 @@ angular.module('Pundit2.Annotators')
                 currentUri = items[uri].parentItemXP;
             }
             xpointers.push(currentUri);
+
+            if (typeof(items[uri].polygon) !== 'undefined'){
+                if (typeof(parentItemXPList[items[uri].parentItemXP]) !== 'undefined'){
+                    parentItemXPList[items[uri].parentItemXP].push(items[uri].polygon);
+                } else{
+                    parentItemXPList[items[uri].parentItemXP] = [items[uri].polygon];
+                }
+            }
         }
         var xpaths = XpointersHelper.getXPathsFromXPointers(xpointers);
-        for (uri in xpaths) {
+        for (uri in xpaths) {            
             angular.element(xpaths[uri].startNode.firstChild).addClass(imgConsClass);
+            if (uri in parentItemXPList){
+                for (polyIF in parentItemXPList[uri]){
+                    ImageFragmentAnnotatorHelper.drawPolygonOverImage(parentItemXPList[uri][polyIF], angular.element(xpaths[uri].startNode.firstChild));
+                }
+            }
         }
     };
 
