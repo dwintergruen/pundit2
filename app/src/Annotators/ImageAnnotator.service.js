@@ -122,16 +122,43 @@ angular.module('Pundit2.Annotators')
             // TODO Move DOM manipulation in Xpointer service
             var imgReference = angular.element(xpaths[uri].startNode.firstElementChild);
             imgReference.addClass(imgConsClass);
-            if (uri in parentItemXPList){
-                for (polyIF in parentItemXPList[uri]){
-                    ImageFragmentAnnotatorHelper.drawPolygonOverImage(parentItemXPList[uri][polyIF],  imgReference);
-                }
-            }
+            // if (uri in parentItemXPList){
+            //     for (polyIF in parentItemXPList[uri]){
+            //         ImageFragmentAnnotatorHelper.drawPolygonOverImage(parentItemXPList[uri][polyIF],  imgReference);
+            //     }
+            // }
         }
     };
 
     ia.wipe = function() {
-        angular.element('.'+imgConsClass).removeClass(imgConsClass);
+        var imgCons = angular.element('.'+imgConsClass);
+        imgCons.removeClass(imgConsClass);
+        // imgCons.siblings('svg.pnd-polygon-layer').remove();
+    };
+
+    ia.svgHighlightByItem = function(item) {
+        var currentUri, imgReference, xpaths = [];
+        if ((item.type.indexOf(ia.typeIF) !== -1) && (typeof(item.polygon) !== 'undefined')){
+            currentUri = item.parentItemXP;
+            xpaths = XpointersHelper.getXPathsFromXPointers([currentUri]);
+            if (currentUri in xpaths) {
+                imgReference = angular.element(xpaths[currentUri].startNode.firstElementChild);
+                ImageFragmentAnnotatorHelper.drawPolygonOverImage(item.polygon,  imgReference);
+            }
+        }
+    };
+
+    ia.svgClearHighlightByItem = function(item) {
+        angular.element('.'+imgConsClass).siblings('svg.pnd-polygon-layer').remove();
+        // var currentUri, imgReference, xpaths = [];
+        // if ((item.type.indexOf(ia.typeIF) !== -1) && (typeof(item.polygon) !== 'undefined')){
+        //     currentUri = item.parentItemXP;
+        //     xpaths = XpointersHelper.getXPathsFromXPointers([currentUri]);
+        //     if (currentUri in xpaths) {
+        //         imgReference = angular.element(xpaths[currentUri].startNode.firstElementChild);
+        //         imgReference.siblings('svg.pnd-polygon-layer').remove();
+        //     }
+        // }
     };
 
     ia.highlightById = function() {

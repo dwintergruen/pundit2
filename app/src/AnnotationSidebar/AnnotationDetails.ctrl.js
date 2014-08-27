@@ -133,7 +133,7 @@ angular.module('Pundit2.AnnotationSidebar')
                 if (currentItem.isTextFragment()) {
                     TextFragmentAnnotator.highlightByUri(items[index]);
                 } else if (currentItem.isImageFragment()) {
-                    //ImageFragmentAnnotator.highlightByUri(items[index]);
+                    ImageAnnotator.svgHighlightByItem(currentItem);
                 } else if (currentItem.isImage()) {
                     ImageAnnotator.highlightByUri(items[index]);
                 }
@@ -150,7 +150,7 @@ angular.module('Pundit2.AnnotationSidebar')
                 if (currentItem.isTextFragment()) {
                     TextFragmentAnnotator.clearHighlightByUri(items[index]);
                 } else if (currentItem.isImageFragment()) {
-                    //ImageFragmentAnnotator.clearHighlightByUri(items[index]);
+                    ImageAnnotator.svgClearHighlightByItem(currentItem);
                 } else if (currentItem.isImage()) {
                     ImageAnnotator.clearHighlightByUri(items[index]);
                 }
@@ -164,7 +164,7 @@ angular.module('Pundit2.AnnotationSidebar')
             if (currentItem.isTextFragment()) {
                 TextFragmentAnnotator.highlightByUri(itemUri);
             } else if (currentItem.isImageFragment()) {
-                //ImageFragmentAnnotator.highlightByUri(itemUri);
+                ImageAnnotator.svgHighlightByItem(currentItem);
             } else if (currentItem.isImage()) {
                 ImageAnnotator.highlightByUri(itemUri);
             }
@@ -177,7 +177,7 @@ angular.module('Pundit2.AnnotationSidebar')
             if (currentItem.isTextFragment()) {
                 TextFragmentAnnotator.clearHighlightByUri(itemUri);
             } else if (currentItem.isImageFragment()) {
-                //ImageFragmentAnnotator.clearHighlightByUri(itemUri);
+                ImageAnnotator.svgClearHighlightByItem(currentItem);
             } else if (currentItem.isImage()) {
                 ImageAnnotator.clearHighlightByUri(itemUri);
             }
