@@ -186,7 +186,7 @@ angular.module('Pundit2.Core')
          *       }
          * }
          * </pre>
-         * All propeties are optional. By default a triple is not mandatory.
+         * All propeties are optional. By default a triple is mandatory.
          */
         templates: [
             "http://conf.thepund.it/V2/templates/tagFree",
