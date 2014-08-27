@@ -117,11 +117,14 @@ angular.module('Pundit2.Annotators')
             }
         }
         var xpaths = XpointersHelper.getXPathsFromXPointers(xpointers);
-        for (uri in xpaths) {            
-            angular.element(xpaths[uri].startNode.firstChild).addClass(imgConsClass);
+        for (uri in xpaths) {
+            // TODO So bad! Add span (like Pundit1) and use it as reference
+            // TODO Move DOM manipulation in Xpointer service
+            var imgReference = angular.element(xpaths[uri].startNode.firstElementChild);
+            imgReference.addClass(imgConsClass);
             if (uri in parentItemXPList){
                 for (polyIF in parentItemXPList[uri]){
-                    ImageFragmentAnnotatorHelper.drawPolygonOverImage(parentItemXPList[uri][polyIF], angular.element(xpaths[uri].startNode.firstChild));
+                    ImageFragmentAnnotatorHelper.drawPolygonOverImage(parentItemXPList[uri][polyIF],  imgReference);
                 }
             }
         }
