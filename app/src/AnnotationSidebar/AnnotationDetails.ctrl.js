@@ -125,6 +125,10 @@ angular.module('Pundit2.AnnotationSidebar')
     };
 
     $scope.mouseoverAllHandler = function(){
+        if($scope.annotation.broken){
+            return;
+        }
+
         var currentItem;
         var items = $scope.annotation.itemsUriArray;
         for (var index in items){
@@ -138,6 +142,10 @@ angular.module('Pundit2.AnnotationSidebar')
     };
 
     $scope.mouseoutAllHandler = function(){
+        if($scope.annotation.broken){
+            return;
+        }
+        
         var currentItem;
         var items = $scope.annotation.itemsUriArray;
         for (var index in items){
@@ -151,6 +159,10 @@ angular.module('Pundit2.AnnotationSidebar')
     };
 
     $scope.mouseoverHandler = function() {
+        if($scope.annotation.broken){
+            return;
+        }
+        
         var currentItem;
         var items = $scope.annotation.itemsUriArray;
         for (var index in items){
@@ -168,6 +180,10 @@ angular.module('Pundit2.AnnotationSidebar')
     };
 
     $scope.mouseoutHandler = function() {
+        if($scope.annotation.broken){
+            return;
+        }
+        
         var currentItem;
         var items = $scope.annotation.itemsUriArray;
         for (var index in items){
@@ -185,6 +201,10 @@ angular.module('Pundit2.AnnotationSidebar')
     };
 
     $scope.mouseoverItemHandler = function(itemUri) {
+        if($scope.annotation.broken){
+            return;
+        }
+        
         var currentItem = ItemsExchange.getItemByUri(itemUri);
         if (typeof(currentItem) !== 'undefined'){
             if (currentItem.isTextFragment()) {
@@ -198,6 +218,10 @@ angular.module('Pundit2.AnnotationSidebar')
     };
 
     $scope.mouseoutItemHandler = function(itemUri) {
+        if($scope.annotation.broken){
+            return;
+        }
+        
         var currentItem = ItemsExchange.getItemByUri(itemUri);
         if(typeof(currentItem) !== 'undefined'){
             if (currentItem.isTextFragment()) {
