@@ -107,7 +107,7 @@ angular.module('Pundit2.Core')
         var ofx = (img.outerWidth() - w)/2,
             ofy = (img.outerHeight() - h)/2;
 
-        var html = '<svg class="pnd-polygon-layer" width='+w+' height='+h+'></svg>';
+        var html = '<svg xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" version="1.0" class="pnd-polygon-layer" width='+w+' height='+h+'></svg>';
 
         // overlap and svg element to the image
         var svg = angular.element(html).insertBefore(img).css({
@@ -153,7 +153,7 @@ angular.module('Pundit2.Core')
             'opacity': 0.3
         });
 
-        angular.element(svg).html(svg.html());
+        angular.element(svg.parent()).html(svg.parent().html());
     };
 
     return imageFragmentHelper;
