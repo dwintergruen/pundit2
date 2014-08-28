@@ -148,18 +148,10 @@ angular.module('Pundit2.Annotators')
                 ImageFragmentAnnotatorHelper.drawPolygonOverImage(item.polygon,  imgReference);
             }
         }
-        if(typeof(svgTimeout) !== 'undefined') {
-            $timeout.cancel(svgTimeout);
-        }
     };
 
     ia.svgClearHighlightByItem = function(item) {
-        if(typeof(svgTimeout) !== 'undefined') {
-            $timeout.cancel(svgTimeout);
-        }
-        svgTimeout = $timeout(function(){
-            angular.element('.'+imgConsClass).siblings('span.pnd-cons-svg').remove();
-        }, 10);
+        angular.element('.'+imgConsClass).siblings('span.pnd-cons-svg').remove();
         // var currentUri, imgReference, xpaths = [];
         // if ((item.type.indexOf(ia.typeIF) !== -1) && (typeof(item.polygon) !== 'undefined')){
         //     currentUri = item.parentItemXP;
