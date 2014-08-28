@@ -124,6 +124,32 @@ angular.module('Pundit2.AnnotationSidebar')
         return AnnotationDetails.isUserToolShowed($scope.annotation.creator);
     };
 
+    $scope.mouseoverAllHandler = function(){
+        var currentItem;
+        var items = $scope.annotation.itemsUriArray;
+        for (var index in items){
+            currentItem = ItemsExchange.getItemByUri(items[index]);
+            if (typeof(currentItem) !== 'undefined'){
+                if (currentItem.isImageFragment()) {
+                    ImageAnnotator.svgHighlightByItem(currentItem);
+                }
+            }
+        }
+    };
+
+    $scope.mouseoutAllHandler = function(){
+        var currentItem;
+        var items = $scope.annotation.itemsUriArray;
+        for (var index in items){
+            currentItem = ItemsExchange.getItemByUri(items[index]);
+            if (typeof(currentItem) !== 'undefined'){
+                if (currentItem.isImageFragment()) {
+                    ImageAnnotator.svgClearHighlightByItem(currentItem);
+                }
+            }
+        }
+    };
+
     $scope.mouseoverHandler = function() {
         var currentItem;
         var items = $scope.annotation.itemsUriArray;
@@ -133,7 +159,7 @@ angular.module('Pundit2.AnnotationSidebar')
                 if (currentItem.isTextFragment()) {
                     TextFragmentAnnotator.highlightByUri(items[index]);
                 } else if (currentItem.isImageFragment()) {
-                    ImageAnnotator.svgHighlightByItem(currentItem);
+                    // ImageAnnotator.svgHighlightByItem(currentItem);
                 } else if (currentItem.isImage()) {
                     ImageAnnotator.highlightByUri(items[index]);
                 }
@@ -150,7 +176,7 @@ angular.module('Pundit2.AnnotationSidebar')
                 if (currentItem.isTextFragment()) {
                     TextFragmentAnnotator.clearHighlightByUri(items[index]);
                 } else if (currentItem.isImageFragment()) {
-                    ImageAnnotator.svgClearHighlightByItem(currentItem);
+                    // ImageAnnotator.svgClearHighlightByItem(currentItem);
                 } else if (currentItem.isImage()) {
                     ImageAnnotator.clearHighlightByUri(items[index]);
                 }
@@ -164,7 +190,7 @@ angular.module('Pundit2.AnnotationSidebar')
             if (currentItem.isTextFragment()) {
                 TextFragmentAnnotator.highlightByUri(itemUri);
             } else if (currentItem.isImageFragment()) {
-                ImageAnnotator.svgHighlightByItem(currentItem);
+                // ImageAnnotator.svgHighlightByItem(currentItem);
             } else if (currentItem.isImage()) {
                 ImageAnnotator.highlightByUri(itemUri);
             }
@@ -177,7 +203,7 @@ angular.module('Pundit2.AnnotationSidebar')
             if (currentItem.isTextFragment()) {
                 TextFragmentAnnotator.clearHighlightByUri(itemUri);
             } else if (currentItem.isImageFragment()) {
-                ImageAnnotator.svgClearHighlightByItem(currentItem);
+                // ImageAnnotator.svgClearHighlightByItem(currentItem);
             } else if (currentItem.isImage()) {
                 ImageAnnotator.clearHighlightByUri(itemUri);
             }

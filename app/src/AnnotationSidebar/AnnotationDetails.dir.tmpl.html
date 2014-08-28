@@ -1,5 +1,7 @@
 <div 
-    class="pnd-annotation-details-wrap pnd-ignore">
+    class="pnd-annotation-details-wrap pnd-ignore"
+    ng-mouseover="mouseoverAllHandler()"
+    ng-mouseout="mouseoutAllHandler()">
     <div class="pnd-annotation-details-header pnd-annotation-details-top" 
         ng-click="toggleAnnotation()"
         ng-class="{'pnd-annotation-details-broken': annotation.broken, 'pnd-annotation-details-ghosted': annotation.ghosted}"

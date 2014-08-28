@@ -138,6 +138,7 @@ angular.module('Pundit2.Annotators')
     };
 
     ia.svgHighlightByItem = function(item) {
+        // TODO check if the svg is yet built
         var currentUri, imgReference, xpaths = [];
         if ((item.type.indexOf(ia.typeIF) !== -1) && (typeof(item.polygon) !== 'undefined')){
             currentUri = item.parentItemXP;
@@ -158,7 +159,7 @@ angular.module('Pundit2.Annotators')
         }
         svgTimeout = $timeout(function(){
             angular.element('.'+imgConsClass).siblings('span.pnd-cons-svg').remove();
-        }, 300);
+        }, 10);
         // var currentUri, imgReference, xpaths = [];
         // if ((item.type.indexOf(ia.typeIF) !== -1) && (typeof(item.polygon) !== 'undefined')){
         //     currentUri = item.parentItemXP;
