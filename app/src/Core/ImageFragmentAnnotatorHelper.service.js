@@ -107,14 +107,17 @@ angular.module('Pundit2.Core')
         var ofx = (img.outerWidth() - w)/2,
             ofy = (img.outerHeight() - h)/2;
 
-        var html = '<svg xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" version="1.0" class="pnd-polygon-layer" width='+w+' height='+h+'></svg>';
+        var html = '<span class="pnd-cons-svg"></span>';
+        var htmlSVG = '<svg xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" version="1.0" class="pnd-polygon-layer" width='+w+' height='+h+'></svg>';
 
-        // overlap and svg element to the image
-        var svg = angular.element(html).insertBefore(img).css({
+        var container = angular.element(html).insertBefore(img).css({
             'position': 'absolute',
             'margin-left': ofx,
             'margin-top': ofy
         });
+
+        // overlap and svg element to the image
+        var svg = angular.element(htmlSVG).appendTo(container);
 
         var normPoints = [];
         for (i=0; i<points.length; i++) {
@@ -153,7 +156,7 @@ angular.module('Pundit2.Core')
             'opacity': 0.3
         });
 
-        angular.element(svg.parent()).html(svg.parent().html());
+        angular.element(container).html(container.html());
     };
 
     return imageFragmentHelper;

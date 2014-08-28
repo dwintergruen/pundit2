@@ -13,7 +13,7 @@ angular.module('Pundit2.Annotators')
     // and consolidating annotations. Add here any other UI element class which
     // is not considered in the isConsolidationNode() method. wrapNodeClass and
     // textFragmentIconClass are already considered.
-    consolidationClasses: [],
+    consolidationClasses: ['pnd-cons-svg'],
 
     // Classes to assign to named content elements to have them recognized by Pundit
     namedContentClasses: ['pundit-content']

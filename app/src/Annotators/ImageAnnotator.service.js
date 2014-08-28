@@ -11,6 +11,7 @@ angular.module('Pundit2.Annotators')
     ia.typeIF = NameSpace.fragments[ia.labelIF];
 
     var imgConsClass = "pnd-cons-img";
+    var svgTimeout;
 
     Consolidation.addAnnotator(ia);
 
@@ -146,10 +147,18 @@ angular.module('Pundit2.Annotators')
                 ImageFragmentAnnotatorHelper.drawPolygonOverImage(item.polygon,  imgReference);
             }
         }
+        if(typeof(svgTimeout) !== 'undefined') {
+            $timeout.cancel(svgTimeout);
+        }
     };
 
     ia.svgClearHighlightByItem = function(item) {
-        angular.element('.'+imgConsClass).siblings('svg.pnd-polygon-layer').remove();
+        if(typeof(svgTimeout) !== 'undefined') {
+            $timeout.cancel(svgTimeout);
+        }
+        svgTimeout = $timeout(function(){
+            angular.element('.'+imgConsClass).siblings('span.pnd-cons-svg').remove();
+        }, 300);
         // var currentUri, imgReference, xpaths = [];
         // if ((item.type.indexOf(ia.typeIF) !== -1) && (typeof(item.polygon) !== 'undefined')){
         //     currentUri = item.parentItemXP;
