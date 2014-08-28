@@ -620,6 +620,17 @@ angular.module('KorboEE')
             $scope.imageUrl = "";
         };
 
+        $scope.activeAllTypes = function(){
+            for(var t in $scope.types){
+                $scope.types[t].checked = true;
+            }
+        };
+        $scope.disableAllTypes = function(){
+            for(var t in $scope.types){
+                $scope.types[t].checked = false;
+            }
+        };
+
         //entityToCreate
         $scope.$watch(function(){
             return KorboCommunicationService.getEntityToCopy();
