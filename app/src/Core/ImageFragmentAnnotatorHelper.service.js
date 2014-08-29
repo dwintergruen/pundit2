@@ -103,9 +103,11 @@ angular.module('Pundit2.Core')
         var w = img.width(),
             h = img.height(),
             i;
+        
+        // TODO padding?
 
-        var ofx = (img.outerWidth() - w)/2,
-            ofy = (img.outerHeight() - h)/2;
+        var ofx = ((img.outerWidth(true)) - w)/2,
+            ofy = (img.outerHeight(true) - h)/2;
 
         var html = '<span class="pnd-cons-svg"></span>';
         var htmlSVG = '<svg xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" version="1.0" class="pnd-polygon-layer" width='+w+' height='+h+'></svg>';

@@ -2,7 +2,7 @@ angular.module('Pundit2.AnnotationSidebar')
 .controller('AnnotationDetailsCtrl', function($scope, $rootScope, $element, $modal, $timeout,
         AnnotationSidebar, AnnotationDetails, AnnotationsExchange, AnnotationsCommunication,
         NotebookExchange, ItemsExchange, TripleComposer, Dashboard, ImageAnnotator,
-        TextFragmentAnnotator, Toolbar, TypesHelper, MyPundit) {
+        TextFragmentAnnotator, Toolbar, TypesHelper, MyPundit, Consolidation) {
 
     var currentId = $scope.id;
     var currentElement = angular.element($element).find('.pnd-annotation-details-wrap');
@@ -134,7 +134,7 @@ angular.module('Pundit2.AnnotationSidebar')
         for (var index in items){
             currentItem = ItemsExchange.getItemByUri(items[index]);
             if (typeof(currentItem) !== 'undefined'){
-                if (currentItem.isImageFragment()) {
+                if (currentItem.isImageFragment() && Consolidation.isConsolidated(currentItem)) {
                     ImageAnnotator.svgHighlightByItem(currentItem);
                 }
             }
@@ -145,13 +145,13 @@ angular.module('Pundit2.AnnotationSidebar')
         if($scope.annotation.broken){
             return;
         }
-        
+
         var currentItem;
         var items = $scope.annotation.itemsUriArray;
         for (var index in items){
             currentItem = ItemsExchange.getItemByUri(items[index]);
             if (typeof(currentItem) !== 'undefined'){
-                if (currentItem.isImageFragment()) {
+                if (currentItem.isImageFragment() && Consolidation.isConsolidated(currentItem)) {
                     ImageAnnotator.svgClearHighlightByItem(currentItem);
                 }
             }
@@ -162,7 +162,7 @@ angular.module('Pundit2.AnnotationSidebar')
         if($scope.annotation.broken){
             return;
         }
-        
+
         var currentItem;
         var items = $scope.annotation.itemsUriArray;
         for (var index in items){
@@ -183,7 +183,7 @@ angular.module('Pundit2.AnnotationSidebar')
         if($scope.annotation.broken){
             return;
         }
-        
+
         var currentItem;
         var items = $scope.annotation.itemsUriArray;
         for (var index in items){
@@ -204,13 +204,15 @@ angular.module('Pundit2.AnnotationSidebar')
         if($scope.annotation.broken){
             return;
         }
-        
+
         var currentItem = ItemsExchange.getItemByUri(itemUri);
         if (typeof(currentItem) !== 'undefined'){
             if (currentItem.isTextFragment()) {
                 TextFragmentAnnotator.highlightByUri(itemUri);
-            } else if (currentItem.isImageFragment()) {
-                // ImageAnnotator.svgHighlightByItem(currentItem);
+            } else if (currentItem.isImageFragment() && Consolidation.isConsolidated(currentItem)) {
+                // TODO really temp trick!!
+                ImageAnnotator.svgClearHighlightByItem(currentItem);
+                ImageAnnotator.svgHighlightByItem(currentItem);
             } else if (currentItem.isImage()) {
                 ImageAnnotator.highlightByUri(itemUri);
             }
@@ -221,7 +223,7 @@ angular.module('Pundit2.AnnotationSidebar')
         if($scope.annotation.broken){
             return;
         }
-        
+
         var currentItem = ItemsExchange.getItemByUri(itemUri);
         if(typeof(currentItem) !== 'undefined'){
             if (currentItem.isTextFragment()) {
