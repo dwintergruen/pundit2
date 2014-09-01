@@ -83,7 +83,6 @@ angular.module('Pundit2.Core')
             type: [NameSpace.fragments.imagePart],
             label: 'Fragment of ' + text,
             description: 'This fragment represents a part of the image ' + text,
-            // TODO use pundit content in isPartOf
             isPartOf: imgItem.isPartOf,
             image: imgItem.image,
             pageContext: XpointersHelper.getSafePageContext(),
@@ -91,8 +90,6 @@ angular.module('Pundit2.Core')
             polygonUri: NameSpace.selectors.baseURI + 'polygon/' + (new Date().getTime()+1),
             parentItemXP: imgItem.uri
         };
-
-        console.log(item)
 
         return new Item(item.uri, item);
     };
