@@ -29,7 +29,7 @@ angular.module('Pundit2.Preview')
                 if (typeof($scope.item.polygon) !== 'undefined') {
                     $timeout(function(){
                         // TODO not good idea
-                        angular.element($element).find(".pnd-preview-item-image > svg.pnd-polygon-layer").remove();
+                        angular.element($element).find(".pnd-preview-item-image span > svg.pnd-polygon-layer").remove();
                         ImageFragmentAnnotatorHelper.drawPolygonOverImage($scope.item.polygon, angular.element($element).find(".pnd-preview-item-image > img"));
                     }, 50);
                 }
