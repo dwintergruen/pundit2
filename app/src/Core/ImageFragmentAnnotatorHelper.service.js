@@ -53,11 +53,14 @@ angular.module('Pundit2.Core')
 
     var overflow, imgItem;
     var open = function(item) {
+        var newSrc = decodeURIComponent(item.image);
+        newSrc = newSrc.replace(/'/g, "\\'");
+
         // add iframe to the page
-        if(item.image.substring(0, 7) === "http://") {
-            angular.element("[data-ng-app='Pundit2']").append(template1+item.image+template2);
+        if ((newSrc.substring(0, 7) === "http://") || (newSrc.substring(0, 8) === "https://")) {
+            angular.element("[data-ng-app='Pundit2']").append(template1+newSrc+template2);
         } else {
-            angular.element("[data-ng-app='Pundit2']").append(template1+"http://"+item.image+template2);
+            angular.element("[data-ng-app='Pundit2']").append(template1+"http://"+newSrc+template2);
         }
         // disable page scroll
         overflow = angular.element('body').css('overflow');
