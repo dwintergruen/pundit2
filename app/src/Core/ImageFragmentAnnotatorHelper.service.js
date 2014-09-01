@@ -2,7 +2,7 @@
 
 angular.module('Pundit2.Core')
 .service('ImageFragmentAnnotatorHelper', function($rootScope, $modal, $window, BaseComponent, Config, NameSpace,
-    ContextualMenu, XpointersHelper, Item, MyItems) {
+    ContextualMenu, XpointersHelper, Item, MyItems, MyPundit) {
     
     var imageFragmentHelper = new BaseComponent("ImageFragmentAnnotatorHelper");
 
@@ -46,8 +46,17 @@ angular.module('Pundit2.Core')
             close();
         }
         if (e.data.type === msg.addPolygon) {
-            var item = imageFragmentHelper.createItemFromPolygon(e.data.poly);
-            MyItems.addItem(item);
+            var lastData = e.data;
+            if(!MyPundit.isUserLogged()) {
+                $rootScope.$on('consolidation-completed', function() {
+                    var item = imageFragmentHelper.createItemFromPolygon(lastData.poly);
+                    MyItems.addItem(item);
+                });
+                MyPundit.login();
+            } else {
+                var item = imageFragmentHelper.createItemFromPolygon(lastData.poly);
+                MyItems.addItem(item);
+            }
         }
     });
 
