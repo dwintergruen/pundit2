@@ -122,6 +122,32 @@ angular.module('Pundit2.Dashboard')
 
     };
 
+    /**** FOOTER ****/
+
+    var footerMouseUpHandler = function() {
+        // remove handlers
+        $document.off('mousemove', footerMouseMoveHandler);
+        $document.off('mouseup', footerMouseUpHandler);
+    };
+
+    var lastPageY;
+    var footerMouseMoveHandler = function(event) {
+        var dy = event.pageY - lastPageY;
+        if ( Dashboard.increaseContainerHeight(dy) ) {
+            lastPageY = event.pageY;
+        }
+    };
+
+    $scope.footerMouseDownHandler = function(event) {
+        if ( event.which === 1 ) {
+            event.preventDefault();
+            $document.on('mouseup', footerMouseUpHandler);
+            $document.on('mousemove', footerMouseMoveHandler);
+
+            lastPageY = event.pageY;
+        }
+    };
+
     Dashboard.addPanel($scope);
     $rootScope.$$phase || $scope.$digest();
     Dashboard.log('Panel '+$scope.title+' Controller Run');
