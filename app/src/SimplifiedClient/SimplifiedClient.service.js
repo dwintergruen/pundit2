@@ -1,5 +1,32 @@
 angular.module('Pundit2.SimplifiedClient')
 
+/**
+ * @module punditConfig
+ * @ngdoc property
+ * @name modules#SimplifiedClient
+ *
+ * @description
+ * `object`
+ *
+ * Configuration object for SimplifiedClient module. By default this module is not enabled and Pundit
+ * run in standard mode.
+ * 
+ */
+
+ /**
+ * @ngdoc property
+ * @name modules#SimplifiedClient.active
+ *
+ * @description
+ * `boolean`
+ *
+ * Default state of the SimplifiedClient module, if it is set to true 
+ * the client run in simplified mode (only show annotation on the page) otherwise run in standard mode.
+ *
+ * Default value:
+ * <pre> active: false </pre>
+ */
+
 .run(function($injector, Config) {
     if (Config.isModuleActive('SimplifiedClient')) {
         var sc = $injector.get('SimplifiedClient');

@@ -17,6 +17,24 @@ angular.module('Pundit2.Vocabularies')
      */
 
     /**
+     * @ngdoc property
+     * @name modules#SelectorsManager.active
+     *
+     * @description
+     * `boolean`
+     *
+     * Default state of the SelectorsManager module, if it is set to true 
+     * the client adds to the DOM (inside dashboard) the VocabulariesContainer directive in the boot phase.
+     *
+     * When selector manager is activated by default all selectors are active (Freebase, Korbo, ...),
+     * to turn off a specific selector is necessary to set to false the active property
+     * in the configuration object of the specific selector.
+     *
+     * Default value:
+     * <pre> active: true </pre>
+     */
+
+    /**
      * @module punditConfig
      * @ngdoc property
      * @name modules#SelectorsManager.clientDashboardTemplate

@@ -14,6 +14,20 @@ angular.module('Pundit2.MyItemsContainer')
      * remove them or filter them.
      */
 
+    /**
+     * @ngdoc property
+     * @name modules#MyItemsContainer.active
+     *
+     * @description
+     * `boolean`
+     *
+     * Default state of the MyItemsContainer module, if it is set to true 
+     * the client adds to the DOM (inside dashboard) the MyItemsContainer directive in the boot phase.
+     *
+     * Default value:
+     * <pre> active: true </pre>
+     */
+
      /**
      * @module punditConfig
      * @ngdoc property

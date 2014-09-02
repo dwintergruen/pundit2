@@ -15,6 +15,20 @@ angular.module('Pundit2.Dashboard')
      */
 
     /**
+     * @ngdoc property
+     * @name modules#Dashboard.active
+     *
+     * @description
+     * `boolean`
+     *
+     * Default state of the dashboard module, if it is set to true 
+     * the client adds to the DOM the dashboard directive in the boot phase.
+     *
+     * Default value:
+     * <pre> active: true </pre>
+     */
+
+    /**
      * @module punditConfig
      * @ngdoc property
      * @name modules#Dashboard.clientDomTemplate

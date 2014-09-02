@@ -289,23 +289,12 @@ angular.module('Pundit2.Core')
             // and show the annotations on the page
             SimplifiedClient: {
                 // SimplifiedClient by default MUST NOT BE ACTIVE
+                // ngdoc inside SimplifiedClient.service.js
                 active: false
             },
 
             Dashboard: {
-                /**
-                 * @ngdoc property
-                 * @name modules#Dashboard.active
-                 *
-                 * @description
-                 * `boolean`
-                 *
-                 * Default state of the dashboard module, if it is set to true 
-                 * the client adds to the DOM the dashboard directive in the boot phase.
-                 *
-                 * Default value:
-                 * <pre> active: true </pre>
-                 */
+                // ngdoc inside Dashboard.service.js
                 active: true
             },
             Toolbar: {
@@ -318,74 +307,22 @@ angular.module('Pundit2.Core')
                 active: true
             },
             PageItemsContainer: {
-                /**
-                 * @ngdoc property
-                 * @name modules#PageItemsContainer.active
-                 *
-                 * @description
-                 * `boolean`
-                 *
-                 * Default state of the PageItemsContainer module, if it is set to true 
-                 * the client adds to the DOM (inside dashboard) the PageItemsContainer directive in the boot phase.
-                 *
-                 * Default value:
-                 * <pre> active: true </pre>
-                 */
+                // ngdoc in PageItemsContainer.service.js
                 active: true
             },
             MyNotebooksContainer: {
                 active: true
             },
             MyItemsContainer: {
-                /**
-                 * @ngdoc property
-                 * @name modules#MyItemsContainer.active
-                 *
-                 * @description
-                 * `boolean`
-                 *
-                 * Default state of the MyItemsContainer module, if it is set to true 
-                 * the client adds to the DOM (inside dashboard) the MyItemsContainer directive in the boot phase.
-                 *
-                 * Default value:
-                 * <pre> active: true </pre>
-                 */
+                // ngdoc in MyItemsContainer.service.js
                 active: true
             },
             SelectorsManager: {
-                /**
-                 * @ngdoc property
-                 * @name modules#SelectorsManager.active
-                 *
-                 * @description
-                 * `boolean`
-                 *
-                 * Default state of the SelectorsManager module, if it is set to true 
-                 * the client adds to the DOM (inside dashboard) the VocabulariesContainer directive in the boot phase.
-                 *
-                 * When selector manager is activated by default all selectors are active (Freebase, Korbo, ...),
-                 * to turn off a specific selector is necessary to set to false the active property
-                 * in the configuration object of the specific selector.
-                 *
-                 * Default value:
-                 * <pre> active: true </pre>
-                 */
+                // ngdoc in SelectorsManager.service.js
                 active: true
             },
             TripleComposer: {
-                /**
-                 * @ngdoc property
-                 * @name modules#TripleComposer.active
-                 *
-                 * @description
-                 * `boolean`
-                 *
-                 * Default state of the TripleComposer module, if it is set to true 
-                 * the client adds to the DOM (inside dashboard) the TripleComposer directive in the boot phase.
-                 *
-                 * Default value:
-                 * <pre> active: true </pre>
-                 */
+                // ngdoc in TripleComposer.service.js
                 active: true
             },
             NotebookComposer: {

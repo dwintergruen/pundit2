@@ -62,6 +62,7 @@ angular.module('punditConfig');
  *  - {@link #!/api/punditConfig/object/modules#TextFragmentHandler TextFragmentHandler}
  *  - {@link #!/api/punditConfig/object/modules#Toolbar Toolbar}
  *  - {@link #!/api/punditConfig/object/modules#TripleComposer TripleComposer}
+ *  - {@link #!/api/punditConfig/object/modules#SimplifiedClient SimplifiedClient}
  *
  * All the configurable properties of the modules are available within {@link #!/api/punditConfig/object/modules modules}. 
  **/

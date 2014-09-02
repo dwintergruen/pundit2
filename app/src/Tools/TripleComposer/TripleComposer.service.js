@@ -14,6 +14,20 @@ angular.module('Pundit2.TripleComposer')
      * By default the TripleComposer directive is contained in the central panel (tools) of the dashboard.
      */
 
+    /**
+     * @ngdoc property
+     * @name modules#TripleComposer.active
+     *
+     * @description
+     * `boolean`
+     *
+     * Default state of the TripleComposer module, if it is set to true 
+     * the client adds to the DOM (inside dashboard) the TripleComposer directive in the boot phase.
+     *
+     * Default value:
+     * <pre> active: true </pre>
+     */
+
      /**
      * @module punditConfig
      * @ngdoc property

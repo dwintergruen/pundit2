@@ -13,6 +13,20 @@ angular.module('Pundit2.PageItemsContainer')
      * in the first panel of the dashboard (lists) and allows you to display the list of page items.
      */
 
+    /**
+     * @ngdoc property
+     * @name modules#PageItemsContainer.active
+     *
+     * @description
+     * `boolean`
+     *
+     * Default state of the PageItemsContainer module, if it is set to true 
+     * the client adds to the DOM (inside dashboard) the PageItemsContainer directive in the boot phase.
+     *
+     * Default value:
+     * <pre> active: true </pre>
+     */
+
      /**
      * @module punditConfig
      * @ngdoc property
