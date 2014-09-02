@@ -93,7 +93,7 @@ angular.module('Pundit2.Core')
         var item = {
             uri: NameSpace.fragmentBaseUri + 'image/' + new Date().getTime(),
             type: [NameSpace.fragments.imagePart],
-            label: 'Fragment of ' + text,
+            label: poly.name + ' of ' + text,
             description: 'This fragment represents a part of the image ' + text,
             isPartOf: imgItem.isPartOf,
             image: imgItem.image,
