@@ -20,8 +20,8 @@
         </div>
 
         <!-- Complete Subject -->
-        <div ng-if="subjectFound" ng-mouseover="subjectOver=true" ng-mouseleave="subjectOver=false">
-            <div class="pnd-statement-label">{{subjectLabel}}</div>
+        <div ng-if="subjectFound">
+            <div class="pnd-statement-label" ng-mouseover="onSubjectMouseOver()" ng-mouseleave="onItemMouseOut()">{{subjectLabel}}</div>
             <!-- Subject buttons -->
             <div class="pnd-row-button-subject">
 		            <button type="button" class="btn btn-xs btn-link" ng-if="!templateMode" title="delete" ng-click="wipeSubject()"><span class="pnd-icon pnd-icon-trash-o"></span></button> {{subjectTypeLabel}}
@@ -49,8 +49,8 @@
         </div>
 
         <!-- Complete Predicate -->
-        <div ng-if="predicateFound" ng-mouseover="subjectOver=true" ng-mouseleave="subjectOver=false">
-	        <div class="pnd-statement-label">{{predicateLabel}}</div>
+        <div ng-if="predicateFound">
+	        <div class="pnd-statement-label" ng-mouseover="onPredicateMouseOver()" ng-mouseleave="onItemMouseOut()">{{predicateLabel}}</div>
 	        <!-- Predicate buttons -->
 	        <div class="pnd-row-button-predicate">
 	            <button type="button" class="btn btn-xs btn-link" ng-if="!predicateFixed" title="delete"  ng-click="wipePredicate()"><span class="pnd-icon pnd-icon-trash-o"></span></button>
@@ -83,8 +83,8 @@
         </div>
 
         <!-- Complete Object -->
-        <div ng-if="objectFound" ng-mouseover="objectOver=true" ng-mouseleave="objectOver=false">
-	        <div class="pnd-statement-label">{{objectLabel}}</div>
+        <div ng-if="objectFound">
+	        <div class="pnd-statement-label" ng-mouseover="onObjectMouseOver()" ng-mouseleave="onItemMouseOut()">{{objectLabel}}</div>
 	        
 	        <!-- Object buttons -->
             <div class="pnd-row-button-object">

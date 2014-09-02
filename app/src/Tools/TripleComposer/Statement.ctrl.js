@@ -1,5 +1,5 @@
 angular.module('Pundit2.TripleComposer')
-.controller('StatementCtrl', function($scope, $element, TypesHelper, ResourcePanel, NameSpace, TripleComposer, Toolbar) {
+.controller('StatementCtrl', function($scope, $element, TypesHelper, ResourcePanel, NameSpace, TripleComposer, Toolbar, Preview) {
 
     // default values
     $scope.subjectLabel = '';
@@ -231,6 +231,22 @@ angular.module('Pundit2.TripleComposer')
         }
         $scope.objectSearch = "";
         ResourcePanel.showItemsForObject(buildUrisArray(), undefined, $scope.objectSearch).then($scope.setObject);
+    };
+
+    $scope.onSubjectMouseOver = function() {
+        Preview.showDashboardPreview(triple.subject);
+    };   
+
+    $scope.onPredicateMouseOver = function() {
+        Preview.showDashboardPreview(triple.predicate);
+    };
+
+    $scope.onObjectMouseOver = function() {
+        Preview.showDashboardPreview(triple.object);
+    };
+
+    $scope.onItemMouseOut = function() {
+        Preview.hideDashboardPreview();
     };
 
     // update input icons when text is present
