@@ -62,7 +62,7 @@ describe('Calendar Popover Resource Panel service', function() {
         // at this time popover is open and scope must be defined
         expect(calendarPopoverScope).toBeDefined();
         // popover should be open with default date
-        expect(calendarPopoverScope.selectedDate).toBe(RESOURCEPANELDEFAULTS.initialCalendarDate);
+        expect(calendarPopoverScope.selectedDate).toBe(new Date().toString());
         // popover should have a save method
         expect(calendarPopoverScope.save).toBeDefined();
         // popover should have a cancel method
