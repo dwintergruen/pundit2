@@ -43,7 +43,7 @@ angular.module('Pundit2.AnnotationSidebar')
      */
     debug: false
 })
-.service('AnnotationDetails', function($rootScope, $filter, $timeout, $document, BaseComponent, Annotation, AnnotationSidebar, AnnotationsExchange, TemplatesExchange, Consolidation, ContextualMenu, Dashboard, ItemsExchange, MyPundit, TextFragmentAnnotator, TypesHelper, ANNOTATIONDETAILSDEFAULTS) {
+.service('AnnotationDetails', function($rootScope, $filter, $timeout, $document, BaseComponent, Annotation, AnnotationSidebar, AnnotationsExchange, TemplatesExchange, Consolidation, ContextualMenu, Dashboard, ImageHandler, ItemsExchange, MyPundit, TextFragmentAnnotator, TypesHelper, ANNOTATIONDETAILSDEFAULTS) {
     
     var annotationDetails = new BaseComponent('AnnotationDetails', ANNOTATIONDETAILSDEFAULTS);
 
@@ -56,11 +56,16 @@ angular.module('Pundit2.AnnotationSidebar')
     };
 
     ContextualMenu.addAction({
-        type: [TextFragmentAnnotator.options.cMenuType],
+        type: [
+            TextFragmentAnnotator.options.cMenuType,
+            ImageHandler.options.cMenuType
+        ],
         name: 'showAllAnnotations',
         label: 'Show all annotations of this item',
-        showIf: function() {
-            return true;
+        showIf: function(item) {
+            if(typeof(item) !== 'undefined'){
+                return Consolidation.isConsolidated(item);
+            }
         },
         priority: 10,
         action: function(item) {
