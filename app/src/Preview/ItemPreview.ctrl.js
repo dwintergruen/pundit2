@@ -2,6 +2,7 @@ angular.module('Pundit2.Preview')
     .controller('ItemPreviewCtrl', function($scope, $timeout, TypesHelper, ItemsExchange, $element, Preview, ImageFragmentAnnotatorHelper) {
         var currentElement = angular.element($element).find(".pnd-annotation-preview-item-container");
         var sticking;
+        var imgTempReference;
         $scope.typeHidden = true;
         $scope.isSticky = false;
 
@@ -29,8 +30,9 @@ angular.module('Pundit2.Preview')
                 if (typeof($scope.item.polygon) !== 'undefined') {
                     $timeout(function(){
                         // TODO not good idea
-                        angular.element($element).find(".pnd-preview-item-image span > svg.pnd-polygon-layer").remove();
-                        ImageFragmentAnnotatorHelper.drawPolygonOverImage($scope.item.polygon, angular.element($element).find(".pnd-preview-item-image > img"));
+                        angular.element($element).find(".pnd-preview-item-image span > svg.pnd-polygon-layer").remove();                        
+                        ImageFragmentAnnotatorHelper.drawPolygonOverImage($scope.item.polygon, imgTempReference);                                        
+                        imgTempReference = angular.element($element).find(".pnd-preview-item-image > img");
                     }, 50);
                 }
             }
@@ -41,6 +43,17 @@ angular.module('Pundit2.Preview')
                 } else {
                     $scope.isSticky = false;
                 }
+            }
+        });
+
+        $scope.$watch(function() {
+            if (typeof(imgTempReference) !== 'undefined'){
+                return imgTempReference.width();
+            }
+        }, function(newWidth, oldWith) {
+            if(typeof(newWidth) !== 'undefined'){
+                angular.element($element).find(".pnd-preview-item-image span > svg.pnd-polygon-layer").remove();                        
+                ImageFragmentAnnotatorHelper.drawPolygonOverImage($scope.item.polygon, imgTempReference);                
             }
         });
 
