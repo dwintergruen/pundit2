@@ -86,6 +86,7 @@ angular.module('Pundit2.Toolbar')
             "&body=" + escape(body) +
             "%0A%0A" + "Pundit Version: "+ PUNDITVERSION.version +
             "%0A%0A" + "Configuration file: "+ Config.confURL +
+            "%0A" + "Web Page: " + document.URL +
             "%0A" + "Broswer info: " + window.navigator.userAgent +
             "%0A%0A" + "User openid: " + user.openid +
             "%0A" + "User uri: " + user.uri +
