@@ -7,13 +7,15 @@ angular.module('Pundit2.Toolbar')
     $scope.dropdownTemplate = "src/ContextualMenu/dropdown.tmpl.html";
     $scope.dropdownTemplateMyNotebook = "src/Toolbar/myNotebooksDropdown.tmpl.html";
     $scope.dropdownTemplateTemplates = "src/Toolbar/templatesDropdown.tmpl.html";
+
+    if (Config.useOnlyTemplateMode) {
+        angular.element(".pnd-toolbar-template-mode-button").addClass('pnd-not-clickable');
+    }
     
     $scope.login = function() {
         ResourcePanel.hide();
         MyPundit.login();
     };
-
-
     
     var logout = function() {
         ResourcePanel.hide();
