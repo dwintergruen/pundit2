@@ -225,4 +225,31 @@ describe("TripleComposer interaction", function() {
            
     });
 
+    it("should correctly open resource panel date popover", function(){
+
+        // open literal resource panel
+        p.findElement(protractor.By.css(".pnd-statement-object .pnd-row-button-object [title='calendar']")).click();
+        // check if popover exist
+        p.findElements(protractor.By.css(".pnd-popover-calendar")).then(function(popover) {
+            expect(popover.length).toBe(1);
+        });
+
+        var date = new Date();
+
+        // check day
+        p.findElement(protractor.By.css(".popover-datepicker .pnd-date-picker tbody .btn-primary span")).getText().then(function(text) {
+            if (date.getDate() < 10) {
+                expect(text).toBe('0'+date.getDate());
+            } else {
+                expect(text).toBe(date.getDate().toString());
+            }
+        });
+
+        // check month and year
+        p.findElement(protractor.By.css(".popover-datepicker .pnd-date-picker thead .ng-binding")).getText().then(function(text) {
+            expect(text.indexOf(date.getFullYear())).not.toBe(-1);
+        });
+
+    });
+
 });
