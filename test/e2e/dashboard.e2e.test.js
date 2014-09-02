@@ -45,7 +45,7 @@ describe("Dashboard interaction", function() {
         p.get('/app/examples/dashboard.html');
 
         // find footer element 
-        var footer = p.findElement(protractor.By.css('.pnd-dashboard-container .pnd-dashboard-footer'));
+        var footer = p.findElement(protractor.By.css('.pnd-dashboard-container .pnd-dashboard-footer-handler'));
 
         // panels
         var container = p.findElement(protractor.By.css('.pnd-dashboard-container'));
