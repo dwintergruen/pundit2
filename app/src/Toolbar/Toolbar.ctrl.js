@@ -47,14 +47,18 @@ angular.module('Pundit2.Toolbar')
         {label: "Korbo basket: ", value: "-"}, // is always defined? read from korbo selector instance? if i have more than one instance}?
         {label: "Contact the Pundit team:", value: "punditdev@netseven.it"},
         {label: "License: ", value: "http://url3.com"},
-        {label: "Developed by: ", value: " Net7 Srl"},
         {label: "Credits: ", value: "-"}
     ];
 
-    infoModalScope.links = [];
+    infoModalScope.links = [{
+        label: "Developed by:",
+        linkLabel: "Net7 srl",
+        ref: "http://www.netseven.it"
+    }];
     if (Config.confURL !== 'local') {
         infoModalScope.links.push({
             label: 'Configuration file',
+            linkLabel: Config.confURL,
             ref: Config.confURL
         });
     }
