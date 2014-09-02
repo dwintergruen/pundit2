@@ -242,6 +242,10 @@ angular.module('Pundit2.TripleComposer')
     };
 
     $scope.onObjectMouseOver = function() {
+        if ($scope.objectDate || $scope.objectLiteral) {
+            // literal and date not have a preview
+            return;
+        }
         Preview.showDashboardPreview(triple.object);
     };
 
@@ -329,6 +333,7 @@ angular.module('Pundit2.TripleComposer')
         ResourcePanel.showProperties(buildUrisArray(), $event.target, $scope.predicateSearch).then($scope.setPredicate);
     };
 
+    var lastDate;
     $scope.setObject = function(item, fixed){
         $scope.objectFound = true;
 
@@ -345,6 +350,7 @@ angular.module('Pundit2.TripleComposer')
             $scope.objectLiteral = true;
         } else if( item instanceof Date) {
             // date item
+            lastDate = item;
             triple.object = parseDate(item);
             $scope.objectLabel = triple.object;
             $scope.objectTypeLabel = TypesHelper.getLabel(NameSpace.dateTime);
@@ -367,8 +373,17 @@ angular.module('Pundit2.TripleComposer')
     };
 
     $scope.onClickObjectCalendar = function($event){
-        ResourcePanel.showPopoverCalendar(undefined, $event.target).then(function(date){
+
+        var d;
+        if ($scope.objectDate) {
+            d = lastDate;
+        } else {
+            d = new Date();
+        }
+
+        ResourcePanel.showPopoverCalendar(d, $event.target).then(function(date){
             triple.object = parseDate(date);
+            lastDate = date;
             $scope.objectLabel = triple.object;
             $scope.objectTypeLabel = TypesHelper.getLabel(NameSpace.dateTime);
             $scope.objectDate = true;

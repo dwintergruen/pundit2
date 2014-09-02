@@ -36,7 +36,7 @@ angular.module('Pundit2.ResourcePanel')
      *
      * Initial date showing in calendar popover.
      */
-    initialCalendarDate: '1900-1-01'
+    initialCalendarDate: ''
     
 })
 
@@ -109,7 +109,7 @@ angular.module('Pundit2.ResourcePanel')
             if(typeof(content.date) === 'undefined' || content.date === '') {
 
                 if(typeof(resourcePanel.options.initialCalendarDate) === 'undefined' || resourcePanel.options.initialCalendarDate === ''){
-                    state.popoverOptions.scope.selectedDate = '';
+                    state.popoverOptions.scope.selectedDate = new Date().toString();
                 } else {
                     state.popoverOptions.scope.selectedDate = resourcePanel.options.initialCalendarDate;
                 }
