@@ -25,6 +25,7 @@ body.pnd-toolbar-active {
     .pnd-toolbar-not-active-element {
         color: gray !important;
     }
+
     
     // ---------- ASK BUTTON
     
@@ -143,6 +144,19 @@ body.pnd-toolbar-active {
 
             span {
             font-size: 14px;
+            }
+        }
+    }
+    
+   // ---------- TEMPLATE MODE
+    
+    &.pnd-not-clickable  {
+        
+        a {
+            &:hover,
+            &:focus {
+                background-color:transparent;
+                cursor: default;
             }
         }
     }
