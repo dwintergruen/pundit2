@@ -452,4 +452,32 @@ describe("Client interaction when user is logged in", function() {
         });
     });
 
+    it("should correctly show item preview when mouseover on triple composer items", function(){
+
+        p.driver.manage().window().setSize(1200, 960);
+
+        // open dashboard
+        p.findElement(protractor.By.css('toolbar .pnd-toolbar-dashboard-button')).click();
+        // open resource panel
+        p.findElement(protractor.By.css(".pnd-statement-object input")).click();
+
+        // add item by click on resource panel item and use btn
+        p.findElement(protractor.By.css(".pnd-resource-panel-popover .pnd-item")).click();
+        p.findElement(protractor.By.css(".pnd-resource-panel-popover .pnd-vertical-tab-footer-content .pnd-resource-panel-use-button")).click();
+
+        // mouseover on item
+        var item = p.findElement(protractor.By.css(".pnd-statement-object .pnd-statement-label"));
+        p.actions().mouseMove(item).perform();
+
+        // check title
+        p.findElement(protractor.By.css("preview .pnd-dashboard-preview-panel-label")).getText().then(function(text) {
+            expect(text).toBe("Dante");
+        });
+        // check type
+        p.findElement(protractor.By.css("item-preview .pnd-preview-single-type")).getText().then(function(text) {
+            expect(text).toBe("Text fragment");
+        });
+
+    });
+
 });
