@@ -71,7 +71,6 @@ angular.module('Pundit2.ResourcePanel')
         copyItemsArray();
         
         $scope.$watch('label', function(newLabel, oldLabel) {
-            if (newLabel !== oldLabel) {
                 for(var i=0; i<$scope.contentTabs.length; i++){
                     
                     if($scope.contentTabs[i].title === 'My Items'){
@@ -86,7 +85,6 @@ angular.module('Pundit2.ResourcePanel')
                         $scope.contentTabs[i].items = $filter('filterByLabel')(allItemsArrays[i], newLabel);
                     }
                 }
-            }
         });
 
         $scope.itemSelected = null;
