@@ -204,6 +204,7 @@ angular.module('Pundit2.NotebookComposer')
             $scope.notebook.current = "";
             $scope.editMode = false;
             $scope.notebookComposerHeader = "Create your notebook";
+            NotebookComposer.setNotebookToEdit(null);
         };
 
     });
