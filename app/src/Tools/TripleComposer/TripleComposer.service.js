@@ -569,7 +569,7 @@ angular.module('Pundit2.TripleComposer')
                     var triple = tmpl.triples[i];
                     
                     if (typeof(triple.predicate)!== 'undefined') {
-                        statements[i].scope.setPredicate(triple.predicate, true);
+                        statements[i].scope.setPredicate(ItemsExchange.getItemByUri(triple.predicate.uri), true);
                     }
                     if (typeof(triple.subject)!== 'undefined') {
                         statements[i].scope.setSubject(triple.subject.value, true);
