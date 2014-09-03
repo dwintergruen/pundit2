@@ -5,10 +5,17 @@
     <!-- FOOTER -->
 
     <div class="pnd-panel-tab-content-footer">
-        <button type="button" class="btn btn-xs btn-link my-items-btn-delete" ng-click="onClickDeleteAllMyItems()" title="Delete all my items"><span class="pnd-icon pnd-icon-trash-o"></span></button>
+        <button type="button" class="btn btn-xs btn-link my-items-btn-delete" ng-click="onClickDeleteAllMyItems()" title="Delete all my items">
+            <span class="pnd-icon pnd-icon-trash-o"></span>
+        </button>
         <button type="button" class="btn btn-xs btn-link my-items-btn-order" template="{{dropdownTemplate}}"
                 placement="top-left"
-                bs-dropdown="dropdownOrdering"  title="Order my items"><span class="pnd-icon pnd-icon-sort-amount-asc"></span></button>
+                bs-dropdown="dropdownOrdering"  title="Order my items">
+                   <span class="pnd-icon pnd-icon-sort-amount-asc"></span>
+        </button>
+        <button type="button" class="btn btn-xs btn-link my-items-btn-add-page" title="Add page to my items" ng-click="onClickAddPageToMyItems()">
+            <span class="pnd-icon pnd-icon-bookmark"></span>
+        </button>
     </div> <!-- end pnd-panel-tab-content-footer -->
 
 </div>

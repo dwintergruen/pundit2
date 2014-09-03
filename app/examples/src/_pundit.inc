@@ -47,6 +47,8 @@
     <script src="../src/Annotators/ItemsExchange.service.js"></script>
     <script src="../src/Annotators/TextFragmentHandler.service.js"></script>
     <script src="../src/Annotators/ImageHandler.service.js"></script>
+    <script src="../src/Annotators/PageHandler.service.js"></script>
+    <script src="../src/Annotators/PageAnnotator.service.js"></script>
 
     <script src="../src/Annotators/ImgMenu.dir.js"></script>
     

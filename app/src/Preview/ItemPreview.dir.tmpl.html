@@ -19,6 +19,14 @@
         <p>{{item.description}}</p>
     </div>
 
+    <div ng-if="item.isWebPage()" class="pnd-preview-item-webpage">
+        <ul>
+            <li>
+                <strong>URL:</strong> {{item.uri}}
+            </li>
+        </ul>
+    </div>
+
     <div ng-if="item.isProperty()" class="pnd-preview-item-predicate">
         <ul>
             <li ng-if="item.uri"><strong>Uri:</strong> {{item.uri}}</li>

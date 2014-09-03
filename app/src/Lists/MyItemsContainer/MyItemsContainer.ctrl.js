@@ -1,6 +1,6 @@
 angular.module('Pundit2.MyItemsContainer')
 .controller('MyItemsContainerCtrl', function($scope, $rootScope, $modal, $timeout, $element,
-    MyItemsContainer, ItemsExchange, MyItems, MyPundit, Preview, TypesHelper) {
+    MyItemsContainer, ItemsExchange, MyItems, MyPundit, Preview, TypesHelper, PageHandler) {
 
     // read by <item> directive (in Lists/itemList.tmpl.html)
     // specifie how contextual menu type show on item
@@ -179,6 +179,12 @@ angular.module('Pundit2.MyItemsContainer')
         }
         
     });
+
+    // add page to my items
+    $scope.onClickAddPageToMyItems = function(){
+        var item = PageHandler.createItemFromPage();
+        MyItems.addItem(item);
+    };
 
     // Filter items which are shown
     // go to lowerCase and replace multiple space with single space, 

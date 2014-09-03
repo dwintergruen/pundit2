@@ -454,7 +454,7 @@ angular.module('Pundit2.Client')
     .service('Client', function(CLIENTDEFAULTS, BaseComponent, Config, MyPundit,
                                 ImageAnnotator, TextFragmentAnnotator, AnnotationsCommunication,
                                 AnnotationsExchange, Item, ItemsExchange, MyItems,
-                                TextFragmentHandler, ImageHandler,
+                                TextFragmentHandler, ImageHandler, PageAnnotator,
                                 Toolbar, Annomatic, NotebookCommunication, NotebookExchange,
                                 SelectorsManager, FreebaseSelector, MurucaSelector, KorboBasketSelector, Korbo2Selector, PredicateSelector,
                                 TemplatesSelector, TripleComposer, ImageFragmentAnnotatorHelper,
