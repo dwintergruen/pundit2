@@ -1,5 +1,5 @@
 angular.module('Pundit2.Annotators')
-.directive('imgMenu', function($rootScope, ContextualMenu, Toolbar, ImageHandler, ImageAnnotator, ItemsExchange, TripleComposer) {
+.directive('imgMenu', function($rootScope, NameSpace, ContextualMenu, Toolbar, ImageHandler, ImageAnnotator, ItemsExchange, TemplatesExchange, TripleComposer) {
     return {
         restrict: 'E',
         scope: {
@@ -72,9 +72,16 @@ angular.module('Pundit2.Annotators')
                     ItemsExchange.addItemToContainer(scope.item, ImageHandler.options.container);
                 }
 
-                // TODO check if predicate domain accept image type
-                // remember to modify (alessio) existing template config to satisfy this condition
                 if (Toolbar.isActiveTemplateMode()) {
+                    var triples = TemplatesExchange.getCurrent().triples;
+                    // verify that all predicates admit images as subject
+                    // all template triples must be have a predicate
+                    for (var i in triples) {
+                        if (triples[i].predicate.domain.indexOf(NameSpace.types.image) === -1) {
+                            return;
+                        }
+                    }
+                    
                     TripleComposer.addToAllSubject(ItemsExchange.getItemByUri(scope.item.uri));
                     TripleComposer.closeAfterOp();
                     $rootScope.$emit('pnd-save-annotation');
