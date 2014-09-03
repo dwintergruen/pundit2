@@ -480,4 +480,43 @@ describe("Client interaction when user is logged in", function() {
 
     });
 
+    it("should correctly show notebook composer by edit notebook voice in ctx menu", function(){
+
+        p.driver.manage().window().setSize(1200, 960);
+
+        // open dashboard
+        p.findElement(protractor.By.css('toolbar .pnd-toolbar-dashboard-button')).click();
+        // collapse right panel
+        p.findElement(protractor.By.css('dashboard-panel[paneltitle=details] .btn.btn-default')).click();
+        // open my notebooks tab
+        p.findElements(protractor.By.css("dashboard-panel[paneltitle=lists] .pnd-tab-header > li > a")).then(function(tabs) {
+            tabs[3].click();
+            expect(tabs[3].getText()).toBe("My Notebooks");
+        });
+        // move on notebook item
+        var item = p.findElement(protractor.By.css("dashboard-panel[paneltitle=lists] .pnd-tab-content > div.active my-notebooks-container notebook .pnd-item"));
+        p.actions().mouseMove(item).perform();
+        // wait animation
+        p.sleep(500);
+        // open ctx menu
+        p.findElements(protractor.By.css("dashboard-panel[paneltitle=lists] .pnd-tab-content > div.active my-notebooks-container notebook .pnd-item-buttons")).then(function(btns){
+            btns[0].click();
+        });
+        // edit notebook
+        p.findElements(protractor.By.css(".pnd-dropdown-contextual-menu > li > a")).then(function(options){
+            expect(options[0].getText()).toBe("Edit Notebook");
+            options[0].click();
+        });
+
+        // check if tools panel show notebook composer interface
+        // check active tab title
+        p.findElements(protractor.By.css("dashboard-panel[paneltitle=tools] .pnd-tab-header > li.active > a")).then(function(tabs) {
+            expect(tabs.length).toBe(1);
+            expect(tabs[0].getText()).toBe("Notebooks Composer");
+        });
+        
+        // TODO write notebook composer dedicated e2e tests
+
+    });
+
 });
