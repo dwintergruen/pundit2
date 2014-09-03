@@ -64,7 +64,7 @@ angular.module('Pundit2.AnnotationSidebar')
         label: 'Show all annotations of this item',
         showIf: function(item) {
             if(typeof(item) !== 'undefined'){
-                return Consolidation.isConsolidated(item);
+                return Consolidation.isConsolidated(item) || (item.uri in Consolidation.getFragmentParentList());
             }
         },
         priority: 10,
@@ -73,9 +73,22 @@ angular.module('Pundit2.AnnotationSidebar')
                 AnnotationSidebar.toggle();
             }
             annotationDetails.closeViewAndReset();
+
+            var fragmentsListUri;
+            var fragmentParentList = Consolidation.getFragmentParentList();
+            if (item.uri in fragmentParentList){
+                fragmentsListUri = fragmentParentList[item.uri];
+            }
+
             for(var annotation in state.annotations) {
                 if(state.annotations[annotation].itemsUriArray.indexOf(item.uri) === -1){
                     state.annotations[annotation].ghosted = true;
+                }
+                for (var f in fragmentsListUri){
+                    if(state.annotations[annotation].itemsUriArray.indexOf(fragmentsListUri[f].uri) !== -1){
+                        state.annotations[annotation].ghosted = false;
+                        continue;
+                    }
                 }
             }
             

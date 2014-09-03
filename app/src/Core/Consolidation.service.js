@@ -13,6 +13,7 @@ angular.module('Pundit2.Core')
             state.typeUriMap = {};
             state.uriTypeMap = {};
             state.itemListByURI = {};
+            state.fragmentsItemListByParentURI = {};
 
             for (var a in state.annotators) {
                 state.annotators[a].wipe();
@@ -28,6 +29,10 @@ angular.module('Pundit2.Core')
 
         cc.getItems = function() {
             return state.itemListByURI;
+        };
+
+        cc.getFragmentParentList = function() {
+            return state.fragmentsItemListByParentURI;
         };
 
         var addItems = function(items) {
@@ -55,6 +60,15 @@ angular.module('Pundit2.Core')
                     state.typeUriMap[fragmentType] = [];
                     state.itemListByType[fragmentType] = {};
                     state.itemListByType[fragmentType][item.uri] = item;
+                }
+
+                // Create or update parent list of fragments
+                if (typeof(item.parentItemXP) !== 'undefined'){
+                    if (item.parentItemXP in state.fragmentsItemListByParentURI){
+                        state.fragmentsItemListByParentURI[item.parentItemXP].push(item);
+                    } else{
+                        state.fragmentsItemListByParentURI[item.parentItemXP] = [item];
+                    }
                 }
 
                 state.itemListByURI[item.uri] = item;
