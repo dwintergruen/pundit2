@@ -22,7 +22,7 @@
     <div ng-if="item.isWebPage()" class="pnd-preview-item-webpage">
         <ul>
             <li>
-                <strong>URL:</strong> {{item.uri}}
+                <strong>URL:</strong> <a href="{{item.uri}}" target="_blank">{{item.uri}}</a>
             </li>
         </ul>
     </div>

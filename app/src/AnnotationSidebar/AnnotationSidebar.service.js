@@ -584,7 +584,7 @@ angular.module('Pundit2.AnnotationSidebar')
 
         for (var subject in graph){
             currentItem = ItemsExchange.getItemByUri(subject);
-            if (currentItem.isTextFragment() || currentItem.isImageFragment() || currentItem.isImage()){
+            if (currentItem.isTextFragment() || currentItem.isImageFragment() || currentItem.isImage() || currentItem.isWebPage()){
                 if (Consolidation.isConsolidated(currentItem)){
                     return subject;
                 }
@@ -599,7 +599,7 @@ angular.module('Pundit2.AnnotationSidebar')
 
                     if (objectType === 'uri'){
                         currentItem = ItemsExchange.getItemByUri(objectValue);
-                        if (currentItem.isTextFragment() || currentItem.isImageFragment() || currentItem.isImage()){
+                        if (currentItem.isTextFragment() || currentItem.isImageFragment() || currentItem.isImage() || currentItem.isWebPage()){
                             if (Consolidation.isConsolidated(currentItem)){
                                 return objectValue;
                             }
@@ -649,15 +649,16 @@ angular.module('Pundit2.AnnotationSidebar')
 
                     annotationPosition.push({
                         id: annotation.id,
-                        top: -2,
+                        top: -3,
                         height: annotationHeigth,
                         broken: true
                     });
                 } else{
-                    var top = -1;
+                    var top;
                     currentItem = ItemsExchange.getItemByUri(firstValidUri);
 
                     if(currentItem.isTextFragment()){
+                        top = -1;
                         currentFragment = TextFragmentAnnotator.getFragmentIdByUri(firstValidUri);
 
                         if (typeof(currentFragment) !== 'undefined'){
@@ -669,9 +670,12 @@ angular.module('Pundit2.AnnotationSidebar')
                     } else if(currentItem.isImage() || currentItem.isImageFragment()){
                         // TODO: add icon during the consolidation and get the top of the specific image
                         var firstValidImage = angular.element('img[src="'+currentItem.image+'"]');
+                        top = -1;
                         if (typeof(firstValidImage.offset()) !== 'undefined'){
                             top = firstValidImage.offset().top - toolbarHeight - dashboardHeight;
                         }
+                    } else if(currentItem.isWebPage()) {
+                        top = -2;
                     }
 
                     annotationHeigth = annotationSidebar.options.annotationHeigth;
