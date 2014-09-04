@@ -20,12 +20,16 @@ angular.module('Pundit2.MyItemsContainer')
         text: "No my items found."
     };
 
+    $scope.isUserLogged = false;
+
     $scope.$watch(function(){
         return MyPundit.isUserLogged();
     }, function(logged){
         if (logged) {
+            $scope.isUserLogged = true;
             $scope.message.text = "No my items found.";
         } else {
+            $scope.isUserLogged = false;
             $scope.message.text = "Please login to see your items.";
         }
     });
@@ -182,6 +186,13 @@ angular.module('Pundit2.MyItemsContainer')
 
     // add page to my items
     $scope.onClickAddPageToMyItems = function(){
+        // TODO
+        // MyPundit.login().then(function(logged) {
+        //     if(logged){
+        //         var item = PageHandler.createItemFromPage();
+        //         MyItems.addItem(item);
+        //     }
+        // });
         var item = PageHandler.createItemFromPage();
         MyItems.addItem(item);
     };
