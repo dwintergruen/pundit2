@@ -313,16 +313,20 @@ describe('TripleComposer service', function() {
 
     it('should correctly show current template', function(){
         compileDirective();
+        var pred = {
+            label: 'predicate label',
+            uri: 'http://predicateTestID',
+            type: ["http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"],
+            range: [],
+            domain: []
+        };
+        // add pred to relations
+        var item = new Item("http://predicateTestID", pred);
         var currentTmpl = new Template('testID', {
             triples: [
                 {
                     mandatory: true,
-                    predicate: {
-                        label: 'predicate label',
-                        id: 'predicateTestID',
-                        range: [],
-                        domain: []
-                    }
+                    predicate: pred
                 }
             ]
         });
@@ -342,16 +346,20 @@ describe('TripleComposer service', function() {
 
     it('should correctly show current template with not mandatory triple', function(){
         compileDirective();
+        var pred = {
+            label: 'predicate label',
+            uri: 'http://predicateTestID',
+            type: ["http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"],
+            range: [],
+            domain: []
+        };
+        // add pred to relations
+        var item = new Item("http://predicateTestID", pred);
         var currentTmpl = new Template('testID', {
             triples: [
                 {
                     mandatory: false,
-                    predicate: {
-                        label: 'predicate label',
-                        id: 'predicateTestID',
-                        range: [],
-                        domain: []
-                    }
+                    predicate: pred
                 }
             ]
         });
