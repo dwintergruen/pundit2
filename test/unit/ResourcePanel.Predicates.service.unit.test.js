@@ -54,6 +54,11 @@ describe('Subject Popover Resource Panel service', function() {
         type: ["http://www.freebase.com/schema/common/topic", "http://www.freebase.com/schema/interests/collection_category", "http://www.freebase.com/schema/base/popstra/product"]
     };
 
+    var propNoMatch = {
+        label: "item image",
+        description: "item description",
+        type: ["inesistente"]
+    };
 
     var testPunditConfig = {
         modules: {
@@ -194,8 +199,7 @@ describe('Subject Popover Resource Panel service', function() {
         // at this time popover scope should be defined
         var scope = getPopoverResourcePanelScope();
 
-        // should load only predicates with domain containing image-fragment type
-        // in this case, only depicts, hasComment and similarTo
+        // should load only predicates with domain containing image-fragment type or empty range
         expect(scope.properties.length).toBe(3);
         expect(scope.properties[0].uri).toBe(testPredicates.hasComment.uri);
         expect(scope.properties[1].uri).toBe(testPredicates.similarTo.uri);
@@ -233,9 +237,8 @@ describe('Subject Popover Resource Panel service', function() {
 
         var scope = getPopoverResourcePanelScope();
 
-        // should load only predicates with domain containing image-fragment type
-        // in this case, only similarTo
-        expect(scope.properties.length).toBe(1);
+        // should load only predicates with domain containing image-fragment type or empty domain
+        expect(scope.properties.length).toBe(3);
         expect(scope.properties[0].uri).toBe(testPredicates.similarTo.uri);
 
     });
@@ -277,8 +280,7 @@ describe('Subject Popover Resource Panel service', function() {
         var scope = getPopoverResourcePanelScope();
 
         // should load only predicates matching with both object and subject
-        // in this case, only depicts and similarTo
-        expect(scope.properties.length).toBe(1);
+        expect(scope.properties.length).toBe(2);
         expect(scope.properties[0].uri).toBe(testPredicates.similarTo.uri);
 
     });
@@ -288,10 +290,10 @@ describe('Subject Popover Resource Panel service', function() {
         var anchor = angular.element('.pnd-anchor')[0];
 
         // add an item
-        var item = new Item("http://item-uri", propCommonTopic);
+        var item = new Item("http://item-uri", propNoMatch);
         ItemsExchange.addItemToContainer(item, PageItemsContainer.options.container);
 
-        var triple = ["http://item-uri", "", ""];
+        var triple = ["http://item-uri", "", "http://item-uri"];
 
         // open a resource panel popover
         ResourcePanel.showProperties(triple, anchor, "");
@@ -369,7 +371,7 @@ describe('Subject Popover Resource Panel service', function() {
 
         var scope = getPopoverResourcePanelScope();
         // should load only properties matching with object types
-        expect(scope.properties.length).toBe(1);
+        expect(scope.properties.length).toBe(3);
         expect(scope.properties[0].uri).toBe(testPredicates.similarTo.uri);
 
     });

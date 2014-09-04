@@ -837,6 +837,11 @@ angular.module('Pundit2.ResourcePanel')
     // get only items matching with predicate domain
     var filterByDomain = function(item) {
         if(typeof(item.domain) !== 'undefined'){
+
+            if (item.domain.length === 0) {
+                return true;
+            }
+
             for(var i=0; i<subTypes.length; i++){
                 for (var j=0; j<item.domain.length; j++){
                     if(subTypes[i] === item.domain[j]) {
@@ -853,6 +858,11 @@ angular.module('Pundit2.ResourcePanel')
     // get only items matching with predicate domain
     var filterByRange = function(item) {
         if(typeof(item.range) !== 'undefined'){
+
+            if (item.range.length === 0) {
+                return true;
+            }
+
             for(var i=0; i<objTypes.length; i++){
                 for (var j=0; j<item.range.length; j++){
                     if(objTypes[i] === item.range[j]) {
