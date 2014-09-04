@@ -310,6 +310,10 @@ angular.module('Pundit2.Core')
                 // ngdoc in PageItemsContainer.service.js
                 active: true
             },
+            PredicatesContainer: {
+                // ngdoc in PredicatesContainer.service.js
+                active: true
+            },
             MyNotebooksContainer: {
                 active: true
             },

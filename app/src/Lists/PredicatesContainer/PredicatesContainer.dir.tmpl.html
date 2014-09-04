@@ -1,0 +1,33 @@
+<div class="pnd-panel-tab-content">
+
+    <!-- HEADER -->
+
+    <div class="pnd-panel-tab-content-header pnd-panel-tab-content-header-border">
+        <div class="left-inner-icon">
+            <span class="pnd-icon {{search.icon}}" ng-click="search.term = ''"></span>
+            <input type="text" ng-model="search.term" placeholder="search notebooks" class="form-control">
+        </div>
+    </div> <!-- end pnd-panel-tab-content-header -->
+
+    <!-- CONTENT -->
+
+    <div class="pnd-panel-tab-content-content pnd-inner-scrollable pnd-inner-no-tabs">
+
+        <ul class="list-group" ng-if="!message.flag">
+            <li class="list-group-item" ng-repeat="pndItem in displayedItems | orderBy:getOrderProperty:reverse">
+                <item uri="{{pndItem.uri}}" menu-type="{{itemMenuType}}"></item>
+            </li>
+        </ul>
+        <div class="pnd-dashboard-welcome" ng-if="message.flag">{{message.text}}</div>
+
+    </div> <!-- end pnd-panel-tab-content-content -->
+
+    <!-- FOOTER -->
+
+    <div class="pnd-panel-tab-content-footer">
+        <button type="button" class="btn btn-xs btn-link predicates-items-btn-order" template="{{dropdownTemplate}}"
+                placement="top-left"
+                bs-dropdown="dropdownOrdering" title="Order predicates"><span class="pnd-icon pnd-icon-sort-amount-asc"></span></button>
+    </div> <!-- end pnd-panel-tab-content-footer -->
+
+</div>
