@@ -271,7 +271,7 @@ angular.module('Pundit2.AnnotationSidebar')
 })
 .service('AnnotationSidebar', function($rootScope, $filter, $timeout,
                                        BaseComponent, AnnotationsExchange, Consolidation, Dashboard, ItemsExchange, NotebookExchange,
-                                       TypesHelper, TextFragmentAnnotator, ANNOTATIONSIDEBARDEFAULTS) {
+                                       TypesHelper, TextFragmentAnnotator, XpointersHelper, ANNOTATIONSIDEBARDEFAULTS) {
     
     var annotationSidebar = new BaseComponent('AnnotationSidebar', ANNOTATIONSIDEBARDEFAULTS);
 
@@ -654,7 +654,7 @@ angular.module('Pundit2.AnnotationSidebar')
                         broken: true
                     });
                 } else{
-                    var top;
+                    var top, imgRef, xpathTemp;
                     currentItem = ItemsExchange.getItemByUri(firstValidUri);
 
                     if(currentItem.isTextFragment()){
@@ -667,12 +667,23 @@ angular.module('Pundit2.AnnotationSidebar')
                         } else {
                             annotationSidebar.log("Something wrong with the fragments of this annotation: ",annotation);
                         }
-                    } else if(currentItem.isImage() || currentItem.isImageFragment()){
+                    } else if(currentItem.isImage()){
                         // TODO: add icon during the consolidation and get the top of the specific image
-                        var firstValidImage = angular.element('img[src="'+currentItem.image+'"]');
+                        // console.log("img ? ", currentItem);
                         top = -1;
-                        if (typeof(firstValidImage.offset()) !== 'undefined'){
-                            top = firstValidImage.offset().top - toolbarHeight - dashboardHeight;
+                        xpathTemp = XpointersHelper.xPointerToXPath(currentItem.uri);
+                        imgRef = angular.element(xpathTemp.startNode.firstElementChild);
+
+                        if(typeof(imgRef.offset()) !== 'undefined'){
+                            top = imgRef.offset().top - toolbarHeight - dashboardHeight;
+                        }
+                    } else if(currentItem.isImageFragment()) {
+                        top = -1;
+                        xpathTemp = XpointersHelper.xPointerToXPath(currentItem.parentItemXP);
+                        imgRef = angular.element(xpathTemp.startNode.firstElementChild);
+
+                        if(typeof(imgRef.offset()) !== 'undefined'){
+                            top = imgRef.offset().top - toolbarHeight - dashboardHeight;
                         }
                     } else if(currentItem.isWebPage()) {
                         top = -2;
