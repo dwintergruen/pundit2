@@ -21,6 +21,7 @@ module.exports = function(config) {
             'app/src/Dashboard/Dashboard.js',
             'app/src/ContextualMenu/ContextualMenu.js',
             'app/src/Lists/PageItemsContainer/PageItemsContainer.js',
+            'app/src/Lists/PredicatesContainer/PredicatesContainer.js',
             'app/src/Lists/MyItemsContainer/MyItemsContainer.js',
             'app/src/Lists/MyNotebooksContainer/MyNotebooksContainer.js',
             'app/src/Lists/Vocabularies/Vocabularies.js',
