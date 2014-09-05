@@ -200,6 +200,35 @@ angular.module('Pundit2.Core')
             }
         };
 
+        var extendRangeAndDomain = function(uri, range, domain) {
+            var p = itemListByURI[uri];
+            
+            var i;
+            // empty array coding a free range
+            if (range.length === 0) {
+                p.range = [];
+            } else if (p.range.length > 0) {
+                for (i in range) {
+                    // if the range is not already present
+                    if (p.range.indexOf(range[i]) === -1) {
+                        p.range.push(range[i]);
+                    }
+                }
+            }
+            // empty array coding a free domain
+            if (domain.length === 0) {
+                p.domain = [];
+            } else if (p.domain.length > 0) {
+                for (i in domain) {
+                    // if the domain is not already present
+                    if (p.domain.indexOf(domain[i]) === -1) {
+                        p.domain.push(domain[i]);
+                    }
+                }
+            }
+
+        };
+
         itemsExchange.addItem = function(item, container) {
 
             if (typeof(container) === "undefined") {
@@ -212,6 +241,9 @@ angular.module('Pundit2.Core')
                 return;
             } else if (item.uri in itemListByURI) {
                 itemsExchange.log("Item already present: "+ item.uri);
+                if (item.isProperty()) {
+                    extendRangeAndDomain(item.uri, item.range, item.domain);
+                }
                 return;
             } else if (item.isProperty()) {
                 // TODO: magic string, get it somewhere else, options, defaults, other component..
