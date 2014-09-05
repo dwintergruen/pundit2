@@ -77,7 +77,11 @@ angular.module('Pundit2.PredicatesContainer')
             reg = new RegExp(strParts.join('.*'));
 
         $scope.displayedItems = allPredicates.filter(function(ns){
-            return ns.label.toLowerCase().match(reg) !== null;
+            if (typeof(ns.mergedLabel) === 'undefined') {
+                return ns.label.toLowerCase().match(reg) !== null;
+            } else {
+                return ns.mergedLabel.toLowerCase().match(reg) !== null;
+            }            
         });
 
         // update text messagge

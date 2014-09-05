@@ -253,7 +253,7 @@ angular.module('Pundit2.Core')
                 itemsExchange.log("Item already present: "+ item.uri);
                 if (item.isProperty()) {
                     extendRangeAndDomain(item.uri, item.range, item.domain);
-                    addLabel(item.ur, item.label);
+                    addLabel(item.uri, item.label);
                 }
                 return;
             } else if (item.isProperty()) {
