@@ -83,7 +83,7 @@ angular.module('Pundit2.Core')
                     delete p.rdftype;
                     p.uri = p.value;
                     delete p.value;
-                    p.vocabulary = url;
+                    p.vocabulary = url + " (External Vocabulary)";
 
                     result.push(p);
                 }
