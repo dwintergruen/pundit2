@@ -741,6 +741,8 @@ angular.module('Pundit2.ResourcePanel')
      */
     resourcePanel.showProperties = function(triple, target, label) {
 
+        // TODO ALL THIS FUNCTION NEED SEVERAL REFACTORING
+
         if(typeof(target) === 'undefined'){
             target = state.popover.clickTarget;
         }
@@ -778,30 +780,52 @@ angular.module('Pundit2.ResourcePanel')
                     // get subject item
                     itemSubject = ItemsExchange.getItemByUri(subject);
                     // if subject item has no type
-                    if(typeof(itemSubject) === 'undefined' || typeof(itemSubject.type) === 'undefined' || itemSubject.type.length === 0 || itemSubject.type[0] === "") {
+                    if(typeof(itemSubject) === 'undefined') {
                         // all properties are good
                         properties = ItemsExchange.getItemsByContainer(propertiesContainer);
                         showPopoverResourcePanel(target, "", "", properties, label, 'pr');
                     } else {
-                        // predicate with a valid domain
-                        subTypes = itemSubject.type;
-                        properties = ItemsExchange.getItemsFromContainerByFilter(propertiesContainer, filterByDomain);
-                        showPopoverResourcePanel(target, "", "", properties, label, 'pr');
+                        if (itemSubject.type.length === 0 || itemSubject.type[0] === ""){
+                            properties = ItemsExchange.getItemsByContainer(propertiesContainer);
+                            showPopoverResourcePanel(target, "", "", properties, label, 'pr');
+                        } else{
+                            // predicate with a valid domain
+                            subTypes = itemSubject.type;
+                            properties = ItemsExchange.getItemsFromContainerByFilter(propertiesContainer, filterByDomain);
+                            showPopoverResourcePanel(target, "", "", properties, label, 'pr');
+                        }
                     }
 
                     // if only object is defined
                 } else if((typeof(object) !== 'undefined' && object !== "") && (typeof(subject) === 'undefined' || subject === "")) {
                     // get object item
                     itemObject = ItemsExchange.getItemByUri(object);
-                    // if oject has no type
-                    if(typeof(itemObject) === 'undefined' || typeof(itemObject.type) === 'undefined' || itemObject.type.length === 0 || itemObject.type[0] === "") {
-                        // all properties are good
-                        properties = ItemsExchange.getItemsByContainer(propertiesContainer);
-                        showPopoverResourcePanel(target, "", "", properties, label, 'pr');
-                    } else {
-                        objTypes = itemObject.type;
-                        properties = ItemsExchange.getItemsFromContainerByFilter(propertiesContainer, filterByRange);
-                        showPopoverResourcePanel(target, "", "", properties, label, 'pr');
+                    // if object has no type
+                    if(typeof(itemObject) === 'undefined') {
+                        
+                        if(object instanceof Date){
+                            objTypes = [NameSpace.dateTime];
+                            properties = ItemsExchange.getItemsFromContainerByFilter(propertiesContainer, filterByRange);
+                            showPopoverResourcePanel(target, "", "", properties, label, 'pr');
+                        } else if (object !== ""){
+                            objTypes = [NameSpace.rdfs.literal];
+                            properties = ItemsExchange.getItemsFromContainerByFilter(propertiesContainer, filterByRange);
+                            showPopoverResourcePanel(target, "", "", properties, label, 'pr');
+                        } else{
+                            // all properties are good
+                            properties = ItemsExchange.getItemsByContainer(propertiesContainer);
+                            showPopoverResourcePanel(target, "", "", properties, label, 'pr');
+                        }
+                    } else{
+                        if (itemObject.type.length === 0 || itemObject.type[0] === ""){
+                            // all properties are good
+                            properties = ItemsExchange.getItemsByContainer(propertiesContainer);
+                            showPopoverResourcePanel(target, "", "", properties, label, 'pr');
+                        } else{
+                            objTypes = itemObject.type;
+                            properties = ItemsExchange.getItemsFromContainerByFilter(propertiesContainer, filterByRange);
+                            showPopoverResourcePanel(target, "", "", properties, label, 'pr');
+                        }
                     }
 
                     // subject and object are both defined
@@ -809,29 +833,58 @@ angular.module('Pundit2.ResourcePanel')
                     itemObject = ItemsExchange.getItemByUri(object);
                     itemSubject = ItemsExchange.getItemByUri(subject);
 
-                    // both subject and object have empty types
-                    if((typeof(itemSubject.type) === 'undefined' || itemSubject.type.length === 0 || itemSubject.type[0] === "") && (typeof(itemObject.type) === 'undefined' || itemObject.type.length === 0 || itemObject.type[0] === "")) {
-                        // all items are good
+                    if((typeof(itemSubject) === 'undefined') && (typeof(itemObject) === 'undefined')) {
+                        
+                        if(object instanceof Date){
+                            objTypes = [NameSpace.dateTime];
+                            properties = ItemsExchange.getItemsFromContainerByFilter(propertiesContainer, filterByRange);
+                            showPopoverResourcePanel(target, "", "", properties, label, 'pr');
+                        } else if (object !== ""){
+                            objTypes = [NameSpace.rdfs.literal];
+                            properties = ItemsExchange.getItemsFromContainerByFilter(propertiesContainer, filterByRange);
+                            showPopoverResourcePanel(target, "", "", properties, label, 'pr');
+                        } else{
+                            // all properties are good
+                            properties = ItemsExchange.getItemsByContainer(propertiesContainer);
+                            showPopoverResourcePanel(target, "", "", properties, label, 'pr');
+                        }
+                    } else if ((itemSubject.type.length === 0 || itemSubject.type[0] === "") && (itemObject.type.length === 0 || itemObject.type[0] === "")){
+                        // all properties are good
                         properties = ItemsExchange.getItemsByContainer(propertiesContainer);
                         showPopoverResourcePanel(target, "", "", properties, label, 'pr');
                     }
 
-                    // subjecy has no type, object has valid types --> filterByRange
-                    else if((typeof(itemSubject.type) === 'undefined' || itemSubject.type.length === 0 || itemSubject.type[0] === "") && (typeof(itemObject.type) !== 'undefined' && itemObject.type[0] !== "")) {
+                    // subject has no type, object has valid types --> filterByRange
+                    // else if((typeof(itemSubject.type) === 'undefined' || itemSubject.type.length === 0 || itemSubject.type[0] === "") && (typeof(itemObject.type) !== 'undefined' && itemObject.type[0] !== "")) {
+                    else if((typeof(itemSubject.type) === 'undefined' || itemSubject.type.length === 0 || itemSubject.type[0] === "") && (typeof(itemObject) !== 'undefined')) {
                         objTypes = itemObject.type;
                         properties = ItemsExchange.getItemsFromContainerByFilter(propertiesContainer, filterByRange);
                         showPopoverResourcePanel(target, "", "", properties, label, 'pr');
                     }
 
                     // object has no type, subject has valid types --> filterByDomain
-                    else if((typeof(itemSubject.type) !== 'undefined' && itemSubject.type[0] !== "") && (typeof(itemObject.type) === 'undefined' || itemObject.type.length === 0 || itemObject.type[0] === "")) {
+                    // else if((typeof(itemSubject.type) !== 'undefined' && itemSubject.type[0] !== "") && (typeof(itemObject.type) === 'undefined' || itemObject.type.length === 0 || itemObject.type[0] === "")) {
+                    else if((typeof(itemSubject.type) !== 'undefined' && itemSubject.type[0] !== "") && (typeof(itemObject) === 'undefined')) {
                         subTypes = itemSubject.type;
-                        properties = ItemsExchange.getItemsFromContainerByFilter(propertiesContainer, filterByDomain);
-                        showPopoverResourcePanel(target, "", "", properties, label, 'pr');
+
+                        if(object instanceof Date){
+                            objTypes = [NameSpace.dateTime];
+                            properties = ItemsExchange.getItemsFromContainerByFilter(propertiesContainer, filterByRangeAndDomain);
+                            showPopoverResourcePanel(target, "", "", properties, label, 'pr');
+                        } else if (object !== ""){
+                            objTypes = [NameSpace.rdfs.literal];
+                            properties = ItemsExchange.getItemsFromContainerByFilter(propertiesContainer, filterByRangeAndDomain);
+                            showPopoverResourcePanel(target, "", "", properties, label, 'pr');
+                        } else{
+                            properties = ItemsExchange.getItemsFromContainerByFilter(propertiesContainer, filterByDomain);
+                            showPopoverResourcePanel(target, "", "", properties, label, 'pr');
+                        }
+
                     }
 
                     // both object and subject have valid types --> filterByDomainAndRange
-                    else if((typeof(itemSubject.type) !== 'undefined' && itemSubject.type[0] !== "") && (typeof(itemObject.type) !== 'undefined' && itemObject.type[0] !== "")) {
+                    // else if((typeof(itemSubject.type) !== 'undefined' && itemSubject.type[0] !== "") && (typeof(itemObject.type) !== 'undefined' && itemObject.type[0] !== "")) {
+                    else if((typeof(itemSubject.type) !== 'undefined' && itemSubject.type[0] !== "") && (typeof(itemObject) !== 'undefined')) {
                         subTypes = itemSubject.type;
                         objTypes = itemObject.type;
                         properties = ItemsExchange.getItemsFromContainerByFilter(propertiesContainer, filterByRangeAndDomain);

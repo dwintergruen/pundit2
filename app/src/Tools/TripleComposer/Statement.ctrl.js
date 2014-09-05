@@ -70,7 +70,13 @@ angular.module('Pundit2.TripleComposer')
             res.push('');
         }
         if (triple.object!==null) {
-            res.push(triple.object.uri);
+            if ($scope.objectDate){
+                res.push(lastDate);
+            } else if ($scope.objectLiteral){
+                res.push($scope.objectLabel);
+            } else{
+                res.push(triple.object.uri);
+            }
         } else {
             res.push('');
         }
