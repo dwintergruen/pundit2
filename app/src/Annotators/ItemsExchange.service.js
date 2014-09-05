@@ -237,7 +237,16 @@ angular.module('Pundit2.Core')
             } else if (p.mergedLabel.indexOf(label) === -1) {
                 p.mergedLabel += label;
             }
-            
+        };
+
+        var addVocab = function(uri, vocab) {
+            var p = itemListByURI[uri];
+
+            if (typeof(p.mergedVocabulary) === 'undefined') {
+                p.mergedVocabulary = [p.vocabulary, vocab];
+            } else if (p.mergedVocabulary.indexOf(vocab) === -1) {
+                p.mergedVocabulary.push(vocab);
+            }
         };
 
         itemsExchange.addItem = function(item, container) {
@@ -255,6 +264,7 @@ angular.module('Pundit2.Core')
                 if (item.isProperty()) {
                     extendRangeAndDomain(item.uri, item.range, item.domain);
                     addLabel(item.uri, item.label);
+                    addVocab(item.uri, item.vocabulary);
                 }
                 return;
             } else if (item.isProperty()) {
