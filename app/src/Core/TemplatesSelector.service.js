@@ -27,7 +27,7 @@ angular.module('Pundit2.Core')
         }
 
         for (var i in urls) {
-            promiseArr.push(templatesSelector.get(urls[i], colors[i]));
+            promiseArr.push(templatesSelector.get(urls[i]));
         }
             
         templatesSelector.log("Loading templates from", urls);
@@ -36,7 +36,7 @@ angular.module('Pundit2.Core')
     };
 
     // make a jsonp to get template object from url
-    templatesSelector.get = function(url, color){
+    templatesSelector.get = function(url){
 
         // promise il always resolved to use $q.all
         // if the result value is undefined
@@ -61,10 +61,7 @@ angular.module('Pundit2.Core')
 
                 // url is used as id to identify the template
                 data.id = url;
-                if (typeof(color) !== 'undefined') {
-                    data.color = color;
-                }
-
+                //data.color = data.hasColor;
                 var i,
                     trp = data.triples;
 

@@ -239,7 +239,7 @@ angular.module('Pundit2.Toolbar')
             if (typeof(newCurr) !== "undefined") {
                 updateTemplates();
                 $scope.currentTemplateLabel = newCurr.label;
-                $scope.currentTemplateColor = newCurr.color;
+                $scope.currentTemplateColor = newCurr.hasColor;
             }
         });
 
@@ -265,7 +265,7 @@ angular.module('Pundit2.Toolbar')
             for (var i = 0; i<templates.length; i++){
                 $scope.userTemplateDropdown[j] = {
                     text: templates[i].label,
-                    color: templates[i].color,
+                    hasColor: templates[i].hasColor,
                     currentTemplate: function(){
                         var current = TemplatesExchange.getCurrent();
                         if (typeof(current)!== "undefined" && templates[i].id === current.id) {

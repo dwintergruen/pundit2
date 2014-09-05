@@ -317,7 +317,7 @@ angular.module('Pundit2.AnnotationSidebar')
             template = TemplatesExchange.getTemplateById(currentAnnotation.hasTemplate);
             
             if (typeof(template) !== 'undefined') {
-                currentColor = template.color;
+                currentColor = template.hasColor;
             }
 
             if(typeof(state.annotations[currentId]) === 'undefined' || typeof(force) !== 'undefined'){
