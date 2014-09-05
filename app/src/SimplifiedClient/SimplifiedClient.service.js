@@ -9,7 +9,8 @@ angular.module('Pundit2.SimplifiedClient')
  * `object`
  *
  * Configuration object for SimplifiedClient module. By default this module is not enabled and Pundit
- * run in standard mode.
+ * run in standard mode. If the moudule is enabled it expose an annotation toggle function trought the PUNDIT
+ * global object available on the broswer window object as "window.PUNDIT.simplifiedClient.toggleAnnotation()".
  * 
  */
 
@@ -34,7 +35,7 @@ angular.module('Pundit2.SimplifiedClient')
     }
 })
 
-.service('SimplifiedClient', function(BaseComponent, $rootScope,
+.service('SimplifiedClient', function(BaseComponent, $rootScope, $window,
     MyPundit, MyItems, AnnotationsCommunication, TextFragmentAnnotator, Consolidation, ItemPopover){
 
     // This service only make a consolidation of the annotation on the page
@@ -50,11 +51,11 @@ angular.module('Pundit2.SimplifiedClient')
         if (!root.hasClass('pnd-wrp')) {
             root.addClass('pnd-wrp');
         }
-        root.append('<button class="btn btn-info" ng-click="toggleAnnotation()">Show or Hide Annotation</button>');
     };
 
+    // show or hide annotations
     var isAnnotationVisible = true;
-    $rootScope.toggleAnnotation = function() {
+    var toggleAnnotation = function() {
         ItemPopover.hide();
         if (isAnnotationVisible) {
             Consolidation.wipe();
@@ -64,12 +65,14 @@ angular.module('Pundit2.SimplifiedClient')
         isAnnotationVisible = !isAnnotationVisible;
     };
 
+    // expose the api trought the pundit global object
+    $window.PUNDIT.simplifiedClient = {
+        toggleAnnotation : toggleAnnotation
+    };
+
     sc.boot = function() {
-
         fixRootNode();
-
         AnnotationsCommunication.getAnnotations();
-
     };
 
     return sc;
