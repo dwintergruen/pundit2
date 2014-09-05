@@ -402,7 +402,7 @@ describe("The toolbar module", function() {
             expect(items[1].getText()).toBe("Template Name");
         });
         // check dropdown voices icon (color icon)
-        p.findElements(protractor.By.css('toolbar .pnd-toolbar-template-menu-button .dropdown-menu .pnd-icon-certificate')).then(function(icons) {
+        p.findElements(protractor.By.css('toolbar .pnd-toolbar-template-menu-button .dropdown-menu .pnd-icon-circle')).then(function(icons) {
             expect(icons.length).toBe(1);
         });
         // check dropdown voices icon (current icon)

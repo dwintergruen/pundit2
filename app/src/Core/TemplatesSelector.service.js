@@ -61,9 +61,8 @@ angular.module('Pundit2.Core')
 
                 // url is used as id to identify the template
                 data.id = url;
-                //data.color = data.hasColor;
-                var i,
-                    trp = data.triples;
+
+                var i, trp = data.triples;
 
                 for(i in trp) {
                     // read predicate and made a real item
