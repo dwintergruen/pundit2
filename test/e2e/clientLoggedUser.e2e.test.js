@@ -482,7 +482,7 @@ describe("Client interaction when user is logged in", function() {
 
     it("should correctly show notebook composer by edit notebook voice in ctx menu", function(){
 
-        p.driver.manage().window().setSize(1200, 960);
+        p.driver.manage().window().setSize(1600, 960);
 
         // open dashboard
         p.findElement(protractor.By.css('toolbar .pnd-toolbar-dashboard-button')).click();
@@ -490,8 +490,8 @@ describe("Client interaction when user is logged in", function() {
         p.findElement(protractor.By.css('dashboard-panel[paneltitle=details] .btn.btn-default')).click();
         // open my notebooks tab
         p.findElements(protractor.By.css("dashboard-panel[paneltitle=lists] .pnd-tab-header > li > a")).then(function(tabs) {
-            tabs[3].click();
-            expect(tabs[3].getText()).toBe("My Notebooks");
+            tabs[4].click();
+            expect(tabs[4].getText()).toBe("My Notebooks");
         });
         // move on notebook item
         var item = p.findElement(protractor.By.css("dashboard-panel[paneltitle=lists] .pnd-tab-content > div.active my-notebooks-container notebook .pnd-item"));
