@@ -460,7 +460,7 @@ angular.module('Pundit2.ResourcePanel')
             $timeout.cancel(searchTimer);
             setLabelToSearch(label);
             searchTimer = $timeout(function(){
-                searchOnVocab(label, selectors);
+                searchOnVocab(label, selectors, triple, 'subject');
             }, resourcePanel.options.vocabSearchTimer);
 
         } else {
@@ -469,7 +469,7 @@ angular.module('Pundit2.ResourcePanel')
                 state.popoverOptions.scope.vocabSubStatus = 'loading';
                 $timeout.cancel(searchTimer);
                 searchTimer = $timeout(function(){
-                    searchOnVocab(label, selectors);
+                    searchOnVocab(label, selectors, triple, 'subject');
                 }, resourcePanel.options.vocabSearchTimer);
             }
 
@@ -529,7 +529,9 @@ angular.module('Pundit2.ResourcePanel')
 
     };
 
-    var searchOnVocab = function(label, selectors) {
+    var searchOnVocab = function(label, selectors, triple, caller) {
+
+        var predicate = (triple[1] !== '' ? ItemsExchange.getItemByUri(triple[1]) : undefined);
 
         // if label is an empty string
         // set empty array as results for each vocab
@@ -567,7 +569,17 @@ angular.module('Pundit2.ResourcePanel')
                         for(var t=0; t<state.popoverOptions.scope.contentTabs.length; t++){
                             if(state.popoverOptions.scope.contentTabs[t].title === selectors[index].config.label){
                                 var container = state.popoverOptions.scope.contentTabs[t].itemsContainer + label.split(' ').join('$');
-                                state.popoverOptions.scope.contentTabs[t].items = ItemsExchange.getItemsByContainer(container);
+                                var itemsList = ItemsExchange.getItemsByContainer(container);
+
+                                if (typeof(predicate) !== 'undefined'){
+                                    if (caller === 'subject'){
+                                        itemsList = filterSubjectItems(itemsList, predicate);
+                                    } else if (caller === 'object'){
+                                        itemsList = filterObjectItems(itemsList, predicate);
+                                    }
+                                }
+
+                                state.popoverOptions.scope.contentTabs[t].items = itemsList;
                                 // and set loading to false
                                 state.popoverOptions.scope.contentTabs[t].isLoading = false;
                             }
@@ -621,7 +633,7 @@ angular.module('Pundit2.ResourcePanel')
             $timeout.cancel(searchTimer);
             setLabelToSearch(label);
             searchTimer = $timeout(function(){
-                searchOnVocab(label, selectors);
+                searchOnVocab(label, selectors, triple, 'object');
             }, resourcePanel.options.vocabSearchTimer);
 
         } else {
@@ -631,7 +643,7 @@ angular.module('Pundit2.ResourcePanel')
                 //state.popoverOptions.scope.vocabObjStatus = 'loading';
                 $timeout.cancel(searchTimer);
                 searchTimer = $timeout(function(){
-                   searchOnVocab(label, selectors);
+                   searchOnVocab(label, selectors, triple, 'object');
                 }, resourcePanel.options.vocabSearchTimer);
             }
 
@@ -832,6 +844,45 @@ angular.module('Pundit2.ResourcePanel')
         }
         state.resourcePromise = $q.defer();
         return state.resourcePromise.promise;
+    };
+
+    var isTypeIncluded = function(item, list){
+        for (var i in list){
+            if (item.type.indexOf(list[i]) !== -1){
+                return true;
+            }
+        }
+        return false;
+    };
+
+    var filterSubjectItems = function(items, predicate) {
+        var ret = [];
+        if (typeof(predicate.domain) === 'undefined' || predicate.domain.length === 0){
+            return items;
+        }
+
+        for (var i in items){
+            if (isTypeIncluded(items[i], predicate.domain)){
+                ret.push(items[i]);
+            }    
+        }
+
+        return ret;
+    };
+
+    var filterObjectItems = function(items, predicate) {
+        var ret = [];
+        if (typeof(predicate.range) === 'undefined' || predicate.range.length === 0){
+            return items;
+        }
+
+        for (var i in items){
+            if (isTypeIncluded(items[i], predicate.range)){
+                ret.push(items[i]);
+            }    
+        }
+
+        return ret;
     };
 
     // get only items matching with predicate domain
