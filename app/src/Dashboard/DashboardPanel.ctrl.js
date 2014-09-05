@@ -1,5 +1,5 @@
 angular.module('Pundit2.Dashboard')
-.controller('DashboardPanelCtrl', function($document, $window, $scope, $rootScope, $element, $timeout, Dashboard) {
+.controller('DashboardPanelCtrl', function($document, $window, $scope, $rootScope, $element, $timeout, Dashboard, ResourcePanel) {
 
     // readed from default (not change)
     $scope.collapsedWidth = Dashboard.options.panelCollapseWidth;
@@ -28,6 +28,8 @@ angular.module('Pundit2.Dashboard')
     });
 
     $scope.toggleCollapse = function() {
+
+        ResourcePanel.hide();
 
         if( $scope.isCollapsed ) {
             $scope.isCollapsed = !$scope.isCollapsed;
@@ -65,6 +67,7 @@ angular.module('Pundit2.Dashboard')
     };
 
     $scope.mouseDownHandler = function(evt) {
+        ResourcePanel.hide();
         evt.preventDefault();
         lastPageX = evt.pageX;
         $document.on('mousemove', moveHandler);
