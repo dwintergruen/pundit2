@@ -229,6 +229,16 @@ angular.module('Pundit2.Core')
 
         };
 
+        var addLabel = function(uri, label) {
+            var p = itemListByURI[uri];
+
+            if (typeof(p.mergedLabel) === 'undefined') {
+                p.mergedLabel = label;
+            } else if (p.mergedLabel.indexOf(label) === -1) {
+                p.mergedLabel += label;
+            }
+        };
+
         itemsExchange.addItem = function(item, container) {
 
             if (typeof(container) === "undefined") {
@@ -243,6 +253,7 @@ angular.module('Pundit2.Core')
                 itemsExchange.log("Item already present: "+ item.uri);
                 if (item.isProperty()) {
                     extendRangeAndDomain(item.uri, item.range, item.domain);
+                    addLabel(item.ur, item.label);
                 }
                 return;
             } else if (item.isProperty()) {
