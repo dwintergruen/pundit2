@@ -233,10 +233,11 @@ angular.module('Pundit2.Core')
             var p = itemListByURI[uri];
 
             if (typeof(p.mergedLabel) === 'undefined') {
-                p.mergedLabel = label;
+                p.mergedLabel = p.label + label;
             } else if (p.mergedLabel.indexOf(label) === -1) {
                 p.mergedLabel += label;
             }
+            
         };
 
         itemsExchange.addItem = function(item, container) {
