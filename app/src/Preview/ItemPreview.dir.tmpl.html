@@ -34,8 +34,14 @@
             <li ng-if="item.domain"><strong>Domain:</strong> 
                 <span ng-repeat="domain in item.domain">{{domain}}</span>
             </li>
+            <li ng-if="item.domain.length === 0"><strong>Domain:</strong> 
+                <span>Free Domain</span>
+            </li>
             <li ng-if="item.range"><strong>Range:</strong> 
                 <span ng-repeat="range in item.range">{{range}}</span>
+            </li>
+            <li ng-if="item.range.length === 0"><strong>Range:</strong> 
+                <span>Free Range</span>
             </li>
         </ul>
     </div>
