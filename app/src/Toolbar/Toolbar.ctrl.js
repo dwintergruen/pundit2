@@ -28,7 +28,7 @@ angular.module('Pundit2.Toolbar')
 
     var infoModal = $modal({
         container: "[data-ng-app='Pundit2']",
-        template: 'src/Core/info.modal.tmpl.html',
+        template: 'src/Core/Templates/info.modal.tmpl.html',
         show: false,
         backdrop: 'static',
         scope: infoModalScope
@@ -36,7 +36,7 @@ angular.module('Pundit2.Toolbar')
 
     var sendModal = $modal({
         container: "[data-ng-app='Pundit2']",
-        template: 'src/Core/send.modal.tmpl.html',
+        template: 'src/Core/Templates/send.modal.tmpl.html',
         show: false,
         backdrop: 'static',
         scope: sendModalScope

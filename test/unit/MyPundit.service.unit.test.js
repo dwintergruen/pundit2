@@ -30,7 +30,7 @@ describe('MyPundit service', function() {
     };
     
     beforeEach(module(
-        'src/Core/login.modal.tmpl.html'
+        'src/Core/Templates/login.modal.tmpl.html'
     ));
     
     beforeEach(module('Pundit2'));

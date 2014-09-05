@@ -320,7 +320,7 @@ angular.module('Pundit2.Core')
     
     var loginModal = $modal({
         container: "[data-ng-app='Pundit2']",
-        template: 'src/Core/login.modal.tmpl.html',
+        template: 'src/Core/Templates/login.modal.tmpl.html',
         show: false,
         backdrop: 'static'
     });

@@ -35,6 +35,7 @@
 
     <script src="../src/Core/Template.factory.js"></script>
     <script src="../src/Core/Item.factory.js"></script>
+    <script src="../src/Core/ItemsExchange.service.js"></script>
     <script src="../src/Core/TypesHelper.service.js"></script>
     <script src="../src/Core/Consolidation.service.js"></script>
 
@@ -44,7 +45,6 @@
     <script src="../src/Annotators/ImageAnnotator.service.js"></script>
     <script src="../src/Annotators/TextFragmentBit.dir.js"></script>
     <script src="../src/Annotators/TextFragmentIcon.dir.js"></script>
-    <script src="../src/Annotators/ItemsExchange.service.js"></script>
     <script src="../src/Annotators/TextFragmentHandler.service.js"></script>
     <script src="../src/Annotators/ImageHandler.service.js"></script>
     <script src="../src/Annotators/PageHandler.service.js"></script>

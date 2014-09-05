@@ -72,7 +72,7 @@ angular.module('Pundit2.AnnotationSidebar')
 
     var confirmModal = $modal({
         container: '[data-ng-app="Pundit2"]',
-        template: 'src/Core/confirm.modal.tmpl.html',
+        template: 'src/Core/Templates/confirm.modal.tmpl.html',
         show: false,
         backdrop: 'static',
         scope: modalScope
