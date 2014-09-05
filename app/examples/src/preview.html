@@ -53,6 +53,26 @@
             "uri": "http://schema.org/comment"
         };
 
+        var item5 = {
+            "type": ["http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"],
+            "label": "all free",
+            "description": "Any comment related to the selected fragment of text or image",
+            "domain": [],
+            "range": [],
+            "vocabulary": "Basic Relation",
+            "uri": "http://schema.org/allfree"
+        };
+
+        var item6 = {
+            "type": ["http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"],
+            "label": "completely free",
+            "description": "Any comment related to the selected fragment of text or image",
+            "domain": [],
+            "range": [],
+            "vocabulary": "Basic Relation",
+            "uri": "http://schema.org/allfree"
+        };
+
         var i1 = new Item(item1.uri, item1);
         ItemsExchange.addItemToContainer(i1, PageItemsContainer.options.container);
 
@@ -64,6 +84,12 @@
 
         var i4 = new Item(item4.uri, item4);
         ItemsExchange.addItemToContainer(i4, PageItemsContainer.options.container);
+
+        var i5 = new Item(item5.uri, item5);
+        ItemsExchange.addItemToContainer(i5, PageItemsContainer.options.container);
+
+        var i6 = new Item(item6.uri, item6);
+        ItemsExchange.addItemToContainer(i6, PageItemsContainer.options.container);
 
         $scope.items = ItemsExchange.getItemsByContainer(PageItemsContainer.options.container);
 

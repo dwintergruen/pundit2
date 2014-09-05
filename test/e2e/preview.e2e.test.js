@@ -112,4 +112,27 @@ describe("Preview interaction", function() {
 
     });
 
+    it('should show predicate advanced option preview on mouseover', function() {
+
+        p.driver.manage().window().setSize(1200, 960);
+        p.get('/app/examples/preview.html');
+
+        p.findElements(protractor.By.css('.pnd-example-ul li')).then(function(items) {
+            p.actions().mouseMove(items[4]).perform();
+
+            p.findElements(protractor.By.css('.pnd-preview-item-predicate > ul > li > span')).then(function(elem) {
+                expect(elem.length).toBe(2);
+                expect(elem[0].getText()).toBe("Free Domain");
+                expect(elem[1].getText()).toBe("Free Range");
+            });
+
+            p.findElements(protractor.By.css('.pnd-preview-item-allLables > span')).then(function(elem) {
+                expect(elem[0].getText()).toBe("all free, completely free");
+            });
+
+            
+        });
+
+    });
+
 });
