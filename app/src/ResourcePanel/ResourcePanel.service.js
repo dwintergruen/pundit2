@@ -285,7 +285,8 @@ angular.module('Pundit2.ResourcePanel')
         } else if (typeof(property) !== 'undefined'){
             if (typeof(item[property]) === 'undefined'){
                 return false;
-            } else if (item[property].length === 0){
+            } else if (item[property].length === 0 || item[property][0] === ''){
+                // TODO A type can be an empty string?!?!
                 return false;
             }
         }

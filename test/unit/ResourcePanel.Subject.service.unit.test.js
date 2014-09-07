@@ -136,7 +136,11 @@ describe('Subject Popover Resource Panel service', function() {
 
         var anchor = angular.element('.pnd-anchor')[0];
         // undefined triple
-        var triple = ["", "", ""];
+        var triple = {
+            subject: null,
+            predicate: null,
+            object: null
+        };
 
         // open a resource panel popover
         ResourcePanel.showItemsForSubject(triple, anchor, "");
@@ -189,7 +193,11 @@ describe('Subject Popover Resource Panel service', function() {
 
         var anchor = angular.element('.pnd-anchor')[0];
         // undefined triple
-        var triple = ["", "", ""];
+        var triple = {
+            subject: null,
+            predicate: null,
+            object: null
+        };
 
         // open a resource panel popover
         ResourcePanel.showItemsForSubject(triple, anchor, "");
@@ -225,7 +233,11 @@ describe('Subject Popover Resource Panel service', function() {
         ItemsExchange.addItemToContainer(item2, PageItemsContainer.options.container);
 
         var anchor = angular.element('.pnd-anchor')[0];
-        var triple = ["", "http://sss", ""];
+        var triple = {
+            subject: null,
+            predicate: {uri: "http://sss"},
+            object: null
+        };
 
         // open a resource panel popover
         ResourcePanel.showItemsForSubject(triple, anchor, "");
@@ -250,9 +262,15 @@ describe('Subject Popover Resource Panel service', function() {
             "uri": "http://purl.org/pundit/ont/oa#identifies"
         };
 
+        var triple = {
+            subject: null,
+            predicate: null,
+            object: null
+        };
+
         // add a predicate with an empty domain
-        var predicate = new Item(emptyDomainPred.uri, emptyDomainPred);
-        ItemsExchange.addItemToContainer(predicate, Client.options.relationsContainer);
+        triple.predicate = new Item(emptyDomainPred.uri, emptyDomainPred);
+        ItemsExchange.addItemToContainer(triple.predicate, Client.options.relationsContainer);
 
         // add some page items
         var item1 = new Item("http://item1-uri", propFragmentText);
@@ -262,8 +280,6 @@ describe('Subject Popover Resource Panel service', function() {
         ItemsExchange.addItemToContainer(item2, PageItemsContainer.options.container);
 
         var anchor = angular.element('.pnd-anchor')[0];
-
-        var triple = ["", emptyDomainPred.uri, ""];
 
         // open a resource panel popover
         ResourcePanel.showItemsForSubject(triple, anchor, "");
@@ -322,9 +338,15 @@ describe('Subject Popover Resource Panel service', function() {
             "uri": "http://purl.org/pundit/ont/oa#isTranslationOf"
         };
 
+        var triple = {
+            subject: null,
+            predicate: null,
+            object: null
+        };
+
         // add a predicate with an undefined domain
-        var predicate = new Item(undefDomainPred.uri, undefDomainPred);
-        ItemsExchange.addItemToContainer(predicate, Client.options.relationsContainer);
+        triple.predicate = new Item(undefDomainPred.uri, undefDomainPred);
+        ItemsExchange.addItemToContainer(triple.predicate, Client.options.relationsContainer);
 
         // add some page items
         var item1 = new Item("http://item1-uri", propFragmentText);
@@ -334,7 +356,6 @@ describe('Subject Popover Resource Panel service', function() {
         ItemsExchange.addItemToContainer(item2, PageItemsContainer.options.container);
 
         var anchor = angular.element('.pnd-anchor')[0];
-        var triple = ["", undefDomainPred.uri, ""];
 
         // open a resource panel popover
         ResourcePanel.showItemsForSubject(triple, anchor, "");
@@ -373,9 +394,15 @@ describe('Subject Popover Resource Panel service', function() {
             "uri": "http://xmlns.com/foaf/0.1/depicts"
         };
 
+        var triple = {
+            subject: null,
+            predicate: null,
+            object: null
+        };
+
         // add a predicate with domain as image type
-        var predicate = new Item(ImagePred.uri, ImagePred);
-        ItemsExchange.addItemToContainer(predicate, Client.options.relationsContainer);
+        triple.predicate = new Item(ImagePred.uri, ImagePred);
+        ItemsExchange.addItemToContainer(triple.predicate, Client.options.relationsContainer);
 
         // add some page items
         var item1 = new Item("http://item1-uri", propFragmentText);
@@ -393,7 +420,6 @@ describe('Subject Popover Resource Panel service', function() {
         ItemsExchange.addItemToContainer(myItem2, MyItems.options.container);
 
         var anchor = angular.element('.pnd-anchor')[0];
-        var triple = ["", ImagePred.uri, ""];
 
         // open a resource panel popover
         ResourcePanel.showItemsForSubject(triple, anchor, "");
@@ -431,9 +457,15 @@ describe('Subject Popover Resource Panel service', function() {
             "uri": "http://purl.org/spar/cito/includesQuotationFrom"
         };
 
+        var triple = {
+            subject: null,
+            predicate: null,
+            object: null
+        };
+
         // add a predicate with domain as fragment text type
-        var predicate = new Item(FragmentTextPred.uri, FragmentTextPred);
-        ItemsExchange.addItemToContainer(predicate, Client.options.relationsContainer);
+        triple.predicate = new Item(FragmentTextPred.uri, FragmentTextPred);
+        ItemsExchange.addItemToContainer(triple.predicate, Client.options.relationsContainer);
 
         // add some page items
         var item1 = new Item("http://item1-uri", propFragmentText);
@@ -451,7 +483,6 @@ describe('Subject Popover Resource Panel service', function() {
         ItemsExchange.addItemToContainer(myItem2, MyItems.options.container);
 
         var anchor = angular.element('.pnd-anchor')[0];
-        var triple = ["", FragmentTextPred.uri, ""];
 
         // open a resource panel popover
         ResourcePanel.showItemsForSubject(triple, anchor, "");
@@ -468,7 +499,11 @@ describe('Subject Popover Resource Panel service', function() {
 
     it("should close popover calling cancel method", function() {
         var anchor = angular.element('.pnd-anchor')[0];
-        var triple = ["", "", ""];
+        var triple = {
+            subject: null,
+            predicate: null,
+            object: null
+        };
 
         // open a resource panel popover
         ResourcePanel.showItemsForSubject(triple, anchor, "");
@@ -492,7 +527,11 @@ describe('Subject Popover Resource Panel service', function() {
         ItemsExchange.addItemToContainer(item, PageItemsContainer.options.container);
 
         var anchor = angular.element('.pnd-anchor')[0];
-        var triple = ["", "", ""];
+        var triple = {
+            subject: null,
+            predicate: null,
+            object: null
+        };
 
         // open a resource panel popover
         var promise = ResourcePanel.showItemsForSubject(triple, anchor, "");
@@ -517,7 +556,11 @@ describe('Subject Popover Resource Panel service', function() {
     it("should be open only one popover at time", function() {
 
         var anchor = angular.element('.pnd-anchor')[0];
-        var triple = ["", "", ""];
+        var triple = {
+            subject: null,
+            predicate: null,
+            object: null
+        };
 
         // open a resource panel popover
         ResourcePanel.showItemsForSubject(triple, anchor, "");
@@ -559,7 +602,11 @@ describe('Subject Popover Resource Panel service', function() {
     it("should start searching label in vocab", function() {
 
         var anchor = angular.element('.pnd-anchor')[0];
-        var triple = ["", "", ""];
+        var triple = {
+            subject: null,
+            predicate: null,
+            object: null
+        };
         var label = "term";
 
         // Muruca search url for 'term' label
@@ -658,7 +705,11 @@ describe('Subject Popover Resource Panel service', function() {
     it("should not start searching label in vocab when input is empty", function() {
 
         var anchor = angular.element('.pnd-anchor')[0];
-        var triple = ["", "", ""];
+        var triple = {
+            subject: null,
+            predicate: null,
+            object: null
+        };
 
         // open resource panel without a string to search
         ResourcePanel.showItemsForSubject(triple, anchor, "");
