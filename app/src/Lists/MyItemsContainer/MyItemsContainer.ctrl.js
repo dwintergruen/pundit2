@@ -186,15 +186,12 @@ angular.module('Pundit2.MyItemsContainer')
 
     // add page to my items
     $scope.onClickAddPageToMyItems = function(){
-        // TODO
-        // MyPundit.login().then(function(logged) {
-        //     if(logged){
-        //         var item = PageHandler.createItemFromPage();
-        //         MyItems.addItem(item);
-        //     }
-        // });
-        var item = PageHandler.createItemFromPage();
-        MyItems.addItem(item);
+        if(!MyPundit.isUserLogged()){
+            MyItemsContainer.err('User not logged');
+        } else{
+            var item = PageHandler.createItemFromPage();
+            MyItems.addItem(item);
+        }
     };
 
     // Filter items which are shown
@@ -264,6 +261,7 @@ angular.module('Pundit2.MyItemsContainer')
         // show empty lists messagge
         if (len === 0){
             $scope.message.flag = true;
+            // TODO Use ng-disable in all MyItems tmpl
             deleteBtn.addClass('disabled');
             orderBtn.addClass('disabled');
         } else {

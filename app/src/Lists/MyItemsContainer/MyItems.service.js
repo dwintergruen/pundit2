@@ -281,6 +281,8 @@ angular.module("Pundit2.MyItemsContainer")
     // add one item to my items on pundit server
     myItems.addItem = function(value){
 
+        // TODO gestire il caso in cui l'utente non era loggato (!)
+
         var currentTime = new Date(),
             // get all my items and make a copy
             items = angular.copy(ItemsExchange.getItemsByContainer(myItems.options.container)),

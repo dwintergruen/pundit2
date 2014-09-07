@@ -74,7 +74,6 @@ angular.module('Pundit2.Annotators')
             var values = {};
             values = getPageMetadata();
             values.uri = XpointersHelper.getSafePageContext();
-            console.log($document[0].title);
             values.label = $document[0].title || "No title";
             if (typeof (values.description) === 'undefined'){
                 values.description = values.label;

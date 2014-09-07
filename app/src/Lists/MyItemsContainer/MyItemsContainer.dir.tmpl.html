@@ -13,7 +13,7 @@
                 bs-dropdown="dropdownOrdering"  title="Order my items">
                    <span class="pnd-icon pnd-icon-sort-amount-asc"></span>
         </button>
-        <button type="button" class="btn btn-xs btn-link my-items-btn-add-page" title="Add current page to my items" ng-click="onClickAddPageToMyItems()" ng-show="isUserLogged">
+        <button type="button" class="btn btn-xs btn-link my-items-btn-add-page" title="Add current page to my items" ng-click="onClickAddPageToMyItems()" ng-disabled="!isUserLogged">
             <span class="pnd-icon pnd-icon-bookmark"></span>
         </button>
     </div> <!-- end pnd-panel-tab-content-footer -->
