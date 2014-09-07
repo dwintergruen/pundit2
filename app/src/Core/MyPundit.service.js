@@ -230,10 +230,12 @@ angular.module('Pundit2.Core')
         if (typeof(loginPromise) === 'undefined') {
             myPundit.err('Login promise not defined, you should call login() first');
             return;
-        } else if(typeof(loginServer) === 'undefined') {
-            myPundit.checkLoggedIn();
-            myPundit.err('Login server url not defined, something wrong with client boot (?)');
-            return;
+        // TODO Fix and check unit test
+        // } else if(typeof(loginServer) === 'undefined') {
+        //     myPundit.checkLoggedIn();
+        //     myPundit.err('Login server url not defined, something wrong with client boot (?)');
+        //     loginPromise.reject('login error');
+        //     return;
         } else {
             // login status is waiting for login
             loginStatus = 'waitingForLogIn';
