@@ -54,36 +54,6 @@ angular.module('Pundit2.TripleComposer')
         object: null
     };
 
-    // build an array that represent the triple
-    // this array is passed to resource panel
-    var buildUrisArray = function(){
-        var res = [];
-
-        if (triple.subject!==null) {
-            res.push(triple.subject.uri);
-        } else {
-            res.push('');
-        }
-        if (triple.predicate!==null) {
-            res.push(triple.predicate.uri);
-        } else {
-            res.push('');
-        }
-        if (triple.object!==null) {
-            if ($scope.objectDate){
-                res.push(lastDate);
-            } else if ($scope.objectLiteral){
-                res.push($scope.objectLabel);
-            } else{
-                res.push(triple.object.uri);
-            }
-        } else {
-            res.push('');
-        }
-
-        return res;
-    };
-
     $scope.isStatementComplete = function(){
         if (triple.subject!==null && triple.predicate!==null && triple.object!==null) {
             return true;
@@ -193,7 +163,7 @@ angular.module('Pundit2.TripleComposer')
             return;
         }
         $scope.subjectSearch = "";
-        ResourcePanel.showItemsForSubject(buildUrisArray(), undefined, $scope.subjectSearch).then($scope.setSubject);
+        ResourcePanel.showItemsForSubject(triple, undefined, $scope.subjectSearch).then($scope.setSubject);
     };
 
     $scope.wipePredicate = function(){
@@ -214,7 +184,7 @@ angular.module('Pundit2.TripleComposer')
             return;
         }
         $scope.predicateSearch = "";
-        ResourcePanel.showProperties(buildUrisArray(), undefined, $scope.predicateSearch).then($scope.setPredicate);
+        ResourcePanel.showProperties(triple, undefined, $scope.predicateSearch).then($scope.setPredicate);
     };
 
     $scope.wipeObject = function(){
@@ -236,7 +206,7 @@ angular.module('Pundit2.TripleComposer')
             return;
         }
         $scope.objectSearch = "";
-        ResourcePanel.showItemsForObject(buildUrisArray(), undefined, $scope.objectSearch).then($scope.setObject);
+        ResourcePanel.showItemsForObject(triple, undefined, $scope.objectSearch).then($scope.setObject);
     };
 
     $scope.onSubjectMouseOver = function() {
@@ -307,10 +277,10 @@ angular.module('Pundit2.TripleComposer')
             // template mode is enabled (subject can be only a text selection)
             return;
         }
-        ResourcePanel.showItemsForSubject(buildUrisArray(), $event.target, $scope.subjectSearch).then($scope.setSubject);
+        ResourcePanel.showItemsForSubject(triple, $event.target, $scope.subjectSearch).then($scope.setSubject);
     };
     $scope.onKeyUpSubject = function($event){
-        ResourcePanel.showItemsForSubject(buildUrisArray(), $event.target, $scope.subjectSearch).then($scope.setSubject);
+        ResourcePanel.showItemsForSubject(triple, $event.target, $scope.subjectSearch).then($scope.setSubject);
     };
 
     $scope.setPredicate = function(item, fixed){
@@ -323,20 +293,20 @@ angular.module('Pundit2.TripleComposer')
         }
 
         // check predicate range
-        if (item.range.indexOf(NameSpace.rdfs.literal) === -1) {
+        if (item.range.indexOf(NameSpace.rdfs.literal) === -1 && item.range.length > 0) {
             $scope.canBeObjectLiteral = false;
         }
-        if (item.range.indexOf(NameSpace.dateTime) === -1) {
+        if (item.range.indexOf(NameSpace.dateTime) === -1 && item.range.length > 0) {
             $scope.canBeObjectDate = false;
         }
         $scope.tripleComposerCtrl.isAnnotationComplete();
         $scope.tripleComposerCtrl.isTripleErasable();
     };
     $scope.onClickPredicate = function($event){
-        ResourcePanel.showProperties(buildUrisArray(), $event.target, $scope.predicateSearch).then($scope.setPredicate);
+        ResourcePanel.showProperties(triple, $event.target, $scope.predicateSearch).then($scope.setPredicate);
     };
     $scope.onKeyUpPredicate = function($event){
-        ResourcePanel.showProperties(buildUrisArray(), $event.target, $scope.predicateSearch).then($scope.setPredicate);
+        ResourcePanel.showProperties(triple, $event.target, $scope.predicateSearch).then($scope.setPredicate);
     };
 
     var lastDate;
@@ -372,10 +342,10 @@ angular.module('Pundit2.TripleComposer')
         
     };
     $scope.onClickObject = function($event){
-        ResourcePanel.showItemsForObject(buildUrisArray(), $event.target, $scope.objectSearch).then($scope.setObject);
+        ResourcePanel.showItemsForObject(triple, $event.target, $scope.objectSearch).then($scope.setObject);
     };
     $scope.onKeyUpObject = function($event){
-        ResourcePanel.showItemsForObject(buildUrisArray(), $event.target, $scope.objectSearch).then($scope.setObject);
+        ResourcePanel.showItemsForObject(triple, $event.target, $scope.objectSearch).then($scope.setObject);
     };
 
     $scope.onClickObjectCalendar = function($event){

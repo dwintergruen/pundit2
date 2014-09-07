@@ -64,24 +64,23 @@ angular.module('Pundit2.ResourcePanel')
                                    $filter, $rootScope, $popover, $q, $timeout, Preview, $window, Config, Item) {
 
     var resourcePanel = new BaseComponent('ResourcePanel', RESOURCEPANELDEFAULTS);
+    
+    // TODO remove obj and sub global var
+    var objTypes,
+        subTypes;
+
+    var searchTimer;
     var state = {};
 
     state.popover = null;
     state.defaultPlacement = 'bottom';
     state.resourcePromise = null;
 
-    /**
-     * @ngdoc method
-     * @name ResourcePanel#hide
-     * @module Pundit2.ResourcePanel
-     * @function
-     *
-     * @description
-     * Close and destroy the popover
-     *
-     */
-    resourcePanel.hide = function(){
+    // scope needed to instantiate a new popover using $popover provider
+    state.popoverOptions = {scope: $rootScope.$new()};
+    state.popoverOptions.trigger = "manual";
 
+    var hide = function(){
         if(state.popover === null){
             return;
         }
@@ -93,10 +92,6 @@ angular.module('Pundit2.ResourcePanel')
         state.popover.destroy();
         state.popover = null;
     };
-
-    // scope needed to instantiate a new popover using $popover provider
-    state.popoverOptions = {scope: $rootScope.$new()};
-    state.popoverOptions.trigger = "manual";
 
     // initialize a popover
     var initPopover = function(content, target, placement, type, contentTabs){
@@ -122,13 +117,13 @@ angular.module('Pundit2.ResourcePanel')
 
                 state.resourcePromise.resolve(new Date(this.selectedDate));
                 Preview.hideDashboardPreview();
-                resourcePanel.hide();
+                hide();
             };
 
             // close popoverLiteral popover without saving
             state.popoverOptions.scope.cancel = function() {
                 Preview.hideDashboardPreview();
-                resourcePanel.hide();
+                hide();
             };
 
         // initialize a literal popover
@@ -146,13 +141,13 @@ angular.module('Pundit2.ResourcePanel')
             state.popoverOptions.scope.save = function() {
                 state.resourcePromise.resolve(this.literalText);
                 Preview.hideDashboardPreview();
-                resourcePanel.hide();
+                hide();
             };
 
             // close popoverLiteral popover without saving
             state.popoverOptions.scope.cancel = function() {
                 Preview.hideDashboardPreview();
-                resourcePanel.hide();
+                hide();
             };
 
             // initialize a resource panel popover
@@ -178,7 +173,7 @@ angular.module('Pundit2.ResourcePanel')
                         var item = new Item(obj.value, options);
                         state.resourcePromise.resolve(item);
                         Preview.hideDashboardPreview();
-                        resourcePanel.hide();
+                        hide();
                     }
                 );
             }
@@ -199,7 +194,7 @@ angular.module('Pundit2.ResourcePanel')
 
             // handle save a new popoverLiteral
             state.popoverOptions.scope.save = function(elem) {
-                resourcePanel.hide();
+                hide();
                 Preview.hideDashboardPreview();
                 state.resourcePromise.resolve(elem);
             };
@@ -207,7 +202,7 @@ angular.module('Pundit2.ResourcePanel')
             // close popoverLiteral popover without saving
             state.popoverOptions.scope.cancel = function() {
                 Preview.hideDashboardPreview();
-                resourcePanel.hide();
+                hide();
             };
         }
 
@@ -272,6 +267,140 @@ angular.module('Pundit2.ResourcePanel')
         }
 
     };
+    
+    var isTypeIncluded = function(item, list){
+        for (var i in list){
+            if (item.type.indexOf(list[i]) !== -1){
+                return true;
+            }
+        }
+        return false;
+    };
+
+    var isItemValid = function(item, property){
+        if (typeof(item) === 'undefined'){
+            return false;
+        } else if (item === null){
+            return false;
+        } else if (typeof(property) !== 'undefined'){
+            if (typeof(item[property]) === 'undefined'){
+                return false;
+            } else if (item[property].length === 0){
+                return false;
+            }
+        }
+        return true;
+    };
+
+    var filterSubjectItems = function(items, predicate) {
+        var ret = [];
+        if (!isItemValid(predicate, 'domain')){
+            return items;
+        }
+
+        for (var i in items){
+            if (isTypeIncluded(items[i], predicate.domain)){
+                ret.push(items[i]);
+            }    
+        }
+
+        return ret;
+    };
+
+    var filterObjectItems = function(items, predicate) {
+        var ret = [];
+        if (!isItemValid(predicate, 'range')){
+            return items;
+        }
+
+        for (var i in items){
+            if (isTypeIncluded(items[i], predicate.range)){
+                ret.push(items[i]);
+            }    
+        }
+
+        return ret;
+    };
+
+
+    var searchOnVocab = function(label, selectors, triple, caller) {
+
+        var predicate = triple.predicate;
+
+        // if label is an empty string
+        // set empty array as results for each vocab
+        if(label === ''){
+            for(var i=0; i<selectors.length; i++){
+                (function(index) {
+
+                    for(var t=0; t<state.popoverOptions.scope.contentTabs.length; t++){
+                        if(state.popoverOptions.scope.contentTabs[t].title === selectors[index].config.label){
+                            state.popoverOptions.scope.contentTabs[t].items = [];
+                            state.popoverOptions.scope.contentTabs[t].isLoading = false;
+                            state.popoverOptions.scope.contentTabs[t].isStarted = false;
+                        }
+                    }
+                })(i);
+            }
+
+        // if label is a valid string
+        } else {
+            // for each selector...
+            for(var j=0; j<selectors.length; j++){
+
+                (function(index) {
+                    // ... set loading status...
+                    for(var t=0; t<state.popoverOptions.scope.contentTabs.length; t++){
+                        if(state.popoverOptions.scope.contentTabs[t].title === selectors[index].config.label){
+                            state.popoverOptions.scope.contentTabs[t].isLoading = true;
+                            state.popoverOptions.scope.contentTabs[t].isStarted = true;
+                        }
+                    }
+                    // ... and search label for each selector
+                    selectors[index].getItems(label).then(function(){
+
+                        // where results is done, update content for each selector
+                        for(var t=0; t<state.popoverOptions.scope.contentTabs.length; t++){
+                            if(state.popoverOptions.scope.contentTabs[t].title === selectors[index].config.label){
+                                var container = state.popoverOptions.scope.contentTabs[t].itemsContainer + label.split(' ').join('$');
+                                var itemsList = ItemsExchange.getItemsByContainer(container);
+
+                                if (predicate !== null){
+                                    if (caller === 'subject'){
+                                        itemsList = filterSubjectItems(itemsList, predicate);
+                                    } else if (caller === 'object'){
+                                        itemsList = filterObjectItems(itemsList, predicate);
+                                    }
+                                }
+
+                                state.popoverOptions.scope.contentTabs[t].items = itemsList;
+                                // and set loading to false
+                                state.popoverOptions.scope.contentTabs[t].isLoading = false;
+                            }
+                        }
+
+                    });
+                })(j);
+            }
+
+        }
+
+    };
+
+
+    /**
+     * @ngdoc method
+     * @name ResourcePanel#hide
+     * @module Pundit2.ResourcePanel
+     * @function
+     *
+     * @description
+     * Close and destroy the popover
+     *
+     */
+    resourcePanel.hide = function(){
+        hide();
+    };
 
     /**
      * @ngdoc method
@@ -295,7 +424,7 @@ angular.module('Pundit2.ResourcePanel')
         content.literalText = text;
 
         if (state.popover !== null && state.popover.clickTarget !== target) {
-            resourcePanel.hide();
+            hide();
             state.popover = initPopover(content, target, "", 'literal');
             state.popover.$promise.then(function() {
                 state.popover.show();
@@ -347,7 +476,7 @@ angular.module('Pundit2.ResourcePanel')
 
         // if click a different popover, hide the shown popover and show the clicked one
         else if (state.popover !== null && state.popover.clickTarget !== target) {
-            resourcePanel.hide();
+            hide();
             state.popover = initPopover( "", target, "", 'calendar');
             state.popover.$promise.then(function() {
                 state.popover.show();
@@ -409,15 +538,12 @@ angular.module('Pundit2.ResourcePanel')
 
         // if click a different popover, hide the shown popover and show the clicked one
         else if (state.popover !== null && state.popover.clickTarget !== target) {
-            resourcePanel.hide();
+            hide();
             state.popover = initPopover(content, target, "", 'resourcePanel', contentTabs);
             state.popover.$promise.then(state.popover.show);
         } // if click a different popover, hide the shown popover and show the clicked one
 
     };
-
-        var searchTimer;
-
 
     /**
      * @ngdoc method
@@ -427,14 +553,14 @@ angular.module('Pundit2.ResourcePanel')
      *
      * @description
      * Open a popover where subject items are shown grouped according from their provenance ('Page items', 'My items', 'Vocabularies').
-     * If URI predicate is not defined in the triple, all items will be shown.
-     * If URI predicate is defined in the triple, will be shown only items whose types are compatible with predicate domain
+     * If predicate is not defined in the triple, all items will be shown.
+     * If predicate is defined in the triple, will be shown only items whose types are compatible with predicate domain
      *
      * My items are visible only if user is logged in.
      *
      * It is possible to insert a label to filter shown items and start a searching of new items in the vocabularies.
      *
-     * @param {Array} triple Array of URI (for details content of this array, see {@link #!/api/Pundit2.ResourcePanel/service/ResourcePanel here})
+     * @param {Object} triple object (for details content of this object, see {@link #!/api/Pundit2.ResourcePanel/service/ResourcePanel here})
      * @param {DOMElement} target DOM Element where to append the popover
      * @param {string} label label used to search subject in the vocabularies and filter shown Page Items and My Items
      * @return {Promise} return a promise that will be resolved when a subject is selected
@@ -479,11 +605,10 @@ angular.module('Pundit2.ResourcePanel')
 
             if(typeof(triple) !== 'undefined') {
 
-                // predicate is the second element of the triple
-                var predicate = triple[1];
+                var predicate = triple.predicate;
 
                 // if predicate is not defined
-                if(typeof(predicate) === 'undefined' || predicate === "") {
+                if(predicate === null) {
                     // all items are good
 
                     myItems = ItemsExchange.getItemsByContainer(myItemsContainer);
@@ -491,7 +616,7 @@ angular.module('Pundit2.ResourcePanel')
                     // if predicate is a valid uri
                 } else {
                     // get item predicate and check his domain
-                    var itemPredicate = ItemsExchange.getItemByUri(predicate);
+                    var itemPredicate = ItemsExchange.getItemByUri(predicate.uri);
                     // predicate with empty domain
                     if(typeof(itemPredicate) === 'undefined' || typeof(itemPredicate.domain) === 'undefined' || itemPredicate.domain.length === 0 || itemPredicate.domain[0] === "") {
                         // all items are good
@@ -529,70 +654,6 @@ angular.module('Pundit2.ResourcePanel')
 
     };
 
-    var searchOnVocab = function(label, selectors, triple, caller) {
-
-        var predicate = (triple[1] !== '' ? ItemsExchange.getItemByUri(triple[1]) : undefined);
-
-        // if label is an empty string
-        // set empty array as results for each vocab
-        if(label === ''){
-            for(var i=0; i<selectors.length; i++){
-                (function(index) {
-
-                    for(var t=0; t<state.popoverOptions.scope.contentTabs.length; t++){
-                        if(state.popoverOptions.scope.contentTabs[t].title === selectors[index].config.label){
-                            state.popoverOptions.scope.contentTabs[t].items = [];
-                            state.popoverOptions.scope.contentTabs[t].isLoading = false;
-                            state.popoverOptions.scope.contentTabs[t].isStarted = false;
-                        }
-                    }
-                })(i);
-            }
-
-        // if label is a valid string
-        } else {
-            // for each selector...
-            for(var j=0; j<selectors.length; j++){
-
-                (function(index) {
-                    // ... set loading status...
-                    for(var t=0; t<state.popoverOptions.scope.contentTabs.length; t++){
-                        if(state.popoverOptions.scope.contentTabs[t].title === selectors[index].config.label){
-                            state.popoverOptions.scope.contentTabs[t].isLoading = true;
-                            state.popoverOptions.scope.contentTabs[t].isStarted = true;
-                        }
-                    }
-                    // ... and search label for each selector
-                    selectors[index].getItems(label).then(function(){
-
-                        // where results is done, update content for each selector
-                        for(var t=0; t<state.popoverOptions.scope.contentTabs.length; t++){
-                            if(state.popoverOptions.scope.contentTabs[t].title === selectors[index].config.label){
-                                var container = state.popoverOptions.scope.contentTabs[t].itemsContainer + label.split(' ').join('$');
-                                var itemsList = ItemsExchange.getItemsByContainer(container);
-
-                                if (typeof(predicate) !== 'undefined'){
-                                    if (caller === 'subject'){
-                                        itemsList = filterSubjectItems(itemsList, predicate);
-                                    } else if (caller === 'object'){
-                                        itemsList = filterObjectItems(itemsList, predicate);
-                                    }
-                                }
-
-                                state.popoverOptions.scope.contentTabs[t].items = itemsList;
-                                // and set loading to false
-                                state.popoverOptions.scope.contentTabs[t].isLoading = false;
-                            }
-                        }
-
-                    });
-                })(j);
-            }
-
-        }
-
-    };
-
     /**
      * @ngdoc method
      * @name ResourcePanel#showItemsForObject
@@ -601,14 +662,14 @@ angular.module('Pundit2.ResourcePanel')
      *
      * @description
      * Open a popover where object items are shown grouped according from their provenance ('Page items', 'My items', 'Vocabularies').
-     * If URI predicate is not defined in the triple, all items will be shown.
-     * If URI predicate is defined in the triple, will be shown only items whose types are compatible with predicate range
+     * If predicate is not defined in the triple, all items will be shown.
+     * If predicate is defined in the triple, will be shown only items whose types are compatible with predicate range
      *
      * My items are visible only if user is logged in.
      *
      * It is possible to insert a label to filter shown items and start a searching of new items in the vocabularies.
      *
-     * @param {Array} triple Array of URI (for details content of this array, see {@link #!/api/Pundit2.ResourcePanel/service/ResourcePanel here})
+     * @param {Object} triple object (for details content of this object, see {@link #!/api/Pundit2.ResourcePanel/service/ResourcePanel here})
      * @param {DOMElement} target DOM Element where to append the popover
      * @param {string} label label used to search subject in the vocabularies and filter shown Page Items and My Items
      * @return {Promise} return a promise that will be resolved when a subject is selected
@@ -653,11 +714,10 @@ angular.module('Pundit2.ResourcePanel')
 
         if(typeof(triple) !== 'undefined'){
 
-            // predicate is the second element of the triple
-            var predicate = triple[1];
+            var predicate = triple.predicate;
 
             // if predicate is not defined
-            if( typeof(predicate) === 'undefined' || predicate === "") {
+            if(predicate === null) {
                 // all items are good
                 myItems = ItemsExchange.getItemsByContainer(myItemsContainer);
                 pageItems = ItemsExchange.getItemsByContainer(pageItemsContainer);
@@ -665,7 +725,7 @@ angular.module('Pundit2.ResourcePanel')
 
             } else {
                 // get item predicate and check his domain
-                var itemPredicate = ItemsExchange.getItemByUri(predicate);
+                var itemPredicate = ItemsExchange.getItemByUri(predicate.uri);
                 // predicate with empty domain
                 if(typeof(itemPredicate) === 'undefined' || typeof(itemPredicate.range) === 'undefined' || itemPredicate.range.length === 0 || itemPredicate.range[0] === ""){
                     // all items are good
@@ -714,9 +774,6 @@ angular.module('Pundit2.ResourcePanel')
 
     };
 
-    var objTypes,
-        subTypes;
-
     /**
      * @ngdoc method
      * @name ResourcePanel#showProperties
@@ -725,23 +782,21 @@ angular.module('Pundit2.ResourcePanel')
      *
      * @description
      * Open a popover where predicate items are shown.
-     * If URI subject and object are both not defined in the triple, all predicates will be shown.
-     * If only URI subject is defined in the triple, will be shown only predicates whose domain is compatible with subject types
-     * If only URI object is defined in the triple, will be shown only predicates whose range is compatible with subject types
+     * If subject and object are both not defined in the triple, all predicates will be shown.
+     * If only subject is defined in the triple, will be shown only predicates whose domain is compatible with subject types
+     * If only object is defined in the triple, will be shown only predicates whose range is compatible with subject types
      *
      * My items are visible only if user is logged in.
      *
      * It is possible to insert a label to filter shown predicates.
      *
-     * @param {Array} triple Array of URI (for details content of this array, see {@link #!/api/Pundit2.ResourcePanel/service/ResourcePanel here})
+     * @param {Object} triple object (for details content of this object, see {@link #!/api/Pundit2.ResourcePanel/service/ResourcePanel here})
      * @param {DOMElement} target DOM Element where to append the popover
      * @param {string} label label used to search subject in the vocabularies and filter shown Page Items and My Items
      * @return {Promise} return a promise that will be resolved when a subject is selected
      *
      */
     resourcePanel.showProperties = function(triple, target, label) {
-
-        // TODO ALL THIS FUNCTION NEED SEVERAL REFACTORING
 
         if(typeof(target) === 'undefined'){
             target = state.popover.clickTarget;
@@ -755,143 +810,46 @@ angular.module('Pundit2.ResourcePanel')
             setLabelToSearch(label);
 
         } else {
-            resourcePanel.hide();
+            hide();
             var propertiesContainer = Client.options.relationsContainer;
             var properties;
             var itemSubject;
             var itemObject;
 
+
+            // TODO Add some comments
             if(typeof(triple) !== 'undefined') {
 
-                // subject is the first element of the triple
-                var subject = triple[0];
-                // object is the third element of the triple
-                var object = triple[2];
+                var subject = triple.subject;
+                var object = triple.object;
 
-                // if subject and object are both not defined
-                if((typeof(subject) === 'undefined' || subject === "") && (typeof(object) === 'undefined' || object === "")) {
-                    // all properties are good
-                    properties = ItemsExchange.getItemsByContainer(propertiesContainer);
-                    showPopoverResourcePanel(target, "", "", properties, label, 'pr');
+                properties = ItemsExchange.getItemsByContainer(propertiesContainer);
 
-                    // if only subject is defined
-                } else if((typeof(subject) !== 'undefined' && subject !== "") && (typeof(object) === 'undefined' || object === "")) {
+                if(isItemValid(subject, 'type')){
+                    subTypes = subject.type;
+                    properties = $filter('filterByTypes')(properties, 'domain', subTypes);
+                }
 
-                    // get subject item
-                    itemSubject = ItemsExchange.getItemByUri(subject);
-                    // if subject item has no type
-                    if(typeof(itemSubject) === 'undefined') {
-                        // all properties are good
-                        properties = ItemsExchange.getItemsByContainer(propertiesContainer);
-                        showPopoverResourcePanel(target, "", "", properties, label, 'pr');
-                    } else {
-                        if (itemSubject.type.length === 0 || itemSubject.type[0] === ""){
-                            properties = ItemsExchange.getItemsByContainer(propertiesContainer);
-                            showPopoverResourcePanel(target, "", "", properties, label, 'pr');
-                        } else{
-                            // predicate with a valid domain
-                            subTypes = itemSubject.type;
-                            properties = ItemsExchange.getItemsFromContainerByFilter(propertiesContainer, filterByDomain);
-                            showPopoverResourcePanel(target, "", "", properties, label, 'pr');
-                        }
+                if(isItemValid(object)){
+                    objTypes = [];
+
+                    if(isItemValid(object, 'type')){
+                        objTypes = object.type;
+                    } else if(object instanceof Date){
+                        objTypes = [NameSpace.dateTime];
+                    } else if(typeof(object) === 'string'){
+                        objTypes = [NameSpace.rdfs.literal];
                     }
 
-                    // if only object is defined
-                } else if((typeof(object) !== 'undefined' && object !== "") && (typeof(subject) === 'undefined' || subject === "")) {
-                    // get object item
-                    itemObject = ItemsExchange.getItemByUri(object);
-                    // if object has no type
-                    if(typeof(itemObject) === 'undefined') {
-                        
-                        if(object instanceof Date){
-                            objTypes = [NameSpace.dateTime];
-                            properties = ItemsExchange.getItemsFromContainerByFilter(propertiesContainer, filterByRange);
-                            showPopoverResourcePanel(target, "", "", properties, label, 'pr');
-                        } else if (object !== ""){
-                            objTypes = [NameSpace.rdfs.literal];
-                            properties = ItemsExchange.getItemsFromContainerByFilter(propertiesContainer, filterByRange);
-                            showPopoverResourcePanel(target, "", "", properties, label, 'pr');
-                        } else{
-                            // all properties are good
-                            properties = ItemsExchange.getItemsByContainer(propertiesContainer);
-                            showPopoverResourcePanel(target, "", "", properties, label, 'pr');
-                        }
-                    } else{
-                        if (itemObject.type.length === 0 || itemObject.type[0] === ""){
-                            // all properties are good
-                            properties = ItemsExchange.getItemsByContainer(propertiesContainer);
-                            showPopoverResourcePanel(target, "", "", properties, label, 'pr');
-                        } else{
-                            objTypes = itemObject.type;
-                            properties = ItemsExchange.getItemsFromContainerByFilter(propertiesContainer, filterByRange);
-                            showPopoverResourcePanel(target, "", "", properties, label, 'pr');
-                        }
-                    }
+                    properties = $filter('filterByTypes')(properties, 'range', objTypes);
+                }
 
-                    // subject and object are both defined
-                } else if((typeof(object) !== 'undefined' && object !== "") && (typeof(subject) !== 'undefined' && subject !== "")) {
-                    itemObject = ItemsExchange.getItemByUri(object);
-                    itemSubject = ItemsExchange.getItemByUri(subject);
-
-                    if((typeof(itemSubject) === 'undefined') && (typeof(itemObject) === 'undefined')) {
-                        
-                        if(object instanceof Date){
-                            objTypes = [NameSpace.dateTime];
-                            properties = ItemsExchange.getItemsFromContainerByFilter(propertiesContainer, filterByRange);
-                            showPopoverResourcePanel(target, "", "", properties, label, 'pr');
-                        } else if (object !== ""){
-                            objTypes = [NameSpace.rdfs.literal];
-                            properties = ItemsExchange.getItemsFromContainerByFilter(propertiesContainer, filterByRange);
-                            showPopoverResourcePanel(target, "", "", properties, label, 'pr');
-                        } else{
-                            // all properties are good
-                            properties = ItemsExchange.getItemsByContainer(propertiesContainer);
-                            showPopoverResourcePanel(target, "", "", properties, label, 'pr');
-                        }
-                    } else if ((itemSubject.type.length === 0 || itemSubject.type[0] === "") && (itemObject.type.length === 0 || itemObject.type[0] === "")){
-                        // all properties are good
-                        properties = ItemsExchange.getItemsByContainer(propertiesContainer);
-                        showPopoverResourcePanel(target, "", "", properties, label, 'pr');
-                    }
-
-                    // subject has no type, object has valid types --> filterByRange
-                    // else if((typeof(itemSubject.type) === 'undefined' || itemSubject.type.length === 0 || itemSubject.type[0] === "") && (typeof(itemObject.type) !== 'undefined' && itemObject.type[0] !== "")) {
-                    else if((typeof(itemSubject.type) === 'undefined' || itemSubject.type.length === 0 || itemSubject.type[0] === "") && (typeof(itemObject) !== 'undefined')) {
-                        objTypes = itemObject.type;
-                        properties = ItemsExchange.getItemsFromContainerByFilter(propertiesContainer, filterByRange);
-                        showPopoverResourcePanel(target, "", "", properties, label, 'pr');
-                    }
-
-                    // object has no type, subject has valid types --> filterByDomain
-                    // else if((typeof(itemSubject.type) !== 'undefined' && itemSubject.type[0] !== "") && (typeof(itemObject.type) === 'undefined' || itemObject.type.length === 0 || itemObject.type[0] === "")) {
-                    else if((typeof(itemSubject.type) !== 'undefined' && itemSubject.type[0] !== "") && (typeof(itemObject) === 'undefined')) {
-                        subTypes = itemSubject.type;
-
-                        if(object instanceof Date){
-                            objTypes = [NameSpace.dateTime];
-                            properties = ItemsExchange.getItemsFromContainerByFilter(propertiesContainer, filterByRangeAndDomain);
-                            showPopoverResourcePanel(target, "", "", properties, label, 'pr');
-                        } else if (object !== ""){
-                            objTypes = [NameSpace.rdfs.literal];
-                            properties = ItemsExchange.getItemsFromContainerByFilter(propertiesContainer, filterByRangeAndDomain);
-                            showPopoverResourcePanel(target, "", "", properties, label, 'pr');
-                        } else{
-                            properties = ItemsExchange.getItemsFromContainerByFilter(propertiesContainer, filterByDomain);
-                            showPopoverResourcePanel(target, "", "", properties, label, 'pr');
-                        }
-
-                    }
-
-                    // both object and subject have valid types --> filterByDomainAndRange
-                    // else if((typeof(itemSubject.type) !== 'undefined' && itemSubject.type[0] !== "") && (typeof(itemObject.type) !== 'undefined' && itemObject.type[0] !== "")) {
-                    else if((typeof(itemSubject.type) !== 'undefined' && itemSubject.type[0] !== "") && (typeof(itemObject) !== 'undefined')) {
-                        subTypes = itemSubject.type;
-                        objTypes = itemObject.type;
-                        properties = ItemsExchange.getItemsFromContainerByFilter(propertiesContainer, filterByRangeAndDomain);
-                        showPopoverResourcePanel(target, "", "", properties, label, 'pr');
-                    }
-
-                } // end else both subject and object are defined
+                if(typeof(properties) !== 'undefined' && properties.length > 0){
+                    showPopoverResourcePanel(target, "", "", properties, label, 'pr');                    
+                } else{
+                    // TODO Show error? 
+                    showPopoverResourcePanel(target, "", "", [], label, 'pr');                    
+                }
 
             } // end triple !== undefined
         }
@@ -899,116 +857,5 @@ angular.module('Pundit2.ResourcePanel')
         return state.resourcePromise.promise;
     };
 
-    var isTypeIncluded = function(item, list){
-        for (var i in list){
-            if (item.type.indexOf(list[i]) !== -1){
-                return true;
-            }
-        }
-        return false;
-    };
-
-    var filterSubjectItems = function(items, predicate) {
-        var ret = [];
-        if (typeof(predicate.domain) === 'undefined' || predicate.domain.length === 0){
-            return items;
-        }
-
-        for (var i in items){
-            if (isTypeIncluded(items[i], predicate.domain)){
-                ret.push(items[i]);
-            }    
-        }
-
-        return ret;
-    };
-
-    var filterObjectItems = function(items, predicate) {
-        var ret = [];
-        if (typeof(predicate.range) === 'undefined' || predicate.range.length === 0){
-            return items;
-        }
-
-        for (var i in items){
-            if (isTypeIncluded(items[i], predicate.range)){
-                ret.push(items[i]);
-            }    
-        }
-
-        return ret;
-    };
-
-    // get only items matching with predicate domain
-    var filterByDomain = function(item) {
-        if(typeof(item.domain) !== 'undefined'){
-
-            if (item.domain.length === 0) {
-                return true;
-            }
-
-            for(var i=0; i<subTypes.length; i++){
-                for (var j=0; j<item.domain.length; j++){
-                    if(subTypes[i] === item.domain[j]) {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        } else {
-            return false;
-        }
-    };
-
-    // get only items matching with predicate domain
-    var filterByRange = function(item) {
-        if(typeof(item.range) !== 'undefined'){
-
-            if (item.range.length === 0) {
-                return true;
-            }
-
-            for(var i=0; i<objTypes.length; i++){
-                for (var j=0; j<item.range.length; j++){
-                    if(objTypes[i] === item.range[j]) {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        } else {
-            return false;
-        }
-    };
-
-    // get only items matching with predicate domain and range
-    var filterByRangeAndDomain = function(item) {
-        var ret = filterByRange(item) && filterByDomain(item);
-        return ret;
-    };
-
     return resourcePanel;
-})
-    .filter('filterByLabel', function() {
-        return function(input, search) {
-            var results = [];
-            if(typeof(search) !== 'undefined' && search !== ''){
-                angular.forEach(input, function (item) {
-                    var label = item.label;
-                    var str = search.toLowerCase().replace(/\s+/g, ' '),
-                        strParts = str.split(' '),
-                        reg = new RegExp(strParts.join('.*'));
-
-                    if (label.toLowerCase().match(reg) !== null) {
-                        results.push(item);
-                        return;
-                    }
-
-                });
-            } else {
-                results = input;
-            }
-
-            return results;
-
-        };
-    });
+});

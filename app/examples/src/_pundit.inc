@@ -154,6 +154,7 @@
     <script src="../src/Preview/NotebookPreview.ctrl.js"></script>
 
     <script src="../src/ResourcePanel/ResourcePanel.js"></script>
+    <script src="../src/ResourcePanel/ResourcePanel.filter.js"></script>
     <script src="../src/ResourcePanel/ResourcePanel.service.js"></script>
     <script src="../src/ResourcePanel/ResourcePanel.ctrl.js"></script>
 
