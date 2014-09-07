@@ -609,7 +609,7 @@ angular.module('Pundit2.ResourcePanel')
                 var predicate = triple.predicate;
 
                 // if predicate is not defined
-                if(predicate === null) {
+                if(typeof(predicate) === 'undefined' || predicate === null) {
                     // all items are good
 
                     myItems = ItemsExchange.getItemsByContainer(myItemsContainer);
@@ -718,7 +718,7 @@ angular.module('Pundit2.ResourcePanel')
             var predicate = triple.predicate;
 
             // if predicate is not defined
-            if(predicate === null) {
+            if(typeof(predicate) === 'undefined' || predicate === null) {
                 // all items are good
                 myItems = ItemsExchange.getItemsByContainer(myItemsContainer);
                 pageItems = ItemsExchange.getItemsByContainer(pageItemsContainer);

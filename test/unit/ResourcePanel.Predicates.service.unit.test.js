@@ -48,11 +48,11 @@ describe('Subject Popover Resource Panel service', function() {
         description: "item description"
     };
 
-    var propCommonTopic = {
-        label: "item common topic",
-        description: "item description",
-        type: ["http://www.freebase.com/schema/common/topic", "http://www.freebase.com/schema/interests/collection_category", "http://www.freebase.com/schema/base/popstra/product"]
-    };
+    // var propCommonTopic = {
+    //     label: "item common topic",
+    //     description: "item description",
+    //     type: ["http://www.freebase.com/schema/common/topic", "http://www.freebase.com/schema/interests/collection_category", "http://www.freebase.com/schema/base/popstra/product"]
+    // };
 
     var propNoMatch = {
         label: "item image",

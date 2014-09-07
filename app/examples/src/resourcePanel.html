@@ -123,18 +123,22 @@
     var ResourcePanelDemoCtrl = function($scope, ResourcePanel, Annotation, MyItems, MyPundit, Client, Item, ItemsExchange, SelectorsManager, FreebaseSelector, MurucaSelector, KorboBasketSelector, $filter) {
 
         SelectorsManager.init();
-        $scope.triple = ["", "", ""];
+        $scope.triple = {
+            subject: null,
+            predicate: null,
+            object: null
+        };
 
         $scope.$watch('predicateUri', function(pr){
-            $scope.triple[1] = pr;
+            $scope.triple.predicate = pr;
         });
 
         $scope.$watch('subjectUri', function(sub){
-            $scope.triple[0] = sub;
+            $scope.triple.subject = sub;
         });
 
         $scope.$watch('objectUri', function(obj){
-            $scope.triple[2] = obj;
+            $scope.triple.object = obj;
         });
 
         var toLoad = ["8fd05a49", "65286186", "385c1647"];
@@ -178,6 +182,8 @@
         };
 
         $scope.testSubject = function(elementID, $event){
+
+            console.log($scope.triple);
 
             ResourcePanel.showItemsForSubject($scope.triple, $event.target, $scope.subject).then(function(value){
                 angular.element('#'+elementID).text(value.label);

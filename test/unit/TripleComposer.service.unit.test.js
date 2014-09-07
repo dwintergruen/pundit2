@@ -321,7 +321,9 @@ describe('TripleComposer service', function() {
             domain: []
         };
         // add pred to relations
-        var item = new Item("http://predicateTestID", pred);
+        var item;
+        item = new Item("http://predicateTestID", pred);
+
         var currentTmpl = new Template('testID', {
             triples: [
                 {
@@ -354,7 +356,9 @@ describe('TripleComposer service', function() {
             domain: []
         };
         // add pred to relations
-        var item = new Item("http://predicateTestID", pred);
+        var item;
+        item = new Item("http://predicateTestID", pred);
+        
         var currentTmpl = new Template('testID', {
             triples: [
                 {
