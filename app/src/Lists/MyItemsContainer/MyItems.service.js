@@ -140,13 +140,15 @@ angular.module("Pundit2.MyItemsContainer")
     // then we add it to "myItems" container too
 
     myItems.getAllItems = function(){
-        var item;
+        var item,
+            promise = $q.defer();
 
         if (opInProgress || !MyPundit.isUserLogged() ) {
             myItems.log('User not logged');
             return;
         }
         opInProgress = true;
+        Toolbar.setLoading(true);
 
         $http({
             headers: { 'Accept': 'application/json' },
@@ -155,15 +157,18 @@ angular.module("Pundit2.MyItemsContainer")
             withCredentials: true
         }).success(function(data) {
             var num = 0;
+            Toolbar.setLoading(false);
 
             if (typeof(data) === 'undefined') {
                 opInProgress = false;
+                promise.resolve();
                 myItems.log('Undefined Server response');
                 return;
             }
 
             if (typeof(data.redirectTo) !== 'undefined') {
                 opInProgress = false;
+                promise.resolve();
                 myItems.log('Get all my items on server produce a redirect response to: ', data);
                 return;
             }
@@ -192,14 +197,19 @@ angular.module("Pundit2.MyItemsContainer")
                 // add to myItems container
                 ItemsExchange.addItemToContainer(item, myItems.options.container);
             }
-            opInProgress = false;
 
+            opInProgress = false;
+            promise.resolve();
             myItems.log('Retrieved my items from the server: '+num+' items');
 
         }).error(function(msg) {
+            Toolbar.setLoading(false);
             opInProgress = false;
+            promise.reject();
             myItems.log('Http error while retrieving my items from the server: ', msg);
         });
+
+        return promise.promise;
     };
 
     myItems.deleteAllItems = function(){
@@ -228,6 +238,7 @@ angular.module("Pundit2.MyItemsContainer")
 
             if (typeof(data.redirectTo) !== 'undefined') {
                 opInProgress = false;
+                promise.resolve();
                 myItems.log('Deleted all my items on server produce a redirect response to: ', data);
                 return;
             }
@@ -240,10 +251,10 @@ angular.module("Pundit2.MyItemsContainer")
             
             myItems.log('Deleted all my items on server', data);
         }).error(function(msg) {
-            opInProgress = false;
             Toolbar.setLoading(false);
-            myItems.err('Cant delete my items on server: ', msg);
+            opInProgress = false;
             promise.reject();
+            myItems.err('Cant delete my items on server: ', msg);
         });
 
         return promise.promise;
@@ -284,6 +295,8 @@ angular.module("Pundit2.MyItemsContainer")
 
             if (typeof(data.redirectTo) !== 'undefined') {
                 opInProgress = false;
+                Toolbar.setLoading(false);
+                promise.resolve();
                 myItems.log('Deleted single my item on server produce a redirect response to: ', data);
                 return;
             }
@@ -299,8 +312,8 @@ angular.module("Pundit2.MyItemsContainer")
 
         }).error(function(msg) {
             opInProgress = false;
-            promise.reject();
             Toolbar.setLoading(false);
+            promise.reject();
             myItems.err('Cant delete a my item on the server: ', msg);
         });
 
@@ -340,6 +353,8 @@ angular.module("Pundit2.MyItemsContainer")
 
             if (typeof(data.redirectTo) !== 'undefined') {
                 opInProgress = false;
+                Toolbar.setLoading(false);
+                promise.resolve();
                 myItems.log('Add single item to my items on server produce a redirect response to: ', data);
                 return;
             }
@@ -348,15 +363,15 @@ angular.module("Pundit2.MyItemsContainer")
             // controller watch now update the view
             ItemsExchange.addItemToContainer(value, myItems.options.container);
             opInProgress = false;
-            promise.resolve();
             Toolbar.setLoading(false);
+            promise.resolve();
 
             myItems.log('Added item to my items: '+ value.label);
 
         }).error(function(msg) {
             opInProgress = false;
-            promise.reject();
             Toolbar.setLoading(false);
+            promise.reject();
 
             myItems.err('Cant add item to my items on the server: ', msg);
         });
