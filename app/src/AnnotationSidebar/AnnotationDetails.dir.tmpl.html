@@ -109,7 +109,12 @@
                                 <!-- <span class="{{object.icon}}"></span> -->
                                 <div class="pnd-annotation-item-header-text">
 	                                <span class="pnd-icon pnd-icon-circle"></span>
-	                                <span ng-bind-html="object.label">{{object.label}}</span>
+                                    <span ng-if="object.typeClass!='uri'">
+                                        {{object.label}}
+                                    </span>
+	                                <span ng-if="object.typeClass=='uri'" ng-bind-html="object.label">
+                                        {{object.label}}
+                                    </span>
                                 </div>
                                 <button type="button" class="btn  btn-link pull-right">
                                         <span ng-class="{true:'pnd-icon-caret-up', false:'pnd-icon-sort-down'}[objInfo]"></span>
@@ -121,7 +126,7 @@
                                         <item-preview class="pnd-preview clearfix" uri="{{object.uri}}" sticking="false"></item-preview>
                                     </span>
                                     <span ng-if="object.typeClass!='uri'">
-                                        <span ng-bind-html="object.label">{{object.label}}</span>
+                                        <span>{{object.label}}</span>
                                     </span>
                                 </span>
                             </div>
