@@ -19,7 +19,8 @@
       </tr>
       {% for component in componentGroup.components %}
       <tr>
-        <td>{$ component.id | link(component.name, component) $}</td>
+        <td><a href="#!/{$ component.path $}">{$ component.name $}</a></td>
+        <!-- <td>{$ component.id | link(component.name, component) $}</td> -->
         <td>{$ component.description | firstParagraph | marked $}</td>
       </tr>
       {% endfor %}
