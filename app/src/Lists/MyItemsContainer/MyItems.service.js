@@ -157,11 +157,13 @@ angular.module("Pundit2.MyItemsContainer")
             var num = 0;
 
             if (typeof(data) === 'undefined') {
+                opInProgress = false;
                 myItems.log('Undefined Server response');
                 return;
             }
 
             if (typeof(data.redirectTo) !== 'undefined') {
+                opInProgress = false;
                 myItems.log('Get all my items on server produce a redirect response to: ', data);
                 return;
             }
@@ -190,8 +192,8 @@ angular.module("Pundit2.MyItemsContainer")
                 // add to myItems container
                 ItemsExchange.addItemToContainer(item, myItems.options.container);
             }
-
             opInProgress = false;
+
             myItems.log('Retrieved my items from the server: '+num+' items');
 
         }).error(function(msg) {
@@ -225,6 +227,7 @@ angular.module("Pundit2.MyItemsContainer")
             Toolbar.setLoading(false);
 
             if (typeof(data.redirectTo) !== 'undefined') {
+                opInProgress = false;
                 myItems.log('Deleted all my items on server produce a redirect response to: ', data);
                 return;
             }
@@ -237,8 +240,8 @@ angular.module("Pundit2.MyItemsContainer")
             
             myItems.log('Deleted all my items on server', data);
         }).error(function(msg) {
-            Toolbar.setLoading(false);
             opInProgress = false;
+            Toolbar.setLoading(false);
             myItems.err('Cant delete my items on server: ', msg);
             promise.reject();
         });
@@ -280,6 +283,7 @@ angular.module("Pundit2.MyItemsContainer")
         }).success(function(data) {
 
             if (typeof(data.redirectTo) !== 'undefined') {
+                opInProgress = false;
                 myItems.log('Deleted single my item on server produce a redirect response to: ', data);
                 return;
             }
@@ -288,8 +292,8 @@ angular.module("Pundit2.MyItemsContainer")
             // controller watch now update the view
             ItemsExchange.removeItemFromContainer(value, myItems.options.container);
             promise.resolve();
-            Toolbar.setLoading(false);
             opInProgress = false;
+            Toolbar.setLoading(false);
 
             myItems.log('Deleted from my item: '+ value.label);
 
@@ -335,6 +339,7 @@ angular.module("Pundit2.MyItemsContainer")
         }).success(function(data) {
 
             if (typeof(data.redirectTo) !== 'undefined') {
+                opInProgress = false;
                 myItems.log('Add single item to my items on server produce a redirect response to: ', data);
                 return;
             }
