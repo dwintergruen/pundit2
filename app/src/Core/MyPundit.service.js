@@ -154,10 +154,10 @@ angular.module('Pundit2.Core')
             withCredentials: true
             
         }).success(function(data) {
+            loginServer = data.loginServer;
             // user is not logged in
             if (data.loginStatus === 0) {
                 isUserLogged = false;
-                loginServer = data.loginServer;
                 promise.resolve(false);
             } else {
                 // user is logged in
