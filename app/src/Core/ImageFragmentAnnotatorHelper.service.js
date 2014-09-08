@@ -108,7 +108,7 @@ angular.module('Pundit2.Core')
 
     imageFragmentHelper.drawPolygonOverImage = function(points, img) {
 
-        if(typeof(img) === 'undefined' || !img.is('img, svg')){
+        if(typeof(img) === 'undefined' || typeof(points) === 'undefined' || !img.is('img, svg')){
             return false;
         }
 
