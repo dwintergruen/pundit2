@@ -48,9 +48,10 @@ angular.module('Pundit2.Core')
         if (e.data.type === msg.addPolygon) {
             var lastData = e.data;
             if(!MyPundit.isUserLogged()) {
-                $rootScope.$on('consolidation-completed', function() {
+                var der = $rootScope.$on('consolidation-completed', function() {
                     var item = imageFragmentHelper.createItemFromPolygon(lastData.poly);
                     MyItems.addItem(item);
+                    der(); // Remove listener on rootScope
                 });
                 MyPundit.login();
             } else {
