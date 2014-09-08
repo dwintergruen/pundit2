@@ -80,13 +80,35 @@ describe('MyItems service', function() {
 
     });
 
-
-    it('should get my items', function(){
+    it('should perform only one operation at a time', function(){
 
         MyPundit.setIsUserLogged(true);
 
         $httpBackend.whenGET(NameSpace.get('asPref')).respond(myItemsHttpResponse);
+        // make an http request
         MyItems.getAllItems();
+        // try to make a second operation at the same time
+        expect(MyItems.addItem(new Item(myItemsHttpResponse.value[0].uri))).toBeUndefined();
+
+        $httpBackend.flush();
+
+        // the second operation does not influence the result
+        var items = ItemsExchange.getItemsByContainer(MYITEMSDEFAULTS.container);
+        expect(items.length).toBe(2);
+        expect(items[0].uri).toBe(myItemsHttpResponse.value[0].uri);
+        expect(items[1].uri).toBe(myItemsHttpResponse.value[1].uri);
+
+    });
+
+    it('should get my items', function(){
+
+        MyPundit.setIsUserLogged(true);
+        var resolved = false;
+
+        $httpBackend.whenGET(NameSpace.get('asPref')).respond(myItemsHttpResponse);
+        MyItems.getAllItems().then(function(){
+            resolved = true;
+        });
         $httpBackend.flush();
 
         var items = ItemsExchange.getItemsByContainer(MYITEMSDEFAULTS.container);
@@ -94,29 +116,37 @@ describe('MyItems service', function() {
         expect(items.length).toBe(2);
         expect(items[0].uri).toBe(myItemsHttpResponse.value[0].uri);
         expect(items[1].uri).toBe(myItemsHttpResponse.value[1].uri);
+        expect(resolved).toBe(true);
 
     });
 
     it('should get my items and get redirect response', function(){
 
         MyPundit.setIsUserLogged(true);
+        var resolved = false;
 
         $httpBackend.whenGET(NameSpace.get('asPref')).respond(redirectResponse);
-        MyItems.getAllItems();
+        MyItems.getAllItems().then(function(){
+            resolved = true;
+        });
         $httpBackend.flush();
 
         var items = ItemsExchange.getItemsByContainer(MYITEMSDEFAULTS.container);
 
         expect(items.length).toBe(0);
+        expect(resolved).toBe(true);
 
     });
 
     it('should get my items from old pundit', function(){
 
         MyPundit.setIsUserLogged(true);
+        var resolved = false;
 
         $httpBackend.whenGET(NameSpace.get('asPref')).respond(oldPunditMyItemsHttpResponse);
-        MyItems.getAllItems();
+        MyItems.getAllItems().then(function(){
+            resolved = true;
+        });
         $httpBackend.flush();
 
         var items = ItemsExchange.getItemsByContainer(MYITEMSDEFAULTS.container);
@@ -128,15 +158,19 @@ describe('MyItems service', function() {
         // renamed property
         expect(angular.equals(items[0].uri, oldPunditMyItemsHttpResponse.value[0].value)).toBe(true);
         expect(angular.equals(items[0].type, oldPunditMyItemsHttpResponse.value[0].rdftype)).toBe(true);
+        expect(resolved).toBe(true);
 
     });
 
     it('should delete all my items when http success', function(){
 
         MyPundit.setIsUserLogged(true);
+        var resolved = false;
 
         $httpBackend.whenGET(NameSpace.get('asPref')).respond(myItemsHttpResponse);
-        MyItems.getAllItems();
+        MyItems.getAllItems().then(function(){
+            resolved = true;
+        });
         $httpBackend.flush();
 
         expect(ItemsExchange.getItemsByContainer(MYITEMSDEFAULTS.container).length).toBe(2);
@@ -146,6 +180,7 @@ describe('MyItems service', function() {
         $httpBackend.flush();
 
         expect(ItemsExchange.getItemsByContainer(MYITEMSDEFAULTS.container).length).toBe(0);
+        expect(resolved).toBe(true);
     });
 
     it('should not delete all my items when http success but get redirect response', function(){
@@ -185,12 +220,16 @@ describe('MyItems service', function() {
     it('should add one item to my items', function(){
 
         MyPundit.setIsUserLogged(true);
+        var resolved = false;
 
         $httpBackend.whenPOST(NameSpace.get('asPref')).respond(201, '');
-        MyItems.addItem(new Item(myItemsHttpResponse.value[0].uri));
+        MyItems.addItem(new Item(myItemsHttpResponse.value[0].uri)).then(function(){
+            resolved = true;
+        });
         $httpBackend.flush();
 
         expect(ItemsExchange.getItemsByContainer(MYITEMSDEFAULTS.container).length).toBe(1);
+        expect(resolved).toBe(true);
     });
 
     it('should not add one item to my items when http success but get redirect response', function(){
@@ -207,17 +246,22 @@ describe('MyItems service', function() {
     it('should not add one item to my items when http fail', function(){
 
         MyPundit.setIsUserLogged(true);
+        var rejected = false;
 
         $httpBackend.whenPOST(NameSpace.get('asPref')).respond(500, '');
-        MyItems.addItem(new Item(myItemsHttpResponse.value[0].uri));
+        MyItems.addItem(new Item(myItemsHttpResponse.value[0].uri)).catch(function(){
+            rejected = true;
+        });
         $httpBackend.flush();
 
         expect(ItemsExchange.getItemsByContainer(MYITEMSDEFAULTS.container).length).toBe(0);
+        expect(rejected).toBe(true);
     });
 
     it('should delete one item to my items', function(){
 
         MyPundit.setIsUserLogged(true);
+        var resolved = false;
 
         // add two items to my items
         $httpBackend.whenGET(NameSpace.get('asPref')).respond(myItemsHttpResponse);
@@ -229,12 +273,15 @@ describe('MyItems service', function() {
         expect(items.length).toBe(2);
 
         $httpBackend.whenPOST(NameSpace.get('asPref')).respond(201, '');
-        MyItems.deleteItem(items[1]);
+        MyItems.deleteItem(items[1]).then(function(){
+            resolved = true;
+        });
         $httpBackend.flush();
 
         var newItem = ItemsExchange.getItemsByContainer(MYITEMSDEFAULTS.container);
         expect(newItem.length).toBe(1);
         expect(newItem[0].uri).toBe(itemUri);
+        expect(resolved).toBe(true);
     });
 
     it('should not delete one item to my items when http success but get redirect response', function(){
@@ -261,6 +308,7 @@ describe('MyItems service', function() {
     it('should not delete one item to my items', function(){
 
         MyPundit.setIsUserLogged(true);
+        var resolved = false, rejected = false;
 
         // add two items to my items
         $httpBackend.whenGET(NameSpace.get('asPref')).respond(myItemsHttpResponse);
@@ -272,8 +320,10 @@ describe('MyItems service', function() {
         expect(items.length).toBe(2);
 
         $httpBackend.whenPOST(NameSpace.get('asPref')).respond(500, '');
-        MyItems.deleteItem(items[1]);
+        MyItems.deleteItem(items[1]).then(function(){resolved=true}, function(){rejected=true});
         $httpBackend.flush();
+        expect(resolved).toBe(false);
+        expect(rejected).toBe(true);
 
         var newItem = ItemsExchange.getItemsByContainer(MYITEMSDEFAULTS.container);
         expect(newItem.length).toBe(2);
