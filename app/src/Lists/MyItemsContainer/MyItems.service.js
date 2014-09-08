@@ -65,6 +65,7 @@ angular.module("Pundit2.MyItemsContainer")
 
     var myItems = new BaseComponent("MyItems", MYITEMSDEFAULTS);
 
+    var opInProgress = false;
 
     var initContextualMenu = function() {
 
@@ -141,6 +142,12 @@ angular.module("Pundit2.MyItemsContainer")
     myItems.getAllItems = function(){
         var item;
 
+        if (opInProgress || !MyPundit.isUserLogged() ) {
+            myItems.log('User not logged');
+            return;
+        }
+        opInProgress = true;
+
         $http({
             headers: { 'Accept': 'application/json' },
             method: 'GET',
@@ -184,9 +191,11 @@ angular.module("Pundit2.MyItemsContainer")
                 ItemsExchange.addItemToContainer(item, myItems.options.container);
             }
 
+            opInProgress = false;
             myItems.log('Retrieved my items from the server: '+num+' items');
 
         }).error(function(msg) {
+            opInProgress = false;
             myItems.log('Http error while retrieving my items from the server: ', msg);
         });
     };
@@ -194,6 +203,12 @@ angular.module("Pundit2.MyItemsContainer")
     myItems.deleteAllItems = function(){
         var currentTime = new Date(),
         promise = $q.defer();
+
+        if (opInProgress || !MyPundit.isUserLogged() ) {
+            myItems.log('User not logged');
+            return;
+        }
+        opInProgress = true;
 
         Toolbar.setLoading(true);
 
@@ -216,12 +231,14 @@ angular.module("Pundit2.MyItemsContainer")
             // remove all my items on application
             // controller watch now update the view
             ItemsExchange.wipeContainer(myItems.options.container);
+            opInProgress = false;
             promise.resolve();
             Consolidation.consolidateAll();
             
             myItems.log('Deleted all my items on server', data);
         }).error(function(msg) {
             Toolbar.setLoading(false);
+            opInProgress = false;
             myItems.err('Cant delete my items on server: ', msg);
             promise.reject();
         });
@@ -230,6 +247,12 @@ angular.module("Pundit2.MyItemsContainer")
     };
 
     myItems.deleteItem = function(value){
+
+        if (opInProgress || !MyPundit.isUserLogged() ) {
+            myItems.log('User not logged');
+            return;
+        }
+        opInProgress = true;
 
         // get all my items (inside app)
         var currentTime = new Date(),
@@ -266,10 +289,12 @@ angular.module("Pundit2.MyItemsContainer")
             ItemsExchange.removeItemFromContainer(value, myItems.options.container);
             promise.resolve();
             Toolbar.setLoading(false);
+            opInProgress = false;
 
             myItems.log('Deleted from my item: '+ value.label);
 
         }).error(function(msg) {
+            opInProgress = false;
             promise.reject();
             Toolbar.setLoading(false);
             myItems.err('Cant delete a my item on the server: ', msg);
@@ -282,6 +307,11 @@ angular.module("Pundit2.MyItemsContainer")
     myItems.addItem = function(value){
 
         // TODO gestire il caso in cui l'utente non era loggato (!)
+        if (opInProgress || !MyPundit.isUserLogged() ) {
+            myItems.log('User not logged');
+            return;
+        }
+        opInProgress = true;
 
         var currentTime = new Date(),
             // get all my items and make a copy
@@ -312,12 +342,14 @@ angular.module("Pundit2.MyItemsContainer")
             // add value to my items
             // controller watch now update the view
             ItemsExchange.addItemToContainer(value, myItems.options.container);
+            opInProgress = false;
             promise.resolve();
             Toolbar.setLoading(false);
 
             myItems.log('Added item to my items: '+ value.label);
 
         }).error(function(msg) {
+            opInProgress = false;
             promise.reject();
             Toolbar.setLoading(false);
 

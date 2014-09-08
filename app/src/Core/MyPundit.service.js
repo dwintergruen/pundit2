@@ -103,6 +103,11 @@ angular.module('Pundit2.Core')
         return isUserLogged;
     };
 
+    // used only in test
+    myPundit.setIsUserLogged = function(bool) {
+        isUserLogged = bool;
+    };
+
     /**
      * @ngdoc method
      * @name MyPundit#getUserData

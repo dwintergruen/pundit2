@@ -5,17 +5,19 @@ describe('MyItems service', function() {
     NameSpace,
     ItemsExchange,
     MYITEMSDEFAULTS,
-    Item;
+    Item,
+    MyPundit;
 
     beforeEach(module('Pundit2'));
 
-    beforeEach(inject(function(_MyItems_, _$httpBackend_, _NameSpace_, _ItemsExchange_, _MYITEMSDEFAULTS_, _Item_){
+    beforeEach(inject(function(_MyItems_, _$httpBackend_, _NameSpace_, _ItemsExchange_, _MYITEMSDEFAULTS_, _Item_, _MyPundit_){
         MyItems = _MyItems_;
         $httpBackend = _$httpBackend_;
         NameSpace = _NameSpace_;
         ItemsExchange = _ItemsExchange_;
         MYITEMSDEFAULTS = _MYITEMSDEFAULTS_;
         Item = _Item_;
+        MyPundit = _MyPundit_;
     }));
 
     afterEach(function(){
@@ -65,8 +67,23 @@ describe('MyItems service', function() {
         redirectTo: 'loginPage.html'
     };
 
+    it('should not add anything when user is not logged', function(){
+
+        MyPundit.setIsUserLogged(false);
+
+        MyItems.addItem({});
+        $httpBackend.verifyNoOutstandingRequest();
+        MyItems.deleteItem({});
+        $httpBackend.verifyNoOutstandingRequest();
+        MyItems.deleteAllItems({});
+        $httpBackend.verifyNoOutstandingRequest();
+
+    });
+
 
     it('should get my items', function(){
+
+        MyPundit.setIsUserLogged(true);
 
         $httpBackend.whenGET(NameSpace.get('asPref')).respond(myItemsHttpResponse);
         MyItems.getAllItems();
@@ -82,6 +99,8 @@ describe('MyItems service', function() {
 
     it('should get my items and get redirect response', function(){
 
+        MyPundit.setIsUserLogged(true);
+
         $httpBackend.whenGET(NameSpace.get('asPref')).respond(redirectResponse);
         MyItems.getAllItems();
         $httpBackend.flush();
@@ -93,6 +112,8 @@ describe('MyItems service', function() {
     });
 
     it('should get my items from old pundit', function(){
+
+        MyPundit.setIsUserLogged(true);
 
         $httpBackend.whenGET(NameSpace.get('asPref')).respond(oldPunditMyItemsHttpResponse);
         MyItems.getAllItems();
@@ -112,6 +133,8 @@ describe('MyItems service', function() {
 
     it('should delete all my items when http success', function(){
 
+        MyPundit.setIsUserLogged(true);
+
         $httpBackend.whenGET(NameSpace.get('asPref')).respond(myItemsHttpResponse);
         MyItems.getAllItems();
         $httpBackend.flush();
@@ -126,6 +149,8 @@ describe('MyItems service', function() {
     });
 
     it('should not delete all my items when http success but get redirect response', function(){
+
+        MyPundit.setIsUserLogged(true);
 
         $httpBackend.whenGET(NameSpace.get('asPref')).respond(myItemsHttpResponse);
         MyItems.getAllItems();
@@ -142,6 +167,8 @@ describe('MyItems service', function() {
 
     it('should not delete all my items when http fail', function(){
 
+        MyPundit.setIsUserLogged(true);
+
         $httpBackend.whenGET(NameSpace.get('asPref')).respond(myItemsHttpResponse);
         MyItems.getAllItems();
         $httpBackend.flush();
@@ -157,6 +184,8 @@ describe('MyItems service', function() {
 
     it('should add one item to my items', function(){
 
+        MyPundit.setIsUserLogged(true);
+
         $httpBackend.whenPOST(NameSpace.get('asPref')).respond(201, '');
         MyItems.addItem(new Item(myItemsHttpResponse.value[0].uri));
         $httpBackend.flush();
@@ -165,6 +194,8 @@ describe('MyItems service', function() {
     });
 
     it('should not add one item to my items when http success but get redirect response', function(){
+
+        MyPundit.setIsUserLogged(true);
 
         $httpBackend.whenPOST(NameSpace.get('asPref')).respond(201, redirectResponse);
         MyItems.addItem(new Item(myItemsHttpResponse.value[0].uri));
@@ -175,6 +206,8 @@ describe('MyItems service', function() {
 
     it('should not add one item to my items when http fail', function(){
 
+        MyPundit.setIsUserLogged(true);
+
         $httpBackend.whenPOST(NameSpace.get('asPref')).respond(500, '');
         MyItems.addItem(new Item(myItemsHttpResponse.value[0].uri));
         $httpBackend.flush();
@@ -183,6 +216,8 @@ describe('MyItems service', function() {
     });
 
     it('should delete one item to my items', function(){
+
+        MyPundit.setIsUserLogged(true);
 
         // add two items to my items
         $httpBackend.whenGET(NameSpace.get('asPref')).respond(myItemsHttpResponse);
@@ -204,6 +239,8 @@ describe('MyItems service', function() {
 
     it('should not delete one item to my items when http success but get redirect response', function(){
 
+        MyPundit.setIsUserLogged(true);
+
         // add two items to my items
         $httpBackend.whenGET(NameSpace.get('asPref')).respond(myItemsHttpResponse);
         MyItems.getAllItems();
@@ -222,6 +259,8 @@ describe('MyItems service', function() {
     });
 
     it('should not delete one item to my items', function(){
+
+        MyPundit.setIsUserLogged(true);
 
         // add two items to my items
         $httpBackend.whenGET(NameSpace.get('asPref')).respond(myItemsHttpResponse);
