@@ -65,8 +65,8 @@ angular.module('Pundit2.Core')
                     if (typeof(trp[i].predicate) !== 'undefined') {
                         trp[i].predicate.type = ["http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"];
                         trp[i].predicate.vocabulary = url + " (Template)";
-                        trp[i].predicate = new Item(trp[i].predicate.uri, trp[i].predicate);
-                        ItemsExchange.addItemToContainer(trp[i].predicate, Config.modules.Client.relationsContainer);
+                        // property is automatically added to ItemsExchange default container
+                        new Item(trp[i].predicate.uri, trp[i].predicate);
                     }
                 }
                 

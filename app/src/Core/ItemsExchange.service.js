@@ -1,5 +1,5 @@
 angular.module('Pundit2.Core')
-    .service('ItemsExchange', function(BaseComponent) {
+    .service('ItemsExchange', function(BaseComponent, Config) {
 
         // TODO: inherit from a Store or something()? Annotations, items, ...
         var itemsExchange = new BaseComponent("ItemsExchange"),
@@ -22,6 +22,10 @@ angular.module('Pundit2.Core')
         };
 
         itemsExchange.isItemInContainer = function(item, container) {
+            if (typeof(container) === "undefined") {
+                return false;
+            }
+
             var list = itemContainers[item.uri];
 
             // Item not found .. !!?!
@@ -263,15 +267,18 @@ angular.module('Pundit2.Core')
                 return;
             } else if (item.uri in itemListByURI) {
                 itemsExchange.log("Item already present: "+ item.uri);
+                
                 if (item.isProperty()) {
+                    // update the item
                     extendRangeAndDomain(item.uri, item.range, item.domain);
                     addLabel(item.uri, item.label);
                     addVocab(item.uri, item.vocabulary);
                 }
                 return;
             } else if (item.isProperty()) {
-                // TODO: magic string, get it somewhere else, options, defaults, other component..
-                container = "property";
+                // default propeties container
+                // the first time that a propeties is loaded it is added to this container
+                container = Config.modules.Client.relationsContainer;
             }
 
             itemListByURI[item.uri] = item;
