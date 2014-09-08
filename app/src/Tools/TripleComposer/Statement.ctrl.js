@@ -54,6 +54,54 @@ angular.module('Pundit2.TripleComposer')
         object: null
     };
 
+    // tripleProperty, es. object of triple
+    // predicateProperty, es. range of predicate
+    var checkPredicateTolerance = function(triplePropertyName, predicatePropertyName){
+        if(triple.predicate === null){
+            return;
+        }
+
+        var tripleProperty = triple[triplePropertyName];
+        var predicateProperty = triple.predicate[predicatePropertyName];
+
+        // predicate check
+        if(typeof(predicateProperty) === 'undefined'){
+            return;
+        }
+        if(predicateProperty.length < 1){
+            return;
+        }
+        // property check
+        if(typeof(tripleProperty) === 'undefined'){
+            return;
+        }
+        if(tripleProperty === null){
+            return;
+        }
+        if(typeof(tripleProperty.type) === 'undefined'){
+            return;
+        }
+        if(tripleProperty.type.length < 1){
+            $scope.wipePredicate();
+            return;
+        }
+
+        var check = false;
+        var types = tripleProperty.type;
+        angular.forEach(predicateProperty, function (itm) {
+            for(var i=0; i<types.length; i++){
+                if(types[i] === itm) {
+                    check = true;
+                    return;
+                }
+            }
+        });
+
+        if(!check){
+            $scope.wipePredicate();
+        }
+    };
+
     $scope.isStatementComplete = function(){
         if (triple.subject!==null && triple.predicate!==null && triple.object!==null) {
             return true;
@@ -268,6 +316,8 @@ angular.module('Pundit2.TripleComposer')
             $scope.subjectFixed = fixed;
         }
 
+        checkPredicateTolerance('subject', 'domain');
+
         $scope.tripleComposerCtrl.isAnnotationComplete();
         $scope.tripleComposerCtrl.isTripleErasable();
     };
@@ -335,6 +385,7 @@ angular.module('Pundit2.TripleComposer')
             // standard item
             $scope.objectLabel = item.label;
             $scope.objectTypeLabel = TypesHelper.getLabel(item.type[0]);
+            checkPredicateTolerance('object', 'range');
         }
 
         $scope.tripleComposerCtrl.isAnnotationComplete();
