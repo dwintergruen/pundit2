@@ -1,5 +1,5 @@
 angular.module('Pundit2.Annotators')
-.service('ImageAnnotator', function(NameSpace, BaseComponent, $location, $compile, $rootScope, $timeout,
+.service('ImageAnnotator', function(NameSpace, BaseComponent, $location,
     Consolidation, XpointersHelper, ImageFragmentAnnotatorHelper) {
 
     // Create the component and declare what we deal with: text
@@ -14,50 +14,6 @@ angular.module('Pundit2.Annotators')
     var svgTimeout;
 
     Consolidation.addAnnotator(ia);
-
-    // This function must be executed before than pundit is appended to DOM
-    var timeoutPromise = null, exist = false, el = null, dir = null;
-    angular.element('img').hover(function(evt){
-        ia.clearTimeout();
-        if (el !== null && evt.target.src !== el[0].src) {
-            clear();
-        }
-        if (!exist) {
-            // store a target (img) reference
-            el = angular.element(evt.target)
-                .addClass('pnd-pointed-img')
-                .after('<img-menu ref="pnd-pointed-img"></img-menu>');
-            // store a directive reference
-            dir = $compile(angular.element('img-menu'))($rootScope);
-            exist = true;
-        }
-    }, function(){
-        // remove directive after 250ms
-        ia.removeDirective();
-    });
-
-    ia.clearTimeout = function() {
-        if(timeoutPromise !== null) {
-            $timeout.cancel(timeoutPromise);
-            timeoutPromise = null;
-        }
-    };
-
-    ia.removeDirective = function() {
-        timeoutPromise =  $timeout(function(){
-            clear();
-        }, 100);
-    };
-
-    var clear = function() {
-        // remove css class from img
-        el.removeClass('pnd-pointed-img');
-        // remove directive
-        dir.remove();
-        // update state var
-        exist = false;
-        el = null;
-    };
     
     ia.isConsolidable = function(item) {
         var xpointerURI;

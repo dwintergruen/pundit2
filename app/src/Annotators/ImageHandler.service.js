@@ -69,14 +69,58 @@ angular.module('Pundit2.Annotators')
 
 })
 .service('ImageHandler', function(IMAGEHANDLERDEFAULTS, NameSpace, BaseComponent, Config,
-    TextFragmentHandler, XpointersHelper, Item ) {
+    TextFragmentHandler, XpointersHelper, Item, $compile, $timeout, $rootScope) {
 
     var ih = new BaseComponent('ImageHandler', IMAGEHANDLERDEFAULTS);
+
+    // This function must be executed before than pundit is appended to DOM
+    var timeoutPromise = null, exist = false, el = null, dir = null;
+    angular.element('img').hover(function(evt){
+        ih.clearTimeout();
+        if (el !== null && evt.target.src !== el[0].src) {
+            clear();
+        }
+        if (!exist) {
+            // store a target (img) reference
+            el = angular.element(evt.target)
+                .addClass('pnd-pointed-img')
+                .after('<img-menu ref="pnd-pointed-img"></img-menu>');
+            // store a directive reference
+            dir = $compile(angular.element('img-menu'))($rootScope);
+            exist = true;
+        }
+    }, function(){
+        // remove directive after 250ms
+        ih.removeDirective();
+    });
+
+    var clear = function() {
+        // remove css class from img
+        el.removeClass('pnd-pointed-img');
+        // remove directive
+        dir.remove();
+        // update state var
+        exist = false;
+        el = null;
+    };
 
     var getXpFromNode = function(node) {
         var range = document.createRange();
         range.selectNode(node);
         return TextFragmentHandler.range2xpointer(range);
+    };
+
+    ih.clearTimeout = function() {
+        if(timeoutPromise !== null) {
+            $timeout.cancel(timeoutPromise);
+            timeoutPromise = null;
+        }
+    };
+
+    ih.removeDirective = function() {
+        timeoutPromise =  $timeout(function(){
+            clear();
+        }, 100);
     };
 
     ih.createItemFromImage = function(img) {

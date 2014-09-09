@@ -64,7 +64,7 @@ angular.module('Pundit2.Annotators')
                 evt.preventDefault();
                 evt.stopPropagation();
 
-                ImageAnnotator.clearTimeout();
+                ImageHandler.clearTimeout();
                 
                 if (scope.item === null) {
                     // create item only once
@@ -94,11 +94,11 @@ angular.module('Pundit2.Annotators')
             };
 
             scope.onMouseOver = function() {
-                ImageAnnotator.clearTimeout();
+                ImageHandler.clearTimeout();
             };
 
             scope.onMouseLeave = function() {
-                ImageAnnotator.removeDirective();
+                ImageHandler.removeDirective();
             };
 
         } // link()
