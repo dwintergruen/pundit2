@@ -270,7 +270,7 @@ angular.module('Pundit2.AnnotationSidebar')
     debug: false
 })
 .service('AnnotationSidebar', function($rootScope, $filter, $timeout,
-                                       BaseComponent, AnnotationsExchange, Consolidation, Dashboard, ItemsExchange, NotebookExchange,
+                                       BaseComponent, AnnotationsExchange, Annomatic, Consolidation, Dashboard, ItemsExchange, NotebookExchange,
                                        TypesHelper, TextFragmentAnnotator, XpointersHelper, ANNOTATIONSIDEBARDEFAULTS) {
     
     var annotationSidebar = new BaseComponent('AnnotationSidebar', ANNOTATIONSIDEBARDEFAULTS);
@@ -379,6 +379,11 @@ angular.module('Pundit2.AnnotationSidebar')
         return state.isAnnotationsPanelActive;
     };
     annotationSidebar.activateAnnotationsPanel = function() {
+        if (state.isSuggestionsPanelActive){
+            Annomatic.stop();
+            Consolidation.consolidateAll();
+        }
+
         state.isAnnotationsPanelActive = true;
         state.isSuggestionsPanelActive = false;
     };
@@ -387,6 +392,11 @@ angular.module('Pundit2.AnnotationSidebar')
         return state.isSuggestionsPanelActive;
     };
     annotationSidebar.activateSuggestionsPanel = function() {
+        if (state.isAnnotationsPanelActive){
+            Annomatic.run();
+            Consolidation.wipe();
+        }
+
         state.isSuggestionsPanelActive = true;
         state.isAnnotationsPanelActive = false;
     };

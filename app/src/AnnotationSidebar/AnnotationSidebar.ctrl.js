@@ -1,5 +1,5 @@
 angular.module('Pundit2.AnnotationSidebar')
-.controller('AnnotationSidebarCtrl', function($scope, $filter, $timeout, $document, $window, AnnotationSidebar, Dashboard, Toolbar) {
+.controller('AnnotationSidebarCtrl', function($scope, $filter, $timeout, $document, $window, AnnotationSidebar, Dashboard, Toolbar, Config) {
     var bodyClasses = AnnotationSidebar.options.bodyExpandedClass + ' ' + AnnotationSidebar.options.bodyCollapsedClass;
     var sidebarClasses = AnnotationSidebar.options.sidebarExpandedClass + ' ' + AnnotationSidebar.options.sidebarCollapsedClass;
 
@@ -30,6 +30,8 @@ angular.module('Pundit2.AnnotationSidebar')
     $scope.annotationSidebar = AnnotationSidebar;
 
     $scope.filters = AnnotationSidebar.getFilters();
+
+    $scope.isAnnomaticActive = Config.isModuleActive('Annomatic');
 
     body.css('position', 'static');
     container.css('height', body.innerHeight() + 'px');

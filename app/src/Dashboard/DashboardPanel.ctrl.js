@@ -1,5 +1,5 @@
 angular.module('Pundit2.Dashboard')
-.controller('DashboardPanelCtrl', function($document, $window, $scope, $rootScope, $element, $timeout, Dashboard, ResourcePanel) {
+.controller('DashboardPanelCtrl', function($document, $window, $scope, $rootScope, $element, $timeout, Dashboard, ResourcePanel, Annomatic) {
 
     // readed from default (not change)
     $scope.collapsedWidth = Dashboard.options.panelCollapseWidth;
@@ -17,6 +17,18 @@ angular.module('Pundit2.Dashboard')
 
     // tabs
     $scope.tabs = [];
+
+    $scope.isAnnomaticRunning = false;
+
+     // Watch Annomatic status
+    $scope.$watch(function() {
+        return Annomatic.isRunning();
+    }, function(currentState) {
+        if(currentState && Dashboard.isDashboardVisible()){
+            Dashboard.toggle();
+        }
+        $scope.isAnnomaticRunning = currentState;
+    });
 
     // TODO fix flickering and use better implementation
     $scope.$watch(function() {

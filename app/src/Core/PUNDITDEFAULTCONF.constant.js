@@ -293,6 +293,10 @@ angular.module('Pundit2.Core')
                 active: false
             },
 
+            Annomatic: {
+                active: false
+            },
+
             Dashboard: {
                 // ngdoc inside Dashboard.service.js
                 active: true

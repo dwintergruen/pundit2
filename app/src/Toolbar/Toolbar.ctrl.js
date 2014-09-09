@@ -2,7 +2,7 @@
 
 angular.module('Pundit2.Toolbar')
 .controller('ToolbarCtrl', function($scope, $rootScope, $modal, $http, NameSpace, Config, Toolbar, SelectorsManager, Fp3,
-    MyPundit, Dashboard, TripleComposer, AnnotationSidebar, ResourcePanel, NotebookExchange, NotebookCommunication, TemplatesExchange) {
+    MyPundit, Dashboard, TripleComposer, AnnotationSidebar, Annomatic, ResourcePanel, NotebookExchange, NotebookCommunication, TemplatesExchange) {
 
     $scope.dropdownTemplate = "src/ContextualMenu/dropdown.tmpl.html";
     $scope.dropdownTemplateMyNotebook = "src/Toolbar/myNotebooksDropdown.tmpl.html";
@@ -146,6 +146,15 @@ angular.module('Pundit2.Toolbar')
     var showBug = function() {
         infoModalScope.send();
     };
+
+    $scope.isAnnomaticRunning = false;
+
+     // Watch Annomatic status
+    $scope.$watch(function() {
+        return Annomatic.isRunning();
+    }, function(currentState) {
+        $scope.isAnnomaticRunning = currentState;
+    });
     
     $scope.errorMessageDropdown = Toolbar.getErrorMessageDropdown();
 
@@ -362,8 +371,10 @@ angular.module('Pundit2.Toolbar')
     };
 
     $scope.dashboardClickHandler = function() {
-        ResourcePanel.hide();
-        Dashboard.toggle();
+        if(!$scope.isAnnomaticRunning){
+            ResourcePanel.hide();
+            Dashboard.toggle();
+        }
     };
 
     $scope.annotationsClickHandler = function() {

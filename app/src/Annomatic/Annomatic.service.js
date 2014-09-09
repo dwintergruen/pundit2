@@ -70,6 +70,10 @@ angular.module('Pundit2.Annomatic')
         // Key-value pair for the types
         typesOptions: []
     };
+
+    var state = {
+        isRunning: false
+    }
     
     annomatic.annotationNumber = 0;
 
@@ -615,6 +619,18 @@ angular.module('Pundit2.Annomatic')
             // console.log('All reviewed, for the current filters!');
         }
 
+    };
+
+    annomatic.run = function() {
+        state.isRunning = true;
+    };
+
+    annomatic.stop = function(){
+        state.isRunning = false;
+    };
+
+    annomatic.isRunning = function() {
+        return state.isRunning;
     };
 
     annomatic.log('Component up and running');
