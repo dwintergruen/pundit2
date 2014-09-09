@@ -635,5 +635,80 @@ angular.module('Pundit2.Annomatic')
 
     annomatic.log('Component up and running');
 
+
+    // NEW ANNOMATIC SERVICE BASED ON GRAMSCI
+    var gramsciMock = {
+        "timestamp": "1234455",
+        "time": "234",
+        "annotations": [
+            {
+                "uri": "http://purl.org/gramscisource/dictionary/entry/Risorgimento",
+                "label": "Risorgimento Italiano",
+                "spot": "Risorgimento",
+                "start-xpath": "//DIV[@about='http://89.31.77.216/quaderno/2/nota/2']/DIV[1]/TEXT[1]/P[1]/EMPH[1]/text()[1]",
+                "end-xpath": "//DIV[@about='http://89.31.77.216/quaderno/2/nota/2']/DIV[1]/TEXT[1]/P[1]/EMPH[1]/text()[1]",
+                "start-offeset": "26",
+                "end-offeset": "38"
+            },
+            {
+                "uri": "http://purl.org/gramscisource/dictionary/entry/Zanichelli",
+                "label": "Zanichelli Editore",
+                "spot": "Zanichelli",
+                "start-xpath": "//DIV[@about='http://89.31.77.216/quaderno/2/nota/2']/DIV[1]/TEXT[1]/P[1]/text()[3]",
+                "end-xpath": "//DIV[@about='http://89.31.77.216/quaderno/2/nota/2']/DIV[1]/TEXT[1]/P[1]/text()[3]",
+                "start-offeset": "2",
+                "end-offeset": "12"
+            }
+        ]
+    };
+
+    annomatic.gramsciAnn = {
+
+        // annotations by resource uri
+        byUri: {},
+
+        // annotations by spot (text)
+        bySpot: {}
+
+    };
+
+
+    // get the html content to be sent to gramsci
+    var getGramsciHtml = function () {
+        return angular.element('.pundit-content').html();
+    };
+
+    var getGramsciAnnotations = function (data) {
+
+        for (var i in data.annotations) {
+
+            var ann = data.annotations[i];
+
+            // in the near future every spot show a popover where we can select the desired resource
+            // we organise the annotation by spot (text) and by uri (resource)
+
+            if (typeof(annomatic.gramsciAnn.byUri[ann.uri]) === "undefined" ) {
+                annomatic.gramsciAnn.byUri[ann.uri] = [ann];
+            } else {
+                annomatic.gramsciAnn.byUri[ann.uri].push(ann);
+            }
+
+            if (typeof(annomatic.gramsciAnn.bySpot[ann.spot]) === "undefined" ) {
+                annomatic.gramsciAnn.bySpot[ann.spot] = [ann];
+            } else {
+                annomatic.gramsciAnn.bySpot[ann.spot].push(ann);
+            }            
+
+        }
+
+    };
+    getGramsciAnnotations(gramsciMock);
+
+
+    // consolidate all gramsci spots (wrap text inside span and add popover toggle icon)
+    var consolidateGramsciSpots = function () {
+
+    };
+
     return annomatic;
 });
