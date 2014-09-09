@@ -48,7 +48,7 @@ angular.module('Pundit2.Client')
          * @description
          * `string`
          *
-         * Name of the container used to store the usable relations in the itemsExchange.
+         * Name of the container used to store all of the pundit client usable relations.
          *
          * Default value:
          * <pre> relationsContainer: "usableRelations" </pre>
@@ -551,7 +551,7 @@ angular.module('Pundit2.Client')
                 relations = client.options.basicRelations;
             for (var p in relations) {
                 // property is automatically added to ItemsExchange default container
-                new Item(relations[p].uri, relations[p]);
+                ItemsExchange.addItemToContainer(new Item(relations[p].uri, relations[p]), [client.options.relationsContainer, 'basicRelations']);
             }
             client.log('Loaded '+num+' basic relations');
         };
@@ -562,7 +562,7 @@ angular.module('Pundit2.Client')
 
                 for (var p in res) {
                     // property is automatically added to ItemsExchange default container
-                    new Item(res[p].uri, res[p]);
+                    ItemsExchange.addItemToContainer(new Item(res[p].uri, res[p]), [client.options.relationsContainer, 'vocabularyRelations']);
                 }
 
                 client.log('Loaded '+res.length+' relations from extern vocabularies');

@@ -226,6 +226,12 @@ angular.module('Pundit2.Communication')
                     item = new Item(uri, ann.items[uri]);
                 }
 
+                if (item.isProperty()) {
+                    // Add specific flag, this properties are deleted if an other property 
+                    // with the same uri is added
+                    item.isAnnotationProperty = true;
+                }
+
                 // And read what the annotation says about the item
                 item.fromAnnotationRdf(data.items);
             }

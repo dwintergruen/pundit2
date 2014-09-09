@@ -4,6 +4,9 @@ angular.module('Pundit2.Core')
         // TODO: inherit from a Store or something()? Annotations, items, ...
         var itemsExchange = new BaseComponent("ItemsExchange"),
 
+            // all properties are stored here
+            defaultRelationsContainer = 'properties',
+
             // container: [ array of ItemFactory objects belonging to that container ]
             itemListByContainer = {},
             // item uri : [ array of containers which contains the ItemFactory with that uri ]
@@ -134,6 +137,7 @@ angular.module('Pundit2.Core')
             }
         };
 
+        // TODO must be refactor, pass uri instead of new item reference
         itemsExchange.addItemToContainer = function(item, containers) {
 
             if (!angular.isArray(containers)) {
@@ -163,6 +167,7 @@ angular.module('Pundit2.Core')
 
         };
 
+        // TODO must be refactor, pass uri instead of new item reference
         itemsExchange.removeItemFromContainer = function(item, container) {
 
             var containerItems = itemListByContainer[container];
@@ -268,17 +273,33 @@ angular.module('Pundit2.Core')
             } else if (item.uri in itemListByURI) {
                 itemsExchange.log("Item already present: "+ item.uri);
                 
-                if (item.isProperty()) {
-                    // update the item
-                    extendRangeAndDomain(item.uri, item.range, item.domain);
-                    addLabel(item.uri, item.label);
-                    addVocab(item.uri, item.vocabulary);
+                if (item.isProperty() && !item.isAnnotationProperty) {
+
+                    if (itemListByURI[item.uri].isAnnotationProperty) {
+                        // remove item                        
+                        var index = itemListByContainer[defaultRelationsContainer].indexOf(itemListByURI[item.uri]);
+                        if (index > -1) {
+                            itemListByContainer[defaultRelationsContainer].splice(index, 1);
+                        }
+                        delete itemContainers[item.uri];
+                        delete itemListByURI[item.uri];
+                        // default 
+                        container = defaultRelationsContainer;
+                    } else {
+                        // update the item
+                        extendRangeAndDomain(item.uri, item.range, item.domain);
+                        addLabel(item.uri, item.label);
+                        addVocab(item.uri, item.vocabulary);
+                    }
+
                 }
+
                 return;
+
             } else if (item.isProperty()) {
                 // default propeties container
                 // the first time that a propeties is loaded it is added to this container
-                container = Config.modules.Client.relationsContainer;
+                container = defaultRelationsContainer;
             }
 
             itemListByURI[item.uri] = item;

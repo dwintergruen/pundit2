@@ -4,6 +4,8 @@ angular.module('Pundit2.Core')
     
     var templatesSelector = new BaseComponent("TemplatesSelector");
 
+    var container = "templateRelations";
+
     var selector = new FreebaseSelector({
         container: 'freebase'
     });
@@ -66,7 +68,7 @@ angular.module('Pundit2.Core')
                         trp[i].predicate.type = ["http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"];
                         trp[i].predicate.vocabulary = url + " (Template)";
                         // property is automatically added to ItemsExchange default container
-                        new Item(trp[i].predicate.uri, trp[i].predicate);
+                        ItemsExchange.addItemToContainer(new Item(trp[i].predicate.uri, trp[i].predicate), [Config.modules.Client.relationsContainer, container]);
                     }
                 }
                 
