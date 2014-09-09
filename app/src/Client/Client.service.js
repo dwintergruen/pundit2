@@ -563,6 +563,11 @@ angular.module('Pundit2.Client')
                 for (var p in res) {
                     // property is automatically added to ItemsExchange default container
                     ItemsExchange.addItemToContainer(new Item(res[p].uri, res[p]), [client.options.relationsContainer, 'vocabularyRelations']);
+                    // if necessary override the label (vocab not override template label)
+                    var real = ItemsExchange.getItemByUri(res[p].uri);
+                    if (typeof(res[p].label) !== 'undefined' && !ItemsExchange.isItemInContainer(real, 'templateRelations')) {
+                        real.label = res[p].label;
+                    }
                 }
 
                 client.log('Loaded '+res.length+' relations from extern vocabularies');

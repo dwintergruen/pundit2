@@ -271,22 +271,27 @@ angular.module('Pundit2.Core')
                 itemsExchange.err("Ouch, cannot add this item ... ", item);
                 return;
             } else if (item.uri in itemListByURI) {
+                // the item that we try to add already exist
                 itemsExchange.log("Item already present: "+ item.uri);
                 
+                // skip if come from an annotation
                 if (item.isProperty() && !item.isAnnotationProperty) {
 
+                    // if the item that already exist is an annotation item
+                    // we need to replace it every time
+                    // otherwise we update the item
                     if (itemListByURI[item.uri].isAnnotationProperty) {
-                        // remove item                        
+                        // remove old item                        
                         var index = itemListByContainer[defaultRelationsContainer].indexOf(itemListByURI[item.uri]);
                         if (index > -1) {
                             itemListByContainer[defaultRelationsContainer].splice(index, 1);
                         }
                         delete itemContainers[item.uri];
                         delete itemListByURI[item.uri];
-                        // default 
+                        // add the new property to the default container 
                         container = defaultRelationsContainer;
                     } else {
-                        // update the item
+                        // update the old item (merge of range, domain and vocabs)
                         extendRangeAndDomain(item.uri, item.range, item.domain);
                         addLabel(item.uri, item.label);
                         addVocab(item.uri, item.vocabulary);
