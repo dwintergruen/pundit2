@@ -320,7 +320,7 @@ describe('MyItems service', function() {
         expect(items.length).toBe(2);
 
         $httpBackend.whenPOST(NameSpace.get('asPref')).respond(500, '');
-        MyItems.deleteItem(items[1]).then(function(){resolved=true}, function(){rejected=true});
+        MyItems.deleteItem(items[1]).then(function(){resolved=true;}, function(){rejected=true;});
         $httpBackend.flush();
         expect(resolved).toBe(false);
         expect(rejected).toBe(true);
