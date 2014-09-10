@@ -43,7 +43,7 @@ angular.module('Pundit2.Annomatic')
 })
 .service('Annomatic', function(ANNOMATICDEFAULTS, BaseComponent, DataTXTResource, XpointersHelper,
                                ItemsExchange, TextFragmentHandler, ImageHandler, TypesHelper,
-                               DBPediaSpotlightResource, Item,
+                               DBPediaSpotlightResource, Item, Consolidation,
                                $rootScope, $timeout, $document, $q) {
 
     var annomatic = new BaseComponent('Annomatic', ANNOMATICDEFAULTS);
@@ -709,6 +709,32 @@ angular.module('Pundit2.Annomatic')
     };
     getGramsciAnnotations(gramsciMock);
 
+    var createItemFromGramsciAnnotation = function(ann) {
+        var values = {};
+
+        values.uri = ann.uri;
+        values.isAnnomatic = true;
+
+        values.label = ann.label;
+        if (values.label.length > TextFragmentHandler.options.labelMaxLength) {
+            values.label = values.label.substr(0, TextFragmentHandler.options.labelMaxLength) + ' ..';
+        }        
+
+        // TODO what types ?
+        if (typeof(ann.types) === "undefined") {
+            values.type = ['http://dbpedia.org/ontology/Thing'];
+        } else {
+            values.type = angular.copy(ann.types);
+        }
+        if (typeof(ann.abstract) === "undefined") {
+            values.description = ann.label + " imported from Gramsci Dictionary";
+        } else {
+            values.description = ann.abstract;
+        }
+
+        return new Item(values.uri, values);
+    };
+
 
     // consolidate all gramsci spots (wrap text inside span and add popover toggle icon)
     var consolidateGramsciSpots = function () {
@@ -718,6 +744,45 @@ angular.module('Pundit2.Annomatic')
             // ann is an array that contain all annotations about this spot
             // we read the xpath info from the first (we expect that all xpaths have the same value)
             var ann = annomatic.gramsciAnn.bySpot[i];
+            // get the current node from xpath
+            var currentNode = XpointersHelper.getNodeFromXpath(ann[0].startXpath);
+            // TODO startXpath and endXpath are all times equal ???
+            // XpointersHelper.getNodeFromXpath(ann[0].endXpath);
+
+            if (!XpointersHelper.isTextNode(currentNode)) {
+                annomatic.log('is not a text node');
+                if (currentNode.hasChildNodes()) {
+                    var childNodes = currentNode.childNodes;
+                    // do somethings with child nodes (complex case)
+                    annomatic.log('have child nodes', childNodes);
+                    // we must continue the search in the next node ???
+                }
+
+            // If it's a text node (simple case)
+            } else {
+                annomatic.log('is a text node');
+                var range = $document[0].createRange();
+                range.setStart(currentNode, ann[0].startOffset);
+                range.setEnd(currentNode, ann[0].endOffset);
+
+                if (range.toString() !== ann[0].spot) {
+                    annomatic.err('Annotation and range content do not match!! :((');
+                } else {
+                    annomatic.log('Annotation and range content match!! :))');
+
+                    // create item from spot (text fragment)
+                    var item = TextFragmentHandler.createItemFromRange(range);
+                    item.isAnnomatic = true;
+                    ItemsExchange.addItemToContainer(item, annomatic.options.container);
+
+                    // create item from resource 
+                    ItemsExchange.addItemToContainer(createItemFromGramsciAnnotation(ann[0]), annomatic.options.container);
+
+                    // Consolidation.consolidate(ItemsExchange.getItemsByContainer(annomatic.options.container));
+
+                }
+
+            }
 
         }
 
