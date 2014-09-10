@@ -393,8 +393,8 @@ angular.module('Pundit2.AnnotationSidebar')
     };
     annotationSidebar.activateSuggestionsPanel = function() {
         if (state.isAnnotationsPanelActive){
-            Annomatic.run();
             Consolidation.wipe();
+            Annomatic.run();
         }
 
         state.isSuggestionsPanelActive = true;

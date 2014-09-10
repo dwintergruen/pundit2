@@ -70,10 +70,6 @@ angular.module('Pundit2.Annomatic')
         // Key-value pair for the types
         typesOptions: []
     };
-
-    var state = {
-        isRunning: false
-    }
     
     annomatic.annotationNumber = 0;
 
@@ -677,6 +673,9 @@ angular.module('Pundit2.Annomatic')
 
     };
 
+    var state = {
+        isRunning: false
+    };
 
     // get the html content to be sent to gramsci
     var getGramsciHtml = function () {
@@ -750,7 +749,7 @@ angular.module('Pundit2.Annomatic')
             // XpointersHelper.getNodeFromXpath(ann[0].endXpath);
 
             if (!XpointersHelper.isTextNode(currentNode)) {
-                annomatic.log('is not a text node');
+                
                 if (currentNode.hasChildNodes()) {
                     var childNodes = currentNode.childNodes;
                     // do somethings with child nodes (complex case)
@@ -760,7 +759,7 @@ angular.module('Pundit2.Annomatic')
 
             // If it's a text node (simple case)
             } else {
-                annomatic.log('is a text node');
+                
                 var range = $document[0].createRange();
                 range.setStart(currentNode, ann[0].startOffset);
                 range.setEnd(currentNode, ann[0].endOffset);
@@ -777,14 +776,13 @@ angular.module('Pundit2.Annomatic')
 
                     // create item from resource 
                     ItemsExchange.addItemToContainer(createItemFromGramsciAnnotation(ann[0]), annomatic.options.container);
-
-                    // Consolidation.consolidate(ItemsExchange.getItemsByContainer(annomatic.options.container));
-
                 }
 
             }
 
-        }
+        } // end for spot
+            
+        Consolidation.consolidate(ItemsExchange.getItemsByContainer(annomatic.options.container));
 
     };
 

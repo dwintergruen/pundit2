@@ -70,6 +70,7 @@
     <script src="../src/Annomatic/DBPediaSpotlightResource.service.js"></script>
     <script src="../src/Annomatic/AnnomaticPopover.ctrl.js"></script>
     <script src="../src/Annomatic/SuggestionFragmentIcon.dir.js"></script>
+    <script src="../src/Annomatic/SuggestionFragmentIcon.ctrl.js"></script>
 
     <script src="../src/AnnotationSidebar/AnnotationSidebar.js"></script>
     <script src="../src/AnnotationSidebar/AnnotationSidebar.dir.js"></script>
