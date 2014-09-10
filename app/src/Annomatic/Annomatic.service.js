@@ -42,7 +42,7 @@ angular.module('Pundit2.Annomatic')
     cMenuType: 'annomatic'
 })
 .service('Annomatic', function(ANNOMATICDEFAULTS, BaseComponent, DataTXTResource, XpointersHelper,
-                               ItemsExchange, TextFragmentHandler, TypesHelper,
+                               ItemsExchange, TextFragmentHandler, ImageHandler, TypesHelper,
                                DBPediaSpotlightResource, Item,
                                $rootScope, $timeout, $document, $q) {
 
@@ -623,10 +623,14 @@ angular.module('Pundit2.Annomatic')
 
     annomatic.run = function() {
         state.isRunning = true;
+        TextFragmentHandler.turnOff();
+        ImageHandler.turnOff();
     };
 
     annomatic.stop = function(){
         state.isRunning = false;
+        TextFragmentHandler.turnOn();
+        ImageHandler.turnOn();
     };
 
     annomatic.isRunning = function() {

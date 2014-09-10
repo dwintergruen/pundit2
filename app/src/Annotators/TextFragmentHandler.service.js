@@ -102,21 +102,6 @@ angular.module('Pundit2.Annotators')
 
         var tfh = new BaseComponent('TextFragmentHandler', TEXTFRAGMENTHANDLERDEFAULTS);
 
-        $document.on('mousedown', function(downEvt) {
-
-            var target = downEvt.target;
-            if (tfh.isToBeIgnored(target)) {
-                tfh.log('ABORT: ignoring mouse DOWN event on document: ignore class spotted.');
-                if (tfh.options.removeSelectionOnAbort) {
-                    $document.on('mouseup', mouseUpHandlerToRemove);
-                }
-                return;
-            }
-
-            $document.on('mouseup', mouseUpHandler);
-            tfh.log('Selection started on document, waiting for mouse up.');
-        });
-
         // If we are configured to remove the selection, we cannot preventDefault() or
         // we will interfere with other clicks inside ignored containers (search inputs?!!).
         // So we bind this up handler and just remove the selection on mouseup, if there is one.
@@ -181,6 +166,29 @@ angular.module('Pundit2.Annotators')
 
         }; // mouseUpHandler()
 
+        var mouseDownHandler = function(downEvt) {
+            var target = downEvt.target;
+            if (tfh.isToBeIgnored(target)) {
+                tfh.log('ABORT: ignoring mouse DOWN event on document: ignore class spotted.');
+                if (tfh.options.removeSelectionOnAbort) {
+                    $document.on('mouseup', mouseUpHandlerToRemove);
+                }
+                return;
+            }
+
+            $document.on('mouseup', mouseUpHandler);
+            tfh.log('Selection started on document, waiting for mouse up.');
+        }; // mouseDownHandler()
+
+        $document.on('mousedown', mouseDownHandler);
+
+        tfh.turnOn = function() {
+            $document.on('mousedown', mouseDownHandler);
+        };
+
+        tfh.turnOff = function() {
+            $document.off('mousedown', mouseDownHandler);
+        };        
 
         // Creates a proper Item from a range .. it must be a valid range, kktnx.
         tfh.createItemFromRange = function(range) {
