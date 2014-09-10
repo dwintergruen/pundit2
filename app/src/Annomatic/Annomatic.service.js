@@ -625,6 +625,7 @@ angular.module('Pundit2.Annomatic')
         state.isRunning = true;
         TextFragmentHandler.turnOff();
         ImageHandler.turnOff();
+        consolidateGramsciSpots();
     };
 
     annomatic.stop = function(){
@@ -649,19 +650,19 @@ angular.module('Pundit2.Annomatic')
                 "uri": "http://purl.org/gramscisource/dictionary/entry/Risorgimento",
                 "label": "Risorgimento Italiano",
                 "spot": "Risorgimento",
-                "start-xpath": "//DIV[@about='http://89.31.77.216/quaderno/2/nota/2']/DIV[1]/TEXT[1]/P[1]/EMPH[1]/text()[1]",
-                "end-xpath": "//DIV[@about='http://89.31.77.216/quaderno/2/nota/2']/DIV[1]/TEXT[1]/P[1]/EMPH[1]/text()[1]",
-                "start-offeset": "26",
-                "end-offeset": "38"
+                "startXpath": "//DIV[@about='http://89.31.77.216/quaderno/2/nota/2']/DIV[1]/TEXT[1]/P[1]/EMPH[1]/text()[1]",
+                "endXpath": "//DIV[@about='http://89.31.77.216/quaderno/2/nota/2']/DIV[1]/TEXT[1]/P[1]/EMPH[1]/text()[1]",
+                "startOffset": "26",
+                "endOffset": "38"
             },
             {
                 "uri": "http://purl.org/gramscisource/dictionary/entry/Zanichelli",
                 "label": "Zanichelli Editore",
                 "spot": "Zanichelli",
-                "start-xpath": "//DIV[@about='http://89.31.77.216/quaderno/2/nota/2']/DIV[1]/TEXT[1]/P[1]/text()[3]",
-                "end-xpath": "//DIV[@about='http://89.31.77.216/quaderno/2/nota/2']/DIV[1]/TEXT[1]/P[1]/text()[3]",
-                "start-offeset": "2",
-                "end-offeset": "12"
+                "startXpath": "//DIV[@about='http://89.31.77.216/quaderno/2/nota/2']/DIV[1]/TEXT[1]/P[1]/text()[3]",
+                "endXpath": "//DIV[@about='http://89.31.77.216/quaderno/2/nota/2']/DIV[1]/TEXT[1]/P[1]/text()[3]",
+                "startOffset": "2",
+                "endOffset": "12"
             }
         ]
     };
@@ -711,6 +712,14 @@ angular.module('Pundit2.Annomatic')
 
     // consolidate all gramsci spots (wrap text inside span and add popover toggle icon)
     var consolidateGramsciSpots = function () {
+
+        for (var i in annomatic.gramsciAnn.bySpot) {
+
+            // ann is an array that contain all annotations about this spot
+            // we read the xpath info from the first (we expect that all xpaths have the same value)
+            var ann = annomatic.gramsciAnn.bySpot[i];
+
+        }
 
     };
 
