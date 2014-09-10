@@ -1,0 +1,51 @@
+//
+// Normalization of tags
+// --------------------------------------------------
+
+// This normalize file is used to reset the specifications of
+// common tags that could be influenced by the CSS
+// of pages loaded in Pundit or loading Korboee
+
+// Example: If the CSS of a Page loaded in Pundit defines the margins for the UL
+// tag and these are not defined in Pundit, this will inherit the margin from the
+// loaded page, probably changing the UI in an unwanted way.
+
+// The problem should generally apply only to general HTML tags and for this reason we
+// just define these
+
+// We're not declaring all the possible attributes for the elements but just the
+// most commonly modified (ie. margins, paddings...).
+// If we'll find situations when some other attributes are defined by the loaded pages
+// we can add the declaration to reset it
+
+
+//== Common tags reset
+
+html, body, div, span, iframe,
+h1, h2, h3, h4, h5, h6, p, img, strong,
+b, i, ul, li {
+    margin:0;
+    padding:0;
+    border:0;
+    outline:0;
+    
+    vertical-align:baseline;
+    background:transparent;
+    background-image: none;
+}
+
+// Display declaration
+
+div, h1, h2, h3, h4, h5, h6, p, ul {
+    display: block;
+}
+
+span, img, strong, b, i {
+    display: inline;    
+}
+
+// Lists
+
+ol, ul {
+    list-style: none;
+}

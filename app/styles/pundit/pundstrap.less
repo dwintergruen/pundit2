@@ -6,7 +6,7 @@
 // outside of the .pnd-wrp import
 @import "@{bspath}variables.less";
 @import "@{bspath}mixins.less";
-@import "variables.less";
+@import "../assets/variables.less";
 
 
 // Wrap every bs rule under one of our nodes
@@ -57,7 +57,8 @@
 }
 
 .pnd-wrp {
-    @import "../pundit/theme";
+    // @import "../pundit/theme";
+    @import "theme";
 }
 
 
