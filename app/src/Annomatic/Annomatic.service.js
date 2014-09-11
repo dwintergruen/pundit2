@@ -58,7 +58,7 @@ angular.module('Pundit2.Annomatic')
 })
 .service('Annomatic', function(ANNOMATICDEFAULTS, BaseComponent, DataTXTResource, XpointersHelper,
                                ItemsExchange, TextFragmentHandler, ImageHandler, TypesHelper,
-                               DBPediaSpotlightResource, Item, Consolidation,
+                               DBPediaSpotlightResource, Item,
                                $rootScope, $timeout, $document, $q) {
 
     var annomatic = new BaseComponent('Annomatic', ANNOMATICDEFAULTS);
@@ -486,7 +486,7 @@ angular.module('Pundit2.Annomatic')
             },
             function(msg) {
                 annomatic.err('Error loading annotations from DataTXT');
-                promise.reject(msg);
+                promise.resolve(msg);
             }
         );
 
@@ -653,14 +653,19 @@ angular.module('Pundit2.Annomatic')
     };
 
     annomatic.getGrasciAnnotations = function(node){
+        var promise = $q.defer();
+        // TODO http POST than consolidation than promise is resolved
+        // TODO use the node to extract the html to pass at gramsci
         consolidateGramsciSpots();
+        promise.resolve();
+        return promise.promise;
     };
 
     annomatic.getAnnotations = function(node){
         if(annomatic.options.source === 'DataTXT'){
-            annomatic.getDataTXTAnnotations(node);
+            return annomatic.getDataTXTAnnotations(node);
         } else if(annomatic.options.source === 'gramsci'){
-            annomatic.getGrasciAnnotations(node);
+            return annomatic.getGrasciAnnotations(node);
         }
     };
 
@@ -804,9 +809,7 @@ angular.module('Pundit2.Annomatic')
             annomatic.ann.byUri[ann.uri] = ann;
         }
 
-        analyze(oldAnnotationNumber, annomatic.annotationNumber);        
-            
-        Consolidation.consolidate(ItemsExchange.getItemsByContainer(annomatic.options.container));
+        analyze(oldAnnotationNumber, annomatic.annotationNumber);
 
     };
 

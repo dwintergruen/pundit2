@@ -13,39 +13,32 @@ angular.module('Pundit2.Annomatic')
         }
         $scope.gotAnnotations = true;
 
-        Annomatic.getAnnotations();
+        var nodes = [],
+            namedClasses = XpointersHelper.options.namedContentClasses,
+            selectors = [];
 
-        // WORK IN PROGRESS
+        for (var len=$scope.targets.length; len--;) {
+            selectors.push("[about='"+$scope.targets[len]+"']");
+        }
+        selectors.join(',');
+        angular.forEach(angular.element(selectors.join(',')), function(node){
+            for (var l=namedClasses.length; l--;) {
+                if (angular.element(node).hasClass(namedClasses[l])) {
+                    nodes.push(node);
+                    break;
+                }
+            }
+        });
 
-        // var nodes = [],
-        //     namedClasses = XpointersHelper.options.namedContentClasses,
-        //     selectors = [];
+        Annomatic.log('Asking for annotations on '+nodes.length+' nodes: ', nodes);
 
-        // for (var len=$scope.targets.length; len--;) {
-        //     selectors.push("[about='"+$scope.targets[len]+"']");
-        // }
-        // selectors.join(',');
-        // angular.forEach(angular.element(selectors.join(',')), function(node){
-        //     for (var l=namedClasses.length; l--;) {
-        //         if (angular.element(node).hasClass(namedClasses[l])) {
-        //             nodes.push(node);
-        //             break;
-        //         }
-        //     }
-        // });
-
-        // Annomatic.log('Asking for annotations on '+nodes.length+' nodes: ', nodes);
-
-        // var promises = [];
-        // for (var n=nodes.length; n--;) {
-        //     promises.push(Annomatic.getDataTXTAnnotations(nodes[n]));
-        // }
-        // // TODO: if one the aggregated promises gets rejected ... all of them gets rejected :|
-        // // we can put the consolidation in in the rejected function too, maybe, not in the
-        // // finally(), since it only gets called if all of them are resolved.
-        // $q.all(promises).then(function() {
-        //     Consolidation.consolidate(ItemsExchange.getItemsByContainer(Annomatic.options.container));
-        // });
+        var promises = [];
+        for (var n=nodes.length; n--;) {
+            promises.push(Annomatic.getAnnotations(nodes[n]));
+        }
+        $q.all(promises).then(function() {
+            Consolidation.consolidate(ItemsExchange.getItemsByContainer(Annomatic.options.container));
+        });
     };
 
     $scope.startReview = function() {
