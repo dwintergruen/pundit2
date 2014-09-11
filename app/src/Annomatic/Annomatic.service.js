@@ -58,7 +58,7 @@ angular.module('Pundit2.Annomatic')
 })
 .service('Annomatic', function(ANNOMATICDEFAULTS, BaseComponent, DataTXTResource, XpointersHelper,
                                ItemsExchange, TextFragmentHandler, ImageHandler, TypesHelper,
-                               DBPediaSpotlightResource, Item,
+                               DBPediaSpotlightResource, Item, GramsciResource,
                                $rootScope, $timeout, $document, $q) {
 
     var annomatic = new BaseComponent('Annomatic', ANNOMATICDEFAULTS);
@@ -654,10 +654,30 @@ angular.module('Pundit2.Annomatic')
 
     annomatic.getGrasciAnnotations = function(node){
         var promise = $q.defer();
-        // TODO http POST than consolidation than promise is resolved
-        // TODO use the node to extract the html to pass at gramsci
-        consolidateGramsciSpots();
-        promise.resolve();
+
+        if(typeof(node) === 'undefined'){
+            promise.resolve();
+            return;
+        }
+
+        var element = angular.element(node);
+        var about = element.attr('about');
+        var content = element.parent().html();
+
+        GramsciResource.getAnnotations({
+                doc_id: about,
+                html_fragment: content
+            },
+            function(data) {
+                consolidateGramsciSpots(data);
+                promise.resolve();               
+            },
+            function(msg) {
+                annomatic.log('Error msg: ', msg);
+                promise.resolve();
+            }
+        );
+
         return promise.promise;
     };
 
@@ -669,31 +689,6 @@ angular.module('Pundit2.Annomatic')
         }
     };
 
-    var gramsciMock = {
-        "timestamp": "1234455",
-        "time": "234",
-        "annotations": [
-            {
-                "uri": "http://purl.org/gramscisource/dictionary/entry/Risorgimento",
-                "label": "Risorgimento Italiano",
-                "spot": "Risorgimento",
-                "startXpath": "//DIV[@about='http://89.31.77.216/quaderno/2/nota/2']/DIV[1]/TEXT[1]/P[1]/EMPH[1]/text()[1]",
-                "endXpath": "//DIV[@about='http://89.31.77.216/quaderno/2/nota/2']/DIV[1]/TEXT[1]/P[1]/EMPH[1]/text()[1]",
-                "startOffset": "26",
-                "endOffset": "38"
-            },
-            {
-                "uri": "http://purl.org/gramscisource/dictionary/entry/Zanichelli",
-                "label": "Zanichelli Editore",
-                "spot": "Zanichelli",
-                "startXpath": "//DIV[@about='http://89.31.77.216/quaderno/2/nota/2']/DIV[1]/TEXT[1]/P[1]/text()[3]",
-                "endXpath": "//DIV[@about='http://89.31.77.216/quaderno/2/nota/2']/DIV[1]/TEXT[1]/P[1]/text()[3]",
-                "startOffset": "2",
-                "endOffset": "12"
-            }
-        ]
-    };
-
     var state = {
         isRunning: false
     };
@@ -701,10 +696,6 @@ angular.module('Pundit2.Annomatic')
     // get the html content to be sent to gramsci
     var getGramsciHtml = function () {
         return angular.element('.pundit-content').html();
-    };
-
-    var getGramsciAnnotations = function (data) {
-        return gramsciMock.annotations;
     };
 
     var createItemFromGramsciAnnotation = function(ann) {
@@ -735,9 +726,10 @@ angular.module('Pundit2.Annomatic')
 
 
     // consolidate all gramsci spots (wrap text inside span and add popover toggle icon)
-    var consolidateGramsciSpots = function () {
+    var consolidateGramsciSpots = function (data) {
 
-        var annotations = getGramsciAnnotations();
+        // var annotations = getGramsciAnnotations();
+        var annotations = data.annotations;
         var validAnnotations = [];
         var i;
         
@@ -746,7 +738,7 @@ angular.module('Pundit2.Annomatic')
 
             var ann = annotations[i];
             // get the current node from xpath
-            var currentNode = XpointersHelper.getNodeFromXpath(ann.startXpath);
+            var currentNode = XpointersHelper.getNodeFromXpath(ann.startXpath.replace('/html[1]/body[1]', '/'));
             // TODO startXpath and endXpath are all times equal ???
             // XpointersHelper.getNodeFromXpath(ann.endXpath);
 
