@@ -39,7 +39,22 @@ angular.module('Pundit2.Annomatic')
      * Default value:
      * <pre> cMenuType: 'annomatic' </pre>
      */
-    cMenuType: 'annomatic'
+    cMenuType: 'annomatic',
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#Annomatic.source
+     *
+     * @description
+     * `string`
+     *
+     * Set the service called by Annomatic to get annotation suggested: 'DataTXT' or 'gramsci' 
+     *
+     * Default value:
+     * <pre> source: 'gramsci' </pre>
+     */
+    source: 'gramsci'
 })
 .service('Annomatic', function(ANNOMATICDEFAULTS, BaseComponent, DataTXTResource, XpointersHelper,
                                ItemsExchange, TextFragmentHandler, ImageHandler, TypesHelper,
@@ -617,11 +632,12 @@ angular.module('Pundit2.Annomatic')
 
     };
 
+    annomatic.log('Component up and running');
+
     annomatic.run = function() {
         state.isRunning = true;
         TextFragmentHandler.turnOff();
         ImageHandler.turnOff();
-        consolidateGramsciSpots();
     };
 
     annomatic.stop = function(){
@@ -634,8 +650,17 @@ angular.module('Pundit2.Annomatic')
         return state.isRunning;
     };
 
-    annomatic.log('Component up and running');
+    annomatic.getGrasciAnnotations = function(node){
+        consolidateGramsciSpots();
+    };
 
+    annomatic.getAnnotations = function(node){
+        if(annomatic.options.source === 'DataTXT'){
+            annomatic.getDataTXTAnnotations(node);
+        } else if(annomatic.options.source === 'gramsci'){
+            annomatic.getGrasciAnnotations(node);
+        }
+    };
 
     // NEW ANNOMATIC SERVICE BASED ON GRAMSCI
     var gramsciMock = {
@@ -701,7 +726,7 @@ angular.module('Pundit2.Annomatic')
                 annomatic.gramsciAnn.bySpot[ann.spot] = [ann];
             } else {
                 annomatic.gramsciAnn.bySpot[ann.spot].push(ann);
-            }            
+            }         
 
         }
 
@@ -738,6 +763,14 @@ angular.module('Pundit2.Annomatic')
     // consolidate all gramsci spots (wrap text inside span and add popover toggle icon)
     var consolidateGramsciSpots = function () {
 
+        var oldAnnotationNumber = annomatic.annotationNumber;
+        var count = 0;
+
+        // TODO change this (!)
+        annomatic.annotationNumber += $.map(annomatic.gramsciAnn.bySpot, function(n, i) { return i; }).length;
+        
+        annomatic.currAnn = 0;
+
         for (var i in annomatic.gramsciAnn.bySpot) {
 
             // ann is an array that contain all annotations about this spot
@@ -761,7 +794,8 @@ angular.module('Pundit2.Annomatic')
 
             // If it's a text node (simple case)
             } else {
-                
+                var currentIndex = count + oldAnnotationNumber;
+
                 var range = $document[0].createRange();
                 range.setStart(currentNode, ann[0].startOffset);
                 range.setEnd(currentNode, ann[0].endOffset);
@@ -774,6 +808,12 @@ angular.module('Pundit2.Annomatic')
                     // create item from spot (text fragment)
                     var item = TextFragmentHandler.createItemFromRange(range);
                     item.isAnnomatic = true;
+                    
+                    annomatic.ann.byNum[currentIndex] = ann[0];
+                    annomatic.ann.numToUriMap[currentIndex] = item.uri;
+                    annomatic.ann.uriToNumMap[item.uri] = currentIndex;
+                    annomatic.ann.byUri[item.uri] = ann[0];
+
                     ItemsExchange.addItemToContainer(item, annomatic.options.container);
 
                     // create item from resource 
@@ -781,8 +821,11 @@ angular.module('Pundit2.Annomatic')
                 }
 
             }
+            count++;
 
         } // end for spot
+
+        analyze(oldAnnotationNumber, annomatic.annotationNumber);        
             
         Consolidation.consolidate(ItemsExchange.getItemsByContainer(annomatic.options.container));
 

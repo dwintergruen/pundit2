@@ -11,35 +11,39 @@ angular.module('Pundit2.Annomatic')
         if (gotAnnotations) { return; }
         gotAnnotations = true;
 
-        var nodes = [],
-            namedClasses = XpointersHelper.options.namedContentClasses,
-            selectors = [];
+        Annomatic.getAnnotations();
 
-        for (var len=$scope.targets.length; len--;) {
-            selectors.push("[about='"+$scope.targets[len]+"']");
-        }
-        selectors.join(',');
-        angular.forEach(angular.element(selectors.join(',')), function(node){
-            for (var l=namedClasses.length; l--;) {
-                if (angular.element(node).hasClass(namedClasses[l])) {
-                    nodes.push(node);
-                    break;
-                }
-            }
-        });
+        // WORK IN PROGRESS
 
-        Annomatic.log('Asking for annotations on '+nodes.length+' nodes: ', nodes);
+        // var nodes = [],
+        //     namedClasses = XpointersHelper.options.namedContentClasses,
+        //     selectors = [];
 
-        var promises = [];
-        for (var n=nodes.length; n--;) {
-            promises.push(Annomatic.getDataTXTAnnotations(nodes[n]));
-        }
-        // TODO: if one the aggregated promises gets rejected ... all of them gets rejected :|
-        // we can put the consolidation in in the rejected function too, maybe, not in the
-        // finally(), since it only gets called if all of them are resolved.
-        $q.all(promises).then(function() {
-            Consolidation.consolidate(ItemsExchange.getItemsByContainer(Annomatic.options.container));
-        });
+        // for (var len=$scope.targets.length; len--;) {
+        //     selectors.push("[about='"+$scope.targets[len]+"']");
+        // }
+        // selectors.join(',');
+        // angular.forEach(angular.element(selectors.join(',')), function(node){
+        //     for (var l=namedClasses.length; l--;) {
+        //         if (angular.element(node).hasClass(namedClasses[l])) {
+        //             nodes.push(node);
+        //             break;
+        //         }
+        //     }
+        // });
+
+        // Annomatic.log('Asking for annotations on '+nodes.length+' nodes: ', nodes);
+
+        // var promises = [];
+        // for (var n=nodes.length; n--;) {
+        //     promises.push(Annomatic.getDataTXTAnnotations(nodes[n]));
+        // }
+        // // TODO: if one the aggregated promises gets rejected ... all of them gets rejected :|
+        // // we can put the consolidation in in the rejected function too, maybe, not in the
+        // // finally(), since it only gets called if all of them are resolved.
+        // $q.all(promises).then(function() {
+        //     Consolidation.consolidate(ItemsExchange.getItemsByContainer(Annomatic.options.container));
+        // });
     };
 
     $scope.startReview = function() {
@@ -77,32 +81,32 @@ angular.module('Pundit2.Annomatic')
     }; // getSelectedRange()
     
     var ancestor;
-    angular.element('body').on('mousedown', function() {
+    // angular.element('body').on('mousedown', function() {
 
-        angular.element('body').on('mousemove', function() {
-            var r = getSelectedRange();
-            if (r && r.commonAncestorContainer !== ancestor) {
-                if (ancestor) {
-                    angular.element(ancestor).removeClass('selecting-ancestor');
-                }
-                ancestor = r.commonAncestorContainer;
+    //     angular.element('body').on('mousemove', function() {
+    //         var r = getSelectedRange();
+    //         if (r && r.commonAncestorContainer !== ancestor) {
+    //             if (ancestor) {
+    //                 angular.element(ancestor).removeClass('selecting-ancestor');
+    //             }
+    //             ancestor = r.commonAncestorContainer;
                 
-                if (ancestor.nodeType === Node.TEXT_NODE) {
-                    ancestor = ancestor.parentNode;
-                }
-                angular.element(ancestor).addClass('selecting-ancestor');
-            }
-        });
-    });
+    //             if (ancestor.nodeType === Node.TEXT_NODE) {
+    //                 ancestor = ancestor.parentNode;
+    //             }
+    //             angular.element(ancestor).addClass('selecting-ancestor');
+    //         }
+    //     });
+    // });
 
-    angular.element('body').on('mouseup', function() {
-        angular.element('body').off('mousemove');
+    // angular.element('body').on('mouseup', function() {
+    //     angular.element('body').off('mousemove');
         
-        if (ancestor) {
-            angular.element(ancestor).removeClass('selecting-ancestor');
-            annotationsRootNode = angular.element(ancestor);
-            $scope.getAnnotations();
-        }
-    });
+    //     if (ancestor) {
+    //         angular.element(ancestor).removeClass('selecting-ancestor');
+    //         annotationsRootNode = angular.element(ancestor);
+    //         $scope.getAnnotations();
+    //     }
+    // });
 
 });
