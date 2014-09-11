@@ -8,7 +8,7 @@ body.pnd-toolbar-active {
 
 .pnd-toolbar-navbar{
     min-width: 960px;
-    
+
     .container-fluid {
         padding-left: 0px;
     }
@@ -16,7 +16,21 @@ body.pnd-toolbar-active {
 
 .pnd-toolbar-navbar .navbar-nav li {
 
-    
+    // ---------- BUTTONS IN TOOLBAR
+
+    a {
+        line-height: 1.5;
+        height: @toolbar-height - @toolbar-border-bottom;
+    }
+
+    // ---------- ICONS IN TOOLBAR
+
+    .pnd-icon {
+        font-size: 14px;
+        margin-top: 1px;
+        display: inline-block;
+    }
+
     // ---------- ELEMENTS
     
     .pnd-toolbar-active-element {
@@ -26,7 +40,6 @@ body.pnd-toolbar-active {
         color: gray !important;
     }
 
-    
     // ---------- ASK BUTTON
     
     &.pnd-toolbar-ask-button-not-active {
@@ -105,7 +118,7 @@ body.pnd-toolbar-active {
     &.pnd-toolbar-dashboard-button {
     
         .pnd-toolbar-active-element,.pnd-toolbar-not-active-element {
-            padding-left: 10px; // padding Arrow
+            padding-left: 16px; // padding Arrow
         }
     }
     // ---------- STATUS BUTTON
@@ -143,7 +156,7 @@ body.pnd-toolbar-active {
             }
 
             span {
-            font-size: 14px;
+                // font-size: 14px;
             }
         }
     }
@@ -206,7 +219,11 @@ body.pnd-toolbar-active {
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
-	    }
+        
+        .pnd-icon {
+            margin-right: 6px;
+        }
+    }
     
     &.pnd-toolbar-login-button .dropdown-menu {
     	padding: 0px;
@@ -280,7 +297,6 @@ body.pnd-toolbar-active {
         }
     }
 
-    
     .dropdown-menu {
     	padding: 0px;
     	border: 1px solid @brand-success;
@@ -289,8 +305,7 @@ body.pnd-toolbar-active {
     	left: auto !important;
     	right: 0 !important;
     	}
-    	
-     
+
         a {
             //background-color: transparent;
             //padding: 3px 10px;
@@ -315,7 +330,7 @@ body.pnd-toolbar-active {
     
          .current-notebook a {
 		    background-color: darken(@brand-success, 10%) !important;
-		    }  
+         }
         
     }
 }
