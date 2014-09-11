@@ -35,6 +35,12 @@ angular.module('Pundit2.Annomatic')
         Annomatic.setLastState($scope.num);
         Annomatic.reviewNext($scope.num + 1);
     };
+
+    $scope.goPrev = function() {
+        $scope.$hide();
+        Annomatic.setLastState($scope.num);
+        Annomatic.reviewNext($scope.num - 1);  
+    };
     
     $scope.acceptAll = function() {
         var id = $scope.ann.byNum[$scope.num].id,
