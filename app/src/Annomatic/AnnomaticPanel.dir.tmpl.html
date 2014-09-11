@@ -1,19 +1,20 @@
-<div ng-controller="AnnomaticPanelCtrl">
-    <div>
-
-        <button ng-disabled="targets.length == 0" class="btn btn-success pnd-button-suggestion" ng-click="getSuggestions()">
-            Scan Page <span class="pnd-icon pnd-icon-file-text"></span>
-        </button>
+<div ng-controller="AnnomaticPanelCtrl" class="pnd-annomatic-container pnd-ignore">
+    <div class="pnd-annomatic-content">
+        <div class="pnd-btn-annomatic">
+            <button 
+                class="btn btn-link pnd-button-suggestion" 
+                ng-click="getSuggestions()"
+                ng-show="!gotAnnotations"
+                ng-disabled="targets.length == 0">
+                    <span class="pnd-icon pnd-icon-file-text"></span> Scan Page
+            </button>
+        </div>
 
         <!-- <button class="btn btn-success pnd-button-select-area" ng-click="selectAreaMode()">
             Select area <span class="pnd-icon pnd-icon-edit"></span>
         </button> -->
 
-        <div ng-show="Annomatic.annotationNumber > 0">
-            <button class="btn btn-danger pnd-button-start-review" ng-click="startReview()">
-                Review ({{Annomatic.currAnn}}/{{Annomatic.annotationNumber}})
-            </button>
-
+        <div ng-show="gotAnnotations && Annomatic.annotationNumber > 0" class="pnd-btn-annomatic">
             <button
                 class="btn btn-default pnd-button-filter-suggestion"
                 ng-model="filteredTypes"
@@ -24,15 +25,22 @@
                 ng-options="type.value as type.label for type in Annomatic.ann.typesOptions"
                 bs-select>
             </button>
+
+            <button class="btn btn-danger pnd-button-start-review" ng-click="startReview()">
+                Review ({{Annomatic.currAnn}}/{{Annomatic.annotationNumber}})
+            </button>
         </div>
-    </div>
-    <div>
-        Accepted: {{Annomatic.ann.byState['accepted'].join(', ')}}
-    </div>
-    <div>
-        Removed: {{Annomatic.ann.byState['removed'].join(', ')}}
-    </div>
-    <div>
-        filteredTypes: {{Annomatic.filteredTypes}}
+
+        <div class="pnd-annomatic-info" ng-show="gotAnnotations && Annomatic.annotationNumber > 0">
+            <div>
+                Accepted: {{Annomatic.ann.byState['accepted'].join(', ')}}
+            </div>
+            <div>
+                Removed: {{Annomatic.ann.byState['removed'].join(', ')}}
+            </div>
+            <div>
+                filteredTypes: {{Annomatic.filteredTypes}}
+            </div>
+        </div>
     </div>
 </div>

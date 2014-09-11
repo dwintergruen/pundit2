@@ -260,8 +260,10 @@
         </div>
         
         <!-- Suggestions panel -->
-        <div class="pnd-annotation-sidebar-annotations" ng-show="isSuggestionsPanelActive()">
-            <annomatic-panel></annomatic-panel>
+        <div ng-if="isSuggestionsPanelActive()">
+            <div class="pnd-annotation-sidebar-annomatic" ng-show="isAnnotationSidebarExpanded">
+                <annomatic-panel></annomatic-panel>
+            </div>
         </div>
 
         <!-- List of annotations -->

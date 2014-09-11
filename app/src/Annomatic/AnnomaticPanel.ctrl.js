@@ -4,12 +4,14 @@ angular.module('Pundit2.Annomatic')
                                            $window, $q) {
 
     $scope.targets = Consolidation.getAvailableTargets(true);
+    $scope.gotAnnotations = false;
 
-    var gotAnnotations = false;
     $scope.getSuggestions = function() {
 
-        if (gotAnnotations) { return; }
-        gotAnnotations = true;
+        if ($scope.gotAnnotations){ 
+            return; 
+        }
+        $scope.gotAnnotations = true;
 
         Annomatic.getAnnotations();
 
