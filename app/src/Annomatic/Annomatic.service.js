@@ -748,6 +748,8 @@ angular.module('Pundit2.Annomatic')
             // TODO startXpath and endXpath are all times equal ???
             // XpointersHelper.getNodeFromXpath(ann[0].endXpath);
 
+            annomatic.log('get node from xpath', currentNode);
+
             if (!XpointersHelper.isTextNode(currentNode)) {
                 
                 if (currentNode.hasChildNodes()) {
