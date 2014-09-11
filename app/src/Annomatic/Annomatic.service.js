@@ -634,6 +634,8 @@ angular.module('Pundit2.Annomatic')
 
     annomatic.log('Component up and running');
 
+    // NEW ANNOMATIC SERVICE BASED ON GRAMSCI
+
     annomatic.run = function() {
         state.isRunning = true;
         TextFragmentHandler.turnOff();
@@ -662,7 +664,6 @@ angular.module('Pundit2.Annomatic')
         }
     };
 
-    // NEW ANNOMATIC SERVICE BASED ON GRAMSCI
     var gramsciMock = {
         "timestamp": "1234455",
         "time": "234",
@@ -688,16 +689,6 @@ angular.module('Pundit2.Annomatic')
         ]
     };
 
-    annomatic.gramsciAnn = {
-
-        // annotations by resource uri
-        byUri: {},
-
-        // annotations by spot (text)
-        bySpot: {}
-
-    };
-
     var state = {
         isRunning: false
     };
@@ -708,30 +699,8 @@ angular.module('Pundit2.Annomatic')
     };
 
     var getGramsciAnnotations = function (data) {
-
-        for (var i in data.annotations) {
-
-            var ann = data.annotations[i];
-
-            // in the near future every spot show a popover where we can select the desired resource
-            // we organise the annotation by spot (text) and by uri (resource)
-
-            if (typeof(annomatic.gramsciAnn.byUri[ann.uri]) === "undefined" ) {
-                annomatic.gramsciAnn.byUri[ann.uri] = [ann];
-            } else {
-                annomatic.gramsciAnn.byUri[ann.uri].push(ann);
-            }
-
-            if (typeof(annomatic.gramsciAnn.bySpot[ann.spot]) === "undefined" ) {
-                annomatic.gramsciAnn.bySpot[ann.spot] = [ann];
-            } else {
-                annomatic.gramsciAnn.bySpot[ann.spot].push(ann);
-            }         
-
-        }
-
+        return gramsciMock.annotations;
     };
-    getGramsciAnnotations(gramsciMock);
 
     var createItemFromGramsciAnnotation = function(ann) {
         var values = {};
@@ -763,23 +732,18 @@ angular.module('Pundit2.Annomatic')
     // consolidate all gramsci spots (wrap text inside span and add popover toggle icon)
     var consolidateGramsciSpots = function () {
 
-        var oldAnnotationNumber = annomatic.annotationNumber;
-        var count = 0;
-
-        // TODO change this (!)
-        annomatic.annotationNumber += $.map(annomatic.gramsciAnn.bySpot, function(n, i) { return i; }).length;
+        var annotations = getGramsciAnnotations();
+        var validAnnotations = [];
+        var i;
         
-        annomatic.currAnn = 0;
+        // cycle on all annotations received from gramsci
+        for (i=0; i<annotations.length; i++) {
 
-        for (var i in annomatic.gramsciAnn.bySpot) {
-
-            // ann is an array that contain all annotations about this spot
-            // we read the xpath info from the first (we expect that all xpaths have the same value)
-            var ann = annomatic.gramsciAnn.bySpot[i];
+            var ann = annotations[i];
             // get the current node from xpath
-            var currentNode = XpointersHelper.getNodeFromXpath(ann[0].startXpath);
+            var currentNode = XpointersHelper.getNodeFromXpath(ann.startXpath);
             // TODO startXpath and endXpath are all times equal ???
-            // XpointersHelper.getNodeFromXpath(ann[0].endXpath);
+            // XpointersHelper.getNodeFromXpath(ann.endXpath);
 
             annomatic.log('get node from xpath', currentNode);
 
@@ -790,40 +754,55 @@ angular.module('Pundit2.Annomatic')
                     // do somethings with child nodes (complex case)
                     annomatic.log('have child nodes', childNodes);
                     // we must continue the search in the next node ???
+                    // TODO
                 }
 
             // If it's a text node (simple case)
             } else {
-                var currentIndex = count + oldAnnotationNumber;
 
                 var range = $document[0].createRange();
-                range.setStart(currentNode, ann[0].startOffset);
-                range.setEnd(currentNode, ann[0].endOffset);
+                range.setStart(currentNode, ann.startOffset);
+                range.setEnd(currentNode, ann.endOffset);
 
-                if (range.toString() !== ann[0].spot) {
-                    annomatic.err('Annotation and range content do not match!! :((');
+                if (range.toString() !== ann.spot) {
+                    annomatic.err('Annotation spot and range do not match!! :((');
                 } else {
-                    annomatic.log('Annotation and range content match!! :))');
+                    annomatic.log('Annotation spot and range match!! :))');
 
                     // create item from spot (text fragment)
                     var item = TextFragmentHandler.createItemFromRange(range);
                     item.isAnnomatic = true;
-                    
-                    annomatic.ann.byNum[currentIndex] = ann[0];
-                    annomatic.ann.numToUriMap[currentIndex] = item.uri;
-                    annomatic.ann.uriToNumMap[item.uri] = currentIndex;
-                    annomatic.ann.byUri[item.uri] = ann[0];
-
                     ItemsExchange.addItemToContainer(item, annomatic.options.container);
 
+                    validAnnotations.push({
+                        ann: ann,
+                        frUri: item.uri
+                    });
+
                     // create item from resource 
-                    ItemsExchange.addItemToContainer(createItemFromGramsciAnnotation(ann[0]), annomatic.options.container);
+                    ItemsExchange.addItemToContainer(createItemFromGramsciAnnotation(ann), annomatic.options.container);
                 }
 
             }
-            count++;
 
-        } // end for spot
+        } // end for annotations
+
+        var oldAnnotationNumber = annomatic.annotationNumber;
+        annomatic.annotationNumber += validAnnotations.length;
+        annomatic.currAnn = 0;
+
+        // cycle over the valid annotations (range and spot match)
+        // and update the state
+        for (i=0; i<validAnnotations.length; i++) {
+
+            var currentIndex = i + oldAnnotationNumber;
+            var ann = validAnnotations[i].ann;
+
+            annomatic.ann.byNum[currentIndex] = ann;
+            annomatic.ann.numToUriMap[currentIndex] = validAnnotations[i].frUri;
+            annomatic.ann.uriToNumMap[validAnnotations[i].frUri] = currentIndex;
+            annomatic.ann.byUri[ann.uri] = ann;
+        }
 
         analyze(oldAnnotationNumber, annomatic.annotationNumber);        
             
