@@ -44,6 +44,10 @@ angular.module('Pundit2.Annomatic')
     $scope.startReview = function() {
         Annomatic.reviewNext(0);
     };
+
+    $scope.saveReview = function() {
+        Annomatic.save();
+    };
     
     $scope.Annomatic = Annomatic;
 

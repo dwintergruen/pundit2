@@ -54,7 +54,23 @@ angular.module('Pundit2.Annomatic')
      * Default value:
      * <pre> source: 'gramsci' </pre>
      */
-    source: 'gramsci'
+    source: 'gramsci',
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#Annomatic.property
+     *
+     * @description
+     * `string` or `obj`
+     *
+     * Propety used to save the annotations on the server. You can pass the uri of the property (this must be available in pundit)
+     * or the complete object as pundit property convention ({uri, type, label, range, domain ...}) 
+     *
+     * Default value:
+     * <pre> property: 'http://purl.org/pundit/ont/oa#isRelatedTo' </pre>
+     */
+    property: 'http://purl.org/pundit/ont/oa#isRelatedTo'
 })
 .service('Annomatic', function(ANNOMATICDEFAULTS, BaseComponent, DataTXTResource, XpointersHelper,
                                ItemsExchange, TextFragmentHandler, ImageHandler, TypesHelper,
@@ -499,8 +515,9 @@ angular.module('Pundit2.Annomatic')
         values.uri = ann.uri;
         values.isAnnomatic = true;
 
-        // TODO: DataTXT gives back resources with no types ... like http://it.dbpedia.org/page/Dio
         if (typeof(ann.types) === "undefined") {
+            values.type = ['http://dbpedia.org/ontology/Thing'];
+        } else if (ann.types.length === 0) {
             values.type = ['http://dbpedia.org/ontology/Thing'];
         } else {
             values.type = angular.copy(ann.types);
@@ -646,6 +663,16 @@ angular.module('Pundit2.Annomatic')
         state.isRunning = false;
         TextFragmentHandler.turnOn();
         ImageHandler.turnOn();
+    };
+
+    annomatic.save = function(){
+        // save all accepted annotation
+        for (var i=0; i<annomatic.ann.byState.accepted.length; i++) {
+            var index = annomatic.ann.byState.accepted[i];
+            var uri = annomatic.ann.numToUriMap[index];
+            var ann = annomatic.ann.byUri[uri];
+            //console.log(index, uri, ann);
+        }
     };
 
     annomatic.isRunning = function() {
