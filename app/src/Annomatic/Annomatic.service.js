@@ -99,7 +99,8 @@ angular.module('Pundit2.Annomatic')
         // list of numbers for the given type
         byType: {},
         // Key-value pair for the types
-        typesOptions: []
+        typesOptions: [],
+        saved: []
     };
     
     annomatic.annotationNumber = 0;
@@ -769,16 +770,43 @@ angular.module('Pundit2.Annomatic')
 
     };
 
-    annomatic.save = function(){
+    annomatic.save = function(num){
+        var uri = annomatic.ann.numToUriMap[num];
+        var ann = annomatic.ann.byUri[uri];
+
+        var items = buildRDFItems(uri, annomatic.options.property, ann.uri);
+        var graph = buildGraph(uri, annomatic.options.property, ann.uri);
+        var targets = buildTargets(uri, annomatic.options.property, ann.uri);
+
+        // TODO Not in thiw way (!!)
+        var sub = ItemsExchange.getItemByUri(uri),
+            obj = ItemsExchange.getItemByUri(ann.uri);
+        sub.isAnnomatic = false;
+        obj.isAnnomatic = false;
+
+        AnnotationsCommunication.saveAnnotation(graph, items, targets, undefined, true).then(function(annId){
+            annomatic.ann.saved.push(annId);
+        });
+    };
+
+    // TODO save all, not just accepted
+    annomatic.saveAll = function(){
         // save all accepted annotation
         for (var i=0; i<annomatic.ann.byState.accepted.length; i++) {
             var index = annomatic.ann.byState.accepted[i];
             var uri = annomatic.ann.numToUriMap[index];
             var ann = annomatic.ann.byUri[uri];
 
-            var items = buildRDFItems(uri, annomatic.options.property  ,ann.uri);
-            var graph = buildGraph(uri, annomatic.options.property  ,ann.uri);
-            var targets = buildTargets(uri, annomatic.options.property  ,ann.uri);
+            var items = buildRDFItems(uri, annomatic.options.property, ann.uri);
+            var graph = buildGraph(uri, annomatic.options.property, ann.uri);
+            var targets = buildTargets(uri, annomatic.options.property, ann.uri);
+
+            // TODO Not in thiw way (!!)
+            var sub = ItemsExchange.getItemByUri(uri),
+                obj = ItemsExchange.getItemByUri(ann.uri);
+            sub.isAnnomatic = false;
+            obj.isAnnomatic = false;
+
             AnnotationsCommunication.saveAnnotation(graph, items, targets, undefined, true);
         }
     };

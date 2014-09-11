@@ -27,12 +27,16 @@
                 ng-show="Annomatic.ann.typesOptions.length > 0">
             </button>
 
-            <button class="btn btn-success pnd-button-save-review" ng-click="saveReview()">
+            <!-- <button class="btn btn-success pnd-button-save-review" ng-click="saveReview()">
                 Save
-            </button>
+            </button> -->
             <!-- <button class="btn btn-danger pnd-button-start-review" ng-click="startReview()">
                 Review ({{Annomatic.currAnn}}/{{Annomatic.annotationNumber}})
             </button> -->
+        </div>
+
+        <div ng-repeat="ann in filtered = (annotations)" style="color: black">
+            <annotation-details id="{{ann}}"></annotation-details>
         </div>
 
         <!-- <div class="pnd-annomatic-info" ng-show="gotAnnotations && Annomatic.annotationNumber > 0">

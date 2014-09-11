@@ -20,6 +20,7 @@ angular.module('Pundit2.Annomatic')
 
     $scope.setOk = function() {
         $scope.$hide();
+        Annomatic.save($scope.num);
         Annomatic.setState($scope.num, 'accepted');
         Annomatic.reviewNext($scope.num + 1);
     };

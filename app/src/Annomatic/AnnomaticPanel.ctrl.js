@@ -48,10 +48,16 @@ angular.module('Pundit2.Annomatic')
     };
 
     $scope.saveReview = function() {
-        Annomatic.save();
+        Annomatic.saveAll();
     };
     
     $scope.Annomatic = Annomatic;
+
+    $scope.$watch(function() {
+        return Annomatic.ann.saved;
+    }, function(annotationsList) {
+        $scope.annotations = annotationsList;
+    });
 
     // Watching changes on the select
     $scope.$watch('filteredTypes', function(filtered, oldFiltered) {

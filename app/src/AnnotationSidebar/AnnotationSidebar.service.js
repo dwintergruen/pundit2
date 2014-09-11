@@ -386,6 +386,7 @@ angular.module('Pundit2.AnnotationSidebar')
     annotationSidebar.activateAnnotationsPanel = function() {
         if (state.isSuggestionsPanelActive){
             Annomatic.stop();
+            Consolidation.wipe();
             Consolidation.consolidateAll();
         }
 
@@ -398,6 +399,9 @@ angular.module('Pundit2.AnnotationSidebar')
     };
     annotationSidebar.activateSuggestionsPanel = function() {
         if (state.isAnnotationsPanelActive){
+            if(state.isFiltersExpanded){
+                state.isFiltersExpanded = false;
+            }
             Consolidation.wipe();
             Annomatic.run();
         }
