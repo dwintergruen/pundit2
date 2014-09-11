@@ -72,9 +72,9 @@ angular.module('Pundit2.Annomatic')
      */
     property: 'http://purl.org/pundit/ont/oa#isRelatedTo'
 })
-.service('Annomatic', function(ANNOMATICDEFAULTS, BaseComponent, DataTXTResource, XpointersHelper,
+.service('Annomatic', function(ANNOMATICDEFAULTS, BaseComponent, NameSpace, DataTXTResource, XpointersHelper,
                                ItemsExchange, TextFragmentHandler, ImageHandler, TypesHelper,
-                               DBPediaSpotlightResource, Item, GramsciResource,
+                               DBPediaSpotlightResource, Item, GramsciResource, AnnotationsCommunication,
                                $rootScope, $timeout, $document, $q) {
 
     var annomatic = new BaseComponent('Annomatic', ANNOMATICDEFAULTS);
@@ -683,13 +683,103 @@ angular.module('Pundit2.Annomatic')
         ImageHandler.turnOn();
     };
 
+    var buildTargets = function(subUri, predUri, objUri){
+
+        var sub = ItemsExchange.getItemByUri(subUri),
+            pred = ItemsExchange.getItemByUri(predUri),
+            obj = ItemsExchange.getItemByUri(objUri),
+            res = [];
+
+        if (typeof(sub) === 'undefined' || typeof(pred) === 'undefined' || typeof(obj) === 'undefined') {
+            return;
+        }        
+
+        if (sub.isTextFragment() || sub.isImage() || sub.isImageFragment() ){
+            if (res.indexOf(sub.uri) === -1) {
+                res.push(sub.uri);
+            }
+        }
+        if (pred.isTextFragment() || pred.isImage() || pred.isImageFragment() ){
+            if (res.indexOf(pred.uri) === -1) {
+                res.push(pred.uri);
+            }
+        }        
+        if (obj.isTextFragment() || obj.isImage() || obj.isImageFragment() ){
+            if (res.indexOf(obj.uri) === -1) {
+                res.push(obj.uri);
+            }
+        }
+
+        return res;
+    };
+
+    var buildGraph = function(subUri, predUri, objUri) {
+        
+        var sub = ItemsExchange.getItemByUri(subUri),
+            pred = ItemsExchange.getItemByUri(predUri),
+            obj = ItemsExchange.getItemByUri(objUri),
+            res = {};
+
+        if (typeof(sub) === 'undefined' || typeof(pred) === 'undefined' || typeof(obj) === 'undefined') {
+            return;
+        }
+        
+        res[sub.uri] = {};
+        res[sub.uri][pred.uri] = [{type: 'uri', value: obj.uri}];
+
+        return res;
+    };
+
+    var buildRDFItems = function(subUri, predUri, objUri) {
+
+        var sub = ItemsExchange.getItemByUri(subUri),
+            pred = ItemsExchange.getItemByUri(predUri),
+            obj = ItemsExchange.getItemByUri(objUri),
+            res = {};
+
+        if (typeof(sub) === 'undefined' || typeof(pred) === 'undefined' || typeof(obj) === 'undefined') {
+            return;
+        }
+
+        // add item and its rdf properties
+        res[sub.uri] = sub.toRdf();
+        res[pred.uri] = pred.toRdf();
+        res[obj.uri] = obj.toRdf();
+
+        // add object types and its label
+        obj.type.forEach(function(e, i){
+            var type = obj.type[i];
+            res[type] = { };
+            res[type][NameSpace.rdfs.label] = [{type: 'literal', value: TypesHelper.getLabel(e)}];
+        });
+        // add subject types and its label
+        sub.type.forEach(function(e, i){
+            var type = sub.type[i];
+            res[type] = { };
+            res[type][NameSpace.rdfs.label] = [{type: 'literal', value: TypesHelper.getLabel(e)}];
+        });
+        // add predicate types and its label
+        pred.type.forEach(function(e, i){
+            var type = pred.type[i];
+            res[type] = { };
+            res[type][NameSpace.rdfs.label] = [{type: 'literal', value: TypesHelper.getLabel(e)}];
+        });
+
+        return res;
+
+    };
+
     annomatic.save = function(){
         // save all accepted annotation
         for (var i=0; i<annomatic.ann.byState.accepted.length; i++) {
             var index = annomatic.ann.byState.accepted[i];
             var uri = annomatic.ann.numToUriMap[index];
             var ann = annomatic.ann.byUri[uri];
-            //console.log(index, uri, ann);
+
+            var items = buildRDFItems(uri, annomatic.options.property  ,ann.uri);
+            var graph = buildGraph(uri, annomatic.options.property  ,ann.uri);
+            var targets = buildTargets(uri, annomatic.options.property  ,ann.uri);
+            AnnotationsCommunication.saveAnnotation(graph, items, targets);
         }
     };
 
@@ -843,7 +933,7 @@ angular.module('Pundit2.Annomatic')
             annomatic.ann.byNum[currentIndex] = ann;
             annomatic.ann.numToUriMap[currentIndex] = validAnnotations[i].frUri;
             annomatic.ann.uriToNumMap[validAnnotations[i].frUri] = currentIndex;
-            annomatic.ann.byUri[ann.uri] = ann;
+            annomatic.ann.byUri[validAnnotations[i].frUri] = ann;
         }
 
         analyze(oldAnnotationNumber, annomatic.annotationNumber);
