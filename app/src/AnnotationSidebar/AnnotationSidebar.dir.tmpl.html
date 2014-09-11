@@ -266,16 +266,16 @@
             </div>
         </div>
 
+        <!-- Loading -->
+        <div ng-show="isLoading" class="pnd-saving-content" ng-show="isAnnotationSidebarExpanded">
+            <span class="pnd-icon pnd-icon-refresh pnd-icon-spin pnd-icon-2x"></span>
+            <span class="pnd-message">Loading</span>
+        </div>
+
         <!-- List of annotations -->
         <div 
             ng-show="isAnnotationsPanelActive()"
-            class="pnd-annotation-sidebar-annotations">
-
-            <!-- Loading -->
-            <div ng-show="isLoading" class="pnd-saving-content" ng-show="isAnnotationSidebarExpanded">
-            	<span class="pnd-icon pnd-icon-refresh pnd-icon-spin pnd-icon-2x"></span>
-                <span class="pnd-message">Loading</span>
-            </div>
+            class="pnd-annotation-sidebar-annotations">         
 
             <div ng-repeat="ann in filtered = (annotations)">
                 <!-- <annotation-details id="{{ann.id}}"></annotation-details> -->

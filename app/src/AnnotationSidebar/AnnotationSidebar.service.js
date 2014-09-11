@@ -278,6 +278,7 @@ angular.module('Pundit2.AnnotationSidebar')
     var state = {
         isSidebarExpanded: annotationSidebar.options.isAnnotationSidebarExpanded,
         isFiltersExpanded: annotationSidebar.options.isFiltersShowed,
+        isLoading: false,
         allAnnotations: [],
         filteredAnnotations: [],
         isAnnotationsPanelActive: annotationSidebar.options.annotationsPanelActive,
@@ -360,6 +361,10 @@ angular.module('Pundit2.AnnotationSidebar')
     // Expands or collapses the sidebar
     annotationSidebar.toggle = function(){
         state.isSidebarExpanded = !state.isSidebarExpanded;
+    };
+
+    annotationSidebar.toggleLoading = function(){
+        state.isLoading = !state.isLoading;
     };
 
     // Show / hide the list of the filters in the sidebar
@@ -917,6 +922,10 @@ angular.module('Pundit2.AnnotationSidebar')
             );
         }
     };
+
+    annotationSidebar.getLoadingStatus = function(){
+        return state.isLoading;
+    }
 
     annotationSidebar.setAllPosition = function(id, height){
         orderAndSetPos(id, height);

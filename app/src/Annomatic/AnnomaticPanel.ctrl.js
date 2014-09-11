@@ -1,6 +1,6 @@
 angular.module('Pundit2.Annomatic')
 .controller('AnnomaticPanelCtrl', function($scope, Annomatic, Consolidation, ItemsExchange,
-                                           TextFragmentAnnotator, XpointersHelper,
+                                           TextFragmentAnnotator, XpointersHelper, AnnotationSidebar,
                                            $window, $q) {
 
     $scope.targets = Consolidation.getAvailableTargets(true);
@@ -12,6 +12,7 @@ angular.module('Pundit2.Annomatic')
             return; 
         }
         $scope.gotAnnotations = true;
+        AnnotationSidebar.toggleLoading();
 
         var nodes = [],
             namedClasses = XpointersHelper.options.namedContentClasses,
@@ -37,6 +38,7 @@ angular.module('Pundit2.Annomatic')
             promises.push(Annomatic.getAnnotations(nodes[n]));
         }
         $q.all(promises).then(function() {
+            AnnotationSidebar.toggleLoading();
             Consolidation.consolidate(ItemsExchange.getItemsByContainer(Annomatic.options.container));
         });
     };

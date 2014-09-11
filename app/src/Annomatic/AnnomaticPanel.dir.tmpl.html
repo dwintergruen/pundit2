@@ -23,18 +23,19 @@
                 data-multiple="1"
                 data-animation="am-flip-x"
                 ng-options="type.value as type.label for type in Annomatic.ann.typesOptions"
-                bs-select>
+                bs-select
+                ng-show="Annomatic.ann.typesOptions.length > 0">
             </button>
 
             <button class="btn btn-success pnd-button-save-review" ng-click="saveReview()">
                 Save
             </button>
-            <button class="btn btn-danger pnd-button-start-review" ng-click="startReview()">
+            <!-- <button class="btn btn-danger pnd-button-start-review" ng-click="startReview()">
                 Review ({{Annomatic.currAnn}}/{{Annomatic.annotationNumber}})
-            </button>
+            </button> -->
         </div>
 
-        <div class="pnd-annomatic-info" ng-show="gotAnnotations && Annomatic.annotationNumber > 0">
+        <!-- <div class="pnd-annomatic-info" ng-show="gotAnnotations && Annomatic.annotationNumber > 0">
             <div>
                 Accepted: {{Annomatic.ann.byState['accepted'].join(', ')}}
             </div>
@@ -44,6 +45,6 @@
             <div>
                 filteredTypes: {{Annomatic.filteredTypes}}
             </div>
-        </div>
+        </div> -->
     </div>
 </div>
