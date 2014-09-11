@@ -653,6 +653,22 @@ angular.module('Pundit2.Annomatic')
 
     // NEW ANNOMATIC SERVICE BASED ON GRAMSCI
 
+
+    annomatic.hardReset = function() {
+        annomatic.ann = {
+            byUri: {},
+            byNum: [],
+            numToUriMap: {},
+            uriToNumMap: {},
+            byId: {},
+            autoAnnScopes: [],
+            byState: {},
+            byType: {},
+            typesOptions: []
+        };
+        annomatic.annotationNumber = 0;
+    };
+
     annomatic.run = function() {
         state.isRunning = true;
         TextFragmentHandler.turnOff();
@@ -660,6 +676,8 @@ angular.module('Pundit2.Annomatic')
     };
 
     annomatic.stop = function(){
+        annomatic.hardReset();
+        annomatic.reset();
         state.isRunning = false;
         TextFragmentHandler.turnOn();
         ImageHandler.turnOn();
