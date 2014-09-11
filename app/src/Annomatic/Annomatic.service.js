@@ -779,7 +779,7 @@ angular.module('Pundit2.Annomatic')
             var items = buildRDFItems(uri, annomatic.options.property  ,ann.uri);
             var graph = buildGraph(uri, annomatic.options.property  ,ann.uri);
             var targets = buildTargets(uri, annomatic.options.property  ,ann.uri);
-            AnnotationsCommunication.saveAnnotation(graph, items, targets);
+            AnnotationsCommunication.saveAnnotation(graph, items, targets, undefined, true);
         }
     };
 

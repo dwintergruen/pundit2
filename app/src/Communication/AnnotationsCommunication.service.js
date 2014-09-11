@@ -116,7 +116,7 @@ angular.module('Pundit2.Communication')
         return promise.promise;
     };
 
-    annotationsCommunication.saveAnnotation = function(graph, items, targets, templateID){
+    annotationsCommunication.saveAnnotation = function(graph, items, targets, templateID, skipConsolidation){
 
         // var completed = 0;
         var promise = $q.defer();
@@ -163,8 +163,12 @@ angular.module('Pundit2.Communication')
                     // otherwise if user has a notebook yet, use it to add new annotation in that notebook in NotebookExchange
                     NotebookExchange.getNotebookById(ann.isIncludedIn).addAnnotation(data.AnnotationID);
                 }
-                Consolidation.consolidateAll();
-                $rootScope.$emit('update-annotation-completed', data.AnnotationID);
+
+                if (typeof(skipConsolidation) === 'undefined' || !skipConsolidation) {
+                    Consolidation.consolidateAll();
+                    $rootScope.$emit('update-annotation-completed', data.AnnotationID);
+                }
+                
                 // TODO move inside notebook then?
                 Toolbar.setLoading(false);
                 promise.resolve(ann.id);
