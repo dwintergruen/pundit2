@@ -50,18 +50,26 @@ angular.module('Pundit2.Core')
             if(!MyPundit.isUserLogged()) {
                 var der = $rootScope.$on('consolidation-completed', function() {
                     var item = imageFragmentHelper.createItemFromPolygon(lastData.poly);
-                    MyItems.addItem(item);
+                    MyItems.addItem(item).then(function(){
+                        childWindow.postMessage({type:'pundit-add-to-my-items-success'},'*');
+                    }, function(){
+                        childWindow.postMessage({type:'pundit-add-to-my-items-err'},'*');
+                    });
                     der(); // Remove listener on rootScope
                 });
                 MyPundit.login();
             } else {
                 var item = imageFragmentHelper.createItemFromPolygon(lastData.poly);
-                MyItems.addItem(item);
+                MyItems.addItem(item).then(function(){
+                    childWindow.postMessage({type:'pundit-add-to-my-items-success'},'*');
+                }, function(){
+                    childWindow.postMessage({type:'pundit-add-to-my-items-err'},'*');
+                });
             }
         }
     });
 
-    var overflow, imgItem;
+    var childWindow, overflow, imgItem;
     var open = function(item) {
         var newSrc = decodeURIComponent(item.image);
         newSrc = newSrc.replace(/'/g, "\\'");
@@ -76,6 +84,8 @@ angular.module('Pundit2.Core')
         overflow = angular.element('body').css('overflow');
         angular.element('body').css('overflow', 'hidden');
         imgItem = item;
+
+        childWindow = angular.element('.pnd-image-fragment-frame')[0].contentWindow;
     };
 
     var close = function() {
