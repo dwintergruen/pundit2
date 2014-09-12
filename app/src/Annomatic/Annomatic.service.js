@@ -485,7 +485,7 @@ angular.module('Pundit2.Annomatic')
                 for (var l=validAnnotations.length, i=0; i<l; i++) {
                     var currentIndex = oldAnnotationNumber + i;
                     item = TextFragmentHandler.createItemFromRange(validAnnotations[i].range);
-                    item.isAnnomatic = true;
+
                     annomatic.ann.byNum[currentIndex] = validAnnotations[i].annotation;
                     annomatic.ann.numToUriMap[currentIndex] = item.uri;
                     annomatic.ann.uriToNumMap[item.uri] = currentIndex;
@@ -493,7 +493,6 @@ angular.module('Pundit2.Annomatic')
                     ItemsExchange.addItemToContainer(item, annomatic.options.container);
 
                     item = createItemFromDataTXTAnnotation(validAnnotations[i].annotation);
-                    item.isAnnomatic = true;
                     ItemsExchange.addItemToContainer(item, annomatic.options.container);
                 }
 
@@ -514,7 +513,6 @@ angular.module('Pundit2.Annomatic')
         var values = {};
 
         values.uri = ann.uri;
-        values.isAnnomatic = true;
 
         if (typeof(ann.types) === "undefined") {
             values.type = ['http://dbpedia.org/ontology/Thing'];
@@ -629,12 +627,12 @@ angular.module('Pundit2.Annomatic')
         }
         
         // Start from 0 if we reach the ends
-        if (from >= annomatic.annotationNumber) {
+        if (from >= annomatic.annotationNumber || from < 0) {
             annomatic.currAnn = 0;
         } else {
             annomatic.currAnn = from;
         }
-        
+
         // Look for the next 'waiting' state starting from the current one
         while (annomatic.ann.byNum[annomatic.currAnn].hidden === true || annomatic.ann.byNum[annomatic.currAnn].state !== "waiting") {
             annomatic.currAnn++;
@@ -668,6 +666,7 @@ angular.module('Pundit2.Annomatic')
             typesOptions: []
         };
         annomatic.annotationNumber = 0;
+        annomatic.reset();
     };
 
     annomatic.run = function() {
@@ -678,7 +677,7 @@ angular.module('Pundit2.Annomatic')
 
     annomatic.stop = function(){
         annomatic.hardReset();
-        annomatic.reset();
+        ItemsExchange.wipeContainer(annomatic.options.container);
         state.isRunning = false;
         TextFragmentHandler.turnOn();
         ImageHandler.turnOn();
@@ -778,12 +777,6 @@ angular.module('Pundit2.Annomatic')
         var graph = buildGraph(uri, annomatic.options.property, ann.uri);
         var targets = buildTargets(uri, annomatic.options.property, ann.uri);
 
-        // TODO Not in thiw way (!!)
-        var sub = ItemsExchange.getItemByUri(uri),
-            obj = ItemsExchange.getItemByUri(ann.uri);
-        sub.isAnnomatic = false;
-        obj.isAnnomatic = false;
-
         AnnotationsCommunication.saveAnnotation(graph, items, targets, undefined, true).then(function(annId){
             annomatic.ann.saved.push(annId);
         });
@@ -794,20 +787,7 @@ angular.module('Pundit2.Annomatic')
         // save all accepted annotation
         for (var i=0; i<annomatic.ann.byState.accepted.length; i++) {
             var index = annomatic.ann.byState.accepted[i];
-            var uri = annomatic.ann.numToUriMap[index];
-            var ann = annomatic.ann.byUri[uri];
-
-            var items = buildRDFItems(uri, annomatic.options.property, ann.uri);
-            var graph = buildGraph(uri, annomatic.options.property, ann.uri);
-            var targets = buildTargets(uri, annomatic.options.property, ann.uri);
-
-            // TODO Not in thiw way (!!)
-            var sub = ItemsExchange.getItemByUri(uri),
-                obj = ItemsExchange.getItemByUri(ann.uri);
-            sub.isAnnomatic = false;
-            obj.isAnnomatic = false;
-
-            AnnotationsCommunication.saveAnnotation(graph, items, targets, undefined, true);
+            annomatic.save(index);
         }
     };
 
@@ -865,7 +845,6 @@ angular.module('Pundit2.Annomatic')
         var values = {};
 
         values.uri = ann.uri;
-        values.isAnnomatic = true;
 
         values.label = ann.label;
         if (values.label.length > TextFragmentHandler.options.labelMaxLength) {
@@ -925,7 +904,6 @@ angular.module('Pundit2.Annomatic')
 
                     // create item from spot (text fragment)
                     var item = TextFragmentHandler.createItemFromRange(range);
-                    item.isAnnomatic = true;
                     ItemsExchange.addItemToContainer(item, annomatic.options.container);
 
                     validAnnotations.push({
