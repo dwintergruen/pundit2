@@ -344,7 +344,7 @@ angular.module('Pundit2.Toolbar')
     };
 
     $scope.toggleTemplateMode = function() {
-        if (TripleComposer.isEditMode()) {
+        if (TripleComposer.isEditMode() || $scope.isAnnomaticRunning) {
             return;
         }
         ResourcePanel.hide();

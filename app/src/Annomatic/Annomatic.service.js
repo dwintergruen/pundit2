@@ -73,7 +73,7 @@ angular.module('Pundit2.Annomatic')
     property: 'http://purl.org/pundit/ont/oa#isRelatedTo'
 })
 .service('Annomatic', function(ANNOMATICDEFAULTS, BaseComponent, NameSpace, DataTXTResource, XpointersHelper,
-                               ItemsExchange, TextFragmentHandler, ImageHandler, TypesHelper,
+                               ItemsExchange, TextFragmentHandler, ImageHandler, TypesHelper, Toolbar,
                                DBPediaSpotlightResource, Item, GramsciResource, AnnotationsCommunication,
                                $rootScope, $timeout, $document, $q) {
 
@@ -676,6 +676,9 @@ angular.module('Pundit2.Annomatic')
         state.isRunning = true;
         TextFragmentHandler.turnOff();
         ImageHandler.turnOff();
+        if (Toolbar.isActiveTemplateMode()) {
+            Toolbar.toggleTemplateMode();
+        }
         $rootScope.$emit('annomatic-run');
     };
 
