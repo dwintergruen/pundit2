@@ -16,7 +16,7 @@
 
         <div ng-show="gotAnnotations && Annomatic.annotationNumber > 0" class="pnd-btn-annomatic">
             <div class="pnd-annomatic-count">
-                Suggestion: {{Annomatic.annotationNumber}} - Saved: {{Annomatic.ann.savedByNum.length}} - Rejected: {{Annomatic.ann.byState['removed'].length}}
+                Suggestion: {{Annomatic.annotationNumber}} - Saved: {{Annomatic.ann.savedByNum.length}} <!-- - Rejected: {{Annomatic.ann.byState['removed'].length}} -->
             </div>
 
             <button
@@ -34,9 +34,12 @@
             <!-- <button class="btn btn-success pnd-button-save-review" ng-click="saveReview()">
                 Save
             </button> -->
-            <!-- <button class="btn btn-danger pnd-button-start-review" ng-click="startReview()">
-                Review ({{Annomatic.currAnn}}/{{Annomatic.annotationNumber}})
-            </button> -->
+            <button 
+                class="btn btn-success pnd-button-start-review" 
+                ng-click="startReview()"
+                ng-hide="Annomatic.ann.savedByNum.length > 0">
+                Start review <!-- ({{Annomatic.currAnn}}/{{Annomatic.annotationNumber}}) -->
+            </button>
         </div>
 
         <div ng-repeat="ann in filtered = (annotations)" style="color: black">
