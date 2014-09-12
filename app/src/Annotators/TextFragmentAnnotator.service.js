@@ -77,7 +77,7 @@ angular.module('Pundit2.Annotators')
 
 .service('TextFragmentAnnotator',
     function(TEXTFRAGMENTANNOTATORDEFAULTS, NameSpace, BaseComponent, Consolidation,
-             XpointersHelper, ItemsExchange, Config, TripleComposer, Toolbar,
+             XpointersHelper, ItemsExchange, Config, TripleComposer, Toolbar, Annomatic,
              $compile, $rootScope) {
 
     // Create the component and declare what we deal with: text
@@ -178,8 +178,7 @@ angular.module('Pundit2.Annotators')
                 // TODO: put this name in .options ?
                 directive = "text-fragment-icon";
 
-            if (fragmentById[id].item.isAnnomatic) {
-                // TODO: put this name in .options, in Annomatic ?
+            if (Annomatic.isRunning()) {
                 directive = "suggestion-fragment-icon";
             }
 
