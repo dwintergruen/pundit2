@@ -161,6 +161,10 @@ describe('AnnotationsCommunication service', function() {
             },
             _q: $q.defer()
         };
+
+        // mock is user logged
+        MyPundit.setIsUserLogged(true);
+
         // http mock for edit annotation
         $httpBackend.expectPUT(new RegExp(NameSpace.get('asAnnContent', {id: ann.id}))).respond({});
         $httpBackend.expectPUT(new RegExp(NameSpace.get('asAnnItems', {id: ann.id}))).respond({});

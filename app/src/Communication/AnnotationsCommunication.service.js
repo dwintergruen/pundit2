@@ -121,69 +121,76 @@ angular.module('Pundit2.Communication')
         // var completed = 0;
         var promise = $q.defer();
 
-        Toolbar.setLoading(true);
+        if(MyPundit.isUserLogged()){
 
-        var postData = {
-            graph: graph,
-            items: items
-        };
-        if (typeof(templateID) !== 'undefined') {
-            postData.metadata = {template: templateID};
-        }
+            Toolbar.setLoading(true);
 
-        $http({
-            headers: { 'Content-Type': 'application/json' },
-            method: 'POST',
-            url: NameSpace.get('asNBCurrent'),
-            params: {
-                context: angular.toJson({
-                    targets: targets,
-                    pageContext: XpointersHelper.getSafePageContext()
-                })
-            },
-            withCredentials: true,
-            data: postData
-        }).success(function(data) {
+            var postData = {
+                graph: graph,
+                items: items
+            };
+            if (typeof(templateID) !== 'undefined') {
+                postData.metadata = {template: templateID};
+            }
 
-            // TODO if is rejected ???
-            new Annotation(data.AnnotationID).then(function(){
+            $http({
+                headers: { 'Content-Type': 'application/json' },
+                method: 'POST',
+                url: NameSpace.get('asNBCurrent'),
+                params: {
+                    context: angular.toJson({
+                        targets: targets,
+                        pageContext: XpointersHelper.getSafePageContext()
+                    })
+                },
+                withCredentials: true,
+                data: postData
+            }).success(function(data) {
 
-                var ann = AnnotationsExchange.getAnnotationById(data.AnnotationID);
+                // TODO if is rejected ???
+                new Annotation(data.AnnotationID).then(function(){
 
-                // get notebook that include the new annotation
-                var nb = NotebookExchange.getNotebookById(ann.isIncludedIn);
+                    var ann = AnnotationsExchange.getAnnotationById(data.AnnotationID);
 
-                // if no notebook is defined, it means that user is logged in a new user in Pundit and has not any notebooks
-                // so create a new notebook and add annotation in new notebook in NotebookExchange
-                if(typeof(nb) === 'undefined'){
-                    new Notebook(ann.isIncludedIn, true).then(function(id){
-                        NotebookExchange.getNotebookById(id).addAnnotation(data.AnnotationID);
-                    });
-                } else {
-                    // otherwise if user has a notebook yet, use it to add new annotation in that notebook in NotebookExchange
-                    NotebookExchange.getNotebookById(ann.isIncludedIn).addAnnotation(data.AnnotationID);
-                }
+                    // get notebook that include the new annotation
+                    var nb = NotebookExchange.getNotebookById(ann.isIncludedIn);
 
-                if (typeof(skipConsolidation) === 'undefined' || !skipConsolidation) {
-                    Consolidation.consolidateAll();
-                    $rootScope.$emit('update-annotation-completed', data.AnnotationID);
-                }
-                
-                // TODO move inside notebook then?
-                Toolbar.setLoading(false);
-                promise.resolve(ann.id);
-            }, function(){
-                // rejected, impossible to download annotation from server
-                annotationsCommunication.log("Error: impossible to get annotation from server after save");
+                    // if no notebook is defined, it means that user is logged in a new user in Pundit and has not any notebooks
+                    // so create a new notebook and add annotation in new notebook in NotebookExchange
+                    if(typeof(nb) === 'undefined'){
+                        new Notebook(ann.isIncludedIn, true).then(function(id){
+                            NotebookExchange.getNotebookById(id).addAnnotation(data.AnnotationID);
+                        });
+                    } else {
+                        // otherwise if user has a notebook yet, use it to add new annotation in that notebook in NotebookExchange
+                        NotebookExchange.getNotebookById(ann.isIncludedIn).addAnnotation(data.AnnotationID);
+                    }
+
+                    if (typeof(skipConsolidation) === 'undefined' || !skipConsolidation) {
+                        Consolidation.consolidateAll();
+                        $rootScope.$emit('update-annotation-completed', data.AnnotationID);
+                    }
+                    
+                    // TODO move inside notebook then?
+                    Toolbar.setLoading(false);
+                    promise.resolve(ann.id);
+                }, function(){
+                    // rejected, impossible to download annotation from server
+                    annotationsCommunication.log("Error: impossible to get annotation from server after save");
+                    Toolbar.setLoading(false);
+                    promise.reject();
+                });
+            }).error(function(msg) {
+                // TODO
+                annotationsCommunication.log("Error: impossible to save annotation", msg);
                 Toolbar.setLoading(false);
                 promise.reject();
             });
-        }).error(function(msg) {
-            // TODO
-            annotationsCommunication.log("Error: impossible to save annotation", msg);
-            Toolbar.setLoading(false);
-            promise.reject();
-        });
+
+        } else {
+            annotationsCommunication.log("Error impossible to save annotation: "+annID+" you are not logged");
+            promise.reject("Error impossible to save annotation: "+annID+" you are not logged");
+        }
 
         return promise.promise;
 
@@ -197,61 +204,68 @@ angular.module('Pundit2.Communication')
         var completed = 0,
             promise = $q.defer();
 
-        Toolbar.setLoading(true);
+        if(MyPundit.isUserLogged()){
 
-        $http({
-            headers: { 'Content-Type': 'application/json' },
-            method: 'PUT',
-            url: NameSpace.get('asAnnContent', {id: annID}),
-            params: {
-                context: angular.toJson({
-                    targets: targets,
-                    pageContext: XpointersHelper.getSafePageContext()
-                })
-            },
-            withCredentials: true,
-            data: {
-                "graph": graph
-            }
-        }).success(function() {
-            if (completed > 0) {
-                AnnotationsExchange.getAnnotationById(annID).update().then(function(){
-                    Consolidation.consolidateAll();
-                    $rootScope.$emit('update-annotation-completed', annID);
-                    promise.resolve();
-                });
-            }
-            Toolbar.setLoading(false);
-            completed++;
-            annotationsCommunication.log("Graph correctly updated: "+annID);
-        }).error(function() {
-            Toolbar.setLoading(false);
-            promise.reject();
-            annotationsCommunication.log("Error during graph editing of "+annID);
-        });
+            Toolbar.setLoading(true);
 
-        $http({
-            headers: { 'Content-Type': 'application/json' },
-            method: 'PUT',
-            url: NameSpace.get('asAnnItems', {id: annID}),
-            withCredentials: true,
-            data: items
-        }).success(function() {
-            if (completed > 0) {
-                AnnotationsExchange.getAnnotationById(annID).update().then(function(){
-                    Consolidation.consolidateAll();
-                    $rootScope.$emit('update-annotation-completed', annID);
-                    promise.resolve();
-                });
-            }
-            Toolbar.setLoading(false);
-            completed++;
-            annotationsCommunication.log("Items correctly updated: "+annID);
-        }).error(function() {
-            Toolbar.setLoading(false);
-            promise.reject();
-            annotationsCommunication.log("Error during items editing of "+annID);
-        });
+            $http({
+                headers: { 'Content-Type': 'application/json' },
+                method: 'PUT',
+                url: NameSpace.get('asAnnContent', {id: annID}),
+                params: {
+                    context: angular.toJson({
+                        targets: targets,
+                        pageContext: XpointersHelper.getSafePageContext()
+                    })
+                },
+                withCredentials: true,
+                data: {
+                    "graph": graph
+                }
+            }).success(function() {
+                if (completed > 0) {
+                    AnnotationsExchange.getAnnotationById(annID).update().then(function(){
+                        Consolidation.consolidateAll();
+                        $rootScope.$emit('update-annotation-completed', annID);
+                        promise.resolve();
+                    });
+                }
+                Toolbar.setLoading(false);
+                completed++;
+                annotationsCommunication.log("Graph correctly updated: "+annID);
+            }).error(function() {
+                Toolbar.setLoading(false);
+                promise.reject();
+                annotationsCommunication.log("Error during graph editing of "+annID);
+            });
+
+            $http({
+                headers: { 'Content-Type': 'application/json' },
+                method: 'PUT',
+                url: NameSpace.get('asAnnItems', {id: annID}),
+                withCredentials: true,
+                data: items
+            }).success(function() {
+                if (completed > 0) {
+                    AnnotationsExchange.getAnnotationById(annID).update().then(function(){
+                        Consolidation.consolidateAll();
+                        $rootScope.$emit('update-annotation-completed', annID);
+                        promise.resolve();
+                    });
+                }
+                Toolbar.setLoading(false);
+                completed++;
+                annotationsCommunication.log("Items correctly updated: "+annID);
+            }).error(function() {
+                Toolbar.setLoading(false);
+                promise.reject();
+                annotationsCommunication.log("Error during items editing of "+annID);
+            });
+
+        } else {
+            annotationsCommunication.log("Error impossible to edit annotation: "+annID+" you are not logged");
+            promise.reject("Error impossible to edit annotation: "+annID+" you are not logged");
+        }
 
         return promise.promise;
 
