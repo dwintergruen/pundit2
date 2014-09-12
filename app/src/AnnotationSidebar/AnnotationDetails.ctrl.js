@@ -121,7 +121,7 @@ angular.module('Pundit2.AnnotationSidebar')
     });
 
     $scope.isUserToolShowed = function() {
-        return AnnotationDetails.isUserToolShowed($scope.annotation.creator);
+        return AnnotationDetails.isUserToolShowed($scope.annotation.creator) && AnnotationSidebar.isAnnotationsPanelActive();
     };
 
     $scope.mouseoverAllHandler = function(){
