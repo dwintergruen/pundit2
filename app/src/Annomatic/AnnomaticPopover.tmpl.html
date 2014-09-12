@@ -25,26 +25,26 @@
             <item-preview uri="{{ann.byNum[num].uri}}" sticking="false"></item-preview>
         </div>
 
-        <div class="btn-group" style="left: 21px">
+        <div class="btn-group">
 
             <!-- <button class="btn btn-warning pnd-button-go-prev" ng-click="goPrev()">
                 <span class="pnd-icon pnd-icon-arrow-left"></span>
             </button> -->
 
-            <button class="btn btn-success pnd-button-set-ok" ng-click="setOk()">
+            <button class="btn btn-success pnd-button-set-ok" ng-click="setOk()" ng-disabled="ann.savedByNum.indexOf(num) != -1">
                 <span class="pnd-icon pnd-icon-check"></span>
             </button>
 
-            <button class="btn btn-danger pnd-button-set-ko" ng-click="setKo()">
+            <!-- <button class="btn btn-danger pnd-button-set-ko" ng-click="setKo()" ng-disabled="ann.savedByNum.indexOf(num) != -1">
                 <span class="pnd-icon pnd-icon-trash-o"></span>
-            </button>
+            </button> -->
 
-            <button
+            <!-- <button
                 ng-show="instances > 1"
                 class="btn btn-info"
                 ng-click="acceptAll()"
                 ng-mouseover="toggleSimilar()"
-                ng-mouseout="toggleSimilar(content)">accept all {{instances}}</button>
+                ng-mouseout="toggleSimilar(content)">accept all {{instances}}</button> -->
 
             <button class="btn btn-warning" ng-click="goNext()">
                 <span class="pnd-icon pnd-icon-arrow-right"></span>

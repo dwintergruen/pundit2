@@ -100,7 +100,8 @@ angular.module('Pundit2.Annomatic')
         byType: {},
         // Key-value pair for the types
         typesOptions: [],
-        saved: []
+        savedById: [],
+        savedByNum: []
     };
     
     annomatic.annotationNumber = 0;
@@ -664,7 +665,8 @@ angular.module('Pundit2.Annomatic')
             byState: {},
             byType: {},
             typesOptions: [],
-            saved: []
+            savedByNum: [],
+            savedById: []
         };
         annomatic.annotationNumber = 0;
         annomatic.reset();
@@ -781,18 +783,20 @@ angular.module('Pundit2.Annomatic')
         var targets = buildTargets(uri, annomatic.options.property, ann.uri);
 
         AnnotationsCommunication.saveAnnotation(graph, items, targets, undefined, true).then(function(annId){
-            annomatic.ann.saved.push(annId);
+            annomatic.ann.savedById.push(annId);
+            annomatic.ann.savedByNum.push(num);
+            annomatic.setState(num, 'accepted');
+            annomatic.reviewNext(num + 1);
         });
     };
 
-    // TODO save all, not just accepted
-    annomatic.saveAll = function(){
-        // save all accepted annotation
-        for (var i=0; i<annomatic.ann.byState.accepted.length; i++) {
-            var index = annomatic.ann.byState.accepted[i];
-            annomatic.save(index);
-        }
-    };
+    // annomatic.saveAll = function(){
+    //     // save all accepted annotation
+    //     for (var i=0; i<annomatic.ann.byState.accepted.length; i++) {
+    //         var index = annomatic.ann.byState.accepted[i];
+    //         annomatic.save(index);    
+    //     }
+    // };
 
     annomatic.isRunning = function() {
         return state.isRunning;

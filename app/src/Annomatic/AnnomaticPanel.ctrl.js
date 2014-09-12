@@ -54,7 +54,7 @@ angular.module('Pundit2.Annomatic')
     $scope.Annomatic = Annomatic;
 
     $scope.$watch(function() {
-        return Annomatic.ann.saved;
+        return Annomatic.ann.savedById;
     }, function(annotationsList) {
         $scope.annotations = annotationsList;
     });

@@ -20,9 +20,12 @@ angular.module('Pundit2.Annomatic')
 
     $scope.setOk = function() {
         $scope.$hide();
-        Annomatic.save($scope.num);
-        Annomatic.setState($scope.num, 'accepted');
-        Annomatic.reviewNext($scope.num + 1);
+
+        if($scope.ann.savedByNum.indexOf($scope.num) === -1){
+            Annomatic.save($scope.num);
+        } else{
+            Annomatic.setState($scope.num, 'accepted');
+        }
     };
     
     $scope.setKo = function() {
@@ -43,17 +46,23 @@ angular.module('Pundit2.Annomatic')
     //     Annomatic.reviewNext($scope.num - 1);  
     // };
     
-    $scope.acceptAll = function() {
-        var id = $scope.ann.byNum[$scope.num].id,
-            similar = $scope.ann.byId[id];
+    // $scope.acceptAll = function() {
+    //     // TODO move this in service
+    //     var id = $scope.ann.byNum[$scope.num].id,
+    //         similar = $scope.ann.byId[id];
 
-        for (var i=similar.length; i--;) {
-            Annomatic.setState(similar[i], 'accepted');
-        }
+    //     for (var i=similar.length; i--;) {
+    //         if($scope.ann.savedByNum.indexOf(similar[i]) === -1){
+    //             Annomatic.save(similar[i]);
+    //         } else{
+    //             Annomatic.setState($scope.num, 'accepted');
+    //         }
+    //         // Annomatic.setState(similar[i], 'accepted');
+    //     }
         
-        $scope.$hide();
-        Annomatic.reviewNext($scope.num + 1);
-    };
+    //     $scope.$hide();
+    //     // Annomatic.reviewNext($scope.num + 1);
+    // };
     
     $scope.toggleSimilar = function() {
         var ann = $scope.ann.byNum[$scope.num],
