@@ -27,6 +27,14 @@ angular.module('Pundit2.Core')
         state.annotableTypes = [];
         state.annotators = {};
 
+        state.isRunningAnnomatic = false;
+        $rootScope.$on('annomatic-run', function(){
+            state.isRunningAnnomatic = true;
+        });
+        $rootScope.$on('annomatic-stop', function(){
+            state.isRunningAnnomatic = false;
+        });
+
         cc.getItems = function() {
             return state.itemListByURI;
         };
@@ -81,6 +89,11 @@ angular.module('Pundit2.Core')
 
         // Will consolidate every possible item found in the ItemsExchange
         cc.consolidateAll = function() {
+
+            if (state.isRunningAnnomatic) {
+                return;
+            }
+
             var allItems = [];
             if (typeof(Config.modules.PageItemsContainer) !== 'undefined') {
                 allItems = allItems.concat(ItemsExchange.getItemsByContainer(Config.modules.PageItemsContainer.container));

@@ -8,7 +8,7 @@
                         ng-click="activateSuggestionsPanel()"
                         ng-class="{'pnd-active': isSuggestionsPanelActive()}"
                         class="btn pnd-btn-sidebar"
-                        ng-disabled="!isAnnomaticActive">
+                        ng-disabled="!isAnnomaticActive || isLoadingData">
                     Suggestions
                 </button><button type="button"
                         ng-click="activateAnnotationsPanel()"

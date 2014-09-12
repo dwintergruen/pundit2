@@ -59,13 +59,13 @@ angular.module('Pundit2.AnnotationSidebar')
         AnnotationSidebar.activateAnnotationsPanel();
     };
 
-
     $scope.$watch(function() {
         return Toolbar.isLoading();
     }, function(currentState, oldState) {
         if (currentState !== oldState) {
             AnnotationSidebar.toggleLoading();
         }
+        $scope.isLoadingData = currentState; 
     });
 
     $scope.$watch(function() {

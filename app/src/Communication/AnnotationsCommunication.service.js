@@ -188,8 +188,8 @@ angular.module('Pundit2.Communication')
             });
 
         } else {
-            annotationsCommunication.log("Error impossible to save annotation: "+annID+" you are not logged");
-            promise.reject("Error impossible to save annotation: "+annID+" you are not logged");
+            annotationsCommunication.log("Error impossible to save annotation you are not logged");
+            promise.reject("Error impossible to save annotation you are not logged");
         }
 
         return promise.promise;

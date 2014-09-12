@@ -674,6 +674,7 @@ angular.module('Pundit2.Annomatic')
         state.isRunning = true;
         TextFragmentHandler.turnOff();
         ImageHandler.turnOff();
+        $rootScope.$emit('annomatic-run');
     };
 
     annomatic.stop = function(){
@@ -682,6 +683,7 @@ angular.module('Pundit2.Annomatic')
         state.isRunning = false;
         TextFragmentHandler.turnOn();
         ImageHandler.turnOn();
+        $rootScope.$emit('annomatic-stop');
     };
 
     var buildTargets = function(subUri, predUri, objUri){
