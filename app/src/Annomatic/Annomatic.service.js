@@ -663,7 +663,8 @@ angular.module('Pundit2.Annomatic')
             autoAnnScopes: [],
             byState: {},
             byType: {},
-            typesOptions: []
+            typesOptions: [],
+            saved: []
         };
         annomatic.annotationNumber = 0;
         annomatic.reset();
