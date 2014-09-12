@@ -901,28 +901,22 @@ angular.module('Pundit2.Annomatic')
 
             var ann = annotations[i];
             // get the current node from xpath
-            var currentNode = XpointersHelper.getNodeFromXpath(ann.startXpath.replace('/html[1]/body[1]', '/'));
-            // TODO startXpath and endXpath are all times equal ???
-            // XpointersHelper.getNodeFromXpath(ann.endXpath);
+            var startCurrentNode = XpointersHelper.getNodeFromXpath(ann.startXpath.replace('/html[1]/body[1]', '/'));
+            var endCurrentNode = XpointersHelper.getNodeFromXpath(ann.endXpath.replace('/html[1]/body[1]', '/'));
 
-            annomatic.log('get node from xpath', currentNode);
+            annomatic.log('get node from xpath', startCurrentNode, endCurrentNode);
 
-            if (!XpointersHelper.isTextNode(currentNode)) {
-                
-                if (currentNode.hasChildNodes()) {
-                    var childNodes = currentNode.childNodes;
-                    // do somethings with child nodes (complex case)
-                    annomatic.log('have child nodes', childNodes);
-                    // we must continue the search in the next node ???
-                    // TODO
-                }
-
-            // If it's a text node (simple case)
+            if (!XpointersHelper.isTextNode(startCurrentNode) || !XpointersHelper.isTextNode(endCurrentNode)) {
+                // TODO
+                // we must continue the search in the next node ???
+                // do somethings with child nodes (complex case)
+                annomatic.err('node is not text', startCurrentNode, endCurrentNode);
             } else {
+                // If it's a text node (simple case)
 
                 var range = $document[0].createRange();
-                range.setStart(currentNode, ann.startOffset);
-                range.setEnd(currentNode, ann.endOffset);
+                range.setStart(startCurrentNode, ann.startOffset);
+                range.setEnd(endCurrentNode, ann.endOffset);
 
                 if (range.toString() !== ann.spot) {
                     annomatic.err('Annotation spot and range do not match!! :((');
