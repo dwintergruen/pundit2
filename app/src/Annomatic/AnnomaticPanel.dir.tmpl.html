@@ -4,17 +4,25 @@
             <button 
                 class="btn btn-link pnd-button-suggestion" 
                 ng-click="getSuggestions()"
-                ng-show="!gotAnnotations"
+                ng-show="!gotAnnotations || Annomatic.annotationNumber == 0"
                 ng-disabled="targets.length == 0">
                     <span class="pnd-icon pnd-icon-file-text"></span> Scan Page
-            </button>
+            </button> 
+
+            <!-- <button 
+                class="btn btn-link pnd-button-suggestion" 
+                ng-click="getSuggestionsArea()"
+                ng-show="Annomatic.area != null"
+                ng-disabled="targets.length == 0">
+                    <span class="pnd-icon pnd-icon-file-text"></span> Scan Area
+            </button> -->
         </div>
 
         <!-- <button class="btn btn-success pnd-button-select-area" ng-click="selectAreaMode()">
             Select area <span class="pnd-icon pnd-icon-edit"></span>
         </button> -->
 
-        <div ng-show="gotAnnotations && Annomatic.annotationNumber > 0" class="pnd-btn-annomatic">
+        <div ng-show="Annomatic.annotationNumber > 0" class="pnd-btn-annomatic">
             <div class="pnd-annomatic-count">
                 Suggestion: {{Annomatic.annotationNumber}} - Saved: {{Annomatic.ann.savedByNum.length}} <!-- - Rejected: {{Annomatic.ann.byState['removed'].length}} -->
             </div>

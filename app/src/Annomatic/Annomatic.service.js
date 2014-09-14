@@ -54,7 +54,7 @@ angular.module('Pundit2.Annomatic')
      * Default value:
      * <pre> source: 'gramsci' </pre>
      */
-    source: 'gramsci',
+    source: 'DataTXT',
 
     /**
      * @module punditConfig
@@ -70,12 +70,14 @@ angular.module('Pundit2.Annomatic')
      * Default value:
      * <pre> property: 'http://purl.org/pundit/ont/oa#isRelatedTo' </pre>
      */
-    property: 'http://purl.org/pundit/ont/oa#isRelatedTo'
+    property: 'http://purl.org/pundit/ont/oa#isRelatedTo',
+
+    partialSelection: false
 })
 .service('Annomatic', function(ANNOMATICDEFAULTS, BaseComponent, NameSpace, DataTXTResource, XpointersHelper,
                                ItemsExchange, TextFragmentHandler, ImageHandler, TypesHelper, Toolbar,
                                DBPediaSpotlightResource, Item, GramsciResource, AnnotationsCommunication,
-                               $rootScope, $timeout, $document, $q) {
+                               $rootScope, $timeout, $document, $window, $q, Consolidation, ContextualMenu) {
 
     var annomatic = new BaseComponent('Annomatic', ANNOMATICDEFAULTS);
 
@@ -103,8 +105,30 @@ angular.module('Pundit2.Annomatic')
         savedById: [],
         savedByNum: []
     };
+
+    annomatic.area = null;
     
     annomatic.annotationNumber = 0;
+
+    if(annomatic.options.partialSelection){
+        ContextualMenu.addAction({
+            type: [
+                annomatic.options.cMenuType
+            ],
+            name: 'showAllItems',
+            label: 'Search items in this area',
+            showIf: function() {
+                return true;
+            },
+            priority: 10,
+            action: function() {
+                Consolidation.wipe();
+                annomatic.getAnnotationByArea();
+                $document[0].getSelection().removeAllRanges();
+                mouseCheck = false;
+            }
+        });
+    }
 
     // Tries to find the given array of DataTXT annotations in the child nodes of the
     // given node. Finding them might be a very delicate and fun dance!
@@ -477,8 +501,17 @@ angular.module('Pundit2.Annomatic')
 
                 annomatic.log('Received '+data.annotations.length+' annotations from DataTXT');
                 var item,
-                    validAnnotations = findAnnotations(element, data.annotations),
+                    allValidAnnotations = findAnnotations(element, data.annotations),
+                    validAnnotations = [],
                     oldAnnotationNumber = annomatic.annotationNumber;
+
+                validAnnotations = allValidAnnotations;
+                // TODO: improve confidence management
+                // for (var a in allValidAnnotations){
+                //     if (allValidAnnotations[a].annotation.confidence > 0.65){
+                //         validAnnotations.push(allValidAnnotations[a]);
+                //     }
+                // }
 
                 annomatic.annotationNumber += validAnnotations.length;
                 annomatic.currAnn = 0;
@@ -655,6 +688,7 @@ angular.module('Pundit2.Annomatic')
 
 
     annomatic.hardReset = function() {
+        ItemsExchange.wipeContainer(annomatic.options.container);
         annomatic.ann = {
             byUri: {},
             byNum: [],
@@ -669,6 +703,7 @@ angular.module('Pundit2.Annomatic')
             savedById: []
         };
         annomatic.annotationNumber = 0;
+        annomatic.area = null;
         annomatic.reset();
     };
 
@@ -679,15 +714,26 @@ angular.module('Pundit2.Annomatic')
         if (Toolbar.isActiveTemplateMode()) {
             Toolbar.toggleTemplateMode();
         }
+
+        if(annomatic.options.partialSelection){
+            angular.element('body').on('mousedown', mouseDownHandler);
+        }
+
         $rootScope.$emit('annomatic-run');
     };
 
     annomatic.stop = function(){
         annomatic.hardReset();
-        ItemsExchange.wipeContainer(annomatic.options.container);
+        // ItemsExchange.wipeContainer(annomatic.options.container);
         state.isRunning = false;
         TextFragmentHandler.turnOn();
         ImageHandler.turnOn();
+
+        if(annomatic.options.partialSelection){
+            angular.element('body').off('mousedown', mouseDownHandler);
+            angular.element('body').off('mouseup', mouseUpHandler);
+        }
+
         $rootScope.$emit('annomatic-stop');
     };
 
@@ -948,6 +994,83 @@ angular.module('Pundit2.Annomatic')
 
         analyze(oldAnnotationNumber, annomatic.annotationNumber);
 
+    };
+
+    var getSelectedRange = function() {
+        var range;
+        
+        if ($window.getSelection().rangeCount === 0) {
+            // console.log('Range count 0!');
+            return null;
+        }
+
+        range = $window.getSelection().getRangeAt(0);
+
+        // If the selected range is empty (this happens when the user clicks on something)...
+        if  (range !== null && (range.startContainer === range.endContainer) && (range.startOffset === range.endOffset)) {
+            // console.log("Range is not null, but start/end containers and offsets match: no selected range.");
+            return null;
+        }
+
+        return range;
+
+    }; // getSelectedRange()
+    
+    var ancestor;
+    var mouseCheck = false;
+
+    var mouseDownHandler = function(){
+        angular.element('body').on('mousemove', function() {
+            var r = getSelectedRange();
+
+            if (r && r.commonAncestorContainer !== ancestor) {
+                if (ancestor) {
+                    angular.element(ancestor).removeClass('selecting-ancestor');
+                }
+                ancestor = r.commonAncestorContainer;
+                
+                if (ancestor.nodeType === Node.TEXT_NODE) {
+                    ancestor = ancestor.parentNode;
+                }
+                angular.element(ancestor).addClass('selecting-ancestor');
+            }
+            mouseCheck = false;
+        });
+        angular.element('body').on('mouseup', mouseUpHandler);
+    };
+
+    var mouseUpHandler = function(upEvt) {
+        angular.element('body').off('mouseup', mouseUpHandler);
+        angular.element('body').off('mousemove');
+
+        var range = getSelectedRange();
+        if (range === null || mouseCheck) {
+            return;
+        }
+
+        // AnnotationSidebar.toggleLoading();
+
+        if (ancestor) {
+            angular.element(ancestor).removeClass('selecting-ancestor');
+            annotationsRootNode = angular.element(ancestor);
+            annomatic.area = annotationsRootNode;
+            mouseCheck = true;
+            ContextualMenu.show(upEvt.pageX, upEvt.pageY, annotationsRootNode, annomatic.options.cMenuType);
+            // $rootScope.$apply();
+        }
+    };
+
+    annomatic.getAnnotationByArea = function(){
+        annotationsRootNode = annomatic.area;
+        if(annotationsRootNode == null){ return; }
+
+        annomatic.hardReset();
+        Toolbar.setLoading(true);
+        annomatic.getAnnotations(annotationsRootNode).then(function(){
+            // AnnotationSidebar.toggleLoading();
+            Toolbar.setLoading(false);
+            Consolidation.consolidate(ItemsExchange.getItemsByContainer(annomatic.options.container));
+        })
     };
 
     return annomatic;
