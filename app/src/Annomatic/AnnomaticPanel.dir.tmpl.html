@@ -19,7 +19,8 @@
                 Suggestion: {{Annomatic.annotationNumber}} - Saved: {{Annomatic.ann.savedByNum.length}} <!-- - Rejected: {{Annomatic.ann.byState['removed'].length}} -->
             </div>
 
-            <button
+            <!-- TODO: fix filter -->
+            <!-- <button
                 class="btn btn-default pnd-button-filter-suggestion"
                 ng-model="filteredTypes"
                 placeholder="Filter by suggestion type"
@@ -29,7 +30,7 @@
                 ng-options="type.value as type.label for type in Annomatic.ann.typesOptions"
                 bs-select
                 ng-show="Annomatic.ann.typesOptions.length > 0">
-            </button>
+            </button> -->
 
             <!-- <button class="btn btn-success pnd-button-save-review" ng-click="saveReview()">
                 Save
