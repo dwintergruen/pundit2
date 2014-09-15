@@ -72,6 +72,8 @@ angular.module('Pundit2.Annomatic')
      */
     property: 'http://purl.org/pundit/ont/oa#isRelatedTo',
 
+    minConfidence: 0.65,
+
     partialSelection: false
 })
 .service('Annomatic', function(ANNOMATICDEFAULTS, BaseComponent, NameSpace, DataTXTResource, XpointersHelper,
@@ -124,7 +126,6 @@ angular.module('Pundit2.Annomatic')
             action: function() {
                 Consolidation.wipe();
                 annomatic.getAnnotationByArea();
-                $document[0].getSelection().removeAllRanges();
                 mouseCheck = false;
             }
         });
@@ -505,13 +506,13 @@ angular.module('Pundit2.Annomatic')
                     validAnnotations = [],
                     oldAnnotationNumber = annomatic.annotationNumber;
 
-                validAnnotations = allValidAnnotations;
+                // validAnnotations = allValidAnnotations;
                 // TODO: improve confidence management
-                // for (var a in allValidAnnotations){
-                //     if (allValidAnnotations[a].annotation.confidence > 0.65){
-                //         validAnnotations.push(allValidAnnotations[a]);
-                //     }
-                // }
+                for (var a in allValidAnnotations){
+                    if (allValidAnnotations[a].annotation.confidence > annomatic.options.minConfidence){
+                        validAnnotations.push(allValidAnnotations[a]);
+                    }
+                }
 
                 annomatic.annotationNumber += validAnnotations.length;
                 annomatic.currAnn = 0;
@@ -1055,6 +1056,7 @@ angular.module('Pundit2.Annomatic')
             annotationsRootNode = angular.element(ancestor);
             annomatic.area = annotationsRootNode;
             mouseCheck = true;
+            $document[0].getSelection().removeAllRanges();
             ContextualMenu.show(upEvt.pageX, upEvt.pageY, annotationsRootNode, annomatic.options.cMenuType);
             // $rootScope.$apply();
         }

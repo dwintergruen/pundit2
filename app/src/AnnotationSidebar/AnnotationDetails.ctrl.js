@@ -1,8 +1,10 @@
 angular.module('Pundit2.AnnotationSidebar')
-.controller('AnnotationDetailsCtrl', function($scope, $rootScope, $element, $modal, $timeout,
+.controller('AnnotationDetailsCtrl', function($scope, $rootScope, $element, $modal, $timeout, $window,
         AnnotationSidebar, AnnotationDetails, AnnotationsExchange, AnnotationsCommunication,
         NotebookExchange, ItemsExchange, TripleComposer, Dashboard, ImageAnnotator,
         TextFragmentAnnotator, Toolbar, TypesHelper, MyPundit, Consolidation) {
+
+    var lodLiveLink = 'http://demo-lodlive.thepund.it/?http://purl.org/pundit/demo-cloud-server/annotation/';
 
     var currentId = $scope.id;
     var currentElement = angular.element($element).find('.pnd-annotation-details-wrap');
@@ -30,6 +32,10 @@ angular.module('Pundit2.AnnotationSidebar')
             cancelWatchNotebookName();
         }
     });
+
+    $scope.openGraph = function(){
+        $window.open(lodLiveLink+currentId, '_blank');
+    };
 
     $scope.toggleAnnotation = function(){
         if(!AnnotationSidebar.isAnnotationSidebarExpanded()){
