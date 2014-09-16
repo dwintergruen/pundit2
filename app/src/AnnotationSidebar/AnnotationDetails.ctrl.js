@@ -12,6 +12,7 @@ angular.module('Pundit2.AnnotationSidebar')
     AnnotationDetails.addAnnotationReference($scope);
 
     $scope.annotation = AnnotationDetails.getAnnotationDetails(currentId);
+
     if(typeof($scope.annotation) !== 'undefined'){
         if (AnnotationDetails.isUserToolShowed($scope.annotation.creator)){
             $scope.askLink = Toolbar.options.askLinkDefault + '#/myNotebooks/';
@@ -111,8 +112,10 @@ angular.module('Pundit2.AnnotationSidebar')
     $scope.$watch(function() {
         return currentElement.height();
     }, function(newHeight, oldHeight) {
-        if (newHeight !== oldHeight && $scope.annotation.expanded){
-            AnnotationSidebar.setAllPosition(currentId, newHeight);
+        if(typeof($scope.annotation) !== 'undefined'){
+            if (newHeight !== oldHeight && $scope.annotation.expanded){
+                AnnotationSidebar.setAllPosition(currentId, newHeight);
+            }
         }
     });
 
