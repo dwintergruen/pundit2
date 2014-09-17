@@ -18,8 +18,8 @@ angular.module('Pundit2.MyNotebooksContainer')
 })
 .service('MyNotebooksContainer', function($rootScope, MYNOTEBOOKSCONTAINERDEFAULTS, BaseComponent,
     NotebookExchange, ItemsExchange, PageItemsContainer, AnnotationsExchange, NotebookCommunication, Consolidation,
-    ContextualMenu, Dashboard, NotebookComposer, AnnotationsCommunication,
-    $modal, $timeout) {
+    ContextualMenu, Config, Dashboard, NotebookComposer, AnnotationsCommunication,
+    $modal, $timeout, $window) {
 
     var myNotebooksContainer = new BaseComponent('MyNotebooksContainer', MYNOTEBOOKSCONTAINERDEFAULTS);
 
@@ -30,6 +30,24 @@ angular.module('Pundit2.MyNotebooksContainer')
 
         // TODO: sanity checks on Config.modules.* ? Are they active? Think so??
         var cMenuTypes = [ myNotebooksContainer.options.cMenuType ];
+
+        var lodLive = false;
+        if(typeof(Config.lodLive) !== 'undefined' && Config.lodLive.active){
+            lodLive = true;
+        }
+
+        ContextualMenu.addAction({
+            name: 'openNTlod',
+            type: cMenuTypes,
+            label: "Open graph",
+            priority: 102,
+            showIf: function(nt) {
+                return lodLive;
+            },
+            action: function(nt) {
+                $window.open(Config.lodLive.baseUrl+Config.lodLive.pndPurl+'notebook/'+nt.id, '_blank');
+            }
+        });
 
         ContextualMenu.addAction({
             name: 'setAsPrivate',

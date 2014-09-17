@@ -336,6 +336,11 @@ angular.module('Pundit2.Core')
             NotebookComposer: {
                 active: true
             }
+      },
+      lodLive: {
+        active: false,
+        baseUrl: 'http://demo-lodlive.thepund.it/?',
+        pndPurl: 'http://purl.org/pundit/demo-cloud-server/'
       }
 
     });

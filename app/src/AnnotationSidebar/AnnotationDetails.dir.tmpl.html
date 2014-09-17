@@ -23,13 +23,18 @@
         <div class="pnd-annotation-details-menu">
             <div class="{{annotation.mainItem.class}}">
 	            <button type="button" class="btn btn-primary" ng-click="metaInfo = !metaInfo"><!--<span class="pnd-icon-exclamation-circle"></span>-->Meta</button>
-	            <!-- <button 
-                    type="button" 
-                    class="btn btn-primary"
-                    ng-click="openGraph()">
-                   Graph
-                </button> -->
-                <button type="button" class="btn btn-primary" disabled><!-- <span class="pnd-icon-mail-forward"></span> -->Reply</button>
+	            <span ng-show="lodLive">
+                    <button 
+                        type="button" 
+                        class="btn btn-primary"
+                        ng-click="openGraph()"
+                        >
+                       Graph
+                    </button>
+                </span>
+                <span ng-show="!lodLive">
+                    <button type="button" class="btn btn-primary" disabled><!-- <span class="pnd-icon-mail-forward"></span> -->Reply</button>
+                </span>
 	            <button type="button" class="btn btn-primary" disabled><!--<span class="pnd-icon-share-square-o"></span>-->Share</button>
             </div>
         </div>
@@ -138,6 +143,9 @@
                                         <span>{{object.label}}</span>
                                     </span>
                                 </span>
+                                <button ng-if="lodLive && object.typeClass=='uri'">
+                                    <a href="{{lodLiveBaseUrl}}{{object.uri}}" target="_blank">Graph</a>
+                                </button>
                             </div>
                     </div>
                 </div>

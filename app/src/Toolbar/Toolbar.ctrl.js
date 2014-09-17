@@ -1,7 +1,7 @@
 /*global PUNDITVERSION, escape*/
 
 angular.module('Pundit2.Toolbar')
-.controller('ToolbarCtrl', function($scope, $rootScope, $modal, $http, NameSpace, Config, Toolbar, SelectorsManager, Fp3,
+.controller('ToolbarCtrl', function($scope, $rootScope, $modal, $http, $window, NameSpace, Config, Toolbar, SelectorsManager, Fp3,
     MyPundit, Dashboard, TripleComposer, AnnotationSidebar, Annomatic, ResourcePanel, NotebookExchange, NotebookCommunication, TemplatesExchange) {
 
     $scope.dropdownTemplate = "src/ContextualMenu/dropdown.tmpl.html";
@@ -10,6 +10,11 @@ angular.module('Pundit2.Toolbar')
 
     if (Config.useOnlyTemplateMode) {
         angular.element(".pnd-toolbar-template-mode-button").addClass('pnd-not-clickable');
+    }
+
+    var lodLive = false;
+    if(typeof(Config.lodLive) !== 'undefined' && Config.lodLive.active){
+        lodLive = true;
     }
     
     $scope.login = function() {
@@ -21,6 +26,13 @@ angular.module('Pundit2.Toolbar')
         ResourcePanel.hide();
         MyPundit.logout();
     };
+
+    var lodliveOpen = function(){
+        if(MyPundit.isUserLogged()){
+            var userData = MyPundit.getUserData();
+            $window.open(Config.lodLive.baseUrl+Config.lodLive.pndPurl+'user/'+userData.id, '_blank');
+        }
+    }
 
     // modal
     var infoModalScope = $rootScope.$new(),
@@ -171,9 +183,17 @@ angular.module('Pundit2.Toolbar')
         $scope.infoDropdown.push({ text: Fp3.options.label, click: Fp3.post });
     }
     
-    $scope.userLoggedInDropdown = [
-        { text: 'Log out', click: logout }
-    ];
+    if(lodLive){
+        $scope.userLoggedInDropdown = [
+            { text: 'Open your graph', click: lodliveOpen },
+            { text: 'Log out', click: logout }
+        ];
+    } else{
+        $scope.userLoggedInDropdown = [
+            { text: 'Log out', click: logout }
+        ];
+    }
+
 
     var myNotebooks;
     // TODO add a function on click that add this watcher

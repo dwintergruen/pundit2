@@ -1,6 +1,6 @@
 angular.module('Pundit2.AnnotationSidebar')
 .controller('AnnotationDetailsCtrl', function($scope, $rootScope, $element, $modal, $timeout, $window,
-        AnnotationSidebar, AnnotationDetails, AnnotationsExchange, AnnotationsCommunication,
+        AnnotationSidebar, AnnotationDetails, AnnotationsExchange, AnnotationsCommunication, Config,
         NotebookExchange, ItemsExchange, TripleComposer, Dashboard, ImageAnnotator,
         TextFragmentAnnotator, Toolbar, TypesHelper, MyPundit, Consolidation) {
 
@@ -23,6 +23,12 @@ angular.module('Pundit2.AnnotationSidebar')
         var notebookId = $scope.annotation.notebookId;
     }
 
+    if(typeof(Config.lodLive) !== 'undefined' && Config.lodLive.active){
+        $scope.lodLiveBaseUrl = Config.lodLive.baseUrl;
+        $scope.lodLive = true;
+    } else{
+        $scope.lodLive = false;
+    }
 
     $scope.notebookName = 'Downloading notebook in progress';
     var cancelWatchNotebookName = $scope.$watch(function() {
@@ -35,7 +41,7 @@ angular.module('Pundit2.AnnotationSidebar')
     });
 
     $scope.openGraph = function(){
-        $window.open(lodLiveLink+currentId, '_blank');
+        $window.open(Config.lodLive.baseUrl+Config.lodLive.pndPurl+'annotation/'+currentId, '_blank');
     };
 
     $scope.toggleAnnotation = function(){
