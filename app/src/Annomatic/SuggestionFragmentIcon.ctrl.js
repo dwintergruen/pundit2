@@ -51,7 +51,7 @@ angular.module('Pundit2.Annomatic')
         TextFragmentAnnotator.clearHighlightById($scope.fragment);
     };
 
-    $scope.clickHandler = function() {
+    $scope.clickHandler = function(event) {
         if (Annomatic.ann.byNum[$scope.num].hidden) { return; }
 
         if (!$scope.popover.$isShown) {
@@ -59,6 +59,9 @@ angular.module('Pundit2.Annomatic')
         } else {
             $scope.hide();
         }
+
+        event.stopPropagation();               
+        event.preventDefault();
     };
 
     $scope.show = function() {
