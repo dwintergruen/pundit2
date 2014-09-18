@@ -1,5 +1,5 @@
 angular.module('Pundit2.Annomatic')
-.controller('SuggestionFragmentIconCtrl', function($scope, $popover, $element,
+.controller('SuggestionFragmentIconCtrl', function($scope, $popover, $element, $rootScope,
     TextFragmentAnnotator, XpointersHelper, Annomatic) {
 
     // Common for all icons
@@ -28,15 +28,18 @@ angular.module('Pundit2.Annomatic')
         // TODO: make 'ann-auto' configurable? .options?
         angular.element('.'+$scope.fragment).addClass('ann-auto');
 
+        var options = {
+            content: ""+$scope.num,
+            placement: 'bottom',
+            template: 'src/Annomatic/AnnomaticPopover.tmpl.html',
+            trigger: 'manual'
+            //scope: $rootScope.$new(),
+            //container: "[data-ng-app='Pundit2']"
+        };
+
         $scope.popover = $popover(
             $scope.element,
-            {
-                content: ""+$scope.num,
-                placement: 'bottom',
-                template: 'src/Annomatic/AnnomaticPopover.tmpl.html',
-                trigger: 'manual',
-                container: "[data-ng-app='Pundit2']"
-            }// init()
+            options
         );
 
     };

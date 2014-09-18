@@ -1,4 +1,4 @@
-<div class="pnd-annomatic-popover popover" ng-controller="AnnomaticPopoverCtrl">
+<div class="pnd-wrp pnd-ignore pnd-annomatic-popover popover" ng-controller="AnnomaticPopoverCtrl" style="position: absolute; margin-top: 10px;">
     <div class="arrow"></div>
 
     <h4 class="popover-title" ng-click="showDetails = !showDetails">
@@ -21,7 +21,7 @@
 
     <div class="popover-content">
 
-        <div ng-show="showDetails" class="pnd-preview clearfix">
+        <div ng-show="showDetails" class="pnd-preview clearfix" style="max-height: 200px; overflow-y: scrool; overflow-x: hidden;">
             <item-preview uri="{{ann.byNum[num].uri}}" sticking="false"></item-preview>
         </div>
 
@@ -31,7 +31,7 @@
                 <span class="pnd-icon pnd-icon-arrow-left"></span>
             </button> -->
 
-            <button class="btn btn-success pnd-button-set-ok" ng-click="setOk()" ng-disabled="ann.savedByNum.indexOf(num) != -1">
+            <button class="btn btn-success pnd-button-set-ok" ng-click="setOk($event)" ng-disabled="ann.savedByNum.indexOf(num) != -1">
                 <span class="pnd-icon pnd-icon-check"></span>
             </button>
 
@@ -46,7 +46,7 @@
                 ng-mouseover="toggleSimilar()"
                 ng-mouseout="toggleSimilar(content)">accept all {{instances}}</button> -->
 
-            <button class="btn btn-warning" ng-click="goNext()">
+            <button class="btn btn-warning" ng-click="goNext($event)">
                 <span class="pnd-icon pnd-icon-arrow-right"></span>
             </button>
 

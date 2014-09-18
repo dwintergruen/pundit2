@@ -18,7 +18,7 @@ angular.module('Pundit2.Annomatic')
         Annomatic.setLastState($scope.num);
     };
 
-    $scope.setOk = function() {
+    $scope.setOk = function($event) {
         $scope.$hide();
 
         if($scope.ann.savedByNum.indexOf($scope.num) === -1){
@@ -32,12 +32,16 @@ angular.module('Pundit2.Annomatic')
         $scope.$hide();
         Annomatic.setState($scope.num, 'removed');
         Annomatic.reviewNext($scope.num + 1);
+        $event.preventDefault();
+        $event.stopPopagation();
     };
     
-    $scope.goNext = function() {
+    $scope.goNext = function($event) {
         $scope.$hide();
         Annomatic.setLastState($scope.num);
         Annomatic.reviewNext($scope.num + 1);
+        $event.preventDefault();
+        $event.stopPopagation();
     };
 
     // $scope.goPrev = function() {
