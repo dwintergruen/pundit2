@@ -212,6 +212,19 @@ angular.module('Pundit2.Core')
         /**
          * @module punditConfig
          * @ngdoc object
+         * @name forceTemplateEdit
+         * @description
+         * `boolean`
+         * Force editing of the annotations created with templates
+         *
+         * Default:
+         * <pre> forceTemplateEdit: false </pre>
+         */
+        forceTemplateEdit: false,
+
+        /**
+         * @module punditConfig
+         * @ngdoc object
          * @name useOnlyTemplateMode
          * @description
          * `boolean`
@@ -337,6 +350,30 @@ angular.module('Pundit2.Core')
                 active: true
             }
       },
+
+      /**
+         * @module punditConfig
+         * @ngdoc object
+         * @name lodLive
+         * @description
+         * `object`
+         *
+         * Define if is active lodLive link in Pundit. Object has the follow fields:
+         *
+         * * `active`: true to active lodLive link, false otherwise
+         * * `baseUrl`: base url of lodlive service
+         * * `pndPurl`: base purl of pundit server
+         *
+         * Default:
+         * <pre>
+         *
+         * lodLive: {
+            active: false,
+            baseUrl: 'http://demo-lodlive.thepund.it/?',
+            pndPurl: 'http://purl.org/pundit/demo-cloud-server/'
+          }
+         * </pre>
+        */
       lodLive: {
         active: false,
         baseUrl: 'http://demo-lodlive.thepund.it/?',

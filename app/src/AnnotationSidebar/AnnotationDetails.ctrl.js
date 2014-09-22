@@ -30,6 +30,12 @@ angular.module('Pundit2.AnnotationSidebar')
         $scope.lodLive = false;
     }
 
+    if(typeof(Config.forceTemplateEdit) !== 'undefined' && Config.forceTemplateEdit){
+        $scope.forceEdit = true;
+    } else{
+        $scope.forceEdit = false;
+    }
+
     $scope.notebookName = 'Downloading notebook in progress';
     var cancelWatchNotebookName = $scope.$watch(function() {
         return NotebookExchange.getNotebookById(notebookId);
@@ -103,7 +109,7 @@ angular.module('Pundit2.AnnotationSidebar')
     };
 
     $scope.showEdit = function() {
-        return typeof($scope.annotation.hasTemplate) === 'undefined';
+        return typeof($scope.annotation.hasTemplate) === 'undefined' || $scope.forceEdit;
     };
 
     $scope.editAnnotation = function() {
