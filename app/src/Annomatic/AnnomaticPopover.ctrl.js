@@ -13,9 +13,11 @@ angular.module('Pundit2.Annomatic')
     // Will be used to show the button to accept all of them at once
     $scope.instances = $scope.ann.byId[$scope.ann.byNum[$scope.num].id].length;
 
-    $scope.hide = function() {
+    $scope.hide = function($event) {
         $scope.$hide();
         Annomatic.setLastState($scope.num);
+        $event.preventDefault();
+        $event.stopPopagation();
     };
 
     $scope.setOk = function($event) {
@@ -26,14 +28,14 @@ angular.module('Pundit2.Annomatic')
         } else{
             Annomatic.setState($scope.num, 'accepted');
         }
+        $event.preventDefault();
+        $event.stopPopagation();
     };
     
     $scope.setKo = function() {
         $scope.$hide();
         Annomatic.setState($scope.num, 'removed');
         Annomatic.reviewNext($scope.num + 1);
-        $event.preventDefault();
-        $event.stopPopagation();
     };
     
     $scope.goNext = function($event) {
