@@ -8,11 +8,16 @@
             }
         }
     };
+    var AnnomaticDemoCtrl = function($rootScope, $scope, 
+                                             Annomatic) {
+        Annomatic.run();
+    }
+
 </script>
 
 
 <div data-ng-app="Pundit2" class="pnd-wrp">
-    <div class="container">
+    <div class="container" ng-controller="AnnomaticDemoCtrl">
 
         <annomatic-panel></annomatic-panel>
 
