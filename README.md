@@ -1,5 +1,10 @@
 # Pundit 2
 
+## License
+
+https://thepund.it/introductory-videos/license
+
+
 ## Install
 
 To install the project and be ready to develop you need a few components:
