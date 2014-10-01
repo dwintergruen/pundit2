@@ -129,6 +129,7 @@
     <script src="../src/Lists/Vocabularies/KorboBasketSelector.service.js"></script>
     <script src="../src/Lists/Vocabularies/Korbo2Selector.service.js"></script>
     <script src="../src/Lists/Vocabularies/EuropeanaSelector.service.js"></script>
+    <script src="../src/Lists/Vocabularies/DbpediaSelector.service.js"></script>
     <script src="../src/Lists/Vocabularies/SelectorsManager.service.js"></script>
     <script src="../src/Lists/Vocabularies/VocabulariesContainer/VocabulariesContainer.dir.js"></script>
     <script src="../src/Lists/Vocabularies/VocabulariesContainer/VocabulariesContainer.ctrl.js"></script>
