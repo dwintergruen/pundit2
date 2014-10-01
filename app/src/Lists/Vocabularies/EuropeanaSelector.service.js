@@ -1,22 +1,22 @@
 angular.module('Pundit2.Vocabularies')
-.constant('KORBO2DEFAULTS', {
+.constant('EUROPEANADEFAULTS', {
 
     /**
      * @module punditConfig
      * @ngdoc property
-     * @name modules#Korbo2Selector
+     * @name modules#EuropeanaSelector
      *
      * @description
      * `object`
      *
-     * Configuration object for Korbo2Selector module. This factory can be instantiate
+     * Configuration object for EuropeanaSelector module. This factory can be instantiate
      * more times and query items from korbo.
      */
 
     /**
      * @module punditConfig
      * @ngdoc property
-     * @name modules#Korbo2Selector.active
+     * @name modules#EuropeanaSelector.active
      *
      * @description
      * `boolean`
@@ -32,7 +32,7 @@ angular.module('Pundit2.Vocabularies')
     /**
      * @module punditConfig
      * @ngdoc property
-     * @name modules#Korbo2Selector.limit
+     * @name modules#EuropeanaSelector.limit
      *
      * @description
      * `number`
@@ -51,7 +51,7 @@ angular.module('Pundit2.Vocabularies')
     /**
      * @module punditConfig
      * @ngdoc property
-     * @name modules#Korbo2Selector.instances
+     * @name modules#EuropeanaSelector.instances
      *
      * @description
      * `Array of object`
@@ -76,14 +76,14 @@ angular.module('Pundit2.Vocabularies')
     instances: [
         {
             // where items is stored inside itemsExchange service
-            container: 'korbo2',
+            container: 'europeana',
             // instance label tab title
-            label: 'Korbo2',
+            label: 'Europeana',
             // enable or disable the instance
             active: true,
 
             basketID: null,
-            url: 'http://dev.korbo2.org/v1',
+            url: 'http://dev.korbo2.org/v1', 
             language: 'en'
         }
     ],
@@ -91,7 +91,7 @@ angular.module('Pundit2.Vocabularies')
     /**
      * @module punditConfig
      * @ngdoc property
-     * @name modules#Korbo2Selector.debug
+     * @name modules#EuropeanaSelector.debug
      *
      * @description
      * `number`
@@ -104,32 +104,33 @@ angular.module('Pundit2.Vocabularies')
     debug: false
 
 })
-.factory('Korbo2Selector', function(BaseComponent, KORBO2DEFAULTS, Item, ItemsExchange, SelectorsManager,
+.factory('EuropeanaSelector', function(BaseComponent, EUROPEANADEFAULTS, Item, ItemsExchange, SelectorsManager,
                                             $http, $q) {
 
-    var korbo2Selector = new BaseComponent('Korbo2Selector', KORBO2DEFAULTS);
-    korbo2Selector.name = 'Korbo2Selector';
+    var europeanaSelector = new BaseComponent('EuropeanaSelector', EUROPEANADEFAULTS);
+    europeanaSelector.name = 'EuropeanaSelector';
+
 
     // add this selector to selector manager
     // then the configured instances are read an instantiated
-    if (korbo2Selector.options.active) {
-        SelectorsManager.addSelector(korbo2Selector);
+    if (europeanaSelector.options.active) {
+        SelectorsManager.addSelector(europeanaSelector);
     }
 
     // selector instance constructor
-    var Korbo2Factory = function(config){
+    var EuropeanaFactory = function(config){
         this.config = config;
     };
 
-    Korbo2Factory.prototype.getItems = function(term){
+    EuropeanaFactory.prototype.getItems = function(term){
         var self = this,
             promise = $q.defer(),
             container = self.config.container + term.split(' ').join('$');
             // TODO se basketID è null non aggiungerlo tra i parametri, altrimenti passarlo nell'oggetto params
             var params = {
                 q: term,
-                p: 'korbo',
-                limit: korbo2Selector.options.limit,
+                p: 'europeana',
+                limit: europeanaSelector.options.limit,
                 offset: 0,
                 lang: self.config.language
             };
@@ -146,12 +147,10 @@ angular.module('Pundit2.Vocabularies')
                 params: params
 
             }).success(function(res){
-                // TODO check selector loading (console log duplicate)
-
-                korbo2Selector.log('Http success, get items '+self.config.label, res.data);
+                europeanaSelector.log('Http success, get items '+self.config.label, res.data);
 
                 if (res.data.length === 0) {
-                    korbo2Selector.log('Empty response');
+                    europeanaSelector.log('Empty response');
                     ItemsExchange.wipeContainer(container);
                     // promise is always resolved
                     promise.resolve();
@@ -182,7 +181,7 @@ angular.module('Pundit2.Vocabularies')
 
                 promise.resolve();
             }).error(function(){
-                korbo2Selector.log('Http Error');
+                europeanaSelector.log('Http Error');
                 promise.resolve();
             });
 
@@ -190,12 +189,12 @@ angular.module('Pundit2.Vocabularies')
 
     };
 
-    Korbo2Factory.prototype.push = function(config){
-        korbo2Selector.options.instances.push(config);
+    EuropeanaFactory.prototype.push = function(config){
+        europeanaSelector.options.instances.push(config);
     };
 
-    korbo2Selector.log('Factory init');
+    europeanaSelector.log('Factory init');
 
-    return Korbo2Factory;
+    return EuropeanaFactory;
 
 });
