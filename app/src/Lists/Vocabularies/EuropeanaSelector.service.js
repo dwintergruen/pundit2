@@ -10,7 +10,7 @@ angular.module('Pundit2.Vocabularies')
      * `object`
      *
      * Configuration object for EuropeanaSelector module. This factory can be instantiate
-     * more times and query items from korbo.
+     * more times and query items from Europeana through Korbo.
      */
 
     /**
@@ -21,7 +21,7 @@ angular.module('Pundit2.Vocabularies')
      * @description
      * `boolean`
      *
-     * Enable or disable all korbo selectors instances. Only active vocabularies are added to selectorsManager
+     * Enable or disable all europeana selectors instances. Only active vocabularies are added to selectorsManager
      * and can query the relative database (setting active to false vocabulary is also removed from the interface).
      *
      * Default value:
@@ -65,9 +65,9 @@ angular.module('Pundit2.Vocabularies')
      * <pre> instances: [
      *   {
      *       // where items is stored inside itemsExchange service
-     *       container: 'korbo2',
+     *       container: 'europeana',
      *       // instance label tab title
-     *       label: 'Korbo2',
+     *       label: 'Europeana',
      *       // enable or disable the instance
      *       active: true
      *   }
