@@ -76,6 +76,7 @@ module.exports = function(config) {
         'js/lunr.js/lunr.min.js',
         'js/marked.js',
         'js/pages-data.js',
+        'js/jquery/dist/jquery.min.js',
         'js/docs.js'
       ],
       stylesheets: [

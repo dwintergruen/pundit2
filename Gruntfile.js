@@ -218,6 +218,7 @@ module.exports = function(grunt) {
                         'google-code-prettify/src/prettify.js',
                         'google-code-prettify/src/lang-css.js',
                         'angular/angular.min.js',
+                        'jquery/dist/jquery.min.js',
                         'angular-resource/angular-resource.js',
                         'angular-route/angular-route.js',
                         'angular-animate/angular-animate.js',
