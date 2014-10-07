@@ -115,4 +115,16 @@ angular.module('DocsController', [])
       });
     }
   });
+
+  // Net7Custom
+  $scope.listProperty = [];
+  $.get('docs/api/punditConfig/object/modules.html', function (data) {
+       var listProperty = $(data).find('.properties').children("li");
+       listProperty.each(function( index ) {
+          var currentElement = $(this).attr('id');
+          if(currentElement.indexOf('\.') == -1){
+            $scope.listProperty.push(currentElement);
+          }
+        });
+    });
 });

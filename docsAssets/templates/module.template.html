@@ -7,7 +7,20 @@
 
 {$ doc.description | marked $}
 
+<!-- module -->
+
 {% if doc.module != 'index' %}
+
+  {% if doc.module == 'punditConfig' %} 
+    <div class="component-breakdown">
+      The "modules" property allows you to configure the various modules of Pundit2, a full list of modules is available here:
+      <ul>
+        <li ng-repeat="element in listProperty">
+          <a href="#!/api/punditConfig/object/modules#{{element}}">{{element}}</a>
+        </li>
+      </ul>
+  {% endif %}
+
   <div class="component-breakdown">
     <h2>Module Components</h2>
     {% for componentGroup in doc.componentGroups %}
