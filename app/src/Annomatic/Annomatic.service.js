@@ -76,6 +76,15 @@ angular.module('Pundit2.Annomatic')
 
     partialSelection: false
 })
+
+/**
+ * @ngdoc service
+ * @name Annomatic
+ * @module Pundit2.Annomatic
+ * @description
+ *
+ * For the configuration of this module, see {@link #!/api/punditConfig/object/modules#Annomatic here}
+ */
 .service('Annomatic', function(ANNOMATICDEFAULTS, BaseComponent, NameSpace, DataTXTResource, XpointersHelper,
                                ItemsExchange, TextFragmentHandler, ImageHandler, TypesHelper, Toolbar,
                                DBPediaSpotlightResource, Item, GramsciResource, AnnotationsCommunication,
@@ -366,6 +375,16 @@ angular.module('Pundit2.Annomatic')
     };
 
 
+    /**
+     * @ngdoc method
+     * @name Annomatic#reset
+     * @module Pundit2.Annomatic
+     * @function
+     *
+     * @description
+     * Reset all annomatic states 
+     *
+    */
     // TODO: do we need to do more stuff to reset everything and start from scratch?
     annomatic.reset = function() {
         annomatic.ann.typesOptions = [];
@@ -438,6 +457,20 @@ angular.module('Pundit2.Annomatic')
         byState[from].splice(idx, 1);
     };
 
+    /**
+     * @ngdoc method
+     * @name Annomatic#setState
+     * @module Pundit2.Annomatic
+     * @function
+     *
+     * @description
+     * Set annotations state of annomatic
+     *
+     *
+     * @param {number} number of the annotation
+     * @param {boolean} value of the new state
+     *
+    */
     annomatic.setState = function(num, state) {
         var ann = annomatic.ann.byNum[num],
             scope = annomatic.ann.autoAnnScopes[num];
@@ -459,6 +492,18 @@ angular.module('Pundit2.Annomatic')
 
     };
     
+    /**
+     * @ngdoc method
+     * @name Annomatic#setLastState
+     * @module Pundit2.Annomatic
+     * @function
+     *
+     * @description
+     * Set last state of an annotation
+     *
+     * @param {number} number of the annotation
+     *
+    */
     annomatic.setLastState = function(num) {
         var ann = annomatic.ann.byNum[num],
             scope = annomatic.ann.autoAnnScopes[num];
@@ -474,8 +519,20 @@ angular.module('Pundit2.Annomatic')
         scope.setStateClass(annomatic.stateClassMap[ann.lastState], stateClass);
     };
 
-    // Given an HTML node, will query DataTXT for annotations on the contents of that node
-    // solving the promise when done.
+    /**
+     * @ngdoc method
+     * @name Annomatic#getDataTXTAnnotations
+     * @module Pundit2.Annomatic
+     * @function
+     *
+     * @description
+     * Given an HTML node, will query DataTXT for annotations on the contents of that node
+     * solving the promise when done.
+     *
+     * @param {DOMElement} current node to be processed
+     * @return {Promise} promise will be resolved when the data is returned from datatxt
+     *
+    */
     annomatic.getDataTXTAnnotations = function(node) {
         var promise = $q.defer(),
             element = angular.element(node),
@@ -570,6 +627,18 @@ angular.module('Pundit2.Annomatic')
         return new Item(values.uri, values);
     };
     
+    /**
+     * @ngdoc method
+     * @name Annomatic#hideAnn
+     * @module Pundit2.Annomatic
+     * @function
+     *
+     * @description
+     * Hide an annotation
+     *
+     * @param {number} number of the annotation
+     *
+    */
     annomatic.hideAnn = function(num) {
         var ann = annomatic.ann.byNum[num],
             scope = annomatic.ann.autoAnnScopes[num];
@@ -577,6 +646,19 @@ angular.module('Pundit2.Annomatic')
         ann.hidden = true;
         scope.setStateClass(annomatic.stateClassMap[ann.state], annomatic.stateClassMap.hidden);
     };
+
+    /**
+     * @ngdoc method
+     * @name Annomatic#showAnn
+     * @module Pundit2.Annomatic
+     * @function
+     *
+     * @description
+     * Show an annotation
+     *
+     * @param {number} number of the annotation
+     *
+    */
     annomatic.showAnn = function(num) {
         var ann = annomatic.ann.byNum[num],
             scope = annomatic.ann.autoAnnScopes[num];
@@ -585,8 +667,21 @@ angular.module('Pundit2.Annomatic')
         scope.setStateClass(annomatic.stateClassMap.hidden, annomatic.stateClassMap[ann.state]);
     };
     
-    // Given an array of types, shows only the annotations with that
-    // type.
+    
+
+    /**
+     * @ngdoc method
+     * @name Annomatic#getDataTXTAnnotations
+     * @module Pundit2.Annomatic
+     * @function
+     *
+     * @description
+     * Given an array of types, shows only the annotations with that
+     * type.
+     *
+     * @param {array} list of types
+     *
+    */
     annomatic.setTypeFilter = function(types) {
     
         var byType = annomatic.ann.byType,
@@ -631,6 +726,17 @@ angular.module('Pundit2.Annomatic')
 
     };
     
+    /**
+     * @ngdoc method
+     * @name Annomatic#closeAll
+     * @module Pundit2.Annomatic
+     * @function
+     *
+     * @description
+     * Close all popover of the annotations
+     *
+     *
+    */
     annomatic.closeAll = function() {
         for (var l=annomatic.ann.byState.active.length; l--;){
             var num = annomatic.ann.byState.active[l];
@@ -640,6 +746,19 @@ angular.module('Pundit2.Annomatic')
     
     // If called with no parameter continues from last annotation
     annomatic.currAnn = 0;
+
+    /**
+     * @ngdoc method
+     * @name Annomatic#reviewNext
+     * @module Pundit2.Annomatic
+     * @function
+     *
+     * @description
+     * If called with no parameter continues from last annotation
+     *
+     * @param {number} number of the started annotation
+     *
+    */
     annomatic.reviewNext = function(from) {
 
         if (annomatic.annotationNumber === 0) {
@@ -688,6 +807,17 @@ angular.module('Pundit2.Annomatic')
     // NEW ANNOMATIC SERVICE BASED ON GRAMSCI
 
 
+    /**
+     * @ngdoc method
+     * @name Annomatic#hardReset
+     * @module Pundit2.Annomatic
+     * @function
+     *
+     * @description
+     * Reset the states and all annotations in annomatic
+     *
+     *
+    */
     annomatic.hardReset = function() {
         ItemsExchange.wipeContainer(annomatic.options.container);
         annomatic.ann = {
@@ -708,6 +838,16 @@ angular.module('Pundit2.Annomatic')
         annomatic.reset();
     };
 
+    /**
+     * @ngdoc method
+     * @name Annomatic#run
+     * @module Pundit2.Annomatic
+     * @function
+     *
+     * @description
+     * Start annomatic
+     *
+    */
     annomatic.run = function() {
         state.isRunning = true;
         TextFragmentHandler.turnOff();
@@ -723,6 +863,16 @@ angular.module('Pundit2.Annomatic')
         $rootScope.$emit('annomatic-run');
     };
 
+    /**
+     * @ngdoc method
+     * @name Annomatic#stop
+     * @module Pundit2.Annomatic
+     * @function
+     *
+     * @description
+     * Stop annomatic
+     *
+    */    
     annomatic.stop = function(){
         annomatic.hardReset();
         // ItemsExchange.wipeContainer(annomatic.options.container);
@@ -824,6 +974,18 @@ angular.module('Pundit2.Annomatic')
 
     };
 
+    /**
+     * @ngdoc method
+     * @name Annomatic#save
+     * @module Pundit2.Annomatic
+     * @function
+     *
+     * @description
+     * Create a triple and save the annotation in annotation server
+     *
+     * @param {number} number of the annotation to be saved
+     *
+    */
     annomatic.save = function(num){
         var uri = annomatic.ann.numToUriMap[num];
         var ann = annomatic.ann.byUri[uri];
@@ -848,10 +1010,37 @@ angular.module('Pundit2.Annomatic')
     //     }
     // };
 
+    /**
+     * @ngdoc method
+     * @name Annomatic#isRunning
+     * @module Pundit2.Annomatic
+     * @function
+     *
+     * @description
+     * Return the current state of annomatic: running or not runnging
+     *
+     * @return {boolean} current state of annomatic
+     *
+    */
     annomatic.isRunning = function() {
         return state.isRunning;
     };
 
+
+    /**
+     * @ngdoc method
+     * @name Annomatic#getGramsciAnnotations
+     * @module Pundit2.Annomatic
+     * @function
+     *
+     * @description
+     * Given an HTML node, will query gramsci service for annotations on the contents of that node
+     * solving the promise when done.
+     *
+     * @param {DOMElement} current node to be processed
+     * @return {Promise} promise will be resolved when the data is returned from gramsci service
+     *
+    */
     annomatic.getGrasciAnnotations = function(node){
         var promise = $q.defer();
 
@@ -881,6 +1070,19 @@ angular.module('Pundit2.Annomatic')
         return promise.promise;
     };
 
+    /**
+     * @ngdoc method
+     * @name Annomatic#getAnnotations
+     * @module Pundit2.Annomatic
+     * @function
+     *
+     * @description
+     * Call service set in the configuration 
+     *
+     * @param {DOMElement} current node to be processed
+     * @return {Promise} promise will be resolved when the data is returned from the current service
+     *
+    */
     annomatic.getAnnotations = function(node){
         if(annomatic.options.source === 'DataTXT'){
             return annomatic.getDataTXTAnnotations(node);
@@ -1062,6 +1264,16 @@ angular.module('Pundit2.Annomatic')
         }
     };
 
+    /**
+     * @ngdoc method
+     * @name Annomatic#getAnnotationByArea
+     * @module Pundit2.Annomatic
+     * @function
+     *
+     * @description
+     * Given an HTML node, will query the current service for annotations of the selected area
+     *
+    */
     annomatic.getAnnotationByArea = function(){
         annotationsRootNode = annomatic.area;
         if(annotationsRootNode == null){ return; }
