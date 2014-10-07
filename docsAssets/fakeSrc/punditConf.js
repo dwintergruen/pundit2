@@ -40,6 +40,4 @@ angular.module('punditConfig');
  * }
  * </pre>
  *
- *
- * All the configurable properties of the modules are available within {@link #!/api/punditConfig/object/modules modules}. 
  **/
