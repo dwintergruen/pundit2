@@ -7,27 +7,29 @@
 
 {$ doc.description | marked $}
 
-<div class="component-breakdown">
-  <h2>Module Components</h2>
-  {% for componentGroup in doc.componentGroups %}
-  <div>
-    <h3 class="component-heading" id="{$ componentGroup.groupType | dashCase $}">{$ componentGroup.groupType | title $}</h3>
-    <table class="definition-table">
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-      {% for component in componentGroup.components %}
-      <tr>
-        <td><a href="#!/{$ component.path $}">{$ component.name $}</a></td>
-        <!-- <td>{$ component.id | link(component.name, component) $}</td> -->
-        <td>{$ component.description | firstParagraph | marked $}</td>
-      </tr>
-      {% endfor %}
-    </table>
+{% if doc.module != 'index' %}
+  <div class="component-breakdown">
+    <h2>Module Components</h2>
+    {% for componentGroup in doc.componentGroups %}
+    <div>
+      <h3 class="component-heading" id="{$ componentGroup.groupType | dashCase $}">{$ componentGroup.groupType | title $}</h3>
+      <table class="definition-table">
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+        </tr>
+        {% for component in componentGroup.components %}
+        <tr>
+          <td><a href="#!/{$ component.path $}">{$ component.name $}</a></td>
+          <!-- <td>{$ component.id | link(component.name, component) $}</td> -->
+          <td>{$ component.description | firstParagraph | marked $}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+    {% endfor %}
   </div>
-  {% endfor %}
-</div>
+{% endif %}
 
 {% if doc.usage %}
   <h2>Usage</h2>
