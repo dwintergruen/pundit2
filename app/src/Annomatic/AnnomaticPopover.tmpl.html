@@ -1,14 +1,11 @@
-<div class="pnd-wrp pnd-ignore pnd-annomatic-popover popover" ng-controller="AnnomaticPopoverCtrl" style="position: absolute; margin-top: 10px;">
+<div class="pnd-wrp pnd-ignore pnd-annomatic-popover popover" ng-controller="AnnomaticPopoverCtrl">
     <div class="arrow"></div>
 
     <h4 class="popover-title" ng-click="showDetails = !showDetails">
-
-        <!--
-        TODO: decide if we want the caret or not
+        <!-- TODO: decide if we want the caret or not -->
         <span ng-show="!showDetails" class="pnd-icon pnd-icon-caret-right"></span>
         <span ng-show="showDetails" class="pnd-icon pnd-icon-caret-down"></span>
-        -->
-
+        
         <span
             style="opacity: {{ann.byNum[num].confidence}}"
             title="Confidence {{ann.byNum[num].confidence}}"
@@ -20,13 +17,11 @@
     </h4>
 
     <div class="popover-content">
-
-        <div ng-show="showDetails" class="pnd-preview clearfix" style="max-height: 200px; overflow-y: scrool; overflow-x: hidden;">
+        <div ng-show="showDetails" class="pnd-preview pnd-annomatic-popover-details clearfix">
             <item-preview uri="{{ann.byNum[num].uri}}" sticking="false"></item-preview>
         </div>
 
-        <div class="btn-group" style="left: 82px">
-
+        <div class="btn-group pnd-annomatic-btn-group">
             <!-- <button class="btn btn-warning pnd-button-go-prev" ng-click="goPrev()">
                 <span class="pnd-icon pnd-icon-arrow-left"></span>
             </button> -->
@@ -49,8 +44,6 @@
             <button class="btn btn-warning" ng-click="goNext($event)">
                 <span class="pnd-icon pnd-icon-arrow-right"></span>
             </button>
-
         </div>
-
     </div>
 </div>
