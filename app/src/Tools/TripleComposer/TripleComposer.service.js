@@ -251,6 +251,21 @@ angular.module('Pundit2.TripleComposer')
             }
         });
 
+        ContextualMenu.addAction({
+            type: [
+                Config.modules.PredicatesContainer.cMenuType
+            ],
+            name: 'useAsPredicate',
+            label: 'Use as Predicate',
+            showIf: function(item) {
+                return tripleComposer.canBeUseAsPredicate(item);
+            },
+            priority: 100,
+            action: function(item) {
+                tripleComposer.addToPredicate(item);
+            }
+        });
+
     }; // initContextualMenu()
 
     // When all modules have been initialized, services are up, Config are setup etc..
@@ -416,7 +431,7 @@ angular.module('Pundit2.TripleComposer')
         if (predicate === null || predicate.domain.length === 0) {
             return true;
         }
-        // chek if subject type match predicate domain
+        // check if subject type match predicate domain
         item.type.some(function(type){
             if (predicate.domain.indexOf(type) > -1) {
                 domainFound = true;
@@ -431,6 +446,56 @@ angular.module('Pundit2.TripleComposer')
         }
 
         return domainFound;
+    };
+
+    tripleComposer.canBeUseAsPredicate = function(item){
+        var domainCheck = false;
+        var rangeCheck = false;
+        
+        // search first empty prendicate
+        var index = -1;
+        statements.some(function(s, i){
+            if (!s.scope.predicateFound) {
+                index = i;
+                return true;
+            }
+        });
+        // all predicate are full
+        if (index === -1) {
+            return false;
+        }
+        
+        var subject = statements[index].scope.get().subject;
+        var object = statements[index].scope.get().object;
+        if(subject === null && object === null){
+            return true;
+        }
+        
+        if(subject !== null && item.domain.length !== 0){
+            // check if subject type match predicate domain
+            item.domain.some(function(type){
+                if (subject.type.indexOf(type) > -1) {
+                    domainCheck = true;
+                    return domainCheck;
+                }
+            });
+        } else{
+            domainCheck = true;
+        }
+
+        if(object !== null && item.range.length !== 0){
+            // check if object type match predicate range
+            item.range.some(function(type){
+                if (object.type.indexOf(type) > -1) {
+                    rangeCheck = true;
+                    return rangeCheck;
+                }
+            });
+        } else{
+            rangeCheck = true;
+        }
+
+        return domainCheck && rangeCheck;        
     };
 
     tripleComposer.canAddItemAsObject = function(item){
@@ -495,6 +560,24 @@ angular.module('Pundit2.TripleComposer')
             }
         }
         tripleComposer.log('Error: impossible to add object (all full)');
+    };
+
+    // Used to add a predicate from outside of triple composer
+    tripleComposer.addToPredicate = function(item) {
+        tripleComposer.closeAfterOp();
+        tripleComposer.openTripleComposer();
+
+        for (var i in statements) {
+            // find the first empty subject
+            if (!statements[i].scope.predicateFound) {
+                // set it
+                statements[i].scope.setPredicate(item);
+                $rootScope.$$phase || $rootScope.$digest();
+                tripleComposer.log('Add item as predicate: '+item.label);
+                return;
+            }
+        }
+        tripleComposer.log('Error: impossible to add predicate (all full)');
     };
 
     // Used to add a subject from outside of triple composer

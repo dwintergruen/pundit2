@@ -13,7 +13,7 @@ angular.module('Pundit2.PredicatesContainer')
 
     // read by <notebook> directive
     // will trigger this contextual menu type clicking on the contextual notebook icon
-    $scope.itemMenuType = PredicatesContainer.cMenuType;
+    $scope.itemMenuType = PredicatesContainer.options.cMenuType;
 
     $scope.message = {
         flag: true,
