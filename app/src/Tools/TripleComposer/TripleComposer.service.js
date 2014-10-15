@@ -258,7 +258,12 @@ angular.module('Pundit2.TripleComposer')
             name: 'useAsPredicate',
             label: 'Use as Predicate',
             showIf: function(item) {
-                return tripleComposer.canBeUseAsPredicate(item);
+                if (tripleComposer.canBeUseAsPredicate(item)){
+                    ContextualMenu.modifyHeaderActionByName('useAsPredicate', false);
+                } else{
+                    ContextualMenu.modifyHeaderActionByName('useAsPredicate', true);
+                }
+                return true;
             },
             priority: 100,
             action: function(item) {
