@@ -17,6 +17,30 @@
     }
 </style>
 
+<script type="text/javascript">
+ 
+    var BookmarkletCtrl = function($scope, $http) {
+        var responsePromise = $http.get("../src/InitBookmarkletFeed.js");
+
+        responsePromise.success(function(data, status, headers, config) {
+            $scope.bookmarklet = data;
+        });
+        responsePromise.error(function(data, status, headers, config) {
+            console.log("AJAX failed!");
+        });
+    };
+
+
+    angular.module('Pundit2').config( [
+        '$compileProvider',
+        function( $compileProvider ){   
+            $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|javascript):/);
+            // Angular before v1.2 uses $compileProvider.urlSanitizationWhitelist(...)
+        }
+    ]);
+
+</script>                                                
+
 <div class="bm-container">
     <h3>Bookmarklet howto</h3>
     <ol>
@@ -55,9 +79,22 @@
         </li>
 
     </ol>
+
+    <br/>
+
+    <h3>Bookmarklet feed howto</h3>
+    <ol>
+        <li>In <code>/app/src/InitBookmarkletFeed.js</code> you can change:
+            <ul>
+                <li>the path of feed</li>
+                <li>the path of your custom configuration</li>
+            </ul>
+        </li>
+        <li>Done: the feed bookmarklet is ready</li>
+    </ol>
 </div>
         
-<div class="bm-container">
+<div class="bm-container" data-ng-app="Pundit2" ng-controller="BookmarkletCtrl">
     <img src="http://www.thepund.it/wp-content/uploads/2013/05/Pundit.png" style="height:30px;" />
     <br/><br/>
     <p>Drag the "Pundit 2" button to your bookmark bar to launch Pundit on every Web site.</p>
@@ -71,6 +108,14 @@
                 h.appendChild(d);
             })()"> 
             <span>Pundit 2 bookmarklet</span>
+        </a>
+    </span>
+    <br/>
+    <span class="bm-draggable">
+        <a title="Bookmark this link" href="javascript:(function(){
+                {{bookmarklet}}
+            })()"> 
+            <span>Pundit 2 feed</span>
         </a>
     </span>
 </div>
