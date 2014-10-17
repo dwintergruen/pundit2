@@ -98,7 +98,6 @@ angular.module('Pundit2.Dashboard')
     $scope.$watch(function() {
         return Dashboard.canCollapsePanel();
     }, function(newValue) {
-        console.log("prova");
         $scope.canCollapsePanel = newValue;
     });
 
