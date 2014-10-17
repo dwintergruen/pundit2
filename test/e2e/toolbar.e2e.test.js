@@ -178,6 +178,44 @@ describe("The toolbar module", function() {
 
     });
 
+    it('should correctly open info dropdown', function() {
+        p.get('/app/examples/toolbar.html');
+
+        // click set loading btn
+        p.findElement(protractor.By.css('.pnd-test-set-loading')).click();
+
+        p.findElements(protractor.By.css('.pnd-toolbar-loading-button')).then(function(buttons) {
+            expect(buttons.length).toBe(1);
+        });
+
+        // open info dropdown
+        p.findElement(protractor.By.css('.pnd-toolbar-loading-button')).click();
+        // check if dropdown exist
+        p.findElements(protractor.By.css('.pnd-toolbar-loading-button .dropdown-menu')).then(function(d){
+            expect(d.length).toBe(1);
+        });
+        // check if dropdown exist
+        p.findElements(protractor.By.css('.pnd-toolbar-loading-button .dropdown-menu a')).then(function(a){
+            expect(a.length).toBe(2);
+            expect(a[0].getText()).toEqual("About Pundit");
+        });
+
+        // click remove loading btn
+        p.findElement(protractor.By.css('.pnd-test-remove-loading')).click();
+
+        // open info dropdown
+        p.findElement(protractor.By.css('.pnd-toolbar-status-button-ok')).click();
+        // check if dropdown exist
+        p.findElements(protractor.By.css('.pnd-toolbar-status-button-ok .dropdown-menu')).then(function(d){
+            expect(d.length).toBe(1);
+        });
+        // check if dropdown exist
+        p.findElements(protractor.By.css('.pnd-toolbar-status-button-ok .dropdown-menu a')).then(function(a){
+            expect(a.length).toBe(2);
+            expect(a[0].getText()).toEqual("About Pundit");
+        });
+    });
+
     //TODO aggiornare test con la nuova GUI
     // it('should correctly open info and send modals', function() {
 
