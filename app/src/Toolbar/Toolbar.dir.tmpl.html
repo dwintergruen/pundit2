@@ -16,7 +16,7 @@
 
                 <!-- Loading button -->
                 <li ng-show="showStatusButtonLoading()" class="pnd-toolbar-loading-button">
-                    <a href="javascript:void(0)">
+                    <a href="javascript:void(0)" template="{{dropdownTemplate}}" bs-dropdown="infoDropdown">
                         <!-- <span></span> -->
                         <span class="pnd-icon pnd-icon-refresh pnd-icon-spin"></span>
                     </a>
