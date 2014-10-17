@@ -127,7 +127,7 @@ describe("Dashboard interaction", function() {
             p.findElement(protractor.By.css('dashboard-panel[paneltitle=tools] .btn.btn-default')).then(function(b1) {
                 b1.click();
                 p.findElement(protractor.By.css('dashboard-panel[paneltitle=details] .btn.btn-default')).then(function(b2) {
-                    b2.click();
+                    expect(b2.isEnabled()).toBe(false);
                 });
             });
         });
