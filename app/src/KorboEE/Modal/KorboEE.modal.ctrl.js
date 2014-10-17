@@ -94,7 +94,7 @@ angular.module('KorboEE')
                 "abstract": $scope.itemSelected.description,
                 "type": $scope.itemSelected.type,
                 "depiction": $scope.itemSelected.image,
-                "resourceUrl": $scope.itemSelected.resource
+                "resource": $scope.itemSelected.resource
             };
 
             // save item
