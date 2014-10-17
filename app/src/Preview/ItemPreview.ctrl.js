@@ -5,6 +5,7 @@ angular.module('Pundit2.Preview')
         var imgTempReference;
         $scope.typeHidden = true;
         $scope.isSticky = false;
+        $scope.hasImage = false;
 
         if (typeof($scope.sticking) !== 'undefined'){
             sticking = $scope.sticking;
@@ -21,6 +22,10 @@ angular.module('Pundit2.Preview')
             // TODO: special initialization for certain kind of items, like image fragments?
             $scope.item = ItemsExchange.getItemByUri($scope.uri);
             $scope.typeHidden = true;
+
+            if (typeof($scope.item) !== 'undefined'){
+                $scope.hasImage = typeof($scope.item.image) !== 'undefined';
+            }
 
             if (typeof($scope.item) !== 'undefined' && $scope.item.isImageFragment()){
                 // TODO preview must be refactoring !!!!!
