@@ -1,5 +1,5 @@
 /**
-@ngdoc overview
+@ngdoc tutorial
 @name TafonyCompatibility
 @module KorboEE
 @description

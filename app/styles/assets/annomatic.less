@@ -1,3 +1,8 @@
+annomatic-panel.fixed > header {
+    position: fixed;
+    top: 0px;
+    right: 0px;
+}
 
 .pnd-annomatic-container{
     .pnd-annomatic-content{
@@ -72,16 +77,9 @@
     }
 }
 
-annomatic-panel.fixed > header {
-    position: fixed;
-    top: 0px;
-    right: 0px;
-}
-
 .selecting-ancestor {
     outline: 3px solid lighten(@brand-warning, 12%);
 }
-
 
 .pnd-icon-tag {
 	font-size: 12px;
@@ -91,8 +89,23 @@ annomatic-panel.fixed > header {
 	vertical-align: baseline;
 	text-decoration: none;
 
-		&:hover {
-			color: darken(@brand-warning, 12%);
-			text-decoration: none;
-			}	
+    &:hover {
+        color: darken(@brand-warning, 12%);
+        text-decoration: none;
+    }	
+}
+
+.pnd-annomatic-popover{
+    position: absolute; 
+    margin-top: 10px;
+
+    .pnd-annomatic-popover-details{
+        max-height: 200px; 
+        overflow-y: scrool; 
+        overflow-x: hidden;
+    }
+
+    .pnd-annomatic-btn-group{
+        left: 82px;
+    }
 }

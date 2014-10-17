@@ -1,0 +1,32 @@
+{% block content %}
+<h1>
+  {%- if doc.title -%}
+    {$ doc.title $}
+  {%- elif doc.module -%}
+    {$ doc.groupType | title $} components in {$ doc.module | code $}
+  {%- else -%}
+    Pages
+  {%- endif -%}
+</h1>
+
+{$ doc.description | marked $}
+<!-- service, object, etc -->
+<div class="component-breakdown">
+  <div>
+    <table class="definition-table">
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+      {% for page in doc.components %}
+      <tr>
+        <!-- <td>{$ page.id | link(page.name, page) $}</td> -->
+        <td><a href="#!/{$ page.path $}">{$ page.name $}</a></td>
+        <td>{$ page.description | firstParagraph | marked $}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+</div>
+
+{% endblock %}

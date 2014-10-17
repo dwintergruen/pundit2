@@ -40,29 +40,4 @@ angular.module('punditConfig');
  * }
  * </pre>
  *
- * The "modules" property allows you to configure the various modules of Pundit2, 
- * a full list of modules is available here:
- *  - {@link #!/api/punditConfig/object/modules#AnnotationDetails AnnotationDetails}
- *  - {@link #!/api/punditConfig/object/modules#AnnotationSidebar AnnotationSidebar}
- *  - {@link #!/api/punditConfig/object/modules#Analytics Analytics}
- *  - {@link #!/api/punditConfig/object/modules#Client Client}
- *  - {@link #!/api/punditConfig/object/modules#Dashboard Dashboard}
- *  - {@link #!/api/punditConfig/object/modules#FreebaseSelector FreebaseSelector}
- *  - {@link #!/api/punditConfig/object/modules#Item Item}
- *  - {@link #!/api/punditConfig/object/modules#KorboBasketSelector KorboBasketSelector}
- *  - {@link #!/api/punditConfig/object/modules#MyPundit MyPundit}
- *  - {@link #!/api/punditConfig/object/modules#MyItems MyItems}
- *  - {@link #!/api/punditConfig/object/modules#MyIyemsContainer MyIyemsContainer}
- *  - {@link #!/api/punditConfig/object/modules#MurucaSelector MurucaSelector}
- *  - {@link #!/api/punditConfig/object/modules#PageItemsContainer PageItemsContainer}
- *  - {@link #!/api/punditConfig/object/modules#Preview Preview}
- *  - {@link #!/api/punditConfig/object/modules#ResourcePanel ResourcePanel}
- *  - {@link #!/api/punditConfig/object/modules#SelectorsManager SelectorsManager}
- *  - {@link #!/api/punditConfig/object/modules#TextFragmentAnnotator TextFragmentAnnotator}
- *  - {@link #!/api/punditConfig/object/modules#TextFragmentHandler TextFragmentHandler}
- *  - {@link #!/api/punditConfig/object/modules#Toolbar Toolbar}
- *  - {@link #!/api/punditConfig/object/modules#TripleComposer TripleComposer}
- *  - {@link #!/api/punditConfig/object/modules#SimplifiedClient SimplifiedClient}
- *
- * All the configurable properties of the modules are available within {@link #!/api/punditConfig/object/modules modules}. 
  **/
