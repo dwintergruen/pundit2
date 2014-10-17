@@ -10,6 +10,7 @@ angular.module('Pundit2.Dashboard')
     $scope.ratio = 1;
     
     $scope.isCollapsed = false;
+    $scope.canCollapsePanel = true;
 
     // set by Dashboard.resizeAll()
     $scope.left = 0;
@@ -92,6 +93,13 @@ angular.module('Pundit2.Dashboard')
         return Dashboard.getContainerHeight();
     }, function() {
         $scope.setTabContentHeight();
+    });    
+
+    $scope.$watch(function() {
+        return Dashboard.canCollapsePanel();
+    }, function(newValue) {
+        console.log("prova");
+        $scope.canCollapsePanel = newValue;
     });
 
     // Sets the scrollable height to the right values, depending on Dashboard's height.
