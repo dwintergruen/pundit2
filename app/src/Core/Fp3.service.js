@@ -50,7 +50,7 @@ angular.module('Pundit2.Core')
             withCredentials: true
         }).success(function() {
             fp3.log("Success: fp3 post data");
-            // TODO how close the window?
+            $window.close();
         }).error(function(msg) {
             fp3.log("Error: impossible to post data", msg);
             promise.reject();
