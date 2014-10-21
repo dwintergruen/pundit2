@@ -31,6 +31,12 @@ angular.module('Pundit2.AnnotationSidebar')
     }
 
     if(typeof(Config.forceTemplateEdit) !== 'undefined' && Config.forceTemplateEdit){
+        $scope.forceTemplateEdit = true;
+    } else{
+        $scope.forceTemplateEdit = false;
+    }    
+
+    if(typeof(Config.forceEditAndDelete) !== 'undefined' && Config.forceEditAndDelete){
         $scope.forceEdit = true;
     } else{
         $scope.forceEdit = false;
@@ -109,7 +115,7 @@ angular.module('Pundit2.AnnotationSidebar')
     };
 
     $scope.showEdit = function() {
-        return typeof($scope.annotation.hasTemplate) === 'undefined' || $scope.forceEdit;
+        return typeof($scope.annotation.hasTemplate) === 'undefined' || $scope.forceTemplateEdit;
     };
 
     $scope.editAnnotation = function() {
@@ -142,7 +148,7 @@ angular.module('Pundit2.AnnotationSidebar')
     });
 
     $scope.isUserToolShowed = function() {
-        return AnnotationDetails.isUserToolShowed($scope.annotation.creator) && AnnotationSidebar.isAnnotationsPanelActive();
+        return (AnnotationDetails.isUserToolShowed($scope.annotation.creator) || $scope.forceEdit) && AnnotationSidebar.isAnnotationsPanelActive();
     };
 
     $scope.mouseoverAllHandler = function(){

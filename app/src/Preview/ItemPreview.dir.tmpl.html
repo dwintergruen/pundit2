@@ -17,8 +17,8 @@
 
     <div 
         class="pnd-preview-item-image" 
-        ng-if="!item.isImage() && !item.isImageFragment() && item.image != ''">
-            <img ng-src="{{item.image}}" />
+        ng-if="!item.isImage() && !item.isImageFragment() && hasImage">
+            <img class="pnd-annotation-preview-item-image" ng-src="{{item.image}}" />
     </div>
 
     <div class="pnd-preview-item-description">

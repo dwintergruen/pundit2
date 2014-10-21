@@ -318,6 +318,8 @@ angular.module('Pundit2.TripleComposer')
 
         checkPredicateTolerance('subject', 'domain');
 
+        ResourcePanel.hide();
+
         $scope.tripleComposerCtrl.isAnnotationComplete();
         $scope.tripleComposerCtrl.isTripleErasable();
     };
@@ -349,6 +351,9 @@ angular.module('Pundit2.TripleComposer')
         if (item.range.indexOf(NameSpace.dateTime) === -1 && item.range.length > 0) {
             $scope.canBeObjectDate = false;
         }
+
+        ResourcePanel.hide();
+
         $scope.tripleComposerCtrl.isAnnotationComplete();
         $scope.tripleComposerCtrl.isTripleErasable();
     };
@@ -387,6 +392,8 @@ angular.module('Pundit2.TripleComposer')
             $scope.objectTypeLabel = TypesHelper.getLabel(item.type[0]);
             checkPredicateTolerance('object', 'range');
         }
+
+        ResourcePanel.hide();
 
         $scope.tripleComposerCtrl.isAnnotationComplete();
         $scope.tripleComposerCtrl.isTripleErasable();
