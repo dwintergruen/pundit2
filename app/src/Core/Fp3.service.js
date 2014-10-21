@@ -5,7 +5,7 @@ angular.module('Pundit2.Core')
     active: false,
     debug: false
 })
-.service('Fp3', function(BaseComponent, FP3DEFAULTS, Config, $http, $q) {
+.service('Fp3', function(BaseComponent, FP3DEFAULTS, Config, $http, $q, $window) {
     
     var fp3 = new BaseComponent("Fp3", FP3DEFAULTS);
 
