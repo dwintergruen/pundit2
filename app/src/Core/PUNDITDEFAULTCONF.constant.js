@@ -212,6 +212,19 @@ angular.module('Pundit2.Core')
         /**
          * @module punditConfig
          * @ngdoc object
+         * @name forceEdit
+         * @description
+         * `boolean`
+         * Enables authorized users to edit and delete annotations of other authors
+         *
+         * Default:
+         * <pre> forceEditAndDelete: false </pre>
+         */
+        forceEditAndDelete: false,
+
+        /**
+         * @module punditConfig
+         * @ngdoc object
          * @name forceTemplateEdit
          * @description
          * `boolean`
