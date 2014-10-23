@@ -41,6 +41,13 @@ describe('FreebaseSelector service', function() {
         property: {
             '/common/topic/description': {
                 values: [ {value: "Giuseppe Baudo, known as Pippo Baudo, is one of the most..."} ]
+            },
+            '/common/topic/notable_types': {
+                values: [{
+                    text: "Person",
+                    lang: "en",
+                    id: "/people/person"
+                }]
             }
         }
     };
@@ -114,6 +121,7 @@ describe('FreebaseSelector service', function() {
         expect(list.length).toBe(1);
         expect(list[0].uri).toBe(FREEBASESELECTORDEFAULTS.freebaseItemsBaseURL+itemMqlInfo.result.mid);
         expect(list[0].description).toBe(itemTopicInfo.property['/common/topic/description'].values[0].value);
+        expect(list[0].type[0]).toBe(FREEBASESELECTORDEFAULTS.freebaseSchemaBaseURL + itemTopicInfo.property['/common/topic/notable_types'].values[0].id);
         
     });
 
