@@ -18,13 +18,13 @@
                 debug: false
             },
             'Consolidation': {
-                debug: true
+                debug: false
             },
             'Dashboard': {
-                debug: true
+                debug: false
             },
             'Client': {
-                debug: true,
+                debug: false,
                 active: true
             },
             'TextFragmentAnnotator': {
@@ -53,39 +53,35 @@
     }
 
     var vocab = [
+            // "http://manager.korbo.org/91"
             "http://conf.thepund.it/json2jsonp/index.php?u=https://dl.dropboxusercontent.com/u/1263117/FHP/props_test.json"
         ];
 
-    var LoadDemoCtrl = function($scope, $q, TemplatesSelector, ItemsExchange) {
+    var LoadDemoCtrl = function($scope, $q, PredicateSelector, ItemsExchange, Item) {
 
         $scope.getPredicates = function() {
-
-            console.log('entro');
-
             var urls = vocab,
                 result = [],
                 promise = $q.defer();
 
             var predPromises = [];
+
             for (var i in urls) {
-                var prm = TemplatesSelector.get(urls[i]);
+                var prm = PredicateSelector.getRelations(urls[i]);
                 prm.then(function(res){
                     result.push.apply(result, res);
                 });
                 predPromises.push(prm);
             }
-            console.log('ho ciclato ', urls);
 
             $q.all(predPromises).then(function(){
-                console.log('q all?');
                 for (var p in result){
-                    ItemsExchange.addItemToContainer(new Item(result[p].uri, result[p]), [client.options.relationsContainer, 'vocabularyRelations']);
+                    ItemsExchange.addItemToContainer(new Item(result[p].uri, result[p]), ['usableRelations', 'vocabularyRelations']);
                     var real = ItemsExchange.getItemByUri(result[p].uri);
                     if (typeof(result[p].label) !== 'undefined' && !ItemsExchange.isItemInContainer(real, 'templateRelations')) {
                         real.label = result[p].label;
                     }
                 }
-
             });
         };
     }
@@ -100,7 +96,7 @@
     <div class="container">
 
         <div ng-controller="LoadDemoCtrl">
-            <button type="button" class="btn btn-info pnd-test-get-templates" ng-click="getPredicates()">Get Templates</button>
+            <button type="button" class="btn btn-info pnd-test-get-templates" ng-click="getPredicates()">Get new predicate</button>
         </div>
 
     </div>
