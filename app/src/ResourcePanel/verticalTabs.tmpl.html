@@ -50,7 +50,8 @@
                 <ul class="list-group">
                     <li ng-if="pane.module == 'Pundit2' && contentTabs[$index].items.length === 0 && label !== ''">No results found</li>
                     <li ng-if="pane.module == 'Pundit2' && contentTabs[$index].items.length === 0 && label === ''">Type a label to search...</li>
-                    <li class="list-group-item" ng-repeat="mi in contentTabs[$index].items | orderBy:getOrderProperty" ng-if="moduleName == 'Pundit2'">
+                    <!-- <li class="list-group-item" ng-repeat="mi in contentTabs[$index].items | orderBy:getOrderProperty" ng-if="moduleName == 'Pundit2'"> -->
+                    <li class="list-group-item" ng-repeat="mi in contentTabs[$index].items" ng-if="moduleName == 'Pundit2'">
                         <item uri="{{mi.uri}}" is-selected="{{isSelected(mi)}}" ng-click="select(mi)" hide-options="true" ng-if="moduleName == 'Pundit2'"></item>
                     </li>
                     <li class="list-group-item" ng-repeat="mi in contentTabs[$index].items | orderBy:getOrderProperty" ng-if="moduleName == 'KorboEE'" ng-mouseenter="getItem(mi);$event.stopPropagation()" ng-mouseleave="onMouseLeave()">

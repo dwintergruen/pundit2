@@ -188,6 +188,31 @@ angular.module('Pundit2.Vocabularies')
     /**
      * @module punditConfig
      * @ngdoc property
+     * @name modules#FreebaseSelector.objectFilters
+     *
+     * @description
+     * `Array of string`
+     *
+     * Array of filters we need for any object
+     * 
+     *
+     * Default value:
+     * <pre> objectFilters: [ 
+     *          "/common/topic/description",
+     *          "/common/topic/notable_types",
+     *          "/common/topic/notable_for"
+     *       ]
+     * </pre>
+     */
+    objectFilters: [
+        "/common/topic/description",
+        "/common/topic/notable_types",
+        "/common/topic/notable_for"
+    ],
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
      * @name modules#FreebaseSelector.debug
      *
      * @description
@@ -298,6 +323,7 @@ angular.module('Pundit2.Vocabularies')
 
         // var self = this;
         var error = 0;
+        item.type = [];
 
         // get MQL
         $http({
@@ -314,7 +340,6 @@ angular.module('Pundit2.Vocabularies')
         }).success(function(data) {
 
             item.uri = freebaseSelector.options.freebaseItemsBaseURL + data.result.mid;
-            item.type = [];
 
             freebaseSelector.log('Http success, get MQL from freebase' + item.uri);
 
@@ -322,8 +347,10 @@ angular.module('Pundit2.Vocabularies')
             for (var l=data.result.type.length; l--;) {
                 var o = data.result.type[l],
                     uri = freebaseSelector.options.freebaseSchemaBaseURL + o.id;
-                item.type.push(uri);
-                TypesHelper.add(uri, o.name);
+                if(item.type.indexOf(uri) == -1){
+                    item.type.push(uri);
+                    TypesHelper.add(uri, o.name);
+                }
             }
 
             // Description != -1: this call is the last one, we're done
@@ -347,16 +374,33 @@ angular.module('Pundit2.Vocabularies')
             url: freebaseSelector.options.freebaseTopicURL + item.mid,
             params: {
                 key: freebaseSelector.options.freebaseAPIKey,
-                filter: '/common/topic/description'
+                filter: freebaseSelector.options.objectFilters
             }
         }).success(function(data) {
 
             freebaseSelector.log('Http success, get TOPIC from freebase' + item.uri);
 
-            if (typeof(data.property) !== 'undefined' && data.property['/common/topic/description'].values.length > 0){
-                item.description = data.property['/common/topic/description'].values[0].value;
-            }
-            else{
+            if (typeof(data.property) !== 'undefined'){
+                if (typeof(data.property['/common/topic/description']) !== 'undefined' && data.property['/common/topic/description'].values.length > 0){
+                    item.description = data.property['/common/topic/description'].values[0].value;
+                }
+                else{
+                    item.description = item.label;
+                }
+
+                if (typeof(data.property['/common/topic/notable_types']) !== 'undefined' && data.property['/common/topic/notable_types'].values.length > 0){
+                    var o = data.property['/common/topic/notable_types'].values[0],
+                        uri = freebaseSelector.options.freebaseSchemaBaseURL + o.id;
+
+                    var index = item.type.indexOf(uri);
+
+                    if (index > -1) {
+                        item.type.splice(index, 1);
+                    }
+                    item.type.unshift(uri);
+                    TypesHelper.add(uri, o.text);
+                }
+            } else{
                 item.description = item.label;
             }
 
