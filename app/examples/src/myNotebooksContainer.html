@@ -9,7 +9,7 @@
         }
     };
 
-    var MyNotebooksContainerDemo = function($scope, $rootScope, NotebookCommunication, MyPundit, MyNotebooksContainer, TextFragmentHandler, TextFragmentAnnotator, ImageHandler) {
+    var MyNotebooksContainerDemoCtrl = function($scope, $rootScope, NotebookCommunication, MyPundit, MyNotebooksContainer, TextFragmentHandler, TextFragmentAnnotator, ImageHandler) {
         MyPundit.checkLoggedIn();
         $scope.login = function() {
             MyPundit.login().then(function(value) {
@@ -30,7 +30,7 @@
 </script>
 
 <div data-ng-app="Pundit2" class="pnd-wrp">
-    <div ng-controller="MyNotebooksContainerDemo">
+    <div ng-controller="MyNotebooksContainerDemoCtrl">
         <my-notebooks-container></my-notebooks-container>
 
         <button type="button" class="btn btn-success pnd-test-login" ng-click="login()">Login</button>
