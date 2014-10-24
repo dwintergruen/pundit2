@@ -519,4 +519,30 @@ describe("Client interaction when user is logged in", function() {
 
     });
 
+    it("should correctly show notebook composer by click on create new notebook", function(){
+        
+        p.driver.manage().window().setSize(1600, 960);
+
+        // open dashboard
+        p.findElement(protractor.By.css('toolbar .pnd-toolbar-dashboard-button')).click();
+        // collapse right panel
+        p.findElement(protractor.By.css('dashboard-panel[paneltitle=details] .btn.btn-default')).click();
+        // open my notebooks tab
+        p.findElements(protractor.By.css("dashboard-panel[paneltitle=lists] .pnd-tab-header > li > a")).then(function(tabs) {
+            tabs[4].click();
+            expect(tabs[4].getText()).toBe("My Notebooks");
+        });
+
+        // click on create new notebook
+        p.findElement(protractor.By.css('.my-notebooks-btn-new')).click();
+
+        // check if tools panel show notebook composer interface
+        // check active tab title
+        p.findElements(protractor.By.css("dashboard-panel[paneltitle=tools] .pnd-tab-header > li.active > a")).then(function(tabs) {
+            expect(tabs.length).toBe(1);
+            expect(tabs[0].getText()).toBe("Notebooks Composer");
+        });
+    });
+
+
 });
