@@ -18,7 +18,7 @@ angular.module('Pundit2.MyNotebooksContainer')
 })
 .service('MyNotebooksContainer', function($rootScope, MYNOTEBOOKSCONTAINERDEFAULTS, BaseComponent,
     NotebookExchange, ItemsExchange, PageItemsContainer, AnnotationsExchange, NotebookCommunication, Consolidation,
-    ContextualMenu, Config, Dashboard, NotebookComposer, AnnotationsCommunication,
+    ContextualMenu, Config, Dashboard, NotebookComposer, AnnotationsCommunication, NameSpace,
     $modal, $timeout, $window) {
 
     var myNotebooksContainer = new BaseComponent('MyNotebooksContainer', MYNOTEBOOKSCONTAINERDEFAULTS);
@@ -35,6 +35,11 @@ angular.module('Pundit2.MyNotebooksContainer')
         if(typeof(Config.lodLive) !== 'undefined' && Config.lodLive.active){
             lodLive = true;
         }
+        var timeline = false;
+        if(typeof(Config.timeline) !== 'undefined' && Config.timeline.active){
+            timeline = true;
+        }
+        console.log(timeline);
 
         ContextualMenu.addAction({
             name: 'openNTlod',
@@ -46,6 +51,19 @@ angular.module('Pundit2.MyNotebooksContainer')
             },
             action: function(nt) {
                 $window.open(Config.lodLive.baseUrl+Config.lodLive.pndPurl+'notebook/'+nt.id, '_blank');
+            }
+        });
+
+        ContextualMenu.addAction({
+            name: 'openTM',
+            type: cMenuTypes,
+            label: "Open Timeline",
+            priority: 102,
+            showIf: function() {
+                return timeline;
+            },
+            action: function(nt) {
+                $window.open(Config.timeline.baseUrl+'notebook-ids='+nt.id+'&namespace='+Config.pndPurl+'notebook/'+'&api='+NameSpace.asOpen, '_blank');
             }
         });
 

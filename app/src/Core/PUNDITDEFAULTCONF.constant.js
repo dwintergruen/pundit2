@@ -68,6 +68,21 @@ angular.module('Pundit2.Core')
         /**
          * @module punditConfig
          * @ngdoc object
+         * @name pndPurl
+         * @description
+         * `string`
+         * Base purl of pundit server
+         *
+         * Default:
+         * <pre>
+         * pndPurl: 'http://purl.org/pundit/demo-cloud-server/'
+         * </pre>
+         */
+        pndPurl: 'http://purl.org/pundit/demo-cloud-server/',
+
+        /**
+         * @module punditConfig
+         * @ngdoc object
          * @name confURL
          * @description
          * `string`
@@ -381,16 +396,42 @@ angular.module('Pundit2.Core')
          * <pre>
          *
          * lodLive: {
-            active: false,
-            baseUrl: 'http://demo-lodlive.thepund.it/?',
-            pndPurl: 'http://purl.org/pundit/demo-cloud-server/'
-          }
+         *   active: false,
+         *   baseUrl: 'http://demo-lodlive.thepund.it/?',
+         *   pndPurl: 'http://purl.org/pundit/demo-cloud-server/'
+         * }
          * </pre>
         */
       lodLive: {
         active: false,
         baseUrl: 'http://demo-lodlive.thepund.it/?',
         pndPurl: 'http://purl.org/pundit/demo-cloud-server/'
+      },
+
+        /**
+         * @module punditConfig
+         * @ngdoc object
+         * @name timeline
+         * @description
+         * `object`
+         *
+         * Define if is active timeline link in Pundit. Object has the follow fields:
+         *
+         * * `active`: true to active timeline link, false otherwise
+         * * `baseUrl`: base url of timeline service
+         *
+         * Default:
+         * <pre>
+         *
+         * timeline: {
+         *  active: false,
+         *  baseUrl: 'http://metasound.dibet.univpm.it/timelinejs/examples/pundit.html?notebook-ids='
+         * }
+         * </pre>
+        */
+      timeline: {
+        active: false,
+        baseUrl: 'http://metasound.dibet.univpm.it/timelinejs/examples/pundit.html?'
       }
 
     });
