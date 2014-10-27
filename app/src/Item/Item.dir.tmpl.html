@@ -1,7 +1,7 @@
 <div class="pnd-item" ng-class="{'pnd-sticky-item': isSticky()}" ng-mouseover="onItemMouseOver()" ng-mouseleave="onItemMouseLeave()">
     <div class="pnd-item-buttons">
-        <button ng-hide="hideOptions" type="button" ng-click="onClickMenu($event)" class="btn btn-xs btn-link" title="Options"><span class="pnd-icon pnd-icon-bars"></span></button>
-        <button ng-hide="hideStickyButton" type="button" ng-click="onClickSticky($event)" class="btn btn-xs btn-link" title="Sticky"><span class="pnd-icon pnd-icon-thumb-tack"></span></button>
+        <button ng-hide="hideOptions" type="button" ng-click="onClickMenu($event)" class="btn btn-xs btn-link pnd-btn-bar" title="Options"><span class="pnd-icon pnd-icon-bars"></span></button>
+        <button ng-hide="hideStickyButton" type="button" ng-click="onClickSticky($event)" class="btn btn-xs btn-link pnd-btn-stick" title="Sticky"><span class="pnd-icon pnd-icon-thumb-tack"></span></button>
         <span ng-if="isSelected" class="pnd-icon pnd-icon-check"></span>
     </div>
 
