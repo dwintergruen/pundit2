@@ -30,7 +30,7 @@ angular.module('Pundit2.Toolbar')
     var lodliveOpen = function(){
         if(MyPundit.isUserLogged()){
             var userData = MyPundit.getUserData();
-            $window.open(Config.lodLive.baseUrl+Config.lodLive.pndPurl+'user/'+userData.id, '_blank');
+            $window.open(Config.lodLive.baseUrl+Config.pndPurl+'user/'+userData.id, '_blank');
         }
     }
 

@@ -53,7 +53,7 @@ angular.module('Pundit2.AnnotationSidebar')
     });
 
     $scope.openGraph = function(){
-        $window.open(Config.lodLive.baseUrl+Config.lodLive.pndPurl+'annotation/'+currentId, '_blank');
+        $window.open(Config.lodLive.baseUrl+Config.pndPurl+'annotation/'+currentId, '_blank');
     };
 
     $scope.toggleAnnotation = function(){

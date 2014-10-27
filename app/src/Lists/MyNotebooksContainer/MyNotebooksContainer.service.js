@@ -39,7 +39,6 @@ angular.module('Pundit2.MyNotebooksContainer')
         if(typeof(Config.timeline) !== 'undefined' && Config.timeline.active){
             timeline = true;
         }
-        console.log(timeline);
 
         ContextualMenu.addAction({
             name: 'openNTlod',
@@ -50,7 +49,7 @@ angular.module('Pundit2.MyNotebooksContainer')
                 return lodLive;
             },
             action: function(nt) {
-                $window.open(Config.lodLive.baseUrl+Config.lodLive.pndPurl+'notebook/'+nt.id, '_blank');
+                $window.open(Config.lodLive.baseUrl+Config.pndPurl+'notebook/'+nt.id, '_blank');
             }
         });
 

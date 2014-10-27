@@ -390,22 +390,19 @@ angular.module('Pundit2.Core')
          *
          * * `active`: true to active lodLive link, false otherwise
          * * `baseUrl`: base url of lodlive service
-         * * `pndPurl`: base purl of pundit server
          *
          * Default:
          * <pre>
          *
          * lodLive: {
          *   active: false,
-         *   baseUrl: 'http://demo-lodlive.thepund.it/?',
-         *   pndPurl: 'http://purl.org/pundit/demo-cloud-server/'
+         *   baseUrl: 'http://demo-lodlive.thepund.it/?'
          * }
          * </pre>
         */
       lodLive: {
         active: false,
-        baseUrl: 'http://demo-lodlive.thepund.it/?',
-        pndPurl: 'http://purl.org/pundit/demo-cloud-server/'
+        baseUrl: 'http://demo-lodlive.thepund.it/?'
       },
 
         /**
@@ -425,7 +422,7 @@ angular.module('Pundit2.Core')
          *
          * timeline: {
          *  active: false,
-         *  baseUrl: 'http://metasound.dibet.univpm.it/timelinejs/examples/pundit.html?notebook-ids='
+         *  baseUrl: 'http://metasound.dibet.univpm.it/timelinejs/examples/pundit.html?'
          * }
          * </pre>
         */
