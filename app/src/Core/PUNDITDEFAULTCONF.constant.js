@@ -71,7 +71,7 @@ angular.module('Pundit2.Core')
          * @name pndPurl
          * @description
          * `string`
-         * Base purl of pundit server
+         * Base purl of pundit server (i.e. http://purl.org/pundit/as/)
          *
          * Default:
          * <pre>
