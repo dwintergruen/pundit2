@@ -19,8 +19,15 @@
 
 <script type="text/javascript">
  
-    var BookmarkletCtrl = function($scope, $http) {
-        var responsePromise = $http.get("../src/InitBookmarkletFeed.js");
+    var BookmarkletCtrl = function($scope, $http, $location) {
+        var responsePromise;
+        var folders = $location.url().split("/"),
+            folder = folders[folders.length-2];
+        if(folder == 'examples'){
+            responsePromise = $http.get("../src/InitBookmarkletFeed.js");
+        } else if (folder = 'build'){
+            responsePromise = $http.get("bm/InitBookmarkletFeed.js");
+        }
 
         responsePromise.success(function(data, status, headers, config) {
             $scope.bookmarklet = data;

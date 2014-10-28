@@ -322,6 +322,12 @@ module.exports = function(grunt) {
                         cwd: '<%= conf.app %>/src/',
                         dest: '<%= conf.build %>/bm',
                         src: 'InitBookmarklet.js'
+                    },
+                    {
+                        expand: true,
+                        cwd: '<%= conf.app %>/src/',
+                        dest: '<%= conf.build %>/bm',
+                        src: 'InitBookmarkletFeed.js'
                     }
                 ]
             },
