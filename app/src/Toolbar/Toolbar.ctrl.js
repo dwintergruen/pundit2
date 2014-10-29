@@ -373,12 +373,6 @@ angular.module('Pundit2.Toolbar')
     $scope.isDashboardActive = function() {
         return $scope.isUserLogged === true;
     };
-    
-    // return true if user is logged in --> get user ask link
-    // return false if user is not logged in --> get default ask link
-    $scope.isAskActive = function() {
-        return $scope.isUserLogged === true;
-    };
 
     $scope.toggleTemplateMode = function() {
         if (TripleComposer.isEditMode() || $scope.isAnnomaticRunning) {
