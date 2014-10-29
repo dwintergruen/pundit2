@@ -290,6 +290,10 @@ angular.module('Pundit2.TripleComposer')
         closeAfterOp = true;
     };
 
+    tripleComposer.closeAfterOpOff = function() {
+        closeAfterOp = false;
+    };
+
     tripleComposer.updateVisibility = function() {
         if (closeAfterOp && Dashboard.isDashboardVisible()) {
             Dashboard.toggle();

@@ -232,6 +232,7 @@ angular.module('Pundit2.TripleComposer')
                     promise.resolve();
                 }, function(){
                     // rejected
+                    TripleComposer.closeAfterOpOff();
                     stopSavingProcess(
                         savePromise,
                         TripleComposer.options.notificationErrorMsg,
