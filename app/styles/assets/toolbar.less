@@ -44,6 +44,7 @@ body.pnd-toolbar-active {
 
     // ---------- ASK BUTTON
     
+    /*
     &.pnd-toolbar-ask-button-not-active {
         border-right: 0px;
         
@@ -74,6 +75,42 @@ body.pnd-toolbar-active {
                 background-color: @gray-darker;
                 &:after { // ARROW hover
                     border-left-color: @gray-darker;
+                }
+            }
+        }
+    } */
+    
+     &.pnd-toolbar-ask-button-not-active {
+        border-right: 0px;
+        
+        a {
+            background-color: @brand-success;
+            border: 0px;
+            position: relative;
+            padding-left: 10px;
+            
+            &:after { // ARROW
+                left: 100%;
+                top: 50%;
+                border: solid transparent;
+                content: " ";
+                height: 0;
+                width: 0;
+                position: absolute;
+                pointer-events: none;
+                border-color: rgba(0, 0, 0, 0);
+                border-left-color: @brand-success;
+                border-width: 15px;
+                margin-top: -15px;
+                z-index: 100;
+            }
+            
+            &:hover,
+            &:focus {
+                background-color: darken(@brand-success, 12%);
+                
+                &:after { // ARROW hover
+                    border-left-color: darken(@brand-success, 12%)!important;
                 }
             }
         }
@@ -119,13 +156,16 @@ body.pnd-toolbar-active {
     
     &.pnd-toolbar-dashboard-button {
     	
+    	
      	&.pnd-toolbar-dashboard-button-active {
      		background-color: @gray;
      		color: @btn-primary-color;
      		
-     		&:hover,
-     		&:focus {
-     			background-color: @gray;
+     		a {
+	     		&:hover,
+	     		&:focus {
+	     			background-color: @gray;
+	     		}
      		}
      	}
      	
@@ -141,9 +181,11 @@ body.pnd-toolbar-active {
      	&.pnd-toolbar-annotations-button-active {
      		background-color: @gray;
      		
-     		&:hover,
-     		&:focus {
-     			background-color: @gray;
+     		a {
+	     		&:hover,
+	     		&:focus {
+	     			background-color: @gray;
+	     		}
      		}
      	}
     }
