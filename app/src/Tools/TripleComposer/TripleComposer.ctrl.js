@@ -9,16 +9,16 @@ angular.module('Pundit2.TripleComposer')
     $scope.saving = false;
     $scope.textMessage = TripleComposer.options.savingMsg;
 
-    $scope.headerMessage = "Create New Annotation";
+    $scope.headerMessage = "Create new annotation";
 
     $scope.editMode = false;
     $scope.$watch(function() {
         return TripleComposer.isEditMode();
     }, function(editMode) {
         if (editMode) {
-            $scope.headerMessage = "Edit and update your Annotation";
+            $scope.headerMessage = "Edit and update your annotation";
         } else {
-            $scope.headerMessage = "Create New Annotation";
+            $scope.headerMessage = "Create new annotation";
         }
         $scope.editMode = editMode;
     });
@@ -31,7 +31,7 @@ angular.module('Pundit2.TripleComposer')
         $scope.templateMode = newVal;
         if (newVal) {
             lastHeader = $scope.headerMessage;
-            $scope.headerMessage = "Complete your Annotation and Save!";
+            $scope.headerMessage = "Complete your annotation and save!";
         } else if(newVal !== oldVal) {
             $scope.headerMessage = lastHeader;
         }

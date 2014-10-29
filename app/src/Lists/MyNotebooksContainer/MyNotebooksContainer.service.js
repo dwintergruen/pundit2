@@ -69,7 +69,7 @@ angular.module('Pundit2.MyNotebooksContainer')
         ContextualMenu.addAction({
             name: 'setAsPrivate',
             type: cMenuTypes,
-            label: "Set Notebook as Private",
+            label: "Set notebook as private",
             priority: 100,
             showIf: function(nt) {
                 return nt.visibility === "public";
@@ -82,7 +82,7 @@ angular.module('Pundit2.MyNotebooksContainer')
         ContextualMenu.addAction({
             name: 'setAsPublic',
             type: cMenuTypes,
-            label: "Set Notebook as Public",
+            label: "Set notebook as public",
             priority: 100,
             showIf: function(nt) {
                 return nt.visibility === "private";
@@ -95,7 +95,7 @@ angular.module('Pundit2.MyNotebooksContainer')
         ContextualMenu.addAction({
             name: 'setAsCurrent',
             type: cMenuTypes,
-            label: "Set Notebook as Current",
+            label: "Set notebook as current",
             priority: 100,
             showIf: function(nt) {
                 return !nt.isCurrent();
@@ -108,7 +108,7 @@ angular.module('Pundit2.MyNotebooksContainer')
         ContextualMenu.addAction({
             name: 'deleteNotebook',
             type: cMenuTypes,
-            label: "Delete Notebook",
+            label: "Delete notebook",
             priority: 100,
             showIf: function(nt) {
                 return !nt.isCurrent();
@@ -123,7 +123,7 @@ angular.module('Pundit2.MyNotebooksContainer')
         ContextualMenu.addAction({
             name: 'editNotebook',
             type: cMenuTypes,
-            label: "Edit Notebook",
+            label: "Edit notebook",
             priority: 101,
             showIf: function() {
                 return true;
