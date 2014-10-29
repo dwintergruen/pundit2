@@ -8,6 +8,9 @@ angular.module('Pundit2.Toolbar')
     $scope.dropdownTemplateMyNotebook = "src/Toolbar/myNotebooksDropdown.tmpl.html";
     $scope.dropdownTemplateTemplates = "src/Toolbar/templatesDropdown.tmpl.html";
 
+    $scope.isAnnotationSidebarExpanded = false;
+    $scope.isDashboardVisible = false;
+
     if (Config.useOnlyTemplateMode) {
         angular.element(".pnd-toolbar-template-mode-button").addClass('pnd-not-clickable');
     }
@@ -166,6 +169,20 @@ angular.module('Pundit2.Toolbar')
         return Annomatic.isRunning();
     }, function(currentState) {
         $scope.isAnnomaticRunning = currentState;
+    });     
+
+    // Watch Sidebar status
+    $scope.$watch(function() {
+        return AnnotationSidebar.isAnnotationSidebarExpanded();
+    }, function(currentState) {
+        $scope.isAnnotationSidebarExpanded = currentState;
+    });
+
+    // Watch Toolbar status
+    $scope.$watch(function() {
+        return Dashboard.isDashboardVisible();
+    }, function(currentState) {
+        $scope.isDashboardVisible = currentState;
     });
     
     $scope.errorMessageDropdown = Toolbar.getErrorMessageDropdown();
