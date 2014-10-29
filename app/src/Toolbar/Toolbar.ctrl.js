@@ -56,7 +56,7 @@ angular.module('Pundit2.Toolbar')
 
     infoModalScope.titleMessage = "About Pundit";
     infoModalScope.info = [
-        {label: "Pundit Version: ", value: PUNDITVERSION.version},
+        {label: "Pundit version: ", value: PUNDITVERSION.version},
         {label: "Annotation server URL: ", value: NameSpace.as},
         {label: "Korbo basket: ", value: "-"}, // is always defined? read from korbo selector instance? if i have more than one instance}?
         {label: "Contact the Pundit team:", value: "punditdev@netseven.it"},
@@ -98,9 +98,9 @@ angular.module('Pundit2.Toolbar')
             "?cc=" +
             "&subject=" + escape(subject) +
             "&body=" + escape(body) +
-            "%0A%0A" + "Pundit Version: "+ PUNDITVERSION.version +
+            "%0A%0A" + "Pundit version: "+ PUNDITVERSION.version +
             "%0A%0A" + "Configuration file: "+ Config.confURL +
-            "%0A" + "Web Page: " + document.URL +
+            "%0A" + "Web page: " + document.URL +
             "%0A" + "Broswer info: " + window.navigator.userAgent +
             "%0A%0A" + "User openid: " + user.openid +
             "%0A" + "User uri: " + user.uri +

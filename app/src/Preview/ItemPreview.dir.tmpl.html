@@ -26,7 +26,7 @@
     </div>
 
     <div class="pnd-preview-item-allLables" ng-if="item.mergedLabel">
-        <strong>All Labels:</strong>
+        <strong>All labels:</strong>
         <span>{{item.mergedLabel.split('_').join(', ')}}</span>
     </div>
 
@@ -50,13 +50,13 @@
                 <span ng-repeat="domain in item.domain">{{domain}}</span>
             </li>
             <li class="pnd-preview-item-domain" ng-if="item.domain.length === 0"><strong>Domain:</strong> 
-                <span>Free Domain</span>
+                <span>Free domain</span>
             </li>
             <li class="pnd-preview-item-range" ng-if="item.range"><strong>Range:</strong> 
                 <span ng-repeat="range in item.range">{{range}}</span>
             </li>
             <li class="pnd-preview-item-range" ng-if="item.range.length === 0"><strong>Range:</strong> 
-                <span>Free Range</span>
+                <span>Free range</span>
             </li>
         </ul>
     </div>
