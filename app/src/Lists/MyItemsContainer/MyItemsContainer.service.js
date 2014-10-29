@@ -72,7 +72,7 @@ angular.module('Pundit2.MyItemsContainer')
      * Default value:
      * <pre> clientDashboardTabTitle: "My Items" </pre>
      */
-    clientDashboardTabTitle: "My Items",
+    clientDashboardTabTitle: "My items",
 
     /**
      * @module punditConfig

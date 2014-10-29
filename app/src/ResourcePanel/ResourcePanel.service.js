@@ -500,7 +500,7 @@ angular.module('Pundit2.ResourcePanel')
         var contentTabs = [];
         if(type === 'sub' || type === 'obj'){
             var pageItemsForTabs = {
-              title: 'Page Items',
+              title: 'Page items',
               items: pageItems,
               isStarted: true
             };
@@ -508,7 +508,7 @@ angular.module('Pundit2.ResourcePanel')
             content.pageItems = pageItems;
 
             var myItemsForTabs = {
-                title: 'My Items',
+                title: 'My items',
                 items: myItems,
                 isStarted: true
             };

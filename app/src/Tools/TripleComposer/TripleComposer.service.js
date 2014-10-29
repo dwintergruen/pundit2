@@ -72,7 +72,7 @@ angular.module('Pundit2.TripleComposer')
      * Default value:
      * <pre> clientDashboardTabTitle: "Statements Composer" </pre>
      */
-    clientDashboardTabTitle: "Statements Composer",
+    clientDashboardTabTitle: "Statements composer",
 
     /**
      * @module punditConfig
@@ -221,7 +221,7 @@ angular.module('Pundit2.TripleComposer')
                 Config.modules.ImageHandler.cMenuType
             ],
             name: 'useAsSubject',
-            label: 'Use as Subject',
+            label: 'Use as subject',
             showIf: function(item) {
                 return /*!Toolbar.isActiveTemplateMode() &&*/ tripleComposer.canAddItemAsSubject(item);
             },
@@ -241,7 +241,7 @@ angular.module('Pundit2.TripleComposer')
                 Config.modules.ImageHandler.cMenuType
             ],
             name: 'useAsObject',
-            label: 'Use as Object',
+            label: 'Use as object',
             showIf: function(item) {
                 return /*!Toolbar.isActiveTemplateMode() &&*/ tripleComposer.canAddItemAsObject(item);
             },
@@ -256,7 +256,7 @@ angular.module('Pundit2.TripleComposer')
                 Config.modules.PredicatesContainer.cMenuType
             ],
             name: 'useAsPredicate',
-            label: 'Use as Predicate',
+            label: 'Use as predicate',
             showIf: function(item) {
                 if (tripleComposer.canBeUseAsPredicate(item)){
                     ContextualMenu.modifyHeaderActionByName('useAsPredicate', false);

@@ -25,7 +25,7 @@ angular.module('Pundit2.PageItemsContainer')
     // tabs used to filter items list by type (all, text, image and pages)
     $scope.tabs = [
         {
-            title: 'All Items',
+            title: 'All items',
             template: 'src/Lists/itemList.tmpl.html',
             filterFunction: function(){
                 return true;
@@ -75,7 +75,7 @@ angular.module('Pundit2.PageItemsContainer')
     // sort button dropdown content
     $scope.dropdownOrdering = [
         {
-            text: 'Label Asc',
+            text: 'Label asc',
             click: function(){
                 order = 'label';
                 $scope.reverse = false;
@@ -84,7 +84,7 @@ angular.module('Pundit2.PageItemsContainer')
             isActive: order === 'label' && $scope.reverse === false
         },
         {
-            text: 'Label Desc',
+            text: 'Label desc',
             click: function(){
                 order = 'label';
                 $scope.reverse = true;
@@ -93,7 +93,7 @@ angular.module('Pundit2.PageItemsContainer')
             isActive: order === 'label' && $scope.reverse === true
         },
         {
-            text: 'Type Asc',
+            text: 'Type asc',
             click: function(){
                 if ($scope.dropdownOrdering[2].disable) {
                     return;
@@ -105,7 +105,7 @@ angular.module('Pundit2.PageItemsContainer')
             isActive: order === 'type' && $scope.reverse === false
         },
         {
-            text: 'Type Desc',
+            text: 'Type desc',
             click: function(){
                 if ($scope.dropdownOrdering[3].disable) {
                     return;

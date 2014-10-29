@@ -322,9 +322,9 @@ describe("Client interaction when user is logged in", function() {
         // check triple composer statement subject text
         p.findElements(protractor.By.css('.dropdown-menu li a')).then(function(a){
             expect(a.length).toBe(3);
-            expect(a[0].getText()).toBe('Use as Subject');
-            expect(a[1].getText()).toBe('Use as Object');
-            expect(a[2].getText()).toBe('Add to My Items');
+            expect(a[0].getText()).toBe('Use as subject');
+            expect(a[1].getText()).toBe('Use as object');
+            expect(a[2].getText()).toBe('Add to my items');
         });
     });
 

@@ -71,7 +71,7 @@ angular.module('Pundit2.PageItemsContainer')
      * Default value:
      * <pre> clientDashboardTabTitle: "Page Items" </pre>
      */
-    clientDashboardTabTitle: "Page Items",
+    clientDashboardTabTitle: "Page items",
 
     /**
      * @module punditConfig

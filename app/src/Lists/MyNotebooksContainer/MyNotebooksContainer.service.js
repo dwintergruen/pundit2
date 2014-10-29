@@ -5,7 +5,7 @@ angular.module('Pundit2.MyNotebooksContainer')
 
     clientDashboardPanel: "lists",
 
-    clientDashboardTabTitle: "My Notebooks",
+    clientDashboardTabTitle: "My notebooks",
 
     cMenuType: 'myNotebooks',
 
@@ -150,7 +150,7 @@ angular.module('Pundit2.MyNotebooksContainer')
     // confirm modal
     var modalScope = $rootScope.$new();
 
-    modalScope.titleMessage = "Delete Notebook";
+    modalScope.titleMessage = "Delete notebook";
 
     // confirm btn click
     modalScope.confirm = function() {
