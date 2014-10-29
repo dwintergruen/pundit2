@@ -28,8 +28,9 @@ body.pnd-toolbar-active {
 
     .pnd-icon {
         font-size: 14px;
-        margin-top: 1px;
+        //margin-top: 1px;
         display: inline-block;
+        vertical-align: text-bottom;
     }
 
     // ---------- ELEMENTS
@@ -117,11 +118,35 @@ body.pnd-toolbar-active {
     // ---------- DASHBOARD BUTTON
     
     &.pnd-toolbar-dashboard-button {
-    
+    	
+     	&.pnd-toolbar-dashboard-button-active {
+     		background-color: @gray;
+     		
+     		&:hover,
+     		&:focus {
+     			background-color: @gray;
+     		}
+     	}
+     	
         .pnd-toolbar-active-element,.pnd-toolbar-not-active-element {
             padding-left: 16px; // padding Arrow
         }
     }
+    
+   // ---------- ANNOTATION SIDEBAR BUTTON
+    
+    &.pnd-toolbar-annotations-button {
+
+     	&.pnd-toolbar-annotations-button-active {
+     		background-color: @gray;
+     		
+     		&:hover,
+     		&:focus {
+     			background-color: @gray;
+     		}
+     	}
+    }
+    
     // ---------- STATUS BUTTON
     
     &.pnd-toolbar-status-button-ok {
@@ -321,7 +346,8 @@ body.pnd-toolbar-active {
             }
             
             .pnd-icon-lock,
-			.pnd-icon-group {
+			.pnd-icon-group,
+			.pnd-icon-pencil-square {
 				width: 18px;
 				margin: 0px;
 				display: inline-block;
