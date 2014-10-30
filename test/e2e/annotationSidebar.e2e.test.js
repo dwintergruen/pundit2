@@ -418,4 +418,24 @@ describe("AnnotationSidebar interaction", function() {
         });
     });
 
+    it('should hide filter list after click on show alla annotations', function() {
+        p.findElement(protractor.By.css('.pnd-toolbar-annotations-button')).click();
+        p.findElement(protractor.By.css('.pnd-annotation-sidebar-btn-show-filter')).click();
+        p.findElements(protractor.By.css('.pnd-annotation-sidebar-filters-list.ng-hide')).then(function(elements) {
+            expect(elements.length).toBe(0);
+        });
+
+        p.findElements(protractor.By.css('.pnd-text-fragment-icon')).then(function(elements) {
+            elements[0].click();
+            p.findElements(protractor.By.css('.dropdown-menu li a')).then(function(a){
+                expect(a.length).toBe(4);
+                expect(a[3].getText()).toBe('Show all annotations of this item');
+                a[3].click();
+                p.findElements(protractor.By.css('.pnd-annotation-sidebar-filters-list.ng-hide')).then(function(elements) {
+                    expect(elements.length).toBe(1);
+                });
+            });
+        });
+    });
+
 });
