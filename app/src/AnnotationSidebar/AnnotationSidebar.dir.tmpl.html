@@ -280,7 +280,12 @@
 
             <div ng-repeat="ann in filtered = (annotations)">
                 <!-- <annotation-details id="{{ann.id}}"></annotation-details> -->
-                <annotation-details id="{{ann.id}}" broken="ann.broken" style="position: absolute; top: {{annotationSidebar.annotationPositionReal[ann.id].top}}px"></annotation-details>
+                <annotation-details 
+                    id="{{ann.id}}" 
+                    broken="ann.broken"
+                    class="pnd-annotation-details"
+                    ng-style="{'top': annotationSidebar.annotationPositionReal[ann.id].top}">
+                </annotation-details>
             </div>
             
             <!-- 
