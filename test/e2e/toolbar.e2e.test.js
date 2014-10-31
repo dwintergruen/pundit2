@@ -336,7 +336,7 @@ describe("The toolbar module", function() {
 
         // check showed name
         p.findElements(protractor.By.css('toolbar .pnd-toolbar-notebook-menu-button span')).then(function(spans) {
-            expect(spans[0].getText()).toBe("My Notebooks");
+            expect(spans[0].getText()).toBe("My notebooks");
         });
 
         // click login button and get login

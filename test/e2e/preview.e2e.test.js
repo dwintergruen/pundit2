@@ -143,8 +143,8 @@ describe("Preview interaction", function() {
 
             p.findElements(protractor.By.css('.pnd-preview-item-predicate > ul > li > span')).then(function(elem) {
                 expect(elem.length).toBe(2);
-                expect(elem[0].getText()).toBe("Free Domain");
-                expect(elem[1].getText()).toBe("Free Range");
+                expect(elem[0].getText()).toBe("Free domain");
+                expect(elem[1].getText()).toBe("Free range");
             });
 
             p.findElements(protractor.By.css('.pnd-preview-item-allLables > span')).then(function(elem) {
