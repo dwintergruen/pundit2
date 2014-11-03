@@ -99,7 +99,7 @@ angular.module('Pundit2.MyItemsContainer')
     // sort button dropdown content
     $scope.dropdownOrdering = [
         {
-            text: 'Label Asc',
+            text: 'Label asc',
             click: function(){
                 order = 'label';
                 $scope.reverse = false;
@@ -108,7 +108,7 @@ angular.module('Pundit2.MyItemsContainer')
             isActive: order === 'label' && $scope.reverse === false
         },
         {
-            text: 'Label Desc',
+            text: 'Label desc',
             click: function(){
                 order = 'label';
                 $scope.reverse = true;
@@ -117,7 +117,7 @@ angular.module('Pundit2.MyItemsContainer')
             isActive: order === 'label' && $scope.reverse === true
         },
         {
-            text: 'Type Asc',
+            text: 'Type asc',
             click: function(){
                 if ($scope.dropdownOrdering[2].disable) {
                     return;
@@ -129,7 +129,7 @@ angular.module('Pundit2.MyItemsContainer')
             isActive: order === 'type' && $scope.reverse === false
         },
         {
-            text: 'Type Desc',
+            text: 'Type desc',
             click: function(){
                 if ($scope.dropdownOrdering[3].disable) {
                     return;
@@ -275,7 +275,7 @@ angular.module('Pundit2.MyItemsContainer')
     // confirm modal
     var modalScope = $rootScope.$new();
 
-    modalScope.titleMessage = "Delete All My Items";
+    modalScope.titleMessage = "Delete all my items";
 
     // confirm btn click
     modalScope.confirm = function() {

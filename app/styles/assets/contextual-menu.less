@@ -3,45 +3,46 @@
 }
 // can be used to style the context menu
 .pnd-context-menu {
-    
+
 }
 
 .pnd-dropdown-contextual-menu {
 
 	&.dropdown-menu {
-    	z-index: 10000 !important;
-    	padding: 0px;
-    	border: 1px solid  @gray-extra-light;
-    	font-size: 12px;
-    	border-radius: 0px;
-    	
-    	.divider {
-			height: 2px;
-			margin: 0px;
-			}		    	
-    	
-    	li:first-child a {
-            border-top: 0px;
-            }
-            
-        .dropdown-header {
-         	background-color: @dropdown-bg;
-         	}
-     
+       z-index: 10000 !important;
+       padding: 0px;
+       border: 1px solid  @gray-extra-light;
+       font-size: 12px;
+       border-radius: 0px;
+
+       .divider {
+         height: 2px;
+         margin: 0px;
+     }		    	
+
+     li:first-child a {
+        border-top: 0px;
+    }
+
+    .dropdown-header {
+        background-color: @dropdown-bg;
+        color: @gray-extra-light;
+    }
+
         // TODO: aggiungere separatori senza forzare il comportamento di base del componente
         // li a {
 	       //  background-color: @gray-extra-lighter;
         //     color: @gray;
         //     padding: 3px 10px;
         //     border-top: 1px solid @gray-extra-light;
-                 
-            
+
+
         //     &:hover {
         //         background-color: #fff;
         //         color: @gray-darker;
         //     }
         // }
-    	
+
     }
 }
 

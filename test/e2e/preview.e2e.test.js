@@ -80,6 +80,27 @@ describe("Preview interaction", function() {
 
     });
 
+    it('should show item image on mouseover', function() {
+
+        p.driver.manage().window().setSize(1200, 960);
+        p.get('/app/examples/preview.html');
+
+        p.findElements(protractor.By.css('.pnd-example-ul li')).then(function(items) {
+            p.actions().mouseMove(items[1]).perform();
+            //p.sleep(500);
+
+            p.findElements(protractor.By.css('.pnd-dashboard-preview-panel-label')).then(function(elem) {
+                expect(elem.length).toBe(1);
+                expect(elem[0].getText()).toBe('Item Label2');
+            });
+
+            p.findElements(protractor.By.css('.pnd-annotation-preview-item-image')).then(function(elem) {
+                expect(elem.length).toBe(1);
+            });
+        });
+
+    });
+
     it('should show predicate preview on mouseover', function() {
 
         p.driver.manage().window().setSize(1200, 960);
@@ -122,8 +143,8 @@ describe("Preview interaction", function() {
 
             p.findElements(protractor.By.css('.pnd-preview-item-predicate > ul > li > span')).then(function(elem) {
                 expect(elem.length).toBe(2);
-                expect(elem[0].getText()).toBe("Free Domain");
-                expect(elem[1].getText()).toBe("Free Range");
+                expect(elem[0].getText()).toBe("Free domain");
+                expect(elem[1].getText()).toBe("Free range");
             });
 
             p.findElements(protractor.By.css('.pnd-preview-item-allLables > span')).then(function(elem) {

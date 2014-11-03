@@ -2,7 +2,7 @@
     position : fixed;
     top: @toolbar-height;
     overflow: hidden;
-    z-index: 900;
+    z-index: 9999;
 }
 
 .pnd-dashboard-panel {
@@ -31,6 +31,22 @@
 
 .pnd-dashboard-panel.pnd-dashboard-panel-last  button.pnd-btn-dashboard {
     right: 0px;
+    
+        &.btn-xs {
+    	width: 20px;
+    	
+	    	&.disabled,
+	    	&[disabled] {
+				background-color: #fff;
+				text-shadow: 0;
+				opacity: 1;
+				filter: alpha(opacity=100);
+	
+				.pnd-icon {
+			       color: @gray-light;
+			    }
+			}
+    	}
 }
 
 .pnd-dashboard-panel  button.pnd-btn-dashboard {
@@ -42,7 +58,7 @@
     	border: 0px;
     	padding-top: 2px;
     	text-shadow: 0 1px 0 #fff;
-    	width: 20px;
+    	width: 21px;
     	
     	&:hover {
 	       background-color: #fff;
@@ -60,7 +76,21 @@
 	       line-height: normal;
 	       padding: 0px;
 	   }
-    }  
+	   
+	   &.disabled,
+	   &[disabled] {
+			background-color: #fff;
+			text-shadow: 0;
+			opacity: 1;
+			filter: alpha(opacity=100);
+
+			.pnd-icon {
+		       color: @gray-light;
+		    }
+		}
+   
+    }
+    
 }
 
 .pnd-dashboard-panel-nav {

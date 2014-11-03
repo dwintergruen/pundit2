@@ -1,14 +1,16 @@
-<div class="popover pnd-item-popover" ng-controller="ItemPopoverCtrl" style="min-width: 330px;">
-
+<div class="popover pnd-item-popover pnd-simplified-popover" ng-controller="ItemPopoverCtrl">
     <div class="arrow"></div>
+    <h3 class="popover-title">
+        {{title}}
+        <span 
+            class="pull-right pnd-icon pnd-icon-times" 
+            ng-click="hide()">
+        </span>
+    </h3>
 
-        <h3 class="popover-title">
-            {{title}}
-            <span class="pull-right pnd-icon pnd-icon-times" ng-click="hide()"></span>
-        </h3>
-
-    <div class="popover-content" ng-click="onContentClick()" style="max-height: 400px; overflow-y: scrool; overflow-x: hidden;">
+    <div 
+        class="popover-content pnd-simplified-popover-content" 
+        ng-click="onContentClick()">
         <annotation-details ng-repeat="ann in annotations" id="{{ann.id}}"></annotation-details>
     </div>
-
 </div>

@@ -1,10 +1,10 @@
 describe('Annomatic service', function() {
 
-    var Annomatic, $httpBackend, $compile, $rootScope, $document,
-        testAnnotationsEmpty = {
-            time: 0,
-            annotations: []
-        };
+    var Annomatic, $httpBackend, $compile, $rootScope, $document;
+        // testAnnotationsEmpty = {
+        //     time: 0,
+        //     annotations: []
+        // };
 
     beforeEach(module('Pundit2'));
     beforeEach(function() {

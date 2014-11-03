@@ -18,6 +18,9 @@
     },
     "devDependencies": {
     },
+    "resolutions": {
+      "angular": "~1.2.15"
+    },
     "name": "pundit2",
     "version": "0.0.1"
 }

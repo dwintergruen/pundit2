@@ -87,7 +87,7 @@ angular.module("Pundit2.MyItemsContainer")
         ContextualMenu.addAction({
             name: 'addToMyItems',
             type: cMenuTypes,
-            label: "Add to My Items",
+            label: "Add to my items",
             priority: 100,
             showIf: function(item) {
                 return MyPundit.isUserLogged() &&
@@ -104,7 +104,7 @@ angular.module("Pundit2.MyItemsContainer")
         ContextualMenu.addAction({
             name: 'removeFromMyItems',
             type: cMenuTypes,
-            label: "Remove from My Items",
+            label: "Remove from my items",
             priority: 100,
             showIf: function(item) {
                 return MyPundit.isUserLogged() &&

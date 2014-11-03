@@ -5,7 +5,7 @@ angular.module('Pundit2.Core')
     active: false,
     debug: false
 })
-.service('Fp3', function(BaseComponent, FP3DEFAULTS, Config, $http, $q) {
+.service('Fp3', function(BaseComponent, FP3DEFAULTS, Config, $http, $q, $window) {
     
     var fp3 = new BaseComponent("Fp3", FP3DEFAULTS);
 
@@ -50,7 +50,7 @@ angular.module('Pundit2.Core')
             withCredentials: true
         }).success(function() {
             fp3.log("Success: fp3 post data");
-            // TODO how close the window?
+            $window.close();
         }).error(function(msg) {
             fp3.log("Error: impossible to post data", msg);
             promise.reject();

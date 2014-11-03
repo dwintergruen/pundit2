@@ -153,7 +153,7 @@ angular.module('KorboEE')
                         "abstract": entity.description,
                         "depiction": entity.image,
                         "type": entity.type,
-                        "resourceUrl": entity.uri
+                        "resource": entity.uri
                     };
 
                     var promise = korboComm.save(entityToSave, $scope.defaultLan.value, $scope.conf.endpoint, $scope.conf.basketID);

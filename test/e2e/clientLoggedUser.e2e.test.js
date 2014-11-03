@@ -204,7 +204,7 @@ describe("Client interaction when user is logged in", function() {
 
         // check triple composer header
         p.findElement(protractor.By.css('triple-composer .pnd-panel-tab-content-header')).then(function(h){
-            expect(h.getText()).toBe('Complete your Annotation and Save!');
+            expect(h.getText()).toBe('Complete your annotation and save!');
         });
         // check triple composer statement subject text
         p.findElement(protractor.By.css('triple-composer statement .pnd-statement-subject .pnd-statement-subject-text')).then(function(t){
@@ -252,9 +252,9 @@ describe("Client interaction when user is logged in", function() {
         // check triple composer statement subject text
         p.findElements(protractor.By.css('.dropdown-menu li a')).then(function(a){
             expect(a.length).toBe(3);
-            expect(a[0].getText()).toBe('Use as Subject');
-            expect(a[1].getText()).toBe('Use as Object');
-            expect(a[2].getText()).toBe('Add to My Items');
+            expect(a[0].getText()).toBe('Use as subject');
+            expect(a[1].getText()).toBe('Use as object');
+            expect(a[2].getText()).toBe('Add to my items');
         });
     });
 
@@ -266,7 +266,7 @@ describe("Client interaction when user is logged in", function() {
         // check triple composer statement subject text
         p.findElements(protractor.By.css('.dropdown-menu li a')).then(function(a){
             expect(a.length).toBe(3);
-            expect(a[0].getText()).toBe('Use as Subject');
+            expect(a[0].getText()).toBe('Use as subject');
             a[0].click();
         });
 
@@ -288,7 +288,7 @@ describe("Client interaction when user is logged in", function() {
         // check triple composer statement subject text
         p.findElements(protractor.By.css('.dropdown-menu li a')).then(function(a){
             expect(a.length).toBe(3);
-            expect(a[1].getText()).toBe('Use as Object');
+            expect(a[1].getText()).toBe('Use as object');
             a[1].click();
         });
 
@@ -322,9 +322,9 @@ describe("Client interaction when user is logged in", function() {
         // check triple composer statement subject text
         p.findElements(protractor.By.css('.dropdown-menu li a')).then(function(a){
             expect(a.length).toBe(3);
-            expect(a[0].getText()).toBe('Use as Subject');
-            expect(a[1].getText()).toBe('Use as Object');
-            expect(a[2].getText()).toBe('Add to My Items');
+            expect(a[0].getText()).toBe('Use as subject');
+            expect(a[1].getText()).toBe('Use as object');
+            expect(a[2].getText()).toBe('Add to my items');
         });
     });
 
@@ -366,11 +366,11 @@ describe("Client interaction when user is logged in", function() {
         });
         // check popover vertical tabs number and names
         p.findElements(protractor.By.css(".pnd-resource-panel-popover .pnd-vertical-tabs li")).then(function(tabs) {
-            expect(tabs.length).toBe(6);
+            expect(tabs.length).toBe(8);
         });
         // check popover vertical tabs showed items number
         p.findElements(protractor.By.css(".pnd-resource-panel-popover .pnd-vertical-tabs li a span")).then(function(spans) {
-            expect(spans.length).toBe(12);
+            expect(spans.length).toBe(16);
             expect(spans[0].getText()).toEqual(pageItemsNumber.toString());
             expect(spans[2].getText()).toEqual("0");
         });
@@ -491,7 +491,7 @@ describe("Client interaction when user is logged in", function() {
         // open my notebooks tab
         p.findElements(protractor.By.css("dashboard-panel[paneltitle=lists] .pnd-tab-header > li > a")).then(function(tabs) {
             tabs[4].click();
-            expect(tabs[4].getText()).toBe("My Notebooks");
+            expect(tabs[4].getText()).toBe("My notebooks");
         });
         // move on notebook item
         var item = p.findElement(protractor.By.css("dashboard-panel[paneltitle=lists] .pnd-tab-content > div.active my-notebooks-container notebook .pnd-item"));
@@ -504,7 +504,7 @@ describe("Client interaction when user is logged in", function() {
         });
         // edit notebook
         p.findElements(protractor.By.css(".pnd-dropdown-contextual-menu > li > a")).then(function(options){
-            expect(options[0].getText()).toBe("Edit Notebook");
+            expect(options[0].getText()).toBe("Edit notebook");
             options[0].click();
         });
 
@@ -512,10 +512,72 @@ describe("Client interaction when user is logged in", function() {
         // check active tab title
         p.findElements(protractor.By.css("dashboard-panel[paneltitle=tools] .pnd-tab-header > li.active > a")).then(function(tabs) {
             expect(tabs.length).toBe(1);
-            expect(tabs[0].getText()).toBe("Notebooks Composer");
+            expect(tabs[0].getText()).toBe("Notebooks composer");
         });
         
         // TODO write notebook composer dedicated e2e tests
+
+    });
+
+    it("should correctly show notebook composer by click on create new notebook", function(){
+        
+        p.driver.manage().window().setSize(1600, 960);
+
+        // open dashboard
+        p.findElement(protractor.By.css('toolbar .pnd-toolbar-dashboard-button')).click();
+        // collapse right panel
+        p.findElement(protractor.By.css('dashboard-panel[paneltitle=details] .btn.btn-default')).click();
+        // open my notebooks tab
+        p.findElements(protractor.By.css("dashboard-panel[paneltitle=lists] .pnd-tab-header > li > a")).then(function(tabs) {
+            tabs[4].click();
+            expect(tabs[4].getText()).toBe("My notebooks");
+        });
+
+        // click on create new notebook
+        p.findElement(protractor.By.css('.my-notebooks-btn-new')).click();
+
+        // check if tools panel show notebook composer interface
+        // check active tab title
+        p.findElements(protractor.By.css("dashboard-panel[paneltitle=tools] .pnd-tab-header > li.active > a")).then(function(tabs) {
+            expect(tabs.length).toBe(1);
+            expect(tabs[0].getText()).toBe("Notebooks composer");
+        });
+    });
+
+    it("should correctly use ctx menu for use predicate", function(){
+        
+        p.driver.manage().window().setSize(1600, 960);
+
+        // open dashboard
+        p.findElement(protractor.By.css('toolbar .pnd-toolbar-dashboard-button')).click();
+        // collapse tools panel
+        p.findElement(protractor.By.css('dashboard-panel[paneltitle=details] .btn.btn-default')).click();
+        // open page items tab
+        p.findElement(protractor.By.css("dashboard dashboard-panel .pnd-tab-header li [data-index='2']")).click();
+        // mouseover on item
+        var item = p.findElement(protractor.By.css("dashboard dashboard-panel predicates-container item")),
+            menuBtn = p.findElement(protractor.By.css("dashboard dashboard-panel predicates-container item .pnd-btn-bar"));
+        p.actions().mouseMove(item).perform();
+        // wait animation
+        p.sleep(500);
+        // open ctx menu
+        menuBtn.click();
+
+        p.findElements(protractor.By.css('.dropdown-menu li a')).then(function(a){
+            expect(a.length).toBe(1);
+            expect(a[0].getText()).toBe('Use as predicate');
+            a[0].click();
+        });
+
+        p.actions().mouseMove(item).perform();
+        menuBtn.click();
+
+        p.findElements(protractor.By.css('.dropdown-menu li a')).then(function(a){
+            expect(a.length).toBe(0);
+        });
+        p.findElements(protractor.By.css('.dropdown-menu li span')).then(function(span){
+            expect(span.length).toBe(1);
+        });
 
     });
 

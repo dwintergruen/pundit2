@@ -348,28 +348,6 @@ describe("AnnotationSidebar interaction", function() {
         });
     });
 
-    it('should apply correctly the filters', function() {
-        p.findElements(protractor.By.css('.pnd-annotation-details-wrap')).then(function(elements) {
-            expect(elements.length).toBe(2);
-        });
-
-        p.findElement(protractor.By.css('.pnd-toolbar-annotations-button')).click();
-        p.findElement(protractor.By.css('.pnd-annotation-sidebar-btn-show-filter')).click();
-
-        p.findElement(protractor.By.css('.pnd-annotation-sidebar-filter-input-contains input')).sendKeys('Dante');
-
-        p.findElements(protractor.By.css('.pnd-annotation-details-wrap')).then(function(elements) {
-            expect(elements.length).toBe(1);
-        });
-
-        p.findElement(protractor.By.css('.pnd-annotation-sidebar-btn-close-filters')).click();
-        p.findElement(protractor.By.css('.pnd-annotation-sidebar-btn-remove-filters')).click();
-
-        p.findElements(protractor.By.css('.pnd-annotation-details-wrap')).then(function(elements) {
-            expect(elements.length).toBe(2);
-        });
-    });
-
     it('should sidebar margin-top be dependent from toolbar height and dashboard height', function() {
         var toolbarHeight;
         var dashboardHeight;
@@ -416,6 +394,92 @@ describe("AnnotationSidebar interaction", function() {
                 });
             });
         });
+    });
+
+    it('should hide filter list after click on show all annotations', function() {
+        p.findElement(protractor.By.css('.pnd-toolbar-annotations-button')).click();
+        p.findElement(protractor.By.css('.pnd-annotation-sidebar-btn-show-filter')).click();
+        p.findElements(protractor.By.css('.pnd-annotation-sidebar-filters-list.ng-hide')).then(function(elements) {
+            expect(elements.length).toBe(0);
+        });
+
+        p.findElements(protractor.By.css('.pnd-text-fragment-icon')).then(function(elements) {
+            elements[0].click();
+            p.findElements(protractor.By.css('.dropdown-menu li a')).then(function(a){
+                expect(a.length).toBe(4);
+                expect(a[3].getText()).toBe('Show all annotations of this item');
+                a[3].click();
+                p.findElements(protractor.By.css('.pnd-annotation-sidebar-filters-list.ng-hide')).then(function(elements) {
+                    expect(elements.length).toBe(1);
+                });
+            });
+        });
+    });
+
+    it('should hide filter list after click on show all annotations', function() {
+        p.findElement(protractor.By.css('.pnd-toolbar-annotations-button')).click();
+        p.findElement(protractor.By.css('.pnd-annotation-sidebar-btn-show-filter')).click();
+        p.findElements(protractor.By.css('.pnd-annotation-sidebar-filters-list.ng-hide')).then(function(elements) {
+            expect(elements.length).toBe(0);
+        });
+            
+        p.findElements(protractor.By.css('.pnd-text-fragment-icon')).then(function(elements) {
+            elements[0].click();
+            p.findElements(protractor.By.css('.dropdown-menu li a')).then(function(a){
+                expect(a.length).toBe(4);
+                expect(a[3].getText()).toBe('Show all annotations of this item');
+                a[3].click();
+                p.findElements(protractor.By.css('.pnd-annotation-sidebar-filters-list.ng-hide')).then(function(elements) {
+                    expect(elements.length).toBe(1);
+                });
+            });
+        });
+    });
+
+    it('should apply correctly the filters', function() {
+        p.findElements(protractor.By.css('.pnd-annotation-details-wrap')).then(function(elements) {
+            expect(elements.length).toBe(2);
+        });
+
+        p.findElement(protractor.By.css('.pnd-toolbar-annotations-button')).click();
+        p.findElement(protractor.By.css('.pnd-annotation-sidebar-btn-show-filter')).click();
+
+        p.findElement(protractor.By.css('.pnd-annotation-sidebar-filter-input-contains input')).sendKeys('Dante');
+
+        p.findElements(protractor.By.css('.pnd-annotation-details-wrap')).then(function(elements) {
+            expect(elements.length).toBe(1);
+        });
+
+        p.findElement(protractor.By.css('.pnd-annotation-sidebar-btn-close-filters')).click();
+        p.findElement(protractor.By.css('.pnd-annotation-sidebar-btn-remove-filters')).click();
+
+        p.findElements(protractor.By.css('.pnd-annotation-details-wrap')).then(function(elements) {
+            expect(elements.length).toBe(2);
+        });
+    });
+
+    it('should apply partial filters', function() {
+        p.findElement(protractor.By.css('.pnd-toolbar-annotations-button')).click();
+        p.findElement(protractor.By.css('.pnd-annotation-sidebar-btn-show-filter')).click();
+        p.findElements(protractor.By.css('.pnd-annotation-sidebar-filters-list .pnd-annotation-sidebar-filter')).then(function(elements) {
+            expect(elements.length).toBe(6);
+            elements[4].click();
+
+            elements[4].findElements(protractor.By.css('.pnd-annotation-sidebar-filter-element-label')).then(function(ftr) {
+                expect(ftr.length).toBe(3);
+                ftr[2].click();                
+            });
+
+            elements[3].click();
+
+            elements[3].findElements(protractor.By.css('.pnd-annotation-sidebar-filter-element-label')).then(function(ftr) {
+                expect(ftr.length).toBe(2);
+                expect(ftr[1].getText()).toBe('cites (0)');
+            });
+
+
+        });
+
     });
 
 });

@@ -36,7 +36,24 @@ angular.module('Pundit2.AnnotationSidebar')
                         return;
                     }
                 }
+                for (var subject in annotation.graph){
+                    for (var predicate in annotation.graph[subject]){
+                        for (var object in annotation.graph[subject][predicate]){
+                            var currentObject = annotation.graph[subject][predicate][object];
+                            if (currentObject.type === 'literal'){
+                                var literal = currentObject.value;
+                                var str = search.toLowerCase().replace(/\s+/g, ' '),
+                                    strParts = str.split(' '),
+                                    reg = new RegExp(strParts.join('.*'));
 
+                                if (literal.toLowerCase().match(reg) !== null) {
+                                    results.push(annotation);
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                }
             });
         } else {
             results = input;

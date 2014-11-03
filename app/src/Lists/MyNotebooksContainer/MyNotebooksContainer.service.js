@@ -5,7 +5,7 @@ angular.module('Pundit2.MyNotebooksContainer')
 
     clientDashboardPanel: "lists",
 
-    clientDashboardTabTitle: "My Notebooks",
+    clientDashboardTabTitle: "My notebooks",
 
     cMenuType: 'myNotebooks',
 
@@ -18,7 +18,7 @@ angular.module('Pundit2.MyNotebooksContainer')
 })
 .service('MyNotebooksContainer', function($rootScope, MYNOTEBOOKSCONTAINERDEFAULTS, BaseComponent,
     NotebookExchange, ItemsExchange, PageItemsContainer, AnnotationsExchange, NotebookCommunication, Consolidation,
-    ContextualMenu, Config, Dashboard, NotebookComposer, AnnotationsCommunication,
+    ContextualMenu, Config, Dashboard, NotebookComposer, AnnotationsCommunication, NameSpace,
     $modal, $timeout, $window) {
 
     var myNotebooksContainer = new BaseComponent('MyNotebooksContainer', MYNOTEBOOKSCONTAINERDEFAULTS);
@@ -35,6 +35,10 @@ angular.module('Pundit2.MyNotebooksContainer')
         if(typeof(Config.lodLive) !== 'undefined' && Config.lodLive.active){
             lodLive = true;
         }
+        var timeline = false;
+        if(typeof(Config.timeline) !== 'undefined' && Config.timeline.active){
+            timeline = true;
+        }
 
         ContextualMenu.addAction({
             name: 'openNTlod',
@@ -45,14 +49,27 @@ angular.module('Pundit2.MyNotebooksContainer')
                 return lodLive;
             },
             action: function(nt) {
-                $window.open(Config.lodLive.baseUrl+Config.lodLive.pndPurl+'notebook/'+nt.id, '_blank');
+                $window.open(Config.lodLive.baseUrl+Config.pndPurl+'notebook/'+nt.id, '_blank');
+            }
+        });
+
+        ContextualMenu.addAction({
+            name: 'openTM',
+            type: cMenuTypes,
+            label: "Open Timeline",
+            priority: 102,
+            showIf: function() {
+                return timeline;
+            },
+            action: function(nt) {
+                $window.open(Config.timeline.baseUrl+'notebook-ids='+nt.id+'&namespace='+Config.pndPurl+'notebook/'+'&api='+NameSpace.asOpen, '_blank');
             }
         });
 
         ContextualMenu.addAction({
             name: 'setAsPrivate',
             type: cMenuTypes,
-            label: "Set Notebook as Private",
+            label: "Set notebook as private",
             priority: 100,
             showIf: function(nt) {
                 return nt.visibility === "public";
@@ -65,7 +82,7 @@ angular.module('Pundit2.MyNotebooksContainer')
         ContextualMenu.addAction({
             name: 'setAsPublic',
             type: cMenuTypes,
-            label: "Set Notebook as Public",
+            label: "Set notebook as public",
             priority: 100,
             showIf: function(nt) {
                 return nt.visibility === "private";
@@ -78,7 +95,7 @@ angular.module('Pundit2.MyNotebooksContainer')
         ContextualMenu.addAction({
             name: 'setAsCurrent',
             type: cMenuTypes,
-            label: "Set Notebook as Current",
+            label: "Set notebook as current",
             priority: 100,
             showIf: function(nt) {
                 return !nt.isCurrent();
@@ -91,7 +108,7 @@ angular.module('Pundit2.MyNotebooksContainer')
         ContextualMenu.addAction({
             name: 'deleteNotebook',
             type: cMenuTypes,
-            label: "Delete Notebook",
+            label: "Delete notebook",
             priority: 100,
             showIf: function(nt) {
                 return !nt.isCurrent();
@@ -106,7 +123,7 @@ angular.module('Pundit2.MyNotebooksContainer')
         ContextualMenu.addAction({
             name: 'editNotebook',
             type: cMenuTypes,
-            label: "Edit Notebook",
+            label: "Edit notebook",
             priority: 101,
             showIf: function() {
                 return true;
@@ -133,7 +150,7 @@ angular.module('Pundit2.MyNotebooksContainer')
     // confirm modal
     var modalScope = $rootScope.$new();
 
-    modalScope.titleMessage = "Delete Notebook";
+    modalScope.titleMessage = "Delete notebook";
 
     // confirm btn click
     modalScope.confirm = function() {

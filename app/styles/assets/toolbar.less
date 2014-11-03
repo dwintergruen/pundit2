@@ -8,6 +8,7 @@ body.pnd-toolbar-active {
 
 .pnd-toolbar-navbar{
     min-width: 960px;
+    z-index: 10000;
 
     .container-fluid {
         padding-left: 0px;
@@ -15,6 +16,14 @@ body.pnd-toolbar-active {
 }
 
 .pnd-toolbar-navbar .navbar-nav li {
+
+	.dropdown-menu {
+	
+		a {
+	        height: auto;
+	    }
+	
+	}
 
     // ---------- BUTTONS IN TOOLBAR
 
@@ -27,8 +36,9 @@ body.pnd-toolbar-active {
 
     .pnd-icon {
         font-size: 14px;
-        margin-top: 1px;
+        //margin-top: 1px;
         display: inline-block;
+        vertical-align: text-bottom;
     }
 
     // ---------- ELEMENTS
@@ -42,6 +52,7 @@ body.pnd-toolbar-active {
 
     // ---------- ASK BUTTON
     
+    /*
     &.pnd-toolbar-ask-button-not-active {
         border-right: 0px;
         
@@ -72,6 +83,42 @@ body.pnd-toolbar-active {
                 background-color: @gray-darker;
                 &:after { // ARROW hover
                     border-left-color: @gray-darker;
+                }
+            }
+        }
+    } */
+    
+     &.pnd-toolbar-ask-button-not-active {
+        border-right: 0px;
+        
+        a {
+            background-color: @brand-success;
+            border: 0px;
+            position: relative;
+            padding-left: 10px;
+            
+            &:after { // ARROW
+                left: 100%;
+                top: 50%;
+                border: solid transparent;
+                content: " ";
+                height: 0;
+                width: 0;
+                position: absolute;
+                pointer-events: none;
+                border-color: rgba(0, 0, 0, 0);
+                border-left-color: @brand-success;
+                border-width: 15px;
+                margin-top: -15px;
+                z-index: 100;
+            }
+            
+            &:hover,
+            &:focus {
+                background-color: darken(@brand-success, 12%);
+                
+                &:after { // ARROW hover
+                    border-left-color: darken(@brand-success, 12%)!important;
                 }
             }
         }
@@ -116,11 +163,41 @@ body.pnd-toolbar-active {
     // ---------- DASHBOARD BUTTON
     
     &.pnd-toolbar-dashboard-button {
-    
+    	
+    	
+     	&.pnd-toolbar-dashboard-button-active {
+     		background-color: @gray;
+     		color: @btn-primary-color;
+     		
+     		a {
+	     		&:hover,
+	     		&:focus {
+	     			background-color:@gray;
+	     		}
+     		}
+     	}
+     	
         .pnd-toolbar-active-element,.pnd-toolbar-not-active-element {
             padding-left: 16px; // padding Arrow
         }
     }
+    
+   // ---------- ANNOTATION SIDEBAR BUTTON
+    
+    &.pnd-toolbar-annotations-button {
+
+     	&.pnd-toolbar-annotations-button-active {
+     		background-color: @gray;
+     		
+     		a {
+	     		&:hover,
+	     		&:focus {
+	     			background-color: @gray;
+	     		}
+     		}
+     	}
+    }
+    
     // ---------- STATUS BUTTON
     
     &.pnd-toolbar-status-button-ok {
@@ -162,6 +239,21 @@ body.pnd-toolbar-active {
     }
     
    // ---------- TEMPLATE MODE
+   
+   &.pnd-toolbar-template-mode-button {	 
+        
+        a {
+        	border-left: 1px @gray solid;
+        	border-right: 1px @gray-soft-dark solid;
+        	
+            &:hover,
+            &:focus {
+                background-color:transparent;
+                cursor: default;
+            }
+        }
+    }
+   
     
     &.pnd-not-clickable  {
         
@@ -320,7 +412,8 @@ body.pnd-toolbar-active {
             }
             
             .pnd-icon-lock,
-			.pnd-icon-group {
+			.pnd-icon-group,
+			.pnd-icon-pencil-square {
 				width: 18px;
 				margin: 0px;
 				display: inline-block;

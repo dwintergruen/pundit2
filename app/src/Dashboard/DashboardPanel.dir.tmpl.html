@@ -1,5 +1,7 @@
-<div class="pnd-dashboard-panel" ng-class="{'pnd-dashboard-panel-last': isLast}"
-     style="width: {{width}}px; left: {{left}}px; bottom: {{bottom}}px;">
+<div 
+    class="pnd-dashboard-panel" 
+    ng-class="{'pnd-dashboard-panel-last': isLast}"
+    ng-style="{'width': width, 'left': left, 'bottom': bottom}">
 
     <div class="pnd-dashboard-panel-expanded" ng-hide="isCollapsed">
         <!--<div class="pnd-dashboard-panel-nav"></div>-->
@@ -7,16 +9,31 @@
             <!-- the content comes from outside-->
         </div>
         <div class="pnd-dashboard-footer-handler" ng-mousedown="footerMouseDownHandler($event)"></div>
-        <button type="button" class="btn btn-xs btn-default pnd-btn-dashboard" ng-click="toggleCollapse()"><span class="pnd-icon pnd-icon-times"></span></button>
+        <button 
+            type="button" 
+            class="btn btn-xs btn-default pnd-btn-dashboard" 
+            ng-click="toggleCollapse()" 
+            ng-disabled="!canCollapsePanel">
+            <span class="pnd-icon pnd-icon-times"></span>
+        </button>
     </div>
 
-    <div class="pnd-dashboard-panel-collapsed" ng-show="isCollapsed" style="width: {{collapsedWidth}}px;">
+    <div 
+        class="pnd-dashboard-panel-collapsed" 
+        ng-show="isCollapsed" 
+        ng-style="{'width': collapsedWidth}">
         <div class="pnd-dashboard-panel-collapsed-content"></div>
-        <button type="button" class="btn btn-xs btn-default  pnd-btn-dashboard" ng-click="toggleCollapse()"><span class="pnd-icon pnd-icon-expand"></span></button>
+        <button 
+            type="button" 
+            class="btn btn-xs btn-default  pnd-btn-dashboard" 
+            ng-click="toggleCollapse()">
+            <span class="pnd-icon pnd-icon-expand"></span>
+        </button>
     </div>
 
     <div class="pnd-dashboard-panel-separator"
          ng-mousedown="mouseDownHandler($event)"
-         ng-show="!isLast"></div>
+         ng-show="!isLast">
+     </div>
 
 </div>

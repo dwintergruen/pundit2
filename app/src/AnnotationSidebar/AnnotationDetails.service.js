@@ -74,6 +74,10 @@ angular.module('Pundit2.AnnotationSidebar')
             }
             annotationDetails.closeViewAndReset();
 
+            if(AnnotationSidebar.isFiltersExpanded()){
+                AnnotationSidebar.toggleFiltersContent();
+            }
+
             var fragmentsListUri;
             var fragmentParentList = Consolidation.getFragmentParentList();
             if (item.uri in fragmentParentList){

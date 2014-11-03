@@ -68,6 +68,21 @@ angular.module('Pundit2.Core')
         /**
          * @module punditConfig
          * @ngdoc object
+         * @name pndPurl
+         * @description
+         * `string`
+         * Base purl of pundit server (i.e. http://purl.org/pundit/as/)
+         *
+         * Default:
+         * <pre>
+         * pndPurl: 'http://purl.org/pundit/demo-cloud-server/'
+         * </pre>
+         */
+        pndPurl: 'http://purl.org/pundit/demo-cloud-server/',
+
+        /**
+         * @module punditConfig
+         * @ngdoc object
          * @name confURL
          * @description
          * `string`
@@ -208,6 +223,19 @@ angular.module('Pundit2.Core')
          * <pre> useTemplates: true </pre>
          */
         useTemplates: true,
+
+        /**
+         * @module punditConfig
+         * @ngdoc object
+         * @name forceEdit
+         * @description
+         * `boolean`
+         * Enables authorized users to edit and delete annotations of other authors
+         *
+         * Default:
+         * <pre> forceEditAndDelete: false </pre>
+         */
+        forceEditAndDelete: false,
 
         /**
          * @module punditConfig
@@ -362,22 +390,45 @@ angular.module('Pundit2.Core')
          *
          * * `active`: true to active lodLive link, false otherwise
          * * `baseUrl`: base url of lodlive service
-         * * `pndPurl`: base purl of pundit server
          *
          * Default:
          * <pre>
          *
          * lodLive: {
-            active: false,
-            baseUrl: 'http://demo-lodlive.thepund.it/?',
-            pndPurl: 'http://purl.org/pundit/demo-cloud-server/'
-          }
+         *   active: false,
+         *   baseUrl: 'http://demo-lodlive.thepund.it/?'
+         * }
          * </pre>
         */
       lodLive: {
         active: false,
-        baseUrl: 'http://demo-lodlive.thepund.it/?',
-        pndPurl: 'http://purl.org/pundit/demo-cloud-server/'
+        baseUrl: 'http://demo-lodlive.thepund.it/?'
+      },
+
+        /**
+         * @module punditConfig
+         * @ngdoc object
+         * @name timeline
+         * @description
+         * `object`
+         *
+         * Define if is active timeline link in Pundit. Object has the follow fields:
+         *
+         * * `active`: true to active timeline link, false otherwise
+         * * `baseUrl`: base url of timeline service
+         *
+         * Default:
+         * <pre>
+         *
+         * timeline: {
+         *  active: false,
+         *  baseUrl: 'http://metasound.dibet.univpm.it/timelinejs/examples/pundit.html?'
+         * }
+         * </pre>
+        */
+      timeline: {
+        active: false,
+        baseUrl: 'http://metasound.dibet.univpm.it/timelinejs/examples/pundit.html?'
       }
 
     });

@@ -35,10 +35,10 @@ describe("The annomatic module", function() {
             // accept the suggested annotation
             p.findElement(protractor.By.css('.popover-content .pnd-button-set-ok')).click();
             // now there is 1 accepted annonation
-            p.findElements(protractor.By.css('.ann-ok')).then(function(elements) {
+            // p.findElements(protractor.By.css('.ann-ok')).then(function(elements) {
                 // TODO adapt annomatic workflow
                 // expect(elements.length).toBe(1);
-            });
+            // });
             // click again first icon to open preview and menu suggested annotation
             elements[0].click();
             // remove accepted annotation
@@ -47,10 +47,10 @@ describe("The annomatic module", function() {
             // p.findElement(protractor.By.css('.popover-content .pnd-button-set-ko')).click();
             
             // now there are none accepted annotation
-            p.findElements(protractor.By.css('.ann-ok')).then(function(elements) {
+            // p.findElements(protractor.By.css('.ann-ok')).then(function(elements) {
                 // TODO adapt annomatic workflow
                 // expect(elements.length).toBe(0);
-            });
+            // });
 
         });
 

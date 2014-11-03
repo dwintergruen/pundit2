@@ -8,6 +8,9 @@ angular.module('Pundit2.Toolbar')
     $scope.dropdownTemplateMyNotebook = "src/Toolbar/myNotebooksDropdown.tmpl.html";
     $scope.dropdownTemplateTemplates = "src/Toolbar/templatesDropdown.tmpl.html";
 
+    $scope.isAnnotationSidebarExpanded = false;
+    $scope.isDashboardVisible = false;
+
     if (Config.useOnlyTemplateMode) {
         angular.element(".pnd-toolbar-template-mode-button").addClass('pnd-not-clickable');
     }
@@ -30,7 +33,7 @@ angular.module('Pundit2.Toolbar')
     var lodliveOpen = function(){
         if(MyPundit.isUserLogged()){
             var userData = MyPundit.getUserData();
-            $window.open(Config.lodLive.baseUrl+Config.lodLive.pndPurl+'user/'+userData.id, '_blank');
+            $window.open(Config.lodLive.baseUrl+Config.pndPurl+'user/'+userData.id, '_blank');
         }
     }
 
@@ -56,7 +59,7 @@ angular.module('Pundit2.Toolbar')
 
     infoModalScope.titleMessage = "About Pundit";
     infoModalScope.info = [
-        {label: "Pundit Version: ", value: PUNDITVERSION.version},
+        {label: "Pundit version: ", value: PUNDITVERSION.version},
         {label: "Annotation server URL: ", value: NameSpace.as},
         {label: "Korbo basket: ", value: "-"}, // is always defined? read from korbo selector instance? if i have more than one instance}?
         {label: "Contact the Pundit team:", value: "punditdev@netseven.it"},
@@ -98,9 +101,9 @@ angular.module('Pundit2.Toolbar')
             "?cc=" +
             "&subject=" + escape(subject) +
             "&body=" + escape(body) +
-            "%0A%0A" + "Pundit Version: "+ PUNDITVERSION.version +
+            "%0A%0A" + "Pundit version: "+ PUNDITVERSION.version +
             "%0A%0A" + "Configuration file: "+ Config.confURL +
-            "%0A" + "Web Page: " + document.URL +
+            "%0A" + "Web page: " + document.URL +
             "%0A" + "Broswer info: " + window.navigator.userAgent +
             "%0A%0A" + "User openid: " + user.openid +
             "%0A" + "User uri: " + user.uri +
@@ -166,6 +169,20 @@ angular.module('Pundit2.Toolbar')
         return Annomatic.isRunning();
     }, function(currentState) {
         $scope.isAnnomaticRunning = currentState;
+    });     
+
+    // Watch Sidebar status
+    $scope.$watch(function() {
+        return AnnotationSidebar.isAnnotationSidebarExpanded();
+    }, function(currentState) {
+        $scope.isAnnotationSidebarExpanded = currentState;
+    });
+
+    // Watch Toolbar status
+    $scope.$watch(function() {
+        return Dashboard.isDashboardVisible();
+    }, function(currentState) {
+        $scope.isDashboardVisible = currentState;
     });
     
     $scope.errorMessageDropdown = Toolbar.getErrorMessageDropdown();
@@ -354,12 +371,6 @@ angular.module('Pundit2.Toolbar')
 
     // return true if user is logged in --> dashboard button is active
     $scope.isDashboardActive = function() {
-        return $scope.isUserLogged === true;
-    };
-    
-    // return true if user is logged in --> get user ask link
-    // return false if user is not logged in --> get default ask link
-    $scope.isAskActive = function() {
         return $scope.isUserLogged === true;
     };
 

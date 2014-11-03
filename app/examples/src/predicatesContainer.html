@@ -1,0 +1,35 @@
+<!-- buildexamples:section header --><!-- /buildexamples -->
+
+<script>
+
+    var punditConfig = {
+        //debugAllModules: true,
+        modules: {
+            "PredicatesContainer": {debug: true}
+        }
+    };
+
+    var PredicatesContainerDemoCtrl = function($scope, Client, ItemsExchange, Item) {
+        
+        $scope.getPredicates = function() {
+            var num = 0,
+                relations = Client.options.basicRelations;
+            for (var p in relations) {
+                // property is automatically added to ItemsExchange default container
+                ItemsExchange.addItemToContainer(new Item(relations[p].uri, relations[p]), [Client.options.relationsContainer, 'basicRelations']);
+            }
+        };
+
+    };
+
+</script>
+
+<div data-ng-app="Pundit2" class="pnd-wrp">
+    <div ng-controller="PredicatesContainerDemoCtrl">
+        <predicates-container></predicates-container>
+
+        <button type="button" class="btn btn-info pnd-test-get-my-items" ng-click="getPredicates()">Get Predicates</button>
+    </div>
+</div>
+
+<!-- buildexamples:section footer --><!-- /buildexamples -->

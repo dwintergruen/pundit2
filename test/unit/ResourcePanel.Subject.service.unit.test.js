@@ -599,108 +599,108 @@ describe('Subject Popover Resource Panel service', function() {
     });
 
     // TODO
-    it("should start searching label in vocab", function() {
+    // it("should start searching label in vocab", function() {
 
-        var anchor = angular.element('.pnd-anchor')[0];
-        var triple = {
-            subject: null,
-            predicate: null,
-            object: null
-        };
-        var label = "term";
+    //     var anchor = angular.element('.pnd-anchor')[0];
+    //     var triple = {
+    //         subject: null,
+    //         predicate: null,
+    //         object: null
+    //     };
+    //     var label = "term";
 
-        // Muruca search url for 'term' label
-        var url = "http://demo2.galassiaariosto.netseven.it/backend.php/reconcile?jsonp=JSON_CALLBACK&query=%7B%22query%22:%22term%22,%22type%22:%22http:%2F%2Fpurl.org%2Fgalassiariosto%2Ftypes%2FAzione%22,%22properties%22:%7B%7D,%22limit%22:5%7D";
+    //     // Muruca search url for 'term' label
+    //     var url = "http://demo2.galassiaariosto.netseven.it/backend.php/reconcile?jsonp=JSON_CALLBACK&query=%7B%22query%22:%22term%22,%22type%22:%22http:%2F%2Fpurl.org%2Fgalassiariosto%2Ftypes%2FAzione%22,%22properties%22:%7B%7D,%22limit%22:5%7D";
 
-        // Muruca mocked result for 'term' label
-        var realResult = {
-            result: [
-                {
-                    description: "ZOPPINO 1536, Canto VII - Scena 1 - Azione 1 - Erifilla a cavallo del lupo",
-                    id: "7",
-                    match: false,
-                    name: "ZOPPINO 1536, Canto VII - Scena 1 - Azione 1 - Erifilla a cavallo del lupo",
-                    resource_url: "http://purl.org/galassiariosto/resources/azione_illustrazione/7",
-                    type: ["http://purl.org/galassiariosto/types/Azione"]
-                },
-                {
-                    description: "GIOLITO 1542, Canto XIX - Scena 2 - Azione 1 - Angelica incontra un pastore a cavallo (XIX, 23, vv. 1-2)",
-                    id: "1149",
-                    match: false,
-                    name: "GIOLITO 1542, Canto XIX - Scena 2 - Azione 1 - Angelica incontra un pastore a cavallo (XIX, 23, vv. 1-2)",
-                    resource_url: "http://purl.org/galassiariosto/resources/azione_illustrazione/1149",
-                    type: ["http://purl.org/galassiariosto/types/Azione"]
-                }
-            ]
-        };
+    //     // Muruca mocked result for 'term' label
+    //     var realResult = {
+    //         result: [
+    //             {
+    //                 description: "ZOPPINO 1536, Canto VII - Scena 1 - Azione 1 - Erifilla a cavallo del lupo",
+    //                 id: "7",
+    //                 match: false,
+    //                 name: "ZOPPINO 1536, Canto VII - Scena 1 - Azione 1 - Erifilla a cavallo del lupo",
+    //                 resource_url: "http://purl.org/galassiariosto/resources/azione_illustrazione/7",
+    //                 type: ["http://purl.org/galassiariosto/types/Azione"]
+    //             },
+    //             {
+    //                 description: "GIOLITO 1542, Canto XIX - Scena 2 - Azione 1 - Angelica incontra un pastore a cavallo (XIX, 23, vv. 1-2)",
+    //                 id: "1149",
+    //                 match: false,
+    //                 name: "GIOLITO 1542, Canto XIX - Scena 2 - Azione 1 - Angelica incontra un pastore a cavallo (XIX, 23, vv. 1-2)",
+    //                 resource_url: "http://purl.org/galassiariosto/resources/azione_illustrazione/1149",
+    //                 type: ["http://purl.org/galassiariosto/types/Azione"]
+    //             }
+    //         ]
+    //     };
 
-        // selectors manager initialization
-        SelectorsManager.init();
-        $rootScope.$digest();
+    //     // selectors manager initialization
+    //     SelectorsManager.init();
+    //     $rootScope.$digest();
 
-        $httpBackend.whenJSONP(url).respond(realResult);
+    //     $httpBackend.whenJSONP(url).respond(realResult);
 
-        // open resource panel with 'term' label
-        ResourcePanel.showItemsForSubject(triple, anchor, label);
-        $rootScope.$digest();
+    //     // open resource panel with 'term' label
+    //     ResourcePanel.showItemsForSubject(triple, anchor, label);
+    //     $rootScope.$digest();
 
-        // var scope = getPopoverResourcePanelScope();
+    //     // var scope = getPopoverResourcePanelScope();
 
-        $timeout.flush();
-        $httpBackend.flush();
+    //     $timeout.flush();
+    //     $httpBackend.flush();
 
-        // get active selectors
-        // var selectors = SelectorsManager.getActiveSelectors();
-        // var selContainer = selectors[0].config.container;
+    //     // get active selectors
+    //     // var selectors = SelectorsManager.getActiveSelectors();
+    //     // var selContainer = selectors[0].config.container;
 
-        // and results should be set in scope
+    //     // and results should be set in scope
 
-        /*// open same popover, from same target and same label
-        ResourcePanel.showItemsForSubject(triple, anchor, label);
-        $rootScope.$digest();
-        $timeout.flush();
+    //     /*// open same popover, from same target and same label
+    //     ResourcePanel.showItemsForSubject(triple, anchor, label);
+    //     $rootScope.$digest();
+    //     $timeout.flush();
 
-        // no http request shold be start
-        $httpBackend.verifyNoOutstandingRequest();*/
+    //     // no http request shold be start
+    //     $httpBackend.verifyNoOutstandingRequest();*/
 
-        // open same popover, from same target and empty label
-        ResourcePanel.showItemsForSubject(triple, anchor, "");
-        $rootScope.$digest();
-        $timeout.flush();
+    //     // open same popover, from same target and empty label
+    //     ResourcePanel.showItemsForSubject(triple, anchor, "");
+    //     $rootScope.$digest();
+    //     $timeout.flush();
 
-        // result should be empty
+    //     // result should be empty
 
-        // in the same resource panel, search a new label
-        var otherLabel = "gio";
+    //     // in the same resource panel, search a new label
+    //     var otherLabel = "gio";
 
-        // Muruca search url for 'gio' label
-        var otherUrl = "http://demo2.galassiaariosto.netseven.it/backend.php/reconcile?jsonp=JSON_CALLBACK&query=%7B%22query%22:%22gio%22,%22type%22:%22http:%2F%2Fpurl.org%2Fgalassiariosto%2Ftypes%2FAzione%22,%22properties%22:%7B%7D,%22limit%22:5%7D";
+    //     // Muruca search url for 'gio' label
+    //     var otherUrl = "http://demo2.galassiaariosto.netseven.it/backend.php/reconcile?jsonp=JSON_CALLBACK&query=%7B%22query%22:%22gio%22,%22type%22:%22http:%2F%2Fpurl.org%2Fgalassiariosto%2Ftypes%2FAzione%22,%22properties%22:%7B%7D,%22limit%22:5%7D";
 
-        // Muruca mocked result for 'gio' label
-        var otherResult = {
-            result: [
-                {
-                    description: "ZOPPINO 1536, Canto VII - Scena 1 - Azione 1 - Erifilla a cavallo del lupo",
-                    id: "8",
-                    match: false,
-                    name: "ZOPPINO 1536, Canto VII - Scena 1 - Azione 1 - Erifilla a cavallo del lupo",
-                    resource_url: "http://purl.org/galassiariosto/resources/azione_illustrazione/newIllustr",
-                    type: ["http://purl.org/galassiariosto/types/Azione"]
-                }
-            ]
-        };
+    //     // Muruca mocked result for 'gio' label
+    //     var otherResult = {
+    //         result: [
+    //             {
+    //                 description: "ZOPPINO 1536, Canto VII - Scena 1 - Azione 1 - Erifilla a cavallo del lupo",
+    //                 id: "8",
+    //                 match: false,
+    //                 name: "ZOPPINO 1536, Canto VII - Scena 1 - Azione 1 - Erifilla a cavallo del lupo",
+    //                 resource_url: "http://purl.org/galassiariosto/resources/azione_illustrazione/newIllustr",
+    //                 type: ["http://purl.org/galassiariosto/types/Azione"]
+    //             }
+    //         ]
+    //     };
 
-        $httpBackend.whenJSONP(otherUrl).respond(otherResult);
+    //     $httpBackend.whenJSONP(otherUrl).respond(otherResult);
 
-        // search 'gio' label in resource panel
-        ResourcePanel.showItemsForSubject(triple, anchor, otherLabel);
-        $rootScope.$digest();
-        $timeout.flush();
-        $httpBackend.flush();
+    //     // search 'gio' label in resource panel
+    //     ResourcePanel.showItemsForSubject(triple, anchor, otherLabel);
+    //     $rootScope.$digest();
+    //     $timeout.flush();
+    //     $httpBackend.flush();
 
-        // and new results should be set in the scope
+    //     // and new results should be set in the scope
 
-    });
+    // });
 
     it("should not start searching label in vocab when input is empty", function() {
 

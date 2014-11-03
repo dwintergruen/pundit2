@@ -396,10 +396,10 @@ angular.module('KorboEE')
 
                 var entityToSave = {
                     // "label": $scope.tabs[0].label,
-                    //"abstract": $scope.tabs[0].description,
-                    // "depiction": $scope.imageUrl,
-                    // "type": newTypes,
-                    "resourceUrl": $scope.originalUrl
+                    // "abstract": $scope.tabs[0].description,
+                    "depiction": $scope.imageUrl,
+                    "type": newTypes,
+                    "resource": $scope.originalUrl
                 };
 
                 // declare object returned onSave() call
@@ -414,60 +414,35 @@ angular.module('KorboEE')
                 if($scope.editMode){
                     entityToSave.id = String($scope.idEntityToEdit);
                     basketID = basketIDforEdit;
-                    console.log("dovrebbe stampare ",basketIDforEdit);
                 } else {
                     basketID = $scope.conf.basketID;
                 }
 
-                var promise = korboComm.save(entityToSave, lang, $scope.conf.endpoint, basketID );
+                var promise = korboComm.save(entityToSave, lang, $scope.conf.endpoint, basketID);
                 promise.then(function(res){
 
                     // get id from location of entity just created// All other label types, take the last part
                     var id;
-                        if($scope.editMode){
-                            id = String($scope.idEntityToEdit);
-                        }else{
-                            id = res.substring(res.lastIndexOf('/') + 1);
-                        }
+                    if($scope.editMode){
+                        id = String($scope.idEntityToEdit);
+                    }else{
+                        id = res.substring(res.lastIndexOf('/') + 1);
+                    }
 
                     var location = res;
                     var allPromises = [];
-
-                    var entityToEditWithDepiction = {
-                        "id": id,
-                        "depiction": $scope.imageUrl
-                    };
-                    var entityToEditWithTypes = {
-                        "id": id,
-                        "type": newTypes
-                    };
-
-                    var depictionPromise = korboComm.save(entityToEditWithDepiction, lang, $scope.conf.endpoint, basketID);
-                    var typesPromise = korboComm.save(entityToEditWithTypes, lang, $scope.conf.endpoint, basketID);
-
-                    allPromises.push(depictionPromise);
-                    allPromises.push(typesPromise);
 
                     for(var i=0; i<$scope.tabs.length; i++){
 
                         (function(index) {
                             var lang = angular.lowercase($scope.tabs[index].title);
-
-                            var entityToEditWithLabel = {
+                            var entityToEdit = {
                                 "id": id,
-                                "label": $scope.tabs[index].label
-                            };
-
-                            var entityToEditWithAbstract = {
-                                "id": id,
+                                "label": $scope.tabs[index].label,
                                 "abstract": $scope.tabs[index].description
                             };
-
-                            var langLabelPromise = korboComm.save(entityToEditWithLabel, lang, $scope.conf.endpoint, basketID );
-                            var langAbstractPromise = korboComm.save(entityToEditWithAbstract, lang, $scope.conf.endpoint, basketID );
-
-                            allPromises.push(langLabelPromise);
-                            allPromises.push(langAbstractPromise);
+                            var langPromise = korboComm.save(entityToEdit, lang, $scope.conf.endpoint, basketID);
+                            allPromises.push(langPromise);
                         })(i);
 
                     }

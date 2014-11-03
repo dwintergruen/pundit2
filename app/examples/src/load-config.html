@@ -1,0 +1,106 @@
+<!-- buildexamples:section header --><!-- /buildexamples -->
+
+<style>
+    .pnd-cons {
+        background: #fc0;
+    }
+</style>
+
+<script>
+
+    var punditConfig = {
+        // vocabularies: ['http://manager.korbo.org/91'],
+        // templates: [],
+
+        // vocabularies: ['http://conf.thepund.it/json2jsonp/index.php?u=https://dl.dropboxusercontent.com/u/1263117/FHP/props_test.json'],
+        modules: {
+            'AnnotationsExchange': {
+                debug: false
+            },
+            'Consolidation': {
+                debug: false
+            },
+            'Dashboard': {
+                debug: false
+            },
+            'Client': {
+                debug: false,
+                active: true
+            },
+            'TextFragmentAnnotator': {
+                debug: false
+            },
+            'ContextualMenu': {
+                debug: false
+            },
+            'AnnotationSidebar': {
+                active: true
+            },
+            "Analytics": { debug: false, doTracking: false },
+            
+            'ItemsExchange': { debug: true },
+            'TextFragmentHandler': { debug: false },
+            'PredicateSelector': { debug: true },
+            'KorboBasketSelector': {
+                active: false
+            },
+            'MurucaSelector': {
+                active: false
+            }
+        },
+
+        templates: []
+    }
+
+    var vocab = [
+            // "http://manager.korbo.org/91"
+            "http://conf.thepund.it/json2jsonp/index.php?u=https://dl.dropboxusercontent.com/u/1263117/FHP/props_test.json"
+        ];
+
+    var LoadDemoCtrl = function($scope, $q, PredicateSelector, ItemsExchange, Item) {
+
+        $scope.getPredicates = function() {
+            var urls = vocab,
+                result = [],
+                promise = $q.defer();
+
+            var predPromises = [];
+
+            for (var i in urls) {
+                var prm = PredicateSelector.getRelations(urls[i]);
+                prm.then(function(res){
+                    result.push.apply(result, res);
+                });
+                predPromises.push(prm);
+            }
+
+            $q.all(predPromises).then(function(){
+                for (var p in result){
+                    ItemsExchange.addItemToContainer(new Item(result[p].uri, result[p]), ['usableRelations', 'vocabularyRelations']);
+                    var real = ItemsExchange.getItemByUri(result[p].uri);
+                    if (typeof(result[p].label) !== 'undefined' && !ItemsExchange.isItemInContainer(real, 'templateRelations')) {
+                        real.label = result[p].label;
+                    }
+                }
+            });
+        };
+    }
+
+
+</script>
+
+<h1>Launching the client</h1>
+
+<div data-ng-app="Pundit2">
+
+    <div class="container">
+
+        <div ng-controller="LoadDemoCtrl">
+            <button type="button" class="btn btn-info pnd-test-get-templates" ng-click="getPredicates()">Get new predicate</button>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- buildexamples:section footer --><!-- /buildexamples -->

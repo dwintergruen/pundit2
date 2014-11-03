@@ -26,6 +26,11 @@ angular.module('Pundit2.ResourcePanel')
             }
         }
 
+        var onWindowResize = function(){
+            ResourcePanel.hide();
+        };
+        angular.element($window).resize(onWindowResize);
+
         $scope.$watch(function() {
             return $scope.contentTabs.activeTab;
         }, function(newActive, oldActive) {

@@ -4,7 +4,8 @@
 <script>
     var myConf = {
         //endpoint: "http://korbo2.local:80/v1",
-        endpoint: "http://dev.korbo2.org/v1",
+        // endpoint: "http://korbo2.local/app_dev.php/v1",
+        endpoint: "http://dev.korbo2.org/app_dev.php/v1",
         basketID: 1,
         globalObjectName : 'KK',
         limitSearchResult: 11,
@@ -115,6 +116,7 @@
         $scope.edit = function(){
             //2606; 2607
             $window[name].callEdit(2598);
+            // $window[name].callEdit(3176);
         };
     };
 
