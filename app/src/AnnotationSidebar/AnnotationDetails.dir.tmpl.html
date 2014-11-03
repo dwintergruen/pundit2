@@ -22,8 +22,13 @@
 
         <div class="pnd-annotation-details-menu">
             <div class="{{annotation.mainItem.class}}">
-	            <button type="button" class="btn btn-primary" ng-click="metaInfo = !metaInfo"><!--<span class="pnd-icon-exclamation-circle"></span>-->Meta</button>
-	            <span ng-show="lodLive">
+	            <button 
+                    type="button" 
+                    class="btn btn-primary"
+                    ng-class="{'pnd-annotation-details-menu-btn-active': metaInfo}"
+                    ng-click="metaInfo = !metaInfo"><!--<span class="pnd-icon-exclamation-circle"></span>-->Meta</button>
+	            
+                <span ng-show="lodLive">
                     <button 
                         type="button" 
                         class="btn btn-primary"
@@ -35,7 +40,8 @@
                 <span ng-show="!lodLive">
                     <button type="button" class="btn btn-primary" disabled><!-- <span class="pnd-icon-mail-forward"></span> -->Reply</button>
                 </span>
-	            <button type="button" class="btn btn-primary" disabled><!--<span class="pnd-icon-share-square-o"></span>-->Share</button>
+	            
+                <button type="button" class="btn btn-primary" disabled><!--<span class="pnd-icon-share-square-o"></span>-->Share</button>
             </div>
         </div>
 
