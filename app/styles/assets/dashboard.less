@@ -34,6 +34,18 @@
     
         &.btn-xs {
     	width: 20px;
+    	
+	    	&.disabled,
+	    	&[disabled] {
+				background-color: #fff;
+				text-shadow: 0;
+				opacity: 1;
+				filter: alpha(opacity=100);
+	
+				.pnd-icon {
+			       color: @gray-light;
+			    }
+			}
     	}
 }
 
@@ -41,21 +53,6 @@
     position: absolute;
     z-index: 1;
     right: 7px;
-    
-    &.btn.disabled,
-    &.btn[disabled] {
-		cursor: not-allowed;
-		pointer-events: none;
-		background-color: #fff;
-		text-shadow: 0;
-		opacity: 1;
-		filter: alpha(opacity=100);
-
-		
-			.pnd-icon {
-		       color: @gray-light;
-		    }
-		}
     
     &.btn-xs  {
     	border: 0px;
@@ -79,6 +76,19 @@
 	       line-height: normal;
 	       padding: 0px;
 	   }
+	   
+	   &.disabled,
+	   &[disabled] {
+			background-color: #fff;
+			text-shadow: 0;
+			opacity: 1;
+			filter: alpha(opacity=100);
+
+			.pnd-icon {
+		       color: @gray-light;
+		    }
+		}
+   
     }
     
 }
