@@ -35,13 +35,8 @@ describe("The toolbar module", function() {
         });
 
         // ask the pundit button should be not active
-        p.findElements(protractor.By.css('.pnd-toolbar-ask-button-not-active')).then(function(askButton) {
+        p.findElements(protractor.By.css('.pnd-toolbar-ask-button')).then(function(askButton) {
             expect(askButton.length).toBe(1);
-        });
-
-        // dashboard button should be not active
-        p.findElements(protractor.By.css('.pnd-toolbar-dashboard-button .pnd-toolbar-not-active-element')).then(function(dashboardButton) {
-            expect(dashboardButton.length).toBe(1);
         });
 
         // notebook button should be active
