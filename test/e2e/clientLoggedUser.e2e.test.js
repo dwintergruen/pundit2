@@ -288,7 +288,7 @@ describe("Client interaction when user is logged in", function() {
         // check triple composer statement subject text
         p.findElements(protractor.By.css('.dropdown-menu li a')).then(function(a){
             expect(a.length).toBe(3);
-            expect(a[1].getText()).toBe('Use as Object');
+            expect(a[1].getText()).toBe('Use as object');
             a[1].click();
         });
 
@@ -491,7 +491,7 @@ describe("Client interaction when user is logged in", function() {
         // open my notebooks tab
         p.findElements(protractor.By.css("dashboard-panel[paneltitle=lists] .pnd-tab-header > li > a")).then(function(tabs) {
             tabs[4].click();
-            expect(tabs[4].getText()).toBe("My Notebooks");
+            expect(tabs[4].getText()).toBe("My notebooks");
         });
         // move on notebook item
         var item = p.findElement(protractor.By.css("dashboard-panel[paneltitle=lists] .pnd-tab-content > div.active my-notebooks-container notebook .pnd-item"));
@@ -512,7 +512,7 @@ describe("Client interaction when user is logged in", function() {
         // check active tab title
         p.findElements(protractor.By.css("dashboard-panel[paneltitle=tools] .pnd-tab-header > li.active > a")).then(function(tabs) {
             expect(tabs.length).toBe(1);
-            expect(tabs[0].getText()).toBe("Notebooks Composer");
+            expect(tabs[0].getText()).toBe("Notebooks composer");
         });
         
         // TODO write notebook composer dedicated e2e tests
