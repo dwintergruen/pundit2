@@ -372,9 +372,8 @@
                 width: 100px;
                 padding: 0 8px;
                 margin-left: 0px;
-                border-left: 1px solid #fff;
                 
-                & ~ .btn {
+                &~.btn {
                 	display: inline !important;
                 	width: 100px;
                 	border-right: 0px;
@@ -385,7 +384,12 @@
                 &:hover {
 	                background-color: @gray-extra-lighter;
 	                color: @brand-success;
-	                } 
+	                }
+	                
+	            &.pnd-annotation-details-menu-btn-active {
+		            background-color: @gray-extra-lighter;
+		            color: @gray-dark;
+	            }
 
 	            }
 	            
