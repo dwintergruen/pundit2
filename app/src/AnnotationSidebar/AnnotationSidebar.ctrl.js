@@ -221,13 +221,6 @@ angular.module('Pundit2.AnnotationSidebar')
         }
     });
 
-    $scope.$watch('freeText', function(freeText) {
-        $timeout.cancel(delay);
-        delay = $timeout(function(){
-            AnnotationSidebar.filters.freeText.expression = freeText;
-        }, 1000);
-    });
-
     $scope.$watch('annotationSidebar.filters', function(currentFilters) {
         if(AnnotationSidebar.filters.freeText.expression === ''){
             $scope.freeText = '';
@@ -235,13 +228,12 @@ angular.module('Pundit2.AnnotationSidebar')
         $scope.annotations = AnnotationSidebar.getAllAnnotationsFiltered(currentFilters);
     }, true);
 
-    // $scope.$watch(function() {
-    //     return AnnotationSidebar.getFilters();
-    // }, function(currentFiltersList, oldFilterList) {
-    //     // console.log("getFilters watch", angular.equals(currentFiltersList, oldFilterList));
-    //     $scope.filters = currentFiltersList;
-    // }, true);
-        
+    $scope.updateSearch = function(freeText) {
+        $timeout.cancel(delay);
+        delay = $timeout(function(){
+            AnnotationSidebar.filters.freeText.expression = freeText;
+        }, 1000);
+    };
 
     $scope.isFilterLabelShowed = function(currentInputText) {
         if (typeof(currentInputText) === 'string'){

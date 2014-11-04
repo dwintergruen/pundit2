@@ -45,7 +45,7 @@
                             class="pnd-icon" 
                             ng-class="setSearchIcon(annotationSidebar.filters.freeText.expression)" 
                             ng-click="freeText = ''"></span>
-                        <input class="form-control" ng-model="freeText" placeholder="Contains">
+                        <input class="form-control" ng-model="freeText" ng-change="updateSearch(freeText)" placeholder="Contains">
                     </div>
 
                     <!-- Authors -->
