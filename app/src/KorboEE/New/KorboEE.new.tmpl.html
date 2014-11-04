@@ -177,13 +177,13 @@
                 </div>
                 <button 
                     type="button" 
-                    class="btn btn-xs" 
+                    class="btn btn-default btn-xs" 
                     ng-click="activeAllTypes()">
                         Select all types
                 </button>
                 <button 
                     type="button" 
-                    class="btn btn-xs" 
+                    class="btn btn-default btn-xs" 
                     ng-click="disableAllTypes()">
                         Deselect all types
                 </button>
@@ -217,23 +217,24 @@
         <button 
             type="button" 
             class="btn btn-xs btn-success" 
+            ng-click="save()">
+                <span ng-if="!editMode">Save and add</span>
+                <span ng-if="editMode">Save</span>
+        </button>
+        <button 
+            type="button" 
+            class="btn btn-xs btn-info" 
             ng-click="closeKeeModal()">
                 Close
         </button>
         <button 
             ng-hide="editMode" 
             type="button" 
-            class="btn btn-xs btn-success" 
+            class="btn btn-xs btn-info" 
             ng-click="clearForm()">
                 Clear
         </button>
-        <button 
-            type="button" 
-            class="btn btn-xs btn-success" 
-            ng-click="save()">
-                <span ng-if="!editMode">Save and add</span>
-                <span ng-if="editMode">Save</span>
-        </button>
+
     </div> 
     <!-- End Footer -->
 </div>
