@@ -63,11 +63,46 @@
             </div>       
         </div>
 -->
-        
+
+                
         <div class="pnd-annotation-details-content">
+        
+                <div class="pnd-annotation-details-meta" ng-init="meta = false">
+                        <div class="pnd-annotation-details-item-header" 
+                            ng-click="meta = !meta"
+                            ng-class="{'pnd-annotation-details-sub-open': meta}">
+                            <div class="pnd-annotation-item-header-text">
+	                            <span class="pnd-icon pnd-icon-info-circle"></span>
+	                            <span>Meta</span>
+                            </div>
+                            <button type="button" class="btn btn-link pull-right">
+                                <span ng-class="{true:'pnd-icon-caret-up', false:'pnd-icon-sort-down'}[meta]"></span>
+                            </button>
+                        </div>
+
+                        <div ng-show="meta" class="pnd-sub-info">
+                            <span ng-if="meta">
+                                <div class="pnd-annotation-details-info-id">
+					                <strong>ID:</strong> {{annotation.id}}
+					            </div>
+					            <div class="pnd-annotation-details-info-author">
+					                <strong>Author:</strong> {{annotation.creatorName}}
+					            </div>
+					            <div class="pnd-annotation-details-info-date">
+					                <strong>Date:</strong> {{annotation.created | date : 'MMM d, y H:mm a'}}
+					            </div>       
+					            <div class="pnd-annotation-details-info-notebook">
+					                <strong>Notebook:</strong> <a href="{{askLink}}{{annotation.notebookId}}" target="_blank">
+					                    {{notebookName}}
+					                </a>
+					            </div>   
+                            </span>
+                        </div>
+                 </div>
+        
             <div class="pnd-annotation-detains-item" ng-repeat="item in annotation.itemsArray">
             <!-- meta -->
-                <div 
+             <!--   <div 
                     class="pnd-annotation-details-meta" 
                     ng-init="meta = false">
                         <div 
@@ -101,7 +136,7 @@
 					            </div>   
                             </span>
                         </div>
-                </div>
+                </div> -->
             <!-- // end meta -->
             <!-- subject -->
                 <div 

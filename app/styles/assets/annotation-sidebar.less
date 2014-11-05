@@ -439,8 +439,7 @@
                 background-color: lighten(@subject-color, 5%);
                 line-height: 0px; 
                 height: 24px;
-                //width: 24px;
-                width: 30px;
+                width: 24px;
                 padding: 0 8px;
                 
 	               &:hover {
@@ -457,9 +456,53 @@
 
     .pnd-annotation-details-container {
         width: @annotation-sidebar-filter-width;
+        
         .pnd-annotation-details-content {
             padding: 0px 0px 0px 0px;
             background-color: #fff;
+            
+            // META TOGGLE 
+            
+                .pnd-annotation-details-meta {
+                	background-color: @gray-lighter;
+                    border-bottom: 3px solid @gray-extra-light;
+                    width: @annotation-sidebar-filter-width;
+                    
+                    	.pnd-sub-info {
+			                	padding: 5px 10px;
+			                	overflow-y: hidden;
+			                	background-color: lighten(@gray-lighter, 4%);
+			                    } 
+                    
+                        .pnd-annotation-details-item-header {
+                        	padding-left: 7px;
+                        	cursor: pointer;
+                        	line-height: 24px;
+                        	height: 24px;
+                        	
+                        	.pnd-icon {
+		                    	color: @gray;
+		                    	}
+	                         
+		                	&:hover {
+			                	background-color: @gray-lighter;  
+			                    } 
+			                         
+			                &:active,
+			                &:focus {
+			                    background-color: @gray-lighter; 
+			                    }
+			                    
+			                .btn {
+				                border: none;
+				                background-color: transparent;
+				                line-height: 0px; 
+				                height: 24px;
+				                width: 24px;
+				                padding: 0 8px;
+				                }		                
+			             }                   
+	                 }
 
 	                       
             .pnd-annotation-detains-item {
@@ -474,8 +517,7 @@
 	                background-color: transparent;
 	                line-height: 0px; 
 	                height: 24px;
-	                //width: 24px;
-	                width: 30px;
+	                width: 24px;
 	                padding: 0 8px;
 	                }
 	                
