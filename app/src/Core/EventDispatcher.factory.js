@@ -1,31 +1,40 @@
 angular.module('Pundit2.Core')
 .factory('EventDispatcher', function ($q) {
 
-    var EventDispatcher = {
-        cache: {}
-    };
+    var EventDispatcher = {},
+        events = {};
 
     EventDispatcher.sendEvent = function (name, args) {
-        // there aren't active listeners
-        // if (!$rootScope.$$listeners[name]) {
-        //     return;
-        // }
-        var deferred = [];
+        var promises = [],
+            deferred = [],
+            defIndex = 0;
 
-        // TODO: reject don't work with q.all, why?!
         var eventArgs = {
             args: args,
             resolve: function (a) {
-                deferred.pop().resolve(a);
+                if (defIndex >= 0) {
+                    deferred[defIndex].resolve(a);
+                    defIndex--;
+                }
+            },
+            reject: function (a) {
+                if (defIndex >= 0) {
+                    deferred[defIndex].reject(a);
+                    defIndex--;
+                }
             }
         };
-
-        EventDispatcher.cache[name] && angular.forEach(EventDispatcher.cache[name], function(callback) {       
-            deferred.push($q.defer());
-            callback.apply(null, [eventArgs]);
+    
+        events[name] && angular.forEach(events[name], function (callback) {
+            if (typeof(callback) !== 'undefined') {
+                deferred.push($q.defer());
+                callback.apply(null, [eventArgs]);
+            }
         });
 
-        var promises = deferred.map(function(p) {
+        defIndex = deferred.length-1;
+
+        promises = deferred.map(function (p) {
             return p.promise;
         });
 
@@ -33,20 +42,32 @@ angular.module('Pundit2.Core')
     };
 
     EventDispatcher.addListener = function (name, callback) {
-        if(!EventDispatcher.cache[name]) {
-            EventDispatcher.cache[name] = [];
+        if (!events[name]) {
+            events[name] = [];
         }
-        EventDispatcher.cache[name].push(callback);
+        events[name].push(callback);
         return [name, callback]; 
     };
 
     EventDispatcher.removeListener = function (handle) {
-        var f = handle[0];
-        EventDispatcher.cache[t] && d.each(EventDispatcher.cache[f], function(index){
-            if(this == handle[1]){
-                EventDispatcher.cache[f].splice(index, 1);
+        var name = handle[0],
+            callback = handle[1];
+
+        events[name] && angular.forEach(events[name], 
+            function (f, index) {
+                if (f == callback) {
+                    events[name].splice(index, 1);
+                }
             }
-        });      
+        );      
+    };
+
+    EventDispatcher.getListeners = function () {
+        var results = [];
+        for (var e in events){
+            results.push(e);
+        }
+        return results;
     };
 
     return EventDispatcher;
