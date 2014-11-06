@@ -7,32 +7,31 @@ angular.module('Pundit2.Core')
     EventDispatcher.sendEvent = function (name, args) {
         var promises = [],
             deferred = [],
-            defIndex = 0;
+            defIndex = 0,
+            eventArgs;
 
-        var eventArgs = {
-            args: args,
-            resolve: function (a) {
-                if (defIndex >= 0) {
-                    deferred[defIndex].resolve(a);
-                    defIndex--;
-                }
-            },
-            reject: function (a) {
-                if (defIndex >= 0) {
-                    deferred[defIndex].reject(a);
-                    defIndex--;
-                }
-            }
-        };
-    
         events[name] && angular.forEach(events[name], function (callback) {
             if (typeof(callback) !== 'undefined') {
+                eventArgs = {
+                    args: args,
+                    resolve: function (a) {
+                        if (defIndex < deferred.length) {
+                            deferred[defIndex].resolve(a);
+                            defIndex++;
+                        }
+                    },
+                    reject: function (a) {
+                        if (defIndex < deferred.length) {
+                            deferred[defIndex].reject(a);
+                            defIndex++;
+                        }
+                    }
+                };
+
                 deferred.push($q.defer());
                 callback.apply(null, [eventArgs]);
             }
         });
-
-        defIndex = deferred.length-1;
 
         promises = deferred.map(function (p) {
             return p.promise;
