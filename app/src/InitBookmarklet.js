@@ -21,8 +21,8 @@
 
     d.type = 'text/javascript';
     c.type = 'text/javascript';
-    d.src = p+'/scripts/pundit-bm.js';
-    c.src = u;
+    d.src = p+'/scripts/pundit-bm.js?'+Math.random()*4;
+    c.src = u+'?'+Math.random()*4;
     h.appendChild(d);
     h.appendChild(c);
 
