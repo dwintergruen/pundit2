@@ -59,7 +59,7 @@ angular.module("Pundit2.MyItemsContainer")
     debug: false
 
 })
-.service("MyItems", function(MYITEMSDEFAULTS, BaseComponent, NameSpace, Item, ItemsExchange,
+.service("MyItems", function(MYITEMSDEFAULTS, BaseComponent, EventDispatcher, NameSpace, Item, ItemsExchange,
                              ContextualMenu, MyPundit, Config, Consolidation, Toolbar,
                              $http, $rootScope, $q) {
 
@@ -121,7 +121,7 @@ angular.module("Pundit2.MyItemsContainer")
     }; // initContextualMenu()
 
     // When all modules have been initialized, services are up, Config are setup etc..
-    $rootScope.$on('pundit-boot-done', function() {
+    EventDispatcher.addListener('Client.boot', function() {
         initContextualMenu();
     });
 

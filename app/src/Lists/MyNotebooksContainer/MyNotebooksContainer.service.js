@@ -16,7 +16,7 @@ angular.module('Pundit2.MyNotebooksContainer')
     inputIconClear: 'pnd-icon-times'
     
 })
-.service('MyNotebooksContainer', function($rootScope, MYNOTEBOOKSCONTAINERDEFAULTS, BaseComponent,
+.service('MyNotebooksContainer', function($rootScope, MYNOTEBOOKSCONTAINERDEFAULTS, BaseComponent, EventDispatcher,
     NotebookExchange, ItemsExchange, PageItemsContainer, AnnotationsExchange, NotebookCommunication, Consolidation,
     ContextualMenu, Config, Dashboard, NotebookComposer, AnnotationsCommunication, NameSpace,
     $modal, $timeout, $window) {
@@ -143,7 +143,7 @@ angular.module('Pundit2.MyNotebooksContainer')
     }; // initContextualMenu()
 
     // When all modules have been initialized, services are up, Config are setup etc..
-    $rootScope.$on('pundit-boot-done', function() {
+    EventDispatcher.addListener('Client.boot', function() {
         initContextualMenu();
     });
 

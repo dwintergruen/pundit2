@@ -1,7 +1,7 @@
 /*jshint unused: false*/
 
 angular.module('Pundit2.Core')
-.service('ImageFragmentAnnotatorHelper', function($rootScope, $modal, $window, BaseComponent, Config, NameSpace,
+.service('ImageFragmentAnnotatorHelper', function($rootScope, $modal, $window, BaseComponent, EventDispatcher, Config, NameSpace,
     ContextualMenu, XpointersHelper, Item, MyItems, MyPundit) {
     
     var imageFragmentHelper = new BaseComponent("ImageFragmentAnnotatorHelper");
@@ -33,7 +33,7 @@ angular.module('Pundit2.Core')
     };
 
     // When all modules have been initialized, services are up, Config are setup etc..
-    $rootScope.$on('pundit-boot-done', function() {
+    EventDispatcher.addListener('Client.boot', function() {
         // check configuration and add ctx menu action
         if (Config.imageFragmentAnnotator.active) {
             initContextualMenu();
@@ -48,14 +48,15 @@ angular.module('Pundit2.Core')
         if (e.data.type === msg.addPolygon) {
             var lastData = e.data;
             if(!MyPundit.isUserLogged()) {
-                var der = $rootScope.$on('consolidation-completed', function() {
+                var der = EventDispatcher.addListener('Consolidation.consolidateAll', function() {
+                    console.log('POLIGOOOO');
                     var item = imageFragmentHelper.createItemFromPolygon(lastData.poly);
                     MyItems.addItem(item).then(function(){
                         childWindow.postMessage({type:'pundit-add-to-my-items-success'},'*');
                     }, function(){
                         childWindow.postMessage({type:'pundit-add-to-my-items-err'},'*');
                     });
-                    der(); // Remove listener on rootScope
+                    EventDispatcher.removeListener(der);
                 });
                 MyPundit.login();
             } else {

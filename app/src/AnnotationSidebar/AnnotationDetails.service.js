@@ -43,7 +43,7 @@ angular.module('Pundit2.AnnotationSidebar')
      */
     debug: false
 })
-.service('AnnotationDetails', function($rootScope, $filter, $timeout, $document, BaseComponent, Annotation, AnnotationSidebar, AnnotationsExchange, TemplatesExchange, Consolidation, ContextualMenu, Dashboard, ImageHandler, ItemsExchange, MyPundit, TextFragmentAnnotator, TypesHelper, ANNOTATIONDETAILSDEFAULTS) {
+.service('AnnotationDetails', function($rootScope, $filter, $timeout, $document, BaseComponent, EventDispatcher, Annotation, AnnotationSidebar, AnnotationsExchange, TemplatesExchange, Consolidation, ContextualMenu, Dashboard, ImageHandler, ItemsExchange, MyPundit, TextFragmentAnnotator, TypesHelper, ANNOTATIONDETAILSDEFAULTS) {
     
     var annotationDetails = new BaseComponent('AnnotationDetails', ANNOTATIONDETAILSDEFAULTS);
 
@@ -345,11 +345,13 @@ angular.module('Pundit2.AnnotationSidebar')
         }
     };
 
-    $rootScope.$on('update-annotation-completed', function(e, annotationId) {
+    EventDispatcher.addListeners(['AnnotationsCommunication.saveAnnotation', 'AnnotationsCommunication.editAnnotation'], function(e) {
         annotationDetails.log('Update annotation');
 
-        var targetAnnotation;
-        var currentAnnotation;
+        var annotationId = e.args,
+            targetAnnotation,
+            currentAnnotation;
+
         if(typeof(annotationId) !== 'undefined'){
 
             currentAnnotation = AnnotationsExchange.getAnnotationById(annotationId);

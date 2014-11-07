@@ -1,7 +1,7 @@
 angular.module('Pundit2.Core')
     .constant('CONSOLIDATIONDEFAULTS', {
     })
-    .service('Consolidation', function($rootScope, $location, CONSOLIDATIONDEFAULTS, BaseComponent, NameSpace, Config,
+    .service('Consolidation', function($rootScope, $location, CONSOLIDATIONDEFAULTS, BaseComponent, EventDispatcher, NameSpace, Config,
                                        Item, ItemsExchange, XpointersHelper) {
 
         var cc = new BaseComponent('Consolidation', CONSOLIDATIONDEFAULTS),
@@ -104,7 +104,7 @@ angular.module('Pundit2.Core')
             
             cc.log('Consolidating ALL items');
             cc.consolidate(allItems);
-            $rootScope.$emit('consolidation-completed');
+            EventDispatcher.sendEvent('Consolidation.consolidateAll');
         };
 
         // TODO: pass an element and consolidate just that element? or a named content?

@@ -88,7 +88,7 @@ angular.module('Pundit2.Toolbar')
     debug: false
 })
 
-    .service('Toolbar', function(BaseComponent, TOOLBARDEFAULTS, Config, MyPundit, TripleComposer) {
+    .service('Toolbar', function(BaseComponent, EventDispatcher, TOOLBARDEFAULTS, Config, MyPundit, TripleComposer) {
 
     var toolbar = new BaseComponent('Toolbar', TOOLBARDEFAULTS);
     
@@ -99,6 +99,10 @@ angular.module('Pundit2.Toolbar')
         errorMessageDropdown = [],
         // tell to other components if is active the template mode
         templateMode = Config.useOnlyTemplateMode;
+
+    EventDispatcher.addListener('Pundit.error', function (e) {
+        toolbar.addError(e.args);
+    });
 
     toolbar.getErrorShown = function() {
         return isErrorShown;

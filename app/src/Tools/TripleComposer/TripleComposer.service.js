@@ -194,7 +194,7 @@ angular.module('Pundit2.TripleComposer')
     debug: false
     
 })
-.service('TripleComposer', function($rootScope, BaseComponent, TRIPLECOMPOSERDEFAULTS, TypesHelper, NameSpace, Config,
+.service('TripleComposer', function($rootScope, BaseComponent, EventDispatcher, TRIPLECOMPOSERDEFAULTS, TypesHelper, NameSpace, Config,
     AnnotationsExchange, ItemsExchange, Dashboard, ContextualMenu, TemplatesExchange) {
 
     var tripleComposer = new BaseComponent('TripleComposer', TRIPLECOMPOSERDEFAULTS);
@@ -274,7 +274,7 @@ angular.module('Pundit2.TripleComposer')
     }; // initContextualMenu()
 
     // When all modules have been initialized, services are up, Config are setup etc..
-    $rootScope.$on('pundit-boot-done', function() {
+    EventDispatcher.addListener('Client.boot', function() {
         initContextualMenu();
     });
 

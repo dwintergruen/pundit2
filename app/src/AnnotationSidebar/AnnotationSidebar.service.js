@@ -269,9 +269,10 @@ angular.module('Pundit2.AnnotationSidebar')
      */
     debug: false
 })
-.service('AnnotationSidebar', function($rootScope, $filter, $timeout,
-                                       BaseComponent, AnnotationsExchange, Annomatic, Consolidation, Dashboard, ItemsExchange, NotebookExchange,
-                                       TypesHelper, TextFragmentAnnotator, XpointersHelper, ANNOTATIONSIDEBARDEFAULTS) {
+.service('AnnotationSidebar', function($rootScope, $filter, $timeout, BaseComponent, EventDispatcher, 
+                                        AnnotationsExchange, Annomatic, Consolidation, Dashboard, ItemsExchange, 
+                                        NotebookExchange, TypesHelper, TextFragmentAnnotator, XpointersHelper, 
+                                        ANNOTATIONSIDEBARDEFAULTS) {
     
     var annotationSidebar = new BaseComponent('AnnotationSidebar', ANNOTATIONSIDEBARDEFAULTS);
 
@@ -361,6 +362,7 @@ angular.module('Pundit2.AnnotationSidebar')
     // Expands or collapses the sidebar
     annotationSidebar.toggle = function(){
         state.isSidebarExpanded = !state.isSidebarExpanded;
+        EventDispatcher.sendEvent('AnnotationSidebar.toggle', state.isSidebarExpanded);
     };
 
     annotationSidebar.toggleLoading = function(){
@@ -1015,20 +1017,7 @@ angular.module('Pundit2.AnnotationSidebar')
         });
     };
 
-    // var timeoutPromise;
-    // $rootScope.$watch(function() {
-    //     return AnnotationsExchange.getAnnotations();
-    // }, function(annotations) {
-    //     if (timeoutPromise) {
-    //         $timeout.cancel(timeoutPromise);
-    //     }
-    //     timeoutPromise = $timeout(function() {
-    //         state.allAnnotations = angular.copy(annotations);
-    //         setFilterElements(state.allAnnotations);
-    //     }, annotationSidebar.options.annotationsRefresh);
-    // }, true);
-
-    $rootScope.$on('consolidation-completed', function() {
+    EventDispatcher.addListener('Consolidation.consolidateAll', function () {
         annotationSidebar.log('Update annotations in sidebar');
 
         var annotations = AnnotationsExchange.getAnnotations();
@@ -1037,7 +1026,6 @@ angular.module('Pundit2.AnnotationSidebar')
         setFilterElements(state.allAnnotations);
         setAnnotationsPosition();
     });
-
 
     annotationSidebar.log('Component running');
     return annotationSidebar;

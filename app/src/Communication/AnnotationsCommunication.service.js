@@ -1,5 +1,5 @@
 angular.module('Pundit2.Communication')
-    .service('AnnotationsCommunication', function(BaseComponent, NameSpace, Toolbar, Consolidation, MyPundit,
+    .service('AnnotationsCommunication', function(BaseComponent, EventDispatcher, NameSpace, Toolbar, Consolidation, MyPundit,
         AnnotationsExchange, Annotation, NotebookExchange, Notebook, ItemsExchange, Config, XpointersHelper,
         $http, $q, $rootScope) {
 
@@ -168,7 +168,8 @@ angular.module('Pundit2.Communication')
 
                     if (typeof(skipConsolidation) === 'undefined' || !skipConsolidation) {
                         Consolidation.consolidateAll();
-                        $rootScope.$emit('update-annotation-completed', data.AnnotationID);
+                        // $rootScope.$emit('update-annotation-completed', data.AnnotationID);
+                        EventDispatcher.sendEvent('AnnotationsCommunication.saveAnnotation', annID);
                     }
                     
                     // TODO move inside notebook then?
@@ -226,7 +227,8 @@ angular.module('Pundit2.Communication')
                 if (completed > 0) {
                     AnnotationsExchange.getAnnotationById(annID).update().then(function(){
                         Consolidation.consolidateAll();
-                        $rootScope.$emit('update-annotation-completed', annID);
+                        // $rootScope.$emit('update-annotation-completed', annID);
+                        EventDispatcher.sendEvent('AnnotationsCommunication.editAnnotation', annID);
                         promise.resolve();
                     });
                 }
@@ -249,7 +251,8 @@ angular.module('Pundit2.Communication')
                 if (completed > 0) {
                     AnnotationsExchange.getAnnotationById(annID).update().then(function(){
                         Consolidation.consolidateAll();
-                        $rootScope.$emit('update-annotation-completed', annID);
+                        // $rootScope.$emit('update-annotation-completed', annID);
+                        EventDispatcher.sendEvent('AnnotationsCommunication.editAnnotation', annID);
                         promise.resolve();
                     });
                 }
