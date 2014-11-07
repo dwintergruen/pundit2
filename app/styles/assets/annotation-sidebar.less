@@ -8,29 +8,29 @@
     z-index: 899;
     display: block;
     background-color: @gray-dark;
-	}
+}
 
-.pnd-annotation-sidebar-content{
-    padding: 0px;  
-	}
+.pnd-annotation-sidebar-content {
+    padding: 0px;
+}
 
 .pnd-annotation-sidebar-container.pnd-annotation-sidebar-collapsed {
     width: @annotation-sidebar-coll-width;
-    }	
-    
-.pnd-annotation-sidebar-container.pnd-annotation-sidebar-expanded {
-    width: @annotation-sidebar-exp-width;
-    }
-
-.pnd-footer-sidebar-filter {
-	text-align: center;
-	}
-
-.pnd-annotation-sidebar-annomatic{
-        color: #FFF;
 }
 
-.pnd-saving-content {   
+.pnd-annotation-sidebar-container.pnd-annotation-sidebar-expanded {
+    width: @annotation-sidebar-exp-width;
+}
+
+.pnd-footer-sidebar-filter {
+    text-align: center;
+}
+
+.pnd-annotation-sidebar-annomatic {
+    color: #FFF;
+}
+
+.pnd-saving-content {
     text-align: center;
     position: absolute;
     z-index: 99;
@@ -41,13 +41,13 @@
     bottom: 0;
     padding-top: 40px;
     color: @gray-lighter;
-    -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=85)";
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=85)";
     filter: alpha(opacity=85);
-    opacity:0.85;
-    
+    opacity: 0.85;
+
     .pnd-icon {
-        color: #fff!important;
-    }    
+        color: #fff !important;
+    }
 }
 
 .pnd-annotation-sidebar-annotations {
@@ -57,7 +57,6 @@
 .pnd-annotation-details-delete-in-progress {
     opacity: 0.4;
 }
-
 
 
 //
@@ -414,21 +413,16 @@
         width: @annotation-sidebar-filter-width;
         background-color: @subject-color;
         color: white;
+        transition-property: background-color, background;
+        transition-duration: @animation-fast-duration;
         
 	        &.pnd-annotation-details-broken {
 		        background-color: @brand-warning;
-		        //padding-left: 7px;
-		        
-		        
-			    .btn {
-	                background-color: lighten(@brand-warning, 5%);
-	                
-		               &:hover {
-			                background-color: darken(@brand-warning, 10%);  
-			                } 
-		            }
-		        
-		        }
+
+                &:hover {
+                    background-color: darken(@brand-warning, 5%);
+                }
+            }
 
             &.pnd-annotation-details-ghosted {
                 opacity: 0.4;
@@ -436,7 +430,7 @@
         
             .btn {
                 border: none;
-                background-color: lighten(@subject-color, 5%);
+                background-color: transparent;
                 line-height: 0px; 
                 height: 24px;
                 width: 24px;
@@ -444,14 +438,17 @@
                 
 	               &:hover {
 	                	color: #fff;
-		                background-color: darken(@subject-color, 10%);  
-		                } 
+		           }
 		           
 		           &:active,
 		           &:focus {
 	                	color: #fff;
-		                } 
+                   }
 	            }
+
+            &:hover {
+                background-color: darken(@subject-color, 5%);
+            }
 	    }
 
     .pnd-annotation-details-container {
@@ -628,22 +625,20 @@
 
 .pnd-annotation-sidebar-collapsed {
 
-
-	.pnd-annotation-details-broken {				
+	.pnd-annotation-details-broken {
 				
 		[class^="pnd-icon"]+[class*="pnd-icon-"]{
 			display: none;
-			}
+		}
 			
 		.pnd-annotation-icon-color {
 			display: none;
-			}
-		
 		}
+    }
 
 	.pnd-saving-content{
 		display: none;		
-		}
+	}
 
 	.pnd-annotation-details-header {
 		width: @annotation-sidebar-coll-width;
@@ -651,15 +646,14 @@
 		&:hover {
 			color: #fff;
 			background-color: darken(@subject-color, 10%);  
-			}
+		}
 		                
 	    &.pnd-annotation-details-broken {
 		                 
 		    &:hover {
 			    background-color: darken(@brand-warning, 10%);  
-			    } 
-
-			}
+		    }
+		}
 
 		.pnd-annotation-item-header-text {
 			width: @annotation-sidebar-coll-width;
