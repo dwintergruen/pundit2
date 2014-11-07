@@ -13,6 +13,7 @@ describe('AnnotationDetails service', function() {
         ANNOTATIONDETAILSDEFAULTS,
         Annotation,
         NameSpace,
+        EventDispatcher,
         MyPundit;
 
     var userLoggedIn = {
@@ -38,6 +39,7 @@ describe('AnnotationDetails service', function() {
             AnnotationDetails = $injector.get('AnnotationDetails');
             Annotation = $injector.get('Annotation');
             NameSpace = $injector.get('NameSpace');
+            EventDispatcher = $injector.get('EventDispatcher');
             MyPundit = $injector.get('MyPundit');
             AnnotationDetails.options.debug = true;
             $window = _$window_;
@@ -134,7 +136,8 @@ describe('AnnotationDetails service', function() {
     });
 
     it('should update annotation details and open it', function(){
-        $rootScope.$emit('update-annotation-completed', fakeScope.id);
+        // $rootScope.$emit('update-annotation-completed', fakeScope.id);
+        EventDispatcher.sendEvent('AnnotationsCommunication.editAnnotation', fakeScope.id)
         var currentAnnotationDetails = AnnotationDetails.getAnnotationDetails(fakeScope.id);
         expect(typeof(currentAnnotationDetails)).toBe('object');
         expect(currentAnnotationDetails.expanded).toEqual(true);

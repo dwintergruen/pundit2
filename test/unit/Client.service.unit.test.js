@@ -1,6 +1,6 @@
 describe('Client service', function() {
     
-    var Client, NameSpace, SelectorsManager, ItemsExchange,
+    var Client, NameSpace, SelectorsManager, ItemsExchange, EventDispatcher,
         $rootScope, $httpBackend, $templateCache, $compile;
 
     var testPunditConfig = {
@@ -68,7 +68,7 @@ describe('Client service', function() {
 
     var ImageHandler;
     beforeEach(inject(function( _$rootScope_, _$httpBackend_, _$templateCache_, _$compile_,
-        _Client_, _NameSpace_, _SelectorsManager_, _ItemsExchange_, _ImageHandler_ ){
+        _Client_, _NameSpace_, _SelectorsManager_, _ItemsExchange_, _ImageHandler_, _EventDispatcher_){
 
         $rootScope = _$rootScope_;
         $httpBackend = _$httpBackend_;
@@ -76,6 +76,7 @@ describe('Client service', function() {
         $compile = _$compile_;
         Client = _Client_;
         NameSpace = _NameSpace_;
+        EventDispatcher = _EventDispatcher_;
         SelectorsManager = _SelectorsManager_;
         ItemsExchange = _ItemsExchange_;
         ImageHandler = _ImageHandler_;
@@ -94,9 +95,9 @@ describe('Client service', function() {
     it('should initialize vocab selectors, fix root node class and emit boot event', function(){
         var emitted = false;
 
-        $rootScope.$on('pundit-boot-done', function(){
+        EventDispatcher.addListener('Client.boot', function () {
             emitted = true;
-        });
+        })
 
         Client.boot();
         expect(SelectorsManager.getActiveSelectors().length).toBeGreaterThan(0);

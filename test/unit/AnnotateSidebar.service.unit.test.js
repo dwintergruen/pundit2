@@ -12,7 +12,8 @@ describe('AnnotationSidebar service', function() {
         $rootScope,
         ANNOTATIONSIDEBARDEFAULTS,
         Annotation,
-        NameSpace;
+        NameSpace,
+        EventDispatcher;
 
     var myAnnotation;
 
@@ -27,6 +28,7 @@ describe('AnnotationSidebar service', function() {
             AnnotationSidebar = $injector.get('AnnotationSidebar');
             Annotation = $injector.get('Annotation');
             NameSpace = $injector.get('NameSpace');
+            EventDispatcher = $injector.get('EventDispatcher');
             AnnotationSidebar.options.debug = true;
             $window = _$window_;
             $log = _$log_;
@@ -138,7 +140,7 @@ describe('AnnotationSidebar service', function() {
     });
 
     it('should sidebar get annotation after consolidation-completed event', function(){
-        $rootScope.$emit('consolidation-completed');
+        EventDispatcher.sendEvent('Consolidation.consolidateAll');
         myAnnotation = AnnotationSidebar.getAllAnnotations();
         expect(myAnnotation.length).toEqual(1);
     });
