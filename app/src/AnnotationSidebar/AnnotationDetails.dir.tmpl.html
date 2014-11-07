@@ -11,12 +11,10 @@
 		        <div class="pnd-annotation-item-header-text">
                         <span ng-show="annotation.broken" class="pnd-annotation-icon-color"><span class="pnd-icon pnd-icon-exclamation-circle"></span></span>
 		                <span ng-show="!annotation.broken" class="pnd-annotation-icon-color" style="background-color: {{annotation.color}};"><span class="{{annotation.mainItem.icon}}"></span> </span>
-		                <span class="pnd-item-title">{{annotation.mainItem.label}}</span>
-		                <span ng-class="{true:'pnd-icon-caret-up', false:'pnd-icon-sort-down'}[annotation.expanded]"></span>
-		        </div>    
-               <!-- <button type="button" class="btn pull-right">
+		                <span class="pnd-item-title">{{annotation.mainItem.label}}</span> 		        </div>    
+                <button type="button" class="btn pull-right">
                     <span ng-class="{true:'pnd-icon-caret-up', false:'pnd-icon-sort-down'}[annotation.expanded]"></span>
-                </button> -->
+                </button>
         </div>
     </div>
     <div class="pnd-annotation-details-container" ng-if="annotation.expanded">
@@ -68,7 +66,7 @@
 
                 
         <div class="pnd-annotation-details-content">
-        <!-- meta -->
+        
                 <div class="pnd-annotation-details-meta" ng-init="meta = false">
                         <div class="pnd-annotation-details-item-header" 
                             ng-click="meta = !meta"
@@ -77,10 +75,9 @@
 	                            <span class="pnd-icon pnd-icon-info-circle"></span>
 	                            <span>Meta</span>
                             </div>
-                            <span ng-class="{true:'pnd-icon-caret-up', false:'pnd-icon-sort-down'}[meta]"></span>
-                            <!-- <button type="button" class="btn btn-link pull-right">
+                            <button type="button" class="btn btn-link pull-right">
                                 <span ng-class="{true:'pnd-icon-caret-up', false:'pnd-icon-sort-down'}[meta]"></span>
-                            </button> -->
+                            </button>
                         </div>
 
                         <div ng-show="meta" class="pnd-sub-info">
@@ -102,9 +99,45 @@
                             </span>
                         </div>
                  </div>
-        <!-- // end meta -->
+        
             <div class="pnd-annotation-detains-item" ng-repeat="item in annotation.itemsArray">
+            <!-- meta -->
+             <!--   <div 
+                    class="pnd-annotation-details-meta" 
+                    ng-init="meta = false">
+                        <div 
+                            class="pnd-annotation-details-item-header" 
+                            ng-click="meta = !meta"
+                            ng-class="{'pnd-annotation-details-sub-open': meta}">
+                            <div class="pnd-annotation-item-header-text">
+	                            <span class="pnd-icon pnd-icon-info-circle"></span>
+	                            <span>Meta</span>
+                            </div>
+                            <button type="button" class="btn btn-link pull-right">
+                                <span ng-class="{true:'pnd-icon-caret-up', false:'pnd-icon-sort-down'}[meta]"></span>
+                            </button>
+                        </div>
 
+                        <div ng-show="meta" class="pnd-sub-info">
+                            <span ng-if="meta">
+                                <div class="pnd-annotation-details-info-id">
+					                <strong>ID:</strong> {{annotation.id}}
+					            </div>
+					            <div class="pnd-annotation-details-info-author">
+					                <strong>Author:</strong> {{annotation.creatorName}}
+					            </div>
+					            <div class="pnd-annotation-details-info-date">
+					                <strong>Date:</strong> {{annotation.created | date : 'MMM d, y H:mm a'}}
+					            </div>       
+					            <div class="pnd-annotation-details-info-notebook">
+					                <strong>Notebook:</strong> <a href="{{askLink}}{{annotation.notebookId}}" target="_blank">
+					                    {{notebookName}}
+					                </a>
+					            </div>   
+                            </span>
+                        </div>
+                </div> -->
+            <!-- // end meta -->
             <!-- subject -->
                 <div 
                     class="pnd-annotation-details-subject" 
@@ -117,15 +150,12 @@
                             ng-class="{'pnd-annotation-details-sub-open': subInfo}">
                             <!-- <span class="{{item.subject.icon}}"></span> -->
                             <div class="pnd-annotation-item-header-text">
-	                            <span class="pnd-item-title">
-		                            <span class="pnd-icon pnd-icon-circle"></span>
-		                            <span ng-bind-html="item.subject.label">{{item.subject.label}}</span>
-	                            </span>
+	                            <span class="pnd-icon pnd-icon-circle"></span>
+	                            <span ng-bind-html="item.subject.label">{{item.subject.label}}</span>
                             </div>
-                            <span ng-class="{true:'pnd-icon-caret-up', false:'pnd-icon-sort-down'}[subInfo]"></span>
-                            <!-- <button type="button" class="btn btn-link pull-right">
+                            <button type="button" class="btn btn-link pull-right">
                                 <span ng-class="{true:'pnd-icon-caret-up', false:'pnd-icon-sort-down'}[subInfo]"></span>
-                            </button> -->
+                            </button>
                         </div>
 
                         <div ng-show="subInfo" class="pnd-sub-info">
@@ -147,10 +177,9 @@
     	                    	<span class="pnd-icon pnd-icon-circle"></span>
     	                    	<span ng-bind-html="item.predicate.label">{{item.predicate.label}}</span>
                         	</div>
-                        	<span ng-class="{true:'pnd-icon-caret-up', false:'pnd-icon-sort-down'}[preInfo]"></span>
-                            <!-- <button type="button" class="btn  btn-link pull-right">
+                            <button type="button" class="btn  btn-link pull-right">
                                 <span ng-class="{true:'pnd-icon-caret-up', false:'pnd-icon-sort-down'}[preInfo]"></span>
-                            </button> -->
+                            </button>
                         </div>
 
                         <div ng-show="preInfo" class="pnd-sub-info">
@@ -181,10 +210,9 @@
                                         {{object.label}}
                                     </span>
                                 </div>
-                                <span ng-class="{true:'pnd-icon-caret-up', false:'pnd-icon-sort-down'}[objInfo]"></span>
-                                <!-- <button type="button" class="btn  btn-link pull-right">
+                                <button type="button" class="btn  btn-link pull-right">
                                         <span ng-class="{true:'pnd-icon-caret-up', false:'pnd-icon-sort-down'}[objInfo]"></span>
-                                </button> -->
+                                </button>
                             </div>
                             <div ng-show="objInfo" class="pnd-sub-info">
                                 <span ng-if="objInfo">

@@ -330,37 +330,23 @@
 
 .pnd-annotation-details-wrap {
 		padding: 0px;
+		//border-top: 1px solid #fff;
 
     .pnd-annotation-details-top {
         cursor: pointer;
         }
-		
+        
 	.pnd-annotation-item-header-text {
-		display: inline-block;
-		float: left;
-		margin-right: 5px;
-		}
-		
-	.pnd-item-title {
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
-		max-width: 230px;
+		//width: 250px;
+		width: 245px;
 		display: inline-block;
-		margin: 0px 5px;
-		float: left;
 		}
 		
-	.pnd-icon-caret-up,
-	.pnd-icon-sort-down {
-		display: inline-block;
-		opacity: 0.5;
-		-khtml-opacity: 0.5;
-		-moz-opacity:0.5;
-		filter: alpha(opacity=50);
-		-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+	.pnd-item-title {
 		}
-		
         
         // FOOTER
         
@@ -478,6 +464,7 @@
             // META TOGGLE 
             
                 .pnd-annotation-details-meta {
+                	background-color: @gray-lighter;
                     border-bottom: 3px solid @gray-extra-light;
                     width: @annotation-sidebar-filter-width;
                     
@@ -485,7 +472,6 @@
 			                	padding: 5px 10px;
 			                	overflow-y: hidden;
 			                	background-color: lighten(@gray-lighter, 4%);
-			                	border-top: 1px solid @gray-lighter;
 			                    } 
                     
                         .pnd-annotation-details-item-header {
@@ -727,7 +713,6 @@
 	width: 26px;
 	display: inline-block;
 	text-align: center;
-	float: left;
 	}
 
 .pnd-annotation-details{
