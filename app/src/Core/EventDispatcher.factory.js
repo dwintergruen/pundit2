@@ -48,6 +48,16 @@ angular.module('Pundit2.Core')
         return [name, callback]; 
     };
 
+    EventDispatcher.addListeners = function (list, callback) {
+        var refs = [];
+
+        for (var l in list){
+            refs.push(EventDispatcher.addListener(list[l], callback));
+        }
+        
+        return refs;
+    };
+
     EventDispatcher.removeListener = function (handle) {
         var name = handle[0],
             callback = handle[1];
