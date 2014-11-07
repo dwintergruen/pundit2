@@ -12,6 +12,7 @@ angular.module('Pundit2.AnnotationSidebar')
     AnnotationDetails.addAnnotationReference($scope);
 
     $scope.annotation = AnnotationDetails.getAnnotationDetails(currentId);
+    $scope.openGraph = Config.lodLive.baseUrl+Config.pndPurl+'annotation/'+currentId;
 
     if(typeof($scope.annotation) !== 'undefined'){
         if (AnnotationDetails.isUserToolShowed($scope.annotation.creator)){
@@ -51,10 +52,6 @@ angular.module('Pundit2.AnnotationSidebar')
             cancelWatchNotebookName();
         }
     });
-
-    $scope.openGraph = function(){
-        $window.open(Config.lodLive.baseUrl+Config.pndPurl+'annotation/'+currentId, '_blank');
-    };
 
     $scope.toggleAnnotation = function(){
         if(!AnnotationSidebar.isAnnotationSidebarExpanded()){
