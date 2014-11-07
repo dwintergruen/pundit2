@@ -85,7 +85,7 @@ angular.module('Pundit2.Annomatic')
  *
  * For the configuration of this module, see {@link #!/api/punditConfig/object/modules#Annomatic here}
  */
-.service('Annomatic', function(ANNOMATICDEFAULTS, BaseComponent, NameSpace, DataTXTResource, XpointersHelper,
+.service('Annomatic', function(ANNOMATICDEFAULTS, BaseComponent, EventDispatcher, NameSpace, DataTXTResource, XpointersHelper,
                                ItemsExchange, TextFragmentHandler, ImageHandler, TypesHelper, Toolbar,
                                DBPediaSpotlightResource, Item, GramsciResource, AnnotationsCommunication,
                                $rootScope, $timeout, $document, $window, $q, Consolidation, ContextualMenu) {
@@ -1279,10 +1279,10 @@ angular.module('Pundit2.Annomatic')
         if(annotationsRootNode == null){ return; }
 
         annomatic.hardReset();
-        Toolbar.setLoading(true);
+        EventDispatcher.sendEvent('Pundit.loading', true);
         annomatic.getAnnotations(annotationsRootNode).then(function(){
             // AnnotationSidebar.toggleLoading();
-            Toolbar.setLoading(false);
+            EventDispatcher.sendEvent('Pundit.loading', false);
             Consolidation.consolidate(ItemsExchange.getItemsByContainer(annomatic.options.container));
         })
     };

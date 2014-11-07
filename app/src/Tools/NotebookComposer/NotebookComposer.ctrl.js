@@ -1,5 +1,9 @@
 angular.module('Pundit2.NotebookComposer')
-    .controller('NotebookComposerCtrl', function($scope, NotebookComposer, Toolbar, $timeout, NotebookExchange, NotebookCommunication, $q) {
+    .controller('NotebookComposerCtrl', function($scope, EventDispatcher, NotebookComposer, $timeout, NotebookExchange, NotebookCommunication, $q) {
+
+        var setLoading = function (state) {
+            EventDispatcher.sendEvent('Pundit.loading', state);
+        };
 
         $scope.notebook = {};
         $scope.notebook.visibility = "public";
@@ -70,7 +74,7 @@ angular.module('Pundit2.NotebookComposer')
 
             $timeout(function(){
                 $scope.saving = false;
-                Toolbar.setLoading(false);
+                setLoading(false);
                 $scope.notebookComposerHeader = "Create your notebook";
                 NotebookComposer.setNotebookToEdit(null);
             }, time);
@@ -81,7 +85,7 @@ angular.module('Pundit2.NotebookComposer')
 
         $scope.save = function(){
 
-            Toolbar.setLoading(true);
+            setLoading(true);
 
             // init save process showing saving message
             $scope.textMessage = NotebookComposer.options.savingMsg;
@@ -126,7 +130,7 @@ angular.module('Pundit2.NotebookComposer')
         $scope.edit = function(){
 
             var promises = [];
-            Toolbar.setLoading(true);
+            setLoading(true);
 
             // init save process showing saving message
             $scope.textMessage = NotebookComposer.options.editingMsg;

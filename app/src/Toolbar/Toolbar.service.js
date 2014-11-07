@@ -104,6 +104,10 @@ angular.module('Pundit2.Toolbar')
         toolbar.addError(e.args);
     });
 
+    EventDispatcher.addListener('Pundit.loading', function (e) {
+        toolbar.setLoading(e.args);
+    });
+
     toolbar.getErrorShown = function() {
         return isErrorShown;
     };

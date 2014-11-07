@@ -15,6 +15,11 @@ angular.module('Pundit2.Core')
 
     var errorLog = [];
 
+    // Pundit
+    EventDispatcher.addListener('Pundit.loading', function (e) {
+        state.Pundit.loading = e.args;
+    });
+
     // Client
     EventDispatcher.addListener('Client.boot', function () {
         state.Pundit.clientBoot = true;

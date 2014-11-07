@@ -60,12 +60,16 @@ angular.module("Pundit2.MyItemsContainer")
 
 })
 .service("MyItems", function(MYITEMSDEFAULTS, BaseComponent, EventDispatcher, NameSpace, Item, ItemsExchange,
-                             ContextualMenu, MyPundit, Config, Consolidation, Toolbar,
+                             ContextualMenu, MyPundit, Config, Consolidation,
                              $http, $rootScope, $q) {
 
     var myItems = new BaseComponent("MyItems", MYITEMSDEFAULTS);
 
     var opInProgress = false;
+
+    var setLoading = function (state) {
+        EventDispatcher.sendEvent('Pundit.loading', state);
+    };
 
     var initContextualMenu = function() {
 
@@ -148,7 +152,7 @@ angular.module("Pundit2.MyItemsContainer")
             return;
         }
         opInProgress = true;
-        Toolbar.setLoading(true);
+        setLoading(true);
 
         $http({
             headers: { 'Accept': 'application/json' },
@@ -157,7 +161,7 @@ angular.module("Pundit2.MyItemsContainer")
             withCredentials: true
         }).success(function(data) {
             var num = 0;
-            Toolbar.setLoading(false);
+            setLoading(false);
 
             if (typeof(data) === 'undefined') {
                 opInProgress = false;
@@ -203,7 +207,7 @@ angular.module("Pundit2.MyItemsContainer")
             myItems.log('Retrieved my items from the server: '+num+' items');
 
         }).error(function(msg) {
-            Toolbar.setLoading(false);
+            setLoading(false);
             opInProgress = false;
             promise.reject();
             myItems.log('Http error while retrieving my items from the server: ', msg);
@@ -222,7 +226,7 @@ angular.module("Pundit2.MyItemsContainer")
         }
         opInProgress = true;
 
-        Toolbar.setLoading(true);
+        setLoading(true);
 
         // remove all my item on pundit server
         // setting it to []
@@ -234,7 +238,7 @@ angular.module("Pundit2.MyItemsContainer")
             data: angular.toJson({value: [], created: currentTime.getTime()})
         }).success(function(data) {
 
-            Toolbar.setLoading(false);
+            setLoading(false);
 
             if (typeof(data.redirectTo) !== 'undefined') {
                 opInProgress = false;
@@ -251,7 +255,7 @@ angular.module("Pundit2.MyItemsContainer")
             
             myItems.log('Deleted all my items on server', data);
         }).error(function(msg) {
-            Toolbar.setLoading(false);
+            setLoading(false);
             opInProgress = false;
             promise.reject();
             myItems.err('Cant delete my items on server: ', msg);
@@ -280,7 +284,7 @@ angular.module("Pundit2.MyItemsContainer")
             copiedItems.splice(index, 1);
         }
 
-        Toolbar.setLoading(true);
+        setLoading(true);
 
         // update to server the new my items 
         // the new my items format is different from pundit1 item format
@@ -295,7 +299,7 @@ angular.module("Pundit2.MyItemsContainer")
 
             if (typeof(data.redirectTo) !== 'undefined') {
                 opInProgress = false;
-                Toolbar.setLoading(false);
+                setLoading(false);
                 promise.resolve();
                 myItems.log('Deleted single my item on server produce a redirect response to: ', data);
                 return;
@@ -306,13 +310,13 @@ angular.module("Pundit2.MyItemsContainer")
             ItemsExchange.removeItemFromContainer(value, myItems.options.container);
             promise.resolve();
             opInProgress = false;
-            Toolbar.setLoading(false);
+            setLoading(false);
 
             myItems.log('Deleted from my item: '+ value.label);
 
         }).error(function(msg) {
             opInProgress = false;
-            Toolbar.setLoading(false);
+            setLoading(false);
             promise.reject();
             myItems.err('Cant delete a my item on the server: ', msg);
         });
@@ -338,7 +342,7 @@ angular.module("Pundit2.MyItemsContainer")
         // add new item to the copied array
         items.push(value);
 
-        Toolbar.setLoading(true);
+        setLoading(true);
 
         // update to server the new my items
         // the new my items format is different from pundit1 item format
@@ -353,7 +357,7 @@ angular.module("Pundit2.MyItemsContainer")
 
             if (typeof(data.redirectTo) !== 'undefined') {
                 opInProgress = false;
-                Toolbar.setLoading(false);
+                setLoading(false);
                 promise.resolve();
                 myItems.log('Add single item to my items on server produce a redirect response to: ', data);
                 return;
@@ -363,14 +367,14 @@ angular.module("Pundit2.MyItemsContainer")
             // controller watch now update the view
             ItemsExchange.addItemToContainer(value, myItems.options.container);
             opInProgress = false;
-            Toolbar.setLoading(false);
+            setLoading(false);
             promise.resolve();
 
             myItems.log('Added item to my items: '+ value.label);
 
         }).error(function(msg) {
             opInProgress = false;
-            Toolbar.setLoading(false);
+            setLoading(false);
             promise.reject();
 
             myItems.err('Cant add item to my items on the server: ', msg);
