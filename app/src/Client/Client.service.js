@@ -453,7 +453,7 @@ angular.module('Pundit2.Client')
     // otherwise the image consolidation may BREAK!!!
     .service('Client', function(CLIENTDEFAULTS, BaseComponent, Config, EventDispatcher, MyPundit,
                                 ImageAnnotator, TextFragmentAnnotator, AnnotationsCommunication,
-                                AnnotationsExchange, Item, ItemsExchange, MyItems,
+                                AnnotationsExchange, Item, ItemsExchange, MyItems, Status,
                                 TextFragmentHandler, ImageHandler, PageAnnotator,
                                 Toolbar, Annomatic, NotebookCommunication, NotebookExchange,
                                 SelectorsManager, FreebaseSelector, MurucaSelector, KorboBasketSelector, Korbo2Selector, EuropeanaSelector, DbpediaSelector, GeonamesSelector, PredicateSelector,
@@ -641,9 +641,8 @@ angular.module('Pundit2.Client')
 
             addComponents();
 
-
             client.log('Boot is completed, emitting pundit-boot-done event');
-            $rootScope.$emit('pundit-boot-done');
+            EventDispatcher.sendEvent('Client.boot');
 
             // TODO:
             // * Lists (My, page?, vocabs?, selectors?)
