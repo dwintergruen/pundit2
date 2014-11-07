@@ -65,8 +65,7 @@
 
 .pnd-annotation-sidebar-filter-input, .pnd-annotation-sidebar-filter-input-contains {
     position: relative;
-         
-	    
+
 	 .pnd-icon {
 	    position: absolute;
 	    color: @gray-light;
@@ -76,9 +75,7 @@
 	    -moz-box-sizing: border-box;
 	    -webkit-box-sizing: border-box;
 	    box-sizing: border-box;
-	    }
-	    
-
+     }
 
     // .pnd-icon-times is configured in *ItemsContainer.service.js defaults with
     // inputIconClear: 'pnd-icon-times'
@@ -86,9 +83,8 @@
      .pnd-icon.pnd-icon-times:hover {
         color:  @brand-success;
         cursor: pointer;
-        }
-
-    }
+     }
+}
 
 .pnd-annotation-sidebar-filter-input-contains {
 	padding: 10px;
@@ -455,55 +451,52 @@
         width: @annotation-sidebar-filter-width;
         
         .pnd-annotation-details-content {
-            padding: 0px 0px 0px 0px;
+            padding: 0;
             background-color: #fff;
             
-            // META TOGGLE 
-            
-                .pnd-annotation-details-meta {
-                	background-color: @gray-lighter;
-                    border-bottom: 3px solid @gray-extra-light;
-                    width: @annotation-sidebar-filter-width;
-                    
-                    	.pnd-sub-info {
-			                	padding: 5px 10px;
-			                	overflow-y: hidden;
-			                	background-color: lighten(@gray-lighter, 4%);
-			                    } 
-                    
-                        .pnd-annotation-details-item-header {
-                        	padding-left: 7px;
-                        	cursor: pointer;
-                        	line-height: 24px;
-                        	height: 24px;
-                        	
-                        	.pnd-icon {
-		                    	color: @gray;
-		                    	}
-	                         
-		                	&:hover {
-			                	background-color: @gray-lighter;  
-			                    } 
-			                         
-			                &:active,
-			                &:focus {
-			                    background-color: @gray-lighter; 
-			                    }
-			                    
-			                .btn {
-				                border: none;
-				                background-color: transparent;
-				                line-height: 0px; 
-				                height: 24px;
-				                width: 24px;
-				                padding: 0 8px;
-				                }		                
-			             }                   
-	                 }
+            // META TOGGLE
+            .pnd-annotation-details-meta {
+                background-color: @gray-lighter;
+                border-bottom: 3px solid @gray-extra-light;
+                width: @annotation-sidebar-filter-width;
 
-	                       
+                .pnd-sub-info {
+                        padding: 5px 10px;
+                        overflow-y: hidden;
+                        background-color: lighten(@gray-lighter, 4%);
+                        }
+
+                .pnd-annotation-details-item-header {
+                    padding-left: 7px;
+                    cursor: pointer;
+                    line-height: 24px;
+                    height: 24px;
+
+                    .pnd-icon {
+                        color: @gray;
+                    }
+
+                    &:hover {
+                        background-color: @gray-lighter;
+                    }
+
+                    &:active,
+                    &:focus {
+                        background-color: @gray-lighter;
+                    }
+
+                    .btn {
+                        border: none;
+                        background-color: transparent;
+                        line-height: 0px;
+                        height: 24px;
+                        width: 24px;
+                        padding: 0 8px;
+                    }
+                 }
+             }
+
             .pnd-annotation-detains-item {
-            	
             	
             	& + .pnd-annotation-detains-item {
 	            	border-top: 2px solid @gray-extra-light;
@@ -516,7 +509,7 @@
 	                height: 24px;
 	                width: 24px;
 	                padding: 0 8px;
-	                }
+                }
 	                
                 .pnd-annotation-details-item-header {
                     cursor: pointer;
@@ -525,15 +518,14 @@
                     
                     &:hover button {
 	                    color: @brand-success; 
-	                    }
+                    }
 	                    
 	                &.pnd-annotation-details-sub-open {
 	                	background-color: @gray-lighter;  
 	                    border-bottom: 1px solid @gray-extra-light;
 	                    font-weight: bold;
-	                    }
-
                     }
+                }
 
                 .pnd-annotation-details-meta,  
                 .pnd-annotation-details-subject,
@@ -543,35 +535,34 @@
                     border-bottom: 1px solid @gray-extra-light;
                     width: @annotation-sidebar-filter-width;
                     
-                    	.pnd-sub-info {
-			                	padding: 5px 10px;
-			                	overflow-y: hidden; 
-			                    } 
-                    
-                        .pnd-annotation-details-item-header {
-	                         
-		                	&:hover {
-			                	background-color: @gray-lighter;  
-			                    } 
-			                         
-			                &:active,
-			                &:focus {
-			                    background-color: @gray-lighter; 
-			                    } 
-			             } 
-                    
-	                 }
+                    .pnd-sub-info {
+                        padding: 5px 10px;
+                        overflow-y: hidden;
+                    }
+
+                    .pnd-annotation-details-item-header {
+
+                        &:hover {
+                            background-color: @gray-lighter;
+                        }
+
+                        &:active,
+                        &:focus {
+                            background-color: @gray-lighter;
+                        }
+                     }
+                 }
 	                 
 	            .pnd-annotation-details-meta {
                     
-                       .pnd-annotation-details-item-header {
-	                    	padding-left: 7px;
+                    .pnd-annotation-details-item-header {
+	                    padding-left: 7px;
 	                    	
-	                    	.pnd-icon {
-		                    	color: @gray;
-		                    	}
-	                        } 
+	                    .pnd-icon {
+		                    color: @gray;
+                        }
                     }
+                }
                     
                 .pnd-annotation-details-subject {
                     
@@ -696,11 +687,8 @@
 			.pnd-icon {
 				display: none;
 				}	
-		
 		}
-						
 }
-
 
 .pnd-annotation-icon-color {
 	height: 24px;
@@ -709,7 +697,7 @@
 	text-align: center;
 	}
 
-.pnd-annotation-details{
+.pnd-annotation-details {
     position: absolute;
 }
 
@@ -718,12 +706,11 @@
 // ANIMATION TEST
 // --------------------------------------------------
 
-
 .pnd-annotation-details-ghosted {
      -webkit-transition-duration: 0.8s;
      -moz-transition-duration: 0.8s;
      -o-transition-duration: 0.8s;
      transition-duration: 0.8s;
-     }
+}
 
         
