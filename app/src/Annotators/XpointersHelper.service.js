@@ -20,7 +20,11 @@ angular.module('Pundit2.Annotators')
 
 })
 .config(function($locationProvider) {
-    $locationProvider.html5Mode(true);
+    // $locationProvider.html5Mode(true);
+    $locationProvider.html5Mode({
+        enabled: true,
+        requireBase: false
+    });
 })
 .service('XpointersHelper', function(XPOINTERSHELPERDEFAULTS, NameSpace, BaseComponent,
                                      $document, $location, $window) {
