@@ -1,10 +1,10 @@
 angular.module('Pundit2.Core')
-.factory('EventDispatcher', function ($q) {
+.service('EventDispatcher', function ($q, BaseComponent) {
 
-    var EventDispatcher = {},
-        events = {};
+    var eventDispatcher = new BaseComponent('EventDispatcher');
+    var events = {};
 
-    EventDispatcher.sendEvent = function (name, args) {
+    eventDispatcher.sendEvent = function (name, args) {
         var promises = [],
             deferred = [],
             defIndex = 0,
@@ -40,7 +40,7 @@ angular.module('Pundit2.Core')
         return $q.all(promises);
     };
 
-    EventDispatcher.addListener = function (name, callback) {
+    eventDispatcher.addListener = function (name, callback) {
         if (!events[name]) {
             events[name] = [];
         }
@@ -48,17 +48,17 @@ angular.module('Pundit2.Core')
         return [name, callback]; 
     };
 
-    EventDispatcher.addListeners = function (list, callback) {
+    eventDispatcher.addListeners = function (list, callback) {
         var refs = [];
 
         for (var l in list){
-            refs.push(EventDispatcher.addListener(list[l], callback));
+            refs.push(eventDispatcher.addListener(list[l], callback));
         }
         
         return refs;
     };
 
-    EventDispatcher.removeListener = function (handle) {
+    eventDispatcher.removeListener = function (handle) {
         var name = handle[0],
             callback = handle[1];
 
@@ -71,7 +71,7 @@ angular.module('Pundit2.Core')
         );      
     };
 
-    EventDispatcher.getListeners = function () {
+    eventDispatcher.getListeners = function () {
         var results = [];
         for (var e in events){
             results.push(e);
@@ -79,5 +79,5 @@ angular.module('Pundit2.Core')
         return results;
     };
 
-    return EventDispatcher;
+    return eventDispatcher;
 });

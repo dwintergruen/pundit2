@@ -2,7 +2,7 @@ angular.module('Pundit2.Core')
 .constant("BASECOMPONENTDEFAULTS", {
     debug: false
 })
-.service('BaseComponent', function($log, Utils, BASECOMPONENTDEFAULTS, $window, Config, EventDispatcher) {
+.service('BaseComponent', function($log, Utils, BASECOMPONENTDEFAULTS, $window, Config) {
 
     var BaseComponent = function(name, options) {
         this.name = name;
@@ -46,7 +46,6 @@ angular.module('Pundit2.Core')
         args.unshift("#PUNDIT " + this.name + "#");
         args.push(callerLine);
         $log.error.apply(null, args);
-        EventDispatcher.sendEvent('Pundit.error', args);
     };
 
     // TODO: doc
