@@ -1,5 +1,8 @@
 angular.module('Pundit2.Core')
-.service('Status', function (BaseComponent, EventDispatcher) {
+.constant("STATUSDEFAULTS", {
+    debug: false
+})
+.service('Status', function (BaseComponent, EventDispatcher, STATUSDEFAULTS) {
 
     var status = new BaseComponent('Status');
 

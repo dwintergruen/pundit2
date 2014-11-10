@@ -68,6 +68,7 @@ angular.module('Pundit2.Communication')
 
         }, function(msg) {
             annotationsCommunication.err("Could not search for annotations, error from the server: "+msg);
+            EventDispatcher.sendEvent('Pundit.error', 'Could not search for annotations, error from the server!');
             promise.reject(msg);
         });
 
