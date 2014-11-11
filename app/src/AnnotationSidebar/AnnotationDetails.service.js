@@ -31,6 +31,21 @@ angular.module('Pundit2.AnnotationSidebar')
     /**
      * @module punditConfig
      * @ngdoc property
+     * @name modules#AnnotationDetails.moreInfo
+     *
+     * @description
+     * `boolean`
+     *
+     * Show/Hide the more info link in object
+     *
+     * Default value:
+     * <pre> moreInfo: false </pre>
+     */
+    moreInfo: false,
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
      * @name modules#AnnotationDetails.debug
      *
      * @description

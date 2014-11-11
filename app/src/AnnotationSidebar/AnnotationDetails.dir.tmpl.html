@@ -193,9 +193,12 @@
                                         <span>{{object.label}}</span>
                                     </span>
                                 </span>
-                                <button ng-if="lodLive && object.typeClass=='uri'">
+                                <p ng-if="object.class == 'pnd-item-entity' && moreInfo" class="pnd-annotation-details-more-info">
+                                    <a href="{{object.uri}}" target="_blank">More info</a>
+                                </p>
+                                <p ng-if="lodLive && object.typeClass=='uri'">
                                     <a href="{{lodLiveBaseUrl}}{{object.uri}}" target="_blank">Graph</a>
-                                </button>
+                                </p>
                             </div>
                     </div>
                 </div>

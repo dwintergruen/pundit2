@@ -13,6 +13,7 @@ angular.module('Pundit2.AnnotationSidebar')
 
     $scope.annotation = AnnotationDetails.getAnnotationDetails(currentId);
     $scope.openGraph = Config.lodLive.baseUrl+Config.pndPurl+'annotation/'+currentId;
+    $scope.moreInfo = AnnotationDetails.options.moreInfo;
 
     if(typeof($scope.annotation) !== 'undefined'){
         if (AnnotationDetails.isUserToolShowed($scope.annotation.creator)){
