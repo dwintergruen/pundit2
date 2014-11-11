@@ -42,6 +42,7 @@ angular.module('Pundit2.Preview')
 
     // return true if dashboard preview is empty
     $scope.isNotebook = function() {
+        // TODO: Use namespace
         if($scope.itemDashboardPreview !== null && $scope.itemDashboardPreview.type[0] === "http://purl.org/pundit/ont/ao#Notebook"){
             return true;
         } else {
