@@ -47,7 +47,8 @@ angular.module('Pundit2.Annotators')
                 } else if (Config.modules.SimplifiedClient.active) {
                     ItemPopover.show(scope.element, scope.item);
                 }
-                
+                event.stopPropagation();               
+                event.preventDefault();
             };
 
         } // link()
