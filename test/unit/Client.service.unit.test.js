@@ -92,7 +92,7 @@ describe('Client service', function() {
         delete window.punditConfig;
     });
 
-    it('should initialize vocab selectors, fix root node class and emit boot event', function(){
+    it('should fix root node class and emit boot event', function(){
         var emitted = false;
 
         EventDispatcher.addListener('Client.boot', function () {
@@ -100,7 +100,8 @@ describe('Client service', function() {
         })
 
         Client.boot();
-        expect(SelectorsManager.getActiveSelectors().length).toBeGreaterThan(0);
+        // expect(SelectorsManager.getActiveSelectors().length).toBeGreaterThan(0);
+        
         // fix class to add css
         expect(angular.element("[data-ng-app='Pundit2']").hasClass('pnd-wrp')).toBe(true);
         expect(emitted).toBe(true);
