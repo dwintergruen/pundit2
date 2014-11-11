@@ -130,9 +130,9 @@ angular.module('Pundit2.Vocabularies')
      * and can query the relative database (setting active to false vocabulary is also removed from the interface).
      *
      * Default value:
-     * <pre> active: true </pre>
+     * <pre> active: false </pre>
      */
-    active: true,
+    active: false,
 
     /**
      * @module punditConfig
