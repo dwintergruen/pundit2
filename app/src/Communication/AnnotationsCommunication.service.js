@@ -126,6 +126,21 @@ angular.module('Pundit2.Communication')
         // var completed = 0;
         var promise = $q.defer();
 
+        var postSaveSend = function (url, annotationId) {
+            console.log(url);
+            $http({
+                headers: { 'Content-Type': 'application/json' },
+                method: 'POST',
+                url: url,
+                params: {},
+                data: annotationId
+            }).success(function() {
+                annotationsCommunication.log('Post save success');
+            }).error(function(error) {
+                annotationsCommunication.log('Post save error ', error);
+            });
+        };
+
         if(MyPundit.isUserLogged()){
 
             setLoading(true);
@@ -185,6 +200,14 @@ angular.module('Pundit2.Communication')
                     setLoading(false);
                     promise.reject();
                 });
+
+                // Call post save
+                if(typeof(Config.postSave) !== 'undefined' && Config.postSave.active){
+                    var callbacks = Config.postSave.callbacks;
+                    angular.isArray(callbacks) && angular.forEach(callbacks, function (callback) {
+                        postSaveSend(callback, data.AnnotationID);
+                    });
+                }
             }).error(function(msg) {
                 // TODO
                 annotationsCommunication.log("Error: impossible to save annotation", msg);

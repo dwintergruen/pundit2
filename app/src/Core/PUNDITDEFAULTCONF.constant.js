@@ -53,6 +53,28 @@ angular.module('Pundit2.Core')
         /**
          * @module punditConfig
          * @ngdoc object
+         * @name postSave
+         * @description
+         * `object`
+         *
+         * Define if is use post save callbacks
+         *
+         * Default:
+         * <pre>
+         * postSave: {
+         *   active: false,
+         *   callbacks: []
+         * }
+         * </pre>
+         */
+        postSave: {
+            active: false,
+            callbacks: []
+        },
+
+        /**
+         * @module punditConfig
+         * @ngdoc object
          * @name annotationServerBaseURL
          * @description
          * `string`
