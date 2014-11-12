@@ -3,6 +3,8 @@ angular.module('Pundit2.ContextualMenu')
 
     position: 'bottom-left',
 
+    overflowClass: 'pnd-contextual-menu-scroll',
+
     debug: false
 })
 /**
@@ -185,7 +187,7 @@ angular.module('Pundit2.ContextualMenu')
      * @param {String} type
     */
     contextualMenu.show = function(x, y, resource, type){
-        
+
         // show only one menu
         if ( state.menu !== null ) {
             state.menu.hide();
@@ -245,6 +247,12 @@ angular.module('Pundit2.ContextualMenu')
         state.menu = init(realOptions, place);
         state.menu.$promise.then(state.menu.show);
 
+        angular.element('body').addClass(contextualMenu.options.overflowClass);
+
+    });
+
+    mockOptions.scope.$on('tooltip.hide', function(){
+        angular.element('body').removeClass(contextualMenu.options.overflowClass);
     });
 
     /**
