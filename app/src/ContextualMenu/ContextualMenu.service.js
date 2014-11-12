@@ -5,6 +5,8 @@ angular.module('Pundit2.ContextualMenu')
 
     overflowClass: 'pnd-contextual-menu-scroll',
 
+    overflowContentClass: 'pnd-tab-content',
+
     debug: false
 })
 /**
@@ -39,6 +41,8 @@ angular.module('Pundit2.ContextualMenu')
         // and to define the real menu placement to prevent window scrool
         mockMenu: null
     };
+
+    var overflowContentClass = contextualMenu.options.overflowContentClass;
 
 
     // create div anchor (the element bound with angular strap menu reference)
@@ -247,11 +251,18 @@ angular.module('Pundit2.ContextualMenu')
         state.menu = init(realOptions, place);
         state.menu.$promise.then(state.menu.show);
 
+        // Find current scroll positions
+        var wTop = angular.element($window).scrollTop(),
+            wLeft = angular.element($window).scrollLeft();
+        // Force scroll back to original positions
+        angular.element($window).bind("scroll", function(){
+            $(this).scrollTop(wTop).scrollLeft(wLeft); 
+        });
         angular.element('body').addClass(contextualMenu.options.overflowClass);
-
     });
 
     mockOptions.scope.$on('tooltip.hide', function(){
+        angular.element($window).unbind("scroll");
         angular.element('body').removeClass(contextualMenu.options.overflowClass);
     });
 
