@@ -19,9 +19,10 @@ describe("Preview interaction", function() {
         });
 
         // 'More Info' should be visible and disabled
-        p.findElements(protractor.By.css('.pnd-dashboard-preview-more-info-button.disabled')).then(function(moreInfoButton) {
-            expect(moreInfoButton.length).toBe(1);
-        });
+        // TODO: only for entity
+        // p.findElements(protractor.By.css('.pnd-dashboard-preview-more-info-button.disabled')).then(function(moreInfoButton) {
+        //     expect(moreInfoButton.length).toBe(1);
+        // });
 
         // 'Clear Isticky' should be visible and disabled
         p.findElements(protractor.By.css('.pnd-dashboard-preview-clear-sticky-button.disabled')).then(function(clearStickyButton) {

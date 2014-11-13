@@ -9,7 +9,7 @@ describe("The annomatic module", function() {
         p.findElement(protractor.By.css('.pnd-button-suggestion')).click().then(function(){
             p.waitForAngular();
             p.findElements(protractor.By.css('.ann-auto')).then(function(elements) {
-                expect(elements.length).toBe(38);
+                expect(elements.length).toBe(49);
             });
         });
     });
@@ -28,7 +28,7 @@ describe("The annomatic module", function() {
 
         // find all suggested annotation, should be 38
         p.findElements(protractor.By.css('.pnd-text-fragment-icon')).then(function(elements) {
-            expect(elements.length).toBe(38);
+            expect(elements.length).toBe(49);
 
             // click first icon to open preview and menu suggested annotation
             elements[0].click();
