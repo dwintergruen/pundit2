@@ -13,14 +13,14 @@ angular.module('Pundit2.Annomatic')
     // Will be used to show the button to accept all of them at once
     $scope.instances = $scope.ann.byId[$scope.ann.byNum[$scope.num].id].length;
 
-    $scope.hide = function($event) {
+    $scope.hide = function(event) {
         $scope.$hide();
         Annomatic.setLastState($scope.num);
-        $event.preventDefault();
-        $event.stopPopagation();
+        event.stopPropagation();               
+        event.preventDefault();
     };
 
-    $scope.setOk = function($event) {
+    $scope.setOk = function(event) {
         $scope.$hide();
 
         if($scope.ann.savedByNum.indexOf($scope.num) === -1){
@@ -28,8 +28,8 @@ angular.module('Pundit2.Annomatic')
         } else{
             Annomatic.setState($scope.num, 'accepted');
         }
-        $event.preventDefault();
-        $event.stopPopagation();
+        event.stopPropagation();               
+        event.preventDefault();
     };
     
     $scope.setKo = function() {
@@ -38,12 +38,12 @@ angular.module('Pundit2.Annomatic')
         Annomatic.reviewNext($scope.num + 1);
     };
     
-    $scope.goNext = function($event) {
+    $scope.goNext = function(event) {
         $scope.$hide();
         Annomatic.setLastState($scope.num);
         Annomatic.reviewNext($scope.num + 1);
-        $event.preventDefault();
-        $event.stopPopagation();
+        event.stopPropagation();               
+        event.preventDefault();
     };
 
     // $scope.goPrev = function() {
