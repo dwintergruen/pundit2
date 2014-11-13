@@ -10,7 +10,7 @@ angular.module('Pundit2.Vocabularies')
      * `object`
      *
      * Configuration object for DbpediaSelector module. This factory can be instantiate
-     * more times and query items from Europeana through Korbo.
+     * more times and query items from Dbpedia through Korbo.
      */
 
     /**
@@ -56,7 +56,7 @@ angular.module('Pundit2.Vocabularies')
      * @description
      * `Array of object`
      *
-     * Array of korbo instances, each object in the array allows you to add and configure 
+     * Array of dbpedia instances, each object in the array allows you to add and configure 
      * an instance of the vocabulary. By default, the vocabulary has only one instance.
      * Each instance has its own tab in the interface, with its list of items.
      * 

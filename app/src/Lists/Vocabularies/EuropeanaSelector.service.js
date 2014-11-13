@@ -56,7 +56,7 @@ angular.module('Pundit2.Vocabularies')
      * @description
      * `Array of object`
      *
-     * Array of korbo instances, each object in the array allows you to add and configure 
+     * Array of europeana instances, each object in the array allows you to add and configure 
      * an instance of the vocabulary. By default, the vocabulary has only one instance.
      * Each instance has its own tab in the interface, with its list of items.
      * 
