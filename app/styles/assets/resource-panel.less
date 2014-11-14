@@ -1,97 +1,111 @@
-//
-// Resource panel
-// --------------------------------------------------
+/**
+ * RESOURCE PANEL
+ *
+ * Includes styles for the resource panel but also
+ * literal and calandar popovers
+ */
 
 
+/* ------------------------------------ */
+/* RESOURCE PANEL */
+/* ------------------------------------ */
 .pnd-resource-panel-popover {
-	position: fixed !important;
-	max-width: 400px !important;
-	width: 400px;
+    position: fixed !important;
+    max-width: 400px !important;
+    width: 400px;
     z-index: @zindex-pnd-resource-panel;
 
-	.pnd-item {
-		transition: margin-left 250ms 150ms linear;
-		margin-left: -30px;
+    .pnd-item {
+        transition: margin-left 250ms 150ms linear;
+        margin-left: -30px;
 
-		&:hover {
-			transition: margin-left 250ms 150ms linear;
-			margin-left: 0px; 
-		}
-	}
+        &:hover {
+            transition: margin-left 250ms 150ms linear;
+            margin-left: 0px;
+        }
+    }
 
-	.pnd-item-buttons {
-		
-		.pnd-icon-check {
-			color: @brand-success;
-		}
-	}
-	
-	.list-group-item {
-		overflow: hidden;
-	}
-	
-	.pnd-resource-panel-popover-content {
-		overflow-y: scroll;
-	}
+    .pnd-item-buttons {
 
-	.pnd-vertical-tabs  {
-		height: 200px;
-	}
+        .pnd-icon-check {
+            color: @brand-success;
+        }
+    }
 
-	.pnd-vertical-tab-list-content {
-		height: 200px;
-		overflow-y: auto;
-		padding-top: 8px;
-	}
+    .list-group-item {
+        overflow: hidden;
+    }
 
-	.pnd-vertical-tab-footer-content {
-		display: block;
-		border-top: 1px solid @gray-light;
-		background-color: #fff;
-		height: 30px;
-		padding: 5px;
-		position: absolute;
-		bottom: 0;
-		right: 0px;
-		left: 0;
-	}
+    .pnd-resource-panel-popover-content {
+        overflow-y: scroll;
+    }
 
-	.pnd-vertical-tab-header-content{
-		display: block;
-		border-bottom: 1px solid @gray-light;
-		background-color: #fff;
-		height: 30px;
-		padding: 5px;
-	}
+    .pnd-vertical-tabs {
+        height: 200px;
+    }
+
+    .pnd-vertical-tab-list-content {
+        height: 200px;
+        overflow-y: auto;
+        padding-top: 8px;
+    }
+
+    .pnd-vertical-tab-footer-content {
+        display: block;
+        border-top: 1px solid @gray-light;
+        background-color: #fff;
+        height: 30px;
+        padding: 5px;
+        position: absolute;
+        bottom: 0;
+        right: 0px;
+        left: 0;
+    }
+
+    .pnd-vertical-tab-header-content {
+        display: block;
+        border-bottom: 1px solid @gray-light;
+        background-color: #fff;
+        height: 30px;
+        padding: 5px;
+    }
 }
+
+
+/* ------------------------------------ */
+/* LITERAL POPOVER */
+/* ------------------------------------ */
 
 .pnd-popover-literal {
 	position: fixed !important;
+    z-index: @zindex-pnd-popver;
 }
+
+
+/* ------------------------------------ */
+/* CALENDAR POPOVER */
+/* ------------------------------------ */
 
 .pnd-popover-calendar {
-	position: fixed !important;
+    position: fixed !important;
+    z-index: @zindex-pnd-popver;
 }
 
-.pnd-date-picker{
-	max-width: 320px; 
-	position: static;
+.pnd-date-picker {
+    max-width: 320px;
+    position: static;
 
-	.pnd-date-picker-table{
-		table-layout: fixed; 
-		height: 100%; 
-		width: 100%;
-	}
+    .pnd-date-picker-table {
+        table-layout: fixed;
+        height: 100%;
+        width: 100%;
+    }
 
-	.pnd-date-picker-str-btn{
-		text-transform: capitalize;
-	}
+    .pnd-date-picker-str-btn {
+        text-transform: capitalize;
+    }
 
-	.pnd-date-picker-cntr-btn{
-		width: 100%;
-	}
-}
-
-div.popover{
-  // z-index: 10000; // Why?
+    .pnd-date-picker-cntr-btn {
+        width: 100%;
+    }
 }
