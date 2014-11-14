@@ -133,7 +133,9 @@ angular.module('Pundit2.Communication')
                 method: 'POST',
                 url: url,
                 params: {},
-                data: annotationId
+                data: {
+                        annotationID: annotationId
+                }
             }).success(function() {
                 annotationsCommunication.log('Post save success');
             }).error(function(error) {
