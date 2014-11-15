@@ -11,6 +11,8 @@ angular.module('Pundit2.Toolbar')
     $scope.isAnnotationSidebarExpanded = false;
     $scope.isDashboardVisible = false;
 
+    $scope.isUserLogged = false;
+
     if (Config.useOnlyTemplateMode) {
         angular.element(".pnd-toolbar-template-mode-button").addClass('pnd-not-clickable');
     }
