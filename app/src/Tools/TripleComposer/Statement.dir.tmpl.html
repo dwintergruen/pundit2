@@ -121,14 +121,6 @@
                         </span>
                     </span>
 
-                    <button 
-                        type="button" 
-                        class="btn btn-xs btn-link" 
-                        ng-if="!objectFixed" 
-                        title="delete" 
-                        ng-click="wipeObject()">
-                            <span class="pnd-icon pnd-icon-trash-o"></span>
-                    </button>
                     <!--Calendar Icon-->
                     <button 
                         type="button" 
@@ -146,7 +138,16 @@
                         ng-click="onClickObjectLiteral($event)"  
                         title="text">
                             <span class="pnd-icon pnd-icon-pencil"></span>
-                    </button> 
+                    </button>
+
+                    <button 
+                        type="button" 
+                        class="btn btn-xs btn-link" 
+                        ng-if="!objectFixed" 
+                        title="delete" 
+                        ng-click="wipeObject()">
+                            <span class="pnd-icon pnd-icon-trash-o"></span>
+                    </button>
                     <!-- <span>
                         {{objectTypeLabel}}
                     </span> -->
