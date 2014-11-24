@@ -1,5 +1,5 @@
 angular.module('Pundit2.TripleComposer')
-.controller('StatementCtrl', function($scope, $element, TypesHelper, ResourcePanel, NameSpace, TripleComposer, Toolbar, Preview) {
+.controller('StatementCtrl', function($scope, $element, TypesHelper, ContextualMenu, ResourcePanel, NameSpace, TripleComposer, Toolbar, Preview) {
 
     // default values
     $scope.subjectLabel = '';
@@ -30,9 +30,11 @@ angular.module('Pundit2.TripleComposer')
     $scope.canBeObjectLiteral = true;
 
     if(TripleComposer.getStatements().length < 2){
-        $scope.isDeleteDisabled = true;
+        // $scope.isDeleteDisabled = true;
+        ContextualMenu.modifyHeaderActionByName('removeTriple', true);
     } else{
-        $scope.isDeleteDisabled = false;
+        // $scope.isDeleteDisabled = false;
+        ContextualMenu.modifyHeaderActionByName('removeTriple', false);
     }
 
     // if is true the triple must be completed before save annotation (in template mode)
@@ -441,6 +443,12 @@ angular.module('Pundit2.TripleComposer')
             $scope.tripleComposerCtrl.isAnnotationComplete();
             $scope.tripleComposerCtrl.isTripleErasable();
         });
+    };
+
+    $scope.showDropdown = function(event){
+        var resource = {id: $scope.id};
+        ContextualMenu.show(event.pageX, event.pageY, resource, TripleComposer.options.cMenuType);
+        event.stopPropagation();
     };
 
     var parseDate = function(date) {

@@ -59,7 +59,7 @@ angular.module('Pundit2.ResourcePanel')
  *
  *
  */
-.service('ResourcePanel', function(BaseComponent, RESOURCEPANELDEFAULTS,
+.service('ResourcePanel', function(BaseComponent, EventDispatcher, RESOURCEPANELDEFAULTS,
                                    ItemsExchange, MyItems, PageItemsContainer, Client, NameSpace, SelectorsManager,
                                    $filter, $rootScope, $popover, $q, $timeout, Preview, $window, Config, Item) {
 
@@ -92,6 +92,10 @@ angular.module('Pundit2.ResourcePanel')
         state.popover.destroy();
         state.popover = null;
     };
+
+    EventDispatcher.addListener('TripleComposer.statementChange', function () {
+        hide();
+    });
 
     // initialize a popover
     var initPopover = function(content, target, placement, type, contentTabs){

@@ -181,6 +181,21 @@ angular.module('Pundit2.TripleComposer')
     /**
      * @module punditConfig
      * @ngdoc property
+     * @name modules#TripleComposer.cMenuType
+     *
+     * @description
+     * `string`
+     *
+     * Contextual menu type showed by statement
+     *
+     * Default value:
+     * <pre> cMenuType: 'tripleComposer' </pre>
+     */
+    cMenuType: 'tripleComposer',
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
      * @name modules#TripleComposer.debug
      *
      * @description
@@ -208,6 +223,10 @@ angular.module('Pundit2.TripleComposer')
         editAnnID;
 
     var closeAfterOp = false;
+
+    var statementChangeStatus = function () {
+        EventDispatcher.sendEvent('TripleComposer.statementChange');
+    };
 
     // Contextual Menu actions for my items and page items
     var initContextualMenu = function() {
@@ -268,6 +287,54 @@ angular.module('Pundit2.TripleComposer')
             priority: 100,
             action: function(item) {
                 tripleComposer.addToPredicate(item);
+            }
+        });
+
+        ContextualMenu.addAction({
+            name: 'newTriple',
+            type: tripleComposer.options.cMenuType,
+            label: 'New triple',
+            priority: 3,
+            showIf: function(){
+                return true;
+            },
+            action: function(){
+                angular.element('.pnd-triplecomposer-save').addClass('disabled');
+                tripleComposer.addStatement();
+                statementChangeStatus();
+            }
+        });
+
+        ContextualMenu.addAction({
+            name: 'duplicateTriple',
+            type: tripleComposer.options.cMenuType,
+            label: 'Duplicate triple',
+            priority: 3,
+            showIf: function(){
+                return true;
+            },
+            action: function(statement){
+                var id = parseInt(statement.id, 10);
+                tripleComposer.duplicateStatement(id);
+                statementChangeStatus();
+            }
+        });
+
+        ContextualMenu.addAction({
+            name: 'removeTriple',
+            type: tripleComposer.options.cMenuType,
+            label: 'Remove triple',
+            priority: 3,
+            showIf: function(){
+                return true;
+            },
+            action: function(statement){
+                var id = parseInt(statement.id, 10);
+                tripleComposer.removeStatement(id);
+                if (tripleComposer.isAnnotationComplete()) {
+                    angular.element('.pnd-triplecomposer-save').removeClass('disabled');
+                }
+                statementChangeStatus();
             }
         });
 
@@ -340,7 +407,7 @@ angular.module('Pundit2.TripleComposer')
 
         if(statements.length === 1) {
             if(statements[0].scope.isStatementEmpty()){
-                statements[0].scope.isDeleteDisabled = true;
+                ContextualMenu.modifyHeaderActionByName('removeTriple', true);
             }
         }
         tripleComposer.log('Try to remove statement at index', index);
@@ -385,7 +452,7 @@ angular.module('Pundit2.TripleComposer')
         }
 
         if(statements.length > 1){
-            statements[0].scope.isDeleteDisabled = false;
+            ContextualMenu.modifyHeaderActionByName('removeTriple', false);
         }
 
         tripleComposer.log('statement extended with scope', statements[index]);
@@ -414,7 +481,7 @@ angular.module('Pundit2.TripleComposer')
         }
 
         if(statements.length > 1){
-            statements[0].scope.isDeleteDisabled = false;
+            ContextualMenu.modifyHeaderActionByName('removeTriple', false);
         }
 
     };
@@ -630,9 +697,9 @@ angular.module('Pundit2.TripleComposer')
     tripleComposer.isTripleErasable = function(){
         if(statements.length === 1){
             if(!statements[0].scope.isStatementEmpty()){
-                statements[0].scope.isDeleteDisabled = false;
+                ContextualMenu.modifyHeaderActionByName('removeTriple', false);
             } else{
-                statements[0].scope.isDeleteDisabled = true;
+                ContextualMenu.modifyHeaderActionByName('removeTriple', true);
             }
         }
     };
