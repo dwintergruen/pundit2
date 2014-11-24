@@ -29,25 +29,19 @@ angular.module('Pundit2.TripleComposer')
     $scope.canBeObjectDate = true;
     $scope.canBeObjectLiteral = true;
 
-    if(TripleComposer.getStatements().length < 2){
-        // $scope.isDeleteDisabled = true;
-        ContextualMenu.modifyHeaderActionByName('removeTriple', true);
-    } else{
-        // $scope.isDeleteDisabled = false;
-        ContextualMenu.modifyHeaderActionByName('removeTriple', false);
-    }
+    // true when pundit is in template mode
+    $scope.templateMode;
 
     // if is true the triple must be completed before save annotation (in template mode)
     // if is false the triple can not ben completed and when save the annotation
     // the triple simply is skipped and not included
     $scope.isMandatory = true;
-    // true when pundit is in template mode
-    $scope.templateMode;
-    $scope.$watch(function() {
-        return Toolbar.isActiveTemplateMode();
-    }, function(val) {
-        $scope.templateMode = val;
-    });
+
+    if(TripleComposer.getStatements().length < 2){
+        ContextualMenu.modifyHeaderActionByName('removeTriple', true);
+    } else{
+        ContextualMenu.modifyHeaderActionByName('removeTriple', false);
+    }
 
     // reference to the items used inside this statement
     var triple = {
@@ -55,6 +49,8 @@ angular.module('Pundit2.TripleComposer')
         predicate: null,
         object: null
     };
+
+    var lastDate;
 
     // tripleProperty, es. object of triple
     // predicateProperty, es. range of predicate
@@ -102,6 +98,19 @@ angular.module('Pundit2.TripleComposer')
         if(!check){
             $scope.wipePredicate();
         }
+    };
+
+    var parseDate = function(date) {
+        var month = date.getMonth() + 1,
+            day = date.getDate();
+
+        if (month<10) {
+            month = "0"+month;
+        }
+        if (day<10) {
+            day = "0"+day;
+        }
+        return date.getFullYear()+"-"+month+"-"+day;
     };
 
     $scope.isStatementComplete = function(){
@@ -279,35 +288,6 @@ angular.module('Pundit2.TripleComposer')
         Preview.hideDashboardPreview();
     };
 
-    // update input icons when text is present
-    $scope.$watch(function() {
-        return $scope.subjectSearch;
-    }, function(str) {
-        if (typeof(str) === 'undefined' || str === '') {
-            $scope.subjectIcon = TripleComposer.options.inputIconSearch;
-        } else {
-            $scope.subjectIcon = TripleComposer.options.inputIconClear;
-        }
-    });
-    $scope.$watch(function() {
-        return $scope.predicateSearch;
-    }, function(str) {
-        if (typeof(str) === 'undefined' || str === '') {
-            $scope.predicateIcon = TripleComposer.options.inputIconSearch;
-        } else {
-            $scope.predicateIcon = TripleComposer.options.inputIconClear;
-        }
-    });
-    $scope.$watch(function() {
-        return $scope.objectSearch;
-    }, function(str) {
-        if (typeof(str) === 'undefined' || str === '') {
-            $scope.objectIcon = TripleComposer.options.inputIconSearch;
-        } else {
-            $scope.objectIcon = TripleComposer.options.inputIconClear;
-        }
-    });
-
     $scope.setSubject = function(item, fixed){
         $scope.subjectLabel = item.label;
         $scope.subjectTypeLabel = TypesHelper.getLabel(item.type[0]);
@@ -366,7 +346,6 @@ angular.module('Pundit2.TripleComposer')
         ResourcePanel.showProperties(triple, $event.target, $scope.predicateSearch).then($scope.setPredicate);
     };
 
-    var lastDate;
     $scope.setObject = function(item, fixed){
         $scope.objectFound = true;
 
@@ -451,17 +430,39 @@ angular.module('Pundit2.TripleComposer')
         event.stopPropagation();
     };
 
-    var parseDate = function(date) {
-        var month = date.getMonth() + 1,
-            day = date.getDate();
+    $scope.$watch(function() {
+        return Toolbar.isActiveTemplateMode();
+    }, function(val) {
+        $scope.templateMode = val;
+    });
 
-        if (month<10) {
-            month = "0"+month;
+    // update input icons when text is present
+    $scope.$watch(function() {
+        return $scope.subjectSearch;
+    }, function(str) {
+        if (typeof(str) === 'undefined' || str === '') {
+            $scope.subjectIcon = TripleComposer.options.inputIconSearch;
+        } else {
+            $scope.subjectIcon = TripleComposer.options.inputIconClear;
         }
-        if (day<10) {
-            day = "0"+day;
+    });
+    $scope.$watch(function() {
+        return $scope.predicateSearch;
+    }, function(str) {
+        if (typeof(str) === 'undefined' || str === '') {
+            $scope.predicateIcon = TripleComposer.options.inputIconSearch;
+        } else {
+            $scope.predicateIcon = TripleComposer.options.inputIconClear;
         }
-        return date.getFullYear()+"-"+month+"-"+day;
-    };
+    });
+    $scope.$watch(function() {
+        return $scope.objectSearch;
+    }, function(str) {
+        if (typeof(str) === 'undefined' || str === '') {
+            $scope.objectIcon = TripleComposer.options.inputIconSearch;
+        } else {
+            $scope.objectIcon = TripleComposer.options.inputIconClear;
+        }
+    });
 
 });
