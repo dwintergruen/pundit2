@@ -1,7 +1,8 @@
 angular.module('Pundit2.Core')
+
 .service('Utils', function() {
     var Utils = {};
-    
+
     Utils.deepExtend = function(destination, source) {
         for (var property in source) {
             if (source[property] && source[property].constructor && source[property].constructor === Object) {
@@ -32,7 +33,9 @@ angular.module('Pundit2.Core')
             label = uri
                 .substring(28)
                 .replace(/([A-Z])/g, ' $1')
-                .replace(/^./, function(str){ return str.toUpperCase(); });
+                .replace(/^./, function(str) {
+                    return str.toUpperCase();
+                });
             return label;
         }
 
