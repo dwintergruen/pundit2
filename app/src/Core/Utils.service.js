@@ -45,14 +45,5 @@ angular.module('Pundit2.Core')
         return label;
     };
 
-    Utils.getCurrentUserLanguage = function(){
-        // use the $window service to get the languages of the user's browser (works in Chrome >= 32 and Firefox >= 32)
-        var languages = $window.navigator.languages;
-        if(typeof(languages) !== 'undefined'){
-            var firstLanguage = languages[0];
-            return firstLanguage;
-        }
-    };
-
     return Utils;
 });
