@@ -1,4 +1,5 @@
 angular.module('Pundit2.Item')
+
 .directive('item', function() {
     return {
         restrict: 'E',
@@ -10,7 +11,7 @@ angular.module('Pundit2.Item')
             hideStickyButton: '@',
             useInKorbo: '@'
         },
-        templateUrl: function(el, attr){
+        templateUrl: function(el, attr) {
             if (attr.useInKorbo) {
                 return "src/Item/KorboItem.dir.tmpl.html";
             } else {
