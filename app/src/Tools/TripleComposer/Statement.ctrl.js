@@ -6,23 +6,17 @@ angular.module('Pundit2.TripleComposer')
     $scope.subjectLabel = '';
     $scope.subjectTypeLabel = '';
     $scope.subjectFound = false;
-    $scope.subjectSearch = "";
-    $scope.subjectIcon = TripleComposer.options.inputIconSearch;
     // fixed by template
     $scope.subjectFixed = false;
 
     $scope.predicateLabel = '';
     $scope.predicateFound = false;
-    $scope.predicateSearch = "";
-    $scope.predicateIcon = TripleComposer.options.inputIconSearch;
     // fixed by template
     $scope.predicateFixed = false;
 
     $scope.objectLabel = '';
     $scope.objectTypeLabel = '';
     $scope.objectFound = false;
-    $scope.objectSearch = "";
-    $scope.objectIcon = TripleComposer.options.inputIconSearch;
     $scope.objectLiteral = false;
     // fixed by template
     $scope.objectFixed = false;
@@ -210,27 +204,16 @@ angular.module('Pundit2.TripleComposer')
         $scope.subjectLabel = '';
         $scope.subjectTypeLabel = '';
         $scope.subjectFound = false;
-        $scope.subjectSearch = "";
-        $scope.subjectIcon = TripleComposer.options.inputIconSearch;
         $scope.subjectFixed = false;
         triple.subject = null;
         ResourcePanel.hide();
         angular.element('.pnd-triplecomposer-save').addClass('disabled');
         $scope.tripleComposerCtrl.isTripleErasable();
     };
-    $scope.clearSubjectSearch = function() {
-        if ($scope.subjectSearch === "" || typeof($scope.subjectSearch) === 'undefined') {
-            return;
-        }
-        $scope.subjectSearch = "";
-        ResourcePanel.showItemsForSubject(triple, undefined, $scope.subjectSearch).then($scope.setSubject);
-    };
 
     $scope.wipePredicate = function() {
         $scope.predicateLabel = '';
         $scope.predicateFound = false;
-        $scope.predicateSearch = "";
-        $scope.predicateIcon = TripleComposer.options.inputIconSearch;
         $scope.canBeObjectDate = true;
         $scope.canBeObjectLiteral = true;
         $scope.predicatetFixed = false;
@@ -239,20 +222,11 @@ angular.module('Pundit2.TripleComposer')
         angular.element('.pnd-triplecomposer-save').addClass('disabled');
         $scope.tripleComposerCtrl.isTripleErasable();
     };
-    $scope.clearPredicateSearch = function() {
-        if ($scope.predicateSearch === "" || typeof($scope.predicateSearch) === 'undefined') {
-            return;
-        }
-        $scope.predicateSearch = "";
-        ResourcePanel.showProperties(triple, undefined, $scope.predicateSearch).then($scope.setPredicate);
-    };
 
     $scope.wipeObject = function() {
         $scope.objectLabel = '';
         $scope.objectTypeLabel = '';
         $scope.objectFound = false;
-        $scope.objectSearch = "";
-        $scope.objectIcon = TripleComposer.options.inputIconSearch;
         $scope.objectLiteral = false;
         $scope.objectDate = false;
         $scope.objectFixed = false;
@@ -260,13 +234,6 @@ angular.module('Pundit2.TripleComposer')
         ResourcePanel.hide();
         angular.element('.pnd-triplecomposer-save').addClass('disabled');
         $scope.tripleComposerCtrl.isTripleErasable();
-    };
-    $scope.clearObjectSearch = function() {
-        if ($scope.objectSearch === "" || typeof($scope.objectSearch) === 'undefined') {
-            return;
-        }
-        $scope.objectSearch = "";
-        ResourcePanel.showItemsForObject(triple, undefined, $scope.objectSearch).then($scope.setObject);
     };
 
     $scope.onSubjectMouseOver = function() {
@@ -306,16 +273,14 @@ angular.module('Pundit2.TripleComposer')
         $scope.tripleComposerCtrl.isAnnotationComplete();
         $scope.tripleComposerCtrl.isTripleErasable();
     };
+
     $scope.onClickSubject = function($event) {
         if ($scope.templateMode) {
             // not open resource panel on subject when
             // template mode is enabled (subject can be only a text selection)
             return;
         }
-        ResourcePanel.showItemsForSubject(triple, $event.target, $scope.subjectSearch).then($scope.setSubject);
-    };
-    $scope.onKeyUpSubject = function($event) {
-        ResourcePanel.showItemsForSubject(triple, $event.target, $scope.subjectSearch).then($scope.setSubject);
+        ResourcePanel.showItemsForSubject(triple, $event.target).then($scope.setSubject);
     };
 
     $scope.setPredicate = function(item, fixed) {
@@ -341,10 +306,7 @@ angular.module('Pundit2.TripleComposer')
         $scope.tripleComposerCtrl.isTripleErasable();
     };
     $scope.onClickPredicate = function($event) {
-        ResourcePanel.showProperties(triple, $event.target, $scope.predicateSearch).then($scope.setPredicate);
-    };
-    $scope.onKeyUpPredicate = function($event) {
-        ResourcePanel.showProperties(triple, $event.target, $scope.predicateSearch).then($scope.setPredicate);
+        ResourcePanel.showProperties(triple, $event.target).then($scope.setPredicate);
     };
 
     $scope.setObject = function(item, fixed) {
@@ -381,11 +343,9 @@ angular.module('Pundit2.TripleComposer')
         $scope.tripleComposerCtrl.isTripleErasable();
 
     };
+    
     $scope.onClickObject = function($event) {
-        ResourcePanel.showItemsForObject(triple, $event.target, $scope.objectSearch).then($scope.setObject);
-    };
-    $scope.onKeyUpObject = function($event) {
-        ResourcePanel.showItemsForObject(triple, $event.target, $scope.objectSearch).then($scope.setObject);
+        ResourcePanel.showItemsForObject(triple, $event.target).then($scope.setObject);
     };
 
     $scope.onClickObjectCalendar = function($event) {
