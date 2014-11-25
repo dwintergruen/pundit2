@@ -37,7 +37,37 @@ angular.module('Pundit2.ResourcePanel')
      *
      * Initial date showing in calendar popover.
      */
-    initialCalendarDate: ''
+    initialCalendarDate: '',
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#ResourcePanel.inputIconSearch
+     *
+     * @description
+     * `string`
+     *
+     * Icon shown in the search input when it's empty
+     *
+     * Default value:
+     * <pre> inputIconSearch: 'pnd-icon-search' </pre>
+     */
+    inputIconSearch: 'pnd-icon-search',
+
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#ResourcePanel.inputIconClear
+     *
+     * @description
+     * `string`
+     *
+     * Icon shown in the search input when it has some content
+     *
+     * Default value:
+     * <pre> inputIconClear: 'pnd-icon-times' </pre>
+     */
+    inputIconClear: 'pnd-icon-times'
 
 })
 
