@@ -1,9 +1,23 @@
 <div class="tabbable tabs-left"> <!-- tabs left -->
    <!-- header -->
    <div class="pnd-vertical-tab-header-content" ng-if="moduleName == 'Pundit2'">
-        <strong ng-if="type === 'sub'">Choose your subject...</strong>
+        <!-- TODO: fix layout and restore this block -->
+        <!-- <strong ng-if="type === 'sub'">Choose your subject...</strong>
         <strong ng-if="type === 'obj'">Choose your object...</strong>
-        <strong ng-if="type === 'pr'">Choose your predicate...</strong>
+        <strong ng-if="type === 'pr'">Choose your predicate...</strong> -->
+        
+        <!-- Search Input div -->
+        <div class="left-inner-icon">
+            <span 
+                class="pnd-icon {{subjectIcon}}" 
+                ng-click="clearSearch()"></span>
+            <input 
+                type="text" 
+                class="input-sm form-control" 
+                placeholder="Type at least 4 characters ..." 
+                ng-model="$parent.$parent.label">
+        </div>
+
         <button type="button" class="btn btn-xs btn-link pnd-btn-dashboard pull-right" ng-click="cancel()"><span class="pnd-icon pnd-icon-times"></span></button>
     </div>
     <!-- // end header -->
@@ -47,7 +61,7 @@
                     <div ng-show="contentTabs[$index].serverError">Server error</div>
                 </div>
 
-                <ul class="list-group">
+                <ul class="list-group" style="margin-left: 100px"> <!-- TODO: temp style -->
                     <li ng-if="pane.module == 'Pundit2' && contentTabs[$index].items.length === 0 && label !== ''">No results found</li>
                     <li ng-if="pane.module == 'Pundit2' && contentTabs[$index].items.length === 0 && label === ''">Type a label to search...</li>
                     <!-- <li class="list-group-item" ng-repeat="mi in contentTabs[$index].items | orderBy:getOrderProperty" ng-if="moduleName == 'Pundit2'"> -->
