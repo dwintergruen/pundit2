@@ -1,8 +1,8 @@
 angular.module('Pundit2.ResourcePanel')
 
-.controller('ResourcePanelCtrl', function($rootScope, $scope, $timeout, $filter, $window, 
-        Client, Config, ItemsExchange, MyItems, MyPundit, PageItemsContainer, Preview, 
-        ResourcePanel, SelectorsManager, KorboCommunicationService) {
+.controller('ResourcePanelCtrl', function($rootScope, $scope, $timeout, $filter, $window,
+    Client, Config, ItemsExchange, MyItems, MyPundit, PageItemsContainer, Preview,
+    ResourcePanel, SelectorsManager, KorboCommunicationService) {
 
     var actualContainer;
     var selectors = SelectorsManager.getActiveSelectors();
@@ -126,7 +126,7 @@ angular.module('Pundit2.ResourcePanel')
         }
         if (caller !== 'pr' && caller !== '') {
             $timeout.cancel(searchTimer);
-            searchTimer = $timeout(function(){
+            searchTimer = $timeout(function() {
                 if (typeof(term) !== 'undefined' && term.length > 2) {
                     ResourcePanel.updateVocabSearch(term, $scope.triple, caller);
                 } else {
