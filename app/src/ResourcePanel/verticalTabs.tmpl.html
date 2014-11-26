@@ -127,11 +127,11 @@
                     class="list-group" 
                     style="margin-left: 200px"> <!-- TODO: temp style -->
                     <li 
-                        ng-if="pane.module == 'Pundit2' && contentTabs[$index].items.length === 0 && label !== ''">
+                        ng-if="pane.module == 'Pundit2' && $parent.tabItemsFiltered[$index].length === 0 && label !== ''">
                         No results found
                     </li>
                     <li 
-                        ng-if="pane.module == 'Pundit2' && contentTabs[$index].items.length === 0 && label === ''">
+                        ng-if="pane.module == 'Pundit2' && $parent.tabItemsFiltered[$index].length === 0 && label === ''">
                         Type a label to search...
                     </li>
                     <li 

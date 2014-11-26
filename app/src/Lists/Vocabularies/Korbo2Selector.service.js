@@ -122,6 +122,9 @@ angular.module('Pundit2.Vocabularies')
     };
 
     Korbo2Factory.prototype.getItems = function(term){
+        if(typeof(term) === 'undefined'){
+            return;
+        }
         var self = this,
             promise = $q.defer(),
             container = self.config.container + term.split(' ').join('$');

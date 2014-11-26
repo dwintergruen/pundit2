@@ -113,35 +113,38 @@ angular.module('Pundit2.ResourcePanel')
 
     $scope.updateSearch = function(term) {
         var caller = '';
-        switch ($scope.type) {
-            case 'sub':
-                caller = 'subject';
-                break;
-            case 'pr':
-                caller = 'predicate';
-                break;
-            case 'obj':
-                caller = 'object';
-                break;
-        }
-        if (caller !== 'pr' && caller !== '') {
-            $timeout.cancel(searchTimer);
-            searchTimer = $timeout(function() {
-                if (typeof(term) !== 'undefined' && term.length > 2) {
+        if (typeof(term) !== 'undefined' && term.length > 2) {
+            switch ($scope.type) {
+                case 'sub':
+                    caller = 'subject';
+                    break;
+                case 'pr':
+                    caller = 'predicate';
+                    break;
+                case 'obj':
+                    caller = 'object';
+                    break;
+            }
+            if (caller !== 'pr' && caller !== '') {
+                $timeout.cancel(searchTimer);
+                searchTimer = $timeout(function() {
                     ResourcePanel.updateVocabSearch(term, $scope.triple, caller);
-                } else {
-                    // TODO: add specific method in ResourcePanel to reset search
-                    ResourcePanel.updateVocabSearch('', $scope.triple, caller);
-                }
-            }, ResourcePanel.options.vocabSearchTimer);
+                }, ResourcePanel.options.vocabSearchTimer);
+            }
+        } else {
+            $timeout.cancel(searchTimer);
+            // TODO: add specific method in ResourcePanel to reset search
+            ResourcePanel.updateVocabSearch('', $scope.triple, caller);
         }
     };
 
+    // TODO: why?!
     $scope.$watch(function() {
         return $scope.contentTabs.activeTab;
     }, function(newActive, oldActive) {
         if (newActive !== oldActive) {
-            actualContainer = $scope.contentTabs[$scope.contentTabs.activeTab].itemsContainer + $scope.label.split(' ').join('$');
+            var labTemp = $scope.label ? $scope.label : '';
+            actualContainer = $scope.contentTabs[$scope.contentTabs.activeTab].itemsContainer + labTemp.split(' ').join('$');
             $scope.showUseAndCopyButton();
         }
     });

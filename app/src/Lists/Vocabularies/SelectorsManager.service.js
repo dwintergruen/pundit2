@@ -215,6 +215,10 @@ angular.module('Pundit2.Vocabularies')
     // term to search inside selectors
     // promise resolved when the result is no longer needed
     selectorsManager.getItems = function(term, promise){
+
+        if(typeof(term) === 'undefined'){
+            return;
+        }
         
         // a promise resolved when all selectors complete
         // the http query request

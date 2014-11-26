@@ -142,6 +142,10 @@ angular.module('Pundit2.Vocabularies')
     // you can change this behavior
     // eg. removing the wipeContainer() to produce a union of two research results
     MurucaFactory.prototype.getItems = function(term){
+        if(typeof(term) === 'undefined'){
+            return;
+        }
+        
         var self = this,
             promise = $q.defer(),
             // use selector container + term (replace space with $)
