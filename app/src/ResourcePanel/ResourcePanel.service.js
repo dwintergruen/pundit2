@@ -232,15 +232,14 @@ angular.module('Pundit2.ResourcePanel')
                 state.popoverOptions.scope.label = content.label;
             }
 
-            // handle save a new popoverLiteral
+            // T_T
             state.popoverOptions.scope.save = function(elem) {
                 hide();
                 Preview.hideDashboardPreview();
                 state.resourcePromise.resolve(elem);
             };
-
-            // close popoverLiteral popover without saving
             state.popoverOptions.scope.cancel = function() {
+                Preview.clearItemDashboardSticky();
                 Preview.hideDashboardPreview();
                 hide();
             };
