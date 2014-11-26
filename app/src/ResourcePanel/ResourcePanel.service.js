@@ -219,6 +219,7 @@ angular.module('Pundit2.ResourcePanel')
 
             state.popoverOptions.scope.originalContent = angular.copy(content);
             state.popoverOptions.scope.type = content.type;
+            state.popoverOptions.scope.triple = content.triple;
             state.popoverOptions.scope.pageItems = content.pageItems;
             state.popoverOptions.scope.myItems = content.myItems;
             state.popoverOptions.scope.properties = content.properties;
@@ -360,6 +361,64 @@ angular.module('Pundit2.ResourcePanel')
         return ret;
     };
 
+    // show popover resource panel
+    // pageItems -->  page items to show
+    // myItems -->  my items to show
+    // properties -->  properties to show
+    var showPopoverResourcePanel = function(target, pageItems, myItems, properties, label, type, triple) {
+        var content = {};
+        var contentTabs = [];
+
+        content.type = type;
+        content.triple = triple;
+        
+        if (type === 'sub' || type === 'obj') {
+            var pageItemsForTabs = {
+                title: 'Page items',
+                items: pageItems,
+                isStarted: true
+            };
+            contentTabs.push(pageItemsForTabs);
+            content.pageItems = pageItems;
+
+            var myItemsForTabs = {
+                title: 'My items',
+                items: myItems,
+                isStarted: true
+            };
+            contentTabs.push(myItemsForTabs);
+            content.myItems = myItems;
+
+            content.properties = null;
+        }
+        if (type === 'pr') {
+            var prop = {
+                title: 'Properties',
+                items: properties,
+                isStarted: true
+            };
+            contentTabs.push(prop);
+
+            content.properties = properties;
+            content.pageItems = null;
+            content.myItems = null;
+        }
+
+        content.label = label;
+        // if no popover is shown, just show it
+        if (state.popover === null) {
+            state.popover = initPopover(content, target, "", 'resourcePanel', contentTabs);
+            state.popover.$promise.then(state.popover.show);
+        }
+
+        // if click a different popover, hide the shown popover and show the clicked one
+        else if (state.popover !== null && state.popover.clickTarget !== target) {
+            hide();
+            state.popover = initPopover(content, target, "", 'resourcePanel', contentTabs);
+            state.popover.$promise.then(state.popover.show);
+        } // if click a different popover, hide the shown popover and show the clicked one
+
+    };
 
     var searchOnVocab = function(label, selectors, triple, caller) {
 
@@ -420,11 +479,14 @@ angular.module('Pundit2.ResourcePanel')
                     });
                 })(j);
             }
-
         }
-
     };
 
+    resourcePanel.updateVocabSearch = function(label, triple, caller) {
+        var selectors = SelectorsManager.getActiveSelectors();
+        searchOnVocab(label, selectors, triple, caller);
+        setLabelToSearch(label);
+    };
 
     /**
      * @ngdoc method
@@ -525,62 +587,6 @@ angular.module('Pundit2.ResourcePanel')
 
         state.resourcePromise = $q.defer();
         return state.resourcePromise.promise;
-    };
-
-    // show popover resource panel
-    // pageItems -->  page items to show
-    // myItems -->  my items to show
-    // properties -->  properties to show
-    var showPopoverResourcePanel = function(target, pageItems, myItems, properties, label, type) {
-        var content = {};
-        content.type = type;
-        var contentTabs = [];
-        if (type === 'sub' || type === 'obj') {
-            var pageItemsForTabs = {
-                title: 'Page items',
-                items: pageItems,
-                isStarted: true
-            };
-            contentTabs.push(pageItemsForTabs);
-            content.pageItems = pageItems;
-
-            var myItemsForTabs = {
-                title: 'My items',
-                items: myItems,
-                isStarted: true
-            };
-            contentTabs.push(myItemsForTabs);
-            content.myItems = myItems;
-
-            content.properties = null;
-        }
-        if (type === 'pr') {
-            var prop = {
-                title: 'Properties',
-                items: properties,
-                isStarted: true
-            };
-            contentTabs.push(prop);
-
-            content.properties = properties;
-            content.pageItems = null;
-            content.myItems = null;
-        }
-
-        content.label = label;
-        // if no popover is shown, just show it
-        if (state.popover === null) {
-            state.popover = initPopover(content, target, "", 'resourcePanel', contentTabs);
-            state.popover.$promise.then(state.popover.show);
-        }
-
-        // if click a different popover, hide the shown popover and show the clicked one
-        else if (state.popover !== null && state.popover.clickTarget !== target) {
-            hide();
-            state.popover = initPopover(content, target, "", 'resourcePanel', contentTabs);
-            state.popover.$promise.then(state.popover.show);
-        } // if click a different popover, hide the shown popover and show the clicked one
-
     };
 
     /**
@@ -685,7 +691,7 @@ angular.module('Pundit2.ResourcePanel')
 
             } // end if triple undefined
 
-            showPopoverResourcePanel(target, pageItems, myItems, "", label, 'sub');
+            showPopoverResourcePanel(target, pageItems, myItems, "", label, 'sub', triple);
         }
         state.resourcePromise = $q.defer();
         return state.resourcePromise.promise;
@@ -759,7 +765,7 @@ angular.module('Pundit2.ResourcePanel')
                     // all items are good
                     myItems = ItemsExchange.getItemsByContainer(myItemsContainer);
                     pageItems = ItemsExchange.getItemsByContainer(pageItemsContainer);
-                    showPopoverResourcePanel(target, pageItems, myItems, "", label, 'obj');
+                    showPopoverResourcePanel(target, pageItems, myItems, "", label, 'obj', triple);
 
                 } else {
                     // get item predicate and check his domain
@@ -769,7 +775,7 @@ angular.module('Pundit2.ResourcePanel')
                         // all items are good
                         myItems = ItemsExchange.getItemsByContainer(myItemsContainer);
                         pageItems = ItemsExchange.getItemsByContainer(pageItemsContainer);
-                        showPopoverResourcePanel(target, pageItems, myItems, "", label, 'obj');
+                        showPopoverResourcePanel(target, pageItems, myItems, "", label, 'obj', triple);
 
                         // if predicate is literal, show popover literal
                     } else if (itemPredicate.range.length === 1 && itemPredicate.range[0] === NameSpace.rdfs.literal) {
@@ -798,7 +804,7 @@ angular.module('Pundit2.ResourcePanel')
 
                         myItems = ItemsExchange.getItemsFromContainerByFilter(myItemsContainer, filter);
                         pageItems = ItemsExchange.getItemsFromContainerByFilter(pageItemsContainer, filter);
-                        showPopoverResourcePanel(target, pageItems, myItems, "", label, 'obj');
+                        showPopoverResourcePanel(target, pageItems, myItems, "", label, 'obj', triple);
                     }
 
                 } // end else predicate !== undefined
@@ -881,10 +887,10 @@ angular.module('Pundit2.ResourcePanel')
                 }
 
                 if (typeof(properties) !== 'undefined' && properties.length > 0) {
-                    showPopoverResourcePanel(target, "", "", properties, label, 'pr');
+                    showPopoverResourcePanel(target, "", "", properties, label, 'pr', triple);
                 } else {
                     // TODO Show error? 
-                    showPopoverResourcePanel(target, "", "", [], label, 'pr');
+                    showPopoverResourcePanel(target, "", "", [], label, 'pr', triple);
                 }
 
             } // end triple !== undefined

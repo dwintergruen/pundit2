@@ -6,6 +6,7 @@ angular.module('Pundit2.ResourcePanel')
 
     var actualContainer;
     var selectors = SelectorsManager.getActiveSelectors();
+    var searchTimer;
 
     $scope.label = '';
 
@@ -108,6 +109,32 @@ angular.module('Pundit2.ResourcePanel')
 
         var name = $window[Config.korbo.confName].globalObjectName;
         $window[name].callOpenNew();
+    };
+
+    $scope.updateSearch = function(term) {
+        var caller = '';
+        switch ($scope.type) {
+            case 'sub':
+                caller = 'subject';
+                break;
+            case 'pr':
+                caller = 'predicate';
+                break;
+            case 'obj':
+                caller = 'object';
+                break;
+        }
+        if (caller !== 'pr' && caller !== '') {
+            $timeout.cancel(searchTimer);
+            searchTimer = $timeout(function(){
+                if (typeof(term) !== 'undefined' && term.length > 2) {
+                    ResourcePanel.updateVocabSearch(term, $scope.triple, caller);
+                } else {
+                    // TODO: add specific method in ResourcePanel to reset search
+                    ResourcePanel.updateVocabSearch('', $scope.triple, caller);
+                }
+            }, ResourcePanel.options.vocabSearchTimer);
+        }
     };
 
     $scope.$watch(function() {

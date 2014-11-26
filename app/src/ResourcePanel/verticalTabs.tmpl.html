@@ -18,8 +18,10 @@
             <input 
                 type="text" 
                 class="input-sm form-control" 
-                placeholder="Type at least 4 characters ..." 
-                ng-model="$parent.$parent.label">
+                placeholder="Type at least 3 characters ..." 
+                ng-model="$parent.$parent.label"
+                ng-change="updateSearch($parent.$parent.label)"
+                ng-minlength="3">
         </div>
 
         <button 
