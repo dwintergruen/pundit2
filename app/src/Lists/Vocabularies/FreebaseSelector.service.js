@@ -1,4 +1,5 @@
 angular.module('Pundit2.Vocabularies')
+
 .constant('FREEBASESELECTORDEFAULTS', {
 
     /**
@@ -157,10 +158,10 @@ angular.module('Pundit2.Vocabularies')
      * @description
      * `Array of object`
      *
-     * Array of freebase instances, each object in the array allows you to add and configure 
+     * Array of freebase instances, each object in the array allows you to add and configure
      * an instance of the vocabulary. By default, the vocabulary has only one instance.
      * Each instance has its own tab in the interface, with its list of items.
-     * 
+     *
      *
      * Default value:
      * <pre> instances: [
@@ -174,16 +175,14 @@ angular.module('Pundit2.Vocabularies')
      *   }
      * ] </pre>
      */
-    instances: [
-        {
-            // where items is stored inside itemsExchange service
-            container: 'freebase',
-            // instance tab title
-            label: 'Freebase',
-            // enable or disable the instance
-            active: true
-        }
-    ],
+    instances: [{
+        // where items is stored inside itemsExchange service
+        container: 'freebase',
+        // instance tab title
+        label: 'Freebase',
+        // enable or disable the instance
+        active: true
+    }],
 
     /**
      * @module punditConfig
@@ -194,10 +193,10 @@ angular.module('Pundit2.Vocabularies')
      * `Array of string`
      *
      * Array of filters we need for any object
-     * 
+     *
      *
      * Default value:
-     * <pre> objectFilters: [ 
+     * <pre> objectFilters: [
      *          "/common/topic/description",
      *          "/common/topic/notable_types",
      *          "/common/topic/notable_for"
@@ -226,8 +225,9 @@ angular.module('Pundit2.Vocabularies')
     debug: false
 
 })
+
 .factory('FreebaseSelector', function(BaseComponent, FREEBASESELECTORDEFAULTS, TypesHelper, SelectorsManager, Item, ItemsExchange,
-                                        $http, $q) {
+    $http, $q) {
 
     var freebaseSelector = new BaseComponent('FreebaseSelector', FREEBASESELECTORDEFAULTS);
     freebaseSelector.name = 'FreebaseSelector';
@@ -239,16 +239,16 @@ angular.module('Pundit2.Vocabularies')
     }
 
     // selector instance constructor
-    var FreebaseFactory = function(config){
+    var FreebaseFactory = function(config) {
         this.config = config;
     };
 
     // if two search are launched in parallel on the same term then won the last one is completed
     // you can change this behavior
     // eg. removing the wipeContainer() to produce a union of two research results
-    FreebaseFactory.prototype.getItems = function(term){
-        
-        if(typeof(term) === 'undefined'){
+    FreebaseFactory.prototype.getItems = function(term) {
+
+        if (typeof(term) === 'undefined') {
             return;
         }
 
@@ -298,18 +298,18 @@ angular.module('Pundit2.Vocabularies')
 
             }
 
-            $q.all(promiseArr).then(function(){
+            $q.all(promiseArr).then(function() {
                 freebaseSelector.log('Completed all items http request (topic and mql)');
                 // when all http request are completed we can wipe itemsExchange
                 // and put new items inside relative container
                 ItemsExchange.wipeContainer(container);
-                for (i=0; i<itemsArr.length; i++) {
+                for (i = 0; i < itemsArr.length; i++) {
                     ItemsExchange.addItemToContainer(new Item(itemsArr[i].uri, itemsArr[i]), container);
                 }
                 promise.resolve();
             });
 
-            for (i=0; i<itemsArr.length; i++) {
+            for (i = 0; i < itemsArr.length; i++) {
                 self.getItemDetails(itemsArr[i], deferArr[i]);
             }
 
@@ -323,7 +323,7 @@ angular.module('Pundit2.Vocabularies')
     };
 
 
-    FreebaseFactory.prototype.getItemDetails = function(item, itemPromise){
+    FreebaseFactory.prototype.getItemDetails = function(item, itemPromise) {
 
         // var self = this;
         var error = 0;
@@ -348,10 +348,10 @@ angular.module('Pundit2.Vocabularies')
             freebaseSelector.log('Http success, get MQL from freebase' + item.uri);
 
             // Take the types labels
-            for (var l=data.result.type.length; l--;) {
+            for (var l = data.result.type.length; l--;) {
                 var o = data.result.type[l],
                     uri = freebaseSelector.options.freebaseSchemaBaseURL + o.id;
-                if(item.type.indexOf(uri) == -1){
+                if (item.type.indexOf(uri) == -1) {
                     item.type.push(uri);
                     TypesHelper.add(uri, o.name);
                 }
@@ -366,7 +366,7 @@ angular.module('Pundit2.Vocabularies')
 
         }).error(function(msg) {
             freebaseSelector.err('Cant get MQL from freebase: ', msg);
-            if (item.description !== -1 || error>0) {
+            if (item.description !== -1 || error > 0) {
                 itemPromise.resolve(item);
             }
             error++;
@@ -384,15 +384,14 @@ angular.module('Pundit2.Vocabularies')
 
             freebaseSelector.log('Http success, get TOPIC from freebase' + item.uri);
 
-            if (typeof(data.property) !== 'undefined'){
-                if (typeof(data.property['/common/topic/description']) !== 'undefined' && data.property['/common/topic/description'].values.length > 0){
+            if (typeof(data.property) !== 'undefined') {
+                if (typeof(data.property['/common/topic/description']) !== 'undefined' && data.property['/common/topic/description'].values.length > 0) {
                     item.description = data.property['/common/topic/description'].values[0].value;
-                }
-                else{
+                } else {
                     item.description = item.label;
                 }
 
-                if (typeof(data.property['/common/topic/notable_types']) !== 'undefined' && data.property['/common/topic/notable_types'].values.length > 0){
+                if (typeof(data.property['/common/topic/notable_types']) !== 'undefined' && data.property['/common/topic/notable_types'].values.length > 0) {
                     var o = data.property['/common/topic/notable_types'].values[0],
                         uri = freebaseSelector.options.freebaseSchemaBaseURL + o.id;
 
@@ -404,7 +403,7 @@ angular.module('Pundit2.Vocabularies')
                     item.type.unshift(uri);
                     TypesHelper.add(uri, o.text);
                 }
-            } else{
+            } else {
                 item.description = item.label;
             }
 
@@ -417,7 +416,7 @@ angular.module('Pundit2.Vocabularies')
 
         }).error(function(msg) {
             freebaseSelector.err('Cant get TOPIC from freebase: ', msg);
-            if (item.uri !== -1 || error>0) {
+            if (item.uri !== -1 || error > 0) {
                 itemPromise.resolve(item);
             }
             error++;

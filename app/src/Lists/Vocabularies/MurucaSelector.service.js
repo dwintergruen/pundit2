@@ -1,6 +1,7 @@
 /*jshint camelcase: false*/
 
 angular.module('Pundit2.Vocabularies')
+
 .constant('MURUCASELECTORDEFAULTS', {
 
     /**
@@ -33,7 +34,7 @@ angular.module('Pundit2.Vocabularies')
 
     // TODO doc
     queryProperties: {},
-    
+
     /**
      * @module punditConfig
      * @ngdoc property
@@ -73,16 +74,16 @@ angular.module('Pundit2.Vocabularies')
      * @description
      * `Array of object`
      *
-     * Array of muruca instances, each object in the array allows you to add and configure 
+     * Array of muruca instances, each object in the array allows you to add and configure
      * an instance of the vocabulary. By default, the vocabulary has only one instance.
      * Each instance has its own tab in the interface, with its list of items.
-     * 
+     *
      *
      * Default value:
      * <pre> instances: [
      *   {
      *       // query type (legal value are: Azione, Scena, Influenza, Ecphrasis, ecc..)
-     *       queryType: 'http://purl.org/galassiariosto/types/Azione', 
+     *       queryType: 'http://purl.org/galassiariosto/types/Azione',
      *       // where items is stored inside itemsExchange service
      *       container: 'muruca',
      *       // instance label tab title
@@ -92,18 +93,16 @@ angular.module('Pundit2.Vocabularies')
      *   }
      * ] </pre>
      */
-    instances: [
-        {
-            // query type (legal value are: Azione, Scena, Influenza, Ecphrasis, ecc..)
-            queryType: 'http://purl.org/galassiariosto/types/Azione',
-            // where items is stored inside itemsExchange service
-            container: 'muruca',
-            // instance label tab title
-            label: 'Muruca',
-            // enable or disable the instance
-            active: true
-        }
-    ],
+    instances: [{
+        // query type (legal value are: Azione, Scena, Influenza, Ecphrasis, ecc..)
+        queryType: 'http://purl.org/galassiariosto/types/Azione',
+        // where items is stored inside itemsExchange service
+        container: 'muruca',
+        // instance label tab title
+        label: 'Muruca',
+        // enable or disable the instance
+        active: true
+    }],
 
     /**
      * @module punditConfig
@@ -121,6 +120,7 @@ angular.module('Pundit2.Vocabularies')
     debug: false
 
 })
+
 .factory('MurucaSelector', function(BaseComponent, MURUCASELECTORDEFAULTS, Item, ItemsExchange, SelectorsManager,
     $http, $q) {
 
@@ -134,18 +134,18 @@ angular.module('Pundit2.Vocabularies')
     }
 
     // selector instance constructor
-    var MurucaFactory = function(config){
+    var MurucaFactory = function(config) {
         this.config = config;
     };
 
     // if two search are launched in parallel on the same term then won the last one is completed
     // you can change this behavior
     // eg. removing the wipeContainer() to produce a union of two research results
-    MurucaFactory.prototype.getItems = function(term){
-        if(typeof(term) === 'undefined'){
+    MurucaFactory.prototype.getItems = function(term) {
+        if (typeof(term) === 'undefined') {
             return;
         }
-        
+
         var self = this,
             promise = $q.defer(),
             // use selector container + term (replace space with $)
@@ -164,10 +164,10 @@ angular.module('Pundit2.Vocabularies')
 
         // TODO if the server not response the http timeout is very long (120s)
         // and the error notification arrive only after this time (need a less timeout?)
-        $http.jsonp(murucaSelector.options.murucaReconURL+"?jsonp=JSON_CALLBACK", config)
-            .success(function(data){
+        $http.jsonp(murucaSelector.options.murucaReconURL + "?jsonp=JSON_CALLBACK", config)
+            .success(function(data) {
 
-                murucaSelector.log('Http success, get items from muruca '+self.config.label, data);
+                murucaSelector.log('Http success, get items from muruca ' + self.config.label, data);
 
                 ItemsExchange.wipeContainer(container);
 
@@ -180,21 +180,21 @@ angular.module('Pundit2.Vocabularies')
                     self.getItemsDetails(data.result, promise, container);
                 }
 
-            }).error(function () {
+            }).error(function() {
                 ItemsExchange.wipeContainer(container);
                 // promise is resolved but container is undefined
                 promise.resolve();
             });
 
-            return promise.promise;
+        return promise.promise;
 
     };
 
-    MurucaFactory.prototype.getItemsDetails = function(result, promise, container){
+    MurucaFactory.prototype.getItemsDetails = function(result, promise, container) {
 
         // var self = this;
 
-        for (var i=0; i<result.length; i++) {
+        for (var i = 0; i < result.length; i++) {
             var current = result[i];
 
             var item = {
@@ -203,20 +203,19 @@ angular.module('Pundit2.Vocabularies')
                 type: []
             };
 
-            murucaSelector.log('Loading metadata for item '+ item.uri);
+            murucaSelector.log('Loading metadata for item ' + item.uri);
 
             if ('description' in current) {
                 item.description = current.description;
             }
-                
+
             if (('type' in current) && ('length' in current.type)) {
                 for (var j = current.type.length; j--;) {
                     if (typeof(current.type[j]) === 'string') {
                         // add type to item
                         item.type.push(current.type[j]);
-                    }
-                    else {
-                        murucaSelector.log('ERROR: Weird type is weird? '+typeof(current.type[j])+': '+current.type[j]);
+                    } else {
+                        murucaSelector.log('ERROR: Weird type is weird? ' + typeof(current.type[j]) + ': ' + current.type[j]);
                     }
                 }
             }

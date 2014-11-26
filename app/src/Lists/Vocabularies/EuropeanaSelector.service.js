@@ -1,4 +1,5 @@
 angular.module('Pundit2.Vocabularies')
+
 .constant('EUROPEANADEFAULTS', {
 
     /**
@@ -56,10 +57,10 @@ angular.module('Pundit2.Vocabularies')
      * @description
      * `Array of object`
      *
-     * Array of europeana instances, each object in the array allows you to add and configure 
+     * Array of europeana instances, each object in the array allows you to add and configure
      * an instance of the vocabulary. By default, the vocabulary has only one instance.
      * Each instance has its own tab in the interface, with its list of items.
-     * 
+     *
      *
      * Default value:
      * <pre> instances: [
@@ -73,20 +74,18 @@ angular.module('Pundit2.Vocabularies')
      *   }
      * ] </pre>
      */
-    instances: [
-        {
-            // where items is stored inside itemsExchange service
-            container: 'europeana',
-            // instance label tab title
-            label: 'Europeana',
-            // enable or disable the instance
-            active: true,
+    instances: [{
+        // where items is stored inside itemsExchange service
+        container: 'europeana',
+        // instance label tab title
+        label: 'Europeana',
+        // enable or disable the instance
+        active: true,
 
-            basketID: null,
-            url: 'http://dev.korbo2.org/v1', 
-            language: 'en'
-        }
-    ],
+        basketID: null,
+        url: 'http://dev.korbo2.org/v1',
+        language: 'en'
+    }],
 
     /**
      * @module punditConfig
@@ -104,8 +103,9 @@ angular.module('Pundit2.Vocabularies')
     debug: false
 
 })
+
 .factory('EuropeanaSelector', function(BaseComponent, EUROPEANADEFAULTS, Item, ItemsExchange, SelectorsManager,
-                                            $http, $q) {
+    $http, $q) {
 
     var europeanaSelector = new BaseComponent('EuropeanaSelector', EUROPEANADEFAULTS);
     europeanaSelector.name = 'EuropeanaSelector';
@@ -118,82 +118,82 @@ angular.module('Pundit2.Vocabularies')
     }
 
     // selector instance constructor
-    var EuropeanaFactory = function(config){
+    var EuropeanaFactory = function(config) {
         this.config = config;
     };
 
-    EuropeanaFactory.prototype.getItems = function(term){
-        if(typeof(term) === 'undefined'){
+    EuropeanaFactory.prototype.getItems = function(term) {
+        if (typeof(term) === 'undefined') {
             return;
         }
-        
+
         var self = this,
             promise = $q.defer(),
             container = self.config.container + term.split(' ').join('$');
-            // TODO se basketID è null non aggiungerlo tra i parametri, altrimenti passarlo nell'oggetto params
-            var params = {
-                q: term,
-                p: 'europeana',
-                limit: europeanaSelector.options.limit,
-                offset: 0,
-                lang: self.config.language
-            };
+        // TODO se basketID è null non aggiungerlo tra i parametri, altrimenti passarlo nell'oggetto params
+        var params = {
+            q: term,
+            p: 'europeana',
+            limit: europeanaSelector.options.limit,
+            offset: 0,
+            lang: self.config.language
+        };
 
-            if(self.config.basketID !== null){
-                params.basketId = self.config.basketID;
+        if (self.config.basketID !== null) {
+            params.basketId = self.config.basketID;
+        }
+
+        $http({
+            //headers: { 'Content-Type': 'application/json' },
+            method: 'GET',
+            url: self.config.url + "/search/items",
+            cache: false,
+            params: params
+
+        }).success(function(res) {
+            europeanaSelector.log('Http success, get items ' + self.config.label, res.data);
+
+            if (res.data.length === 0) {
+                europeanaSelector.log('Empty response');
+                ItemsExchange.wipeContainer(container);
+                // promise is always resolved
+                promise.resolve();
+                return;
             }
 
-            $http({
-                //headers: { 'Content-Type': 'application/json' },
-                method: 'GET',
-                url: self.config.url + "/search/items",
-                cache: false,
-                params: params
+            ItemsExchange.wipeContainer(container);
 
-            }).success(function(res){
-                europeanaSelector.log('Http success, get items '+self.config.label, res.data);
+            for (var i = 0; i < res.data.length; i++) {
+                var current = res.data[i];
 
-                if (res.data.length === 0) {
-                    europeanaSelector.log('Empty response');
-                    ItemsExchange.wipeContainer(container);
-                    // promise is always resolved
-                    promise.resolve();
-                    return;
+                var item = {
+                    label: current.label,
+                    uri: current.uri,
+                    type: current.type
+                };
+                // optional propeties
+                if (current.depiction !== "") {
+                    item.image = current.depiction;
+                }
+                if (current.abstract !== "") {
+                    item.description = current.abstract;
                 }
 
-                ItemsExchange.wipeContainer(container);
+                // add to itemsExchange
+                ItemsExchange.addItemToContainer(new Item(item.uri, item), container);
+            }
 
-                for (var i=0; i<res.data.length; i++) {
-                    var current = res.data[i];
-
-                    var item = {
-                        label: current.label,
-                        uri: current.uri,
-                        type: current.type
-                    };
-                    // optional propeties
-                    if (current.depiction !== "") {
-                        item.image = current.depiction;
-                    }
-                    if (current.abstract !== "") {
-                        item.description = current.abstract;
-                    }
-
-                    // add to itemsExchange
-                    ItemsExchange.addItemToContainer(new Item(item.uri, item), container);
-                }
-
-                promise.resolve();
-            }).error(function(){
-                europeanaSelector.log('Http Error');
-                promise.resolve();
-            });
+            promise.resolve();
+        }).error(function() {
+            europeanaSelector.log('Http Error');
+            promise.resolve();
+        });
 
         return promise.promise;
 
     };
 
-    EuropeanaFactory.prototype.push = function(config){
+    EuropeanaFactory.prototype.push = function(config) {
         europeanaSelector.options.instances.push(config);
     };
 
