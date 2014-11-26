@@ -1,3 +1,5 @@
+// TODO: this module (service, tmpl and ctrl) needs several refactoring
+
 angular.module('Pundit2.ResourcePanel')
 
 .constant('RESOURCEPANELDEFAULTS', {
@@ -376,6 +378,7 @@ angular.module('Pundit2.ResourcePanel')
             var pageItemsForTabs = {
                 title: 'Page items',
                 items: pageItems,
+                module: 'Pundit2',
                 isStarted: true
             };
             contentTabs.push(pageItemsForTabs);
@@ -384,6 +387,7 @@ angular.module('Pundit2.ResourcePanel')
             var myItemsForTabs = {
                 title: 'My items',
                 items: myItems,
+                module: 'Pundit2',
                 isStarted: true
             };
             contentTabs.push(myItemsForTabs);
@@ -426,7 +430,7 @@ angular.module('Pundit2.ResourcePanel')
 
         // if label is an empty string
         // set empty array as results for each vocab
-        if (label === '') {
+        if (label === '' || typeof(label) === 'undefined') {
             for (var i = 0; i < selectors.length; i++) {
                 (function(index) {
 

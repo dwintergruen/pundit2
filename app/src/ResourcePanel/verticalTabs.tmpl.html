@@ -24,11 +24,12 @@
                 ng-minlength="3">
         </div>
 
+        <!-- TODO: remove? use cancel? -->
         <button 
             type="button" 
             class="btn btn-xs btn-link pnd-btn-dashboard pull-right" 
             ng-click="cancel()">
-            <span class="pnd-icon pnd-icon-times"></span>
+            <!-- <span class="pnd-icon pnd-icon-times"></span> -->
         </button>
     </div>
     <!-- // end header -->
@@ -131,7 +132,7 @@
                         No results found
                     </li>
                     <li 
-                        ng-if="pane.module == 'Pundit2' && $parent.tabItemsFiltered[$index].length === 0 && label === ''">
+                        ng-if="pane.module == 'Pundit2' && $parent.tabItemsFiltered[$index].length === 0 && label === '' && pane.title != 'My items' && pane.title != 'Page items'">
                         Type a label to search...
                     </li>
                     <li 
@@ -141,11 +142,14 @@
                         <item 
                             uri="{{mi.uri}}" 
                             is-selected="{{isSelected(mi)}}" 
-                            ng-click="select(mi)" 
+                            ng-click="select(mi)"
+                            ng-dblclick="save(mi)"
                             hide-options="true" 
                             hide-sticky-button="true"
                             ng-if="moduleName == 'Pundit2'"></item>
                     </li>
+
+                    <!-- Korbo -->
                     <li 
                         class="list-group-item" 
                         ng-repeat="mi in contentTabs[$index].items | orderBy:getOrderProperty" 
@@ -172,6 +176,11 @@
                     ng-class="{'disabled': !isUseActive}" 
                     ng-click="save(itemSelected)">
                     Use
+                </button>
+                <button 
+                    class="pnd-resource-panel-use-button btn btn-xs btn-info pnd-btn-full" 
+                    ng-click="cancel()">
+                    Cancel
                 </button>
                 <button 
                     class="pnd-resource-panel-copy-button btn btn-xs btn-info pnd-btn-full" 
