@@ -39,6 +39,10 @@ module.exports = function(config) {
             'app/src/**/*.js',
             'test/unit/**/*.js'
         ],
+        exclude: [
+            'app/src/InitBookmarklet.js',
+            'app/src/InitBookmarkletFeed.js'
+        ], // list of files / patterns to exclude
         basePath: '../',
         frameworks: ['jasmine'],
         reporters: ['progress'],
