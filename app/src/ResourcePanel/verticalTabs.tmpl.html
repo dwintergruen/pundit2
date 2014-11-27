@@ -21,7 +21,8 @@
                 placeholder="Type at least 3 characters ..." 
                 ng-model="$parent.$parent.label"
                 ng-change="updateSearch($parent.$parent.label)"
-                ng-minlength="3">
+                ng-minlength="3"
+                ng-keyup="escapeEvent($event)">
         </div>
 
         <!-- TODO: remove? use cancel? -->

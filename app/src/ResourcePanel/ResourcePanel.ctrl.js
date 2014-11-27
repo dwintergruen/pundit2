@@ -138,6 +138,12 @@ angular.module('Pundit2.ResourcePanel')
         }
     };
 
+    $scope.escapeEvent = function(e) {
+        if (e.which == 27){
+            e.stopPropagation();
+        }
+    };
+
     // TODO: why?!
     $scope.$watch(function() {
         return $scope.contentTabs.activeTab;
