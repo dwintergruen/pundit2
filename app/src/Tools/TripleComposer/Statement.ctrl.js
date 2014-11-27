@@ -348,7 +348,15 @@ angular.module('Pundit2.TripleComposer')
     };
     
     $scope.onClickObject = function($event) {
-        ResourcePanel.showItemsForObject(triple, $event.target).then($scope.setObject);
+        if (triple.object === null || (!$scope.objectLiteral && !$scope.objectDate)) {
+            ResourcePanel.showItemsForObject(triple, $event.target).then($scope.setObject);
+        } else {
+            if ($scope.objectLiteral) {
+                $scope.onClickObjectLiteral($event);
+            } else if ($scope.objectDate) {
+                $scope.onClickObjectCalendar($event);
+            }
+        }
     };
 
     $scope.onClickObjectCalendar = function($event) {

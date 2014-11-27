@@ -23,7 +23,8 @@
                     <span 
                         class="pnd-statement-label" 
                         ng-mouseover="onSubjectMouseOver()" 
-                        ng-mouseleave="onItemMouseOut()">
+                        ng-mouseleave="onItemMouseOut()"
+                        ng-click="onClickSubject($event)">
                             {{subjectLabel}}
                     </span>
                     <button 
@@ -61,7 +62,8 @@
                     <span 
                         class="pnd-statement-label" 
                         ng-mouseover="onPredicateMouseOver()" 
-                        ng-mouseleave="onItemMouseOut()">
+                        ng-mouseleave="onItemMouseOut()"
+                        ng-click="onClickPredicate($event)">
                             {{predicateLabel}}
                     </span>
                     <button 
@@ -115,7 +117,8 @@
                     <span 
                         class="pnd-statement-label" 
                         ng-mouseover="onObjectMouseOver()" 
-                        ng-mouseleave="onItemMouseOut()">
+                        ng-mouseleave="onItemMouseOut()"
+                        ng-click="onClickObject($event)">
                         <span>
                             {{objectLabel}}
                         </span>

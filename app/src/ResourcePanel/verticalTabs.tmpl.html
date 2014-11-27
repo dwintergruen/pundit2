@@ -128,12 +128,12 @@
                     class="list-group" 
                     style="margin-left: 200px"> <!-- TODO: temp style -->
                     <li 
-                        ng-if="pane.module == 'Pundit2' && $parent.tabItemsFiltered[$index].length === 0 && label !== ''">
+                        ng-if="pane.module == 'Pundit2' && $parent.tabItemsFiltered[$index].length === 0 && label.length > 2 && !pane.isLoading">
                         No results found
                     </li>
                     <li 
-                        ng-if="pane.module == 'Pundit2' && $parent.tabItemsFiltered[$index].length === 0 && label === '' && pane.title != 'My items' && pane.title != 'Page items'">
-                        Type a label to search...
+                        ng-if="pane.module == 'Pundit2' && label.length > 2 && pane.isLoading">
+                        Loading ... 
                     </li>
                     <li 
                         class="list-group-item" 
