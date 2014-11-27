@@ -103,17 +103,16 @@ angular.module('Pundit2.ResourcePanel')
         subTypes;
 
     var searchTimer;
-    var state = {};
-
-    state.popover = null;
-    state.defaultPlacement = 'bottom';
-    state.resourcePromise = null;
-
-    // scope needed to instantiate a new popover using $popover provider
-    state.popoverOptions = {
-        scope: $rootScope.$new()
+    var state = {
+        popover: null,
+        defaultPlacement: 'bottom',
+        resourcePromise: null,
+        popoverOptions: {
+            // scope needed to instantiate a new popover using $popover provider
+            scope: $rootScope.$new(),
+            trigger: 'manual'
+        }
     };
-    state.popoverOptions.trigger = "manual";
 
     var hide = function() {
         if (state.popover === null) {
@@ -127,10 +126,6 @@ angular.module('Pundit2.ResourcePanel')
         state.popover.destroy();
         state.popover = null;
     };
-
-    EventDispatcher.addListener('TripleComposer.statementChange', function() {
-        hide();
-    });
 
     // initialize a popover
     var initPopover = function(content, target, placement, type, contentTabs) {
@@ -177,7 +172,7 @@ angular.module('Pundit2.ResourcePanel')
             }
 
             // handle save a new popoverLiteral
-            state.popoverOptions.scope.save = function() {
+            state.popoverOptions.scope.save = function(elem) {
                 state.resourcePromise.resolve(this.literalText);
                 Preview.hideDashboardPreview();
                 hide();
@@ -372,7 +367,7 @@ angular.module('Pundit2.ResourcePanel')
 
         content.type = type;
         content.triple = triple;
-        
+
         if (type === 'sub' || type === 'obj') {
             var pageItemsForTabs = {
                 title: 'Page items',
@@ -484,6 +479,10 @@ angular.module('Pundit2.ResourcePanel')
             }
         }
     };
+
+    EventDispatcher.addListener('TripleComposer.statementChange', function() {
+        hide();
+    });
 
     resourcePanel.updateVocabSearch = function(label, triple, caller) {
         var selectors = SelectorsManager.getActiveSelectors();
