@@ -307,6 +307,16 @@ body.pnd-toolbar-active {
     // ---------- DROPDOWN MENU
     
     &.pnd-toolbar-notebook-menu-button a {
+        max-width: 350px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        
+        .pnd-icon {
+            margin-right: 6px;
+        }
+    }    
+    &.pnd-toolbar-custom-menu-button a {
 		max-width: 350px;
 		white-space: nowrap;
 		overflow: hidden;

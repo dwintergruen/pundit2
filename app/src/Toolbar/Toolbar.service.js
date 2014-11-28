@@ -16,6 +16,34 @@ angular.module('Pundit2.Toolbar')
     /**
      * @module punditConfig
      * @ngdoc property
+     * @name modules#Toolbar.myNotebooks
+     *
+     * @description
+     * `boolean`
+     *
+     * Show/Hide ask the Pundit button
+     *
+     * Default value:
+     * <pre> myNotebooks: true </pre>
+     */
+    myNotebooks: true,
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#Toolbar.askThePundit
+     *
+     * @description
+     * `boolean`
+     *
+     * Show/Hide ask the Pundit button
+     *
+     * Default value:
+     * <pre> askThePundit: true </pre>
+     */
+    askThePundit: true,
+    /**
+     * @module punditConfig
+     * @ngdoc property
      * @name modules#Toolbar.askLinkDefault
      *
      * @description
@@ -42,6 +70,29 @@ angular.module('Pundit2.Toolbar')
      * <pre> askLinkUser: "http://demo-cloud.ask.thepund.it/#/myAsk/" </pre>
      */
     askLinkUser: "http://demo-cloud.ask.thepund.it/#/myAsk/",
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#Toolbar.menuCustom
+     *
+     * @description
+     * `object`
+     *
+     * Class added to the body element as soon as the directive is rendered. It will push down body of the current web page.
+     * In this way pundit toolbar and his components are always visibile.
+     *
+     * Default value:
+     * <pre> 
+     *  menuCustom: {
+     *    active: false,s
+     *    list: {label1: 'http://www.yourlink1.it', label2: 'http://www.yourlink2.it'}
+     *  } 
+     * </pre>
+     */
+    menuCustom: {
+        active: false,
+        list: {}
+    },
     /**
      * @module punditConfig
      * @ngdoc property

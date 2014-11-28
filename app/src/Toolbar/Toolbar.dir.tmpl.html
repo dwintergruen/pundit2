@@ -34,7 +34,7 @@
                 </li>
                 
                 <!-- Ask the Pundit button-->
-                <li class="pnd-toolbar-ask-button pnd-toolbar-ask-button-active">
+                <li class="pnd-toolbar-ask-button pnd-toolbar-ask-button-active" ng-if="askThePundit">
                     <a href="{{getAskLink()}}" target="_blank">
                         <span ng-if="!isUserLogged">Ask the Pundit</span>
                         <span ng-if="isUserLogged">My Ask the Pundit</span>
@@ -42,7 +42,7 @@
                 </li>
                 
                 <!-- Dashboard button -->
-                <li class="pnd-toolbar-dashboard-button" ng-class="{'pnd-not-clickable':isAnnomaticRunning, 'pnd-toolbar-dashboard-button-active': isDashboardVisible}">
+                <li class="pnd-toolbar-dashboard-button" ng-if="dashobard" ng-class="{'pnd-not-clickable':isAnnomaticRunning, 'pnd-toolbar-dashboard-button-active': isDashboardVisible}">
                     <a href="javascript:void(0)" ng-click="dashboardClickHandler()">
                         <span class="pnd-toolbar-active-element">Dashboard</span>
                     </a>
@@ -68,13 +68,20 @@
                 </li>
                 
                 <!-- Notebooks menu -->
-                <li class="pnd-toolbar-notebook-menu-button">
+                <li class="pnd-toolbar-notebook-menu-button" ng-if="myNotebooks">
                     <a ng-show="isUserLogged" href="javascript:void(0)" placement="bottom-right" template="{{dropdownTemplateMyNotebook}}" bs-dropdown="userNotebooksDropdown"><span class="pnd-icon pnd-icon-book"> </span> <span class="pnd-toolbar-active-element">{{currentNotebookLabel}}</span></a>
                     <a ng-show="!isUserLogged" href="javascript:void(0)" placement="bottom-right" template="{{dropdownTemplate}}" bs-dropdown="userNotLoggedDropdown"><span class="pnd-toolbar-not-active-element">My notebooks</span></a>
                 </li>
+
+                <!-- Custom menu -->
+                <li class="pnd-toolbar-custom-menu-button" ng-if="menuCustom">
+                    <a href="javascript:void(0)" template="{{dropdownTemplate}}" bs-dropdown="menuCustomDropdown">
+                        <span class="pnd-toolbar-active-element">Advanced menu</span>
+                    </a>
+                </li>
                 
                 <!-- Annotations menu -->
-                <li class="pnd-toolbar-annotations-button" ng-class="{'pnd-toolbar-annotations-button-active': isAnnotationSidebarExpanded}">
+                <li class="pnd-toolbar-annotations-button" ng-if="sidebar" ng-class="{'pnd-toolbar-annotations-button-active': isAnnotationSidebarExpanded}">
                     <a href="javascript:void(0)" ng-click="annotationsClickHandler()">
                         <span class="pnd-toolbar-active-element">Annotations sidebar</span>
                     </a>

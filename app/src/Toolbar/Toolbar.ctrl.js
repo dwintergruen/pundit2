@@ -13,8 +13,33 @@ angular.module('Pundit2.Toolbar')
 
     $scope.isUserLogged = false;
 
+    $scope.askThePundit = Toolbar.options.askThePundit;
+    $scope.myNotebooks = Toolbar.options.myNotebooks;
+    $scope.dashboard = false;
+    $scope.sidebar = false;
+    $scope.menuCustom = false;
+
+    if (Toolbar.options.menuCustom.active){
+        $scope.menuCustom = true;
+        $scope.menuCustomDropdown = [];
+        angular.forEach(Toolbar.options.menuCustom.list, function(value, key) {
+            $scope.menuCustomDropdown.push({ 
+                text: key, 
+                click: function() {
+                    $window.location.href = value;
+                } 
+            });
+        })
+    }
+
     if (Config.useOnlyTemplateMode) {
         angular.element(".pnd-toolbar-template-mode-button").addClass('pnd-not-clickable');
+    }
+    if (Config.modules.Dashboard.active) {
+        $scope.dashboard = true;
+    }    
+    if (Config.modules.AnnotationSidebar.active) {
+        $scope.sidebar = true;
     }
 
     var lodLive = false;
