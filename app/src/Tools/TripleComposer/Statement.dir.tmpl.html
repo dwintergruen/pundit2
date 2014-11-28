@@ -27,14 +27,17 @@
                         ng-click="onClickSubject($event)">
                             {{subjectLabel}}
                     </span>
-                    <button 
-                        type="button" 
-                        class="btn btn-xs btn-link" 
-                        ng-if="!templateMode" 
-                        title="delete" 
-                        ng-click="wipeSubject()">
+
+                    <div class="pnd-row-button-rightbuttons">
+                        <button
+                                type="button"
+                                class="btn btn-xs btn-link"
+                                ng-if="!templateMode"
+                                title="delete"
+                                ng-click="wipeSubject()">
                             <span class="pnd-icon pnd-icon-trash-o"></span>
-                    </button> 
+                        </button>
+                    </div>
                     <!-- <span>
                         {{subjectTypeLabel}}
                     </span> -->
@@ -47,7 +50,7 @@
         <div class="pnd-statement-predicate">
             <div>
                 <!-- Predicate Buttons div (not found)-->
-                <div 
+                <div
                     class="pnd-row-button-predicate"
                     ng-if="!predicateFound">
                         <span 
@@ -66,14 +69,17 @@
                         ng-click="onClickPredicate($event)">
                             {{predicateLabel}}
                     </span>
-                    <button 
-                        type="button" 
-                        class="btn btn-xs btn-link" 
-                        ng-if="!predicateFixed" 
-                        title="delete"  
-                        ng-click="wipePredicate()">
+
+                    <div class="pnd-row-button-rightbuttons">
+                        <button
+                                type="button"
+                                class="btn btn-xs btn-link"
+                                ng-if="!predicateFixed"
+                                title="delete"
+                                ng-click="wipePredicate()">
                             <span class="pnd-icon pnd-icon-trash-o"></span>
-                    </button>
+                        </button>
+                    </div>
                 </div>
                 <!-- // end Predicate buttons -->            
             </div>
@@ -83,33 +89,36 @@
         <div class="pnd-statement-object">
             <div>
                 <!-- Object buttons !found -->
-                <div 
-                    class="pnd-row-button-object" 
+                <div
+                    class="pnd-row-button-object"
                     ng-if="!objectFound"
                     ng-class="{'pnd-statement-mandatory-object':isMandatory && templateMode}">
-                        <span 
-                            class="pnd-statement-label" 
+                        <span
+                            class="pnd-statement-label"
                             ng-click="onClickObject($event)">
                                 Add an object
                         </span>
+
+                    <div class="pnd-row-button-rightbuttons">
                         <!--Calendar Icon-->
-                        <button 
-                            type="button" 
-                            class="btn btn-xs btn-link" 
-                            ng-if="canBeObjectDate" 
-                            ng-click="onClickObjectCalendar($event)"  
-                            title="calendar">
-                                <span class="pnd-icon pnd-icon-table"></span>
+                        <button
+                                type="button"
+                                class="btn btn-xs btn-link"
+                                ng-if="canBeObjectDate"
+                                ng-click="onClickObjectCalendar($event)"
+                                title="calendar">
+                            <span class="pnd-icon pnd-icon-table"></span>
                         </button>
                         <!--Pen Icon-->
-                        <button 
-                            type="button" 
-                            class="btn btn-xs btn-link" 
-                            ng-if="canBeObjectLiteral" 
-                            ng-click="onClickObjectLiteral($event)"  
-                            title="text">
+                        <button
+                                type="button"
+                                class="btn btn-xs btn-link"
+                                ng-if="canBeObjectLiteral"
+                                ng-click="onClickObjectLiteral($event)"
+                                title="text">
                             <span class="pnd-icon pnd-icon-pencil"></span>
                         </button>
+                    </div>
                 </div>
 
                 <!-- Object buttons found -->
@@ -124,33 +133,35 @@
                         </span>
                     </span>
 
-                    <!--Calendar Icon-->
-                    <button 
-                        type="button" 
-                        class="btn btn-xs btn-link" 
-                        ng-if="objectDate && !objectFixed" 
-                        ng-click="onClickObjectCalendar($event)"  
-                        title="calendar">
+                    <div class="pnd-row-button-rightbuttons">
+                        <!--Calendar Icon-->
+                        <button
+                                type="button"
+                                class="btn btn-xs btn-link"
+                                ng-if="objectDate && !objectFixed"
+                                ng-click="onClickObjectCalendar($event)"
+                                title="calendar">
                             <span class="pnd-icon pnd-icon-table"></span>
-                    </button>
-                    <!--Pen Icon-->
-                    <button 
-                        type="button" 
-                        class="btn btn-xs btn-link" 
-                        ng-if="objectLiteral && !objectFixed" 
-                        ng-click="onClickObjectLiteral($event)"  
-                        title="text">
+                        </button>
+                        <!--Pen Icon-->
+                        <button
+                                type="button"
+                                class="btn btn-xs btn-link"
+                                ng-if="objectLiteral && !objectFixed"
+                                ng-click="onClickObjectLiteral($event)"
+                                title="text">
                             <span class="pnd-icon pnd-icon-pencil"></span>
-                    </button>
+                        </button>
 
-                    <button 
-                        type="button" 
-                        class="btn btn-xs btn-link" 
-                        ng-if="!objectFixed" 
-                        title="delete" 
-                        ng-click="wipeObject()">
+                        <button
+                                type="button"
+                                class="btn btn-xs btn-link"
+                                ng-if="!objectFixed"
+                                title="delete"
+                                ng-click="wipeObject()">
                             <span class="pnd-icon pnd-icon-trash-o"></span>
-                    </button>
+                        </button>
+                    </div>
                     <!-- <span>
                         {{objectTypeLabel}}
                     </span> -->
