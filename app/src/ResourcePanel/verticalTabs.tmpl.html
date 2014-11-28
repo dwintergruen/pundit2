@@ -5,10 +5,10 @@
    <div 
         class="pnd-vertical-tab-header-content" 
         ng-if="moduleName == 'Pundit2'">
-        <!-- TODO: fix layout and restore this block -->
-        <!-- <strong ng-if="type === 'sub'">Choose your subject...</strong>
+
+        <strong ng-if="type === 'sub'">Choose your subject...</strong>
         <strong ng-if="type === 'obj'">Choose your object...</strong>
-        <strong ng-if="type === 'pr'">Choose your predicate...</strong> -->
+        <strong ng-if="type === 'pr'">Choose your predicate...</strong>
         
         <!-- Search Input div -->
         <div class="left-inner-icon">
@@ -125,9 +125,7 @@
                     </div>
                 </div>
 
-                <ul 
-                    class="list-group" 
-                    style="margin-left: 200px"> <!-- TODO: temp style -->
+                <ul class="list-group">
                     <li 
                         ng-if="pane.module == 'Pundit2' && $parent.tabItemsFiltered[$index].length === 0 && label.length > 2 && !pane.isLoading">
                         No results found
