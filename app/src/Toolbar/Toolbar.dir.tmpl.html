@@ -40,9 +40,17 @@
                         <span ng-if="isUserLogged">My Ask the Pundit</span>
                     </a>
                 </li>
+
+                <li class="pnd-toolbar-custom-button" ng-if="menuCustom && menuCustomBtn" ng-repeat="(key, value) in menuCustomBtn">
+                    <a href="{{value}}">
+                        <span class="pnd-toolbar-active-element">{{key}}</span>
+                    </a>
+                </li>
                 
                 <!-- Dashboard button -->
-                <li class="pnd-toolbar-dashboard-button" ng-if="dashboard" ng-class="{'pnd-not-clickable':isAnnomaticRunning, 'pnd-toolbar-dashboard-button-active': isDashboardVisible}">
+                <li 
+                    ng-if="dashboard" 
+                    ng-class="{'pnd-not-clickable':isAnnomaticRunning, 'pnd-toolbar-dashboard-button-active': isDashboardVisible, 'pnd-toolbar-dashboard-button': askThePundit}">
                     <a href="javascript:void(0)" ng-click="dashboardClickHandler()">
                         <span class="pnd-toolbar-active-element">Dashboard</span>
                     </a>
@@ -74,7 +82,7 @@
                 </li>
 
                 <!-- Custom menu -->
-                <li class="pnd-toolbar-custom-menu-button" ng-if="menuCustom">
+                <li class="pnd-toolbar-custom-menu-button" ng-if="menuCustom && menuCustomDropdown.length > 0">
                     <a href="javascript:void(0)" template="{{dropdownTemplate}}" bs-dropdown="menuCustomDropdown">
                         <span class="pnd-toolbar-active-element">Advanced menu</span>
                     </a>

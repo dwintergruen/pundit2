@@ -84,13 +84,15 @@ angular.module('Pundit2.Toolbar')
      * Default value:
      * <pre> 
      *  menuCustom: {
-     *    active: false,s
+     *    active: false,
+     *    dropdown: true,
      *    list: {label1: 'http://www.yourlink1.it', label2: 'http://www.yourlink2.it'}
      *  } 
      * </pre>
      */
     menuCustom: {
         active: false,
+        dropdown: true,
         list: {}
     },
     /**

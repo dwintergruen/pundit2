@@ -18,18 +18,26 @@ angular.module('Pundit2.Toolbar')
     $scope.dashboard = false;
     $scope.sidebar = false;
     $scope.menuCustom = false;
+    $scope.menuCustomBtn = false;
+    $scope.menuCustomDropdown = [];
+    $scope.menuCustomBtn = [];
 
-    if (Toolbar.options.menuCustom.active){
+    var menuCustom = Toolbar.options.menuCustom;
+
+    if (menuCustom.active){
         $scope.menuCustom = true;
-        $scope.menuCustomDropdown = [];
-        angular.forEach(Toolbar.options.menuCustom.list, function(value, key) {
-            $scope.menuCustomDropdown.push({ 
-                text: key, 
-                click: function() {
-                    $window.location.href = value;
-                } 
+        if (menuCustom.dropdown) {
+            angular.forEach(menuCustom.list, function(value, key) {
+                $scope.menuCustomDropdown.push({ 
+                    text: key, 
+                    click: function() {
+                        $window.location.href = value;
+                    } 
+                });
             });
-        })
+        } else {
+            $scope.menuCustomBtn = menuCustom.list;
+        }
     }
 
     if (Config.useOnlyTemplateMode) {
