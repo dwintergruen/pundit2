@@ -1,11 +1,16 @@
 angular.module('Pundit2.Communication')
-    .service('AnnotationsCommunication', function(BaseComponent, EventDispatcher, NameSpace, Consolidation, MyPundit,
-        AnnotationsExchange, Annotation, NotebookExchange, Notebook, ItemsExchange, Config, XpointersHelper,
-        $http, $q, $rootScope) {
 
-    var annotationsCommunication = new BaseComponent("AnnotationCommunication");
+.constant('ANNOTATIONSCOMMUNICATIONDEFAULTS', {
+    preventDownload: false
+})
 
-    var setLoading = function (state) {
+.service('AnnotationsCommunication', function(BaseComponent, EventDispatcher, NameSpace, Consolidation, MyPundit,
+    AnnotationsExchange, Annotation, NotebookExchange, Notebook, ItemsExchange, Config, XpointersHelper,
+    $http, $q, $rootScope, ANNOTATIONSCOMMUNICATIONDEFAULTS) {
+
+    var annotationsCommunication = new BaseComponent("AnnotationsCommunication", ANNOTATIONSCOMMUNICATIONDEFAULTS);
+
+    var setLoading = function(state) {
         EventDispatcher.sendEvent('Pundit.loading', state);
     };
 
@@ -18,6 +23,11 @@ angular.module('Pundit2.Communication')
 
         var promise = $q.defer();
 
+        if (annotationsCommunication.options.preventDownload) {
+            promise.reject('Prevent download forced by conf');
+            return;
+        }
+
         setLoading(true);
 
         var uris = Consolidation.getAvailableTargets(),
@@ -26,8 +36,8 @@ angular.module('Pundit2.Communication')
         annotationsCommunication.log('Getting annotations for available targets', uris);
 
         annPromise.then(function(ids) {
-            annotationsCommunication.log('Found '+ids.length+' annotations on the current page.');
-            
+            annotationsCommunication.log('Found ' + ids.length + ' annotations on the current page.');
+
             if (ids.length === 0) {
                 // TODO: use wipe (not consolidateAll) and specific event in other component (like sidebar)
                 Consolidation.consolidateAll();
@@ -37,10 +47,10 @@ angular.module('Pundit2.Communication')
 
             var annPromises = [],
                 settled = 0;
-            for (var i=0; i<ids.length; i++) {
+            for (var i = 0; i < ids.length; i++) {
 
                 var a = new Annotation(ids[i]);
-                a.then(function(ann){
+                a.then(function(ann) {
                     // The annotation got loaded, it is already available
                     // in the AnnotationsExchange
                     var notebookID = ann.isIncludedIn;
@@ -49,12 +59,12 @@ angular.module('Pundit2.Communication')
                         new Notebook(notebookID);
                     }
                 }, function(error) {
-                    annotationsCommunication.log("Could not retrieve annotation: "+ error);
+                    annotationsCommunication.log("Could not retrieve annotation: " + error);
                     // TODO: can we try again? Let the user try again with an error on
                     // the toolbar?
                 }).finally().then(function() {
                     settled++;
-                    annotationsCommunication.log('Received annotation '+settled+'/'+annPromises.length);
+                    annotationsCommunication.log('Received annotation ' + settled + '/' + annPromises.length);
 
                     if (settled === annPromises.length) {
                         annotationsCommunication.log('All promises settled, consolidating');
@@ -67,7 +77,7 @@ angular.module('Pundit2.Communication')
             }
 
         }, function(msg) {
-            annotationsCommunication.err("Could not search for annotations, error from the server: "+msg);
+            annotationsCommunication.err("Could not search for annotations, error from the server: " + msg);
             EventDispatcher.sendEvent('Pundit.error', 'Could not search for annotations, error from the server!');
             promise.reject(msg);
         });
@@ -82,15 +92,17 @@ angular.module('Pundit2.Communication')
 
         var promise = $q.defer();
 
-        if(MyPundit.isUserLogged()){
+        if (MyPundit.isUserLogged()) {
             setLoading(true);
             $http({
                 method: 'DELETE',
-                url: NameSpace.get('asAnn', {id: annID}),
+                url: NameSpace.get('asAnn', {
+                    id: annID
+                }),
                 withCredentials: true
             }).success(function() {
                 setLoading(false);
-                annotationsCommunication.log("Success annotation: "+annID+" correctly deleted");
+                annotationsCommunication.log("Success annotation: " + annID + " correctly deleted");
                 // remove annotation from relative notebook
                 var notebookID = AnnotationsExchange.getAnnotationById(annID).isIncludedIn;
                 var nt = NotebookExchange.getNotebookById(notebookID);
@@ -102,39 +114,41 @@ angular.module('Pundit2.Communication')
                 // wipe all annotations (are in chace)
                 AnnotationsExchange.wipe();
                 // reload all annotation
-                annotationsCommunication.getAnnotations().then(function(){
+                annotationsCommunication.getAnnotations().then(function() {
                     promise.resolve(annID);
-                }, function(){
-                    promise.reject("Error during getAnnotations after a delete of: "+annID);
+                }, function() {
+                    promise.reject("Error during getAnnotations after a delete of: " + annID);
                 });
 
             }).error(function() {
                 setLoading(false);
-                annotationsCommunication.log("Error impossible to delete annotation: "+annID+" please retry.");
-                promise.reject("Error impossible to delete annotation: "+annID);
+                annotationsCommunication.log("Error impossible to delete annotation: " + annID + " please retry.");
+                promise.reject("Error impossible to delete annotation: " + annID);
             });
         } else {
-            annotationsCommunication.log("Error impossible to delete annotation: "+annID+" you are not logged");
-            promise.reject("Error impossible to delete annotation: "+annID+" you are not logged");
+            annotationsCommunication.log("Error impossible to delete annotation: " + annID + " you are not logged");
+            promise.reject("Error impossible to delete annotation: " + annID + " you are not logged");
         }
 
         return promise.promise;
     };
 
-    annotationsCommunication.saveAnnotation = function(graph, items, targets, templateID, skipConsolidation){
+    annotationsCommunication.saveAnnotation = function(graph, items, targets, templateID, skipConsolidation) {
 
         // var completed = 0;
         var promise = $q.defer();
 
-        var postSaveSend = function (url, annotationId) {
+        var postSaveSend = function(url, annotationId) {
             console.log(url);
             $http({
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json'
+                },
                 method: 'POST',
                 url: url,
                 params: {},
                 data: {
-                        annotationID: annotationId
+                    annotationID: annotationId
                 }
             }).success(function() {
                 annotationsCommunication.log('Post save success');
@@ -143,7 +157,7 @@ angular.module('Pundit2.Communication')
             });
         };
 
-        if(MyPundit.isUserLogged()){
+        if (MyPundit.isUserLogged()) {
 
             setLoading(true);
 
@@ -152,11 +166,15 @@ angular.module('Pundit2.Communication')
                 items: items
             };
             if (typeof(templateID) !== 'undefined') {
-                postData.metadata = {template: templateID};
+                postData.metadata = {
+                    template: templateID
+                };
             }
 
             $http({
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json'
+                },
                 method: 'POST',
                 url: NameSpace.get('asNBCurrent'),
                 params: {
@@ -170,7 +188,7 @@ angular.module('Pundit2.Communication')
             }).success(function(data) {
 
                 // TODO if is rejected ???
-                new Annotation(data.AnnotationID).then(function(){
+                new Annotation(data.AnnotationID).then(function() {
 
                     var ann = AnnotationsExchange.getAnnotationById(data.AnnotationID);
 
@@ -179,8 +197,8 @@ angular.module('Pundit2.Communication')
 
                     // if no notebook is defined, it means that user is logged in a new user in Pundit and has not any notebooks
                     // so create a new notebook and add annotation in new notebook in NotebookExchange
-                    if(typeof(nb) === 'undefined'){
-                        new Notebook(ann.isIncludedIn, true).then(function(id){
+                    if (typeof(nb) === 'undefined') {
+                        new Notebook(ann.isIncludedIn, true).then(function(id) {
                             NotebookExchange.getNotebookById(id).addAnnotation(data.AnnotationID);
                         });
                     } else {
@@ -192,11 +210,11 @@ angular.module('Pundit2.Communication')
                         Consolidation.consolidateAll();
                         EventDispatcher.sendEvent('AnnotationsCommunication.saveAnnotation', data.AnnotationID);
                     }
-                    
+
                     // TODO move inside notebook then?
                     setLoading(false);
                     promise.resolve(ann.id);
-                }, function(){
+                }, function() {
                     // rejected, impossible to download annotation from server
                     annotationsCommunication.log("Error: impossible to get annotation from server after save");
                     setLoading(false);
@@ -204,9 +222,9 @@ angular.module('Pundit2.Communication')
                 });
 
                 // Call post save
-                if(typeof(Config.postSave) !== 'undefined' && Config.postSave.active){
+                if (typeof(Config.postSave) !== 'undefined' && Config.postSave.active) {
                     var callbacks = Config.postSave.callbacks;
-                    angular.isArray(callbacks) && angular.forEach(callbacks, function (callback) {
+                    angular.isArray(callbacks) && angular.forEach(callbacks, function(callback) {
                         postSaveSend(callback, data.AnnotationID);
                     });
                 }
@@ -229,19 +247,23 @@ angular.module('Pundit2.Communication')
 
     // this API not work correctly sometimese save correctly the items sometimes not save correctly
     // TODO : safety check if we get an error in one of the two http calls
-    annotationsCommunication.editAnnotation = function(annID, graph, items, targets){
+    annotationsCommunication.editAnnotation = function(annID, graph, items, targets) {
 
         var completed = 0,
             promise = $q.defer();
 
-        if(MyPundit.isUserLogged()){
+        if (MyPundit.isUserLogged()) {
 
             setLoading(true);
 
             $http({
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json'
+                },
                 method: 'PUT',
-                url: NameSpace.get('asAnnContent', {id: annID}),
+                url: NameSpace.get('asAnnContent', {
+                    id: annID
+                }),
                 params: {
                     context: angular.toJson({
                         targets: targets,
@@ -254,7 +276,7 @@ angular.module('Pundit2.Communication')
                 }
             }).success(function() {
                 if (completed > 0) {
-                    AnnotationsExchange.getAnnotationById(annID).update().then(function(){
+                    AnnotationsExchange.getAnnotationById(annID).update().then(function() {
                         Consolidation.consolidateAll();
                         // $rootScope.$emit('update-annotation-completed', annID);
                         EventDispatcher.sendEvent('AnnotationsCommunication.editAnnotation', annID);
@@ -263,22 +285,26 @@ angular.module('Pundit2.Communication')
                 }
                 setLoading(false);
                 completed++;
-                annotationsCommunication.log("Graph correctly updated: "+annID);
+                annotationsCommunication.log("Graph correctly updated: " + annID);
             }).error(function() {
                 setLoading(false);
                 promise.reject();
-                annotationsCommunication.log("Error during graph editing of "+annID);
+                annotationsCommunication.log("Error during graph editing of " + annID);
             });
 
             $http({
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json'
+                },
                 method: 'PUT',
-                url: NameSpace.get('asAnnItems', {id: annID}),
+                url: NameSpace.get('asAnnItems', {
+                    id: annID
+                }),
                 withCredentials: true,
                 data: items
             }).success(function() {
                 if (completed > 0) {
-                    AnnotationsExchange.getAnnotationById(annID).update().then(function(){
+                    AnnotationsExchange.getAnnotationById(annID).update().then(function() {
                         Consolidation.consolidateAll();
                         // $rootScope.$emit('update-annotation-completed', annID);
                         EventDispatcher.sendEvent('AnnotationsCommunication.editAnnotation', annID);
@@ -287,16 +313,16 @@ angular.module('Pundit2.Communication')
                 }
                 setLoading(false);
                 completed++;
-                annotationsCommunication.log("Items correctly updated: "+annID);
+                annotationsCommunication.log("Items correctly updated: " + annID);
             }).error(function() {
                 setLoading(false);
                 promise.reject();
-                annotationsCommunication.log("Error during items editing of "+annID);
+                annotationsCommunication.log("Error during items editing of " + annID);
             });
 
         } else {
-            annotationsCommunication.log("Error impossible to edit annotation: "+annID+" you are not logged");
-            promise.reject("Error impossible to edit annotation: "+annID+" you are not logged");
+            annotationsCommunication.log("Error impossible to edit annotation: " + annID + " you are not logged");
+            promise.reject("Error impossible to edit annotation: " + annID + " you are not logged");
         }
 
         return promise.promise;
@@ -304,5 +330,4 @@ angular.module('Pundit2.Communication')
     };
 
     return annotationsCommunication;
-
 });
