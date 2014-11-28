@@ -42,7 +42,7 @@
                 </li>
 
                 <li class="pnd-toolbar-custom-button" ng-if="menuCustom && menuCustomBtn" ng-repeat="(key, value) in menuCustomBtn">
-                    <a href="{{value}}">
+                    <a href="javascript:void(0)" ng-click="openUrl(value)">
                         <span class="pnd-toolbar-active-element">{{key}}</span>
                     </a>
                 </li>

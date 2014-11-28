@@ -31,7 +31,7 @@ angular.module('Pundit2.Toolbar')
                 $scope.menuCustomDropdown.push({ 
                     text: key, 
                     click: function() {
-                        $window.location.href = value;
+                        $scope.openUrl(value);
                     } 
                 });
             });
@@ -448,4 +448,7 @@ angular.module('Pundit2.Toolbar')
         AnnotationSidebar.toggle();
     };
 
+    $scope.openUrl = function(url) {
+        $window.open(url, '_self');
+    };
 });
