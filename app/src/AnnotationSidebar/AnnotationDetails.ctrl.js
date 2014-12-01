@@ -2,7 +2,7 @@ angular.module('Pundit2.AnnotationSidebar')
 .controller('AnnotationDetailsCtrl', function($scope, $rootScope, $element, $modal, $timeout, $window,
         AnnotationSidebar, AnnotationDetails, AnnotationsExchange, AnnotationsCommunication, Config,
         NotebookExchange, ItemsExchange, TripleComposer, Dashboard, ImageAnnotator,
-        TextFragmentAnnotator, Toolbar, TypesHelper, MyPundit, Consolidation) {
+        TextFragmentAnnotator, TypesHelper, MyPundit, Consolidation) {
 
     var lodLiveLink = 'http://demo-lodlive.thepund.it/?http://purl.org/pundit/demo-cloud-server/annotation/';
 
@@ -17,9 +17,9 @@ angular.module('Pundit2.AnnotationSidebar')
 
     if(typeof($scope.annotation) !== 'undefined'){
         if (AnnotationDetails.isUserToolShowed($scope.annotation.creator)){
-            $scope.askLink = Toolbar.options.askLinkDefault + '#/myNotebooks/';
+            $scope.askLink = Config.askBaseURL + '#/myNotebooks/';
         } else {
-            $scope.askLink = Toolbar.options.askLinkDefault + '#/notebooks/';
+            $scope.askLink = Config.askBaseURL + '#/notebooks/';
         }
         
         var notebookId = $scope.annotation.notebookId;

@@ -44,35 +44,6 @@ angular.module('Pundit2.Toolbar')
     /**
      * @module punditConfig
      * @ngdoc property
-     * @name modules#Toolbar.askLinkDefault
-     *
-     * @description
-     * `string`
-     *
-     * URL to Ask the Pundit shown when user is not logged in
-     *
-     * Default value:
-     * <pre> askLinkDefault: "http://demo-cloud.ask.thepund.it/" </pre>
-     */
-    askLinkDefault: "http://demo-cloud.ask.thepund.it/",
-    /**
-     * @module punditConfig
-     * @ngdoc property
-     * @name modules#Toolbar.askLinkUser
-     *
-     *
-     * @description
-     * `string`
-     *
-     * URL to Ask the Pundit shown where user is logged in. By default it link to myAsk user's page
-     *
-     * Default value:
-     * <pre> askLinkUser: "http://demo-cloud.ask.thepund.it/#/myAsk/" </pre>
-     */
-    askLinkUser: "http://demo-cloud.ask.thepund.it/#/myAsk/",
-    /**
-     * @module punditConfig
-     * @ngdoc property
      * @name modules#Toolbar.menuCustom
      *
      * @description
@@ -232,9 +203,9 @@ angular.module('Pundit2.Toolbar')
     
     toolbar.getAskLink = function() {
         if (MyPundit.isUserLogged()) {
-            return toolbar.options.askLinkUser;
+            return Config.askBaseURL + '#/myAsk/';
         } else {
-            return toolbar.options.askLinkDefault;
+            return Config.askBaseURL;
         }
     };
 

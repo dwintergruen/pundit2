@@ -89,6 +89,21 @@ angular.module('Pundit2.Core')
 
     /**
      * @module punditConfig
+     * @ngdoc property
+     * @name askBaseURL
+     *
+     * @description
+     * `string`
+     *
+     * URL of Ask the Pundit
+     *
+     * Default value:
+     * <pre> askBaseURL: "http://demo-cloud.ask.thepund.it/" </pre>
+     */
+    askBaseURL: "http://demo-cloud.ask.thepund.it/",
+
+    /**
+     * @module punditConfig
      * @ngdoc object
      * @name pndPurl
      * @description
@@ -320,7 +335,6 @@ angular.module('Pundit2.Core')
      *        container: 'annomaticConfiguredContainer'
      *     },
      *     Toolbar: {
-     *        askLinkDefault: "http://ask.thepund.it/",
      *        debug: false
      *     },
      *     Preview: {
