@@ -30,7 +30,7 @@ angular.module('Pundit2.Communication')
                     setLoading(false);
                     Analytics.track('api', 'get', 'notebook owned');
 
-                    // data is empty when user is logged in in Pundit for first time and have no notebooks
+                    // data is empty when user is logged in in Pundit for first time and have no notebooks (TODO: find a better way to manage the first login)
                     if (typeof(data) === 'undefined' || data === '') {
                         promise.reject('some sort of error?');
                         notebookCommunication.log("Error retrieving list of my notebooks - Server undefined response");
@@ -87,7 +87,10 @@ angular.module('Pundit2.Communication')
                 }).success(function(data) {
                     setLoading(false);
                     notebookCommunication.log(data.NotebookID+' is the current notebook');
-                    // TODO check if exist inside notebookExchange otherwise get metadata from server ?
+                    // check if exist inside notebookExchange otherwise download it and add to notebooksExchange
+                    if (typeof(NotebookExchange.getNotebookById(data.NotebookID)) === 'undefined') {
+                        new Notebook(data.NotebookID, true);
+                    }
                     NotebookExchange.setCurrentNotebooks(data.NotebookID);
                     promise.resolve(data.NotebookID);
                 }).error(function(msg) {

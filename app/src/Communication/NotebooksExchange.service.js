@@ -27,8 +27,10 @@ angular.module('Pundit2.Communication')
                 notebookExchange.log('Not adding notebook '+ns.id+': already present.');
             } else {
                 ns._q.promise.then(function(n) {
-                    nsListById[ns.id] = n;
-                    nsList.push(n);
+                    if (typeof(nsListById[ns.id]) === 'undefined') {
+                        nsListById[ns.id] = n;
+                        nsList.push(n);
+                    }
                 });
             }
 
@@ -38,8 +40,10 @@ angular.module('Pundit2.Communication')
                     notebookExchange.log('Not adding notebook '+ns.id+' to my notebook, already present.');
                 } else {
                     ns._q.promise.then(function(n) {
-                        myNsListById[ns.id] = n;
-                        myNsList.push(n);
+                        if (typeof(myNsListById[ns.id]) === 'undefined') {
+                            myNsListById[ns.id] = n;
+                            myNsList.push(n);
+                        }
                     });
                 }
             }
