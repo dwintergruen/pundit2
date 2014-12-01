@@ -264,7 +264,20 @@ angular.module('Pundit2.Core')
     /**
      * @module punditConfig
      * @ngdoc object
-     * @name forceEdit
+     * @name disableImageAnnotation
+     * @description
+     * `boolean`
+     * Enable/Disable the annotation of images
+     *
+     * Default:
+     * <pre> disableImageAnnotation: false </pre>
+     */
+    disableImageAnnotation: false,    
+
+    /**
+     * @module punditConfig
+     * @ngdoc object
+     * @name forceEditAndDelete
      * @description
      * `boolean`
      * Enables authorized users to edit and delete annotations of other authors

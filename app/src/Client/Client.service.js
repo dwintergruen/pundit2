@@ -594,6 +594,10 @@ angular.module('Pundit2.Client')
                 });
             }
 
+            if (Config.disableImageAnnotation) {
+                ImageHandler.turnOff();
+            }
+
             // Check if we're logged in, other components should $watch MyPundit
             // and get notified automatically when logged in, if needed
             MyPundit.checkLoggedIn().then(function(value) {
