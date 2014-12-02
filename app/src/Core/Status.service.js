@@ -69,6 +69,9 @@ angular.module('Pundit2.Core')
     // AnnotationSidebar
     EventDispatcher.addListener('AnnotationSidebar.toggle', function(e) {
         state.AnnotationSidebar.isExpanded = e.args;
+    });    
+    EventDispatcher.addListener('AnnotationSidebar.toggleFiltersContent', function(e) {
+        state.AnnotationSidebar.isFiltersContentExpanded = e.args;
     });
 
     // Error
