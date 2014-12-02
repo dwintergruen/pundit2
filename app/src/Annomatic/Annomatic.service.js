@@ -1279,10 +1279,10 @@ angular.module('Pundit2.Annomatic')
         if(annotationsRootNode == null){ return; }
 
         annomatic.hardReset();
-        EventDispatcher.sendEvent('Pundit.loading', true);
+        EventDispatcher.sendEvent('Annomatic.loading', true);
         annomatic.getAnnotations(annotationsRootNode).then(function(){
             // AnnotationSidebar.toggleLoading();
-            EventDispatcher.sendEvent('Pundit.loading', false);
+            EventDispatcher.sendEvent('Annomatic.loading', false);
             Consolidation.consolidate(ItemsExchange.getItemsByContainer(annomatic.options.container));
         })
     };

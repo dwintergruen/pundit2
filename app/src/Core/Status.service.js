@@ -17,11 +17,33 @@ angular.module('Pundit2.Core')
             }
     };
 
-    var errorLog = [];
+    var errorLog = [],
+        loadingCount = 0;
 
-    // Pundit
-    EventDispatcher.addListener('Pundit.loading', function (e) {
-        state.Pundit.loading = e.args;
+    var updateLoading = function() {
+        EventDispatcher.sendEvent('Pundit.loading', state.Pundit.loading);
+    };
+
+    var setLoading = function(currentState) {
+        if (currentState) {
+            loadingCount++;
+            state.Pundit.loading = true;
+            updateLoading();
+        } else {
+            loadingCount--;
+            if (loadingCount <= 0) {
+                state.Pundit.loading = false;
+                updateLoading();
+                loadingCount = 0;
+            }
+        }
+    }
+
+    // Loading
+    EventDispatcher.addListeners(['NotebookComposerCtrl.loading', 'MyItems.loading', 
+        'NotebookCommunication.loading', 'AnnotationsCommunication.loading', 'Annomatic.loading'], 
+        function (e) {
+            setLoading(e.args);
     });    
 
     // Client

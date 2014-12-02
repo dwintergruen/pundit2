@@ -11,7 +11,7 @@ angular.module('Pundit2.Communication')
     var annotationsCommunication = new BaseComponent("AnnotationsCommunication", ANNOTATIONSCOMMUNICATIONDEFAULTS);
 
     var setLoading = function(state) {
-        EventDispatcher.sendEvent('Pundit.loading', state);
+        EventDispatcher.sendEvent('AnnotationsCommunication.loading', state);
     };
 
     // get all annotations of the page from the server

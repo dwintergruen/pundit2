@@ -68,7 +68,7 @@ angular.module("Pundit2.MyItemsContainer")
     var opInProgress = false;
 
     var setLoading = function (state) {
-        EventDispatcher.sendEvent('Pundit.loading', state);
+        EventDispatcher.sendEvent('MyItems.loading', state);
     };
 
     var initContextualMenu = function() {

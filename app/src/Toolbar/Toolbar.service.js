@@ -140,18 +140,9 @@ angular.module('Pundit2.Toolbar')
         return isLoadingShown;
     };
 
-    toolbar.setLoading = function(v) {
-        toolbar.log('Setting loading to '+ v);
-        if (v) {
-            loadingOperation++;
-            isLoadingShown = true;
-        } else {
-            loadingOperation--;
-            if (loadingOperation <= 0) {
-                isLoadingShown = false;
-                loadingOperation = 0;
-            }
-        }
+    toolbar.setLoading = function(currentState) {
+        toolbar.log('Setting loading to '+ currentState);
+        isLoadingShown = currentState;
     };
     
     // Send error to show in the toolbar

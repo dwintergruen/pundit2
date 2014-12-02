@@ -8,7 +8,7 @@ angular.module('Pundit2.Communication')
         var notebookCommunication = new BaseComponent("NotebookCommunication");
 
         var setLoading = function (state) {
-            EventDispatcher.sendEvent('Pundit.loading', state);
+            EventDispatcher.sendEvent('NotebookCommunication.loading', state);
         };
 
         // TODO use a finally instead of a $q.all
