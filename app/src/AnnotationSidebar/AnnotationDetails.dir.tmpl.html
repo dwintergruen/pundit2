@@ -9,62 +9,24 @@
         ng-mouseout="mouseoutHandler()">
         <div class="{{annotation.mainItem.class}}">
 		        <div class="pnd-annotation-item-header-text">
-                        <span ng-show="annotation.broken" class="pnd-annotation-icon-color"><span class="pnd-icon pnd-icon-exclamation-circle"></span></span>
-		                <span ng-show="!annotation.broken" class="pnd-annotation-icon-color" style="background-color: {{annotation.color}};"><span class="{{annotation.mainItem.icon}}"></span> </span>
-		                <span class="pnd-item-title">{{annotation.mainItem.label}}</span> 		        </div>    
+                        <span ng-show="annotation.broken" class="pnd-annotation-icon-color">
+                            <span class="pnd-icon pnd-icon-exclamation-circle"></span>
+                        </span>
+		                <span 
+                            ng-show="!annotation.broken" 
+                            class="pnd-annotation-icon-color" 
+                            style="background-color: {{annotation.color}};">
+                            <span 
+                                class="{{annotation.mainItem.icon}}"></span>
+                        </span>
+		                <span class="pnd-item-title">{{annotation.mainItem.label}}</span> 		        
+                </div>    
                 <button type="button" class="btn pull-right">
                     <span ng-class="{true:'pnd-icon-caret-up', false:'pnd-icon-sort-down'}[annotation.expanded]"></span>
                 </button>
         </div>
     </div>
-    <div class="pnd-annotation-details-container" ng-if="annotation.expanded">
-<!--
-        <div class="pnd-annotation-details-menu">
-            <div class="{{annotation.mainItem.class}}">
-            	<span>
-	            <button 
-                    type="button" 
-                    class="btn btn-primary"
-                    ng-class="{'pnd-annotation-details-menu-btn-active': metaInfo}"
-                    ng-click="metaInfo = !metaInfo">Meta</button>
-	            </span>
-                <span ng-show="lodLive">
-                    <button 
-                        type="button" 
-                        class="btn btn-primary"
-                        ng-click="openGraph()"
-                        >
-                       Graph
-                    </button>
-                </span>
-                <span ng-show="!lodLive">
-                    <button type="button" class="btn btn-primary" disabled>Reply</button>
-                </span>
-	            <span>
-                <button type="button" class="btn btn-primary" disabled>Share</button>
-                </span>
-            </div>
-        </div>
-
-        <div class="pnd-annotation-details-info" ng-show="metaInfo">
-            <div class="pnd-annotation-details-info-id">
-                <strong>ID:</strong> {{annotation.id}}
-            </div>
-            <div class="pnd-annotation-details-info-author">
-                <strong>Author:</strong> {{annotation.creatorName}}
-            </div>
-            <div class="pnd-annotation-details-info-date">
-                <strong>Date:</strong> {{annotation.created | date : 'MMM d, y H:mm a'}}
-            </div>       
-            <div class="pnd-annotation-details-info-notebook">
-                <strong>Notebook:</strong> <a href="{{askLink}}{{annotation.notebookId}}" target="_blank">
-                    {{notebookName}}
-                </a>
-            </div>       
-        </div>
--->
-
-                
+    <div class="pnd-annotation-details-container" ng-if="annotation.expanded">       
         <div class="pnd-annotation-details-content">
         
             <!-- meta -->
@@ -207,8 +169,17 @@
         </div>
         <!-- footer -->
         <div class="pnd-annotation-details-footer" ng-show="isUserToolShowed()">
-            <button type="button" ng-if="showEdit()" class="btn btn-xs btn-success" ng-click="editAnnotation()">Edit</button>
-            <button type="button" class="btn btn-xs btn-danger" ng-click="deleteAnnotation()">Delete</button>
+            <button 
+                type="button" 
+                ng-if="showEdit()" 
+                class="btn btn-xs btn-success" 
+                ng-click="editAnnotation()"
+                ng-disable="isLoading">Edit</button>
+            <button 
+                type="button" 
+                class="btn btn-xs btn-danger" 
+                ng-click="deleteAnnotation()"
+                ng-disable="isLoading">Delete</button>
         </div>
         <!-- // end footer -->
     </div>

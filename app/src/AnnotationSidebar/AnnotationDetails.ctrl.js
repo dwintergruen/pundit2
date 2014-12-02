@@ -1,97 +1,55 @@
 angular.module('Pundit2.AnnotationSidebar')
+
 .controller('AnnotationDetailsCtrl', function($scope, $rootScope, $element, $modal, $timeout, $window,
-        AnnotationSidebar, AnnotationDetails, AnnotationsExchange, AnnotationsCommunication, Config,
-        NotebookExchange, ItemsExchange, TripleComposer, Dashboard, ImageAnnotator,
-        TextFragmentAnnotator, TypesHelper, MyPundit, Consolidation) {
+    AnnotationSidebar, AnnotationDetails, AnnotationsExchange, AnnotationsCommunication, Config,
+    EventDispatcher, NotebookExchange, ItemsExchange, TripleComposer, Dashboard, ImageAnnotator,
+    TextFragmentAnnotator, TypesHelper, MyPundit, Consolidation) {
 
-    var lodLiveLink = 'http://demo-lodlive.thepund.it/?http://purl.org/pundit/demo-cloud-server/annotation/';
-
-    var currentId = $scope.id;
-    var currentElement = angular.element($element).find('.pnd-annotation-details-wrap');
-    var initialHeight = AnnotationSidebar.options.annotationHeigth;
     AnnotationDetails.addAnnotationReference($scope);
 
-    $scope.annotation = AnnotationDetails.getAnnotationDetails(currentId);
-    $scope.openGraph = Config.lodLive.baseUrl+Config.pndPurl+'annotation/'+currentId;
-    $scope.moreInfo = AnnotationDetails.options.moreInfo;
+    var notebookId,
+        currentId = $scope.id,
+        currentElement = angular.element($element).find('.pnd-annotation-details-wrap'),
+        initialHeight = AnnotationSidebar.options.annotationHeigth;
 
-    if(typeof($scope.annotation) !== 'undefined'){
-        if (AnnotationDetails.isUserToolShowed($scope.annotation.creator)){
+    $scope.annotation = AnnotationDetails.getAnnotationDetails(currentId);
+    $scope.openGraph = Config.lodLive.baseUrl + Config.pndPurl + 'annotation/' + currentId;
+    $scope.moreInfo = AnnotationDetails.options.moreInfo;
+    $scope.notebookName = 'Downloading notebook in progress';
+    $scope.isLoading = false;
+
+    if (typeof($scope.annotation) !== 'undefined') {
+        if (AnnotationDetails.isUserToolShowed($scope.annotation.creator)) {
             $scope.askLink = Config.askBaseURL + '#/myNotebooks/';
         } else {
             $scope.askLink = Config.askBaseURL + '#/notebooks/';
         }
-        
-        var notebookId = $scope.annotation.notebookId;
+
+        notebookId = $scope.annotation.notebookId;
     }
 
-    if(typeof(Config.lodLive) !== 'undefined' && Config.lodLive.active){
+    if (typeof(Config.lodLive) !== 'undefined' && Config.lodLive.active) {
         $scope.lodLiveBaseUrl = Config.lodLive.baseUrl;
         $scope.lodLive = true;
-    } else{
+    } else {
         $scope.lodLive = false;
     }
 
-    if(typeof(Config.forceTemplateEdit) !== 'undefined' && Config.forceTemplateEdit){
+    if (typeof(Config.forceTemplateEdit) !== 'undefined' && Config.forceTemplateEdit) {
         $scope.forceTemplateEdit = true;
-    } else{
+    } else {
         $scope.forceTemplateEdit = false;
-    }    
-
-    if(typeof(Config.forceEditAndDelete) !== 'undefined' && Config.forceEditAndDelete){
-        $scope.forceEdit = true;
-    } else{
-        $scope.forceEdit = false;
     }
 
-    $scope.notebookName = 'Downloading notebook in progress';
-    var cancelWatchNotebookName = $scope.$watch(function() {
-        return NotebookExchange.getNotebookById(notebookId);
-    }, function(nb) {
-        if (typeof(nb) !== 'undefined') {
-            $scope.notebookName = nb.label;
-            cancelWatchNotebookName();
-        }
-    });
-
-    $scope.toggleAnnotation = function(){
-        if(!AnnotationSidebar.isAnnotationSidebarExpanded()){
-            AnnotationSidebar.toggle();
-        }
-        // if(AnnotationDetails.isAnnotationGhosted(currentId)){
-        //     AnnotationDetails.closeViewAndReset();
-        // }
-        $scope.metaInfo = false;
-        AnnotationDetails.toggleAnnotationView(currentId);
-        if (!$scope.annotation.expanded){
-            AnnotationSidebar.setAllPosition(currentId, initialHeight);
-        }
-    };
+    if (typeof(Config.forceEditAndDelete) !== 'undefined' && Config.forceEditAndDelete) {
+        $scope.forceEdit = true;
+    } else {
+        $scope.forceEdit = false;
+    }
 
     // confirm modal
     var modalScope = $rootScope.$new();
     modalScope.titleMessage = 'Delete Annotation';
-
-    // confirm btn click
-    modalScope.confirm = function() {
-        if (MyPundit.isUserLogged()) {
-            currentElement.addClass('pnd-annotation-details-delete-in-progress');
-            AnnotationsCommunication.deleteAnnotation($scope.annotation.id).then(function(){
-                modalScope.notifyMessage = "Your annotation has been deleted successfully";
-            }, function(){
-                currentElement.removeClass('pnd-annotation-details-delete-in-progress');
-                modalScope.notifyMessage = 'Impossible to delete the annotation. Please reatry later.';
-            });
-        }
-        $timeout(function(){
-            confirmModal.hide();
-        }, 1000);
-    };
-
-    // cancel btn click
-    modalScope.cancel = function() {
-        confirmModal.hide();
-    };
 
     var confirmModal = $modal({
         container: '[data-ng-app="Pundit2"]',
@@ -102,10 +60,45 @@ angular.module('Pundit2.AnnotationSidebar')
     });
 
     // open modal
-    var openConfirmModal = function(){
+    var openConfirmModal = function() {
         // promise is needed to open modal when template is ready
         modalScope.notifyMessage = 'Are you sure you want to delete this annotation? After you can no longer recover.';
         confirmModal.$promise.then(confirmModal.show);
+    };
+
+    // confirm btn click
+    modalScope.confirm = function() {
+        if (MyPundit.isUserLogged()) {
+            currentElement.addClass('pnd-annotation-details-delete-in-progress');
+            AnnotationsCommunication.deleteAnnotation($scope.annotation.id).then(function() {
+                modalScope.notifyMessage = "Your annotation has been deleted successfully";
+            }, function() {
+                currentElement.removeClass('pnd-annotation-details-delete-in-progress');
+                modalScope.notifyMessage = 'Impossible to delete the annotation. Please reatry later.';
+            });
+        }
+        $timeout(function() {
+            confirmModal.hide();
+        }, 1000);
+    };
+
+    // cancel btn click
+    modalScope.cancel = function() {
+        confirmModal.hide();
+    };
+
+    $scope.toggleAnnotation = function() {
+        if (!AnnotationSidebar.isAnnotationSidebarExpanded()) {
+            AnnotationSidebar.toggle();
+        }
+        // if(AnnotationDetails.isAnnotationGhosted(currentId)){
+        //     AnnotationDetails.closeViewAndReset();
+        // }
+        $scope.metaInfo = false;
+        AnnotationDetails.toggleAnnotationView(currentId);
+        if (!$scope.annotation.expanded) {
+            AnnotationSidebar.setAllPosition(currentId, initialHeight);
+        }
     };
 
     $scope.deleteAnnotation = function() {
@@ -118,47 +111,27 @@ angular.module('Pundit2.AnnotationSidebar')
 
     $scope.editAnnotation = function() {
         TripleComposer.editAnnotation($scope.annotation.id);
-        if(!Dashboard.isDashboardVisible()){
+        if (!Dashboard.isDashboardVisible()) {
             TripleComposer.closeAfterOp();
             Dashboard.toggle();
         }
         $rootScope.$emit('pnd-dashboard-show-tab', TripleComposer.options.clientDashboardTabTitle);
     };
 
-    $scope.$watch(function() {
-        return currentElement.height();
-    }, function(newHeight, oldHeight) {
-        if(typeof($scope.annotation) !== 'undefined'){
-            if (newHeight !== oldHeight && $scope.annotation.expanded){
-                AnnotationSidebar.setAllPosition(currentId, newHeight);
-            }
-        }
-    });
-
-    $scope.$watch(function() {
-        return AnnotationSidebar.isAnnotationSidebarExpanded();
-    }, function(newState, oldState) {
-        if (newState !== oldState){
-            if(!AnnotationSidebar.isAnnotationSidebarExpanded()){
-                AnnotationDetails.closeViewAndReset();
-            }
-        }
-    });
-
     $scope.isUserToolShowed = function() {
-        return (AnnotationDetails.isUserToolShowed($scope.annotation.creator) || ($scope.forceEdit&&MyPundit.isUserLogged())) && AnnotationSidebar.isAnnotationsPanelActive();
+        return (AnnotationDetails.isUserToolShowed($scope.annotation.creator) || ($scope.forceEdit && MyPundit.isUserLogged())) && AnnotationSidebar.isAnnotationsPanelActive();
     };
 
-    $scope.mouseoverAllHandler = function(){
-        if($scope.annotation.broken){
+    $scope.mouseoverAllHandler = function() {
+        if ($scope.annotation.broken) {
             return;
         }
 
         var currentItem;
         var items = $scope.annotation.itemsUriArray;
-        for (var index in items){
+        for (var index in items) {
             currentItem = ItemsExchange.getItemByUri(items[index]);
-            if (typeof(currentItem) !== 'undefined'){
+            if (typeof(currentItem) !== 'undefined') {
                 if (currentItem.isImageFragment() && Consolidation.isConsolidated(currentItem)) {
                     ImageAnnotator.svgHighlightByItem(currentItem);
                 }
@@ -166,16 +139,16 @@ angular.module('Pundit2.AnnotationSidebar')
         }
     };
 
-    $scope.mouseoutAllHandler = function(){
-        if($scope.annotation.broken){
+    $scope.mouseoutAllHandler = function() {
+        if ($scope.annotation.broken) {
             return;
         }
 
         var currentItem;
         var items = $scope.annotation.itemsUriArray;
-        for (var index in items){
+        for (var index in items) {
             currentItem = ItemsExchange.getItemByUri(items[index]);
-            if (typeof(currentItem) !== 'undefined'){
+            if (typeof(currentItem) !== 'undefined') {
                 if (currentItem.isImageFragment() && Consolidation.isConsolidated(currentItem)) {
                     ImageAnnotator.svgClearHighlightByItem(currentItem);
                 }
@@ -184,15 +157,15 @@ angular.module('Pundit2.AnnotationSidebar')
     };
 
     $scope.mouseoverHandler = function() {
-        if($scope.annotation.broken){
+        if ($scope.annotation.broken) {
             return;
         }
 
         var currentItem;
         var items = $scope.annotation.itemsUriArray;
-        for (var index in items){
+        for (var index in items) {
             currentItem = ItemsExchange.getItemByUri(items[index]);
-            if (typeof(currentItem) !== 'undefined'){
+            if (typeof(currentItem) !== 'undefined') {
                 if (currentItem.isTextFragment()) {
                     TextFragmentAnnotator.highlightByUri(items[index]);
                 } else if (currentItem.isImageFragment()) {
@@ -205,15 +178,15 @@ angular.module('Pundit2.AnnotationSidebar')
     };
 
     $scope.mouseoutHandler = function() {
-        if($scope.annotation.broken){
+        if ($scope.annotation.broken) {
             return;
         }
 
         var currentItem;
         var items = $scope.annotation.itemsUriArray;
-        for (var index in items){
+        for (var index in items) {
             currentItem = ItemsExchange.getItemByUri(items[index]);
-            if (typeof(currentItem) !== 'undefined'){
+            if (typeof(currentItem) !== 'undefined') {
                 if (currentItem.isTextFragment()) {
                     TextFragmentAnnotator.clearHighlightByUri(items[index]);
                 } else if (currentItem.isImageFragment()) {
@@ -226,12 +199,12 @@ angular.module('Pundit2.AnnotationSidebar')
     };
 
     $scope.mouseoverItemHandler = function(itemUri) {
-        if($scope.annotation.broken){
+        if ($scope.annotation.broken) {
             return;
         }
 
         var currentItem = ItemsExchange.getItemByUri(itemUri);
-        if (typeof(currentItem) !== 'undefined'){
+        if (typeof(currentItem) !== 'undefined') {
             if (currentItem.isTextFragment()) {
                 TextFragmentAnnotator.highlightByUri(itemUri);
             } else if (currentItem.isImageFragment() && Consolidation.isConsolidated(currentItem)) {
@@ -245,12 +218,12 @@ angular.module('Pundit2.AnnotationSidebar')
     };
 
     $scope.mouseoutItemHandler = function(itemUri) {
-        if($scope.annotation.broken){
+        if ($scope.annotation.broken) {
             return;
         }
 
         var currentItem = ItemsExchange.getItemByUri(itemUri);
-        if(typeof(currentItem) !== 'undefined'){
+        if (typeof(currentItem) !== 'undefined') {
             if (currentItem.isTextFragment()) {
                 TextFragmentAnnotator.clearHighlightByUri(itemUri);
             } else if (currentItem.isImageFragment()) {
@@ -260,6 +233,36 @@ angular.module('Pundit2.AnnotationSidebar')
             }
         }
     };
+
+    EventDispatcher.addListener('Pundit.loading', function (e) {
+        $scope.isLoading = e.args;
+    });    
+
+    EventDispatcher.addListener('AnnotationSidebar.toggle', function (e) {
+        var isExpanded = e.args;
+        if (!isExpanded) {
+            AnnotationDetails.closeViewAndReset();
+        }
+    });
+
+    var cancelWatchNotebookName = $scope.$watch(function() {
+        return NotebookExchange.getNotebookById(notebookId);
+    }, function(nb) {
+        if (typeof(nb) !== 'undefined') {
+            $scope.notebookName = nb.label;
+            cancelWatchNotebookName();
+        }
+    });
+
+    $scope.$watch(function() {
+        return currentElement.height();
+    }, function(newHeight, oldHeight) {
+        if (typeof($scope.annotation) !== 'undefined') {
+            if (newHeight !== oldHeight && $scope.annotation.expanded) {
+                AnnotationSidebar.setAllPosition(currentId, newHeight);
+            }
+        }
+    });
 
     AnnotationDetails.log('Controller Details Run');
 });
