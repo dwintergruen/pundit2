@@ -163,21 +163,6 @@ describe('Toolbar service', function() {
         expect(Toolbar.isLoading()).toBe(false);
     });
 
-    it("should correctly support multiple loading operation", function(){
-        // add two loading operation
-        Toolbar.setLoading(true);
-        Toolbar.setLoading(true);
-        expect(Toolbar.isLoading()).toBe(true);
-
-        // abort one operation
-        Toolbar.setLoading(false);
-        // loading end when all operation end
-        expect(Toolbar.isLoading()).toBe(true);
-        // now all operation is finished
-        Toolbar.setLoading(false);
-        expect(Toolbar.isLoading()).toBe(false);
-    });
-
     it("should correctly update UI when is in loading status", function(){
         var elem = compileToolbarDirective();
 
