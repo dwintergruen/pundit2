@@ -1,5 +1,8 @@
 angular.module('Pundit2.AnnotationSidebar')
-.controller('AnnotationSidebarCtrl', function($scope, $filter, $timeout, $document, $window, AnnotationSidebar, Dashboard, Toolbar, Config) {
+
+.controller('AnnotationSidebarCtrl', function($scope, $filter, $timeout, $document, $window,
+    AnnotationSidebar, Dashboard, Toolbar, Config) {
+
     var bodyClasses = AnnotationSidebar.options.bodyExpandedClass + ' ' + AnnotationSidebar.options.bodyCollapsedClass;
     var sidebarClasses = AnnotationSidebar.options.sidebarExpandedClass + ' ' + AnnotationSidebar.options.sidebarCollapsedClass;
 
@@ -65,7 +68,7 @@ angular.module('Pundit2.AnnotationSidebar')
         if (currentState !== oldState) {
             AnnotationSidebar.toggleLoading();
         }
-        $scope.isLoadingData = currentState; 
+        $scope.isLoadingData = currentState;
     });
 
     $scope.$watch(function() {
@@ -107,7 +110,7 @@ angular.module('Pundit2.AnnotationSidebar')
     $scope.$watch(function() {
         return Dashboard.isDashboardVisible();
     }, function(dashboardVisibility) {
-        if (dashboardVisibility){
+        if (dashboardVisibility) {
             state.newMarginTopSidebar = state.toolbarHeight + Dashboard.getContainerHeight();
             container.css('margin-top', state.newMarginTopSidebar + 'px');
         } else {
@@ -116,17 +119,17 @@ angular.module('Pundit2.AnnotationSidebar')
     });
 
     // Annotation sidebar height
-    var resizeSidebarHeight = function(){
+    var resizeSidebarHeight = function() {
         var minHeightSidebar = AnnotationSidebar.minHeightRequired;
         var bodyHeight = body.innerHeight();
         // var htmlHeight = html.innerHeight();
-        
+
         var newHeight = Math.max(minHeightSidebar, bodyHeight);
         container.css('height', newHeight + 'px');
 
         // var difference;
         // var documentHeight = $document.innerHeight();
-        
+
         // if (documentHeight > minHeightSidebar && documentHeight > htmlHeight){
         //     console.log("questo caso");
         //     if (Dashboard.isDashboardVisible()){
@@ -152,7 +155,7 @@ angular.module('Pundit2.AnnotationSidebar')
         resizeSidebarHeight();
     });
 
-    angular.element($window).bind('resize', function () {
+    angular.element($window).bind('resize', function() {
         resizeSidebarHeight();
     });
 
@@ -165,8 +168,8 @@ angular.module('Pundit2.AnnotationSidebar')
     $scope.fromToDate = new Date();
 
     // Temp fix for bs-datepicker issues min value
-    var setMin = function(currentMin){
-        var newMinDate = new Date( (currentMin && !isNaN(Date.parse(currentMin))) ? Date.parse(currentMin) : 0 );
+    var setMin = function(currentMin) {
+        var newMinDate = new Date((currentMin && !isNaN(Date.parse(currentMin))) ? Date.parse(currentMin) : 0);
         newMinDate.setDate(newMinDate.getDate() - 1);
 
         return $filter('date')(newMinDate, 'yyyy-MM-dd');
@@ -187,10 +190,10 @@ angular.module('Pundit2.AnnotationSidebar')
     $scope.$watch(function() {
         return AnnotationSidebar.getMinDate();
     }, function(minDate) {
-        if (typeof(minDate) !== 'undefined'){
+        if (typeof(minDate) !== 'undefined') {
             var newMinDate = $filter('date')(minDate, 'yyyy-MM-dd');
             $scope.fromMinDate = setMin(newMinDate);
-            if (AnnotationSidebar.filters.fromDate.expression === ''){
+            if (AnnotationSidebar.filters.fromDate.expression === '') {
                 $scope.toMinDate = setMin(newMinDate);
             }
         }
@@ -198,31 +201,31 @@ angular.module('Pundit2.AnnotationSidebar')
     $scope.$watch(function() {
         return AnnotationSidebar.getMaxDate();
     }, function(maxDate) {
-        if (typeof(maxDate) !== 'undefined'){
+        if (typeof(maxDate) !== 'undefined') {
             var newMaxDate = $filter('date')(maxDate, 'yyyy-MM-dd');
             $scope.toMaxDate = newMaxDate;
-            if (AnnotationSidebar.filters.toDate.expression === ''){
+            if (AnnotationSidebar.filters.toDate.expression === '') {
                 $scope.fromMaxDate = newMaxDate;
             }
         }
     });
     $scope.$watch('annotationSidebar.filters.fromDate.expression', function(currentFromDate) {
-        if (typeof(currentFromDate) !== 'undefined'){
+        if (typeof(currentFromDate) !== 'undefined') {
             $scope.toMinDate = setMin(currentFromDate);
-        } else{
+        } else {
             $scope.toMinDate = setMin($scope.fromMinDate);
         }
     });
     $scope.$watch('annotationSidebar.filters.toDate.expression', function(currentToDate) {
-        if (typeof(currentToDate) !== 'undefined'){
+        if (typeof(currentToDate) !== 'undefined') {
             $scope.fromMaxDate = currentToDate;
-        } else{
+        } else {
             $scope.fromMaxDate = $scope.toMaxDate;
         }
     });
 
     $scope.$watch('annotationSidebar.filters', function(currentFilters) {
-        if(AnnotationSidebar.filters.freeText.expression === ''){
+        if (AnnotationSidebar.filters.freeText.expression === '') {
             $scope.freeText = '';
         }
         $scope.annotations = AnnotationSidebar.getAllAnnotationsFiltered(currentFilters);
@@ -230,13 +233,13 @@ angular.module('Pundit2.AnnotationSidebar')
 
     $scope.updateSearch = function(freeText) {
         $timeout.cancel(delay);
-        delay = $timeout(function(){
+        delay = $timeout(function() {
             AnnotationSidebar.filters.freeText.expression = freeText;
         }, 1000);
     };
 
     $scope.isFilterLabelShowed = function(currentInputText) {
-        if (typeof(currentInputText) === 'string'){
+        if (typeof(currentInputText) === 'string') {
             return currentInputText.length > 0;
         }
     };
@@ -245,11 +248,11 @@ angular.module('Pundit2.AnnotationSidebar')
         var previousElement = angular.element('.pnd-annotation-sidebar-filter-show');
         var currentElement = angular.element(event.target.parentElement);
 
-        $scope.searchAuthors='';
-        $scope.searchNotebooks='';
-        $scope.searchTypes='';
-        $scope.searchPredicates='';
-        $scope.searchEntities='';
+        $scope.searchAuthors = '';
+        $scope.searchNotebooks = '';
+        $scope.searchTypes = '';
+        $scope.searchPredicates = '';
+        $scope.searchEntities = '';
 
         // Close all filter list and toggle the current
         previousElement.not(currentElement).removeClass('pnd-annotation-sidebar-filter-show');
@@ -268,9 +271,9 @@ angular.module('Pundit2.AnnotationSidebar')
     };
 
     $scope.toggleBrokenAnnotations = function() {
-        if(AnnotationSidebar.filters.broken.expression === ''){
+        if (AnnotationSidebar.filters.broken.expression === '') {
             AnnotationSidebar.filters.broken.expression = 'hideBroken';
-        } else{
+        } else {
             AnnotationSidebar.filters.broken.expression = '';
         }
     };
