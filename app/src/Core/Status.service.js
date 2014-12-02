@@ -12,6 +12,7 @@ angular.module('Pundit2.Core')
             Toolbar: {},
             Pundit: {
                 clientBoot: false,
+                userLogged: false,
                 loading: false
             }
     };
@@ -21,11 +22,16 @@ angular.module('Pundit2.Core')
     // Pundit
     EventDispatcher.addListener('Pundit.loading', function (e) {
         state.Pundit.loading = e.args;
-    });
+    });    
 
     // Client
     EventDispatcher.addListener('Client.boot', function () {
         state.Pundit.clientBoot = true;
+    });
+
+    // MyPundit
+    EventDispatcher.addListener('MyPundit.isUserLogged', function (e) {
+        state.Pundit.userLogged = e.args;
     });
 
     // AnnotationSidebar
@@ -48,6 +54,10 @@ angular.module('Pundit2.Core')
 
     status.getLoading = function () {
         return state.Pundit.loading;
+    };    
+
+    status.getUserStatus = function () {
+        return state.Pundit.userLogged;
     };
 
     status.getLog = function () {

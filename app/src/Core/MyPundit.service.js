@@ -1,4 +1,5 @@
 angular.module('Pundit2.Core')
+
 .constant('MYPUNDITDEFAULTS', {
     /**
      * @module punditConfig
@@ -59,10 +60,11 @@ angular.module('Pundit2.Core')
  *
  *
  */
-.service('MyPundit', function(BaseComponent, MYPUNDITDEFAULTS, NameSpace, $http, $q, $timeout, $modal, $window, $interval) {
-    
+.service('MyPundit', function(MYPUNDITDEFAULTS, $http, $q, $timeout, $modal, $window, $interval,
+    BaseComponent, EventDispatcher, NameSpace) {
+
     var myPundit = new BaseComponent('MyPundit', MYPUNDITDEFAULTS);
-    
+
     var isUserLogged = false;
     var loginServer,
         loginStatus,
@@ -82,7 +84,7 @@ angular.module('Pundit2.Core')
      * * `loggedOff`: if user is not logged in
      * * `waitingForLogIn`: when authentication workflow is running but user is not logged in yet
      *
-    */
+     */
     myPundit.getLoginStatus = function() {
         return loginStatus;
     };
@@ -98,7 +100,7 @@ angular.module('Pundit2.Core')
      *
      * @return {boolean} true if user is logged in, false otherwise
      *
-    */
+     */
     myPundit.isUserLogged = function() {
         return isUserLogged;
     };
@@ -129,8 +131,8 @@ angular.module('Pundit2.Core')
      * * `loginServer` - `{string}`: url to server login page
      *
      */
-    myPundit.getUserData = function(){
-        if(userData !== '' && typeof(userData) !== 'undefined') {
+    myPundit.getUserData = function() {
+        if (userData !== '' && typeof(userData) !== 'undefined') {
             return userData;
         }
     };
@@ -151,32 +153,36 @@ angular.module('Pundit2.Core')
 
         var promise = $q.defer(),
             httpCall;
-        
+
         httpCall = $http({
-            headers: { 'Accept': 'application/json' },
+            headers: {
+                'Accept': 'application/json'
+            },
             method: 'GET',
             url: NameSpace.get('asUsersCurrent'),
             withCredentials: true
-            
+
         }).success(function(data) {
             loginServer = data.loginServer;
             // user is not logged in
             if (data.loginStatus === 0) {
                 isUserLogged = false;
+                EventDispatcher.sendEvent('MyPundit.isUserLogged', isUserLogged);
                 promise.resolve(false);
             } else {
                 // user is logged in
                 isUserLogged = true;
                 loginStatus = 'loggedIn';
                 userData = data;
+                EventDispatcher.sendEvent('MyPundit.isUserLogged', isUserLogged);
                 promise.resolve(true);
             }
-        
+
         }).error(function() {
             myPundit.err('Server error');
             promise.reject('check logged in promise error');
         });
-        
+
         return promise.promise;
     };
 
@@ -200,17 +206,17 @@ angular.module('Pundit2.Core')
     myPundit.login = function() {
 
         loginPromise = $q.defer();
-        
-        if(myPundit.isUserLogged()){
+
+        if (myPundit.isUserLogged()) {
             loginPromise.resolve(true);
         } else {
             loginStatus = 'loggedOff';
             myPundit.openLoginPopUp();
         }
-        
+
         return loginPromise.promise;
     };
-    
+
     var loginPollTimer;
 
     /**
@@ -229,18 +235,18 @@ angular.module('Pundit2.Core')
      * If user close modal login, promise will be resolved as false
      *
      */
-    myPundit.openLoginPopUp = function(){
+    myPundit.openLoginPopUp = function() {
 
         $timeout.cancel(loginPollTimer);
         if (typeof(loginPromise) === 'undefined') {
             myPundit.err('Login promise not defined, you should call login() first');
             return;
-        // TODO Fix and check unit test
-        // } else if(typeof(loginServer) === 'undefined') {
-        //     myPundit.checkLoggedIn();
-        //     myPundit.err('Login server url not defined, something wrong with client boot (?)');
-        //     loginPromise.reject('login error');
-        //     return;
+            // TODO Fix and check unit test
+            // } else if(typeof(loginServer) === 'undefined') {
+            //     myPundit.checkLoggedIn();
+            //     myPundit.err('Login server url not defined, something wrong with client boot (?)');
+            //     loginPromise.reject('login error');
+            //     return;
         } else {
             // login status is waiting for login
             loginStatus = 'waitingForLogIn';
@@ -249,9 +255,9 @@ angular.module('Pundit2.Core')
             var loginpopup = $window.open(loginServer, 'loginpopup', 'left=260,top=120,width=480,height=360');
 
             var stopTime = $interval(function() {
-                if (typeof(loginpopup) !== 'undefined' && (loginpopup.closed || loginpopup === null) ) {
+                if (typeof(loginpopup) !== 'undefined' && (loginpopup.closed || loginpopup === null)) {
                     $interval.cancel(stopTime);
-                    $timeout(function(){
+                    $timeout(function() {
                         $timeout.cancel(loginPollTimer);
                     }, 5000);
                 }
@@ -263,14 +269,14 @@ angular.module('Pundit2.Core')
                 var promise = myPundit.checkLoggedIn();
                 promise.then(
                     // success
-                    function(isUserLogged){
-                        if (isUserLogged){
+                    function(isUserLogged) {
+                        if (isUserLogged) {
                             loginPromise.resolve(true);
                             $interval.cancel(stopTime);
                             $timeout.cancel(loginPollTimer);
                         }
                     },
-                    function(){
+                    function() {
                         loginPromise.reject('login error');
                     }
                 ); // end promise.then
@@ -280,7 +286,7 @@ angular.module('Pundit2.Core')
 
             check();
 
-            $timeout(function(){
+            $timeout(function() {
                 $timeout.cancel(loginPollTimer);
                 //loginPromise.reject('login error');
                 loginPromise.resolve(false);
@@ -289,7 +295,7 @@ angular.module('Pundit2.Core')
         }
 
     };
-    
+
     // logout
 
     /**
@@ -304,31 +310,34 @@ angular.module('Pundit2.Core')
      * @returns {Promise} the promise will be resolved as true when user is logged out
      *
      */
-    myPundit.logout = function(){
-        
+    myPundit.logout = function() {
+
         var logoutPromise = $q.defer(),
             httpCallLogout;
-        
+
         httpCallLogout = $http({
-            headers: { 'Accept': 'application/json' },
+            headers: {
+                'Accept': 'application/json'
+            },
             method: 'GET',
             url: NameSpace.get('asUsersLogout'),
             withCredentials: true
-            
+
         }).success(function() {
             isUserLogged = false;
+            EventDispatcher.sendEvent('MyPundit.isUserLogged', isUserLogged);
             userData = {};
             logoutPromise.resolve(true);
-            
+
         }).error(function() {
             logoutPromise.reject('logout promise error');
         });
-        
+
         return logoutPromise.promise;
     };
-    
+
     // MODAL HANDLER
-    
+
     var loginModal = $modal({
         container: "[data-ng-app='Pundit2']",
         template: 'src/Core/Templates/login.modal.tmpl.html',
@@ -348,11 +357,11 @@ angular.module('Pundit2.Core')
      * Login promise will not be resolved
      *
      */
-    myPundit.closeLoginModal = function(){
+    myPundit.closeLoginModal = function() {
         loginModal.hide();
         $timeout.cancel(loginPollTimer);
     };
-    
+
     // close modal, cancel timeout and resolve loginPromise
     /**
      * @ngdoc method
@@ -366,7 +375,7 @@ angular.module('Pundit2.Core')
      * In this case, authentication process will be interrupted and login promise will be resolved as true
      *
      */
-    myPundit.cancelLoginModal = function(){
+    myPundit.cancelLoginModal = function() {
         loginModal.hide();
         loginPromise.resolve(false);
         $timeout.cancel(loginPollTimer);
