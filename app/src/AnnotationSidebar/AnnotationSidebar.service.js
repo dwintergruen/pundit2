@@ -368,11 +368,13 @@ angular.module('Pundit2.AnnotationSidebar')
 
     annotationSidebar.toggleLoading = function() {
         state.isLoading = !state.isLoading;
+        EventDispatcher.sendEvent('AnnotationSidebar.toggleLoading', state.isLoading);
     };
 
     // Show / hide the list of the filters in the sidebar
     annotationSidebar.toggleFiltersContent = function() {
         state.isFiltersExpanded = !state.isFiltersExpanded;
+        EventDispatcher.sendEvent('AnnotationSidebar.toggleFiltersContent', state.isFiltersExpanded);
     };
     // Check if the sidebar is expanded
     annotationSidebar.isAnnotationSidebarExpanded = function() {
