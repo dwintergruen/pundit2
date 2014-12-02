@@ -13,6 +13,7 @@ angular.module('Pundit2.Core')
         events[name] && angular.forEach(events[name], function (callback) {
             if (typeof(callback) !== 'undefined') {
                 eventArgs = {
+                    name: name,
                     args: args,
                     resolve: function (a) {
                         if (defIndex < deferred.length) {
