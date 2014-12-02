@@ -20,23 +20,36 @@ angular.module('Pundit2.Core')
     };
 
     var errorLog = [],
-        loadingCount = 0;
+        loadingCount = {};
 
-    var updateLoading = function() {
-        EventDispatcher.sendEvent('Pundit.loading', state.Pundit.loading);
+    var updateLoading = function(currentState) {
+        EventDispatcher.sendEvent('Pundit.loading', currentState);
     };
 
-    var setLoading = function(currentState)  {
+    var setLoading = function(eventName, currentState)  {
+        var loadingState = [];
+
+        if (typeof(loadingCount[eventName]) === 'undefined') {
+            loadingCount[eventName] = 0;
+        }
+
         if (currentState) {
-            loadingCount++;
             state.Pundit.loading = true;
-            updateLoading();
+            updateLoading(true);
+
+            loadingCount[eventName]++;
         } else {
-            loadingCount--;
-            if (loadingCount <= 0) {
+            loadingCount[eventName]--;
+            loadingState = Object.keys(loadingCount).filter(
+                function(index) {
+                    return loadingCount[index] > 0;
+                }
+            );
+
+            if (loadingState.length === 0) {
                 state.Pundit.loading = false;
-                updateLoading();
-                loadingCount = 0;
+                updateLoading(false);
+                loadingCount[eventName] = 0;
             }
         }
     }
@@ -52,7 +65,7 @@ angular.module('Pundit2.Core')
 
         ],
         function(e) {
-            setLoading(e.args);
+            setLoading(e.name, e.args);
         }
     );
 
@@ -69,7 +82,7 @@ angular.module('Pundit2.Core')
     // AnnotationSidebar
     EventDispatcher.addListener('AnnotationSidebar.toggle', function(e) {
         state.AnnotationSidebar.isExpanded = e.args;
-    });    
+    });
     EventDispatcher.addListener('AnnotationSidebar.toggleFiltersContent', function(e) {
         state.AnnotationSidebar.isFiltersContentExpanded = e.args;
     });
