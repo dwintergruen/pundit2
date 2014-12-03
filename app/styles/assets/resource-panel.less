@@ -6,9 +6,9 @@
  */
 
 
-/* ------------------------------------ */
-/* RESOURCE PANEL */
-/* ------------------------------------ */
+/* ------------------------------------ *\
+   #RESOURCE-PANEL
+\* ------------------------------------ */
 .pnd-resource-panel-popover {
     position: fixed !important;
     max-width: 400px !important;
@@ -55,36 +55,33 @@
         border-top: 1px solid @gray-light;
         background-color: #fff;
         height: 30px;
-        padding: 5px;
+        // padding: 5px;
         position: absolute;
         bottom: 0;
         right: 0px;
         left: 0;
-    }
 
-    .pnd-vertical-tab-header-content {
-        display: block;
-        border-bottom: 1px solid @gray-light;
-        background-color: #fff;
-        height: 30px;
-        padding: 5px;
+        .btn {
+            float: left;
+            border-right: 1px solid #fff;
+        }
     }
 }
 
 
-/* ------------------------------------ */
-/* LITERAL POPOVER */
-/* ------------------------------------ */
+/* ------------------------------------ *\
+   #LITERAL-POPOVER
+\* ------------------------------------ */
 
 .pnd-popover-literal {
-	position: fixed !important;
+    position: fixed !important;
     z-index: @zindex-pnd-popver;
 }
 
 
-/* ------------------------------------ */
-/* CALENDAR POPOVER */
-/* ------------------------------------ */
+/* ------------------------------------ *\
+   #CALENDAR-POPOVER
+\* ------------------------------------ */
 
 .pnd-popover-calendar {
     position: fixed !important;

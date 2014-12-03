@@ -10,12 +10,12 @@
 // with the Pundit-like skin.
 //
 // When you need variables only for Pundit or another specific application
-// please insert the variables in the relative variable file
+// like Korbo please insert the variables in the relative variable file
 // (i.e. pundit-variables.less)
 //
 // The specific z-index variables for Pundit components
 // are set apart in the pundit-variables.less file:
-// the default z-index variables of Bootstrap are not used
+// the default z-index variables of Bootstrap shouldn't be used
 //
 
 
@@ -29,7 +29,7 @@
 @gray-light:             lighten(#000, 60%);   // #999
 @gray-lighter:           lighten(#000, 93.5%); // #eee  
 
-@brand-primary:         #0071bc;
+@brand-primary:         #39b54a;
 @brand-success:         #39b54a;
 @brand-info:            #eeeeee;
 @brand-warning:         #ff931e;
@@ -194,11 +194,11 @@
 //** Text color for `<input>`s
 @input-color:                    @gray;
 //** `<input>` border color
-@input-border:                   #ccc;
+@input-border:                   @gray-lighter;
 //** `<input>` border radius
 @input-border-radius:            @border-radius-base;
 //** Border color for inputs on focus
-@input-border-focus:             #66afe9;
+@input-border-focus:             lighten(@brand-primary, 30);
 
 //** Placeholder text color
 @input-color-placeholder:        @gray-light;

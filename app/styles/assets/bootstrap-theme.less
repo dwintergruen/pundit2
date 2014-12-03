@@ -1,0 +1,690 @@
+/**
+ * BOOTSTRAP THEME
+ *
+ * This style is used **only** to override styles for Bootstrap
+ * and it's **common** for all applications (Pundit Client, Korbo EE...).
+ * Please don't add here generic styles for the application other than
+ * styling for basic Bootstrap elements.
+ *
+ * If you need more Bootstrap customization not common for an application
+ * please use a specific theme file (like korboee-bootstrap-theme or pundit-bootstrap-theme.*
+ *
+ */
+
+
+//
+// Buttons
+// --------------------------------------------------
+
+// Common styles
+.btn-default,
+.btn-primary,
+.btn-success,
+.btn-info,
+.btn-warning,
+.btn-danger {
+    text-shadow: none;
+
+    // Reset the shadow
+    &:active,
+    &.active {
+        box-shadow: none;
+    }
+}
+
+.btn-xs {
+    line-height: normal;
+
+    .pnd-icon {
+        font-size: 14px;
+        transition-property: color;
+        transition-duration: @animation-fast-duration;
+    }
+}
+
+// Mixin for generating new styles
+.btn-styles(@btn-color: #555) {
+    //#gradient > .vertical(@start-color: @btn-color; @end-color: darken(@btn-color, 12%));
+    .reset-filter(); // Disable gradients for IE9 because filter bleeds through rounded corners
+    background-repeat: repeat-x;
+    //border-color: darken(@btn-color, 14%);
+    outline: 0 !important;
+    box-shadow: none;
+
+    &:hover,
+    &:focus {
+        background-color: darken(@btn-color, 12%);
+        background-position: 0 -15px;
+        outline: 0;
+    }
+
+    &:active,
+    &.active {
+        background-color: darken(@btn-color, 12%);
+        border-color: darken(@btn-color, 14%);
+        outline: 0;
+        box-shadow: none;
+    }
+}
+
+// Common styles
+.btn {
+    outline: 0 !important;
+    box-shadow: none;
+
+    // Remove the gradient for the pressed/active state
+    &:active,
+    &.active {
+        background-image: none;
+        outline: 0;
+        box-shadow: none;
+    }
+
+    &:hover,
+    &:focus {
+        outline: 0;
+        box-shadow: none;
+    }
+
+}
+
+// Apply the mixin to the buttons
+.btn-default {
+    .btn-styles(@btn-default-bg);
+    text-shadow: 0 1px 0 #fff;
+    border-color: #ccc;
+}
+
+.btn-primary {
+    .btn-styles(@btn-primary-bg);
+}
+
+.btn-success {
+    .btn-styles(@btn-success-bg);
+}
+
+.btn-info {
+    .btn-styles(@btn-info-bg);
+}
+
+.btn-warning {
+    .btn-styles(@btn-warning-bg);
+}
+
+.btn-danger {
+    .btn-styles(@btn-danger-bg);
+}
+
+
+// Link buttons
+// -------------------------
+
+// Make a button look and behave like a link
+
+.btn-link {
+    color: @gray;
+    font-weight: normal;
+    cursor: pointer;
+    border-radius: 0;
+    line-height: 0; // PND ADD
+
+    &:hover {
+        color: @brand-success;
+        text-decoration: none;
+        background-color: transparent;
+    }
+
+    &:focus {
+        text-decoration: none;
+        background-color: transparent;
+    }
+
+}
+
+
+//
+// Icons
+// --------------------------------------------------
+
+.pnd-icon-spin {
+    -webkit-animation: spin 2s infinite linear;
+    -moz-animation: spin 2s infinite linear;
+    -o-animation: spin 2s infinite linear;
+    animation: spin 2s infinite linear;
+}
+
+@-moz-keyframes spin {
+    0% {
+        -moz-transform: rotate(0deg);
+    }
+    100% {
+        -moz-transform: rotate(359deg);
+    }
+}
+
+@-webkit-keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(359deg);
+    }
+}
+
+@-o-keyframes spin {
+    0% {
+        -o-transform: rotate(0deg);
+    }
+    100% {
+        -o-transform: rotate(359deg);
+    }
+}
+
+@keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(359deg);
+        transform: rotate(359deg);
+    }
+}
+
+.pnd-icon-4x {
+    font-size: 4em;
+}
+
+.pnd-icon-3x {
+    font-size: 3em;
+}
+
+.pnd-icon-2x {
+    font-size: 2em;
+}
+
+.pnd-icon-lg {
+    font-size: 1.33333333em;
+    line-height: 0.75em;
+    vertical-align: -15%;
+}
+
+
+//
+// Images
+// --------------------------------------------------
+
+.thumbnail,
+.img-thumbnail {
+    //.box-shadow(0 1px 2px rgba(0,0,0,.075));
+}
+
+
+//
+// Dropdowns
+// --------------------------------------------------
+
+.dropdown-menu {
+    .box-shadow(0 6px 12px rgba(0, 0, 0, .175));
+    background-color: @gray-extra-lighter;
+    padding: 0px;
+}
+
+.dropdown-menu li,
+.dropdown-menu li a {
+    max-width: 250px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:focus {
+    //#gradient > .vertical(@start-color: @dropdown-link-hover-bg; @end-color: darken(@dropdown-link-hover-bg, 5%));
+    //background-color: darken(@dropdown-link-hover-bg, 5%);
+}
+
+.dropdown-menu > .active > a,
+.dropdown-menu > .active > a:hover,
+.dropdown-menu > .active > a:focus {
+    //#gradient > .vertical(@start-color: @dropdown-link-active-bg; @end-color: darken(@dropdown-link-active-bg, 5%));
+    //background-color: darken(@dropdown-link-active-bg, 5%);
+}
+
+.dropdown-menu > .disabled.active > a,
+.dropdown-menu > .disabled.active > a:hover,
+.dropdown-menu > .disabled.active > a:focus {
+    color: @gray-light;
+    background-color: @dropdown-link-hover-bg;
+}
+
+.dropdown-menu .divider {
+    margin: 0px;
+}
+
+.dropdown-menu .dropdown-header {
+    padding: 3px 10px;
+    white-space: normal;
+    color: @gray-darker;
+    font-size: inherit;
+}
+
+
+//
+// Navbar
+// --------------------------------------------------
+
+// Default navbar
+.navbar-default {
+    //#gradient > .vertical(@start-color: lighten(@navbar-default-bg, 10%); @end-color: @navbar-default-bg);
+    .reset-filter(); // Remove gradient in IE<10 to fix bug where dropdowns don't get triggered
+    //border-radius: @navbar-border-radius;
+    //@shadow: inset 0 1px 0 rgba(255,255,255,.15), 0 1px 5px rgba(0,0,0,.075);
+    //.box-shadow(@shadow);
+
+    .navbar-nav > .active > a {
+        //#gradient > .vertical(@start-color: darken(@navbar-default-bg, 5%); @end-color: darken(@navbar-default-bg, 2%));
+        //.box-shadow(inset 0 3px 9px rgba(0,0,0,.075));
+    }
+}
+
+.navbar-brand,
+.navbar-nav > li > a {
+    text-shadow: 0 1px 0 rgba(255, 255, 255, .25);
+
+}
+
+// Inverted navbar
+.navbar-inverse {
+    //#gradient > .vertical(@start-color: lighten(@navbar-inverse-bg, 10%); @end-color: @navbar-inverse-bg);
+    //.reset-filter(); // Remove gradient in IE<10 to fix bug where dropdowns don't get triggered
+
+    .navbar-nav > .active > a {
+        //#gradient > .vertical(@start-color: @navbar-inverse-bg; @end-color: lighten(@navbar-inverse-bg, 2.5%));
+        //.box-shadow(inset 0 3px 9px rgba(0,0,0,.25));
+    }
+
+    .navbar-brand {
+        background-color: #51b848;
+        color: #fff;
+        text-shadow: 0 -0px 0 rgba(0, 0, 0, .0);
+
+        &:hover,
+        &:focus {
+            background-color: darken(#51b848, 12%);
+        }
+    }
+
+    .navbar-nav > li > a {
+        text-shadow: 0 0px 0 rgba(0, 0, 0, .25);
+        border-right: 1px @gray solid;
+    }
+}
+
+// Undo rounded corners in static and fixed navbars
+.navbar-static-top,
+.navbar-fixed-top,
+.navbar-fixed-bottom {
+    border-radius: 0;
+}
+
+.nav .open > a,
+.nav .open > a:hover,
+.nav .open > a:focus {
+    border-color: transparent;
+    border-right: 1px @gray solid;
+}
+
+.nav > li > a:hover,
+.nav > li > a:focus {
+    text-decoration: none;
+    background-color: #ffffff;
+}
+
+//
+// Tabs
+// --------------------------------------------------
+
+// Give the tabs something to sit on
+.nav-tabs {
+    // margin: 0 7px 10px 0;
+    margin: 0 0 10px 0;
+    background-color: @gray-light;
+
+    // Show tabs button
+
+    .show-tabs {
+
+        &.active a {
+            background-color: @nav-tabs-active-link-hover-bg;
+            color: @brand-success;
+        }
+
+        a {
+            background-color: darken(@gray-light, 6%);
+            color: #fff;
+            width: 30px;
+
+            .pnd-icon {
+                font-size: 12px;
+                line-height: normal;
+                padding: 0px;
+            }
+
+            &:hover {
+                background-color: darken(@gray-light, 14%);
+                color: #fff;
+            }
+
+        }
+    }
+
+    > li {
+
+        // Actual tabs (as links)
+        > a {
+            color: @nav-tabs-active-link-hover-color;
+            margin-right: 0px;
+            line-height: @line-height-base;
+            border: 0px solid transparent;
+            border-radius: @border-radius-base @border-radius-base 0 0;
+            background-color: @gray-light;
+
+            &:hover {
+                border-color: transparent;
+                background-color: @gray-lighter;
+                cursor: pointer;
+            }
+
+        }
+
+        // Active state, and its :hover to override normal :hover
+        &.active > a {
+            &,
+            &:hover,
+            &:focus {
+                color: @nav-tabs-active-link-hover-color;
+                background-color: @nav-tabs-active-link-hover-bg;
+                border: 0px;
+                border-bottom-color: transparent;
+                cursor: pointer;
+            }
+        }
+
+    }
+}
+
+.pnd-dashboard-panel-last .nav-tabs {
+    margin-right: 0px;
+}
+
+
+//
+// Alerts
+// --------------------------------------------------
+
+// Common styles
+.alert {
+    text-shadow: 0 1px 0 rgba(255, 255, 255, .2);
+    //@shadow: inset 0 1px 0 rgba(255,255,255,.25), 0 1px 2px rgba(0,0,0,.05);
+    //.box-shadow(@shadow);
+}
+
+// Mixin for generating new styles
+.alert-styles(@color) {
+    //#gradient > .vertical(@start-color: @color; @end-color: darken(@color, 7.5%));
+    border-color: darken(@color, 15%);
+}
+
+// Apply the mixin to the alerts
+.alert-success {
+    .alert-styles(@alert-success-bg);
+}
+
+.alert-info {
+    .alert-styles(@alert-info-bg);
+}
+
+.alert-warning {
+    .alert-styles(@alert-warning-bg);
+}
+
+.alert-danger {
+    .alert-styles(@alert-danger-bg);
+}
+
+
+//
+// Progress bars
+// --------------------------------------------------
+
+// Give the progress background some depth
+.progress {
+    #gradient > .vertical(@start-color: darken(@progress-bg, 4%); @end-color: @progress-bg)
+}
+
+// Mixin for generating new styles
+.progress-bar-styles(@color) {
+    #gradient > .vertical(@start-color: @color; @end-color: darken(@color, 10%));
+}
+
+// Apply the mixin to the progress bars
+.progress-bar {
+    .progress-bar-styles(@progress-bar-bg);
+}
+
+.progress-bar-success {
+    .progress-bar-styles(@progress-bar-success-bg);
+}
+
+.progress-bar-info {
+    .progress-bar-styles(@progress-bar-info-bg);
+}
+
+.progress-bar-warning {
+    .progress-bar-styles(@progress-bar-warning-bg);
+}
+
+.progress-bar-danger {
+    .progress-bar-styles(@progress-bar-danger-bg);
+}
+
+
+//
+// List groups
+// --------------------------------------------------
+
+.list-group {
+    border-radius: @border-radius-base;
+    -webkit-box-shadow: 0;
+    box-shadow: 0;
+    margin: 0px;
+
+    .list-group-item {
+        padding: 0px;
+        border: 0px;
+        margin-bottom: 0px;
+
+        &:first-child {
+            border-top: 0px;
+        }
+
+    }
+
+    .list-group-item.active,
+    .list-group-item.active:hover,
+    .list-group-item.active:focus {
+        text-shadow: 0 -1px 0 darken(@list-group-active-bg, 10%);
+    }
+
+    /* .list-group-item:hover {
+      background-color: @gray-lighter;
+      }
+    */
+
+    .list-group-item-inverse {
+        background-color: #e5e5e5;
+        border: 1px solid #ffffff;
+    }
+
+}
+
+
+//
+// Panels
+// --------------------------------------------------
+
+// Common styles
+.panel {
+    //.box-shadow(0 1px 2px rgba(0,0,0,.05));
+}
+
+// Mixin for generating new styles
+.panel-heading-styles(@color) {
+    // #gradient > .vertical(@start-color: @color; @end-color: darken(@color, 5%));
+}
+
+// Apply the mixin to the panel headings only
+.panel-default > .panel-heading {
+    .panel-heading-styles(@panel-default-heading-bg);
+}
+
+.panel-primary > .panel-heading {
+    .panel-heading-styles(@panel-primary-heading-bg);
+}
+
+.panel-success > .panel-heading {
+    .panel-heading-styles(@panel-success-heading-bg);
+}
+
+.panel-info > .panel-heading {
+    .panel-heading-styles(@panel-info-heading-bg);
+}
+
+.panel-warning > .panel-heading {
+    .panel-heading-styles(@panel-warning-heading-bg);
+}
+
+.panel-danger > .panel-heading {
+    .panel-heading-styles(@panel-danger-heading-bg);
+}
+
+
+//
+// Wells
+// --------------------------------------------------
+
+.well {
+    //#gradient > .vertical(@start-color: darken(@well-bg, 5%); @end-color: @well-bg);
+    border-color: darken(@well-bg, 10%);
+    //@shadow: inset 0 1px 3px rgba(0,0,0,.05), 0 1px 0 rgba(255,255,255,.1);
+    //.box-shadow(@shadow);
+}
+
+//
+// INPUT & Outline
+// --------------------------------------------------
+
+textarea.form-control {
+    height: auto;
+}
+
+.form-control {
+    border-color: @gray-extra-light;
+    padding: 4px 5px;
+    height: 26px;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    // width: 100% !important; // This was in KorboEE
+
+    &:focus {
+        outline: 0;
+        // border-color: @gray-light !important;
+        box-shadow: none;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+    }
+}
+
+a {
+    &:hover,
+    &:focus,
+    &:active,
+    {
+        outline: 0;
+        box-shadow: none;
+    }
+}
+
+.btn:focus,
+.btn:active:focus,
+.btn.active:focus,
+:invalid,
+:-moz-submit-invalid,
+:-moz-ui-invalid {
+    outline: 0;
+    box-shadow: none;
+}
+
+input {
+    outline: 0;
+    box-shadow: none;
+}
+
+
+//
+// DATEPICKER
+// --------------------------------------------------
+
+.datepicker {
+    padding: 3px;
+
+    .btn {
+        border: 1px solid @gray-lighter;
+        text-shadow: none;
+
+        &:hover,
+        &:focus {
+            text-shadow: none;
+        }
+
+    }
+
+    .btn-primary {
+        background-color: @brand-success;
+
+        &:hover,
+        &:focus {
+            background-color: darken(@brand-success, 12%);
+            border-color: #fff;
+            //box-shadow: none;
+        }
+    }
+}
+
+
+//
+// POPOVER
+// --------------------------------------------------
+
+.popover {
+    padding: 0;
+
+    textarea {
+        resize: vertical;
+    }
+
+    &.popover-datepicker {
+        width: 300px;
+        max-width: 300px;
+    }
+}
+
+//
+// MODAL
+// --------------------------------------------------
+
+.pnd-mandatory-field {
+    color: @brand-danger;
+}

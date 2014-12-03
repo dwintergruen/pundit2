@@ -4,6 +4,7 @@
  * Defining style for Triple Composer component
  */
 
+
 .pnd-triplecomposer-statements-container {
     margin-right: 10px;
 
@@ -75,10 +76,6 @@
 
                 cursor: pointer;
                 // display: block;
-
-                &:hover {
-                    background-color: red;
-                }
             }
 
             /* Buttons on the right (delete, date, literal) */
@@ -103,21 +100,21 @@
         .pnd-row-button-subject {
             background-color: @subject-color;
             &:hover {
-                // background-color: darken(@subject-color, 8);
+                background-color: darken(@subject-color, 10);
             }
         }
 
         .pnd-row-button-predicate {
             background-color: @predicate-color;
             &:hover {
-                //background-color: darken(@predicate-color, 8);
+                background-color: darken(@predicate-color, 10);
             }
         }
 
         .pnd-row-button-object {
             background-color: @object-color;
             &:hover {
-                //background-color: darken(@object-color, 8);
+                background-color: darken(@object-color, 10);
             }
         }
 
@@ -159,7 +156,6 @@
                 }
             }
         }
-
 
         /* Input and icon */
         /*
@@ -208,9 +204,10 @@
     }
 }
 
-/* ------------------------------------ */
-/* MESSAGES */
-/* ------------------------------------ */
+
+/* ------------------------------------ *\
+   #MESSAGES
+\* ------------------------------------ */
 
 .pnd-triplecomposer-saving-content,
 .pnd-saving-content,
