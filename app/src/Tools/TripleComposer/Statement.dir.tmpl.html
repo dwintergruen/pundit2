@@ -99,7 +99,12 @@
                                 Add an object
                         </span>
 
-                    <div class="pnd-row-button-rightbuttons">
+                    <div 
+                        class="pnd-row-button-rightbuttons"
+                        ng-class="{
+                            'pnd-statement-icon-one': !canBeObjectLiteral && canBeObjectDate || !canBeObjectDate && canBeObjectLiteral,
+                            'pnd-statement-icon-two': canBeObjectDate && canBeObjectLiteral
+                            }">
                         <!--Calendar Icon-->
                         <button
                                 type="button"
@@ -133,7 +138,12 @@
                         </span>
                     </span>
 
-                    <div class="pnd-row-button-rightbuttons">
+                    <div 
+                        class="pnd-row-button-rightbuttons"
+                        ng-class="{
+                            'pnd-statement-icon-one': !objectDate && !objectLiteral,
+                            'pnd-statement-icon-two': objectLiteral || objectDate
+                            }">
                         <!--Calendar Icon-->
                         <button
                                 type="button"
