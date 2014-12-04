@@ -127,6 +127,10 @@ angular.module('Pundit2.ResourcePanel')
         state.popover = null;
     };
 
+    var setFocus = function(selector) {
+        $timeout(function(){ angular.element(selector)[0].focus(); });
+    };
+
     // initialize a popover
     var initPopover = function(content, target, placement, type, contentTabs) {
 
@@ -406,14 +410,20 @@ angular.module('Pundit2.ResourcePanel')
         // if no popover is shown, just show it
         if (state.popover === null) {
             state.popover = initPopover(content, target, "", 'resourcePanel', contentTabs);
-            state.popover.$promise.then(state.popover.show);
+            state.popover.$promise.then(function() {
+                state.popover.show();
+                setFocus('input.pnd-rsp-input');
+            });
         }
 
         // if click a different popover, hide the shown popover and show the clicked one
         else if (state.popover !== null && state.popover.clickTarget !== target) {
             hide();
             state.popover = initPopover(content, target, "", 'resourcePanel', contentTabs);
-            state.popover.$promise.then(state.popover.show);
+            state.popover.$promise.then(function() {
+                state.popover.show();
+                setFocus('input.pnd-rsp-input');
+            });
         } // if click a different popover, hide the shown popover and show the clicked one
 
     };
@@ -530,7 +540,7 @@ angular.module('Pundit2.ResourcePanel')
             state.popover = initPopover(content, target, "", 'literal');
             state.popover.$promise.then(function() {
                 state.popover.show();
-                angular.element('textarea.pnd-popover-literal-textarea')[0].focus();
+                setFocus('textarea.pnd-popover-literal-textarea');
             });
         }
 
@@ -539,7 +549,7 @@ angular.module('Pundit2.ResourcePanel')
             state.popover = initPopover(content, target, "", 'literal');
             state.popover.$promise.then(function() {
                 state.popover.show();
-                angular.element('textarea.pnd-popover-literal-textarea')[0].focus();
+                setFocus('textarea.pnd-popover-literal-textarea');
             });
         }
 
@@ -572,7 +582,7 @@ angular.module('Pundit2.ResourcePanel')
             state.popover.$promise.then(function() {
                 state.popover.show();
                 //$datepicker.show;
-                angular.element('input.pnd-input-calendar')[0].focus();
+                // angular.element('input.pnd-input-calendar')[0].focus();
             });
         }
 
@@ -583,7 +593,7 @@ angular.module('Pundit2.ResourcePanel')
             state.popover.$promise.then(function() {
                 state.popover.show();
                 //$datepicker.show;
-                angular.element('input.pnd-input-calendar')[0].focus();
+                // angular.element('input.pnd-input-calendar')[0].focus();
             });
         }
 
