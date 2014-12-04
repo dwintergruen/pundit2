@@ -1,99 +1,81 @@
-
-//
-// ITEM ROLLOVER
-// --------------------------------------------------
+/**
+ * ITEM
+ *
+ * Style for items contained in lists (first panel of the dashboard
+ * and resource panel).
+ *
+ * These items are usually composed by an icon section on the left,
+ * the item's type and the title.
+ */
 
 
 .pnd-item {
-	    white-space: nowrap;
-    	overflow: hidden;
-    	text-overflow: ellipsis;
-    	transition: margin-left 250ms 150ms linear;
-    	margin-left: -55px;
-    	padding: 4px 8px;
-    	border-bottom: 1px solid @gray-extra-light;
-    	     	   	
-	    &:hover {
-	    	transition: margin-left 250ms 150ms linear;
-	    	margin-left: 0px; 
-	    	background-color: @gray-lighter;
-	    	
-	    	    .pnd-item-typeLabel {
-		    	   // background-color: #fff;
-		    	    }
-	    	}
-    	
-    .pnd-item-buttons {
-	 	margin-right: 7px;
-	 	display: inline;
-	 	float: left;
-	    }
-	
+    height: @item-height;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 4px;
+    border-bottom: 1px solid @gray-extra-lighter;
+    cursor: pointer;
 
-    .pnd-item-text {
-	    display: inline;
-	    
-	    .pnd-icon {
-			font-size: 14px;
-			vertical-align: middle;
-			margin-left: 5px;
-			color: @brand-success;
-			
-				&.pnd-icon-lock,
-				&.pnd-icon-group {
-					width: 18px;
-					margin: 0px;
-					display: inline-block;
-					text-align: center;
-					color: @gray;
-					}
-					
-			}
-
+    &:hover {
+        background-color: @gray-extra-lightest;
     }
 
+    .pnd-item-buttons {
+        margin-right: 7px;
+        display: inline;
+        float: left;
+    }
+
+    /* Item's wrapper for title and type label */
+    .pnd-item-text {
+        display: inline;
+        line-height: @item-height;
+    }
+
+    /* Item's title */
     .pnd-item-label {
-	    display: inline;
-	    font-weight: bold;
-    	}
+        display: inline;
+        font-weight: bold;
+        line-height: @item-height - 1px;
+    }
 
+    /* Item's type label */
     .pnd-item-typeLabel {
-		display: inline-block;
-		background-color: @gray-lighter;
-		padding: 2px 5px 3px 5px;
-		//width: 9em;
-		}
-	    
-   // Sticky item
+        display: inline-block;
+        margin-top: 3px;
+        line-height: @item-height - (1px + 6px);
+        height: @item-height - (1px + 6px);
+        background-color: @gray-lighter;
+        padding: 0 6px;
+    }
 
-	&.pnd-sticky-item {
-		margin-left: 0px;
-		background-color:@brand-success; 
-		color: #fff;
-		
-		    .pnd-item-label {
-			    font-weight: bold;
-			    }
-		
-		    .pnd-item-typeLabel {
-				background-color: transparent;
-				padding: 2px 5px 3px 5px;
-				width: auto;
-				}
-		
-		&:hover {    	
-				.pnd-item-buttons {
-		     		-webkit-animation-name: none !important;
-		    		}
-		    	}
-		    	
-		.pnd-icon {
-			color: #fff !important;
-			}
-			
-			
-	    }
-	    
+    &:hover .pnd-item-typeLabel {
+        background-color: @gray-extra-lighter;
+    }
+
+    /* Icons */
+    .pnd-icon {
+        line-height: @item-height - 1px;
+    }
+
+    /* Sticky/selected item */
+    &.pnd-sticky-item {
+        // margin-left: 0px;
+        background-color: @brand-success;
+        color: #fff;
+
+        .pnd-item-label {
+            font-weight: bold;
+        }
+
+        .pnd-item-typeLabel {
+            background-color: lighten(@brand-success, 10);
+        }
+
+        .pnd-icon {
+            color: #fff !important;
+        }
+    }
 }
-
-
