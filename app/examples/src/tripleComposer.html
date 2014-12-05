@@ -2,7 +2,7 @@
 
 <script>
 
-    var TripleComposerDemoCtrl = function($scope, $http, NameSpace, ItemsExchange, Item, MyPundit,
+    var TripleComposerDemoCtrl = function($scope, $http, $timeout, NameSpace, ItemsExchange, Item, MyPundit, EventDispatcher,
         CLIENTDEFAULTS, PAGEITEMSCONTAINERDEFAULTS, MYITEMSDEFAULTS) {
 
         var predicate = {
@@ -53,6 +53,9 @@
             }
         }();
 
+        $timeout(function() {
+            EventDispatcher.sendEvent('Client.boot');
+        }, 1000);
     };
 
 </script>

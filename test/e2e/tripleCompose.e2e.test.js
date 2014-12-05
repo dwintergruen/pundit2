@@ -22,9 +22,9 @@ describe("TripleComposer interaction", function() {
         p.findElements(protractor.By.css("statement .pnd-statement-object")).then(function(obj) {
             expect(obj.length).toBe(1);
         });
-        // clear and copy buttons
+        // advanced menu buttons
         p.findElements(protractor.By.css("statement .pnd-statement-buttons button")).then(function(btn) {
-            expect(btn.length).toBe(2);
+            expect(btn.length).toBe(1);
         });
     });
 
