@@ -71,9 +71,9 @@ angular.module('Pundit2.TripleComposer')
      * Tab title inside panel dashboard tabs.
      *
      * Default value:
-     * <pre> clientDashboardTabTitle: "Statements Composer" </pre>
+     * <pre> clientDashboardTabTitle: "Annotation Composer" </pre>
      */
-    clientDashboardTabTitle: "Statements composer",
+    clientDashboardTabTitle: "Annotation composer",
 
     /**
      * @module punditConfig
