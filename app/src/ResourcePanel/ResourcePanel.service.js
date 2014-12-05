@@ -132,7 +132,20 @@ angular.module('Pundit2.ResourcePanel')
     };
 
     // initialize a popover
-    var initPopover = function(content, target, placement, type, contentTabs) {
+    var initPopover = function(content, target, placement, type, contentTabs, tripleElemType) {
+        var posPopMod = 0,
+            valMod = 100;
+        state.popoverOptions.scope.arrowLeft = '-11px';
+
+        if (typeof(tripleElemType) !== 'undefined') {
+            if (tripleElemType === 'sub') {
+                posPopMod = valMod+27;
+                state.popoverOptions.scope.arrowLeft = '-' + valMod-27 + 'px';
+            } else if (tripleElemType === 'obj') {
+                state.popoverOptions.scope.arrowLeft = valMod + 'px';
+                posPopMod = -valMod;
+            }
+        }
 
         // initialize a calendar popover
         if (type === 'calendar') {
@@ -269,7 +282,7 @@ angular.module('Pundit2.ResourcePanel')
         state.anchor = angular.element('.pnd-popover-anchor');
 
         state.anchor.css({
-            left: left + (w / 2),
+            left: left + posPopMod + (w / 2),
             top: top + h
         });
 
@@ -409,7 +422,7 @@ angular.module('Pundit2.ResourcePanel')
         content.label = label;
         // if no popover is shown, just show it
         if (state.popover === null) {
-            state.popover = initPopover(content, target, "", 'resourcePanel', contentTabs);
+            state.popover = initPopover(content, target, "", 'resourcePanel', contentTabs, type);
             state.popover.$promise.then(function() {
                 state.popover.show();
                 setFocus('input.pnd-rsp-input');
@@ -419,7 +432,7 @@ angular.module('Pundit2.ResourcePanel')
         // if click a different popover, hide the shown popover and show the clicked one
         else if (state.popover !== null && state.popover.clickTarget !== target) {
             hide();
-            state.popover = initPopover(content, target, "", 'resourcePanel', contentTabs);
+            state.popover = initPopover(content, target, "", 'resourcePanel', contentTabs, type); // type = element of triple
             state.popover.$promise.then(function() {
                 state.popover.show();
                 setFocus('input.pnd-rsp-input');
