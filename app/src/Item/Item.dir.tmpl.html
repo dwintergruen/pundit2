@@ -1,6 +1,7 @@
 <div 
     class="pnd-item" 
-    ng-class="{'pnd-sticky-item': isSticky()}" 
+    ng-class="{'pnd-select-item': isSelected, 'pnd-sticky-item': isSticky() && forceSticky}"
+    ng-click="setStickInForceMode()"
     ng-mouseover="onItemMouseOver()" 
     ng-mouseleave="onItemMouseLeave()">
     
@@ -22,7 +23,7 @@
             <span class="pnd-icon pnd-icon-thumb-tack"></span>
         </button>
         
-        <span ng-if="isSelected" class="pnd-icon pnd-icon-check"></span>
+        <!-- <span ng-if="isSelect" class="pnd-icon pnd-icon-check"></span> -->
     </div>
 
     <div class="pnd-item-text">

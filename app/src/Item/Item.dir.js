@@ -6,7 +6,8 @@ angular.module('Pundit2.Item')
         scope: {
             uri: '@',
             menuType: '@',
-            isSelected: '@',
+            isSelected: '=isSelected',
+            forceSticky: '=forceSticky',
             hideOptions: '@',
             hideStickyButton: '@',
             useInKorbo: '@'

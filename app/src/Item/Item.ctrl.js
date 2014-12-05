@@ -32,6 +32,16 @@ angular.module('Pundit2.Item')
         return false;
     };
 
+    $scope.setStickInForceMode = function() {
+        if ($scope.forceSticky) {
+            if (Preview.isStickyItem($scope.item)) {
+                Preview.clearItemDashboardSticky();
+            } else {
+                Preview.setItemDashboardSticky($scope.item);
+            }
+        }
+    };
+
     $scope.onClickMenu = function(evt) {
         // show menu on item, the action is added by MyItemsContainer or PageItemsContainer service
         // the type of menu to show is relative to pageItems or myItems
