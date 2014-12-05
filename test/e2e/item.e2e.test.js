@@ -31,10 +31,10 @@ describe("Item interaction", function() {
 
     });
 
-    it("should correctly set item to stcky", function(){
+    it("should correctly set item to sticky", function(){
 
-        var item = p.findElement(protractor.By.css("item")),
-            stickyBtn = p.findElement(protractor.By.css("item .pnd-icon-thumb-tack"));
+        var item = p.findElement(protractor.By.css("item"));
+            head = p.findElement(protractor.By.css("item .pnd-item"));
 
         p.actions().mouseMove(item).perform();
 
@@ -45,7 +45,7 @@ describe("Item interaction", function() {
             expect(items.length).toBe(0);
         });
 
-        p.actions().mouseMove(stickyBtn).click().perform();
+        p.actions().mouseMove(head).click().perform();
 
         p.findElements(protractor.By.css(".pnd-sticky-item")).then(function(items){
             expect(items.length).toBe(1);
