@@ -1,6 +1,19 @@
-<ul class="list-group" ng-if="!message.flag">
-    <li class="list-group-item" ng-repeat="pndItem in displayedItems | orderBy:getOrderProperty:reverse">
-        <item uri="{{pndItem.uri}}" menu-type="{{itemMenuType}}"></item>
+<ul 
+    class="list-group" 
+    ng-if="!message.flag">
+    <li 
+        class="list-group-item" 
+        ng-repeat="pndItem in displayedItems | orderBy:getOrderProperty:reverse">
+        <item 
+            uri="{{pndItem.uri}}" 
+            menu-type="{{itemMenuType}}"
+            hide-sticky-button="true"
+            force-sticky="true"></item>
     </li>
 </ul>
-<div class="pnd-dashboard-welcome" ng-if="message.flag">{{message.text}}</div>
+
+<div 
+    class="pnd-dashboard-welcome" 
+    ng-if="message.flag">
+    {{message.text}}
+</div>

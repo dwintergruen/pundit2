@@ -144,7 +144,7 @@
                         ng-if="moduleName == 'Pundit2'">
                         <item 
                             uri="{{mi.uri}}" 
-                            is-selected="{{isSelected(mi)}}" 
+                            is-selected="isSelected(mi)" 
                             ng-click="select(mi)"
                             ng-dblclick="save(mi)"
                             hide-options="true" 
@@ -164,7 +164,7 @@
                             hide-options="true" 
                             hide-sticky-button="true" 
                             ng-click="select(mi)" 
-                            is-selected="{{isSelected(mi)}}" 
+                            is-selected="isSelected(mi)" 
                             use-in-korbo="true" 
                             ng-if="moduleName == 'KorboEE'"></item>
                     </li>
