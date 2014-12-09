@@ -92,7 +92,11 @@
                 <div
                     class="pnd-row-button-object"
                     ng-if="!objectFound"
-                    ng-class="{'pnd-statement-mandatory-object':isMandatory && templateMode}">
+                    ng-class="{
+                        'pnd-statement-mandatory-object':isMandatory && templateMode,
+                        'pnd-statement-icon-one': !canBeObjectLiteral && canBeObjectDate || !canBeObjectDate && canBeObjectLiteral,
+                        'pnd-statement-icon-two': canBeObjectDate && canBeObjectLiteral
+                        }">
                         <span
                             class="pnd-statement-label"
                             ng-click="onClickObject($event)">
@@ -100,11 +104,7 @@
                         </span>
 
                     <div 
-                        class="pnd-row-button-rightbuttons"
-                        ng-class="{
-                            'pnd-statement-icon-one': !canBeObjectLiteral && canBeObjectDate || !canBeObjectDate && canBeObjectLiteral,
-                            'pnd-statement-icon-two': canBeObjectDate && canBeObjectLiteral
-                            }">
+                        class="pnd-row-button-rightbuttons">
                         <!--Calendar Icon-->
                         <button
                                 type="button"
@@ -127,7 +127,11 @@
                 </div>
 
                 <!-- Object buttons found -->
-                <div class="pnd-row-button-object" ng-if="objectFound">
+                <div class="pnd-row-button-object" ng-if="objectFound"
+                     ng-class="{
+                        'pnd-statement-icon-one': !objectDate && !objectLiteral,
+                        'pnd-statement-icon-two': objectLiteral || objectDate
+                     }">
                     <span 
                         class="pnd-statement-label" 
                         ng-mouseover="onObjectMouseOver()" 
@@ -139,11 +143,7 @@
                     </span>
 
                     <div 
-                        class="pnd-row-button-rightbuttons"
-                        ng-class="{
-                            'pnd-statement-icon-one': !objectDate && !objectLiteral,
-                            'pnd-statement-icon-two': objectLiteral || objectDate
-                            }">
+                        class="pnd-row-button-rightbuttons">
                         <!--Calendar Icon-->
                         <button
                                 type="button"

@@ -20,16 +20,15 @@
     width: 100%;
     height: 100%;
     overflow: hidden;
+}
 
-    /* Left panel - Lists */
-    &:first-child { // TODO: Modificare
-        // padding-right: 7px; // TODO: da sistemare con Raffaele... aggiungere classi dedicate!!!!
+/* First and second expended panels have
+an internal padding on the right to leave some space to the
+vertical draggable bar */
+.pnd-dashboard-panel-not-last {
+    .pnd-dashboard-panel-expanded {
+        padding-right: 7px
     }
-
-    /* Center panel - Tools */
-
-    /* Right panel - Details */
-
 }
 
 .pnd-dashboard-panel-collapsed {
@@ -37,7 +36,7 @@
 }
 
 .pnd-dashboard-panel-last .nav-tabs {
-    margin-right: 0px;
+    margin-right: 0;
 }
 
 /* ------------------------------------ *\
@@ -162,5 +161,3 @@
     background-image: -ms-linear-gradient(top,  @gray-light 0%,@gray-light 75%, lighten(@gray, 10%) 100%); /* IE10+ */
     background-image: linear-gradient(to bottom,  @gray-light 0%,@gray-light 75%, lighten(@gray, 10%) 100%); /* W3C */
 }
-
-
