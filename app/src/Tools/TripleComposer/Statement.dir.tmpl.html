@@ -7,12 +7,12 @@
                 <!-- Subject buttons -->
                 <div class="pnd-row-button-subject" ng-if="!subjectFound">
                     <span 
-                        ng-show="templateMode"
+                        ng-if="templateMode"
                         class="pnd-statement-label pnd-statement-subject-text">
                             Select some text on the page
                     </span>
                     <span
-                        ng-show="!templateMode" 
+                        ng-if="!templateMode" 
                         class="pnd-statement-label" 
                         ng-click="onClickSubject($event)">
                             Add a subject
