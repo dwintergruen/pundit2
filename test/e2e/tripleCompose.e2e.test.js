@@ -33,7 +33,7 @@ describe("TripleComposer interaction", function() {
         p.driver.manage().window().setSize(1200, 960);
 
         // open resource panel
-        p.findElement(protractor.By.css(".pnd-statement-object input")).click();
+        p.findElement(protractor.By.css(".pnd-statement-object .pnd-statement-label")).click();
 
         p.findElements(protractor.By.css(".pnd-resource-panel-popover")).then(function(popover) {
             expect(popover.length).toBe(1);
@@ -51,10 +51,6 @@ describe("TripleComposer interaction", function() {
         p.findElement(protractor.By.css(".pnd-statement-object .pnd-row-button-object button")).then(function(btn) {
             expect(btn.getAttribute('title')).toEqual("delete");
         });
-        // type label
-        p.findElement(protractor.By.css(".pnd-statement-object .pnd-row-button-object")).then(function(div) {
-            expect(div.getText()).toEqual("Text fragment");
-        });
     });
 
     it("should correctly show predicate when object is already present", function(){
@@ -62,7 +58,7 @@ describe("TripleComposer interaction", function() {
         p.driver.manage().window().setSize(1200, 960);
 
         // open resource panel on object
-        p.findElement(protractor.By.css(".pnd-statement-object input")).click();
+        p.findElement(protractor.By.css(".pnd-statement-object .pnd-statement-label")).click();
         // check if is opened
         p.findElements(protractor.By.css(".pnd-resource-panel-popover")).then(function(popover) {
             expect(popover.length).toBe(1);
@@ -74,7 +70,7 @@ describe("TripleComposer interaction", function() {
         p.findElement(protractor.By.css(".pnd-resource-panel-popover .pnd-vertical-tab-footer-content .pnd-resource-panel-use-button")).click();
 
         // open resource panel on predicate
-        p.findElement(protractor.By.css(".pnd-statement-predicate input")).click();
+        p.findElement(protractor.By.css(".pnd-statement-predicate .pnd-statement-label")).click();
         // check if is opened
         p.findElements(protractor.By.css(".pnd-resource-panel-popover")).then(function(popover) {
             expect(popover.length).toBe(1);
@@ -95,7 +91,8 @@ describe("TripleComposer interaction", function() {
         p.findElement(protractor.By.css(".pnd-statement-object .pnd-row-button-object [title='text']")).click();
         // check if popover exist
         p.findElements(protractor.By.css(".pnd-popover-literal")).then(function(popover) {
-            expect(popover.length).toBe(1);        });
+            expect(popover.length).toBe(1);        
+        });
 
         // add text to popover
         p.findElement(protractor.By.css(".pnd-popover-literal .popover-content textarea")).sendKeys('testo');
@@ -110,12 +107,8 @@ describe("TripleComposer interaction", function() {
         // delete button
         p.findElements(protractor.By.css(".pnd-statement-object .pnd-row-button-object button")).then(function(btn) {
             expect(btn.length).toBe(2);
-            expect(btn[0].getAttribute('title')).toEqual("delete");
-            expect(btn[1].getAttribute('title')).toEqual("text");
-        });
-        // type label
-        p.findElement(protractor.By.css(".pnd-statement-object .pnd-row-button-object")).then(function(div) {
-            expect(div.getText()).toEqual("Literal");
+            expect(btn[1].getAttribute('title')).toEqual("delete");
+            expect(btn[0].getAttribute('title')).toEqual("text");
         });
     });
 
@@ -159,7 +152,7 @@ describe("TripleComposer interaction", function() {
         p.driver.manage().window().setSize(1200, 960);
 
         // open resource panel
-        p.findElement(protractor.By.css(".pnd-statement-object input")).click();
+        p.findElement(protractor.By.css(".pnd-statement-object .pnd-statement-label")).click();
 
         // add item by click on resource panel item and use btn
         p.findElement(protractor.By.css(".pnd-resource-panel-popover .pnd-item")).click();
@@ -173,51 +166,68 @@ describe("TripleComposer interaction", function() {
         // click delete button
         p.findElement(protractor.By.css(".pnd-statement-object .pnd-row-button-object button")).click();
         // check input
-        p.findElements(protractor.By.css(".pnd-statement-object input")).then(function(input) {
-            expect(input.length).toBe(1);
-            expect(input[0].getAttribute('placeholder')).toEqual("search an object");
+        p.findElement(protractor.By.css(".pnd-statement-object .pnd-statement-label")).then(function(label) {
+            expect(label.getText()).toEqual("Add an object");
         });
-                  
     });
 
     it("should correctly duplicate statement", function(){
 
         // open resource panel
-        p.findElement(protractor.By.css(".pnd-statement-object input")).click();
+        p.findElement(protractor.By.css(".pnd-statement-object .pnd-statement-label")).click();
 
         // add item by click on resource panel item and use btn
         p.findElement(protractor.By.css(".pnd-resource-panel-popover .pnd-item")).click();
         p.findElement(protractor.By.css(".pnd-resource-panel-popover .pnd-vertical-tab-footer-content .pnd-resource-panel-use-button")).click();
      
         // duplicate statement
-        p.findElement(protractor.By.css("statement[id='1'] .pnd-statement-buttons [title='copy']")).click();
+        p.findElement(protractor.By.css("statement[id='1'] .pnd-statement-buttons button")).click();
+        p.findElements(protractor.By.css('.dropdown-menu')).then(function(elements) {
+            expect(elements.length).toBe(1);
+        });
+        p.findElements(protractor.By.css('.dropdown-menu > li')).then(function(elements) {
+            expect(elements.length).toBe(3);
+            elements[1].click();
+        });
         
 
         // check if have the same label
         p.findElement(protractor.By.css("statement[id='2'] .pnd-statement-object .pnd-statement-label")).then(function(label) {
             expect(label.getText()).toEqual("item1Label");
         });
-        // che if have the delete button
+        // check if have the delete button
         p.findElement(protractor.By.css("statement[id='2'] .pnd-statement-object .pnd-row-button-object button")).then(function(btn) {
             expect(btn.getAttribute('title')).toEqual("delete");
-        });
-        // che if have the same type label
-        p.findElement(protractor.By.css("statement[id='2'] .pnd-statement-object .pnd-row-button-object")).then(function(div) {
-            expect(div.getText()).toEqual("Text fragment");
         });
     });
 
     it("should correctly remove statement", function(){
 
         // add blank statement
-        p.findElement(protractor.By.css("triple-composer .pnd-panel-tab-content-footer .pnd-triplecomposer-add-blank")).click();
+        p.findElement(protractor.By.css("statement[id='1'] .pnd-statement-buttons button")).click();
+        p.findElements(protractor.By.css('.dropdown-menu')).then(function(elements) {
+            expect(elements.length).toBe(1);
+        });
+        p.findElements(protractor.By.css('.dropdown-menu > li')).then(function(elements) {
+            expect(elements.length).toBe(3);
+            elements[0].click();
+        });
+
         // chek new statement number
         p.findElements(protractor.By.css(".pnd-triplecomposer-statements-container statement")).then(function(s) {
             expect(s.length).toBe(2);
         });
 
         // remove statement
-        p.findElement(protractor.By.css("statement[id='1'] .pnd-statement-buttons [title='delete']")).click();
+        p.findElement(protractor.By.css("statement[id='1'] .pnd-statement-buttons button")).click();
+        p.findElements(protractor.By.css('.dropdown-menu')).then(function(elements) {
+            expect(elements.length).toBe(1);
+        });
+        p.findElements(protractor.By.css('.dropdown-menu > li')).then(function(elements) {
+            expect(elements.length).toBe(3);
+            elements[2].click();
+        });
+
         // chek new statement number
         p.findElements(protractor.By.css(".pnd-triplecomposer-statements-container statement")).then(function(s) {
             expect(s.length).toBe(1);
@@ -251,5 +261,7 @@ describe("TripleComposer interaction", function() {
         });
 
     });
+
+    // TODO: test vocab and items search
 
 });
