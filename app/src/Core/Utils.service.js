@@ -1,7 +1,8 @@
 angular.module('Pundit2.Core')
+
 .service('Utils', function() {
     var Utils = {};
-    
+
     Utils.deepExtend = function(destination, source) {
         for (var property in source) {
             if (source[property] && source[property].constructor && source[property].constructor === Object) {
@@ -32,7 +33,9 @@ angular.module('Pundit2.Core')
             label = uri
                 .substring(28)
                 .replace(/([A-Z])/g, ' $1')
-                .replace(/^./, function(str){ return str.toUpperCase(); });
+                .replace(/^./, function(str) {
+                    return str.toUpperCase();
+                });
             return label;
         }
 
@@ -43,15 +46,6 @@ angular.module('Pundit2.Core')
         }
 
         return label;
-    };
-
-    Utils.getCurrentUserLanguage = function(){
-        // use the $window service to get the languages of the user's browser (works in Chrome >= 32 and Firefox >= 32)
-        var languages = $window.navigator.languages;
-        if(typeof(languages) !== 'undefined'){
-            var firstLanguage = languages[0];
-            return firstLanguage;
-        }
     };
 
     return Utils;

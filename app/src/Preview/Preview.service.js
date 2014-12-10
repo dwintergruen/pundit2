@@ -1,4 +1,5 @@
 angular.module('Pundit2.Preview')
+
 .constant('PREVIEWDEFAULTS', {
     /**
      * @module punditConfig
@@ -108,7 +109,7 @@ angular.module('Pundit2.Preview')
         itemDashboardSticky: null,
         heigthTypesDiv: null,
         typesHidden: null
-        };
+    };
 
     /**
      * @ngdoc method
@@ -244,9 +245,9 @@ angular.module('Pundit2.Preview')
      * otherwise preview panel will be empty and will be shown welcome message
      *
      */
-    preview.hideDashboardPreview = function(){
+    preview.hideDashboardPreview = function() {
 
-        if(state.itemDashboardSticky === null ) {
+        if (state.itemDashboardSticky === null) {
             state.itemDashboardPreview = null;
         } else {
             state.itemDashboardPreview = state.itemDashboardSticky;

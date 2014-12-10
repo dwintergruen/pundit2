@@ -1,4 +1,5 @@
 angular.module('Pundit2.Vocabularies')
+
 .constant('DBPEDIADEFAULTS', {
 
     /**
@@ -56,10 +57,10 @@ angular.module('Pundit2.Vocabularies')
      * @description
      * `Array of object`
      *
-     * Array of dbpedia instances, each object in the array allows you to add and configure 
+     * Array of dbpedia instances, each object in the array allows you to add and configure
      * an instance of the vocabulary. By default, the vocabulary has only one instance.
      * Each instance has its own tab in the interface, with its list of items.
-     * 
+     *
      *
      * Default value:
      * <pre> instances: [
@@ -73,20 +74,18 @@ angular.module('Pundit2.Vocabularies')
      *   }
      * ] </pre>
      */
-    instances: [
-        {
-            // where items is stored inside itemsExchange service
-            container: 'dbpedia',
-            // instance label tab title
-            label: 'Dbpedia',
-            // enable or disable the instance
-            active: true,
+    instances: [{
+        // where items is stored inside itemsExchange service
+        container: 'dbpedia',
+        // instance label tab title
+        label: 'Dbpedia',
+        // enable or disable the instance
+        active: true,
 
-            basketID: null,
-            url: 'http://dev.korbo2.org/v1', 
-            language: 'en'
-        }
-    ],
+        basketID: null,
+        url: 'http://dev.korbo2.org/v1',
+        language: 'en'
+    }],
 
     /**
      * @module punditConfig
@@ -104,8 +103,9 @@ angular.module('Pundit2.Vocabularies')
     debug: false
 
 })
+
 .factory('DbpediaSelector', function(BaseComponent, DBPEDIADEFAULTS, Item, ItemsExchange, SelectorsManager,
-                                            $http, $q) {
+    $http, $q) {
 
     var dbpediaSelector = new BaseComponent('DbpediaSelector', DBPEDIADEFAULTS);
     dbpediaSelector.name = 'DbpediaSelector';
@@ -118,78 +118,82 @@ angular.module('Pundit2.Vocabularies')
     }
 
     // selector instance constructor
-    var DbpediaFactory = function(config){
+    var DbpediaFactory = function(config) {
         this.config = config;
     };
 
-    DbpediaFactory.prototype.getItems = function(term){
+    DbpediaFactory.prototype.getItems = function(term) {
+        if (typeof(term) === 'undefined') {
+            return;
+        }
+
         var self = this,
             promise = $q.defer(),
             container = self.config.container + term.split(' ').join('$');
-            // TODO se basketID è null non aggiungerlo tra i parametri, altrimenti passarlo nell'oggetto params
-            var params = {
-                q: term,
-                p: 'dandeliondbpedia',
-                limit: dbpediaSelector.options.limit,
-                offset: 0,
-                lang: self.config.language
-            };
+        // TODO se basketID è null non aggiungerlo tra i parametri, altrimenti passarlo nell'oggetto params
+        var params = {
+            q: term,
+            p: 'dandeliondbpedia',
+            limit: dbpediaSelector.options.limit,
+            offset: 0,
+            lang: self.config.language
+        };
 
-            if(self.config.basketID !== null){
-                params.basketId = self.config.basketID;
+        if (self.config.basketID !== null) {
+            params.basketId = self.config.basketID;
+        }
+
+        $http({
+            //headers: { 'Content-Type': 'application/json' },
+            method: 'GET',
+            url: self.config.url + "/search/items",
+            cache: false,
+            params: params
+
+        }).success(function(res) {
+            dbpediaSelector.log('Http success, get items ' + self.config.label, res.data);
+
+            if (res.data.length === 0) {
+                dbpediaSelector.log('Empty response');
+                ItemsExchange.wipeContainer(container);
+                // promise is always resolved
+                promise.resolve();
+                return;
             }
 
-            $http({
-                //headers: { 'Content-Type': 'application/json' },
-                method: 'GET',
-                url: self.config.url + "/search/items",
-                cache: false,
-                params: params
+            ItemsExchange.wipeContainer(container);
 
-            }).success(function(res){
-                dbpediaSelector.log('Http success, get items '+self.config.label, res.data);
+            for (var i = 0; i < res.data.length; i++) {
+                var current = res.data[i];
 
-                if (res.data.length === 0) {
-                    dbpediaSelector.log('Empty response');
-                    ItemsExchange.wipeContainer(container);
-                    // promise is always resolved
-                    promise.resolve();
-                    return;
+                var item = {
+                    label: current.label,
+                    uri: current.uri,
+                    type: current.type
+                };
+                // optional propeties
+                if (current.depiction !== "") {
+                    item.image = current.depiction;
+                }
+                if (current.abstract !== "") {
+                    item.description = current.abstract;
                 }
 
-                ItemsExchange.wipeContainer(container);
+                // add to itemsExchange
+                ItemsExchange.addItemToContainer(new Item(item.uri, item), container);
+            }
 
-                for (var i=0; i<res.data.length; i++) {
-                    var current = res.data[i];
-
-                    var item = {
-                        label: current.label,
-                        uri: current.uri,
-                        type: current.type
-                    };
-                    // optional propeties
-                    if (current.depiction !== "") {
-                        item.image = current.depiction;
-                    }
-                    if (current.abstract !== "") {
-                        item.description = current.abstract;
-                    }
-
-                    // add to itemsExchange
-                    ItemsExchange.addItemToContainer(new Item(item.uri, item), container);
-                }
-
-                promise.resolve();
-            }).error(function(){
-                dbpediaSelector.log('Http Error');
-                promise.resolve();
-            });
+            promise.resolve();
+        }).error(function() {
+            dbpediaSelector.log('Http Error');
+            promise.resolve();
+        });
 
         return promise.promise;
 
     };
 
-    DbpediaFactory.prototype.push = function(config){
+    DbpediaFactory.prototype.push = function(config) {
         dbpediaSelector.options.instances.push(config);
     };
 

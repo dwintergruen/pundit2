@@ -1,4 +1,5 @@
 angular.module('Pundit2.Core')
+
 .constant('PUNDITDEFAULTCONF', {
 
     /**
@@ -23,7 +24,7 @@ angular.module('Pundit2.Core')
 
      * </pre>
      */
-    korbo : {
+    korbo: {
         active: false,
         confName: 'KORBODEFAULTCONF'
     },
@@ -153,7 +154,7 @@ angular.module('Pundit2.Core')
      * @description
      * `Array of url`
      * Specifies relations vocaularies that will be available to Pundit users
-     * (defines a list of relations with domain and ranges). 
+     * (defines a list of relations with domain and ranges).
      * Each vocabulary definition is a JSONP file available on the Web and is loaded by resolving an absolute URL.
      *
      * Default:
@@ -338,7 +339,7 @@ angular.module('Pundit2.Core')
      * List of all modules available in Pundit2 and their default configuration.
      *
      * Each "modules" properties is the name of a Pundit2 module and contain the default configuration of the module.
-     * This configuration can be extended and/or overwritten, 
+     * This configuration can be extended and/or overwritten,
      * the defined properties override the default values while the properties that are not defined assume the default values.
      *
      * Modules configuration example:
@@ -360,7 +361,7 @@ angular.module('Pundit2.Core')
      *     }
      * }</pre>
      *
-     * For a complete example go {@link #!/api/punditConfig here}. 
+     * For a complete example go {@link #!/api/punditConfig here}.
      *
      */
     modules: {
@@ -426,9 +427,9 @@ angular.module('Pundit2.Core')
         NotebookComposer: {
             active: true
         }
-  },
+    },
 
-  /**
+    /**
      * @module punditConfig
      * @ngdoc object
      * @name lodLive
@@ -448,11 +449,11 @@ angular.module('Pundit2.Core')
      *   baseUrl: 'http://demo-lodlive.thepund.it/?'
      * }
      * </pre>
-    */
-  lodLive: {
-    active: false,
-    baseUrl: 'http://demo-lodlive.thepund.it/?'
-  },
+     */
+    lodLive: {
+        active: false,
+        baseUrl: 'http://demo-lodlive.thepund.it/?'
+    },
 
     /**
      * @module punditConfig
@@ -474,10 +475,10 @@ angular.module('Pundit2.Core')
      *  baseUrl: 'http://metasound.dibet.univpm.it/timelinejs/examples/pundit.html?'
      * }
      * </pre>
-    */
-  timeline: {
-    active: false,
-    baseUrl: 'http://metasound.dibet.univpm.it/timelinejs/examples/pundit.html?'
-  }
+     */
+    timeline: {
+        active: false,
+        baseUrl: 'http://metasound.dibet.univpm.it/timelinejs/examples/pundit.html?'
+    }
 
 });

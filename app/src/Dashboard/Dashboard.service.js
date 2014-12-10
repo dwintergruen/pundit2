@@ -1,4 +1,5 @@
 angular.module('Pundit2.Dashboard')
+
 .constant('DASHBOARDDEFAULTS', {
 
     /**
@@ -9,8 +10,8 @@ angular.module('Pundit2.Dashboard')
      * @description
      * `object`
      *
-     * Configuration object for Dashboard module. By default, Dashboard directive is located below the toolbar, 
-     * is composed of three panels that can be resized and collapsed. 
+     * Configuration object for Dashboard module. By default, Dashboard directive is located below the toolbar,
+     * is composed of three panels that can be resized and collapsed.
      * Each panel has its own minimum width and its contents are added dynamically by the client service.
      */
 
@@ -21,7 +22,7 @@ angular.module('Pundit2.Dashboard')
      * @description
      * `boolean`
      *
-     * Default state of the dashboard module, if it is set to true 
+     * Default state of the dashboard module, if it is set to true
      * the client adds to the DOM the dashboard directive in the boot phase.
      *
      * Default value:
@@ -36,7 +37,7 @@ angular.module('Pundit2.Dashboard')
      * @description
      * `string`
      *
-     * Path of template containing dashboard directive, client will append the content of this template 
+     * Path of template containing dashboard directive, client will append the content of this template
      * to the DOM to bootstrap this component
      *
      * Default value:
@@ -168,9 +169,15 @@ angular.module('Pundit2.Dashboard')
      */
     // TODO: if you need to configure at least three panels this object must be an array
     panels: {
-        lists: { minWidth: 243 },
-        tools: { minWidth: 478 },
-        details: { minWidth: 239 }
+        lists: {
+            minWidth: 243
+        },
+        tools: {
+            minWidth: 478
+        },
+        details: {
+            minWidth: 239
+        }
     },
 
     /**
@@ -251,6 +258,7 @@ angular.module('Pundit2.Dashboard')
     panelFooterHeight: 40
 
 })
+
 .service('Dashboard', function(BaseComponent, DASHBOARDDEFAULTS, $window, $rootScope) {
 
     var dashboard = new BaseComponent('Dashboard', DASHBOARDDEFAULTS);
@@ -259,7 +267,7 @@ angular.module('Pundit2.Dashboard')
     for (var i in dashboard.options.panels) {
         containerMinWidth += dashboard.options.panels[i].minWidth;
     }
-    
+
     var state = {
 
         isDashboardVisible: dashboard.options.isDashboardVisible,
@@ -277,16 +285,16 @@ angular.module('Pundit2.Dashboard')
         return dashboard.options.panels;
     };
 
-    dashboard.canCollapsePanel = function(){
-        var collapsedNum = panels.filter(function(p){
-                return p.isCollapsed;
-            }).length;
+    dashboard.canCollapsePanel = function() {
+        var collapsedNum = panels.filter(function(p) {
+            return p.isCollapsed;
+        }).length;
 
-        return collapsedNum < panels.length-1;
+        return collapsedNum < panels.length - 1;
     };
 
     /**** DASHBOARD ****/
-    dashboard.toggle = function(){
+    dashboard.toggle = function() {
         state.isDashboardVisible = !state.isDashboardVisible;
 
         // If we are expanded, help the panels setting their height properly
@@ -297,7 +305,7 @@ angular.module('Pundit2.Dashboard')
         }
     };
 
-    dashboard.isDashboardVisible = function(){
+    dashboard.isDashboardVisible = function() {
         return state.isDashboardVisible;
     };
 
@@ -308,17 +316,17 @@ angular.module('Pundit2.Dashboard')
 
     dashboard.increaseContainerHeight = function(dy) {
 
-        if ( state.containerHeight === dashboard.options.containerMaxHeight && dy>0){
+        if (state.containerHeight === dashboard.options.containerMaxHeight && dy > 0) {
             return false;
         }
-        if ( state.containerHeight === dashboard.options.containerMinHeight && dy<0){
+        if (state.containerHeight === dashboard.options.containerMinHeight && dy < 0) {
             return false;
         }
 
         var newHeight = state.containerHeight + dy;
-        if ( newHeight < dashboard.options.containerMinHeight ){
+        if (newHeight < dashboard.options.containerMinHeight) {
             state.containerHeight = dashboard.options.containerMinHeight;
-        } else if ( newHeight > dashboard.options.containerMaxHeight ) {
+        } else if (newHeight > dashboard.options.containerMaxHeight) {
             state.containerHeight = dashboard.options.containerMaxHeight;
         } else {
             state.containerHeight = newHeight;
@@ -326,7 +334,7 @@ angular.module('Pundit2.Dashboard')
 
         // TODO: why without this the view not update right
         $rootScope.$$phase || $rootScope.$digest();
-        
+
         return true;
     };
 
@@ -336,7 +344,7 @@ angular.module('Pundit2.Dashboard')
 
     // set dashboard width then resize panels and mantain ratios and min-widths
     dashboard.setContainerWidth = function(width) {
-        
+
         if (width <= containerMinWidth) {
 
             // container is set to min-width
@@ -376,8 +384,8 @@ angular.module('Pundit2.Dashboard')
         // If there's any previously saved panel content for this panel, add it
         if (panelScope.paneltitle in state.panelsContent) {
             var contents = state.panelsContent[panelScope.paneltitle];
-            for (var l=contents.length; l--;) {
-                dashboard.log('Adding tab '+contents[l].tabName+' to existing panel '+panelScope.paneltitle);
+            for (var l = contents.length; l--;) {
+                dashboard.log('Adding tab ' + contents[l].tabName + ' to existing panel ' + panelScope.paneltitle);
                 panelScope.addContent(contents[l].tabName, contents[l].tabTemplate);
             }
         }
@@ -391,7 +399,7 @@ angular.module('Pundit2.Dashboard')
         if (panels.length === configuredPanelsLen) {
             dashboard.resizeAll();
         }
-        
+
     };
 
     dashboard.resizeAll = function(skip) {
@@ -411,25 +419,25 @@ angular.module('Pundit2.Dashboard')
             avail = avail - skip[i];
         }
 
-        var collapsed = panels.filter(function(p){
+        var collapsed = panels.filter(function(p) {
                 return p.isCollapsed;
             }),
-            expanded = panels.filter(function(p){
+            expanded = panels.filter(function(p) {
                 return !p.isCollapsed;
             });
 
         // Take out collapsed widths from the available width
         //avail = avail - collapsed.length * dashboard.options.panelCollapsedWidth;
-        avail = avail - collapsed.reduce(function(total, panel){
+        avail = avail - collapsed.reduce(function(total, panel) {
             return total + panel.collapsedWidth;
         }, 0);
 
         // Cycle over all panels which will be interested in a change
         // of width and get their total sum, to calculate ratios
-        var currentTotal = expanded.reduce(function(total, panel){
+        var currentTotal = expanded.reduce(function(total, panel) {
 
             // TODO: Getting back from a collapse, set to min width?
-            if (panel.width < panel.minWidth){
+            if (panel.width < panel.minWidth) {
                 panel.width = panel.minWidth;
             }
 
@@ -437,12 +445,12 @@ angular.module('Pundit2.Dashboard')
                 return total;
             }
 
-            return total+panel.width;
+            return total + panel.width;
         }, 0);
 
         // Ratios: panel current width / panels total widths
-        for (l=expanded.length; l--;) {
-            expanded[l].ratio = expanded[l].width/currentTotal;
+        for (l = expanded.length; l--;) {
+            expanded[l].ratio = expanded[l].width / currentTotal;
         }
 
         // Go over the panels from left to right, accumulating the
@@ -450,7 +458,7 @@ angular.module('Pundit2.Dashboard')
         var currentLeft = 0,
             resizable = [],
             delta = 0;
-        for (l=panels.length, i=0; i<l; i++) {
+        for (l = panels.length, i = 0; i < l; i++) {
 
             if (i in skip) {
                 panels[i].width = skip[i];
@@ -459,7 +467,7 @@ angular.module('Pundit2.Dashboard')
             } else {
                 var newWidth = panels[i].ratio * avail;
                 // check if after dispense delta the panel go under to min-width
-                if (newWidth < panels[i].minWidth){
+                if (newWidth < panels[i].minWidth) {
                     delta = delta + (newWidth - panels[i].minWidth);
                     panels[i].width = panels[i].minWidth;
                 } else {
@@ -475,21 +483,21 @@ angular.module('Pundit2.Dashboard')
         // if any panel go at min-width the loop is skipped
         // if all panel go at min-width the loop is executed only one time
         var newDelta, newCurrentTotal;
-        while ( delta < 0 ) {
+        while (delta < 0) {
 
             newDelta = 0;
             newCurrentTotal = 0;
             currentLeft = 0;
 
-            for(i=0; i<resizable.length; i++) {
+            for (i = 0; i < resizable.length; i++) {
                 newCurrentTotal = newCurrentTotal + resizable[i].width;
             }
 
-            resizable = resizable.filter(function(el){
+            resizable = resizable.filter(function(el) {
                 el.ratio = el.width / newCurrentTotal;
                 var newWidth = el.width + (el.ratio * delta);
                 // check if after dispense delta the panel go to min-width
-                if (newWidth < el.minWidth){
+                if (newWidth < el.minWidth) {
                     newDelta = newDelta + (newWidth - el.minWidth);
                     el.width = el.minWidth;
                     return false;
@@ -499,7 +507,7 @@ angular.module('Pundit2.Dashboard')
                 }
             });
 
-            for (i=0; i<panels.length; i++) {
+            for (i = 0; i < panels.length; i++) {
                 panels[i].left = currentLeft;
                 currentLeft = currentLeft + panels[i].width;
             }
@@ -507,32 +515,33 @@ angular.module('Pundit2.Dashboard')
             delta = newDelta;
         }
 
-        if(!$rootScope.$$phase) {
-          for(i=0; i<panels.length; i++) {
-            panels[i].$digest();
-          }
+        if (!$rootScope.$$phase) {
+            for (i = 0; i < panels.length; i++) {
+                panels[i].$digest();
+            }
         }
     };
 
     dashboard.tryToResizeCouples = function(index, delta) {
-        
-        var panel = panels[index], i;
+
+        var panel = panels[index],
+            i;
         var realDelta;
         var currentLeft;
 
-        if ( panel.isCollapsed ) {
+        if (panel.isCollapsed) {
             // check if the next panel exist and is not collapsed
-            if( index+1 < panels.length && !panels[index+1].isCollapsed ) {
+            if (index + 1 < panels.length && !panels[index + 1].isCollapsed) {
                 // find the first left not collapsed panel
-                for (i=index-1; i>=0; i--) {
-                    if ( !panels[i].isCollapsed ) {
+                for (i = index - 1; i >= 0; i--) {
+                    if (!panels[i].isCollapsed) {
                         panel = panels[i];
                         index = i;
                         break;
                     }
                 }
                 // all left panels are collapsed
-                if ( i < 0 ) {
+                if (i < 0) {
                     return false;
                 }
             } else {
@@ -540,61 +549,61 @@ angular.module('Pundit2.Dashboard')
             }
         }
         var allCollapsed = true;
-        if ( index < panels.length-1 ) {
+        if (index < panels.length - 1) {
             // all panel after me is collapsed
-            for ( i=index+1; i<panels.length; i++ ) {
-                if( !panels[i].isCollapsed ){
+            for (i = index + 1; i < panels.length; i++) {
+                if (!panels[i].isCollapsed) {
                     allCollapsed = false;
                     break;
                 }
             }
-            if ( allCollapsed ){
+            if (allCollapsed) {
                 return false;
             }
         }
 
         // If it is shrinking
         if (delta < 0) {
-            
+
             realDelta = panel.width - Math.max(panel.minWidth, panel.width + delta);
             panel.width = Math.max(panel.minWidth, panel.width + delta);
 
             if (realDelta > 0) {
 
                 currentLeft = panel.left;
-                for ( i=index+1; i<panels.length; i++ ) {
-                    if ( !panels[i].isCollapsed ) {
+                for (i = index + 1; i < panels.length; i++) {
+                    if (!panels[i].isCollapsed) {
                         panels[i].width = panels[i].width + realDelta;
-                        panels[i].left =  panels[i-1].left + panels[i-1].width;
+                        panels[i].left = panels[i - 1].left + panels[i - 1].width;
                         break;
                     } else {
-                        panels[i].left = currentLeft + panels[i-1].width;
+                        panels[i].left = currentLeft + panels[i - 1].width;
                     }
-                    
+
                 }
 
-                if(!$rootScope.$$phase) {
-                  for(i=0; i<panels.length; i++) {
-                    panels[i].$digest();
-                  }
+                if (!$rootScope.$$phase) {
+                    for (i = 0; i < panels.length; i++) {
+                        panels[i].$digest();
+                    }
                 }
                 return true;
 
             } else {
-                if(!$rootScope.$$phase) {
-                  for(i=0; i<panels.length; i++) {
-                    panels[i].$digest();
-                  }
+                if (!$rootScope.$$phase) {
+                    for (i = 0; i < panels.length; i++) {
+                        panels[i].$digest();
+                    }
                 }
                 return false;
             }
 
             // If it's growing, check if there's space to grow
-        } else if (panels.length > index+1) {
-            
+        } else if (panels.length > index + 1) {
+
             var nextIndex;
-            for (i=index+1; i<panels.length; i++) {
-                if ( !panels[i].isCollapsed ) {
+            for (i = index + 1; i < panels.length; i++) {
+                if (!panels[i].isCollapsed) {
                     nextIndex = i;
                     break;
                 }
@@ -605,30 +614,29 @@ angular.module('Pundit2.Dashboard')
             realDelta = next.width - Math.max(next.minWidth, next.width - delta);
             next.width = Math.max(next.minWidth, next.width - delta);
 
-            if ( realDelta > 0 ) {
+            if (realDelta > 0) {
                 panel.width = panel.width + realDelta;
 
                 currentLeft = panel.left + panel.width;
-                for (i=index+1; i<nextIndex; i++) {
+                for (i = index + 1; i < nextIndex; i++) {
                     panels[i].left = currentLeft;
                     currentLeft = currentLeft + panels[i].width;
                 }
                 next.left = currentLeft;
-                
 
-                if(!$rootScope.$$phase) {
-                  for(i=0; i<panels.length; i++) {
-                    panels[i].$digest();
-                  }
+                if (!$rootScope.$$phase) {
+                    for (i = 0; i < panels.length; i++) {
+                        panels[i].$digest();
+                    }
                 }
                 return true;
 
             } else {
 
-                if(!$rootScope.$$phase) {
-                  for(i=0; i<panels.length; i++) {
-                    panels[i].$digest();
-                  }
+                if (!$rootScope.$$phase) {
+                    for (i = 0; i < panels.length; i++) {
+                        panels[i].$digest();
+                    }
                 }
                 return false;
             }
@@ -644,7 +652,7 @@ angular.module('Pundit2.Dashboard')
     dashboard.addContent = function(panelTitle, tabName, tabTemplate) {
         for (var i in panels) {
             if (panels[i].paneltitle === panelTitle) {
-                dashboard.log('Adding tab '+tabName+' to existing panel '+panelTitle);
+                dashboard.log('Adding tab ' + tabName + ' to existing panel ' + panelTitle);
                 panels[i].addContent(tabName, tabTemplate);
                 return;
             }
@@ -662,10 +670,10 @@ angular.module('Pundit2.Dashboard')
             state.panelsContent[panelTitle] = [content];
         }
 
-        dashboard.log("Added tab "+tabName+" to non-existing panel "+panelTitle+": for later use.");
+        dashboard.log("Added tab " + tabName + " to non-existing panel " + panelTitle + ": for later use.");
     };
 
     dashboard.log('Service run');
-    
+
     return dashboard;
 });

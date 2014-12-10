@@ -1,14 +1,23 @@
 <!-- HEADER -->
-
-<div class="pnd-panel-tab-content-header pnd-panel-tab-content-header-no-border">
+<div 
+    class="pnd-panel-tab-content-header pnd-panel-tab-content-header-no-border">
+    
     <div class="left-inner-icon">
-        <span class="pnd-icon {{search.icon}}" ng-click="search.term = ''"></span>
-        <input type="text" ng-model="search.term" placeholder="search items" class="form-control">
+        <span 
+            class="pnd-icon {{search.icon}}" 
+            ng-click="search.term = ''"></span>
+        <input 
+            type="text" 
+            ng-model="search.term" 
+            placeholder="search items" 
+            class="form-control">
     </div>
+
 </div> <!-- end pnd-panel-tab-content-header -->
 
 <!-- CONTENT -->
-
 <div class="pnd-panel-tab-content-content pnd-inner">
-    <div ng-model="tabs.activeTab" pnd-tabs="tabs"></div>
+    <div 
+        ng-model="tabs.activeTab" 
+        pnd-tabs="tabs"></div>
 </div> <!-- end pnd-panel-tab-content-content -->

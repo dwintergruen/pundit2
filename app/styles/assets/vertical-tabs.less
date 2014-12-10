@@ -1,74 +1,91 @@
-//
-// Vertical tabs
-// --------------------------------------------------
+/**
+ * VERTICAL TABS
+ *
+ * Style for vertical tabs used in ResourcePanel
+ * and Korbo
+ */
+
+
+/* ------------------------------------ *\
+   #VERTICAL-TABS
+\* ------------------------------------ */
 
 .tabs-left > .nav-tabs {
-	  float: left;
-	  margin-right: 5px;
-	  border-bottom: 0;
-	  background-color: @gray-lighter;
-	  }
+    float: left;
+    // margin-right: 5px;
+    border-bottom: 0;
+    background-color: lighten(@gray-lighter, 2);
+}
 
 .tab-content > .tab-pane {
-	  display: none;
-	  margin-bottom: 30px;
-	  }
+    display: none;
+    margin-bottom: 30px;
+}
 
 .tab-content > .active {
-	  display: block;
-	  }
+    display: block;
+}
+
+
+/* ------------------------------------ *\
+   #SINGLE ITEMS
+\* ------------------------------------ */
 
 .tabs-left > .nav-tabs > li {
-	  float: none;
-	  
-	  .pnd-icon {
-		  margin: 2px 4px 0px 0px;
-		  }
-	  	  
-	  .badge {
-		  padding: 3px 7px;
-		  font-size: 10px;
-		  font-weight: normal;
-		  background-color: lighten(@gray-light, 10%);
-		  border-radius: 8px;
-		  }
-		
-	   &.active .badge {
-		  background-color: lighten(@gray, 20%);
-		  }
-	  }
+    float: none;
 
-.tabs-left > .nav-tabs > li > a {
-	  min-width: 150px;
-	  margin-right: 0;
-	  margin-bottom: 1px;
-	  background-color: @gray-lighter;
-	  color: @gray;
-	  border-bottom: 1px solid #fff;
-	  }
+    .pnd-icon {
+        margin: 2px 4px 0px 0px;
+    }
 
-.tabs-left > .nav-tabs > li > a:hover,
-.tabs-left > .nav-tabs > li > a:focus {
-		color: @gray-darker;
-		background-color: darken(@gray-lighter, 5%);
-		border-bottom: 1px solid #fff;
-  
-		.badge {
-			background-color: lighten(@gray, 20%);
-			}	
-		}
+    .badge {
+        padding: 3px 7px;
+        font-size: 10px;
+        font-weight: normal;
+        background-color: lighten(@gray-light, 10%);
+        border-radius: 8px;
+    }
 
-.tabs-left > .nav-tabs .active > a,
-.tabs-left > .nav-tabs .active > a:hover,
-.tabs-left > .nav-tabs .active > a:focus {
+    &>a {
+        min-width: 150px;
+        margin-right: 0;
+        margin-bottom: 1px;
+        background-color: @gray-lighter;
+        color: @gray;
+        border-bottom: 1px solid #fff;
+        // transition-property: background-color;
+        // transition-duration: @animation-fast-duration;
 
-		}
+        &:hover, &:focus {
+            color: @gray-darker;
+            background-color: darken(@gray-lighter, 3%);
+            border-bottom: 1px solid #fff;
 
-.tabs-left > .nav-tabs .active > a:hover,
-.tabs-left > .nav-tabs .active > a:focus {
+            .badge {
+                background-color: lighten(@gray, 20%);
+            }
+        }
+    }
 
-		.badge {
-			background-color: lighten(@gray, 5%);
-			}
-		}
+    /* The currently active item */
+    &.active {
+        &>a {
+            background-color: #fff;
+            cursor: default;
 
+            &:hover, &:focus {
+                color: @gray;
+                background-color: #fff;
+                border-bottom: 1px solid #fff;
+
+                .badge {
+                    background-color: lighten(@gray, 20%);
+                }
+            }
+        }
+
+        .badge {
+            background-color: lighten(@gray, 20%);
+        }
+    }
+}

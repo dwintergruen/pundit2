@@ -14,7 +14,11 @@
     <div class="pnd-panel-tab-content-content pnd-inner-scrollable pnd-inner-no-tabs">
 	        <ul class="list-group" ng-if="!message.flag">
 	            <li class="list-group-item" ng-repeat="notebook in displayedNotebook | orderBy:getOrderProperty:reverse">
-	                <notebook nid="{{notebook.id}}" menu-type="{{notebookMenuType}}"></notebook>
+	                <notebook 
+                        nid="{{notebook.id}}" 
+                        menu-type="{{notebookMenuType}}"
+                        hide-sticky-button="true"
+                        force-sticky="true"></notebook>
 	            </li>
 	        </ul>
 	<div class="pnd-dashboard-welcome" ng-if="message.flag">{{message.text}}</div>
@@ -23,12 +27,12 @@
     <!-- FOOTER -->
 
     <div class="pnd-panel-tab-content-footer">
-        <button type="button" class="btn btn-xs btn-link my-notebooks-btn-order" template="{{dropdownTemplate}}"
+        <button type="button" class="btn btn-xs btn-link pnd-btn-full my-notebooks-btn-order" template="{{dropdownTemplate}}"
                 placement="top-left"
                 bs-dropdown="dropdownOrdering" title="Order my notebooks"><span class="pnd-icon pnd-icon-sort-amount-asc"></span></button>
         <button 
             type="button" 
-            class="btn btn-xs btn-link my-notebooks-btn-new"
+            class="btn btn-xs btn-link pnd-btn-full my-notebooks-btn-new"
             placement="top-left" 
             title="Create new notebook"
             ng-click="createNewNotebook()">

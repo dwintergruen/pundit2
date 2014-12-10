@@ -1,15 +1,16 @@
 angular.module('Pundit2.Dashboard')
+
 .controller('DashboardCtrl', function($document, $window, $rootScope, $scope, $compile, Dashboard) {
 
     var jqElement = {
-        container : angular.element('.pnd-dashboard-container'),
-        footer : angular.element('.pnd-dashboard-footer'),
-        body : angular.element('body')
+        container: angular.element('.pnd-dashboard-container'),
+        footer: angular.element('.pnd-dashboard-footer'),
+        body: angular.element('body')
     };
 
     // set footer height
     jqElement.footer.css({
-        'height' : Dashboard.options.footerHeight
+        'height': Dashboard.options.footerHeight
     });
 
     $scope.isDashboardVisible = Dashboard.isDashboardVisible();
@@ -44,8 +45,8 @@ angular.module('Pundit2.Dashboard')
         return Dashboard.getConfiguredPanels();
     }, function(panels) {
         for (var p in panels) {
-            Dashboard.log('Adding configured panel to Dashboard: '+ p);
-            jqElement.container.append('<dashboard-panel paneltitle="'+ p +'"></dashboard-panel>');
+            Dashboard.log('Adding configured panel to Dashboard: ' + p);
+            jqElement.container.append('<dashboard-panel paneltitle="' + p + '"></dashboard-panel>');
         }
         var added = angular.element("dashboard-panel");
         $compile(added)($scope);
@@ -58,7 +59,7 @@ angular.module('Pundit2.Dashboard')
         return Dashboard.getContainerHeight();
     }, function(newHeight) {
         jqElement.container.css({
-            'height' : newHeight
+            'height': newHeight
         });
 
         // Push the body element down too
@@ -72,7 +73,7 @@ angular.module('Pundit2.Dashboard')
         return Dashboard.getContainerWidth();
     }, function(newWidth) {
         jqElement.container.css({
-            'width' : newWidth
+            'width': newWidth
         });
     });
 

@@ -26,6 +26,16 @@ angular.module('Pundit2.Notebook')
         evt.stopPropagation();
         return false;
     };
+
+    $scope.setStickInForceMode = function() {
+        if ($scope.forceSticky) {
+            if (Preview.isStickyItem($scope.notebook)) {
+                Preview.clearItemDashboardSticky();
+            } else {
+                Preview.setItemDashboardSticky($scope.notebook);
+            }
+        }
+    };
     
     $scope.onClickMenu = function(evt){
         // show menu on notebook, the action is added by MyItemsContainer or PageItemsContainer service

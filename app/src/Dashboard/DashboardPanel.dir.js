@@ -1,4 +1,5 @@
 angular.module('Pundit2.Dashboard')
+
 .directive('dashboardPanel', function() {
     return {
         // require: "^dashboard",

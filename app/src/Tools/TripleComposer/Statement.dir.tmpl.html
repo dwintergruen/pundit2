@@ -1,112 +1,208 @@
 <div class="pnd-statement-row clearfix">
-<div class="pnd-statement-widget">
+    <div class="pnd-statement-widget">
 
-    <!-- Subject -->
-    <div class="pnd-statement-subject">
+        <!-- Subject -->
+        <div class="pnd-statement-subject">
+            <div>
+                <!-- Subject buttons -->
+                <div class="pnd-row-button-subject" ng-if="!subjectFound">
+                    <span 
+                        ng-if="templateMode"
+                        class="pnd-statement-label pnd-statement-subject-text">
+                            Select some text on the page
+                    </span>
+                    <span
+                        ng-if="!templateMode" 
+                        class="pnd-statement-label" 
+                        ng-click="onClickSubject($event)">
+                            Add a subject
+                    </span>
+                </div>
 
-        <!-- Incomplete Subject -->
-        <div ng-if="!subjectFound">
+                <div 
+                    class="pnd-row-button-subject pnd-statement-found pnd-statement-icon-one" 
+                    ng-if="subjectFound">
+                    <span 
+                        class="pnd-statement-label" 
+                        ng-mouseover="onSubjectMouseOver()" 
+                        ng-mouseleave="onItemMouseOut()"
+                        ng-click="onClickSubject($event)">
+                            {{subjectLabel}}
+                    </span>
 
-            <!-- Subject Input div -->
-            <div class="left-inner-icon">
-                <span ng-show="!templateMode" class="pnd-icon {{subjectIcon}}" ng-click="clearSubjectSearch()"></span>
-                <input ng-show="!templateMode" type="text" class="input-sm form-control" placeholder="search a subject" ng-model="$parent.subjectSearch" ng-click="onClickSubject($event)" ng-keyup="onKeyUpSubject($event)">
-                <div ng-show="templateMode" class="pnd-statement-label pnd-statement-subject-text">Select some text on the page</div>
+                    <div class="pnd-row-button-rightbuttons">
+                        <button
+                                type="button"
+                                class="btn btn-xs btn-link"
+                                ng-if="!templateMode"
+                                title="delete"
+                                ng-click="wipeSubject()">
+                            <span class="pnd-icon pnd-icon-trash-o"></span>
+                        </button>
+                    </div>
+                    <!-- <span>
+                        {{subjectTypeLabel}}
+                    </span> -->
+                </div>
+                <!-- // end Subject buttons -->
             </div>
-
-            <!-- Subject Buttons div (empty)-->
-            <div class="pnd-row-button-subject"></div>
-
         </div>
 
-        <!-- Complete Subject -->
-        <div ng-if="subjectFound">
-            <div class="pnd-statement-label" ng-mouseover="onSubjectMouseOver()" ng-mouseleave="onItemMouseOut()">{{subjectLabel}}</div>
-            <!-- Subject buttons -->
-            <div class="pnd-row-button-subject">
-		            <button type="button" class="btn btn-xs btn-link" ng-if="!templateMode" title="delete" ng-click="wipeSubject()"><span class="pnd-icon pnd-icon-trash-o"></span></button> {{subjectTypeLabel}}
+        <!-- Predicate -->
+        <div class="pnd-statement-predicate">
+            <div>
+                <!-- Predicate Buttons div (not found)-->
+                <div
+                    class="pnd-row-button-predicate"
+                    ng-if="!predicateFound">
+                        <span 
+                            class="pnd-statement-label" 
+                            ng-click="onClickPredicate($event)">
+                                Add a predicate
+                        </span>
+                </div>
+
+                <!-- Predicate buttons (found) -->
+                <div class="pnd-row-button-predicate pnd-statement-found" ng-if="predicateFound">
+                    <span 
+                        class="pnd-statement-label" 
+                        ng-if="!templateMode"
+                        ng-mouseover="onPredicateMouseOver()" 
+                        ng-mouseleave="onItemMouseOut()"
+                        ng-click="onClickPredicate($event)">
+                            {{predicateLabel}}
+                    </span>
+                    <span 
+                        class="pnd-statement-label pnd-statement-tmpl-mode" 
+                        ng-if="templateMode"
+                        ng-mouseover="onPredicateMouseOver()" 
+                        ng-mouseleave="onItemMouseOut()">
+                            {{predicateLabel}}
+                    </span>
+
+                    <div class="pnd-row-button-rightbuttons">
+                        <button
+                                type="button"
+                                class="btn btn-xs btn-link"
+                                ng-if="!predicateFixed"
+                                title="delete"
+                                ng-click="wipePredicate()">
+                            <span class="pnd-icon pnd-icon-trash-o"></span>
+                        </button>
+                    </div>
+                </div>
+                <!-- // end Predicate buttons -->            
             </div>
-            <!-- // end Subject buttons -->
         </div>
 
-    </div>
+        <!-- Object -->
+        <div class="pnd-statement-object">
+            <div>
+                <!-- Object buttons !found -->
+                <div
+                    class="pnd-row-button-object"
+                    ng-if="!objectFound"
+                    ng-class="{
+                        'pnd-statement-mandatory-object':isMandatory && templateMode,
+                        'pnd-statement-icon-one': !canBeObjectLiteral && canBeObjectDate || !canBeObjectDate && canBeObjectLiteral,
+                        'pnd-statement-icon-two': canBeObjectDate && canBeObjectLiteral
+                    }">
+                    <span
+                        class="pnd-statement-label"
+                        ng-click="onClickObject($event)">
+                            Add an object
+                    </span>
 
-    <!-- Predicate -->
-    <div class="pnd-statement-predicate">
+                    <div 
+                        class="pnd-row-button-rightbuttons">
+                        <!--Calendar Icon-->
+                        <button
+                                type="button"
+                                class="btn btn-xs btn-link"
+                                ng-if="canBeObjectDate"
+                                ng-click="onClickObjectCalendar($event)"
+                                title="calendar">
+                            <span class="pnd-icon pnd-icon-table"></span>
+                        </button>
+                        <!--Pen Icon-->
+                        <button
+                                type="button"
+                                class="btn btn-xs btn-link"
+                                ng-if="canBeObjectLiteral"
+                                ng-click="onClickObjectLiteral($event)"
+                                title="text">
+                            <span class="pnd-icon pnd-icon-pencil"></span>
+                        </button>
+                    </div>
+                </div>
 
-        <!-- Incomplete Predicate -->
-        <div ng-if="!predicateFound">
+                <!-- Object buttons found -->
+                <div 
+                    class="pnd-row-button-object pnd-statement-found" 
+                    ng-if="objectFound"
+                    ng-class="{
+                        'pnd-statement-icon-one': !objectDate && !objectLiteral,
+                        'pnd-statement-icon-two': objectLiteral || objectDate
+                 }">
+                    <span 
+                        class="pnd-statement-label" 
+                        ng-mouseover="onObjectMouseOver()" 
+                        ng-mouseleave="onItemMouseOut()"
+                        ng-click="onClickObject($event)">
+                        <span>
+                            {{objectLabel}}
+                        </span>
+                    </span>
 
-            <!-- Predicate Input div -->
-            <div class="left-inner-icon">
-                <span class="pnd-icon {{predicateIcon}}" ng-click="clearPredicateSearch()"></span>
-                <input type="text" class="input-sm form-control" placeholder="search a predicate" ng-model="$parent.predicateSearch" ng-click="onClickPredicate($event)" ng-keyup="onKeyUpPredicate($event)">
+                    <div 
+                        class="pnd-row-button-rightbuttons">
+                        <!--Calendar Icon-->
+                        <button
+                                type="button"
+                                class="btn btn-xs btn-link"
+                                ng-if="objectDate && !objectFixed"
+                                ng-click="onClickObjectCalendar($event)"
+                                title="calendar">
+                            <span class="pnd-icon pnd-icon-table"></span>
+                        </button>
+                        <!--Pen Icon-->
+                        <button
+                                type="button"
+                                class="btn btn-xs btn-link"
+                                ng-if="objectLiteral && !objectFixed"
+                                ng-click="onClickObjectLiteral($event)"
+                                title="text">
+                            <span class="pnd-icon pnd-icon-pencil"></span>
+                        </button>
+
+                        <button
+                                type="button"
+                                class="btn btn-xs btn-link"
+                                ng-if="!objectFixed"
+                                title="delete"
+                                ng-click="wipeObject()">
+                            <span class="pnd-icon pnd-icon-trash-o"></span>
+                        </button>
+                    </div>
+                    <!-- <span>
+                        {{objectTypeLabel}}
+                    </span> -->
+                </div>
+                <!-- // end Object buttons -->
             </div>
-
-            <!-- Predicate Buttons div-->
-            <div class="pnd-row-button-predicate"></div>
 
         </div>
-
-        <!-- Complete Predicate -->
-        <div ng-if="predicateFound">
-	        <div class="pnd-statement-label" ng-mouseover="onPredicateMouseOver()" ng-mouseleave="onItemMouseOut()">{{predicateLabel}}</div>
-	        <!-- Predicate buttons -->
-	        <div class="pnd-row-button-predicate">
-	            <button type="button" class="btn btn-xs btn-link" ng-if="!predicateFixed" title="delete"  ng-click="wipePredicate()"><span class="pnd-icon pnd-icon-trash-o"></span></button>
-            </div>
-            <!-- // end Predicate buttons -->            
-        </div>
-
-    </div>
-
-    <!-- Object -->
-    <div class="pnd-statement-object">
-
-        <!-- Incomplete Object -->
-        <div ng-if="!objectFound">
-
-            <!-- Object Input div -->
-            <div class="left-inner-icon">
-                <span class="pnd-icon {{objectIcon}}" ng-click="clearObjectSearch()"></span>
-                <input type="text" class="input-sm form-control" placeholder="search an object" ng-model="$parent.objectSearch" ng-click="onClickObject($event)" ng-keyup="onKeyUpObject($event)" ng-class="{'pnd-statement-mandatory-object':isMandatory && templateMode}">
-            </div>
-
-            <!-- Object Buttons div -->
-            <div class="pnd-row-button-object">
-                <!--Calendar Icon-->
-                <button type="button" class="btn btn-xs btn-link" ng-if="canBeObjectDate" ng-click="onClickObjectCalendar($event)"  title="calendar"><span class="pnd-icon pnd-icon-table"></span></button>
-                <!--Pen Icon-->
-                <button type="button" class="btn btn-xs btn-link" ng-if="canBeObjectLiteral" ng-click="onClickObjectLiteral($event)"  title="text"><span class="pnd-icon pnd-icon-pencil"></span></button>
-            </div>
-
-        </div>
-
-        <!-- Complete Object -->
-        <div ng-if="objectFound">
-	        <div class="pnd-statement-label" ng-mouseover="onObjectMouseOver()" ng-mouseleave="onItemMouseOut()">{{objectLabel}}</div>
-	        
-	        <!-- Object buttons -->
-            <div class="pnd-row-button-object">
-		            <button type="button" class="btn btn-xs btn-link" ng-if="!objectFixed" title="delete" ng-click="wipeObject()"><span class="pnd-icon pnd-icon-trash-o"></span></button>
-                    <!--Calendar Icon-->
-                    <button type="button" class="btn btn-xs btn-link" ng-if="objectDate && !objectFixed" ng-click="onClickObjectCalendar($event)"  title="calendar"><span class="pnd-icon pnd-icon-table"></span></button>
-                    <!--Pen Icon-->
-                    <button type="button" class="btn btn-xs btn-link" ng-if="objectLiteral && !objectFixed" ng-click="onClickObjectLiteral($event)"  title="text"><span class="pnd-icon pnd-icon-pencil"></span></button> {{objectTypeLabel}}
-            </div>
-            <!-- // end Object buttons -->
-	        
-        </div>
-
-    </div>
-</div><!-- // end widget -->
+    </div><!-- // end widget -->
 
     <!-- Right buttons -->
     <div class="pnd-statement-buttons">
-        <!-- close icon -->
-        <button type="button" class="btn btn-xs btn-danger pnd-btn-statement" ng-hide="templateMode" ng-click="remove()" title="delete" ng-disabled="isDeleteDisabled"><span class="pnd-icon pnd-icon-trash-o"></span></button>
-        <!-- copy icon -->
-        <button type="button" class="btn btn-xs btn-success pnd-btn-statement" ng-hide="templateMode" ng-click="duplicate()" title="copy"><span class="pnd-icon pnd-icon-copy"></span></button>
+        <button 
+            type="button" 
+            class="btn btn-xs" 
+            ng-click="showDropdown($event)" 
+            title="Triple menu"
+            ng-disabled="templateMode">
+                <span class="pnd-icon pnd-icon-bars"></span>
+        </button>
     </div>
-
 </div>

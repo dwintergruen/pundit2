@@ -359,7 +359,7 @@ describe("Client interaction when user is logged in", function() {
         // open dashboard
         p.findElement(protractor.By.css('toolbar .pnd-toolbar-dashboard-button')).click();
         // open resource panel on subject
-        p.findElement(protractor.By.css(".pnd-statement-object input")).click();
+        p.findElement(protractor.By.css(".pnd-statement-object .pnd-statement-label")).click();
         // check if popover is showed
         p.findElements(protractor.By.css(".pnd-resource-panel-popover")).then(function(popover) {
             expect(popover.length).toBe(1);
@@ -383,7 +383,7 @@ describe("Client interaction when user is logged in", function() {
         // open dashboard
         p.findElement(protractor.By.css('toolbar .pnd-toolbar-dashboard-button')).click();
         // open resource panel on predicate
-        p.findElement(protractor.By.css(".pnd-statement-predicate input")).click();
+        p.findElement(protractor.By.css(".pnd-statement-predicate .pnd-statement-label")).click();
         // check if popover is showed
         p.findElements(protractor.By.css(".pnd-resource-panel-popover")).then(function(popover) {
             expect(popover.length).toBe(1);
@@ -405,18 +405,15 @@ describe("Client interaction when user is logged in", function() {
 
         // open dashboard
         p.findElement(protractor.By.css('toolbar .pnd-toolbar-dashboard-button')).click();
+
         // open resource panel on subject
-        p.findElement(protractor.By.css(".pnd-statement-subject input")).click();
+        p.findElement(protractor.By.css(".pnd-statement-subject .pnd-row-button-subject .pnd-statement-label")).click();
         // check if popover is showed
         p.findElements(protractor.By.css(".pnd-resource-panel-popover")).then(function(popover) {
             expect(popover.length).toBe(1);
         });
         // click item
         p.findElement(protractor.By.css(".pnd-resource-panel-popover .pnd-vertical-tab-content > .active li .pnd-item")).click();
-        // check if item have check icon
-        p.findElements(protractor.By.css(".pnd-resource-panel-popover .pnd-vertical-tab-content > .active li .pnd-item .pnd-item-buttons span.pnd-icon-check")).then(function(check) {
-            expect(check.length).toBe(1);
-        });
         // check if use button is enabled
         p.findElement(protractor.By.css(".pnd-resource-panel-popover .pnd-vertical-tab-footer-content .pnd-resource-panel-use-button")).then(function(useBtn) {
             useBtn.getAttribute('class').then(function(classes){
@@ -437,10 +434,10 @@ describe("Client interaction when user is logged in", function() {
         // open dashboard
         p.findElement(protractor.By.css('toolbar .pnd-toolbar-dashboard-button')).click();
         // open resource panel on predicate
-        p.findElement(protractor.By.css(".pnd-statement-predicate input")).click();
+        p.findElement(protractor.By.css(".pnd-statement-predicate .pnd-statement-label")).click();
         // add text inside input to filter predicates
         // add text to popover
-        p.findElement(protractor.By.css(".pnd-statement-predicate input")).sendKeys('has');
+        p.findElement(protractor.By.css(".pnd-resource-panel-popover .pnd-rsp-input")).sendKeys('has');
         
         // check popover vertical tabs showed number
         p.findElements(protractor.By.css(".pnd-resource-panel-popover .pnd-vertical-tabs li a span")).then(function(spans) {
@@ -459,7 +456,7 @@ describe("Client interaction when user is logged in", function() {
         // open dashboard
         p.findElement(protractor.By.css('toolbar .pnd-toolbar-dashboard-button')).click();
         // open resource panel
-        p.findElement(protractor.By.css(".pnd-statement-object input")).click();
+        p.findElement(protractor.By.css(".pnd-statement-object .pnd-statement-label")).click();
 
         // add item by click on resource panel item and use btn
         p.findElement(protractor.By.css(".pnd-resource-panel-popover .pnd-item")).click();
@@ -512,7 +509,7 @@ describe("Client interaction when user is logged in", function() {
         // check active tab title
         p.findElements(protractor.By.css("dashboard-panel[paneltitle=tools] .pnd-tab-header > li.active > a")).then(function(tabs) {
             expect(tabs.length).toBe(1);
-            expect(tabs[0].getText()).toBe("Notebooks composer");
+            expect(tabs[0].getText()).toBe("Notebook composer");
         });
         
         // TODO write notebook composer dedicated e2e tests
@@ -540,7 +537,7 @@ describe("Client interaction when user is logged in", function() {
         // check active tab title
         p.findElements(protractor.By.css("dashboard-panel[paneltitle=tools] .pnd-tab-header > li.active > a")).then(function(tabs) {
             expect(tabs.length).toBe(1);
-            expect(tabs[0].getText()).toBe("Notebooks composer");
+            expect(tabs[0].getText()).toBe("Notebook composer");
         });
     });
 

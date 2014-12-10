@@ -1,28 +1,88 @@
+<!-- TODO: split Korbo template to solve this code soup -->
+
 <div class="tabbable tabs-left"> <!-- tabs left -->
    <!-- header -->
-   <div class="pnd-vertical-tab-header-content" ng-if="moduleName == 'Pundit2'">
+   <div 
+        class="pnd-panel-tab-content-header pnd-panel-tab-content-header-border"
+        ng-if="moduleName == 'Pundit2'">
+
+       <!-- TODO: please remember that class "pnd-vertical-tab-header-content" was removed -->
+
+        <!--
         <strong ng-if="type === 'sub'">Choose your subject...</strong>
         <strong ng-if="type === 'obj'">Choose your object...</strong>
         <strong ng-if="type === 'pr'">Choose your predicate...</strong>
-        <button type="button" class="btn btn-xs btn-link pnd-btn-dashboard pull-right" ng-click="cancel()"><span class="pnd-icon pnd-icon-times"></span></button>
+        -->
+        
+        <!-- Search Input div -->
+        <div class="left-inner-icon">
+            <span 
+                class="pnd-icon {{subjectIcon}}" 
+                ng-click="clearSearch()"></span>
+            <input 
+                type="text" 
+                class="pnd-rsp-input input-sm form-control" 
+                placeholder="Type at least 3 characters ..." 
+                ng-model="$parent.$parent.label"
+                ng-change="updateSearch($parent.$parent.label)"
+                ng-minlength="3"
+                ng-keyup="escapeEvent($event)">
+        </div>
+
+        <!-- TODO: remove? use cancel? -->
+        <button 
+            type="button" 
+            class="btn btn-xs btn-link pnd-btn-dashboard pull-right" 
+            ng-click="cancel()">
+            <!-- <span class="pnd-icon pnd-icon-times"></span> -->
+        </button>
     </div>
     <!-- // end header -->
 
-    <ul class="nav nav-tabs pnd-vertical-tabs" ng-if = "moduleName == 'Pundit2'">
-        <li ng-repeat="pane in contentTabs" ng-class="{active: $index == active}" ng-if="pane.title != 'My Items' || (pane.title == 'My Items' && userLoggedIn)">
-            <a data-toggle="tab" ng-click="setActive($index, $event)" data-index="{{$index}}" >
-                <span class="badge pull-right" ng-show="moduleName == 'Pundit2' && !pane.isLoading && pane.isStarted">{{pane.items.length}}</span>
-                <span class="pnd-icon pnd-icon-refresh pnd-icon-spin pull-right" ng-show="pane.isLoading"></span>
+    <!-- Pundit2 list -->
+    <ul 
+        class="nav nav-tabs pnd-vertical-tabs" 
+        ng-if= "moduleName == 'Pundit2'">
+        <li 
+            ng-repeat="pane in contentTabs" 
+            ng-class="{active: $index == active}" 
+            ng-if="pane.title != 'My items' || (pane.title == 'My items' && userLoggedIn)">
+            <a 
+                data-toggle="tab" 
+                ng-click="setActive($index, $event)" 
+                data-index="{{$index}}" >
+                <span 
+                    class="badge pull-right" 
+                    ng-show="moduleName == 'Pundit2' && !pane.isLoading && pane.isStarted">
+                    {{tabItemsFiltered[$index].length}}
+                </span>
+                <span 
+                    class="pnd-icon pnd-icon-refresh pnd-icon-spin pull-right" 
+                    ng-show="pane.isLoading"></span>
                 {{pane.title}}
             </a>
         </li>
     </ul>
 
-    <ul class="nav nav-tabs pnd-vertical-tabs" ng-if = "moduleName == 'KorboEE'">
-        <li ng-repeat="pane in contentTabs" ng-class="{active: $index == active}">
-            <a data-toggle="tab" ng-click="setActive($index, $event)" data-index="{{$index}}" >
-                <span class="badge pull-right" ng-show="moduleName == 'KorboEE' && !pane.isLoading && pane.isStarted">{{pane.items.length}}</span>
-                <span class="pnd-icon pnd-icon-refresh pnd-icon-spin pull-right" ng-show="pane.isLoading"></span>
+    <!-- KorboEE list -->
+    <ul 
+        class="nav nav-tabs pnd-vertical-tabs" 
+        ng-if = "moduleName == 'KorboEE'">
+        <li 
+            ng-repeat="pane in contentTabs" 
+            ng-class="{active: $index == active}">
+            <a 
+                data-toggle="tab" 
+                ng-click="setActive($index, $event)" 
+                data-index="{{$index}}" >
+                <span 
+                    class="badge pull-right" 
+                    ng-show="moduleName == 'KorboEE' && !pane.isLoading && pane.isStarted">
+                    {{pane.items.length}}
+                </span>
+                <span 
+                    class="pnd-icon pnd-icon-refresh pnd-icon-spin pull-right" 
+                    ng-show="pane.isLoading"></span>
                 {{pane.title}}
             </a>
         </li>
@@ -30,40 +90,120 @@
 
     <div>
         <div class="pnd-vertical-tab-content tab-content">
-            <div ng-repeat="pane in contentTabs" class="tab-pane pnd-vertical-tab-list-content" ng-class="[$index == active ? 'active' : '']">
-                <div class="kee-server-messages" ng-if="pane.module == 'KorboEE' && !contentTabs[$index].serverError">
+            <div 
+                ng-repeat="pane in contentTabs" 
+                class="tab-pane pnd-vertical-tab-list-content" 
+                ng-class="[$index == active ? 'active' : '']">
+                <div 
+                    class="kee-server-messages" 
+                    ng-if="pane.module == 'KorboEE' && !contentTabs[$index].serverError">
                     <!-- messages 1 -->
-                    <div ng-show="!contentTabs[$index].isLoading && contentTabs[$index].items.length === 0 && elemToSearch !== ''">No results found</div>
+                    <div 
+                        ng-show="!contentTabs[$index].isLoading && contentTabs[$index].items.length === 0 && elemToSearch !== ''">
+                        No results found
+                    </div>
                     <!-- / end messages 1 -->
+                    
                     <!-- messages 2 -->
-                    <div class="kee-server-searching" ng-show="contentTabs[$index].isLoading && elemToSearch !== ''"><span class="pnd-icon pnd-icon-refresh pnd-icon-spin "></span></div>
+                    <div 
+                        class="kee-server-searching" 
+                        ng-show="contentTabs[$index].isLoading && elemToSearch !== ''">
+                        <span class="pnd-icon pnd-icon-refresh pnd-icon-spin "></span>
+                    </div>
                     <!-- / end messages 2 -->
+
                     <!-- messages 3 -->
-                    <div ng-show="!contentTabs[$index].isLoading && contentTabs[$index].items.length === 0 && elemToSearch === ''">Type a label to search...</div>
+                    <div 
+                        ng-show="!contentTabs[$index].isLoading && contentTabs[$index].items.length === 0 && elemToSearch === ''">
+                        Type a label to search...
+                    </div>
                     <!-- / end messages 3 -->
                 </div>
+
                 <!-- messages 4 -->
-                <div class="kee-server-messages" ng-if="pane.module == 'KorboEE' && contentTabs[$index].serverError">
-                    <div ng-show="contentTabs[$index].serverError">Server error</div>
+                <div 
+                    class="kee-server-messages" 
+                    ng-if="pane.module == 'KorboEE' && contentTabs[$index].serverError">
+                    <div ng-show="contentTabs[$index].serverError">
+                        Server error
+                    </div>
                 </div>
 
                 <ul class="list-group">
-                    <li ng-if="pane.module == 'Pundit2' && contentTabs[$index].items.length === 0 && label !== ''">No results found</li>
-                    <li ng-if="pane.module == 'Pundit2' && contentTabs[$index].items.length === 0 && label === ''">Type a label to search...</li>
-                    <!-- <li class="list-group-item" ng-repeat="mi in contentTabs[$index].items | orderBy:getOrderProperty" ng-if="moduleName == 'Pundit2'"> -->
-                    <li class="list-group-item" ng-repeat="mi in contentTabs[$index].items" ng-if="moduleName == 'Pundit2'">
-                        <item uri="{{mi.uri}}" is-selected="{{isSelected(mi)}}" ng-click="select(mi)" hide-options="true" ng-if="moduleName == 'Pundit2'"></item>
+                    <li 
+                        ng-if="pane.module == 'Pundit2' && $parent.tabItemsFiltered[$index].length === 0 && label.length > 2 && !pane.isLoading">
+                        PUNDIT: No results found
                     </li>
-                    <li class="list-group-item" ng-repeat="mi in contentTabs[$index].items | orderBy:getOrderProperty" ng-if="moduleName == 'KorboEE'" ng-mouseenter="getItem(mi);$event.stopPropagation()" ng-mouseleave="onMouseLeave()">
-                        <item uri="{{mi.uri}}" hide-options="true" hide-sticky-button="true" ng-click="select(mi)" is-selected="{{isSelected(mi)}}" use-in-korbo="true" ng-if="moduleName == 'KorboEE'"></item>
+                    <li 
+                        ng-if="pane.module == 'Pundit2' && label.length > 2 && pane.isLoading">
+                        Loading ... 
+                    </li>
+                    <li 
+                        class="list-group-item" 
+                        ng-repeat="mi in $parent.tabItemsFiltered[$index] = (contentTabs[$index].items | filter:{label: label})" 
+                        ng-if="moduleName == 'Pundit2'">
+                        <item 
+                            uri="{{mi.uri}}" 
+                            is-selected="isSelected(mi)" 
+                            ng-click="select(mi)"
+                            ng-dblclick="save(mi)"
+                            hide-options="true" 
+                            hide-sticky-button="true"
+                            ng-if="moduleName == 'Pundit2'"></item>
+                    </li>
+
+                    <!-- Korbo -->
+                    <li 
+                        class="list-group-item" 
+                        ng-repeat="mi in contentTabs[$index].items | orderBy:getOrderProperty" 
+                        ng-if="moduleName == 'KorboEE'" 
+                        ng-mouseenter="getItem(mi);$event.stopPropagation()" 
+                        ng-mouseleave="onMouseLeave()">
+                        <item 
+                            uri="{{mi.uri}}" 
+                            hide-options="true" 
+                            hide-sticky-button="true" 
+                            ng-click="select(mi)" 
+                            is-selected="isSelected(mi)" 
+                            use-in-korbo="true" 
+                            ng-if="moduleName == 'KorboEE'"></item>
                     </li>
                 </ul>
             </div>
-            <div class="pnd-vertical-tab-footer-content" ng-if=" moduleName == 'Pundit2'">
-                <button class="pnd-resource-panel-use-button btn btn-xs btn-success pnd-btn-full" ng-class="{'disabled': !isUseActive}" ng-click="save(itemSelected)">Use</button>
-                <button class="pnd-resource-panel-copy-button btn btn-xs btn-info pnd-btn-full" ng-class="{'disabled': !isUseActive}" ng-show="showUseAndCopyButton()" ng-click="useAndCopy(itemSelected)">Copy and Use</button>
-                <button class="pnd-resource-panel-new-button btn btn-xs btn-info pnd-btn-full" ng-class="{'disabled': !isUseActive}" ng-show="showCopyInEditorButton()" ng-click="copyInEditor()">Copy in editor</button>
-                <button class="pnd-resource-panel-new-button btn btn-xs btn-info pnd-btn-full" ng-show="showNewButton()" ng-click="createNew()">Create new</button>
+
+            <div 
+                class="pnd-vertical-tab-footer-content" 
+                ng-if=" moduleName == 'Pundit2'">
+                <button 
+                    class="pnd-resource-panel-use-button btn btn-xs btn-success pnd-btn-full" 
+                    ng-class="{'disabled': !isUseActive}" 
+                    ng-click="save(itemSelected)">
+                    Use
+                </button>
+                <button 
+                    class="pnd-resource-panel-use-button btn btn-xs btn-info pnd-btn-full" 
+                    ng-click="cancel()">
+                    Cancel
+                </button>
+                <button 
+                    class="pnd-resource-panel-copy-button btn btn-xs btn-info pnd-btn-full" 
+                    ng-class="{'disabled': !isUseActive}" 
+                    ng-show="showUseAndCopyButton()" 
+                    ng-click="useAndCopy(itemSelected)">
+                    Copy and Use
+                </button>
+                <button 
+                    class="pnd-resource-panel-new-button btn btn-xs btn-info pnd-btn-full" 
+                    ng-class="{'disabled': !isUseActive}" 
+                    ng-show="showCopyInEditorButton()" 
+                    ng-click="copyInEditor()">
+                    Copy in editor
+                </button>
+                <button 
+                    class="pnd-resource-panel-new-button btn btn-xs btn-info pnd-btn-full" ng-show="showNewButton()" 
+                    ng-click="createNew()">
+                    Create new
+                </button>
             </div>
         </div>
     </div>

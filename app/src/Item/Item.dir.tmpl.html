@@ -1,13 +1,40 @@
-<div class="pnd-item" ng-class="{'pnd-sticky-item': isSticky()}" ng-mouseover="onItemMouseOver()" ng-mouseleave="onItemMouseLeave()">
+<div 
+    class="pnd-item" 
+    ng-class="{'pnd-select-item': isSelected, 'pnd-sticky-item': isSticky() && forceSticky}"
+    ng-click="setStickInForceMode()"
+    ng-mouseover="onItemMouseOver()" 
+    ng-mouseleave="onItemMouseLeave()">
+    
     <div class="pnd-item-buttons">
-        <button ng-hide="hideOptions" type="button" ng-click="onClickMenu($event)" class="btn btn-xs btn-link pnd-btn-bar" title="Options"><span class="pnd-icon pnd-icon-bars"></span></button>
-        <button ng-hide="hideStickyButton" type="button" ng-click="onClickSticky($event)" class="btn btn-xs btn-link pnd-btn-stick" title="Sticky"><span class="pnd-icon pnd-icon-thumb-tack"></span></button>
-        <span ng-if="isSelected" class="pnd-icon pnd-icon-check"></span>
+        <button 
+            type="button" 
+            class="btn btn-xs btn-link pnd-btn-bar" 
+            title="Options"
+            ng-hide="hideOptions" 
+            ng-click="onClickMenu($event)">
+            <span class="pnd-icon pnd-icon-bars"></span>
+        </button>
+        <button 
+            type="button" 
+            class="btn btn-xs btn-link pnd-btn-stick" 
+            title="Sticky"
+            ng-hide="hideStickyButton" 
+            ng-click="onClickSticky($event)">
+            <span class="pnd-icon pnd-icon-thumb-tack"></span>
+        </button>
+        
+        <!-- <span ng-if="isSelect" class="pnd-icon pnd-icon-check"></span> -->
     </div>
 
     <div class="pnd-item-text">
-        <span ng-show="item.type.length > 0" class="pnd-item-typeLabel">{{itemTypeLabel}}</span>
-        <span class="pnd-item-label">{{item.label}}</span>
+        <span 
+            class="pnd-item-typeLabel"
+            ng-show="item.type.length > 0">
+            {{itemTypeLabel}}
+        </span>
+        <span class="pnd-item-label">
+            {{item.label}}
+        </span>
     </div>
 
 </div>

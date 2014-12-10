@@ -1,4 +1,5 @@
 angular.module('Pundit2.Vocabularies')
+
 .constant('SELECTORMANAGERDEFAULTS', {
 
     /**
@@ -23,7 +24,7 @@ angular.module('Pundit2.Vocabularies')
      * @description
      * `boolean`
      *
-     * Default state of the SelectorsManager module, if it is set to true 
+     * Default state of the SelectorsManager module, if it is set to true
      * the client adds to the DOM (inside dashboard) the VocabulariesContainer directive in the boot phase.
      *
      * When selector manager is activated by default all selectors are active (Freebase, Korbo, ...),
@@ -42,14 +43,14 @@ angular.module('Pundit2.Vocabularies')
      * @description
      * `string`
      *
-     * Path of template containing myItemsContainer directive, client will append the content of this template 
+     * Path of template containing myItemsContainer directive, client will append the content of this template
      * to the DOM (inside dashboard directive) to bootstrap this component
      *
      * Default value:
      * <pre> clientDashboardTemplate: "src/Lists/Vocabularies/VocabulariesContainer/ClientVocabulariesContainer.tmpl.html" </pre>
      */
     clientDashboardTemplate: "src/Lists/Vocabularies/VocabulariesContainer/ClientVocabulariesContainer.tmpl.html",
-    
+
     /**
      * @module punditConfig
      * @ngdoc property
@@ -64,7 +65,7 @@ angular.module('Pundit2.Vocabularies')
      * <pre> clientDashboardPanel: "lists" </pre>
      */
     clientDashboardPanel: "lists",
-    
+
     /**
      * @module punditConfig
      * @ngdoc property
@@ -186,6 +187,7 @@ angular.module('Pundit2.Vocabularies')
     inputIconClear: 'pnd-icon-times'
 
 })
+
 .service('SelectorsManager', function(BaseComponent, SELECTORMANAGERDEFAULTS, ItemsExchange, $injector, $q) {
 
     var selectorsManager = new BaseComponent('SelectorsManager', SELECTORMANAGERDEFAULTS);
@@ -203,19 +205,23 @@ angular.module('Pundit2.Vocabularies')
 
     // wipe and remove all items container that match str
     // a container match if contain in its name the passed string
-    var wipeContainersByName = function(str){
-        selectorsManager.log('Wipe all containers that match '+ str);
+    var wipeContainersByName = function(str) {
+        selectorsManager.log('Wipe all containers that match ' + str);
 
         for (var j in selectorInstances) {
-            var name = selectorInstances[j].config.container+str;
+            var name = selectorInstances[j].config.container + str;
             ItemsExchange.wipeContainer(name);
         }
     };
 
     // term to search inside selectors
     // promise resolved when the result is no longer needed
-    selectorsManager.getItems = function(term, promise){
-        
+    selectorsManager.getItems = function(term, promise) {
+
+        if (typeof(term) === 'undefined') {
+            return;
+        }
+
         // a promise resolved when all selectors complete
         // the http query request
         var compleatedPromise = $q.defer(),
@@ -229,13 +235,13 @@ angular.module('Pundit2.Vocabularies')
         } else {
             researching[termName].push(promise);
         }
-        
+
         // when the promise is resolved no longer need the items
-        promise.then(function(){
+        promise.then(function() {
             var self = promise;
             // search the resolved promise
             var index = researching[termName].indexOf(self);
-            
+
             if (index > -1) {
                 // remove promise from the array
                 researching[termName].splice(index, 1);
@@ -251,9 +257,9 @@ angular.module('Pundit2.Vocabularies')
         for (var j in selectorInstances) {
             // selector always resolve the promise 
             // when http call return (even in case of error)
-            selectorInstances[j].getItems(term).then(function(){
+            selectorInstances[j].getItems(term).then(function() {
                 pendingRequest--;
-                if (pendingRequest <= 0 && compleatedPromise!== null) {
+                if (pendingRequest <= 0 && compleatedPromise !== null) {
                     compleatedPromise.resolve();
                     compleatedPromise = null;
                 }
@@ -267,7 +273,7 @@ angular.module('Pundit2.Vocabularies')
     // inject all selector factory then read config 
     // and instantiate the various instance of the selectors
     // when the init run others factory must to be call the "addSelector" method
-    selectorsManager.init = function(){
+    selectorsManager.init = function() {
 
         selectorInstances = [];
 
@@ -289,13 +295,13 @@ angular.module('Pundit2.Vocabularies')
     // when the selector factory is load run this method
     // another component (client) should inject the singles selector factory 
     // to start the initialization process
-    selectorsManager.addSelector = function(selector){
+    selectorsManager.addSelector = function(selector) {
         selectors[selector.name] = selector;
         selectorsManager.log("Add selector ", selector.name);
     };
 
     // return all active selectors instances
-    selectorsManager.getActiveSelectors = function(){
+    selectorsManager.getActiveSelectors = function() {
         return selectorInstances;
     };
 
