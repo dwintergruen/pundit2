@@ -1,67 +1,60 @@
+//
+// KORBOEE
+//
+// Import of all LESS files needed in KorboEE
+//
+
+
+// ------------------------------------
+//   #BOOTSTRAP
+// ------------------------------------
+
 // Path where to find bootstrap's .less sources
 @bspath: "../../bower_components/bootstrap/less/";
 
 // Core variables and mixins, imported again to being able to use them
 // outside of the .kee-wrp import
-
 @import "@{bspath}variables.less";
 @import "@{bspath}mixins.less";
 @import "../assets/bootstrap-variables";
-// Common variables
-@import "../assets/variables.less";
-// Korboee variables
-@import "korboee-variables.less";
 
+// Wrap every bs rule under one of our nodes
 .kee-wrp {
-  
-  @import "@{bspath}normalize.less";
-  //@import "@{bspath}print.less";
-
-  @import "@{bspath}scaffolding.less";
-  @import "@{bspath}type.less";
-  //@import "@{bspath}code.less";
-  @import "@{bspath}grid.less";
-  //@import "@{bspath}tables.less";
-  @import "@{bspath}forms.less";
-  @import "@{bspath}buttons.less";
-
-  //@import "@{bspath}component-animations.less";
-  // @import "@{bspath}glyphicons.less";
-  @import "@{bspath}dropdowns.less";
-  @import "@{bspath}button-groups.less";
-  @import "@{bspath}input-groups.less";
-  @import "@{bspath}navs.less";
-  @import "@{bspath}navbar.less";
-  //@import "@{bspath}breadcrumbs.less";
-  //@import "@{bspath}pagination.less";
-  //@import "@{bspath}pager.less";
-  //@import "@{bspath}labels.less";
-  @import "@{bspath}badges.less";
-  // @import "@{bspath}jumbotron.less";
-  //@import "@{bspath}thumbnails.less";
-  //@import "@{bspath}alerts.less";
-  //@import "@{bspath}progress-bars.less";
-  //@import "@{bspath}media.less";
-  @import "@{bspath}list-group.less";
-  @import "@{bspath}panels.less";
-  //@import "@{bspath}wells.less";
-  //@import "@{bspath}close.less";
-
-  @import "@{bspath}modals.less";
-  @import "@{bspath}tooltip.less";
-  @import "@{bspath}popovers.less";
-  //@import "@{bspath}carousel.less";
-
-  // KORBO ONLY 
-  @import "../assets/page-item-container.less";
-  @import "../assets/item.less";
-  @import "../assets/preview.less";
-  @import "../assets/vertical-tabs.less";
-  @import "korboee-styles.less";
-    @import "../assets/bootstrap-theme";
-  @import "korboee-bootstrap-theme";
-
+    @import "@{bspath}normalize.less";
+    @import "@{bspath}scaffolding.less";
+    @import "@{bspath}type.less";
+    @import "@{bspath}grid.less";
+    @import "@{bspath}forms.less";
+    @import "@{bspath}buttons.less";
+    @import "@{bspath}dropdowns.less";
+    @import "@{bspath}button-groups.less";
+    @import "@{bspath}input-groups.less";
+    @import "@{bspath}navs.less";
+    @import "@{bspath}navbar.less";
+    @import "@{bspath}badges.less";
+    @import "@{bspath}list-group.less";
+    @import "@{bspath}panels.less";
+    @import "@{bspath}modals.less";
+    @import "@{bspath}tooltip.less";
+    @import "@{bspath}popovers.less";
 }
+
+
+// ------------------------------------
+//   #BOOTSTRAP-THEME
+// ------------------------------------
+
+// Customizing the default Bootstrap theme
+.pnd-wrp {
+    @import "../assets/bootstrap-theme";
+    @import "korboee-bootstrap-theme";
+}
+
+
+// ------------------------------------
+//   #?
+// ------------------------------------
+// TODO: Cleanup this stuff!
 
 //////////////////////////////////////////////////////////////////////////
 // Rewrite every rule which was applied to body, html or any other rule //
@@ -70,27 +63,38 @@
 // versions get out.                                                    //
 //////////////////////////////////////////////////////////////////////////
 
-
 // scaffolding.less, line 27.
 
 // Was html
 .kee-wrp {
-  font-size: 62.5%;
-  -webkit-tap-highlight-color: rgba(0,0,0,0);
+    font-size: 62.5%;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 // Was body
 .kee-wrp {
-  font-family: @font-family-base;
-  font-size: @font-size-base;
-  line-height: @line-height-base;
-  color: @text-color;
+    font-family: @font-family-base;
+    font-size: @font-size-base;
+    line-height: @line-height-base;
+    color: @text-color;
 }
 
 
-// 
+// ------------------------------------
+//   #VARIABLES
+// ------------------------------------
+
+// Common variables
+@import "../assets/variables.less";
+// Korbo variables
+@import "korboee-variables.less";
+
+
+// ------------------------------------
+//   #GENERAL
+// ------------------------------------
+
 // ContextualMenu //TODO: move the dropdown into the modal
-// --------------------------------------------------
 
 /*
 .pnd-dropdown-contextual-menu {
@@ -99,4 +103,21 @@
   }
 }
 */
+
+// utilities.less: NOT importing it prefixed, or clearfix() mixin (and others) will get extend()-ed
+// by too much stuff elsewhere and we end up with **double prefixes**
+// TODO: can we prefix at least SOMETHING inside this utilities.less??
 @import "@{bspath}utilities.less";
+
+
+// ------------------------------------
+//   #COMPONENTS
+// ------------------------------------
+
+.kee-wrp {
+    @import "../assets/page-item-container.less";
+    @import "../assets/item.less";
+    @import "../assets/preview.less";
+    @import "../assets/vertical-tabs.less";
+    @import "korboee-styles.less";
+}
