@@ -129,6 +129,7 @@
                     </div>
                 </div>
 
+                <!-- TODO: find a better way to show partial counting -->
                 <ul class="list-group" ng-init="$parent.tabItemsFiltered = $parent.tabItemsFiltered || []">
                     <li 
                         ng-if="pane.module == 'Pundit2' && $parent.tabItemsFiltered[$index].length === 0 && label.length > 2 && !pane.isLoading">
