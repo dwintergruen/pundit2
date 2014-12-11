@@ -5,7 +5,7 @@ angular.module('Pundit2.Item')
     // get item by uri (passed as directive uri param)
     $scope.item = ItemsExchange.getItemByUri($scope.uri);
     // get item type label (then show it inside template)
-    if ($scope.item.type.length > 0) {
+    if (typeof($scope.item.type) !== 'undefined' && $scope.item.type.length > 0) {
         $scope.itemTypeLabel = TypesHelper.getLabel($scope.item.type[0]);
     }
 
