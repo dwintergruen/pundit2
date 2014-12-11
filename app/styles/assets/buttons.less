@@ -11,25 +11,14 @@
 
 .pnd-btn-full {
     height: 29px;
-    // margin-top: -5px;
-    // margin-left: -5px;
     padding: 0 10px;
     border: 0;
 }
 
-
-
 .btn {
-
-    &.pnd-btn-full {
-        // height: 29px;
-        // margin-top: -5px;
-        // margin-left: -5px;
-        // padding: 0 10px;
-        // border: 0;
-
-        & + .pnd-btn-full {
-            // border-left: 1px solid #fff;
-        }
+    /* Custom opacity for disabled buttons */
+    &.disabled,
+    &[disabled] {
+        .opacity(.5);
     }
 }
