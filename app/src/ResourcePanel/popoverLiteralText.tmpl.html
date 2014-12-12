@@ -13,15 +13,17 @@
                 ng-model="literalText" 
                 ng-keyup="escapeEvent($event)"></textarea>
 		</div>
+    </div>
 
+    <div class="popover-footer">
 	    <button 
-            class="btn btn-sm btn-success" 
+            class="btn btn-sm btn-success pnd-btn-full"
             ng-class="{disabled: literalText == ''}" 
             ng-click="save()">
             Save
         </button>
 	    <button 
-            class="btn btn-sm btn-success" 
+            class="btn btn-sm btn-info pnd-btn-full"
             ng-click="cancel()">
             Cancel
         </button>

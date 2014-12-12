@@ -672,13 +672,46 @@ input {
 .popover {
     padding: 0;
 
+    .popover-content {
+        padding: 10px;
+    }
+
+    .form-group {
+        margin-bottom: 0;
+    }
+
     textarea {
         resize: vertical;
+    }
+
+    .popover-footer {
+        border-top: 1px solid @gray-light;
+        height: 30px;
+
+        .btn {
+            display: block;
+            float: left;
+            border-right: 1px solid #fff;
+        }
+    }
+
+    &.pnd-popover-literal {
+        width: 300px;
+        max-width: 300px;
     }
 
     &.popover-datepicker {
         width: 300px;
         max-width: 300px;
+
+        .popover-content {
+            padding-bottom: 254px;
+        }
+
+        .datepicker {
+            box-shadow: 0 0 0;
+            -webkit-box-shadow: 0 0 0;
+        }
     }
 }
 
