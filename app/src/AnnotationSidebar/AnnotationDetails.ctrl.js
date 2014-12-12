@@ -115,7 +115,8 @@ angular.module('Pundit2.AnnotationSidebar')
             TripleComposer.closeAfterOp();
             Dashboard.toggle();
         }
-        $rootScope.$emit('pnd-dashboard-show-tab', TripleComposer.options.clientDashboardTabTitle);
+        //EventDispatcher.sendEvent('Dashboard.showTab', TripleComposer.options.clientDashboardTabTitle);
+        EventDispatcher.sendEvent('AnnotationDetails.editAnnotation', TripleComposer.options.clientDashboardTabTitle);
     };
 
     $scope.isUserToolShowed = function() {

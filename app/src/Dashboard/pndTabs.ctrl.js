@@ -1,7 +1,9 @@
 angular.module('Pundit2.Dashboard')
 
 .controller('pndTabsCtrl', function($document, $window, $rootScope, $scope, $element,
-    Dashboard, ResourcePanel) {
+    Dashboard, ResourcePanel, EventDispatcher) {
+
+    // TODO: Create service and move some logic there.
 
     var options = {
         animation: 'am-fade',
@@ -12,6 +14,22 @@ angular.module('Pundit2.Dashboard')
     // Support animations
     if (options.animation) {
         $element.addClass(options.animation);
+    }
+
+    var showTabByTitle = function (title) {
+        for (var i = 0; i < $scope.panes.length; i++) {
+            if ($scope.panes[i].title === title) {
+                if ($scope.active !== i) {
+                    $scope.setActive(i);
+                }
+                // parent scope must to be the scope of the
+                // dashboardPanel controller
+                if ($scope.$parent.isCollapsed) {
+                    $scope.$parent.toggleCollapse();
+                }
+                return;
+            }
+        }
     }
 
     // contains tabs content and tabs title
@@ -52,7 +70,8 @@ angular.module('Pundit2.Dashboard')
                 panesJustChanged = true;
                 check();
             }
-        });
+        }
+    );
 
     var panesWidth = 0;
 
@@ -197,22 +216,18 @@ angular.module('Pundit2.Dashboard')
 
     $scope.active = $scope.activePane = 0;
 
-    $rootScope.$on('pnd-dashboard-show-tab', function(evt, title) {
-
-        for (var i = 0; i < $scope.panes.length; i++) {
-            if ($scope.panes[i].title === title) {
-                if ($scope.active !== i) {
-                    $scope.setActive(i);
-                }
-                // parent scope must to be the scope of the
-                // dashboardPanel controller
-                if ($scope.$parent.isCollapsed) {
-                    $scope.$parent.toggleCollapse();
-                }
-                return;
-            }
+    EventDispatcher.addListeners(
+        [
+            'TripleComposer.openTripleComposer',
+            'AnnotationDetails.editAnnotation',
+            'MyNotebooksContainer.createNewNotebook',
+            'MyNotebooksContainer.editNotebook'
+        ],
+        function(e) {
+            var title = e.args;
+            showTabByTitle(title);
         }
-    });
+    );
 
     // set a tab as active
     $scope.setActive = function(index) {

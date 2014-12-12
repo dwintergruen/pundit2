@@ -1,5 +1,5 @@
 angular.module('Pundit2.MyNotebooksContainer')
-.controller('MyNotebooksContainerCtrl', function($scope, $rootScope, $element, MyNotebooksContainer, NotebookExchange, NotebookComposer) {
+.controller('MyNotebooksContainerCtrl', function($scope, $rootScope, $element, MyNotebooksContainer, NotebookExchange, NotebookComposer, EventDispatcher) {
 
     var inputIconSearch = 'pnd-icon-search',
         inputIconClear = 'pnd-icon-times';
@@ -68,7 +68,8 @@ angular.module('Pundit2.MyNotebooksContainer')
     };
 
     $scope.createNewNotebook = function(){
-        $rootScope.$emit('pnd-dashboard-show-tab', NotebookComposer.options.clientDashboardTabTitle);
+        //EventDispatcher.sendEvent('Dashboard.showTab', NotebookComposer.options.clientDashboardTabTitle);
+        EventDispatcher.sendEvent('MyNotebooksContainer.createNewNotebook', NotebookComposer.options.clientDashboardTabTitle);
         NotebookComposer.setNotebookToEdit(null);
     };
 

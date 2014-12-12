@@ -623,7 +623,8 @@ angular.module('Pundit2.TripleComposer')
             Dashboard.toggle();
         }
         $rootScope.$$phase || $rootScope.$digest();
-        $rootScope.$emit('pnd-dashboard-show-tab', tripleComposer.options.clientDashboardTabTitle);
+        //EventDispatcher.sendEvent('Dashboard.showTab', tripleComposer.options.clientDashboardTabTitle);
+        EventDispatcher.sendEvent('TripleComposer.openTripleComposer', tripleComposer.options.clientDashboardTabTitle);
     };
 
     // Used to add a object from outside of triple composer

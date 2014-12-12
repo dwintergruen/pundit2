@@ -1,6 +1,6 @@
 
 angular.module('KorboEE')
-    .controller('keeLanguagesCtrl', function($document, $window, $rootScope, $scope, Dashboard, $element) {
+    .controller('keeLanguagesCtrl', function($document, $window, $rootScope, $scope, Dashboard, $element, EventDispatcher) {
 
         var options = {
             animation: 'am-fade',
@@ -219,8 +219,27 @@ angular.module('KorboEE')
 
         $scope.active = $scope.activePane = 0;
 
+        /*
         $rootScope.$on('pnd-dashboard-show-tab', function(evt, title){
 
+            for (var i=0; i<$scope.panes.length; i++) {
+                if ($scope.panes[i].title === title) {
+                    if ($scope.active !== i) {
+                        $scope.setActive(i);
+                    }
+                    // parent scope must to be the scope of the
+                    // dashboardPanel controller
+                    if ($scope.$parent.isCollapsed) {
+                        $scope.$parent.toggleCollapse();
+                    }
+                    return;
+                }
+            }
+        });
+        */
+
+        EventDispatcher.addListener('Dashboard.showTab', function(e) {
+            var title = e.args;
             for (var i=0; i<$scope.panes.length; i++) {
                 if ($scope.panes[i].title === title) {
                     if ($scope.active !== i) {
