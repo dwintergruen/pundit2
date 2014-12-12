@@ -8,7 +8,7 @@
                 <div class="pnd-row-button-subject" ng-if="!subjectFound">
                     <span 
                         ng-if="templateMode"
-                        class="pnd-statement-label pnd-statement-subject-text">
+                        class="pnd-statement-label pnd-statement-subject-text pnd-statement-tmpl-mode">
                             Select some text on the page
                     </span>
                     <span
@@ -20,7 +20,8 @@
                 </div>
 
                 <div 
-                    class="pnd-row-button-subject pnd-statement-found pnd-statement-icon-one" 
+                    class="pnd-row-button-subject pnd-statement-found"
+                    ng-class="{'pnd-statement-icon-one': !templateMode}"
                     ng-if="subjectFound">
                     <span 
                         class="pnd-statement-label" 
@@ -110,7 +111,7 @@
                     <span
                         class="pnd-statement-label"
                         ng-click="onClickObject($event)">
-                            Add an object
+                            Add an object<span ng-show="templateMode && isMandatory">*</span>
                     </span>
 
                     <div 
@@ -138,10 +139,11 @@
 
                 <!-- Object buttons found -->
                 <div 
-                    class="pnd-row-button-object pnd-statement-found pnd-statement-icon-one" 
+                    class="pnd-row-button-object pnd-statement-found"
+                    ng-class="{'pnd-statement-icon-one': !templateMode || !objectFixed}"
                     ng-if="objectFound">
                     <span 
-                        class="pnd-statement-label" 
+                        class="pnd-statement-label"
                         ng-mouseover="onObjectMouseOver()" 
                         ng-mouseleave="onItemMouseOut()"
                         ng-click="onClickObject($event)">
