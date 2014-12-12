@@ -360,62 +360,6 @@ angular.module('Pundit2.AnnotationSidebar')
     annotationSidebar.filtersCount = {};
     annotationSidebar.annotationPositionReal = {};
 
-    // Expands or collapses the sidebar
-    annotationSidebar.toggle = function() {
-        state.isSidebarExpanded = !state.isSidebarExpanded;
-        EventDispatcher.sendEvent('AnnotationSidebar.toggle', state.isSidebarExpanded);
-    };
-
-    annotationSidebar.toggleLoading = function() {
-        state.isLoading = !state.isLoading;
-        EventDispatcher.sendEvent('AnnotationSidebar.toggleLoading', state.isLoading);
-    };
-
-    // Show / hide the list of the filters in the sidebar
-    annotationSidebar.toggleFiltersContent = function() {
-        state.isFiltersExpanded = !state.isFiltersExpanded;
-        EventDispatcher.sendEvent('AnnotationSidebar.toggleFiltersContent', state.isFiltersExpanded);
-    };
-    // Check if the sidebar is expanded
-    annotationSidebar.isAnnotationSidebarExpanded = function() {
-        return state.isSidebarExpanded;
-    };
-    // Check if the list of the filters is visible
-    annotationSidebar.isFiltersExpanded = function() {
-        return state.isFiltersExpanded;
-    };
-
-    annotationSidebar.isAnnotationsPanelActive = function() {
-        return state.isAnnotationsPanelActive;
-    };
-    annotationSidebar.activateAnnotationsPanel = function() {
-        if (state.isSuggestionsPanelActive) {
-            Annomatic.stop();
-            $rootScope.$emit('suggestions-mode-closed');
-            Consolidation.wipe();
-            Consolidation.consolidateAll();
-        }
-
-        state.isAnnotationsPanelActive = true;
-        state.isSuggestionsPanelActive = false;
-    };
-
-    annotationSidebar.isSuggestionsPanelActive = function() {
-        return state.isSuggestionsPanelActive;
-    };
-    annotationSidebar.activateSuggestionsPanel = function() {
-        if (state.isAnnotationsPanelActive) {
-            if (state.isFiltersExpanded) {
-                state.isFiltersExpanded = false;
-            }
-            Consolidation.wipe();
-            Annomatic.run();
-        }
-
-        state.isSuggestionsPanelActive = true;
-        state.isAnnotationsPanelActive = false;
-    };
-
     var filterCountIncrement = function(uri) {
         if (typeof(annotationSidebar.filtersCount[uri]) === 'undefined') {
             annotationSidebar.filtersCount[uri] = 1;
@@ -869,6 +813,61 @@ angular.module('Pundit2.AnnotationSidebar')
         filtersCount(annotations);
     };
 
+    // Expands or collapses the sidebar
+    annotationSidebar.toggle = function() {
+        state.isSidebarExpanded = !state.isSidebarExpanded;
+        EventDispatcher.sendEvent('AnnotationSidebar.toggle', state.isSidebarExpanded);
+    };
+
+    annotationSidebar.toggleLoading = function() {
+        state.isLoading = !state.isLoading;
+        EventDispatcher.sendEvent('AnnotationSidebar.toggleLoading', state.isLoading);
+    };
+
+    // Show / hide the list of the filters in the sidebar
+    annotationSidebar.toggleFiltersContent = function() {
+        state.isFiltersExpanded = !state.isFiltersExpanded;
+        EventDispatcher.sendEvent('AnnotationSidebar.toggleFiltersContent', state.isFiltersExpanded);
+    };
+    // Check if the sidebar is expanded
+    annotationSidebar.isAnnotationSidebarExpanded = function() {
+        return state.isSidebarExpanded;
+    };
+    // Check if the list of the filters is visible
+    annotationSidebar.isFiltersExpanded = function() {
+        return state.isFiltersExpanded;
+    };
+
+    annotationSidebar.isAnnotationsPanelActive = function() {
+        return state.isAnnotationsPanelActive;
+    };
+    annotationSidebar.activateAnnotationsPanel = function() {
+        if (state.isSuggestionsPanelActive) {
+            Annomatic.stop();
+            $rootScope.$emit('suggestions-mode-closed');
+            Consolidation.wipe();
+            Consolidation.consolidateAll();
+        }
+
+        state.isAnnotationsPanelActive = true;
+        state.isSuggestionsPanelActive = false;
+    };
+
+    annotationSidebar.isSuggestionsPanelActive = function() {
+        return state.isSuggestionsPanelActive;
+    };
+    annotationSidebar.activateSuggestionsPanel = function() {
+        if (state.isAnnotationsPanelActive) {
+            if (state.isFiltersExpanded) {
+                state.isFiltersExpanded = false;
+            }
+            Consolidation.wipe();
+            Annomatic.run();
+        }
+
+        state.isSuggestionsPanelActive = true;
+        state.isAnnotationsPanelActive = false;
+    };
 
     annotationSidebar.getAllAnnotations = function() {
         return state.allAnnotations;
