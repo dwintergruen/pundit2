@@ -1,4 +1,5 @@
 angular.module('Pundit2.Toolbar')
+
 .constant('TOOLBARDEFAULTS', {
     /**
      * @module punditConfig
@@ -53,12 +54,12 @@ angular.module('Pundit2.Toolbar')
      * In this way pundit toolbar and his components are always visibile.
      *
      * Default value:
-     * <pre> 
+     * <pre>
      *  menuCustom: {
      *    active: false,
      *    dropdown: true,
      *    list: {label1: 'http://www.yourlink1.it', label2: 'http://www.yourlink2.it'}
-     *  } 
+     *  }
      * </pre>
      */
     menuCustom: {
@@ -112,10 +113,10 @@ angular.module('Pundit2.Toolbar')
     debug: false
 })
 
-    .service('Toolbar', function(BaseComponent, EventDispatcher, TOOLBARDEFAULTS, Config, MyPundit, TripleComposer) {
+.service('Toolbar', function(BaseComponent, EventDispatcher, TOOLBARDEFAULTS, Config, MyPundit, TripleComposer) {
 
     var toolbar = new BaseComponent('Toolbar', TOOLBARDEFAULTS);
-    
+
     var errorID = 0,
         loadingOperation = 0,
         isLoadingShown = false,
@@ -124,11 +125,11 @@ angular.module('Pundit2.Toolbar')
         // tell to other components if is active the template mode
         templateMode = Config.useOnlyTemplateMode;
 
-    EventDispatcher.addListener('Pundit.error', function (e) {
+    EventDispatcher.addListener('Pundit.error', function(e) {
         toolbar.addError(e.args);
     });
 
-    EventDispatcher.addListener('Pundit.loading', function (e) {
+    EventDispatcher.addListener('Pundit.loading', function(e) {
         toolbar.setLoading(e.args);
     });
 
@@ -141,10 +142,10 @@ angular.module('Pundit2.Toolbar')
     };
 
     toolbar.setLoading = function(currentState) {
-        toolbar.log('Setting loading to '+ currentState);
+        toolbar.log('Setting loading to ' + currentState);
         isLoadingShown = currentState;
     };
-    
+
     // Send error to show in the toolbar
     // @param message = Custom error message according with user action
     // @param callback = is a function user can click to resolve error
@@ -158,8 +159,12 @@ angular.module('Pundit2.Toolbar')
                 callback();
             }
         };
-        
-        var error = { text: message, click: removeErrorAndGetCallback, id: errID };
+
+        var error = {
+            text: message,
+            click: removeErrorAndGetCallback,
+            id: errID
+        };
         errorID++;
         errorMessageDropdown.push(error);
         isErrorShown = true;
@@ -169,19 +174,19 @@ angular.module('Pundit2.Toolbar')
             var button = angular.element('.pnd-toolbar-error-button a');
             button.trigger('click');
         }
-        
+
         return errID;
     };
-    
+
     // Remove error from toolbar
     toolbar.removeError = function(errorID) {
-        for (var i=0; i<errorMessageDropdown.length; i++) {
+        for (var i = 0; i < errorMessageDropdown.length; i++) {
             if (errorMessageDropdown[i].id === errorID) {
-               errorMessageDropdown.splice(i, 1);
-               break;
+                errorMessageDropdown.splice(i, 1);
+                break;
             }
         }
-           
+
         if (errorMessageDropdown.length === 0) {
             isErrorShown = false;
         }
@@ -191,7 +196,7 @@ angular.module('Pundit2.Toolbar')
     toolbar.getErrorMessageDropdown = function() {
         return errorMessageDropdown;
     };
-    
+
     toolbar.getAskLink = function() {
         if (MyPundit.isUserLogged()) {
             return Config.askBaseURL + '#/myAsk/';
@@ -209,7 +214,7 @@ angular.module('Pundit2.Toolbar')
         if (Config.useOnlyTemplateMode) {
             return;
         }
-        
+
         TripleComposer.reset();
         templateMode = !templateMode;
         if (templateMode) {
@@ -219,7 +224,7 @@ angular.module('Pundit2.Toolbar')
             angular.element('.pnd-triplecomposer-save').addClass('disabled');
         }
     };
-    
+
     return toolbar;
 
 });
