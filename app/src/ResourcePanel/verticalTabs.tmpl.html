@@ -168,11 +168,6 @@
                     Use
                 </button>
                 <button 
-                    class="pnd-resource-panel-use-button btn btn-xs btn-info pnd-btn-full" 
-                    ng-click="cancel()">
-                    Cancel
-                </button>
-                <button 
                     class="pnd-resource-panel-copy-button btn btn-xs btn-info pnd-btn-full" 
                     ng-class="{'disabled': !isUseActive}" 
                     ng-show="showUseAndCopyButton()" 
@@ -190,6 +185,11 @@
                     class="pnd-resource-panel-new-button btn btn-xs btn-info pnd-btn-full" ng-show="showNewButton()" 
                     ng-click="createNew()">
                     Create new
+                </button>
+                <button 
+                    class="pnd-resource-panel-use-button btn btn-xs btn-info pnd-btn-full" 
+                    ng-click="cancel()">
+                    Cancel
                 </button>
             </div>
         </div>
