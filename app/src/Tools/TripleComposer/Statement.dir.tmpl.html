@@ -138,12 +138,8 @@
 
                 <!-- Object buttons found -->
                 <div 
-                    class="pnd-row-button-object pnd-statement-found" 
-                    ng-if="objectFound"
-                    ng-class="{
-                        'pnd-statement-icon-one': !objectDate && !objectLiteral,
-                        'pnd-statement-icon-two': objectLiteral || objectDate
-                 }">
+                    class="pnd-row-button-object pnd-statement-found pnd-statement-icon-one" 
+                    ng-if="objectFound">
                     <span 
                         class="pnd-statement-label" 
                         ng-mouseover="onObjectMouseOver()" 
@@ -156,25 +152,6 @@
 
                     <div 
                         class="pnd-row-button-rightbuttons">
-                        <!--Calendar Icon-->
-                        <button
-                                type="button"
-                                class="btn btn-xs btn-link"
-                                ng-if="objectDate && !objectFixed"
-                                ng-click="onClickObjectCalendar($event)"
-                                title="calendar">
-                            <span class="pnd-icon pnd-icon-table"></span>
-                        </button>
-                        <!--Pen Icon-->
-                        <button
-                                type="button"
-                                class="btn btn-xs btn-link"
-                                ng-if="objectLiteral && !objectFixed"
-                                ng-click="onClickObjectLiteral($event)"
-                                title="text">
-                            <span class="pnd-icon pnd-icon-pencil"></span>
-                        </button>
-
                         <button
                                 type="button"
                                 class="btn btn-xs btn-link"
@@ -184,9 +161,6 @@
                             <span class="pnd-icon pnd-icon-trash-o"></span>
                         </button>
                     </div>
-                    <!-- <span>
-                        {{objectTypeLabel}}
-                    </span> -->
                 </div>
                 <!-- // end Object buttons -->
             </div>

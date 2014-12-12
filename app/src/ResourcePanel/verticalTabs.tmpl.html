@@ -7,12 +7,6 @@
         ng-if="moduleName == 'Pundit2'">
 
        <!-- TODO: please remember that class "pnd-vertical-tab-header-content" was removed -->
-
-        <!--
-        <strong ng-if="type === 'sub'">Choose your subject...</strong>
-        <strong ng-if="type === 'obj'">Choose your object...</strong>
-        <strong ng-if="type === 'pr'">Choose your predicate...</strong>
-        -->
         
         <!-- Search Input div -->
         <div class="left-inner-icon">
@@ -28,14 +22,6 @@
                 ng-minlength="3"
                 ng-keyup="escapeEvent($event)">
         </div>
-
-        <!-- TODO: remove? use cancel? -->
-        <button 
-            type="button" 
-            class="btn btn-xs btn-link pnd-btn-dashboard pull-right" 
-            ng-click="cancel()">
-            <!-- <span class="pnd-icon pnd-icon-times"></span> -->
-        </button>
     </div>
     <!-- // end header -->
 
