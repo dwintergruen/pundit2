@@ -1,12 +1,28 @@
-// This class gets added to the body element as soon as the toolbar is
-// rendered. It needs to push down any existing content making space for us.
-// (@toolbar-height is defined in pundit2.less)
+/**
+ * TOOLBAR
+ *
+ * Style for Pundit toolbar
+ */
+
+/*
+This class gets added to the body element as soon as the toolbar is
+rendered. It needs to push down any existing content making space for us.
+(@toolbar-height is defined in pundit2.less)
+*/
+
+/* TODO: A lot of duplication here and some optimization is possible */
+
 body.pnd-toolbar-active {
     margin-top: @toolbar-height;
     background-position-y: @toolbar-height;
 }
 
-.pnd-toolbar-navbar{
+
+/* ------------------------------------ *\
+   #TOOLBAR-STYLE
+\* ------------------------------------ */
+
+.pnd-toolbar-navbar {
     min-width: 960px;
     z-index: @zindex-pnd-toolbar;
 
@@ -16,33 +32,26 @@ body.pnd-toolbar-active {
 }
 
 .pnd-toolbar-navbar .navbar-nav li {
-
 	.dropdown-menu {
-	
 		a {
 	        height: auto;
 	    }
-	
 	}
 
-    // ---------- BUTTONS IN TOOLBAR
-
+    /* Buttons */
     a {
         line-height: 1.5;
         height: @toolbar-height - @toolbar-border-bottom;
     }
 
-    // ---------- ICONS IN TOOLBAR
-
+    /* Icons in toolbar */
     .pnd-icon {
         font-size: 14px;
-        //margin-top: 1px;
         display: inline-block;
         vertical-align: text-bottom;
     }
 
-    // ---------- ELEMENTS
-    
+    /* Elements */
     .pnd-toolbar-active-element {
         color: white;
     }
@@ -50,90 +59,17 @@ body.pnd-toolbar-active {
         color: @color-toolbar-disabled
     }
 
-    // ---------- ASK BUTTON
-    
-    /*
-    &.pnd-toolbar-ask-button-not-active {
-        border-right: 0px;
-        
-        a {
-            background-color: @gray;
-            border: 0px;
-            position: relative;
-            padding-left: 10px;
-            
-            &:after { // ARROW
-                left: 100%;
-                top: 50%;
-                border: solid transparent;
-                content: " ";
-                height: 0;
-                width: 0;
-                position: absolute;
-                pointer-events: none;
-                border-color: rgba(0, 0, 0, 0);
-                border-left-color: @gray;
-                border-width: 15px;
-                margin-top: -15px;
-                z-index: 100;
-            }
-            
-            &:hover,
-            &:focus {
-                background-color: @gray-darker;
-                &:after { // ARROW hover
-                    border-left-color: @gray-darker;
-                }
-            }
-        }
-    } */
-    
-     &.pnd-toolbar-ask-button-not-active {
-        border-right: 0px;
-        
-        a {
-            background-color: @brand-success;
-            border: 0px;
-            position: relative;
-            padding-left: 10px;
-            
-            &:after { // ARROW
-                left: 100%;
-                top: 50%;
-                border: solid transparent;
-                content: " ";
-                height: 0;
-                width: 0;
-                position: absolute;
-                pointer-events: none;
-                border-color: rgba(0, 0, 0, 0);
-                border-left-color: @brand-success;
-                border-width: 15px;
-                margin-top: -15px;
-                z-index: 100;
-            }
-            
-            &:hover,
-            &:focus {
-                background-color: darken(@brand-success, 12%);
-                
-                &:after { // ARROW hover
-                    border-left-color: darken(@brand-success, 12%)!important;
-                }
-            }
-        }
-    }
-    
+    /* Ask button*/
     &.pnd-toolbar-ask-button-active {
-        border-right: 0px;
-        
+        border-right: 0;
         a {
             background-color: @brand-success;
-            border: 0px;
+            border: 0;
             position: relative;
             padding-left: 10px;
-            
-            &:after { // ARROW
+
+            &:after {
+                /* Arrow shape */
                 left: 100%;
                 top: 50%;
                 border: solid transparent;
@@ -148,52 +84,48 @@ body.pnd-toolbar-active {
                 margin-top: -15px;
                 z-index: 100;
             }
-            
+
             &:hover,
             &:focus {
                 background-color: darken(@brand-success, 12%);
-                
-                &:after { // ARROW hover
-                    border-left-color: darken(@brand-success, 12%)!important;
+
+                &:after {
+                    /* Arrow shape hover */
+                    border-left-color: darken(@brand-success, 12%) !important;
                 }
             }
         }
     }
-    
-    // ---------- DASHBOARD BUTTON
-    
+
+    /* Dashboard button */
     &.pnd-toolbar-dashboard-button {
-    	
-    	
-     	&.pnd-toolbar-dashboard-button-active {
-     		background-color: @gray;
-     		color: @btn-primary-color;
-     		
-     		a {
-	     		&:hover,
-	     		&:focus {
-	     			background-color:@gray;
-	     		}
-     		}
-     	}
-     	
-        .pnd-toolbar-active-element,.pnd-toolbar-not-active-element {
-            padding-left: 16px; // padding Arrow
+        &.pnd-toolbar-dashboard-button-active {
+            background-color: @gray;
+            color: @btn-primary-color;
+            a {
+                &:hover,
+                &:focus {
+                    background-color: @gray;
+                }
+            }
+        }
+
+        .pnd-toolbar-active-element, .pnd-toolbar-not-active-element {
+            padding-left: 16px; /* Padding Arrow */
         }
     }
-    
-   // ---------- ANNOTATION SIDEBAR BUTTON
-    
+
+    /* Annotation sidebar button */
     &.pnd-toolbar-annotations-button {
-     	&.pnd-toolbar-annotations-button-active {
-     		background-color: @gray;
-     		a {
-	     		&:hover,
-	     		&:focus {
-	     			background-color: @gray;
-	     		}
+        &.pnd-toolbar-annotations-button-active {
+            background-color: @gray;
+            a {
+                &:hover,
+                &:focus {
+                    background-color: @gray;
+                }
             }
-     	}
+        }
         /* Filter icon positioning */
         .pnd-icon {
             margin-left: 3px;
@@ -204,17 +136,16 @@ body.pnd-toolbar-active {
             }
         }
     }
-    
-    // ---------- STATUS BUTTON
-    
+
+    /* Status button */
     &.pnd-toolbar-status-button-ok {
         background-color: @brand-success;
-        border-right: 1px lighten(@brand-success, 30%) solid ;
-        
+        border-right: 1px lighten(@brand-success, 30%) solid;
+
         a {
             background-color: @brand-success;
-            border: 0px;
-            
+            border: 0;
+
             &:hover,
             &:focus {
                 background-color: darken(@brand-success, 12%);
@@ -222,36 +153,27 @@ body.pnd-toolbar-active {
         }
     }
 
-    // ---------- LOADING BUTTON
-    
+    /* Loading button */
     &.pnd-toolbar-loading-button {
-
         border-right: 1px lighten(@brand-success, 30%) solid;
-
         a {
             padding-right: 8px;
             padding-left: 8px;
             background-color: @brand-success;
-            border: 0px;
+            border: 0;
 
             &:hover,
             &:focus {
                 background-color: @brand-success;
             }
-
-            span {
-                // font-size: 14px;
-            }
         }
     }
-    
-   // ---------- TEMPLATE MODE
-   
-   &.pnd-toolbar-template-mode-button {	 
-        
+
+    /* Template mode */
+    &.pnd-toolbar-template-mode-button {
         a {
-        	border-left: 1px @gray solid;
-        	border-right: 1px @gray-soft-dark solid;
+            border-left: 1px @gray solid;
+            border-right: 1px @gray-soft-dark solid;
 
             span {
                 cursor: pointer;
@@ -259,29 +181,26 @@ body.pnd-toolbar-active {
 
             &:hover,
             &:focus {
-                background-color:transparent;
-                cursor: default;
-            }
-        }
-    }
-   
-    
-    &.pnd-not-clickable  {
-        
-        a {
-            &:hover,
-            &:focus {
-                background-color:transparent;
+                background-color: transparent;
                 cursor: default;
             }
         }
     }
 
-    // ---------- BUTTON
-    
+    &.pnd-not-clickable {
+        a {
+            &:hover,
+            &:focus {
+                background-color: transparent;
+                cursor: default;
+            }
+        }
+    }
+
+    /* Button */
     &.pnd-toolbar-button-active {
-        border-right: 1px lighten(@brand-success, 30%) solid ;
-        
+        border-right: 1px lighten(@brand-success, 30%) solid;
+
         a {
             background-color: @brand-success;
             border: 0px;
@@ -291,118 +210,115 @@ body.pnd-toolbar-active {
             }
         }
     }
-    
+
     .pnd-toolbar-button-not-active {
         background-color: @gray;
     }
-    
+
     .pnd-toolbar-status-ok-icon {
     }
 
-    // ---------- ERROR BUTTON
-    
+    /* Error buttons */
     &.pnd-toolbar-error-button {
         color: #ffffff;
-        
+
         a {
             background-color: @brand-warning;
             border: 0px;
-            
+
             &:hover,
             &:focus {
                 background-color: darken(@brand-warning, 12%);
             }
         }
     }
-    
-    // ---------- DROPDOWN MENU
-    
+
+    /* Dropdown menu */
     &.pnd-toolbar-notebook-menu-button a {
         max-width: 350px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        
-        .pnd-icon {
-            margin-right: 6px;
-        }
-    }    
-    &.pnd-toolbar-custom-menu-button a {
-		max-width: 350px;
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
-        
+
         .pnd-icon {
             margin-right: 6px;
         }
     }
-    
+
+    &.pnd-toolbar-custom-menu-button a {
+        max-width: 350px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+        .pnd-icon {
+            margin-right: 6px;
+        }
+    }
+
     &.pnd-toolbar-login-button .dropdown-menu {
-    	padding: 0px;
-    	border: 1px solid @brand-success;
-    	
+        padding: 0;
+        border: 1px solid @brand-success;
+
         a {
             background-color: @brand-success;
             color: #fff;
             padding: 3px 10px;
-            border-top: 1px lighten(@brand-success, 30%) solid ;
-            
+            border-top: 1px lighten(@brand-success, 30%) solid;
+
             &:hover {
                 background-color: @brand-success;
             }
         }
     }
-    
+
     &.pnd-toolbar-error-button .dropdown-menu {
-    	padding: 0px;
-    	border: 1px solid @brand-warning;
-    	
-    	li:first-child a {
-            border-top: 0px;
-            }
-     
+        padding: 0;
+        border: 1px solid @brand-warning;
+
+        li:first-child a {
+            border-top: 0;
+        }
+
         li a {
             background-color: @brand-warning;
             color: #fff;
             padding: 3px 10px;
-            border-top: 1px lighten(@brand-warning, 30%) solid ;
-            
+            border-top: 1px lighten(@brand-warning, 30%) solid;
+
             &:hover {
                 background-color: @brand-warning;
             }
         }
     }
-    
-    
-    &.pnd-toolbar-template-menu-button  .dropdown-menu {
-    	padding: 0px;
-    	border: 1px solid  @gray-extra-light;
-    	
-    	li:first-child a {
+
+    &.pnd-toolbar-template-menu-button .dropdown-menu {
+        padding: 0px;
+        border: 1px solid  @gray-extra-light;
+
+        li:first-child a {
             border-top: 0px;
-            }
-            
+        }
+
         .dropdown-header {
-         	background-color: @dropdown-bg;
-         	// color: @dropdown-header-color;
-         	}
-         	
+            background-color: @dropdown-bg;
+        }
+
         .current-template a {
-         	background-color: @dropdown-bg;
-         	color: @gray-darker;
-         	}
-     
+            background-color: @dropdown-bg;
+            color: @gray-darker;
+        }
+
         li a {
-	        background-color: @gray-extra-lighter;
+            background-color: @gray-extra-lighter;
             color: @gray;
             padding: 3px 10px;
             border-top: 1px solid @gray-extra-light;
-            
+
             .pnd-icon-check {
-            	color: @brand-success;
-            	}      
-            
+                color: @brand-success;
+            }
+
             &:hover {
                 background-color: #fff;
                 color: @gray-darker;
@@ -411,40 +327,36 @@ body.pnd-toolbar-active {
     }
 
     .dropdown-menu {
-    	padding: 0px;
-    	border: 1px solid @brand-success;
-    	
-    	&.bottom-right {
-    	left: auto !important;
-    	right: 0 !important;
-    	}
+        padding: 0px;
+        border: 1px solid @brand-success;
+
+        &.bottom-right {
+            left: auto !important;
+            right: 0 !important;
+        }
 
         a {
-            //background-color: transparent;
-            //padding: 3px 10px;
             background-color: @brand-success;
             color: #fff;
             padding: 3px 10px;
-            border-top: 1px lighten(@brand-success, 30%) solid ;
-            
+            border-top: 1px lighten(@brand-success, 30%) solid;
+
             &:hover {
-                //background-color: @gray-lighter;
                 background-color: @brand-success;
             }
-            
+
             .pnd-icon-lock,
-			.pnd-icon-group,
-			.pnd-icon-pencil-square {
-				width: 18px;
-				margin: 0px;
-				display: inline-block;
-				text-align: center;
-			}
+            .pnd-icon-group,
+            .pnd-icon-pencil-square {
+                width: 18px;
+                margin: 0px;
+                display: inline-block;
+                text-align: center;
+            }
         }
-    
-         .current-notebook a {
-		    background-color: darken(@brand-success, 10%) !important;
-         }
-        
+
+        .current-notebook a {
+            background-color: darken(@brand-success, 10%) !important;
+        }
     }
 }
