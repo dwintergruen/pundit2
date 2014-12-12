@@ -4,9 +4,9 @@
  * Style related to the sidebar on the right containing the annotations
  */
 
-/* ------------------------------------ */
-/* MAIN STYLE */
-/* ------------------------------------ */
+/* ------------------------------------ *\
+   #MAIN-STYLE
+\* ------------------------------------ */
 .pnd-annotation-sidebar-container {
     position: absolute;
     right: 0;
@@ -68,9 +68,9 @@
 }
 
 
-/* ------------------------------------ */
-/* INPUT SEARCH */
-/* ------------------------------------ */
+/* ------------------------------------ *\
+   #INPUT-SEARCH
+\* ------------------------------------ */
 
 .pnd-annotation-sidebar-filter-input, .pnd-annotation-sidebar-filter-input-contains {
     position: relative;
@@ -108,9 +108,9 @@
 }
 
 
-/* ------------------------------------ */
-/* BUTTONS */
-/* ------------------------------------ */
+/* ------------------------------------ *\
+   #BUTTONS
+\* ------------------------------------ */
 
 .pnd-annotation-sidebar-content {
 
@@ -313,13 +313,13 @@
     }
 }
 
-/* ------------------------------------ */
-/* ANNOTATION DETAILS */
-/* ------------------------------------ */
+
+/* ------------------------------------ *\
+   #ANNOTATIONS-DETAILS
+\* ------------------------------------ */
 
 .pnd-annotation-details-wrap {
     padding: 0px;
-    //border-top: 1px solid #fff;
 
     .pnd-annotation-details-top {
         cursor: pointer;
@@ -329,12 +329,8 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        //width: 250px;
         width: 245px;
         display: inline-block;
-    }
-
-    .pnd-item-title {
     }
 
     // Footer
@@ -395,6 +391,7 @@
         height: 24px;
         width: @annotation-sidebar-filter-width;
         background-color: @subject-color;
+        // background-color: lighten(desaturate(@brand-primary,100), 30);
         color: white;
         transition-property: background-color, background;
         transition-duration: @animation-fast-duration;
@@ -592,9 +589,10 @@
     }
 }
 
-/* ------------------------------------ */
-/* SIDEBAR COLLAPSED */
-/* ------------------------------------ */
+
+/* ------------------------------------ *\
+   #SIDEBAR-COLLAPSED
+\* ------------------------------------ */
 
 .pnd-annotation-sidebar-collapsed {
 
@@ -682,9 +680,10 @@
     position: absolute;
 }
 
-/* ------------------------------------ */
-/* ANIMATION TEST */
-/* ------------------------------------ */
+
+/* ------------------------------------ *\
+   #ANIMATION-TEXT
+\* ------------------------------------ */
 
 .pnd-annotation-details-ghosted {
     -webkit-transition-duration: 0.8s;

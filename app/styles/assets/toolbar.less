@@ -47,7 +47,7 @@ body.pnd-toolbar-active {
         color: white;
     }
     .pnd-toolbar-not-active-element {
-        color: gray !important;
+        color: @color-toolbar-disabled
     }
 
     // ---------- ASK BUTTON
@@ -185,17 +185,24 @@ body.pnd-toolbar-active {
    // ---------- ANNOTATION SIDEBAR BUTTON
     
     &.pnd-toolbar-annotations-button {
-
      	&.pnd-toolbar-annotations-button-active {
      		background-color: @gray;
-     		
      		a {
 	     		&:hover,
 	     		&:focus {
 	     			background-color: @gray;
 	     		}
-     		}
+            }
      	}
+        /* Filter icon positioning */
+        .pnd-icon {
+            margin-left: 3px;
+            color: @color-toolbar-disabled;
+
+            &.pnd-filter-active {
+                color: @brand-primary;
+            }
+        }
     }
     
     // ---------- STATUS BUTTON
