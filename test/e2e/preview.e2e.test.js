@@ -9,13 +9,13 @@ describe("Preview interaction", function() {
         // should be shown the welcome message in panel header
         p.findElements(protractor.By.css('.pnd-dashboard-preview-panel-heading')).then(function(welcomeHeader) {
             expect(welcomeHeader.length).toBe(1);
-            expect(welcomeHeader[0].getText()).toBe('Welcome in Pundit 2');
+            expect(welcomeHeader[0].getText()).toBe('Welcome in Pundit');
         });
 
         // should be shown the welcome message in panel body
         p.findElements(protractor.By.css('.pnd-dashboard-welcome')).then(function(welcomeBody) {
             expect(welcomeBody.length).toBe(1);
-            expect(welcomeBody[0].getText()).toBe('Enjoy it');
+            expect(welcomeBody[0].getText()).toBe('This is the preview area of Pundit. Just click on an element in a list to select it and see its details here. Enjoy using Pundit.');
         });
 
         // 'More Info' should be visible and disabled

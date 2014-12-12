@@ -106,9 +106,7 @@ describe("TripleComposer interaction", function() {
         });
         // delete button
         p.findElements(protractor.By.css(".pnd-statement-object .pnd-row-button-object button")).then(function(btn) {
-            expect(btn.length).toBe(2);
-            expect(btn[1].getAttribute('title')).toEqual("delete");
-            expect(btn[0].getAttribute('title')).toEqual("text");
+            expect(btn.length).toBe(1);
         });
     });
 
@@ -131,14 +129,13 @@ describe("TripleComposer interaction", function() {
         });
 
         // open literal resource panel (second times)
-        p.findElement(protractor.By.css(".pnd-statement-object .pnd-row-button-object [title='text']")).click();
+        p.findElement(protractor.By.css(".pnd-statement-object .pnd-statement-label")).click();
         // add second text to popover
         p.findElement(protractor.By.css(".pnd-popover-literal .popover-content textarea")).then(function(textarea){
             expect(textarea.getAttribute('value')).toBe('testo');
             textarea.sendKeys(' altro testo...');
         });
             
-
         // click save TODO add class to save btn
         p.findElement(protractor.By.css(".pnd-popover-literal .popover-content button")).click();
         // second item label

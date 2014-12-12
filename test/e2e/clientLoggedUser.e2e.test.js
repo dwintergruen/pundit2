@@ -215,12 +215,15 @@ describe("Client interaction when user is logged in", function() {
             });
         });
         // check triple composer object
-        p.findElement(protractor.By.css('triple-composer statement .pnd-statement-object .pnd-statement-mandatory-object')).then(function(o){
-            // it must have solid red border
-            o.getCssValue('border').then(function(border){
-                expect(border).toBeDefined();
-                expect(border.indexOf('1px solid')).toBeGreaterThan(-1);
-            });
+        p.findElement(protractor.By.css('triple-composer statement .pnd-statement-object .pnd-statement-label')).then(function(o){
+            // it must have *
+            expect(o.getText()).toBe('Add an object*');
+
+            // we are leaving old test code for likely future changes
+            // o.getCssValue('border').then(function(border){
+            //     expect(border).toBeDefined();
+            //     expect(border.indexOf('1px solid')).toBeGreaterThan(-1);
+            // });
         });
     });
 
