@@ -370,7 +370,7 @@ angular.module('Pundit2.TripleComposer')
             }
         }
 
-        if ($scope.objectFound) {
+        if ($scope.objectFound && !$scope.objectLiteral && !$scope.objectDate) {
             Preview.setItemDashboardSticky(triple.object);
         }
     };
@@ -416,6 +416,7 @@ angular.module('Pundit2.TripleComposer')
         var resource = {
             id: $scope.id
         };
+        ResourcePanel.hide();
         ContextualMenu.show(event.pageX, event.pageY, resource, TripleComposer.options.cMenuType);
         event.stopPropagation();
     };
