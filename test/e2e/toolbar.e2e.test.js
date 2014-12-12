@@ -271,6 +271,7 @@ describe("The toolbar module", function() {
 
     beforeEach(function() {
         p.addMockModule('httpBackendMock', httpMock);
+        p.driver.manage().window().setSize(1200, 960);
     });
 
     afterEach(function() {
