@@ -188,6 +188,12 @@ angular.module('Pundit2.ResourcePanel')
                 state.popoverOptions.scope.literalText = content.literalText;
             }
 
+            state.popoverOptions.scope.escapeEvent = function(e) {
+                if (e.which == 27){
+                    e.stopPropagation();
+                }
+            };
+
             // handle save a new popoverLiteral
             state.popoverOptions.scope.save = function(elem) {
                 state.resourcePromise.resolve(this.literalText);
