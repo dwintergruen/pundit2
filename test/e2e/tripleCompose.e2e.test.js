@@ -136,8 +136,8 @@ describe("TripleComposer interaction", function() {
             textarea.sendKeys(' altro testo...');
         });
             
-        // click save TODO add class to save btn
-        p.findElement(protractor.By.css(".pnd-popover-literal .popover-content button")).click();
+        // click save
+        p.findElement(protractor.By.css(".pnd-popover-literal .popover-footer .btn-success")).click();
         // second item label
         p.findElement(protractor.By.css(".pnd-statement-object .pnd-statement-label")).then(function(label) {
             expect(label.getText()).toEqual("testo altro testo...");
