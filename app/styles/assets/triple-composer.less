@@ -65,6 +65,7 @@
                 text-overflow: ellipsis;
                 line-height: @triplecomposer-height;
                 cursor: pointer;
+                font-style: italic;
             }
 
             /* Label with one icon on the right */
@@ -81,7 +82,6 @@
             .pnd-row-button-rightbuttons {
                 position: absolute;
                 display: block;
-                // width: 52px;
                 top: 0;
                 right: 0;
 
@@ -105,6 +105,7 @@
             /* Color of text when an entity has been selected */
             &.pnd-statement-found .pnd-statement-label{
                 color: #FFF;
+                font-style: normal;
             }
         }
 
@@ -162,17 +163,17 @@
             }
         }
 
-        /* Mandatory Subject and object for Templates */
+        /* Templates: Mandatory Subject and object for Templates */
         .pnd-statement-object {
             .pnd-statement-mandatory-object {
-                border: 1px solid lighten(@brand-danger, 20%);
+                // border: 1px solid lighten(@brand-danger, 20%);
             }
         }
 
         .pnd-statement-subject {
             .pnd-statement-subject-text {
-                color: lighten(@brand-danger, 20%);
-                font-style: italic;
+                // color: lighten(@brand-danger, 20%);
+                // font-style: italic;
             }
         }
 
