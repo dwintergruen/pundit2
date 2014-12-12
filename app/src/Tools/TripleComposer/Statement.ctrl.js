@@ -177,9 +177,11 @@ angular.module('Pundit2.TripleComposer')
                 $scope.objectLabel = triple.object;
                 if (triple.isDate) {
                     $scope.objectTypeLabel = TypesHelper.getLabel(NameSpace.dateTime);
+                    $scope.objectDate = true;
                 }
                 if (triple.isLiteral) {
                     $scope.objectTypeLabel = TypesHelper.getLabel(NameSpace.rdfs.literal);
+                    $scope.objectLiteral = true;
                 }
 
             } else {
