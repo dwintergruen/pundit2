@@ -307,7 +307,7 @@ module.exports = function(grunt) {
                 files: [
                     {
                         expand: true,
-                        cwd: '<%= conf.app %>/styles/pundit-font/',
+                        cwd: '<%= conf.app %>/fonts/pundit-icon-font/',
                         dest: '<%= conf.build %>/bm/css/',
                         src: 'fonts/*'
                     },
@@ -341,13 +341,13 @@ module.exports = function(grunt) {
                 files: [
                     {
                         expand: true,
-                        cwd: '<%= conf.app %>/styles/pundit-font/',
+                        cwd: '<%= conf.app %>/fonts/pundit-icon-font/',
                         dest: '<%= conf.app %>/css/',
                         src: 'fonts/*'
                     },
                     {
                         expand: true,
-                        cwd: '<%= conf.app %>/styles/pundit-font/',
+                        cwd: '<%= conf.app %>/fonts/pundit-icon-font/',
                         dest: '<%= conf.app %>/css/',
                         src: 'style.css'
                     }
