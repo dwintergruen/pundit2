@@ -91,7 +91,13 @@
                 <!-- Annotations menu -->
                 <li class="pnd-toolbar-annotations-button" ng-if="sidebar" ng-class="{'pnd-toolbar-annotations-button-active': isAnnotationSidebarExpanded}">
                     <a href="javascript:void(0)" ng-click="annotationsClickHandler()">
-                        <span class="pnd-toolbar-active-element">Annotations sidebar</span>
+                        <span class="pnd-toolbar-active-element">
+                            Sidebar 
+                            <span 
+                                class="pnd-icon pnd-icon-filter" 
+                                ng-class="{'pnd-filter-active': isAnnotationFiltersActive}">
+                            </span>
+                        </span>
                     </a>
                 </li>
 

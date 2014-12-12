@@ -9,6 +9,7 @@ angular.module('Pundit2.Toolbar')
     $scope.dropdownTemplateTemplates = "src/Toolbar/templatesDropdown.tmpl.html";
 
     $scope.isAnnotationSidebarExpanded = false;
+    $scope.isAnnotationFiltersActive = false;
     $scope.isDashboardVisible = false;
 
     $scope.isUserLogged = false;
@@ -211,6 +212,12 @@ angular.module('Pundit2.Toolbar')
         return AnnotationSidebar.isAnnotationSidebarExpanded();
     }, function(currentState) {
         $scope.isAnnotationSidebarExpanded = currentState;
+    });    
+
+    $scope.$watch(function() {
+        return AnnotationSidebar.needToFilter();
+    }, function(currentState) {
+        $scope.isAnnotationFiltersActive = currentState;
     });
 
     // Watch Toolbar status
