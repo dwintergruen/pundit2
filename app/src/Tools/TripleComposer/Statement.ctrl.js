@@ -153,48 +153,6 @@ angular.module('Pundit2.TripleComposer')
         return triple;
     };
 
-    // read the duplicated property inside scope (this property is owned by the statement tha born by duplication)
-    // then add the label value to the relative scope properties
-    // this function should be invoked only one time (in the link function)
-    // when you duplicate a statement, elsewhere probably is an error
-    $scope.init = function() {
-
-        triple = $scope.duplicated;
-        delete $scope.duplicated;
-
-        if (triple.subject !== null) {
-            $scope.subjectLabel = triple.subject.label;
-            $scope.subjectTypeLabel = TypesHelper.getLabel(triple.subject.type[0]);
-            $scope.subjectFound = true;
-        }
-        if (triple.predicate !== null) {
-            $scope.predicateLabel = triple.predicate.label;
-            $scope.predicateFound = true;
-        }
-        if (triple.object !== null) {
-            if (typeof(triple.object) === 'string') {
-                // date or literal item
-                $scope.objectLabel = triple.object;
-                if (triple.isDate) {
-                    $scope.objectTypeLabel = TypesHelper.getLabel(NameSpace.dateTime);
-                    $scope.objectDate = true;
-                }
-                if (triple.isLiteral) {
-                    $scope.objectTypeLabel = TypesHelper.getLabel(NameSpace.rdfs.literal);
-                    $scope.objectLiteral = true;
-                }
-
-            } else {
-                // standard item
-                $scope.objectLabel = triple.object.label;
-                $scope.objectTypeLabel = TypesHelper.getLabel(triple.object.type[0]);
-            }
-            $scope.objectFound = true;
-
-        }
-
-    };
-
     // reset scope to default
     $scope.wipe = function() {
         $scope.wipeSubject();
@@ -279,8 +237,9 @@ angular.module('Pundit2.TripleComposer')
 
     $scope.onClickSubject = function($event) {
         if ($scope.templateMode) {
-            // not open resource panel on subject when
-            // template mode is enabled (subject can be only a text selection)
+            if ($scope.subjectFixed) {
+                Preview.setItemDashboardSticky(triple.subject);                
+            }
             return;
         }
         ResourcePanel.showItemsForSubject(triple, $event.target).then($scope.setSubject);
@@ -313,7 +272,12 @@ angular.module('Pundit2.TripleComposer')
         $scope.tripleComposerCtrl.isTripleErasable();
         Preview.clearItemDashboardSticky();
     };
+
     $scope.onClickPredicate = function($event) {
+        if ($scope.templateMode && $scope.predicateFixed) {
+            Preview.setItemDashboardSticky(triple.predicate);
+            return;
+        }
         ResourcePanel.showProperties(triple, $event.target).then($scope.setPredicate);
         if ($scope.predicateFound) {
             Preview.setItemDashboardSticky(triple.predicate);
@@ -355,6 +319,27 @@ angular.module('Pundit2.TripleComposer')
         Preview.clearItemDashboardSticky();
 
     };
+
+    $scope.setCalendar = function(date) {
+        triple.object = parseDate(date);
+        lastDate = date;
+        $scope.objectLabel = triple.object;
+        $scope.objectTypeLabel = TypesHelper.getLabel(NameSpace.dateTime);
+        $scope.objectDate = true;
+        $scope.objectFound = true;
+        $scope.tripleComposerCtrl.isAnnotationComplete();
+        $scope.tripleComposerCtrl.isTripleErasable();
+    };
+
+    $scope.setLiteral = function(text) {
+        $scope.objectFound = true;
+        $scope.objectLabel = text;
+        $scope.objectTypeLabel = TypesHelper.getLabel(NameSpace.rdfs.literal);
+        $scope.objectLiteral = true;
+        triple.object = text;
+        $scope.tripleComposerCtrl.isAnnotationComplete();
+        $scope.tripleComposerCtrl.isTripleErasable();
+    };
     
     $scope.onClickObject = function($event) {
         if ($scope.templateMode && $scope.objectFixed) {
@@ -378,7 +363,6 @@ angular.module('Pundit2.TripleComposer')
     };
 
     $scope.onClickObjectCalendar = function($event) {
-
         var d;
         if ($scope.objectDate) {
             d = lastDate;
@@ -386,16 +370,7 @@ angular.module('Pundit2.TripleComposer')
             d = new Date();
         }
 
-        ResourcePanel.showPopoverCalendar(d, $event.target).then(function(date) {
-            triple.object = parseDate(date);
-            lastDate = date;
-            $scope.objectLabel = triple.object;
-            $scope.objectTypeLabel = TypesHelper.getLabel(NameSpace.dateTime);
-            $scope.objectDate = true;
-            $scope.objectFound = true;
-            $scope.tripleComposerCtrl.isAnnotationComplete();
-            $scope.tripleComposerCtrl.isTripleErasable();
-        });
+        ResourcePanel.showPopoverCalendar(d, $event.target).then($scope.setCalendar);
     };
 
     $scope.onClickObjectLiteral = function($event) {
@@ -403,15 +378,7 @@ angular.module('Pundit2.TripleComposer')
         if (typeof(triple.object) === 'string') {
             str = triple.object;
         }
-        ResourcePanel.showPopoverLiteral(str, $event.target).then(function(text) {
-            $scope.objectFound = true;
-            $scope.objectLabel = text;
-            $scope.objectTypeLabel = TypesHelper.getLabel(NameSpace.rdfs.literal);
-            $scope.objectLiteral = true;
-            triple.object = text;
-            $scope.tripleComposerCtrl.isAnnotationComplete();
-            $scope.tripleComposerCtrl.isTripleErasable();
-        });
+        ResourcePanel.showPopoverLiteral(str, $event.target).then($scope.setLiteral);
     };
 
     $scope.showDropdown = function(event) {
@@ -421,6 +388,37 @@ angular.module('Pundit2.TripleComposer')
         ResourcePanel.hide();
         ContextualMenu.show(event.pageX, event.pageY, resource, TripleComposer.options.cMenuType);
         event.stopPropagation();
+    };
+
+    // read the duplicated property inside scope (this property is owned by the statement tha born by duplication)
+    // then add the label value to the relative scope properties
+    // this function should be invoked only one time (in the link function)
+    // when you duplicate a statement, elsewhere probably is an error
+    $scope.init = function() {
+        triple = $scope.duplicated;
+        delete $scope.duplicated;
+
+        if (triple.predicate !== null) {
+            $scope.setPredicate(triple.predicate);
+        }
+        if (triple.subject !== null) {
+            $scope.setSubject(triple.subject);
+        }
+        if (triple.object !== null) {
+            if (typeof(triple.object) === 'string') {
+                // date or literal item
+                if (triple.isDate) {
+                    $scope.setCalendar(triple.object);
+                }
+                if (triple.isLiteral) {
+                    $scope.setLiteral(triple.object);
+                }
+
+            } else {
+                // standard item
+                $scope.setObject(triple.object);
+            }
+        }
     };
 
     $scope.$watch(function() {

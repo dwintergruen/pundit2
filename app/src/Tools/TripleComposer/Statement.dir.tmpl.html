@@ -67,17 +67,10 @@
                 <div class="pnd-row-button-predicate pnd-statement-found" ng-if="predicateFound">
                     <span 
                         class="pnd-statement-label" 
-                        ng-if="!templateMode"
+                        ng-class="{'pnd-statement-tmpl-mode': templateMode}"
                         ng-mouseover="onPredicateMouseOver()" 
                         ng-mouseleave="onItemMouseOut()"
                         ng-click="onClickPredicate($event)">
-                            {{predicateLabel}}
-                    </span>
-                    <span 
-                        class="pnd-statement-label pnd-statement-tmpl-mode" 
-                        ng-if="templateMode"
-                        ng-mouseover="onPredicateMouseOver()" 
-                        ng-mouseleave="onItemMouseOut()">
                             {{predicateLabel}}
                     </span>
 
