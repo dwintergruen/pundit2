@@ -319,27 +319,6 @@ angular.module('Pundit2.TripleComposer')
         Preview.clearItemDashboardSticky();
 
     };
-
-    $scope.setCalendar = function(date) {
-        triple.object = parseDate(date);
-        lastDate = date;
-        $scope.objectLabel = triple.object;
-        $scope.objectTypeLabel = TypesHelper.getLabel(NameSpace.dateTime);
-        $scope.objectDate = true;
-        $scope.objectFound = true;
-        $scope.tripleComposerCtrl.isAnnotationComplete();
-        $scope.tripleComposerCtrl.isTripleErasable();
-    };
-
-    $scope.setLiteral = function(text) {
-        $scope.objectFound = true;
-        $scope.objectLabel = text;
-        $scope.objectTypeLabel = TypesHelper.getLabel(NameSpace.rdfs.literal);
-        $scope.objectLiteral = true;
-        triple.object = text;
-        $scope.tripleComposerCtrl.isAnnotationComplete();
-        $scope.tripleComposerCtrl.isTripleErasable();
-    };
     
     $scope.onClickObject = function($event) {
         if ($scope.templateMode && $scope.objectFixed) {
@@ -370,7 +349,7 @@ angular.module('Pundit2.TripleComposer')
             d = new Date();
         }
 
-        ResourcePanel.showPopoverCalendar(d, $event.target).then($scope.setCalendar);
+        ResourcePanel.showPopoverCalendar(d, $event.target).then($scope.setObject);
     };
 
     $scope.onClickObjectLiteral = function($event) {
@@ -378,7 +357,7 @@ angular.module('Pundit2.TripleComposer')
         if (typeof(triple.object) === 'string') {
             str = triple.object;
         }
-        ResourcePanel.showPopoverLiteral(str, $event.target).then($scope.setLiteral);
+        ResourcePanel.showPopoverLiteral(str, $event.target).then($scope.setObject);
     };
 
     $scope.showDropdown = function(event) {
@@ -405,17 +384,9 @@ angular.module('Pundit2.TripleComposer')
             $scope.setSubject(triple.subject);
         }
         if (triple.object !== null) {
-            if (typeof(triple.object) === 'string') {
-                // date or literal item
-                if (triple.isDate) {
-                    $scope.setCalendar(triple.object);
-                }
-                if (triple.isLiteral) {
-                    $scope.setLiteral(triple.object);
-                }
-
+            if (triple.isDate) {
+                $scope.setObject(new Date(triple.object));
             } else {
-                // standard item
                 $scope.setObject(triple.object);
             }
         }
