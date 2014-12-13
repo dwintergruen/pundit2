@@ -7,7 +7,14 @@
         <div class="form-group">
             <label class="control-label"><i class="fa fa-calendar"></i> Date </label>
             <input  type="text" 
+                    class="form-control"
+                    data-date-format="dd/MM/yyyy" 
                     ng-model="selectedDate"
+                    ng-keyup="escapeEvent($event)"
+                    calendar-date-format>
+            <input  type="text" 
+                    ng-model="selectedDate"
+                    ng-show="false"
                     class="form-control pnd-input-calendar"
                     trigger="click" 
                     data-date-format="dd/MM/yyyy" 

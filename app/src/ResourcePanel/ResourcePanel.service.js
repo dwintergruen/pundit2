@@ -164,6 +164,12 @@ angular.module('Pundit2.ResourcePanel')
                 state.popoverOptions.scope.selectedDate = content.date;
             }
 
+            state.popoverOptions.scope.escapeEvent = function(e) {
+                if (e.which == 27){
+                    e.stopPropagation();
+                }
+            };
+
             state.popoverOptions.scope.save = function() {
 
                 state.resourcePromise.resolve(new Date(this.selectedDate));
