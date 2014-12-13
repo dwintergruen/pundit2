@@ -237,8 +237,8 @@ angular.module('Pundit2.TripleComposer')
 
     $scope.onClickSubject = function($event) {
         if ($scope.templateMode) {
-            if ($scope.subjectFixed) {
-                Preview.setItemDashboardSticky(triple.subject);                
+            if ($scope.subjectFixed || $scope.subjectFound) {
+                Preview.setItemDashboardSticky(triple.subject);
             }
             return;
         }
@@ -319,7 +319,7 @@ angular.module('Pundit2.TripleComposer')
         Preview.clearItemDashboardSticky();
 
     };
-    
+
     $scope.onClickObject = function($event) {
         if ($scope.templateMode && $scope.objectFixed) {
             Preview.setItemDashboardSticky(triple.object);
@@ -349,7 +349,12 @@ angular.module('Pundit2.TripleComposer')
             d = new Date();
         }
 
-        ResourcePanel.showPopoverCalendar(d, $event.target).then($scope.setObject);
+        ResourcePanel.showPopoverCalendar(d, $event.target).then(function(date) {
+            if (isNaN(date)) {
+                return;
+            }
+            $scope.setObject(date);
+        });
     };
 
     $scope.onClickObjectLiteral = function($event) {
