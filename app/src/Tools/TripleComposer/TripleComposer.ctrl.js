@@ -89,9 +89,19 @@ angular.module('Pundit2.TripleComposer')
 
     $scope.cancel = function() {
         if ($scope.editMode) {
+            angular.element('.pnd-triplecomposer-save').addClass('disabled');
             TripleComposer.reset();
             TripleComposer.setEditMode(false);
+            TripleComposer.updateVisibility();
         }
+    };
+
+    $scope.resetComposer = function() {
+        if ($scope.templateMode) {
+            TripleComposer.wipeNotFixedItems();
+            return;
+        }
+        TripleComposer.reset();
     };
 
     $scope.editAnnotation = function() {
