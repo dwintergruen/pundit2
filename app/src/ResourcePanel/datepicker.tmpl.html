@@ -23,7 +23,7 @@
     <tbody>
       <tr ng-repeat="(i, row) in rows" height="{{ 100 / rows.length }}%">
         <td class="text-center" ng-repeat="(j, el) in row">
-          <button tabindex="-1" type="button" class="btn btn-default pnd-date-picker-cntr-btn" ng-class="{'btn-primary': el.selected}" ng-click="$select(el.date)" ng-disabled="el.disabled">
+          <button tabindex="-1" type="button" class="btn btn-default pnd-date-picker-cntr-btn" ng-class="{'btn-primary': el.selected}" ng-click="$select(el.date)" ng-dblclick="$parent.save()" ng-disabled="el.disabled">
             <span ng-class="{'text-muted': el.muted}" ng-bind="el.label"></span>
           </button>
         </td>
