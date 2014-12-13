@@ -42,6 +42,7 @@
     <button 
         class="pnd-triplecomposer-cancel btn btn-info btn-xs pnd-btn-full" 
         ng-if="!editMode" 
+        ng-disabled="!isAnnotationErasable()"
         ng-click="resetComposer()">
         Reset
     </button>
