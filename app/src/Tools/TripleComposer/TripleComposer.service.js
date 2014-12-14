@@ -803,7 +803,12 @@ angular.module('Pundit2.TripleComposer')
                     if (triples[i].object.type === 'uri') {
                         statements[i].scope.setObject(ItemsExchange.getItemByUri(triples[i].object.value));
                     } else if (triples[i].object.type === 'literal') {
-                        statements[i].scope.setObject(triples[i].object.value);
+                        // TODO: add full support to date
+                        if (isNaN(Date.parse(triples[i].object.value))) {
+                            statements[i].scope.setObject(triples[i].object.value);
+                        } else {
+                            statements[i].scope.setObject(new Date(triples[i].object.value));                            
+                        }
                     } else {
                         tripleComposer.log('Try to add incompatible type of object', triples[i].object);
                     }
