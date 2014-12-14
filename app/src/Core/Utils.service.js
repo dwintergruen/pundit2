@@ -48,5 +48,19 @@ angular.module('Pundit2.Core')
         return label;
     };
 
+    Utils.isValidDate = function(strDate) {
+        var t = strDate.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+        if (t !== null) {
+            var d = +t[3],
+                m = +t[2],
+                y = +t[1];
+            var date = new Date(y, m - 1, d);
+            if (date.getFullYear() === y && date.getMonth() === m - 1) {
+                return true;
+            }
+        }
+        return false;
+    };
+
     return Utils;
 });
