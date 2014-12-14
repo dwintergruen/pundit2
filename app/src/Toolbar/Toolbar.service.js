@@ -124,14 +124,6 @@ angular.module('Pundit2.Toolbar')
         // tell to other components if is active the template mode
         templateMode = Config.useOnlyTemplateMode;
 
-    EventDispatcher.addListener('Pundit.error', function(e) {
-        toolbar.addError(e.args);
-    });
-
-    EventDispatcher.addListener('Pundit.loading', function(e) {
-        toolbar.setLoading(e.args);
-    });
-
     toolbar.getErrorShown = function() {
         return isErrorShown;
     };
@@ -217,12 +209,28 @@ angular.module('Pundit2.Toolbar')
         TripleComposer.reset();
         templateMode = !templateMode;
         if (templateMode) {
+            EventDispatcher.sendEvent('Pundit.templateMode', true);
             TripleComposer.showCurrentTemplate();
         } else {
+            EventDispatcher.sendEvent('Pundit.templateMode', false);
             // disable save btn
             angular.element('.pnd-triplecomposer-save').addClass('disabled');
         }
     };
+
+    EventDispatcher.addListener('Pundit.error', function(e) {
+        toolbar.addError(e.args);
+    });
+
+    EventDispatcher.addListener('Pundit.loading', function(e) {
+        toolbar.setLoading(e.args);
+    });
+
+    EventDispatcher.addListener('AnnotationDetails.editAnnotation', function() {
+        if (templateMode) {
+            toolbar.toggleTemplateMode();
+        }
+    });
 
     return toolbar;
 
