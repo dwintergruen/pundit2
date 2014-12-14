@@ -115,7 +115,6 @@ angular.module('Pundit2.AnnotationSidebar')
             TripleComposer.closeAfterOp();
             Dashboard.toggle();
         }
-        //EventDispatcher.sendEvent('Dashboard.showTab', TripleComposer.options.clientDashboardTabTitle);
         EventDispatcher.sendEvent('AnnotationDetails.editAnnotation', TripleComposer.options.clientDashboardTabTitle);
     };
 

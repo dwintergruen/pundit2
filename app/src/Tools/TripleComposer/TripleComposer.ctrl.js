@@ -1,6 +1,6 @@
 angular.module('Pundit2.TripleComposer')
 
-.controller('TripleComposerCtrl', function($rootScope, $scope, $http, $q, $timeout, NameSpace,
+.controller('TripleComposerCtrl', function($rootScope, $scope, $http, $q, $timeout, NameSpace, EventDispatcher,
     MyPundit, Toolbar, TripleComposer, AnnotationsCommunication, AnnotationsExchange, TemplatesExchange) {
 
     // statements objects are extend by this.addStatementScope()
@@ -266,7 +266,7 @@ angular.module('Pundit2.TripleComposer')
 
     }; // end save function
 
-    $rootScope.$on('pnd-save-annotation', function() {
+    EventDispatcher.addListener('Annotators.saveAnnotation', function() {
         var uncomplete = $scope.statements.some(function(el) {
             var t = el.scope.get();
             if (t.subject === null || t.predicate === null || t.object === null) {
