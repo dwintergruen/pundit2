@@ -179,7 +179,7 @@ angular.module('Pundit2.ResourcePanel')
                 hide();
             };
 
-            // close popoverLiteral popover without saving
+            // close popoverCalendar popover without saving
             state.popoverOptions.scope.cancel = function() {
                 Preview.hideDashboardPreview();
                 hide();
@@ -955,6 +955,10 @@ angular.module('Pundit2.ResourcePanel')
         state.resourcePromise = $q.defer();
         return state.resourcePromise.promise;
     };
+
+    EventDispatcher.addListener('TripleComposer.reset', function() {
+        hide();
+    });
 
     return resourcePanel;
 });

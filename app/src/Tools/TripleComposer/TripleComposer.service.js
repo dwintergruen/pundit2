@@ -423,6 +423,7 @@ angular.module('Pundit2.TripleComposer')
         statements.push({
             id: nextId
         });
+        EventDispatcher.sendEvent('TripleComposer.reset');
         tripleComposer.log('statements reset', statements);
     };
 
