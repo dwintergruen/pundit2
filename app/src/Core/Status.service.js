@@ -15,7 +15,8 @@ angular.module('Pundit2.Core')
         Pundit: {
             clientBoot: false,
             userLogged: false,
-            loading: false
+            loading: false,
+            templateMode: false
         }
     };
 
@@ -87,6 +88,11 @@ angular.module('Pundit2.Core')
         state.AnnotationSidebar.isFiltersContentExpanded = e.args;
     });
 
+    // Template mode
+    EventDispatcher.addListener('Pundit.templateMode', function(e) {
+        state.Pundit.templateMode = e.args;
+    })
+
     // Error
     EventDispatcher.addListener('Pundit.error', function(e) {
         errorLog.push(e.args);
@@ -106,6 +112,10 @@ angular.module('Pundit2.Core')
 
     status.getUserStatus = function() {
         return state.Pundit.userLogged;
+    };
+
+    status.getTemplateModeStatus = function() {
+        return state.Pundit.templateMode;
     };
 
     status.getLog = function() {

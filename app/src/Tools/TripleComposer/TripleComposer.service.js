@@ -212,7 +212,7 @@ angular.module('Pundit2.TripleComposer')
 })
 
 .service('TripleComposer', function($rootScope, BaseComponent, EventDispatcher, TRIPLECOMPOSERDEFAULTS, TypesHelper, NameSpace, Config,
-    AnnotationsExchange, ItemsExchange, Dashboard, ContextualMenu, TemplatesExchange) {
+    AnnotationsExchange, ItemsExchange, Dashboard, ContextualMenu, TemplatesExchange, Status) {
 
     var tripleComposer = new BaseComponent('TripleComposer', TRIPLECOMPOSERDEFAULTS);
 
@@ -248,7 +248,11 @@ angular.module('Pundit2.TripleComposer')
             },
             priority: 101,
             action: function(item) {
-                tripleComposer.addToSubject(item);
+                if (Status.getTemplateModeStatus()) {
+                    tripleComposer.addToAllSubject(item);
+                } else {
+                    tripleComposer.addToSubject(item);
+                }
             }
         });
 
