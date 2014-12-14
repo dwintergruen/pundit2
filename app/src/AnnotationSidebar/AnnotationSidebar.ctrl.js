@@ -11,7 +11,7 @@ angular.module('Pundit2.AnnotationSidebar')
     var container = angular.element('.pnd-annotation-sidebar-container');
     // var content = angular.element('.pnd-annotation-sidebar-content');
 
-    var toolbarHeight = parseInt(angular.element('toolbar nav').css('height'));
+    var toolbarHeight = parseInt(angular.element('toolbar nav').css('height'), 10);
 
     var state = {
         toolbarHeight: toolbarHeight,
@@ -162,17 +162,17 @@ angular.module('Pundit2.AnnotationSidebar')
         }
     };
 
-    EventDispatcher.addListener('Pundit.loading', function (e) {
+    EventDispatcher.addListener('Pundit.loading', function(e) {
         var currentState = e.args;
         if (currentState !== $scope.isLoadingData) {
             AnnotationSidebar.toggleLoading();
             $scope.isLoadingData = currentState;
         }
-    });      
+    });
 
-    EventDispatcher.addListener('AnnotationSidebar.toggleLoading', function (e) {
+    EventDispatcher.addListener('AnnotationSidebar.toggleLoading', function(e) {
         $scope.isLoading = e.args;
-    });  
+    });
 
     // Watch annotation sidebar expanded or collapsed
     EventDispatcher.addListener('AnnotationSidebar.toggle', function(e) {

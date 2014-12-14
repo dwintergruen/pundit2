@@ -449,9 +449,9 @@ angular.module('Pundit2.AnnotationSidebar')
         } else {
             for (var name in elementsList) {
                 if (name !== elementName) {
-                    for (var key in elementsList[name]) {
-                        if (typeof(elementsList[name][key]) !== 'undefined') {
-                            elementsList[name][key].partial = 0;
+                    for (var key2 in elementsList[name]) {
+                        if (typeof(elementsList[name][key2]) !== 'undefined') {
+                            elementsList[name][key2].partial = 0;
                         }
                     }
                 }
@@ -878,7 +878,7 @@ angular.module('Pundit2.AnnotationSidebar')
     // Get the array just of the filtered annotations
     annotationSidebar.getAllAnnotationsFiltered = function(filters) {
         var filteredAnnotationsObj = {};
-        var removedFilters = [];
+        // var removedFilters = [];
         var currentFilterObjExpression;
         var currentFilterName;
         state.filteredAnnotations = angular.copy(state.allAnnotations);
@@ -954,7 +954,7 @@ angular.module('Pundit2.AnnotationSidebar')
 
     annotationSidebar.getLoadingStatus = function() {
         return state.isLoading;
-    }
+    };
 
     annotationSidebar.setAllPosition = function(id, height) {
         orderAndSetPos(id, height);

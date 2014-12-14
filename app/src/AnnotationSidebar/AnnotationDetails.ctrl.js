@@ -235,11 +235,11 @@ angular.module('Pundit2.AnnotationSidebar')
         }
     };
 
-    EventDispatcher.addListener('Pundit.loading', function (e) {
+    EventDispatcher.addListener('Pundit.loading', function(e) {
         $scope.isLoading = e.args;
-    });    
+    });
 
-    EventDispatcher.addListener('AnnotationSidebar.toggle', function (e) {
+    EventDispatcher.addListener('AnnotationSidebar.toggle', function(e) {
         var isExpanded = e.args;
         if (!isExpanded) {
             AnnotationDetails.closeViewAndReset();

@@ -44,11 +44,11 @@ angular.module('Pundit2.AnnotationSidebar')
                             var currentObject = annotation.graph[subject][predicate][object];
                             if (currentObject.type === 'literal') {
                                 var literal = currentObject.value;
-                                var str = search.toLowerCase().replace(/\s+/g, ' '),
-                                    strParts = str.split(' '),
-                                    reg = new RegExp(strParts.join('.*'));
+                                var str2 = search.toLowerCase().replace(/\s+/g, ' '),
+                                    strParts2 = str2.split(' '),
+                                    reg2 = new RegExp(strParts2.join('.*'));
 
-                                if (literal.toLowerCase().match(reg) !== null) {
+                                if (literal.toLowerCase().match(reg2) !== null) {
                                     results.push(annotation);
                                     return;
                                 }
