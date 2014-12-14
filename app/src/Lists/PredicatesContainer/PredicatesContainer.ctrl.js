@@ -81,7 +81,7 @@ angular.module('Pundit2.PredicatesContainer')
                 return ns.label.toLowerCase().match(reg) !== null;
             } else {
                 return ns.mergedLabel.toLowerCase().match(reg) !== null;
-            }            
+            }
         });
 
         // update text messagge

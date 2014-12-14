@@ -1,7 +1,7 @@
 (function() {
     
     var p = 'http://localhost/pundit2/build/bm', // bookmarklet path ($PATH)
-        u = 'http://conf.thepund.it/V2/clients/your-configuration.js' // conf path
+        u = 'http://conf.thepund.it/V2/clients/your-configuration.js', // conf path
         h = document.getElementsByTagName('head')[0],
         d = document.createElement('script'),
         c = document.createElement('script'),

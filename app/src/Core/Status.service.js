@@ -6,7 +6,7 @@ angular.module('Pundit2.Core')
 
 .service('Status', function(BaseComponent, EventDispatcher, STATUSDEFAULTS) {
 
-    var status = new BaseComponent('Status');
+    var status = new BaseComponent('Status', STATUSDEFAULTS);
 
     var state = {
         AnnotationSidebar: {},
@@ -52,7 +52,7 @@ angular.module('Pundit2.Core')
                 loadingCount[eventName] = 0;
             }
         }
-    }
+    };
 
     // Loading
     EventDispatcher.addListeners(

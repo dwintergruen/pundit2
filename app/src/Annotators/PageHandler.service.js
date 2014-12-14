@@ -57,12 +57,14 @@ angular.module('Pundit2.Annotators')
             
             angular.forEach(metaTags, function(meta){
                 if (meta.name === 'keywords'){
-                    if (typeof(meta.content) !== 'undefined')
+                    if (typeof(meta.content) !== 'undefined'){
                         metadata.keywords = meta.content.split(',');
+                    }
                 }
                 if (meta.name === 'description'){
-                    if (typeof(meta.content) !== 'undefined')
+                    if (typeof(meta.content) !== 'undefined'){
                         metadata.description = meta.content;
+                    }
                 }
             });
             return metadata;

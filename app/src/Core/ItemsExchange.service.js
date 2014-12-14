@@ -1,5 +1,5 @@
 angular.module('Pundit2.Core')
-.service('ItemsExchange', function(BaseComponent, Config) {
+.service('ItemsExchange', function(BaseComponent) {
 
     // TODO: inherit from a Store or something()? Annotations, items, ...
     var itemsExchange = new BaseComponent("ItemsExchange"),
@@ -244,7 +244,7 @@ angular.module('Pundit2.Core')
         if (typeof(p.mergedLabel) === 'undefined') {
             if (p.label !== label) {
                 p.mergedLabel = p.label + '_' + label;
-            }                
+            }
         } else if (p.mergedLabel.indexOf(label) === -1) {
             p.mergedLabel += '_' + label;
         }

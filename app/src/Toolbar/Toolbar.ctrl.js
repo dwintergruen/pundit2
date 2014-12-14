@@ -72,7 +72,7 @@ angular.module('Pundit2.Toolbar')
             var userData = MyPundit.getUserData();
             $window.open(Config.lodLive.baseUrl + Config.pndPurl + 'user/' + userData.id, '_blank');
         }
-    }
+    };
 
     // modal
     var infoModalScope = $rootScope.$new(),

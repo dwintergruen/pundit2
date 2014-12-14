@@ -188,7 +188,7 @@ angular.module('Pundit2.Annotators')
 
         tfh.turnOff = function() {
             $document.off('mousedown', mouseDownHandler);
-        };        
+        };
 
         // Creates a proper Item from a range .. it must be a valid range, kktnx.
         tfh.createItemFromRange = function(range) {

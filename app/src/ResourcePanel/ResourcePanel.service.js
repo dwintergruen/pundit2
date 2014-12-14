@@ -167,7 +167,7 @@ angular.module('Pundit2.ResourcePanel')
             }
 
             state.popoverOptions.scope.escapeEvent = function(e) {
-                if (e.which == 27) {
+                if (e.which === 27) {
                     e.stopPropagation();
                 }
             };
@@ -197,13 +197,13 @@ angular.module('Pundit2.ResourcePanel')
             }
 
             state.popoverOptions.scope.escapeEvent = function(e) {
-                if (e.which == 27) {
+                if (e.which === 27) {
                     e.stopPropagation();
                 }
             };
 
             // handle save a new popoverLiteral
-            state.popoverOptions.scope.save = function(elem) {
+            state.popoverOptions.scope.save = function() {
                 state.resourcePromise.resolve(this.literalText);
                 Preview.hideDashboardPreview();
                 hide();
@@ -915,9 +915,6 @@ angular.module('Pundit2.ResourcePanel')
             hide();
             var propertiesContainer = Client.options.relationsContainer;
             var properties;
-            var itemSubject;
-            var itemObject;
-
 
             // TODO Add some comments
             if (typeof(triple) !== 'undefined') {

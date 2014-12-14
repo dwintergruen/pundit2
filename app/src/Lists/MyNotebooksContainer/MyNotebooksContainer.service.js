@@ -45,7 +45,7 @@ angular.module('Pundit2.MyNotebooksContainer')
             type: cMenuTypes,
             label: "Open graph",
             priority: 102,
-            showIf: function(nt) {
+            showIf: function() {
                 return lodLive;
             },
             action: function(nt) {

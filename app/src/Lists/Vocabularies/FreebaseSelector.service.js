@@ -351,7 +351,7 @@ angular.module('Pundit2.Vocabularies')
             for (var l = data.result.type.length; l--;) {
                 var o = data.result.type[l],
                     uri = freebaseSelector.options.freebaseSchemaBaseURL + o.id;
-                if (item.type.indexOf(uri) == -1) {
+                if (item.type.indexOf(uri) === -1) {
                     item.type.push(uri);
                     TypesHelper.add(uri, o.name);
                 }

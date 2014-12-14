@@ -21,5 +21,5 @@ angular.module('Pundit2.ResourcePanel')
                 return isModelADate ? $filter('date')(modelValue, dateFormat) : NaN;
             });
         }
-    }
+    };
 });

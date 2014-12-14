@@ -118,7 +118,6 @@ angular.module('Pundit2.Toolbar')
     var toolbar = new BaseComponent('Toolbar', TOOLBARDEFAULTS);
 
     var errorID = 0,
-        loadingOperation = 0,
         isLoadingShown = false,
         isErrorShown = false,
         errorMessageDropdown = [],

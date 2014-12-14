@@ -707,7 +707,7 @@ angular.module('Pundit2.TripleComposer')
         } else {
             return statements[0].scope.isStatementEmpty();
         }
-    };    
+    };
 
     tripleComposer.isTripleErasable = function() {
         if (statements.length === 1) {

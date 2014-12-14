@@ -30,7 +30,7 @@ angular.module('Pundit2.Dashboard')
                 return;
             }
         }
-    }
+    };
 
     // contains tabs content and tabs title
     // passed in directive

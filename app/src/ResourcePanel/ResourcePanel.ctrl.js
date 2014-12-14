@@ -139,7 +139,7 @@ angular.module('Pundit2.ResourcePanel')
     };
 
     $scope.escapeEvent = function(e) {
-        if (e.which == 27){
+        if (e.which === 27){
             e.stopPropagation();
         }
     };

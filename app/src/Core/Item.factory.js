@@ -200,7 +200,7 @@ angular.module('Pundit2.Core')
                         // to this item .selector
                         if (selector[NameSpace.rdf.type][0].value === NameSpace.selectors.polygonType) {
                             var selectorValue = JSON.parse(selector[NameSpace.rdf.value][0].value);
-                            this.polygon = selectorValue.points
+                            this.polygon = selectorValue.points;
                             // this.selector.push(JSON.parse(selector[NameSpace.rdf.value][0].value));
                         }
                     }

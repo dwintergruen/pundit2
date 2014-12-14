@@ -1,3 +1,5 @@
+/*global $:false */
+
 angular.module('Pundit2.ContextualMenu')
 
 .constant('CONTEXTUALMENUDEFAULTS', {
@@ -45,7 +47,7 @@ angular.module('Pundit2.ContextualMenu')
         mockMenu: null
     };
 
-    var overflowContentClass = contextualMenu.options.overflowContentClass;
+    // var overflowContentClass = contextualMenu.options.overflowContentClass;
 
 
     // create div anchor (the element bound with angular strap menu reference)

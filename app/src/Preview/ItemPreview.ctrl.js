@@ -56,7 +56,7 @@ angular.module('Pundit2.Preview')
         if (typeof(imgTempReference) !== 'undefined') {
             return imgTempReference.width();
         }
-    }, function(newWidth, oldWith) {
+    }, function(newWidth) {
         if (typeof(newWidth) !== 'undefined') {
             angular.element($element).find(".pnd-preview-item-image span > svg.pnd-polygon-layer").remove();
             ImageFragmentAnnotatorHelper.drawPolygonOverImage($scope.item.polygon, imgTempReference);

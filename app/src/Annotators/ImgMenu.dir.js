@@ -1,3 +1,5 @@
+/*global $:false */
+
 angular.module('Pundit2.Annotators')
 .directive('imgMenu', function($rootScope, NameSpace, ContextualMenu, Toolbar, ImageHandler, ImageAnnotator, ItemsExchange, TemplatesExchange, TripleComposer) {
     return {
@@ -43,13 +45,13 @@ angular.module('Pundit2.Annotators')
                     top: imgPos.top
                 });
                 scope.element.hover(
-                    function(){ 
+                    function(){
                         $(this).css({
                             color: '#333333',
                             // textShadow: '0px 0 25px #FFCC00'
                         });
                     },
-                    function(){ 
+                    function(){
                         $(this).css({
                             color: '#fff',
                             // textShadow: 'none'

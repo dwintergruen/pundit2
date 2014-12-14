@@ -273,7 +273,7 @@ angular.module('Pundit2.Core')
      * Default:
      * <pre> disableImageAnnotation: false </pre>
      */
-    disableImageAnnotation: false,    
+    disableImageAnnotation: false,
 
     /**
      * @module punditConfig
