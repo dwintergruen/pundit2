@@ -91,7 +91,7 @@ describe("TripleComposer interaction", function() {
         p.findElement(protractor.By.css(".pnd-statement-object .pnd-row-button-object [title='text']")).click();
         // check if popover exist
         p.findElements(protractor.By.css(".pnd-popover-literal")).then(function(popover) {
-            expect(popover.length).toBe(1);        
+            expect(popover.length).toBe(1);
         });
 
         // add text to popover

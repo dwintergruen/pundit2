@@ -467,7 +467,7 @@ describe("AnnotationSidebar interaction", function() {
 
             elements[4].findElements(protractor.By.css('.pnd-annotation-sidebar-filter-element-label')).then(function(ftr) {
                 expect(ftr.length).toBe(3);
-                ftr[2].click();                
+                ftr[2].click();
             });
 
             elements[3].click();

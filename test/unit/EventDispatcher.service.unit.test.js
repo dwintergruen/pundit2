@@ -53,9 +53,8 @@ describe('Event Dispatcher', function() {
         expect(message).toBe('test');
     });
 
-    it('should send a new message and resolve a promise', function() {
-        var promiseValue,
-            message;
+    it('should send a new event and resolve a promise', function() {
+        var promiseValue;
 
         EventDispatcher.addListener('EventDispatcher.unit.test', function (e) {
             e.resolve('promise ok');

@@ -97,7 +97,7 @@ describe('Client service', function() {
 
         EventDispatcher.addListener('Client.boot', function () {
             emitted = true;
-        })
+        });
 
         Client.boot();
         // expect(SelectorsManager.getActiveSelectors().length).toBeGreaterThan(0);

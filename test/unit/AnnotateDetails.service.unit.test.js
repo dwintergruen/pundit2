@@ -137,7 +137,7 @@ describe('AnnotationDetails service', function() {
 
     it('should update annotation details and open it', function(){
         // $rootScope.$emit('update-annotation-completed', fakeScope.id);
-        EventDispatcher.sendEvent('AnnotationsCommunication.editAnnotation', fakeScope.id)
+        EventDispatcher.sendEvent('AnnotationsCommunication.editAnnotation', fakeScope.id);
         var currentAnnotationDetails = AnnotationDetails.getAnnotationDetails(fakeScope.id);
         expect(typeof(currentAnnotationDetails)).toBe('object');
         expect(currentAnnotationDetails.expanded).toEqual(true);

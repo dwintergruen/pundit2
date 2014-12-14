@@ -33,7 +33,7 @@ describe("Item interaction", function() {
 
     it("should correctly set item to sticky", function(){
 
-        var item = p.findElement(protractor.By.css("item"));
+        var item = p.findElement(protractor.By.css("item")),
             head = p.findElement(protractor.By.css("item .pnd-item"));
 
         p.actions().mouseMove(item).perform();
