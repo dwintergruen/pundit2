@@ -42,9 +42,8 @@ angular.module('Pundit2.Dashboard')
     });
 
     $scope.toggleCollapse = function() {
-
         ResourcePanel.hide();
-
+        
         if ($scope.isCollapsed) {
             $scope.isCollapsed = !$scope.isCollapsed;
             var foo = {};
@@ -76,6 +75,8 @@ angular.module('Pundit2.Dashboard')
         if (resized) {
             lastPageX = evt.pageX;
         }
+
+        ResourcePanel.updatePosition();
     };
     var upHandler = function() {
         $document.off('mousemove', moveHandler);
@@ -83,7 +84,6 @@ angular.module('Pundit2.Dashboard')
     };
 
     $scope.mouseDownHandler = function(evt) {
-        ResourcePanel.hide();
         evt.preventDefault();
         lastPageX = evt.pageX;
         $document.on('mousemove', moveHandler);

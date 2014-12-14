@@ -32,7 +32,7 @@ angular.module('Pundit2.ResourcePanel')
 
     // TODO: global window resize management
     var onWindowResize = function() {
-        ResourcePanel.hide();
+        ResourcePanel.updatePosition();
     };
     angular.element($window).resize(onWindowResize);
 

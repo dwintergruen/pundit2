@@ -128,7 +128,9 @@ angular.module('Pundit2.ResourcePanel')
     };
 
     var setFocus = function(selector) {
-        $timeout(function(){ angular.element(selector)[0].focus(); });
+        $timeout(function() {
+            angular.element(selector)[0].focus();
+        });
     };
 
     // initialize a popover
@@ -139,8 +141,8 @@ angular.module('Pundit2.ResourcePanel')
 
         if (typeof(tripleElemType) !== 'undefined') {
             if (tripleElemType === 'sub') {
-                posPopMod = valMod+27;
-                state.popoverOptions.scope.arrowLeft = '-' + valMod-27 + 'px';
+                posPopMod = valMod + 27;
+                state.popoverOptions.scope.arrowLeft = '-' + valMod - 27 + 'px';
             } else if (tripleElemType === 'obj') {
                 state.popoverOptions.scope.arrowLeft = valMod + 'px';
                 posPopMod = -valMod;
@@ -165,7 +167,7 @@ angular.module('Pundit2.ResourcePanel')
             }
 
             state.popoverOptions.scope.escapeEvent = function(e) {
-                if (e.which == 27){
+                if (e.which == 27) {
                     e.stopPropagation();
                 }
             };
@@ -195,7 +197,7 @@ angular.module('Pundit2.ResourcePanel')
             }
 
             state.popoverOptions.scope.escapeEvent = function(e) {
-                if (e.which == 27){
+                if (e.which == 27) {
                     e.stopPropagation();
                 }
             };
@@ -300,6 +302,7 @@ angular.module('Pundit2.ResourcePanel')
 
         //state.popover = $popover(angular.element(target), state.popoverOptions);
         state.popover = $popover(state.anchor, state.popoverOptions);
+        state.popover.posPopMod = posPopMod;
 
         // Open the calendar automatically
         if (type === 'calendar') {
@@ -310,7 +313,7 @@ angular.module('Pundit2.ResourcePanel')
                 angular.element(state.popover.$element)
                     .find('.pnd-input-calendar')
                     .triggerHandler('click');
-            }, 1);
+            }, 0.3);
 
         }
 
@@ -523,6 +526,26 @@ angular.module('Pundit2.ResourcePanel')
         var selectors = SelectorsManager.getActiveSelectors();
         searchOnVocab(label, selectors, triple, caller);
         setLabelToSearch(label);
+    };
+
+    resourcePanel.updatePosition = function() {
+        if (state.popover === null) {
+            return;
+        }
+
+        var target = state.popover.clickTarget,
+            left = target.getBoundingClientRect().left,
+            top = target.getBoundingClientRect().top,
+            h = angular.element(target).outerHeight(),
+            w = angular.element(target).outerWidth();
+
+        var newLeft = left + state.popover.posPopMod + (w / 2) - 200,
+            newTop = top + h;
+
+        state.popover.$element.css({
+            'left': newLeft,
+            'top': newTop
+        });
     };
 
     /**
