@@ -83,7 +83,6 @@ module.exports = function(grunt) {
                         'coverage/*',
                         '<%= conf.app %>/css/*css',
                         '<%= conf.app %>/css/fonts',
-                        '<%= conf.app %>/fonts',
                         '<%= conf.build %>/*',
                         '!<%= conf.build %>/.git*'
                     ]
