@@ -121,19 +121,11 @@
     <script src="../src/Lists/MyItemsContainer/MyItemsContainer.dir.js"></script>
     <script src="../src/Lists/MyItemsContainer/MyItemsContainer.ctrl.js"></script>
     <script src="../src/Lists/MyItemsContainer/MyItemsContainer.service.js"></script>
-    <script src="../src/Lists/MyItemsContainer/MyItems.service.js"></script>
+    <script src="../src/Lists/MyItemsContainer/MyItems.service.js"></script>    
 
-    <script src="../src/Lists/Vocabularies/Vocabularies.js"></script>
-    <script src="../src/Lists/Vocabularies/FreebaseSelector.service.js"></script>
-    <script src="../src/Lists/Vocabularies/MurucaSelector.service.js"></script>
-    <script src="../src/Lists/Vocabularies/KorboBasketSelector.service.js"></script>
-    <script src="../src/Lists/Vocabularies/Korbo2Selector.service.js"></script>
-    <script src="../src/Lists/Vocabularies/EuropeanaSelector.service.js"></script>
-    <script src="../src/Lists/Vocabularies/GeonamesSelector.service.js"></script>
-    <script src="../src/Lists/Vocabularies/DbpediaSelector.service.js"></script>
-    <script src="../src/Lists/Vocabularies/SelectorsManager.service.js"></script>
-    <script src="../src/Lists/Vocabularies/VocabulariesContainer/VocabulariesContainer.dir.js"></script>
-    <script src="../src/Lists/Vocabularies/VocabulariesContainer/VocabulariesContainer.ctrl.js"></script>
+    <script src="../src/Lists/VocabulariesContainer/VocabulariesContainer.js"></script>
+    <script src="../src/Lists/VocabulariesContainer/VocabulariesContainer.dir.js"></script>
+    <script src="../src/Lists/VocabulariesContainer/VocabulariesContainer.ctrl.js"></script>
 
     <script src="../src/Tools/TripleComposer/TripleComposer.js"></script>
     <script src="../src/Tools/TripleComposer/TripleComposer.dir.js"></script>
@@ -168,6 +160,16 @@
     <script src="../src/Tools/NotebookComposer/NotebookComposer.dir.js"></script>
     <script src="../src/Tools/NotebookComposer/NotebookComposer.ctrl.js"></script>
     <script src="../src/Tools/NotebookComposer/NotebookComposer.service.js"></script>
+
+    <script src="../src/Vocabularies/Vocabularies.js"></script>
+    <script src="../src/Vocabularies/FreebaseSelector.service.js"></script>
+    <script src="../src/Vocabularies/MurucaSelector.service.js"></script>
+    <script src="../src/Vocabularies/KorboBasketSelector.service.js"></script>
+    <script src="../src/Vocabularies/Korbo2Selector.service.js"></script>
+    <script src="../src/Vocabularies/EuropeanaSelector.service.js"></script>
+    <script src="../src/Vocabularies/GeonamesSelector.service.js"></script>
+    <script src="../src/Vocabularies/DbpediaSelector.service.js"></script>
+    <script src="../src/Vocabularies/SelectorsManager.service.js"></script>
 
     <script src="../src/korboee-template.js"></script>
 

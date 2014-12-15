@@ -1,4 +1,4 @@
-angular.module('Pundit2.Vocabularies')
+angular.module('Pundit2.VocabulariesContainer')
 .controller('VocabulariesContainerCtrl', function($scope, $timeout, $injector, $element, $q, BaseComponent,
                                                     SelectorsManager, ItemsExchange, TypesHelper) {
 

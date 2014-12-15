@@ -43,13 +43,13 @@ angular.module('Pundit2.Vocabularies')
      * @description
      * `string`
      *
-     * Path of template containing myItemsContainer directive, client will append the content of this template
+     * Path of template containing VocabulariesContainer directive, client will append the content of this template
      * to the DOM (inside dashboard directive) to bootstrap this component
      *
      * Default value:
-     * <pre> clientDashboardTemplate: "src/Lists/Vocabularies/VocabulariesContainer/ClientVocabulariesContainer.tmpl.html" </pre>
+     * <pre> clientDashboardTemplate: "src/Lists/VocabulariesContainer/ClientVocabulariesContainer.tmpl.html" </pre>
      */
-    clientDashboardTemplate: "src/Lists/Vocabularies/VocabulariesContainer/ClientVocabulariesContainer.tmpl.html",
+    clientDashboardTemplate: "src/Lists/VocabulariesContainer/ClientVocabulariesContainer.tmpl.html",
 
     /**
      * @module punditConfig
