@@ -162,13 +162,13 @@
     <script src="../src/Tools/NotebookComposer/NotebookComposer.service.js"></script>
 
     <script src="../src/Vocabularies/Vocabularies.js"></script>
-    <script src="../src/Vocabularies/FreebaseSelector.service.js"></script>
-    <script src="../src/Vocabularies/MurucaSelector.service.js"></script>
-    <script src="../src/Vocabularies/KorboBasketSelector.service.js"></script>
-    <script src="../src/Vocabularies/Korbo2Selector.service.js"></script>
-    <script src="../src/Vocabularies/EuropeanaSelector.service.js"></script>
-    <script src="../src/Vocabularies/GeonamesSelector.service.js"></script>
-    <script src="../src/Vocabularies/DbpediaSelector.service.js"></script>
+    <script src="../src/Vocabularies/FreebaseSelector.factory.js"></script>
+    <script src="../src/Vocabularies/MurucaSelector.factory.js"></script>
+    <script src="../src/Vocabularies/KorboBasketSelector.factory.js"></script>
+    <script src="../src/Vocabularies/Korbo2Selector.factory.js"></script>
+    <script src="../src/Vocabularies/EuropeanaSelector.factory.js"></script>
+    <script src="../src/Vocabularies/GeonamesSelector.factory.js"></script>
+    <script src="../src/Vocabularies/DbpediaSelector.factory.js"></script>
     <script src="../src/Vocabularies/SelectorsManager.service.js"></script>
 
     <script src="../src/korboee-template.js"></script>
