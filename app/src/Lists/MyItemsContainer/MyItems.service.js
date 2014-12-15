@@ -324,6 +324,12 @@ angular.module("Pundit2.MyItemsContainer")
         return promise.promise;
     };
 
+    myItems.deleteItemAndConsolidate = function(item) {
+        myItems.deleteItem(item).then(function() {
+            Consolidation.consolidateAll();
+        });
+    };
+
     // add one item to my items on pundit server
     myItems.addItem = function(value){
 
