@@ -11,7 +11,7 @@ angular.module('Pundit2.PredicatesContainer')
 
     var orderBtn = angular.element($element).find('.predicates-items-btn-order');
 
-    // read by <notebook> directive
+    // read by <item-notebook> directive
     // will trigger this contextual menu type clicking on the contextual notebook icon
     $scope.itemMenuType = PredicatesContainer.options.cMenuType;
 

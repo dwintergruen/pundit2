@@ -114,10 +114,8 @@
     <script src="../src/Item/Item.js"></script>
     <script src="../src/Item/Item.dir.js"></script>
     <script src="../src/Item/Item.ctrl.js"></script>
-
-    <script src="../src/Notebook/Notebook.js"></script>
-    <script src="../src/Notebook/Notebook.dir.js"></script>
-    <script src="../src/Notebook/Notebook.ctrl.js"></script>
+    <script src="../src/Item/ItemNotebook.dir.js"></script>
+    <script src="../src/Item/ItemNotebook.ctrl.js"></script>
 
     <script src="../src/Lists/MyItemsContainer/MyItemsContainer.js"></script>
     <script src="../src/Lists/MyItemsContainer/MyItemsContainer.dir.js"></script>

@@ -11,7 +11,7 @@ angular.module('Pundit2.MyNotebooksContainer')
 
     var orderBtn = angular.element($element).find('.my-notebooks-btn-order');
 
-    // read by <notebook> directive
+    // read by <item-notebook> directive
     // will trigger this contextual menu type clicking on the contextual notebook icon
     $scope.notebookMenuType = MyNotebooksContainer.options.cMenuType;
 

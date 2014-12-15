@@ -14,11 +14,11 @@
     <div class="pnd-panel-tab-content-content pnd-inner-scrollable pnd-inner-no-tabs">
 	        <ul class="list-group" ng-if="!message.flag">
 	            <li class="list-group-item" ng-repeat="notebook in displayedNotebook | orderBy:getOrderProperty:reverse">
-	                <notebook 
+	                <item-notebook 
                         nid="{{notebook.id}}" 
                         menu-type="{{notebookMenuType}}"
                         hide-sticky-button="true"
-                        force-sticky="true"></notebook>
+                        force-sticky="true"></item-notebook>
 	            </li>
 	        </ul>
 	<div class="pnd-dashboard-welcome" ng-if="message.flag">{{message.text}}</div>

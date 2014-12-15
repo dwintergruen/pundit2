@@ -1,7 +1,6 @@
-// TODO: remove this directive and use Item
+angular.module('Pundit2.Item')
 
-angular.module('Pundit2.Notebook')
-.directive('notebook', function() {
+.directive('itemNotebook', function() {
     return {
         restrict: 'E',
         scope: {
@@ -10,7 +9,7 @@ angular.module('Pundit2.Notebook')
             forceSticky: '=forceSticky',
             menuType: '@'
         },
-        templateUrl: "src/Notebook/Notebook.dir.tmpl.html",
+        templateUrl: "src/Item/ItemNotebook.dir.tmpl.html",
         controller: "NotebookCtrl"
     };
 });
