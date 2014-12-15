@@ -4,11 +4,13 @@
     <li 
         class="list-group-item" 
         ng-repeat="pndItem in displayedItems | orderBy:getOrderProperty:reverse">
+        <!-- hide-options="true"  -->
         <item 
             uri="{{pndItem.uri}}" 
             menu-type="{{itemMenuType}}"
             hide-sticky-button="true"
-            force-sticky="true"></item>
+            is-selected="isSelected(pndItem)" 
+            ng-click="select(pndItem)"></item> 
     </li>
 </ul>
 
