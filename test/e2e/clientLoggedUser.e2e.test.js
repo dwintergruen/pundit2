@@ -494,12 +494,12 @@ describe("Client interaction when user is logged in", function() {
             expect(tabs[4].getText()).toBe("My notebooks");
         });
         // move on notebook item
-        var item = p.findElement(protractor.By.css("dashboard-panel[paneltitle=lists] .pnd-tab-content > div.active my-notebooks-container notebook .pnd-item"));
+        var item = p.findElement(protractor.By.css("dashboard-panel[paneltitle=lists] .pnd-tab-content > div.active my-notebooks-container item-notebook .pnd-item"));
         p.actions().mouseMove(item).perform();
         // wait animation
         p.sleep(500);
         // open ctx menu
-        p.findElements(protractor.By.css("dashboard-panel[paneltitle=lists] .pnd-tab-content > div.active my-notebooks-container notebook .pnd-item-buttons")).then(function(btns){
+        p.findElements(protractor.By.css("dashboard-panel[paneltitle=lists] .pnd-tab-content > div.active my-notebooks-container item-notebook .pnd-item-buttons")).then(function(btns){
             btns[0].click();
         });
         // edit notebook
