@@ -2,7 +2,7 @@ angular.module('Pundit2.ResourcePanel')
 
 .controller('ResourcePanelCtrl', function($rootScope, $scope, $timeout, $filter, $window,
     Client, Config, ItemsExchange, MyItems, MyPundit, PageItemsContainer, Preview,
-    ResourcePanel, SelectorsManager, KorboCommunicationService) {
+    ResourcePanel, SelectorsManager, KorboCommunicationService, EventDispatcher) {
 
     var actualContainer;
     var selectors = SelectorsManager.getActiveSelectors();
@@ -55,6 +55,8 @@ angular.module('Pundit2.ResourcePanel')
     };
 
     $scope.select = function(item) {
+        EventDispatcher.sendEvent('Pundit.changeSelection');
+        
         Preview.setItemDashboardSticky(item);
         $scope.isUseActive = true;
         $scope.itemSelected = item;

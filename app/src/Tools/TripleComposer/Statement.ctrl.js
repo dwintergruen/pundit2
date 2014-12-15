@@ -1,6 +1,8 @@
 angular.module('Pundit2.TripleComposer')
 
-.controller('StatementCtrl', function($scope, $element, TypesHelper, ContextualMenu, ResourcePanel, NameSpace, TripleComposer, Toolbar, Preview) {
+.controller('StatementCtrl', function($scope, $element,
+    TypesHelper, ContextualMenu, ResourcePanel, NameSpace, 
+    TripleComposer, Toolbar, Preview, EventDispatcher) {
 
     // default values
     $scope.subjectLabel = '';
@@ -117,8 +119,8 @@ angular.module('Pundit2.TripleComposer')
     };
 
     $scope.isStatementEmpty = function() {
-        if ((triple.subject !== null && !$scope.subjectFixed) || 
-            (triple.predicate !== null && !$scope.predicateFixed) || 
+        if ((triple.subject !== null && !$scope.subjectFixed) ||
+            (triple.predicate !== null && !$scope.predicateFixed) ||
             (triple.object !== null && !$scope.objectFixed)) {
             return false;
         } else {
@@ -160,6 +162,7 @@ angular.module('Pundit2.TripleComposer')
         $scope.wipeSubject();
         $scope.wipePredicate();
         $scope.wipeObject();
+        EventDispatcher.sendEvent('Pundit.changeSelection');
     };
 
     $scope.wipeSubject = function() {
@@ -171,6 +174,7 @@ angular.module('Pundit2.TripleComposer')
         ResourcePanel.hide();
         angular.element('.pnd-triplecomposer-save').addClass('disabled');
         $scope.tripleComposerCtrl.isTripleErasable();
+        EventDispatcher.sendEvent('Pundit.changeSelection');
     };
 
     $scope.wipePredicate = function() {
@@ -183,6 +187,7 @@ angular.module('Pundit2.TripleComposer')
         ResourcePanel.hide();
         angular.element('.pnd-triplecomposer-save').addClass('disabled');
         $scope.tripleComposerCtrl.isTripleErasable();
+        EventDispatcher.sendEvent('Pundit.changeSelection');
     };
 
     $scope.wipeObject = function() {
@@ -196,6 +201,7 @@ angular.module('Pundit2.TripleComposer')
         ResourcePanel.hide();
         angular.element('.pnd-triplecomposer-save').addClass('disabled');
         $scope.tripleComposerCtrl.isTripleErasable();
+        EventDispatcher.sendEvent('Pundit.changeSelection');
     };
 
     $scope.onSubjectMouseOver = function() {
