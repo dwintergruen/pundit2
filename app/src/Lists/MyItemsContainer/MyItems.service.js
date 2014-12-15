@@ -389,6 +389,12 @@ angular.module("Pundit2.MyItemsContainer")
         return promise.promise;
     };
 
+    myItems.addItemAndConsolidate = function(item) {
+        myItems.addItem(item).then(function() {
+            Consolidation.consolidateAll();
+        });
+    };
+
     return myItems;
 
 });
