@@ -49,6 +49,10 @@ angular.module('Pundit2.Core')
     };
 
     Utils.isValidDate = function(strDate) {
+        if (typeof(strDate) !== 'string') {
+            return;
+        }
+
         var t = strDate.match(/^(\d{4})-(\d{2})-(\d{2})$/);
         if (t !== null) {
             var d = +t[3],

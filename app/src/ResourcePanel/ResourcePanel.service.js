@@ -94,7 +94,7 @@ angular.module('Pundit2.ResourcePanel')
  */
 .service('ResourcePanel', function(BaseComponent, EventDispatcher, RESOURCEPANELDEFAULTS,
     ItemsExchange, MyItems, PageItemsContainer, Client, NameSpace, SelectorsManager,
-    $filter, $rootScope, $popover, $q, $timeout, Preview, $window, Config, Item) {
+    $filter, $rootScope, $popover, $q, $timeout, Preview, $window, Config, Item, Utils) {
 
     var resourcePanel = new BaseComponent('ResourcePanel', RESOURCEPANELDEFAULTS);
 
@@ -932,9 +932,10 @@ angular.module('Pundit2.ResourcePanel')
                 if (isItemValid(object)) {
                     objTypes = [];
 
+                    // TODO: add full date support
                     if (isItemValid(object, 'type')) {
                         objTypes = object.type;
-                    } else if (object instanceof Date) {
+                    } else if (Utils.isValidDate(object)) {
                         objTypes = [NameSpace.dateTime];
                     } else if (typeof(object) === 'string') {
                         objTypes = [NameSpace.rdfs.literal];
