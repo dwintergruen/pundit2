@@ -707,6 +707,10 @@ angular.module('Pundit2.TripleComposer')
     };
 
     tripleComposer.isTripleEmpty = function() {
+        if (statements.length > 1 && !statements[0].scope.templateMode) {
+            return false;
+        }
+
         var empty = true;
 
         statements.some(function(s) {
