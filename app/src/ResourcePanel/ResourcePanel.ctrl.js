@@ -40,6 +40,12 @@ angular.module('Pundit2.ResourcePanel')
     var removeSpace = function(str) {
         return str.replace(/ /g, '');
     };
+
+    var resetSelection = function() {
+        $scope.isUseActive = false;
+        $scope.itemSelected = null;
+    };
+
     // getter function used inside template to order items
     // return the items property value used to order
     $scope.getOrderProperty = function(item) {
@@ -55,9 +61,8 @@ angular.module('Pundit2.ResourcePanel')
     };
 
     $scope.select = function(item) {
-        EventDispatcher.sendEvent('Pundit.changeSelection');
-        
         Preview.setItemDashboardSticky(item);
+        EventDispatcher.sendEvent('Pundit.changeSelection');
         $scope.isUseActive = true;
         $scope.itemSelected = item;
     };
@@ -162,6 +167,10 @@ angular.module('Pundit2.ResourcePanel')
         return MyPundit.isUserLogged();
     }, function(newStatus) {
         $scope.userLoggedIn = newStatus;
+    });
+
+    EventDispatcher.addListener('Pundit.changeSelection', function(){
+        resetSelection();
     });
 
 });

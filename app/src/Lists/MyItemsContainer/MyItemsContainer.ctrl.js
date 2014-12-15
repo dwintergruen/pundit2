@@ -99,7 +99,6 @@ angular.module('Pundit2.MyItemsContainer')
         $scope.isUseActive = false;
         $scope.canAddItemAsSubject = false;
         $scope.canAddItemAsObject = false;
-        Preview.clearItemDashboardSticky();
     };
 
 
@@ -336,6 +335,8 @@ angular.module('Pundit2.MyItemsContainer')
 
     $scope.select = function(item) {
         Preview.setItemDashboardSticky(item);
+        EventDispatcher.sendEvent('Pundit.changeSelection');
+        
         $scope.isUseActive = true;
         $scope.itemSelected = item;
 
