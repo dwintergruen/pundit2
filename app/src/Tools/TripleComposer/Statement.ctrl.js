@@ -256,6 +256,7 @@ angular.module('Pundit2.TripleComposer')
         ResourcePanel.showItemsForSubject(triple, $event.target).then($scope.setSubject);
 
         if ($scope.subjectFound) {
+            EventDispatcher.sendEvent('Pundit.changeSelection');
             Preview.setItemDashboardSticky(triple.subject);
         }
     };
@@ -291,6 +292,7 @@ angular.module('Pundit2.TripleComposer')
         }
         ResourcePanel.showProperties(triple, $event.target).then($scope.setPredicate);
         if ($scope.predicateFound) {
+            EventDispatcher.sendEvent('Pundit.changeSelection');
             Preview.setItemDashboardSticky(triple.predicate);
         }
     };
@@ -348,6 +350,7 @@ angular.module('Pundit2.TripleComposer')
         }
 
         if ($scope.objectFound && !$scope.objectLiteral && !$scope.objectDate) {
+            EventDispatcher.sendEvent('Pundit.changeSelection');
             Preview.setItemDashboardSticky(triple.object);
         }
     };

@@ -11,6 +11,8 @@ angular.module('Pundit2.PageItemsContainer')
     $scope.canAddItemAsSubject = false;
     $scope.canAddItemAsObject = false;
 
+    $scope.isUserLogged = false;
+
     // read by <item> directive (in PageItemsContainer/items.tmpl.html)
     // will trigger this contextual menu type clicking on the contextual item icon
     $scope.itemMenuType = PageItemsContainer.options.cMenuType;
@@ -295,6 +297,10 @@ angular.module('Pundit2.PageItemsContainer')
 
     EventDispatcher.addListener('Pundit.changeSelection', function(){
         resetContainer();
+    });
+
+    EventDispatcher.addListener('MyPundit.isUserLogged', function(e) {
+        $scope.isUserLogged = e.args;
     });
 
 });

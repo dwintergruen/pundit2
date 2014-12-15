@@ -7,7 +7,7 @@
         <button 
             class="pnd-triplecomposer-cancel btn btn-success btn-xs pnd-btn-full" 
             title="Remove from my items"
-            ng-disabled="!isUseActive" 
+            ng-disabled="!isUseActive || !isUserLogged" 
             ng-click="onClickRemove()">
             Remove
         </button>

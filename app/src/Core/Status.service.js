@@ -91,6 +91,9 @@ angular.module('Pundit2.Core')
     // Template mode
     EventDispatcher.addListener('Pundit.templateMode', function(e) {
         state.Pundit.templateMode = e.args;
+
+        // Reset selection when template state change
+        EventDispatcher.sendEvent('Pundit.changeSelection');
     })
 
     // Error
