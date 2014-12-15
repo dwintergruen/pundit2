@@ -162,6 +162,7 @@ angular.module('Pundit2.TripleComposer')
         $scope.wipeSubject();
         $scope.wipePredicate();
         $scope.wipeObject();
+        Preview.clearItemDashboardSticky();
         EventDispatcher.sendEvent('Pundit.changeSelection');
     };
 
@@ -174,6 +175,7 @@ angular.module('Pundit2.TripleComposer')
         ResourcePanel.hide();
         angular.element('.pnd-triplecomposer-save').addClass('disabled');
         $scope.tripleComposerCtrl.isTripleErasable();
+        Preview.clearItemDashboardSticky();
         EventDispatcher.sendEvent('Pundit.changeSelection');
     };
 
@@ -187,6 +189,7 @@ angular.module('Pundit2.TripleComposer')
         ResourcePanel.hide();
         angular.element('.pnd-triplecomposer-save').addClass('disabled');
         $scope.tripleComposerCtrl.isTripleErasable();
+        Preview.clearItemDashboardSticky();
         EventDispatcher.sendEvent('Pundit.changeSelection');
     };
 
