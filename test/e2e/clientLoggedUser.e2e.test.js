@@ -305,31 +305,31 @@ describe("Client interaction when user is logged in", function() {
         });
     });
 
-    it("should correctly show ctx menu voice when triple composer is empty", function(){
+    // it("should correctly show ctx menu voice when triple composer is empty", function(){
 
-        // open dashboard
-        p.findElement(protractor.By.css('toolbar .pnd-toolbar-dashboard-button')).click();
-        // collapse tools panel
-        p.findElement(protractor.By.css('dashboard-panel[paneltitle=tools] .btn.btn-default')).click();
-        // open page items tab
-        p.findElement(protractor.By.css("dashboard dashboard-panel .pnd-tab-header li [data-index='1']")).click();
-        // mouseover on item
-        var item = p.findElement(protractor.By.css("dashboard dashboard-panel .pnd-tab-content item")),
-            menuBtn = p.findElement(protractor.By.css("dashboard dashboard-panel .pnd-tab-content item .pnd-icon-bars"));
-        p.actions().mouseMove(item).perform();
-        // wait animation
-        p.sleep(500);
-        // open ctx menu
-        menuBtn.click();
+    //     // open dashboard
+    //     p.findElement(protractor.By.css('toolbar .pnd-toolbar-dashboard-button')).click();
+    //     // collapse tools panel
+    //     p.findElement(protractor.By.css('dashboard-panel[paneltitle=tools] .btn.btn-default')).click();
+    //     // open page items tab
+    //     p.findElement(protractor.By.css("dashboard dashboard-panel .pnd-tab-header li [data-index='1']")).click();
+    //     // mouseover on item
+    //     var item = p.findElement(protractor.By.css("dashboard dashboard-panel .pnd-tab-content item")),
+    //         menuBtn = p.findElement(protractor.By.css("dashboard dashboard-panel .pnd-tab-content item .pnd-icon-bars"));
+    //     p.actions().mouseMove(item).perform();
+    //     // wait animation
+    //     p.sleep(500);
+    //     // open ctx menu
+    //     menuBtn.click();
 
-        // check triple composer statement subject text
-        p.findElements(protractor.By.css('.dropdown-menu li a')).then(function(a){
-            expect(a.length).toBe(3);
-            expect(a[0].getText()).toBe('Use as subject');
-            expect(a[1].getText()).toBe('Use as object');
-            expect(a[2].getText()).toBe('Add to my items');
-        });
-    });
+    //     // check triple composer statement subject text
+    //     p.findElements(protractor.By.css('.dropdown-menu li a')).then(function(a){
+    //         expect(a.length).toBe(3);
+    //         expect(a[0].getText()).toBe('Use as subject');
+    //         expect(a[1].getText()).toBe('Use as object');
+    //         expect(a[2].getText()).toBe('Add to my items');
+    //     });
+    // });
 
     it("should add my items by ctx menu showed on text selection", function(){
 
@@ -544,41 +544,41 @@ describe("Client interaction when user is logged in", function() {
         });
     });
 
-    it("should correctly use ctx menu for use predicate", function(){
+    // it("should correctly use ctx menu for use predicate", function(){
         
-        p.driver.manage().window().setSize(1600, 960);
+    //     p.driver.manage().window().setSize(1600, 960);
 
-        // open dashboard
-        p.findElement(protractor.By.css('toolbar .pnd-toolbar-dashboard-button')).click();
-        // collapse tools panel
-        p.findElement(protractor.By.css('dashboard-panel[paneltitle=details] .btn.btn-default')).click();
-        // open page items tab
-        p.findElement(protractor.By.css("dashboard dashboard-panel .pnd-tab-header li [data-index='2']")).click();
-        // mouseover on item
-        var item = p.findElement(protractor.By.css("dashboard dashboard-panel predicates-container item")),
-            menuBtn = p.findElement(protractor.By.css("dashboard dashboard-panel predicates-container item .pnd-btn-bar"));
-        p.actions().mouseMove(item).perform();
-        // wait animation
-        p.sleep(500);
-        // open ctx menu
-        menuBtn.click();
+    //     // open dashboard
+    //     p.findElement(protractor.By.css('toolbar .pnd-toolbar-dashboard-button')).click();
+    //     // collapse tools panel
+    //     p.findElement(protractor.By.css('dashboard-panel[paneltitle=details] .btn.btn-default')).click();
+    //     // open page items tab
+    //     p.findElement(protractor.By.css("dashboard dashboard-panel .pnd-tab-header li [data-index='2']")).click();
+    //     // mouseover on item
+    //     var item = p.findElement(protractor.By.css("dashboard dashboard-panel predicates-container item")),
+    //         menuBtn = p.findElement(protractor.By.css("dashboard dashboard-panel predicates-container item .pnd-btn-bar"));
+    //     p.actions().mouseMove(item).perform();
+    //     // wait animation
+    //     p.sleep(500);
+    //     // open ctx menu
+    //     menuBtn.click();
 
-        p.findElements(protractor.By.css('.dropdown-menu li a')).then(function(a){
-            expect(a.length).toBe(1);
-            expect(a[0].getText()).toBe('Use as predicate');
-            a[0].click();
-        });
+    //     p.findElements(protractor.By.css('.dropdown-menu li a')).then(function(a){
+    //         expect(a.length).toBe(1);
+    //         expect(a[0].getText()).toBe('Use as predicate');
+    //         a[0].click();
+    //     });
 
-        p.actions().mouseMove(item).perform();
-        menuBtn.click();
+    //     p.actions().mouseMove(item).perform();
+    //     menuBtn.click();
 
-        p.findElements(protractor.By.css('.dropdown-menu li a')).then(function(a){
-            expect(a.length).toBe(0);
-        });
-        p.findElements(protractor.By.css('.dropdown-menu li span')).then(function(span){
-            expect(span.length).toBe(1);
-        });
+    //     p.findElements(protractor.By.css('.dropdown-menu li a')).then(function(a){
+    //         expect(a.length).toBe(0);
+    //     });
+    //     p.findElements(protractor.By.css('.dropdown-menu li span')).then(function(span){
+    //         expect(span.length).toBe(1);
+    //     });
 
-    });
+    // });
 
 });

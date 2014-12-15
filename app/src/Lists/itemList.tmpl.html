@@ -8,7 +8,9 @@
             uri="{{pndItem.uri}}" 
             menu-type="{{itemMenuType}}"
             hide-sticky-button="true"
-            force-sticky="true"></item>
+            hide-options="true"
+            is-selected="isSelected(pndItem)" 
+            ng-click="select(pndItem)"></item> 
     </li>
 </ul>
 

@@ -98,6 +98,8 @@ angular.module('Pundit2.TripleComposer')
             TripleComposer.setEditMode(false);
             TripleComposer.updateVisibility();
         }
+
+        EventDispatcher.sendEvent('Pundit.changeSelection');
     };
 
     $scope.resetComposer = function() {
@@ -106,6 +108,7 @@ angular.module('Pundit2.TripleComposer')
             return;
         }
         TripleComposer.reset();
+        EventDispatcher.sendEvent('Pundit.changeSelection');
     };
 
     $scope.editAnnotation = function() {
@@ -261,6 +264,8 @@ angular.module('Pundit2.TripleComposer')
 
             } //end if logged
         }); // end my pundit login
+
+        EventDispatcher.sendEvent('Pundit.changeSelection');
 
         return promise.promise;
 

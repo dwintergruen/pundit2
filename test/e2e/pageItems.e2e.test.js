@@ -18,9 +18,9 @@ describe("Page Items interaction", function() {
         p.findElements(protractor.By.css('.pnd-panel-tab-content-content .pnd-tab-content')).then(function(tc) {
             expect(tc.length).toBe(1);
         });
-        // check if exist ordering dropdown
+        // check if exist action button
         p.findElements(protractor.By.css('.pnd-panel-tab-content-footer button')).then(function(btn) {
-            expect(btn.length).toBe(1);
+            expect(btn.length).toBe(4);
         });
         // check if exist items
         p.findElements(protractor.By.css('.pnd-tab-content .active item')).then(function(items) {
@@ -111,13 +111,13 @@ describe("Page Items interaction", function() {
         });
     });
 
-    it("should correctly open order dropdown", function(){
-        // open dropdown menu
-        p.findElement(protractor.By.css('.pnd-panel-tab-content-footer button')).click();
-        // chek if dropdown exist
-        p.findElements(protractor.By.css('.pnd-panel-tab-content-footer .dropdown-menu')).then(function(d) {
-            expect(d.length).toBe(1);
-        });
-    });
+    // it("should correctly open order dropdown", function(){
+    //     // open dropdown menu
+    //     p.findElement(protractor.By.css('.pnd-panel-tab-content-footer button')).click();
+    //     // chek if dropdown exist
+    //     p.findElements(protractor.By.css('.pnd-panel-tab-content-footer .dropdown-menu')).then(function(d) {
+    //         expect(d.length).toBe(1);
+    //     });
+    // });
 
 });
