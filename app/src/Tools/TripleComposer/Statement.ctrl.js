@@ -117,7 +117,9 @@ angular.module('Pundit2.TripleComposer')
     };
 
     $scope.isStatementEmpty = function() {
-        if (triple.subject !== null || triple.predicate !== null || triple.object !== null) {
+        if ((triple.subject !== null && !$scope.subjectFixed) || 
+            (triple.predicate !== null && !$scope.predicateFixed) || 
+            (triple.object !== null && !$scope.objectFixed)) {
             return false;
         } else {
             return true;
@@ -176,7 +178,7 @@ angular.module('Pundit2.TripleComposer')
         $scope.predicateFound = false;
         $scope.canBeObjectDate = true;
         $scope.canBeObjectLiteral = true;
-        $scope.predicatetFixed = false;
+        $scope.predicateFixed = false;
         triple.predicate = null;
         ResourcePanel.hide();
         angular.element('.pnd-triplecomposer-save').addClass('disabled');
