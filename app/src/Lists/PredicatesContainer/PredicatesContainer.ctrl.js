@@ -1,5 +1,7 @@
 angular.module('Pundit2.PredicatesContainer')
-.controller('PredicatesContainerCtrl', function($scope, $rootScope, $element, Config, ItemsExchange, PredicatesContainer) {
+.controller('PredicatesContainerCtrl', function($scope, $rootScope, $element, 
+    Config, ItemsExchange, PredicatesContainer, TripleComposer, Preview,
+    EventDispatcher) {
 
     var inputIconSearch = 'pnd-icon-search',
         inputIconClear = 'pnd-icon-times';
@@ -8,6 +10,11 @@ angular.module('Pundit2.PredicatesContainer')
     $scope.displayedItems = allPredicates;
 
     $scope.dropdownTemplate = "src/ContextualMenu/dropdown.tmpl.html";
+
+    $scope.itemSelected = null;
+    $scope.isUseActive = false;
+
+    $scope.canBeUseAsPredicate = false;
 
     var orderBtn = angular.element($element).find('.predicates-items-btn-order');
 
@@ -33,6 +40,12 @@ angular.module('Pundit2.PredicatesContainer')
             $scope.dropdownOrdering[i].isActive = false;
         }
         $scope.dropdownOrdering[index].isActive = true;
+    };
+
+    var resetContainer = function(){
+        $scope.itemSelected = null;
+        $scope.isUseActive = false;
+        $scope.canBeUseAsPredicate = false;
     };
 
     // sort button dropdown content
@@ -139,6 +152,38 @@ angular.module('Pundit2.PredicatesContainer')
             $scope.message.flag = false;
             orderBtn.removeClass('disabled');
         }
+    });
+
+    $scope.isSelected = function(item) {
+        if ($scope.itemSelected !== null && $scope.itemSelected.uri === item.uri) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
+    $scope.select = function(item) {
+        Preview.setItemDashboardSticky(item);
+        EventDispatcher.sendEvent('Pundit.changeSelection');
+        
+        $scope.isUseActive = true;
+        $scope.itemSelected = item;
+
+        $scope.canBeUseAsPredicate = TripleComposer.canBeUseAsPredicate(item);
+    };
+
+    $scope.onClickUsePredicate = function() {
+        if ($scope.itemSelected === null) {
+            return;
+        }
+
+        TripleComposer.addToPredicate($scope.itemSelected);
+
+        resetContainer();
+    }
+
+    EventDispatcher.addListener('Pundit.changeSelection', function(){
+        resetContainer();
     });
 
 });

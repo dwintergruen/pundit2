@@ -23,11 +23,18 @@
             <li 
                 class="list-group-item" 
                 ng-repeat="pndItem in displayedItems | orderBy:getOrderProperty:reverse">
+                <!-- <item 
+                    uri="{{pndItem.uri}}" 
+                    menu-type="{{itemMenuType}}"
+                    hide-sticky-button="true"
+                    force-sticky="true"></item> -->
                 <item 
                     uri="{{pndItem.uri}}" 
                     menu-type="{{itemMenuType}}"
                     hide-sticky-button="true"
-                    force-sticky="true"></item>
+                    hide-options="true"
+                    is-selected="isSelected(pndItem)" 
+                    ng-click="select(pndItem)"></item>     
             </li>
         </ul>
         <div 
@@ -38,6 +45,14 @@
 
     <!-- FOOTER -->
     <div class="pnd-panel-tab-content-footer">
+        <button 
+            class="pnd-triplecomposer-cancel btn btn-predicate btn-xs pnd-btn-full" 
+            title="Use as predicate"
+            ng-disabled="!isUseActive || !canBeUseAsPredicate" 
+            ng-click="onClickUsePredicate()">
+            Set predicate
+        </button>
+
         <button 
             type="button" 
             class="btn btn-xs btn-link pnd-btn-full predicates-items-btn-order pnd-btn-lists" 
