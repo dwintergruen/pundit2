@@ -842,6 +842,10 @@ angular.module('Pundit2.AnnotationSidebar')
         return state.isAnnotationsPanelActive;
     };
     annotationSidebar.activateAnnotationsPanel = function() {
+        if (state.isFiltersExpanded) {
+            annotationSidebar.toggleFiltersContent();
+        }
+
         if (state.isSuggestionsPanelActive) {
             Annomatic.stop();
             EventDispatcher.sendEvent('AnnotationSidebar.activateAnnotationsPanel');

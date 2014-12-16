@@ -5,14 +5,18 @@
         <div class="pnd-annotation-sidebar-content-exp" ng-show="isAnnotationSidebarExpanded">
             <div class="pnd-annotation-sidebar-modes-buttons">
                 <button type="button"
-                        ng-click="activateSuggestionsPanel()"
-                        ng-class="{'pnd-active': isSuggestionsPanelActive()}"
                         class="btn pnd-btn-sidebar"
-                        ng-disabled="!isAnnomaticActive || isLoadingData || isLoading">
+                        ng-class="{'pnd-active': isSuggestionsPanelActive()}"
+                        ng-click="activateSuggestionsPanel()"
+                        ng-if="isAnnomaticActive"
+                        ng-disabled="isLoadingData || isLoading">
                     Suggestions
                 </button><button type="button"
                         ng-click="activateAnnotationsPanel()"
-                        ng-class="{'pnd-active': isAnnotationsPanelActive()}"
+                        ng-class="{
+                            'pnd-active': isAnnotationsPanelActive(),
+                            'pnd-btn-only-one': !isAnnomaticActive
+                        }"
                         class="btn pnd-btn-sidebar"
                         ng-disabled="isLoading">
                     Annotations <span ng-show="isAnnotationsPanelActive()">({{annotations.length}}/{{allAnnotations.length}})</span>
