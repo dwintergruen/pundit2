@@ -103,6 +103,7 @@ angular.module('Pundit2.TripleComposer')
     };
 
     $scope.resetComposer = function() {
+        angular.element('.pnd-triplecomposer-save').addClass('disabled');
         if ($scope.templateMode) {
             TripleComposer.wipeNotFixedItems();
             return;
