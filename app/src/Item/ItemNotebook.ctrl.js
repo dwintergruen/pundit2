@@ -1,6 +1,6 @@
 angular.module('Pundit2.Item')
 
-.controller('NotebookCtrl', function($scope, NotebookExchange, Preview, ContextualMenu) {
+.controller('NotebookCtrl', function($scope, NotebookExchange, Preview, ContextualMenu, EventDispatcher) {
 
     // get item by id (passed as directive nid param)
     $scope.notebook = NotebookExchange.getNotebookById($scope.nid);
@@ -21,6 +21,7 @@ angular.module('Pundit2.Item')
         if (Preview.isStickyItem($scope.notebook)) {
             Preview.clearItemDashboardSticky();
         } else {
+            EventDispatcher.sendEvent('Pundit.changeSelection');
             Preview.setItemDashboardSticky($scope.notebook);
         }
         evt.preventDefault();
@@ -33,6 +34,7 @@ angular.module('Pundit2.Item')
             if (Preview.isStickyItem($scope.notebook)) {
                 Preview.clearItemDashboardSticky();
             } else {
+                EventDispatcher.sendEvent('Pundit.changeSelection');
                 Preview.setItemDashboardSticky($scope.notebook);
             }
         }
@@ -46,5 +48,9 @@ angular.module('Pundit2.Item')
         evt.stopPropagation();
         return false;
     };
+
+    EventDispatcher.addListener('Pundit.changeSelection', function(){
+        Preview.clearItemDashboardSticky();
+    });
 
 });
