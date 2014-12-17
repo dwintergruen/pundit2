@@ -272,6 +272,15 @@ angular.module('Pundit2.TripleComposer')
 
     }; // end save function
 
+    EventDispatcher.addListener('ResourcePanel.toggle', function(e) {
+        var isResourcePanelOpend = e.args;
+        if (isResourcePanelOpend) {
+            angular.element('.pnd-triplecomposer-statements-container').addClass('pnd-triplecomposer-statement-not-scroll');
+        } else {
+            angular.element('.pnd-triplecomposer-statements-container').removeClass('pnd-triplecomposer-statement-not-scroll');
+        }
+    });
+
     EventDispatcher.addListener('Annotators.saveAnnotation', function() {
         var uncomplete = $scope.statements.some(function(el) {
             var t = el.scope.get();

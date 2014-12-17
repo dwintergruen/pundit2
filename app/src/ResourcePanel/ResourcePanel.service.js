@@ -114,6 +114,11 @@ angular.module('Pundit2.ResourcePanel')
         }
     };
 
+    var show = function() {
+        state.popover.show();
+        EventDispatcher.sendEvent('ResourcePanel.toggle', true);
+    };
+
     var hide = function() {
         if (state.popover === null) {
             return;
@@ -125,6 +130,8 @@ angular.module('Pundit2.ResourcePanel')
         state.popover.hide();
         state.popover.destroy();
         state.popover = null;
+
+        EventDispatcher.sendEvent('ResourcePanel.toggle', false);
     };
 
     var setFocus = function(selector) {
@@ -439,7 +446,7 @@ angular.module('Pundit2.ResourcePanel')
         if (state.popover === null) {
             state.popover = initPopover(content, target, "", 'resourcePanel', contentTabs, type);
             state.popover.$promise.then(function() {
-                state.popover.show();
+                show();
                 setFocus('input.pnd-rsp-input');
             });
         }
@@ -449,7 +456,7 @@ angular.module('Pundit2.ResourcePanel')
             hide();
             state.popover = initPopover(content, target, "", 'resourcePanel', contentTabs, type); // type = element of triple
             state.popover.$promise.then(function() {
-                state.popover.show();
+                show();
                 setFocus('input.pnd-rsp-input');
             });
         } // if click a different popover, hide the shown popover and show the clicked one
@@ -518,10 +525,6 @@ angular.module('Pundit2.ResourcePanel')
         }
     };
 
-    EventDispatcher.addListener('TripleComposer.statementChange', function() {
-        hide();
-    });
-
     resourcePanel.updateVocabSearch = function(label, triple, caller) {
         var selectors = SelectorsManager.getActiveSelectors();
         searchOnVocab(label, selectors, triple, caller);
@@ -587,7 +590,7 @@ angular.module('Pundit2.ResourcePanel')
             hide();
             state.popover = initPopover(content, target, "", 'literal');
             state.popover.$promise.then(function() {
-                state.popover.show();
+                show();
                 setFocus('textarea.pnd-popover-literal-textarea');
             });
         }
@@ -596,7 +599,7 @@ angular.module('Pundit2.ResourcePanel')
         else if (state.popover === null) {
             state.popover = initPopover(content, target, "", 'literal');
             state.popover.$promise.then(function() {
-                state.popover.show();
+                show();
                 setFocus('textarea.pnd-popover-literal-textarea');
             });
         }
@@ -628,7 +631,7 @@ angular.module('Pundit2.ResourcePanel')
         if (state.popover === null) {
             state.popover = initPopover(content, target, "", 'calendar');
             state.popover.$promise.then(function() {
-                state.popover.show();
+                show();
                 //$datepicker.show;
                 // angular.element('input.pnd-input-calendar')[0].focus();
             });
@@ -639,7 +642,7 @@ angular.module('Pundit2.ResourcePanel')
             hide();
             state.popover = initPopover("", target, "", 'calendar');
             state.popover.$promise.then(function() {
-                state.popover.show();
+                show();
                 //$datepicker.show;
                 // angular.element('input.pnd-input-calendar')[0].focus();
             });
@@ -956,6 +959,10 @@ angular.module('Pundit2.ResourcePanel')
         state.resourcePromise = $q.defer();
         return state.resourcePromise.promise;
     };
+
+    EventDispatcher.addListener('TripleComposer.statementChange', function() {
+        hide();
+    });
 
     EventDispatcher.addListener('TripleComposer.reset', function() {
         hide();
