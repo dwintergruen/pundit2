@@ -1,9 +1,8 @@
 /**
  * TRIPLE COMPOSER
  *
- * Defining style for Triple Composer component
+ * Defining styles for Triple Composer component
  */
-
 
 .pnd-triplecomposer-statements-container {
 
@@ -14,6 +13,14 @@
         margin-left: @triplecomposer-spacing;
         margin-bottom: @triplecomposer-spacing;
         margin-right: @triplecomposer-spacing;
+
+        &:first-child {
+            margin-top: @triplecomposer-spacing;
+        }
+
+        &:last-child {
+            margin-top: @triplecomposer-spacing;
+        }
 
         /* Div containing the three triple blocks */
         .pnd-statement-widget {
