@@ -561,10 +561,6 @@ angular.module('Pundit2.Client')
     var loadTemplate = function() {
         if (Config.useTemplates) {
             TemplatesSelector.getAll().then(function() {
-                if (typeof(TemplatesExchange.getCurrent()) === 'undefined') {
-                    TemplatesExchange.setFirstAsCurrent();
-                }
-
                 // show immediatly the first template
                 if (Config.useOnlyTemplateMode) {
                     TripleComposer.showCurrentTemplate();
