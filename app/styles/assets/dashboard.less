@@ -4,6 +4,10 @@
  * Styles for dashboard
  */
 
+/* ------------------------------------ *\
+   #GENERAL-DASHBOARD-STYLE
+\* ------------------------------------ */
+
 .pnd-dashboard-container {
     position: fixed;
     top: @toolbar-height;
@@ -22,10 +26,11 @@
     overflow: hidden;
 }
 
-/* First and second expended panels have
+/* Panels: First and second expended panels have
 an internal padding on the right to leave some space to the
 vertical draggable bar */
 .pnd-dashboard-panel-not-last {
+
     .pnd-dashboard-panel-expanded {
         padding-right: 7px
     }
@@ -40,67 +45,58 @@ vertical draggable bar */
 }
 
 /* ------------------------------------ *\
-   #BUTTON
+   #COLLAPSE-EXPAND-BUTTONS
 \* ------------------------------------ */
 
-.pnd-dashboard-panel.pnd-dashboard-panel-last button.pnd-btn-dashboard {
-    right: 0px;
+.pnd-dashboard-panel {
 
-    &.btn-xs {
-        width: 20px;
+    button.pnd-btn-dashboard {
+        position: absolute;
+        z-index: 1;
+        right: 0; /* This is modified below for not-last panels */
+        width: 20px; /* This is modified below for not-last panels */
 
-        &.disabled,
-        &[disabled] {
-            background-color: #fff;
-            text-shadow: 0;
-            opacity: 1;
-            filter: alpha(opacity=100);
+        &.btn-xs {
+            border: 0;
+            padding-top: 2px;
+            text-shadow: 0 1px 0 #fff;
+
+            &:hover {
+                background-color: #fff;
+                color: @brand-success;
+            }
+
+            &:focus,
+            &:active:focus,
+            &.active:focus {
+                box-shadow: none;
+            }
 
             .pnd-icon {
-                color: @gray-light;
+                font-size: 12px;
+                line-height: normal;
+                padding: 0;
+            }
+
+            &.disabled,
+            &[disabled] {
+                background-color: #fff;
+                text-shadow: 0;
+                opacity: 1;
+                filter: alpha(opacity=100);
+
+                .pnd-icon {
+                    color: @gray-extra-light;
+                }
             }
         }
     }
-}
 
-.pnd-dashboard-panel button.pnd-btn-dashboard {
-    position: absolute;
-    z-index: 1;
-    right: 7px;
-
-    &.btn-xs {
-        border: 0px;
-        padding-top: 2px;
-        text-shadow: 0 1px 0 #fff;
-        width: 21px;
-
-        &:hover {
-            background-color: #fff;
-            color: @brand-success;
-        }
-
-        &:focus,
-        &:active:focus,
-        &.active:focus {
-            box-shadow: none;
-        }
-
-        .pnd-icon {
-            font-size: 12px;
-            line-height: normal;
-            padding: 0px;
-        }
-
-        &.disabled,
-        &[disabled] {
-            background-color: #fff;
-            text-shadow: 0;
-            opacity: 1;
-            filter: alpha(opacity=100);
-
-            .pnd-icon {
-                color: @gray-light;
-            }
+    /* First and second panel (not-last) */
+    &.pnd-dashboard-panel-not-last {
+        button.pnd-btn-dashboard {
+            right: 7px;
+            width: 21px;
         }
     }
 }
