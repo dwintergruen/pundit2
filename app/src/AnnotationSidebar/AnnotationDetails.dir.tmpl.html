@@ -152,7 +152,7 @@
                                         <item-preview class="pnd-preview clearfix" uri="{{object.uri}}" sticking="false"></item-preview>
                                     </span>
                                     <span ng-if="object.typeClass!='uri'">
-                                        <span>{{object.label}}</span>
+                                        <span class="pnd-annotation-details-literal">{{object.label}}</span>
                                     </span>
                                 </span>
                                 <p ng-if="object.class == 'pnd-item-entity' && moreInfo" class="pnd-annotation-details-more-info">
@@ -172,12 +172,12 @@
             <button 
                 type="button" 
                 ng-if="showEdit()" 
-                class="btn btn-xs btn-success" 
+                class="btn btn-xs btn-success pnd-btn-full"
                 ng-click="editAnnotation()"
                 ng-disable="isLoading">Edit</button>
             <button 
                 type="button" 
-                class="btn btn-xs btn-danger" 
+                class="btn btn-xs btn-info pnd-btn-full"
                 ng-click="deleteAnnotation()"
                 ng-disable="isLoading">Delete</button>
         </div>
