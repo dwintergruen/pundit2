@@ -295,11 +295,11 @@ angular.module('Pundit2.Core')
                     extendRangeAndDomain(item.uri, item.range, item.domain);
                     addLabel(item.uri, item.label);
                     addVocab(item.uri, item.vocabulary);
+                    
+                    return;
                 }
 
             }
-
-            return;
 
         } else if (item.isProperty()) {
             // default propeties container

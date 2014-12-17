@@ -19,10 +19,11 @@ angular.module('Pundit2.Core')
         var urls = Config.templates,
             promiseArr = [];
 
+        // TODO: set current template after first promise
         // set the first as current
-        if (urls.length > 0) {
-            TemplatesExchange.setCurrent(urls[0]);
-        }
+        // if (urls.length > 0 && typeof(TemplatesExchange.getCurrent()) === 'undefined') {
+        //     TemplatesExchange.setCurrent(urls[0]);
+        // }
 
         for (var i in urls) {
             promiseArr.push(templatesSelector.get(urls[i]));

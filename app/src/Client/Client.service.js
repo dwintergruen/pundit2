@@ -455,7 +455,7 @@ angular.module('Pundit2.Client')
                                 ImageAnnotator, TextFragmentAnnotator, AnnotationsCommunication,
                                 AnnotationsExchange, Item, ItemsExchange, MyItems, Status,
                                 TextFragmentHandler, ImageHandler, PageAnnotator,
-                                Toolbar, Annomatic, NotebookCommunication, NotebookExchange,
+                                Toolbar, Annomatic, NotebookCommunication, NotebookExchange, TemplatesExchange,
                                 SelectorsManager, FreebaseSelector, MurucaSelector, KorboBasketSelector, Korbo2Selector, EuropeanaSelector, DbpediaSelector, GeonamesSelector, PredicateSelector,
                                 TemplatesSelector, TripleComposer, ImageFragmentAnnotatorHelper,
                                 $injector, $templateCache, $rootScope, $compile, $window) {
@@ -574,6 +574,21 @@ angular.module('Pundit2.Client')
             });
         };
 
+        var loadTemplate = function() {
+            if (Config.useTemplates) {
+                TemplatesSelector.getAll().then(function(){
+                    if (typeof(TemplatesExchange.getCurrent()) === 'undefined') {
+                        TemplatesExchange.setFirstAsCurrent();
+                    }
+
+                    // show immediatly the first template
+                    if (Config.useOnlyTemplateMode) {
+                        TripleComposer.showCurrentTemplate();
+                    }
+                });
+            }
+        };
+
         // Reads the conf and initializes the active components, bootstrap what needs to be
         // bootstrapped (gets annotations, check if the user is logged in, etc)
         client.boot = function() {
@@ -585,14 +600,7 @@ angular.module('Pundit2.Client')
             }
             loadConfiguredRelations();
 
-            if (Config.useTemplates) {
-                TemplatesSelector.getAll().then(function(){
-                    // show immediatly the first template
-                    if (Config.useOnlyTemplateMode) {
-                        TripleComposer.showCurrentTemplate();
-                    }
-                });
-            }
+            loadTemplate();
 
             if (Config.disableImageAnnotation) {
                 ImageHandler.turnOff();
@@ -665,18 +673,20 @@ angular.module('Pundit2.Client')
             NotebookExchange.wipe();
             ItemsExchange.wipe();
             AnnotationsExchange.wipe();
-
-            NotebookCommunication.getMyNotebooks();
-            NotebookCommunication.getCurrent();
+            TemplatesExchange.wipe();
 
             // There could be private annotations we want to show, get them again
             AnnotationsCommunication.getAnnotations();
-
-            MyItems.getAllItems();
             if (Config.useBasicRelations) {
                 loadBasicRelations();
             }
             loadConfiguredRelations();
+            loadTemplate();
+
+            MyItems.getAllItems();
+
+            NotebookCommunication.getMyNotebooks();
+            NotebookCommunication.getCurrent();
         };
 
         // Called when the user completed the logout process, clicking on logout
@@ -685,6 +695,7 @@ angular.module('Pundit2.Client')
             NotebookExchange.wipe();
             ItemsExchange.wipe();
             AnnotationsExchange.wipe();
+            TemplatesExchange.wipe();
 
             // There might have been private annotations we dont want to show anymore
             AnnotationsCommunication.getAnnotations();
@@ -692,6 +703,7 @@ angular.module('Pundit2.Client')
                 loadBasicRelations();
             }
             loadConfiguredRelations();
+            loadTemplate();
         };
 
         var addKorboEESelector = function(){
