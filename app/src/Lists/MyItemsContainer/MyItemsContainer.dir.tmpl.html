@@ -4,14 +4,7 @@
 
     <!-- FOOTER -->
     <div class="pnd-panel-tab-content-footer">
-        <button 
-            class="pnd-triplecomposer-cancel btn btn-success btn-xs pnd-btn-full" 
-            title="Remove from my items"
-            ng-disabled="!isUseActive || !isUserLogged" 
-            ng-click="onClickRemove()">
-            Remove
-        </button>
-        <button 
+        <button
             class="pnd-triplecomposer-cancel btn btn-subject btn-xs pnd-btn-full" 
             title="Use as subject" 
             ng-disabled="!isUseActive || !canAddItemAsSubject"
@@ -25,6 +18,14 @@
             ng-click="onClickUseObject()">
             Set object
         </button>
+        <button
+                class="pnd-triplecomposer-cancel btn btn-info btn-xs pnd-btn-full"
+                title="Remove from my items"
+                ng-disabled="!isUseActive || !isUserLogged"
+                ng-click="onClickRemove()">
+            Remove
+        </button>
+
 
         <!-- <button 
             type="button" 

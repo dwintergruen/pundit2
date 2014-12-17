@@ -4,14 +4,7 @@
 
     <!-- FOOTER -->
     <div class="pnd-panel-tab-content-footer">
-        <button 
-            class="pnd-triplecomposer-cancel btn btn-success btn-xs pnd-btn-full" 
-            title="Add to my items"
-            ng-disabled="!isUseActive" 
-            ng-click="onClickAdd()">
-            Add
-        </button>
-        <button 
+        <button
             class="pnd-triplecomposer-cancel btn btn-subject btn-xs pnd-btn-full" 
             title="Use as subject" 
             ng-disabled="!isUseActive || !canAddItemAsSubject"
@@ -25,7 +18,14 @@
             ng-click="onClickUseObject()">
             Set object
         </button>
-    
+        <button
+                class="pnd-triplecomposer-cancel btn btn-info btn-xs pnd-btn-full"
+                title="Add to my items"
+                ng-disabled="!isUseActive"
+                ng-click="onClickAdd()">
+            Add to myItems
+        </button>
+
         <button 
             type="button" 
             class="btn btn-xs btn-link pnd-btn-full vocab-items-btn-order pnd-btn-lists" 
