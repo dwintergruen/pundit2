@@ -1,4 +1,5 @@
 angular.module('Pundit2.Core')
+
 .service('ItemsExchange', function(BaseComponent) {
 
     // TODO: inherit from a Store or something()? Annotations, items, ...
@@ -45,12 +46,12 @@ angular.module('Pundit2.Core')
 
     itemsExchange.wipeContainer = function(container) {
         if (typeof(itemListByContainer[container]) === 'undefined') {
-            itemsExchange.log('Cannot wipe undefined container '+ container);
+            itemsExchange.log('Cannot wipe undefined container ' + container);
             return;
         }
 
         // for each item inside specified container list
-        itemListByContainer[container].forEach(function(item){
+        itemListByContainer[container].forEach(function(item) {
             // remove container from itemContainers object array
             itemContainers[item.uri].splice(itemContainers[item.uri].indexOf(container), 1);
             // if we have zero container must remove item everywhere
@@ -59,7 +60,7 @@ angular.module('Pundit2.Core')
                 delete itemContainers[item.uri];
                 delete itemListByURI[item.uri];
                 var itemIndex = itemList.indexOf(item);
-                if (itemIndex !== -1){
+                if (itemIndex !== -1) {
                     itemList.splice(itemIndex, 1);
                 }
             }
@@ -67,7 +68,7 @@ angular.module('Pundit2.Core')
         // empty container list
         delete itemListByContainer[container];
 
-        itemsExchange.log('Wiped '+container+' container.');
+        itemsExchange.log('Wiped ' + container + ' container.');
     };
 
     itemsExchange.getItems = function() {
@@ -144,11 +145,11 @@ angular.module('Pundit2.Core')
             containers = [containers];
         }
 
-        for (var i=containers.length; i--;) {
+        for (var i = containers.length; i--;) {
             var container = containers[i];
 
             if (item.uri in itemContainers && itemContainers[item.uri].indexOf(container) !== -1) {
-                itemsExchange.log('Item '+item.label+' already belongs to container '+container);
+                itemsExchange.log('Item ' + item.label + ' already belongs to container ' + container);
                 return;
             }
 
@@ -173,13 +174,13 @@ angular.module('Pundit2.Core')
         var containerItems = itemListByContainer[container];
 
         if (typeof(containerItems) === 'undefined') {
-            itemsExchange.err("Cannot remove item "+item.label+" from container "+ container+": container not found.");
+            itemsExchange.err("Cannot remove item " + item.label + " from container " + container + ": container not found.");
             return;
         }
 
         var index = containerItems.indexOf(item);
         if (index === -1) {
-            itemsExchange.err("Cannot remove item "+item.label+" from container "+ container+": item not in container.");
+            itemsExchange.err("Cannot remove item " + item.label + " from container " + container + ": item not in container.");
             return;
         }
         // remove item from itemListByContainer
@@ -194,24 +195,24 @@ angular.module('Pundit2.Core')
             delete itemContainers[item.uri];
             delete itemListByURI[item.uri];
             var itemIndex = itemList.indexOf(item);
-            if (itemIndex !== -1){
+            if (itemIndex !== -1) {
                 itemList.splice(itemIndex, 1);
             }
         }
 
-        itemsExchange.log("Item "+ item.label +" removed from container "+ container);
+        itemsExchange.log("Item " + item.label + " removed from container " + container);
     };
 
     itemsExchange.addItems = function(items) {
         // TODO: sanity checks
-        for (var l=items.length; l--;) {
+        for (var l = items.length; l--;) {
             itemsExchange.addItem(items[l]);
         }
     };
 
     var extendRangeAndDomain = function(uri, range, domain) {
         var p = itemListByURI[uri];
-        
+
         var i;
         // empty array coding a free range
         if (range.length === 0) {
@@ -262,6 +263,12 @@ angular.module('Pundit2.Core')
 
     itemsExchange.addItem = function(item, container) {
 
+        var insertItem = function() {
+            itemListByURI[item.uri] = item;
+            itemList.push(item);
+            itemsExchange.addItemToContainer(item, container);
+        };
+
         if (typeof(container) === "undefined") {
             container = "default";
         }
@@ -272,8 +279,8 @@ angular.module('Pundit2.Core')
             return;
         } else if (item.uri in itemListByURI) {
             // the item that we try to add already exist
-            itemsExchange.log("Item already present: "+ item.uri);
-            
+            itemsExchange.log("Item already present: " + item.uri);
+
             // skip if come from an annotation
             if (item.isProperty() && !item.isAnnotationProperty) {
 
@@ -286,32 +293,35 @@ angular.module('Pundit2.Core')
                     if (index > -1) {
                         itemListByContainer[defaultRelationsContainer].splice(index, 1);
                     }
+                    var itemIndex = itemList.indexOf(itemListByURI[item.uri]);
+                    if (itemIndex > -1) {
+                        itemList.splice(itemIndex, 1);
+                    }
+
                     delete itemContainers[item.uri];
                     delete itemListByURI[item.uri];
                     // add the new property to the default container 
                     container = defaultRelationsContainer;
+
+                    insertItem();
                 } else {
                     // update the old item (merge of range, domain and vocabs)
                     extendRangeAndDomain(item.uri, item.range, item.domain);
                     addLabel(item.uri, item.label);
                     addVocab(item.uri, item.vocabulary);
-                    
-                    return;
                 }
 
             }
 
+            return;
         } else if (item.isProperty()) {
             // default propeties container
             // the first time that a propeties is loaded it is added to this container
             container = defaultRelationsContainer;
         }
 
-        itemListByURI[item.uri] = item;
-        itemList.push(item);
-        itemsExchange.addItemToContainer(item, container);
-
-        itemsExchange.log("Added item: " +item.uri);
+        insertItem();
+        itemsExchange.log("Added item: " + item.uri);
     };
 
     itemsExchange.log('Component up and running');
