@@ -49,8 +49,4 @@ angular.module('Pundit2.Item')
         return false;
     };
 
-    EventDispatcher.addListener('Pundit.changeSelection', function(){
-        Preview.clearItemDashboardSticky();
-    });
-
 });
