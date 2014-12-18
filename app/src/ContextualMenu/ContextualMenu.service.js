@@ -243,11 +243,11 @@ angular.module('Pundit2.ContextualMenu')
 
         if (!state.init) {
             state.mockMenu = init(mockOptions);
-            state.mockMenu.$promise.then(state.mockMenu.show);    
+            state.mockMenu.$promise.then(state.mockMenu.show);
         } else {
             state.mockMenu.show();
         }
-        
+
 
     };
 
@@ -389,7 +389,7 @@ angular.module('Pundit2.ContextualMenu')
 
         contextualMenu.err('Action ' + name + ' not found');
         return false;
-    };    
+    };
 
     contextualMenu.modifyDisabled = function(name, value) {
         var foundEl;
