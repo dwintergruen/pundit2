@@ -1,6 +1,9 @@
+// TODO: optimize panel resize
+
 angular.module('Pundit2.Dashboard')
 
 .controller('DashboardPanelCtrl', function($document, $window, $scope, $rootScope, $element, $timeout, Dashboard, ResourcePanel, Annomatic, Analytics) {
+
     // readed from default (not change)
     $scope.collapsedWidth = Dashboard.options.panelCollapseWidth;
     $scope.bottom = Dashboard.options.footerHeight;
@@ -76,6 +79,8 @@ angular.module('Pundit2.Dashboard')
         if (resized) {
             lastPageX = evt.pageX;
         }
+
+        ResourcePanel.updatePosition();
     };
     var upHandler = function() {
         $document.off('mousemove', moveHandler);
@@ -83,7 +88,6 @@ angular.module('Pundit2.Dashboard')
     };
 
     $scope.mouseDownHandler = function(evt) {
-        ResourcePanel.hide();
         evt.preventDefault();
         lastPageX = evt.pageX;
         $document.on('mousemove', moveHandler);
@@ -136,11 +140,11 @@ angular.module('Pundit2.Dashboard')
             elInner.height(h + 3);
         }
         if (elInnerScrollable.length > 0) {
-            // TODO why -7 ???
-            elInnerScrollable.height(h - 7);
+            // TODO why +2 ???
+            elInnerScrollable.height(h + 2);
         }
         if (elInnerScrollableNoHeader.length > 0) {
-            // TODO why -7 ???
+            // TODO why -9 ???
             h += Dashboard.options.panelContentHeaderHeight;
             elInnerScrollableNoHeader.height(h - 9);
         }
