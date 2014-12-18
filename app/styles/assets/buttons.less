@@ -52,3 +52,32 @@
 .btn-object {
     .button-variant(#ffffff; @object-color; @object-color);
 }
+
+
+/* ------------------------------------ *\
+   #AVAILABLE-WIDTH-FILL-BUTTONS
+\* ------------------------------------ */
+
+/*
+The buttons with the class "pnd-btn-fill-width" always
+try to fill the available with.
+This class works for one, two or three buttons but
+can be extended to support more buttons
+*/
+
+/* One button */
+.pnd-btn-fill-width:first-child:nth-last-child(1) {
+    width: 100%;
+}
+
+/* Two buttons */
+.pnd-btn-fill-width:first-child:nth-last-child(2),
+.pnd-btn-fill-width:first-child:nth-last-child(2) ~ .pnd-btn-fill-width {
+    width: 50%;
+}
+
+/* Three buttons  */
+.pnd-btn-fill-width:first-child:nth-last-child(3),
+.pnd-btn-fill-width:first-child:nth-last-child(3) ~ .pnd-btn-fill-width {
+    width: 33.3333%;
+}
