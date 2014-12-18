@@ -24,11 +24,13 @@
 
         modules: {
             'Client': {
-                debug: true,
+                debug: false,
                 active: true
             },
             // "Consolidation": { debug: true },
-            "Analytics": { doTracking: false },
+            'Analytics': {
+                doTracking: false
+            },
             'DbpediaSelector': {
                 active: true
             },
@@ -37,6 +39,9 @@
             },
             'AnnotationDetails': {
                 moreInfo: true
+            },
+            'Dashboard': {
+                debug: false
             }
         }
     }

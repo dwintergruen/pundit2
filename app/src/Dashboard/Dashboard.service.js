@@ -653,7 +653,7 @@ angular.module('Pundit2.Dashboard')
         for (var i in panels) {
             if (panels[i].paneltitle === panelTitle) {
                 dashboard.log('Adding tab ' + tabName + ' to existing panel ' + panelTitle);
-                panels[i].addContent(tabName, tabTemplate);
+                panels[i].addContent(tabName, tabTemplate, 'dashboard--' + panelTitle + '--' + tabName);
                 return;
             }
         }
@@ -670,6 +670,7 @@ angular.module('Pundit2.Dashboard')
             state.panelsContent[panelTitle] = [content];
         }
 
+        //dashboard.log("Added tab " + tabName + " to non-existing panel " + panelTitle + ": for later use." + ' [hierarchyString: ' + hierarchyString + ']');
         dashboard.log("Added tab " + tabName + " to non-existing panel " + panelTitle + ": for later use.");
     };
 

@@ -3,7 +3,7 @@
 angular.module('Pundit2.Toolbar')
 
 .controller('ToolbarCtrl', function($scope, $rootScope, $modal, $http, $window, NameSpace, Config, Toolbar, SelectorsManager, Fp3,
-    MyPundit, Dashboard, TripleComposer, AnnotationSidebar, Annomatic, ResourcePanel, NotebookExchange, NotebookCommunication, TemplatesExchange) {
+    MyPundit, Dashboard, TripleComposer, AnnotationSidebar, Annomatic, ResourcePanel, NotebookExchange, NotebookCommunication, TemplatesExchange, Analytics) {
 
     $scope.dropdownTemplate = "src/ContextualMenu/dropdown.tmpl.html";
     $scope.dropdownTemplateMyNotebook = "src/Toolbar/myNotebooksDropdown.tmpl.html";
@@ -57,22 +57,40 @@ angular.module('Pundit2.Toolbar')
         lodLive = true;
     }
 
-    $scope.login = function() {
+    $scope.myNoteboockSigninClick = function() {
+        $scope.login('toolbar--myNotebooks--login');
+    }
+
+    $scope.loginButtonClick = function () {
+        $scope.login('toolbar--login');
+    }
+
+    $scope.login = function(trackingLoginName) {
         ResourcePanel.hide();
         MyPundit.login();
+        if (trackingLoginName == undefined) {
+            trackingLoginName = 'toolbar--otherLogin'
+        }
+        Analytics.track('buttons', 'click', trackingLoginName);
     };
 
     var logout = function() {
         ResourcePanel.hide();
         MyPundit.logout();
+        Analytics.track('buttons', 'toolbar--logout');
     };
 
     var lodliveOpen = function() {
         if (MyPundit.isUserLogged()) {
             var userData = MyPundit.getUserData();
             $window.open(Config.lodLive.baseUrl + Config.pndPurl + 'user/' + userData.id, '_blank');
+            Analytics.track('buttons', 'toolbar--openYourGraph');
         }
     };
+
+    $scope.askThePunditClick = function() {
+        Analytics.track('buttons', 'toolbar--askThePundit', $scope.isUserLogged ? 'logged' : 'anonymous');
+    }
 
     // modal
     var infoModalScope = $rootScope.$new(),
@@ -218,6 +236,7 @@ angular.module('Pundit2.Toolbar')
     // open info modal
     var showInfo = function() {
         infoModal.$promise.then(infoModal.show);
+        Analytics.track('buttons', 'toolbar--aboutPundit');
     };
 
     // open bug modal
@@ -261,7 +280,7 @@ angular.module('Pundit2.Toolbar')
         header: true
     }, {
         text: 'Sign in',
-        click: $scope.login
+        click: $scope.myNoteboockSigninClick
     }];
 
     $scope.infoDropdown = [{
@@ -338,6 +357,7 @@ angular.module('Pundit2.Toolbar')
                 click: function(_i) {
                     return function() {
                         NotebookCommunication.setCurrent(notebooks[_i].id);
+                        Analytics.track('buttons', 'click', 'toolbar--userNotebook');
                     };
                 }(i)
             };
@@ -416,6 +436,7 @@ angular.module('Pundit2.Toolbar')
                                 // disable save btn
                                 angular.element('.pnd-triplecomposer-save').addClass('disabled');
                             }
+                            Analytics.track('buttons', 'click', 'toolbar--userTemplate');
                         };
                     }(i)
                 };
@@ -469,11 +490,17 @@ angular.module('Pundit2.Toolbar')
             return;
         }
         ResourcePanel.hide();
+        Analytics.track('buttons', 'click', 'toolbar--templateActivation--' + (Toolbar.isActiveTemplateMode() ? 'deactivate' : 'activate'));
         Toolbar.toggleTemplateMode();
     };
 
     $scope.onClickTemplateDropdown = function() {
+        Analytics.track('buttons', 'click', 'toolbar--templateList');
         ResourcePanel.hide();
+    };
+
+    $scope.onClickNotebookDropdown = function() {
+        Analytics.track('buttons', 'click', 'toolbar--notebooks--' + ($scope.isUserLogged ? 'logged' : 'anonymous'));
     };
 
     // return true if user is logged in --> template menu is active
@@ -494,12 +521,14 @@ angular.module('Pundit2.Toolbar')
     $scope.dashboardClickHandler = function() {
         if (!$scope.isAnnomaticRunning) {
             ResourcePanel.hide();
+            Analytics.track('buttons', 'click', 'toolbar--dashboard--' + (Dashboard.isDashboardVisible() ? 'closed' : 'open'));
             Dashboard.toggle();
         }
     };
 
     $scope.annotationsClickHandler = function() {
         ResourcePanel.hide();
+        Analytics.track('buttons', 'click', 'toolbar--annotationsSidebar' + (AnnotationSidebar.isAnnotationSidebarExpanded() ? 'closed' : 'open'));
         AnnotationSidebar.toggle();
     };
 

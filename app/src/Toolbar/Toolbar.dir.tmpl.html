@@ -25,7 +25,7 @@
                 <!-- Login button -->
                 <li ng-show="showLogin()" class="pnd-toolbar-login-button pnd-toolbar-button-active pnd-calltoaction-btn">
                     <!-- <a href="javascript:void(0)" template="{{dropdownTemplate}}" bs-dropdown="userNotLoggedDropdown"><span>Login</span></a> -->
-                    <a href="javascript:void(0)" ng-click="login()"><span>Login</span></a>
+                    <a href="javascript:void(0)" ng-click="loginButtonClick()"><span>Login</span></a>
                 </li>
                 
                 <!-- User button -->
@@ -35,7 +35,7 @@
                 
                 <!-- Ask the Pundit button-->
                 <li class="pnd-toolbar-ask-button pnd-toolbar-ask-button-active pnd-calltoaction-btn pnd-triangular-btn" ng-if="askThePundit">
-                    <a href="{{getAskLink()}}" target="_blank">
+                    <a href="{{getAskLink()}}" target="_blank" ng-click="askThePunditClick()">
                         <span ng-if="!isUserLogged">Ask the Pundit</span>
                         <span ng-if="isUserLogged">My Ask the Pundit</span>
                     </a>
@@ -76,7 +76,7 @@
                 </li>
                 
                 <!-- Notebooks menu -->
-                <li class="pnd-toolbar-notebook-menu-button" ng-if="myNotebooks">
+                <li class="pnd-toolbar-notebook-menu-button" ng-if="myNotebooks" ng-click="onClickNotebookDropdown()">
                     <a ng-show="isUserLogged" href="javascript:void(0)" placement="bottom-right" template="{{dropdownTemplateMyNotebook}}" bs-dropdown="userNotebooksDropdown"><span class="pnd-icon pnd-icon-book"> </span> <span class="pnd-toolbar-active-element">{{currentNotebookLabel}}</span></a>
                     <a ng-show="!isUserLogged" href="javascript:void(0)" placement="bottom-right" template="{{dropdownTemplate}}" bs-dropdown="userNotLoggedDropdown"><span class="pnd-toolbar-not-active-element">My notebooks</span></a>
                 </li>

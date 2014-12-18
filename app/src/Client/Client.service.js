@@ -435,7 +435,7 @@ angular.module('Pundit2.Client')
 
 // ImageAnnotator service MUST be injected before TextFragmentAnnotator
 // otherwise the image consolidation may BREAK!!!
-.service('Client', function(CLIENTDEFAULTS, BaseComponent, Config, EventDispatcher, MyPundit,
+.service('Client', function(CLIENTDEFAULTS, BaseComponent, Config, EventDispatcher, Analytics, MyPundit,
     ImageAnnotator, TextFragmentAnnotator, AnnotationsCommunication,
     AnnotationsExchange, Item, ItemsExchange, MyItems, Status,
     TextFragmentHandler, ImageHandler, PageAnnotator,
@@ -635,6 +635,7 @@ angular.module('Pundit2.Client')
 
         client.log('Boot is completed, emitting pundit-boot-done event');
         EventDispatcher.sendEvent('Client.boot');
+        Analytics.track('main-events', 'client--endBootstrap');
 
         // TODO:
         // * Lists (My, page?, vocabs?, selectors?)

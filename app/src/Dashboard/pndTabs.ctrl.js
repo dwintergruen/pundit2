@@ -1,7 +1,7 @@
 angular.module('Pundit2.Dashboard')
 
 .controller('pndTabsCtrl', function($document, $window, $rootScope, $scope, $element,
-    Dashboard, ResourcePanel, EventDispatcher) {
+    Dashboard, ResourcePanel, EventDispatcher, Analytics) {
 
     // TODO: Create service and move some logic there.
 
@@ -230,7 +230,7 @@ angular.module('Pundit2.Dashboard')
     );
 
     // set a tab as active
-    $scope.setActive = function(index) {
+    $scope.setActive = function(index, e) {
 
         ResourcePanel.hide();
 
@@ -239,7 +239,6 @@ angular.module('Pundit2.Dashboard')
             for (var i = 0; i < $scope.hiddenTabs.length; i++) {
                 $scope.hiddenTabs[i].isActive = false;
             }
-
         }
 
         $scope.active = index;
@@ -257,6 +256,10 @@ angular.module('Pundit2.Dashboard')
         } else {
             $scope.hiddenTabIsActive = false;
         }
+
+        var pane = $scope.panes[$scope.active];
+
+        Analytics.track('buttons', 'click', $scope.panes[$scope.active].hierarchystring);
 
     };
 

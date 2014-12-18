@@ -61,7 +61,7 @@ angular.module('Pundit2.Core')
  *
  */
 .service('MyPundit', function(MYPUNDITDEFAULTS, $http, $q, $timeout, $modal, $window, $interval,
-    BaseComponent, EventDispatcher, NameSpace) {
+    BaseComponent, EventDispatcher, NameSpace, Analytics) {
 
     var myPundit = new BaseComponent('MyPundit', MYPUNDITDEFAULTS);
 
@@ -274,6 +274,7 @@ angular.module('Pundit2.Core')
                             loginPromise.resolve(true);
                             $interval.cancel(stopTime);
                             $timeout.cancel(loginPollTimer);
+                            Analytics.track('main-events', 'user--login');
                         }
                     },
                     function() {
@@ -328,7 +329,7 @@ angular.module('Pundit2.Core')
             EventDispatcher.sendEvent('MyPundit.isUserLogged', isUserLogged);
             userData = {};
             logoutPromise.resolve(true);
-
+            Analytics.track('main-events', 'user--logout');
         }).error(function() {
             logoutPromise.reject('logout promise error');
         });

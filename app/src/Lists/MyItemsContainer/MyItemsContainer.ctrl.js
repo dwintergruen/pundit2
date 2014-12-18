@@ -1,7 +1,7 @@
 angular.module('Pundit2.MyItemsContainer')
 .controller('MyItemsContainerCtrl', function($scope, $rootScope, $modal, $timeout, $element,
     MyItemsContainer, ItemsExchange, MyItems, MyPundit, Preview, TypesHelper, PageHandler, 
-    TripleComposer, EventDispatcher, Status) {
+    TripleComposer, EventDispatcher, Status, Analytics) {
 
     // read by <item> directive (in Lists/itemList.tmpl.html)
     // specifie how contextual menu type show on item
