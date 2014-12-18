@@ -296,11 +296,13 @@ angular.module('Pundit2.ResourcePanel')
         var h = angular.element(target).outerHeight();
         var w = angular.element(target).outerWidth();
 
-        // create div anchor (the element bound with angular strap menu reference)
-        angular.element("[data-ng-app='Pundit2']")
-            .prepend("<div class='pnd-popover-anchor' style='position: absolute; left: -500px; top: -500px;'><div>");
+        if (typeof(state.anchor) === 'undefined') {
+             // create div anchor (the element bound with angular strap menu reference)
+            angular.element("[data-ng-app='Pundit2']")
+                .prepend("<div class='pnd-popover-anchor' style='position: absolute; left: -500px; top: -500px;'><div>");
 
-        state.anchor = angular.element('.pnd-popover-anchor');
+            state.anchor = angular.element('.pnd-popover-anchor');
+        }
 
         state.anchor.css({
             left: left + posPopMod + (w / 2),
