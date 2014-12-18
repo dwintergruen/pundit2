@@ -75,10 +75,9 @@ angular.module('Pundit2.Annotators')
 
 })
 
-.service('TextFragmentAnnotator',
-    function(TEXTFRAGMENTANNOTATORDEFAULTS, NameSpace, BaseComponent, Consolidation,
-             XpointersHelper, ItemsExchange, Config, TripleComposer, Toolbar, Annomatic,
-             $compile, $rootScope) {
+.service('TextFragmentAnnotator', function(TEXTFRAGMENTANNOTATORDEFAULTS, NameSpace, BaseComponent, Consolidation,
+    XpointersHelper, ItemsExchange, Config, TripleComposer, Toolbar, Annomatic,
+    $compile, $rootScope) {
 
     // Create the component and declare what we deal with: text
     var tfa = new BaseComponent('TextFragmentAnnotator', TEXTFRAGMENTANNOTATORDEFAULTS);
@@ -97,13 +96,13 @@ angular.module('Pundit2.Annotators')
             tfa.log("Item not valid: types len 0");
             return false;
         } else if (item.type.indexOf(tfa.type) === -1) {
-            tfa.log("Item not valid: not a "+ tfa.type);
+            tfa.log("Item not valid: not a " + tfa.type);
             return false;
         } else if (!XpointersHelper.isValidXpointerURI(item.uri)) {
-            tfa.log("Item not valid: not a valid xpointer uri: "+ item.uri);
+            tfa.log("Item not valid: not a valid xpointer uri: " + item.uri);
             return false;
         } else if (!XpointersHelper.isValidXpointer(item.uri)) {
-            tfa.log("Item not valid: not consolidable on this page: "+ item.uri);
+            tfa.log("Item not valid: not consolidable on this page: " + item.uri);
             return false;
         }
 
@@ -111,7 +110,7 @@ angular.module('Pundit2.Annotators')
         // - has a part of
         // - has a page context
 
-        tfa.log("Item valid: try to consolidate "+ item.label);
+        tfa.log("Item valid: try to consolidate " + item.label);
         return true;
     };
 
@@ -129,7 +128,7 @@ angular.module('Pundit2.Annotators')
     // consolidation service, gathering all annotators
     // TODO: better check twice? :|
     tfa.consolidate = function(items) {
-        
+
         tfa.log('Consolidating!');
 
         var xpointers = [],
@@ -142,8 +141,8 @@ angular.module('Pundit2.Annotators')
 
         for (var uri in items) {
             xpointers.push(uri);
-            fragmentIds[uri] = ["fr-"+i];
-            fragmentById["fr-"+i] = {
+            fragmentIds[uri] = ["fr-" + i];
+            fragmentById["fr-" + i] = {
                 uri: uri,
                 bits: [],
                 item: items[uri]
@@ -162,19 +161,19 @@ angular.module('Pundit2.Annotators')
         // TODO: better name? Elsewhere?
         activateFragments();
 
-        tfa.log(tfa.label +' consolidation: done!');
+        tfa.log(tfa.label + ' consolidation: done!');
     };
 
     // For each fragment ID it will place an icon after the last BIT belonging
     // to the given fragment
     var placeIcons = function() {
         var n = 0;
-            // To see what kind of fragment item is it, check which container it belongs to
-            //amContainer = Config.modules.Annomatic.container;
+        // To see what kind of fragment item is it, check which container it belongs to
+        //amContainer = Config.modules.Annomatic.container;
 
         for (var c in fragmentIds) {
             var id = fragmentIds[c],
-                lastBit = angular.element('.'+ id).last(),
+                lastBit = angular.element('.' + id).last(),
                 // TODO: put this name in .options ?
                 directive = "text-fragment-icon";
 
@@ -182,8 +181,8 @@ angular.module('Pundit2.Annotators')
                 directive = "suggestion-fragment-icon";
             }
 
-            tfa.log('Placing fragment icon '+ n++, id, lastBit.attr('fragments'));
-            lastBit.after('<'+ directive +' fragment="'+id+'"></'+ directive +'>');
+            tfa.log('Placing fragment icon ' + n++, id, lastBit.attr('fragments'));
+            lastBit.after('<' + directive + ' fragment="' + id + '"></' + directive + '>');
         }
     };
 
@@ -215,10 +214,10 @@ angular.module('Pundit2.Annotators')
         angular.element('.' + XpointersHelper.options.textFragmentIconClass).remove();
 
         // Replace wrapped nodes with their content
-        var bits = angular.element('.'+ XpointersHelper.options.wrapNodeClass);
+        var bits = angular.element('.' + XpointersHelper.options.wrapNodeClass);
         angular.forEach(bits, function(node) {
             var parent = node.parentNode;
-            while (node.firstChild){
+            while (node.firstChild) {
                 parent.insertBefore(node.firstChild, node);
             }
             angular.element(node).remove();
@@ -235,7 +234,7 @@ angular.module('Pundit2.Annotators')
         fragmentById[icon.fragment].icon = icon;
         icon.item = fragmentById[icon.fragment].item;
 
-        tfa.log('Adding fragment icon for fragment id='+ icon.fragment);
+        tfa.log('Adding fragment icon for fragment id=' + icon.fragment);
     };
 
     // Called by TextFragmentBit directives: they will wrap every bit of annotated content
@@ -252,7 +251,7 @@ angular.module('Pundit2.Annotators')
             fragments = [fragments];
         }
 
-        for (var l=fragments.length; l--;) {
+        for (var l = fragments.length; l--;) {
             var current = fragmentById[fragments[l]];
             current.bits.push(bit);
         }
@@ -286,14 +285,14 @@ angular.module('Pundit2.Annotators')
     };
 
     tfa.highlightById = function(id) {
-        for (var l=fragmentById[id].bits.length; l--;) {
+        for (var l = fragmentById[id].bits.length; l--;) {
             fragmentById[id].bits[l].high();
         }
-        tfa.log('Highlighting fragment id='+ id +', # bits: '+ fragmentById[id].bits.length);
+        tfa.log('Highlighting fragment id=' + id + ', # bits: ' + fragmentById[id].bits.length);
     };
 
 
-    tfa.clearHighlightByUri  = function(uri) {
+    tfa.clearHighlightByUri = function(uri) {
         if (typeof(fragmentIds[uri]) === "undefined") {
             tfa.log('Not clearing highlight on given URI: fragment id not found');
             return;
@@ -301,11 +300,11 @@ angular.module('Pundit2.Annotators')
         tfa.clearHighlightById(fragmentIds[uri]);
     };
 
-    tfa.clearHighlightById  = function(id) {
-        for (var l=fragmentById[id].bits.length; l--;) {
+    tfa.clearHighlightById = function(id) {
+        for (var l = fragmentById[id].bits.length; l--;) {
             fragmentById[id].bits[l].clear();
         }
-        tfa.log('Clear highlight on fragment id='+ id +', # bits: '+ fragmentById[id].bits.length);
+        tfa.log('Clear highlight on fragment id=' + id + ', # bits: ' + fragmentById[id].bits.length);
     };
 
     // Hides and shows a single fragment (identified by its item's URI)
@@ -315,7 +314,7 @@ angular.module('Pundit2.Annotators')
             return;
         }
         var id = fragmentIds[uri];
-        for (var l=fragmentById[id].bits.length; l--;) {
+        for (var l = fragmentById[id].bits.length; l--;) {
             fragmentById[id].bits[l].show();
         }
     };
@@ -326,7 +325,7 @@ angular.module('Pundit2.Annotators')
             return;
         }
         var id = fragmentIds[uri];
-        for (var l=fragmentById[id].bits.length; l--;) {
+        for (var l = fragmentById[id].bits.length; l--;) {
             fragmentById[id].bits[l].hide();
         }
     };
@@ -351,7 +350,7 @@ angular.module('Pundit2.Annotators')
             return;
         }
         var id = fragmentIds[uri];
-        for (var l=fragmentById[id].bits.length; l--;) {
+        for (var l = fragmentById[id].bits.length; l--;) {
             fragmentById[id].bits[l].ghost();
         }
     };
@@ -362,7 +361,7 @@ angular.module('Pundit2.Annotators')
             return;
         }
         var id = fragmentIds[uri];
-        for (var l=fragmentById[id].bits.length; l--;) {
+        for (var l = fragmentById[id].bits.length; l--;) {
             fragmentById[id].bits[l].expo();
         }
     };

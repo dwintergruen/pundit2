@@ -1,75 +1,77 @@
 angular.module('Pundit2.Annotators')
-    .constant('PAGEANNOTATORDEFAULTS', {
-        /**
-         * @module punditConfig
-         * @ngdoc property
-         * @name modules#PageAnnotator
-         *
-         * @description
-         * `object`
-         *
-         * Configuration for Page Annotator module
-         */
 
-        /**
-         * @module punditConfig
-         * @ngdoc property
-         * @name modules#PageAnnotator.debug
-         *
-         * @description
-         * `boolean`
-         *
-         * Active debug log
-         *
-         * Default value:
-         * <pre> debug: false </pre>
-         */
-        debug: false
+.constant('PAGEANNOTATORDEFAULTS', {
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#PageAnnotator
+     *
+     * @description
+     * `object`
+     *
+     * Configuration for Page Annotator module
+     */
 
-    })
-    .service('PageAnnotator', function(PAGEANNOTATORDEFAULTS, NameSpace, BaseComponent, XpointersHelper, Consolidation) {
-                                             // ContextualMenu, XpointersHelper, Item, ItemsExchange, Toolbar, TripleComposer,
-                                             // $document
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#PageAnnotator.debug
+     *
+     * @description
+     * `boolean`
+     *
+     * Active debug log
+     *
+     * Default value:
+     * <pre> debug: false </pre>
+     */
+    debug: false
 
-        var pageAnnotator = new BaseComponent('PageAnnotator', PAGEANNOTATORDEFAULTS);
+})
 
-        // Create the component and declare what we deal with: text
-        pageAnnotator.label = "page";
-        pageAnnotator.type = NameSpace.types[pageAnnotator.label];
+.service('PageAnnotator', function(PAGEANNOTATORDEFAULTS, NameSpace, BaseComponent, XpointersHelper, Consolidation) {
+    // ContextualMenu, XpointersHelper, Item, ItemsExchange, Toolbar, TripleComposer,
+    // $document
 
-        Consolidation.addAnnotator(pageAnnotator);
+    var pageAnnotator = new BaseComponent('PageAnnotator', PAGEANNOTATORDEFAULTS);
 
-        pageAnnotator.isConsolidable = function(item) {
+    // Create the component and declare what we deal with: text
+    pageAnnotator.label = "page";
+    pageAnnotator.type = NameSpace.types[pageAnnotator.label];
 
-            if (!angular.isArray(item.type)) {
-                pageAnnotator.log("Item not valid: malformed type"+ item.uri);
-                return false;
-            } else if (item.type.length === 0) {
-                pageAnnotator.log("Item not valid: types len 0"+ item.uri);
-                return false;
-            } else if (item.type.indexOf(pageAnnotator.type) === -1) {
-                pageAnnotator.log("Item not valid: not have type page "+ item.uri);
-                return false;
-            } else if (item.uri !== XpointersHelper.getSafePageContext()){
-                pageAnnotator.log("Item not valid: not consolidable on this page");
-                return false;
-            }
-  
-            pageAnnotator.log("Item valid: "+ item.label);
-            return true;
-        };
+    Consolidation.addAnnotator(pageAnnotator);
 
-        pageAnnotator.consolidate = function(/*items*/) {
-            pageAnnotator.log('Consolidating!');
+    pageAnnotator.isConsolidable = function(item) {
 
-            // TODO Add something to the page?
-        };
+        if (!angular.isArray(item.type)) {
+            pageAnnotator.log("Item not valid: malformed type" + item.uri);
+            return false;
+        } else if (item.type.length === 0) {
+            pageAnnotator.log("Item not valid: types len 0" + item.uri);
+            return false;
+        } else if (item.type.indexOf(pageAnnotator.type) === -1) {
+            pageAnnotator.log("Item not valid: not have type page " + item.uri);
+            return false;
+        } else if (item.uri !== XpointersHelper.getSafePageContext()) {
+            pageAnnotator.log("Item not valid: not consolidable on this page");
+            return false;
+        }
 
-        pageAnnotator.wipe = function() {
-            // TODO
-        };
+        pageAnnotator.log("Item valid: " + item.label);
+        return true;
+    };
+
+    pageAnnotator.consolidate = function( /*items*/ ) {
+        pageAnnotator.log('Consolidating!');
+
+        // TODO Add something to the page?
+    };
+
+    pageAnnotator.wipe = function() {
+        // TODO
+    };
 
 
-        pageAnnotator.log('Component up and running');
-        return pageAnnotator;
-    });
+    pageAnnotator.log('Component up and running');
+    return pageAnnotator;
+});

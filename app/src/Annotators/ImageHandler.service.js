@@ -1,6 +1,6 @@
 angular.module('Pundit2.Annotators')
-.constant('IMAGEHANDLERDEFAULTS', {
 
+.constant('IMAGEHANDLERDEFAULTS', {
     /**
      * @module punditConfig
      * @ngdoc property
@@ -68,13 +68,17 @@ angular.module('Pundit2.Annotators')
     labelMaxLength: 40
 
 })
+
 .service('ImageHandler', function(IMAGEHANDLERDEFAULTS, NameSpace, BaseComponent, Config,
     TextFragmentHandler, XpointersHelper, Item, $compile, $timeout, $rootScope) {
 
     var ih = new BaseComponent('ImageHandler', IMAGEHANDLERDEFAULTS);
 
     // This function must be executed before than pundit is appended to DOM
-    var timeoutPromise = null, exist = false, el = null, dir = null;
+    var timeoutPromise = null,
+        exist = false,
+        el = null,
+        dir = null;
 
     var clear = function() {
         // remove css class from img
@@ -123,14 +127,14 @@ angular.module('Pundit2.Annotators')
     };
 
     ih.clearTimeout = function() {
-        if(timeoutPromise !== null) {
+        if (timeoutPromise !== null) {
             $timeout.cancel(timeoutPromise);
             timeoutPromise = null;
         }
     };
 
     ih.removeDirective = function() {
-        timeoutPromise =  $timeout(function(){
+        timeoutPromise = $timeout(function() {
             clear();
         }, 100);
     };

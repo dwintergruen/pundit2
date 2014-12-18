@@ -1,4 +1,5 @@
 angular.module('Pundit2.Annotators')
+
 .constant('XPOINTERSHELPERDEFAULTS', {
     // The helper will use these node name and node classes to
     // wrap the consolidated DOM fragments. TextFragmentAnnotator and Handler
@@ -19,6 +20,7 @@ angular.module('Pundit2.Annotators')
     namedContentClasses: ['pundit-content']
 
 })
+
 .config(function($locationProvider) {
     // $locationProvider.html5Mode(true);
     $locationProvider.html5Mode({
@@ -26,8 +28,9 @@ angular.module('Pundit2.Annotators')
         requireBase: false
     });
 })
+
 .service('XpointersHelper', function(XPOINTERSHELPERDEFAULTS, NameSpace, BaseComponent,
-                                     $document, $location, $window) {
+    $document, $location, $window) {
 
     var xp = new BaseComponent('XpointersHelper', XPOINTERSHELPERDEFAULTS);
 
@@ -35,7 +38,7 @@ angular.module('Pundit2.Annotators')
         var xpointers = [],
             xpaths = {};
 
-        for (var i=xpArray.length-1; i>=0; i--) {
+        for (var i = xpArray.length - 1; i >= 0; i--) {
             var xpointer = xpArray[i],
                 obj = xp.xPointerToXPath(xpointer);
 
@@ -56,7 +59,7 @@ angular.module('Pundit2.Annotators')
 
     xp.isValidXpointerURI = function(xpointer) {
         // TODO: perché in client.html si verifica xpointer undefined?! 
-        if(typeof(xpointer) === 'undefined'){
+        if (typeof(xpointer) === 'undefined') {
             xp.err("Xpointer is undefined: this should not happend!");
             return false;
         }
@@ -144,7 +147,8 @@ angular.module('Pundit2.Annotators')
         // We just need a starting point to sort the xpaths, taking the first node and use
         // an end_by_end comparison will do the job
         var startNode = xp.getNodeFromXpath('//body'),
-            x = [], ret = [];
+            x = [],
+            ret = [];
 
         // For every xpointer we create 2 entries in the array: one for starting xpath
         // and one for the ending one
@@ -180,15 +184,15 @@ angular.module('Pundit2.Annotators')
 
         // Sort this array, using a custom function which compares the end
         // points of the ranges in the passed object
-        x.sort(function (a, b) {
+        x.sort(function(a, b) {
             return a.range.compareBoundaryPoints(Range.END_TO_END, b.range);
         });
 
         // Erase doubled entries: they are sorted, just avoid copying the next
         // element if it's equal to the current one
         ret[0] = x[0];
-        for (var i=1, j=0, len=x.length; i<len; i++){
-            if (x[i].xpath !== ret[j].xpath || x[i].offset !== ret[j].offset){
+        for (var i = 1, j = 0, len = x.length; i < len; i++) {
+            if (x[i].xpath !== ret[j].xpath || x[i].offset !== ret[j].offset) {
                 ret[++j] = x[i];
             }
         }
@@ -204,24 +208,24 @@ angular.module('Pundit2.Annotators')
         // Iterate through the sortedXpaths from 1st to Nth and accumulate
         // the active classes, looking at what xpointers are starting and
         // ending in the current xpath position
-        for (var i=0; i<sortedXpaths.length-1; i++) {
-            
+        for (var i = 0; i < sortedXpaths.length - 1; i++) {
+
             // var end = sortedXpaths[i+1];
             var start = sortedXpaths[i],
                 addXps = xp.getStartingXPs(xpointers, xpaths, start.xpath, start.offset),
                 remXps = xp.getEndingXPs(xpointers, xpaths, start.xpath, start.offset);
-                
+
             realXps = addToArray(realXps, addXps);
             realXps = removeFromArray(realXps, remXps);
 
             var classes = [];
-            for (var j=realXps.length - 1; j>=0; j--) {
+            for (var j = realXps.length - 1; j >= 0; j--) {
                 var x = realXps[j];
-                for (var k = xpointersClasses[x].length - 1; k >= 0; k--){
+                for (var k = xpointersClasses[x].length - 1; k >= 0; k--) {
                     classes.push(xpointersClasses[x][k]);
                 }
             }
-            htmlClasses[i+1] = classes;
+            htmlClasses[i + 1] = classes;
 
         } // for i
 
@@ -235,8 +239,8 @@ angular.module('Pundit2.Annotators')
     // Removes the rem[] elements from arr[]
     var removeFromArray = function(arr, rem) {
         var ret = [];
-        for (var i = arr.length - 1; i >= 0; i--){
-            if (rem.indexOf(arr[i]) === -1){
+        for (var i = arr.length - 1; i >= 0; i--) {
+            if (rem.indexOf(arr[i]) === -1) {
                 ret.push(arr[i]);
             }
         }
@@ -247,10 +251,10 @@ angular.module('Pundit2.Annotators')
     // which starts there
     xp.getStartingXPs = function(xpointers, xpaths, xpath, offset) {
         var ret = [];
-            
-        for (var i=xpointers.length-1; i>=0; i--) {
+
+        for (var i = xpointers.length - 1; i >= 0; i--) {
             var x = xpointers[i];
-            if (xpaths[x].startXpath === xpath && xpaths[x].startOffset === offset){
+            if (xpaths[x].startXpath === xpath && xpaths[x].startOffset === offset) {
                 ret.push(x);
             }
         }
@@ -261,10 +265,10 @@ angular.module('Pundit2.Annotators')
     // which ends there
     xp.getEndingXPs = function(xpointers, xpaths, xpath, offset) {
         var ret = [];
-            
-        for (var i=xpointers.length-1; i>=0; i--) {
+
+        for (var i = xpointers.length - 1; i >= 0; i--) {
             var x = xpointers[i];
-            if (xpaths[x].endXpath === xpath && xpaths[x].endOffset === offset){
+            if (xpaths[x].endXpath === xpath && xpaths[x].endOffset === offset) {
                 ret.push(x);
             }
         }
@@ -275,12 +279,12 @@ angular.module('Pundit2.Annotators')
     // classes
     xp.updateDOM = function(sortedXpaths, htmlClass, xpathsFragmentIds) {
 
-        for (var i=sortedXpaths.length-1; i>0; i--) {
-            var start = sortedXpaths[i-1],
+        for (var i = sortedXpaths.length - 1; i > 0; i--) {
+            var start = sortedXpaths[i - 1],
                 end = sortedXpaths[i];
-                
+
             if (xpathsFragmentIds[i].length > 0) {
-                xp.log("## Updating DOM, xpath "+i+": "+xpathsFragmentIds[i].join(" "));
+                xp.log("## Updating DOM, xpath " + i + ": " + xpathsFragmentIds[i].join(" "));
                 xp.wrapXPaths(start, end, xp.options.wrapNodeName, htmlClass, xpathsFragmentIds[i]);
             }
         }
@@ -307,17 +311,15 @@ angular.module('Pundit2.Annotators')
         } else {
 
             // If it's not a textnode, set the start (or end) before (or after) it
-            if (!xp.isElementNode(startNode)){
+            if (!xp.isElementNode(startNode)) {
                 range.setStart(startNode, startXp.offset);
-            }
-            else{
+            } else {
                 range.setStart(startNode, startXp.offset);
             }
 
-            if (!xp.isElementNode(endNode)){
+            if (!xp.isElementNode(endNode)) {
                 range.setEnd(endNode, endXp.offset);
-            }
-            else{
+            } else {
                 range.setEndAfter(endNode);
             }
         }
@@ -332,7 +334,7 @@ angular.module('Pundit2.Annotators')
     xp.wrapElement = function(element, range, htmlTag, htmlClass, parents) {
         // If there's childNodes, wrap them all
         if (element.childNodes && element.childNodes.length > 0) {
-            for (var i = (element.childNodes.length - 1); i >= 0 && element.childNodes[i]; i--){
+            for (var i = (element.childNodes.length - 1); i >= 0 && element.childNodes[i]; i--) {
                 xp.wrapElement(element.childNodes[i], range, htmlTag, htmlClass, parents);
             }
 
@@ -346,19 +348,19 @@ angular.module('Pundit2.Annotators')
 
     }; // wrapElement()
 
-        // Triple node check: will pass if it's a text node, if it's not
-        // empty and if it is inside the given range
+    // Triple node check: will pass if it's a text node, if it's not
+    // empty and if it is inside the given range
     xp.isTextNodeInsideRange = function(node, range) {
         var content;
 
         // Check: it must be a text node
-        if (node.nodeType !== Node.TEXT_NODE){
+        if (node.nodeType !== Node.TEXT_NODE) {
             return false;
         }
 
         // Check: the content must not be empty
         content = node.textContent.replace(/ /g, "").replace(/\n/, "");
-        if (!node.data || content === "" || content === " "){
+        if (!node.data || content === "" || content === " ") {
             return false;
         }
 
@@ -367,12 +369,12 @@ angular.module('Pundit2.Annotators')
     };
     xp.isImageNodeInsideRange = function(node, range) {
         // Check: it must be an element node
-        if (node.nodeType !== Node.ELEMENT_NODE){
+        if (node.nodeType !== Node.ELEMENT_NODE) {
             return false;
         }
 
         // Check: it must be an img
-        if (node.tagName.toLowerCase() !== 'img'){
+        if (node.tagName.toLowerCase() !== 'img') {
             return false;
         }
 
@@ -408,7 +410,7 @@ angular.module('Pundit2.Annotators')
             r2.setEnd(element, (element === range.endContainer) ? range.endOffset : element.length);
 
             // Otherwise just select the entire node, and wrap it up
-        } else{
+        } else {
             r2.selectNode(element);
         }
 
@@ -533,7 +535,7 @@ angular.module('Pundit2.Annotators')
         return true;
     };
 
-    xp.isNamedContentNode = function (node) {
+    xp.isNamedContentNode = function(node) {
 
         if (!xp.isElementNode(node)) {
             return false;
@@ -594,10 +596,10 @@ angular.module('Pundit2.Annotators')
         }
 
         // Build back the URI
-        if (query){
+        if (query) {
             uri += '?' + query;
         }
-        if (fragment){
+        if (fragment) {
             uri += '#' + fragment;
         }
 
