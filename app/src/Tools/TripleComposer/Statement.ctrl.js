@@ -253,7 +253,7 @@ angular.module('Pundit2.TripleComposer')
             }
             return;
         }
-        ResourcePanel.showItemsForSubject(triple, $event.target.parentNode).then($scope.setSubject);
+        ResourcePanel.showItemsForSubject(triple, $event.target).then($scope.setSubject);
 
         if ($scope.subjectFound) {
             EventDispatcher.sendEvent('Pundit.changeSelection');
@@ -290,7 +290,7 @@ angular.module('Pundit2.TripleComposer')
             Preview.setItemDashboardSticky(triple.predicate);
             return;
         }
-        ResourcePanel.showProperties(triple, $event.target.parentNode).then($scope.setPredicate);
+        ResourcePanel.showProperties(triple, $event.target).then($scope.setPredicate);
         if ($scope.predicateFound) {
             EventDispatcher.sendEvent('Pundit.changeSelection');
             Preview.setItemDashboardSticky(triple.predicate);
@@ -340,7 +340,7 @@ angular.module('Pundit2.TripleComposer')
         }
 
         if (triple.object === null || (!$scope.objectLiteral && !$scope.objectDate)) {
-            ResourcePanel.showItemsForObject(triple, $event.target.parentNode).then($scope.setObject);
+            ResourcePanel.showItemsForObject(triple, $event.target).then($scope.setObject);
         } else {
             if ($scope.objectLiteral) {
                 $scope.onClickObjectLiteral($event);
@@ -357,7 +357,7 @@ angular.module('Pundit2.TripleComposer')
 
     $scope.onClickObjectCalendar = function($event) {
         // TODO: improve parent selection
-        var target = $event.target.parentNode.parentNode.parentNode.parentNode;
+        var target = $event.target.parentNode.parentNode.parentNode;
         var d;
 
         if ($scope.objectDate) {
@@ -366,6 +366,7 @@ angular.module('Pundit2.TripleComposer')
             d = new Date();
         }
 
+        ResourcePanel.hide();
         ResourcePanel.showPopoverCalendar(d, target).then(function(date) {
             if (isNaN(date)) {
                 return;
@@ -376,12 +377,14 @@ angular.module('Pundit2.TripleComposer')
 
     $scope.onClickObjectLiteral = function($event) {
         // TODO: improve parent selection
-        var target = $event.target.parentNode.parentNode.parentNode.parentNode;
+        var target = $event.target.parentNode.parentNode.parentNode;
         var str = '';
 
         if (typeof(triple.object) === 'string') {
             str = triple.object;
         }
+
+        ResourcePanel.hide();
         ResourcePanel.showPopoverLiteral(str, target).then($scope.setObject);
     };
 
