@@ -132,9 +132,12 @@ angular.module('Pundit2.ContextualMenu')
                 content.push({
                     text: filteredActions[i].label,
                     header: (filteredActions[i].header ? true : false),
+                    disable: (filteredActions[i].disable ? true : false),
                     click: function(_i) {
                         return function() {
-                            filteredActions[_i].action(state.menuResource);
+                            if (!filteredActions[_i].disable) {
+                                filteredActions[_i].action(state.menuResource);
+                            }
                         };
                     }(i)
                 });
@@ -380,7 +383,27 @@ angular.module('Pundit2.ContextualMenu')
         });
         if (typeof(foundEl) !== 'undefined') {
             state.menuElements[actionIndex].header = header;
-            contextualMenu.log('Disactive ' + foundEl.name);
+            contextualMenu.log('Modify header ' + foundEl.name);
+            return true;
+        }
+
+        contextualMenu.err('Action ' + name + ' not found');
+        return false;
+    };    
+
+    contextualMenu.modifyDisabled = function(name, value) {
+        var foundEl;
+        var actionIndex;
+        state.menuElements.some(function(el, index) {
+            if (name === el.name) {
+                foundEl = el;
+                actionIndex = index;
+            }
+            return;
+        });
+        if (typeof(foundEl) !== 'undefined') {
+            state.menuElements[actionIndex].disable = value;
+            contextualMenu.log('Change disabled state for ' + foundEl.name);
             return true;
         }
 
