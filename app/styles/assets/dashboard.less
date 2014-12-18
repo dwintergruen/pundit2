@@ -148,13 +148,6 @@ vertical draggable bar */
     width: 100%;
     position: absolute;
     z-index: 1;
-    // linear-gradient(to bottom, #999999 0%, #999999 75%, #777 100%);
-    bottom: 0px;
-    background: @gray-light; /* Old browsers */
-    background-image: -moz-linear-gradient(top,  @gray-light 0%, @gray-light 75%, lighten(@gray, 10%)); /* FF3.6+ */
-    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%,@gray-light), color-stop(75%,@gray-light), color-stop(lighten(@gray, 10%))); /* Chrome,Safari4+ */
-    background-image: -webkit-linear-gradient(top,  @gray-light 0%,@gray-light 75%, lighten(@gray, 10%) 100%); /* Chrome10+,Safari5.1+ */
-    background-image: -o-linear-gradient(top,  @gray-light 0%,@gray-light 75%, lighten(@gray, 10%) 100%); /* Opera 11.10+ */
-    background-image: -ms-linear-gradient(top,  @gray-light 0%,@gray-light 75%, lighten(@gray, 10%) 100%); /* IE10+ */
-    background-image: linear-gradient(to bottom,  @gray-light 0%,@gray-light 75%, lighten(@gray, 10%) 100%); /* W3C */
+    bottom: 0;
+    #gradient > .vertical-three-colors(@gray-light; @gray-light; 80%; darken(@gray-light, 10));
 }
