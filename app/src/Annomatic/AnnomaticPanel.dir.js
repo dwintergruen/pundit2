@@ -1,4 +1,5 @@
 angular.module('Pundit2.Annomatic')
+
 .directive('annomaticPanel', function() {
     return {
         restrict: 'AE',
@@ -8,7 +9,7 @@ angular.module('Pundit2.Annomatic')
         },
         // replace: true,
         templateUrl: "src/Annomatic/AnnomaticPanel.dir.tmpl.html",
-        link: function(/* scope, el, attrs, ctrl */) {
+        link: function( /* scope, el, attrs, ctrl */ ) {
             // Stuff to do on link? read some conf?
         }
     };

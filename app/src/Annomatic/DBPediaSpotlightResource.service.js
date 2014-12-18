@@ -1,33 +1,34 @@
 angular.module('Pundit2.Annomatic')
-    .service('DBPediaSpotlightResource', function($http, $q) {
 
-        /* Just an example of how to retrieve annotations from DBPedia spotlight annotate service.
-         * DataTXT is waaay better and returns the same entities anyway ... stick to it :P
-         **/
+.service('DBPediaSpotlightResource', function($http, $q) {
 
-        var service,
-            promise = $q.defer(),
-            baseURL = "http://spotlight.dbpedia.org/rest/annotate";
+    /* Just an example of how to retrieve annotations from DBPedia spotlight annotate service.
+     * DataTXT is waaay better and returns the same entities anyway ... stick to it :P
+     **/
 
-        service = {
-            getAnnotations: function(text) {
+    var service,
+        promise = $q.defer(),
+        baseURL = "http://spotlight.dbpedia.org/rest/annotate";
 
-                $http({
-                    data: "text="+encodeURIComponent(text),
-                    headers: {
-                        'content-type' : 'application/x-www-form-urlencoded',
-                        'Accept': 'application/json'
-                    },
-                    method: 'POST',
-                    url: baseURL
-                }).success(function(data) {
-                    promise.resolve(data);
-                });
+    service = {
+        getAnnotations: function(text) {
 
-                return promise.promise;
-            }
-        };
+            $http({
+                data: "text=" + encodeURIComponent(text),
+                headers: {
+                    'content-type': 'application/x-www-form-urlencoded',
+                    'Accept': 'application/json'
+                },
+                method: 'POST',
+                url: baseURL
+            }).success(function(data) {
+                promise.resolve(data);
+            });
 
-        return service;
+            return promise.promise;
+        }
+    };
 
-    });
+    return service;
+
+});

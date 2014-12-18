@@ -1,15 +1,16 @@
 angular.module('Pundit2.Annomatic')
+
 .controller('AnnomaticPanelCtrl', function($scope, Annomatic, Consolidation, ItemsExchange,
-                                           TextFragmentAnnotator, XpointersHelper, AnnotationSidebar,
-                                           $window, $q) {
+    TextFragmentAnnotator, XpointersHelper, AnnotationSidebar,
+    $window, $q) {
 
     $scope.targets = Consolidation.getAvailableTargets(true);
     $scope.gotAnnotations = false;
 
     $scope.getSuggestions = function() {
 
-        if ($scope.gotAnnotations){ 
-            return; 
+        if ($scope.gotAnnotations) {
+            return;
         }
         $scope.gotAnnotations = true;
         Annomatic.hardReset();
@@ -19,12 +20,12 @@ angular.module('Pundit2.Annomatic')
             namedClasses = XpointersHelper.options.namedContentClasses,
             selectors = [];
 
-        for (var len=$scope.targets.length; len--;) {
-            selectors.push("[about='"+$scope.targets[len]+"']");
+        for (var len = $scope.targets.length; len--;) {
+            selectors.push("[about='" + $scope.targets[len] + "']");
         }
         selectors.join(',');
-        angular.forEach(angular.element(selectors.join(',')), function(node){
-            for (var l=namedClasses.length; l--;) {
+        angular.forEach(angular.element(selectors.join(',')), function(node) {
+            for (var l = namedClasses.length; l--;) {
                 if (angular.element(node).hasClass(namedClasses[l])) {
                     nodes.push(node);
                     break;
@@ -32,10 +33,10 @@ angular.module('Pundit2.Annomatic')
             }
         });
 
-        Annomatic.log('Asking for annotations on '+nodes.length+' nodes: ', nodes);
+        Annomatic.log('Asking for annotations on ' + nodes.length + ' nodes: ', nodes);
 
         var promises = [];
-        for (var n=nodes.length; n--;) {
+        for (var n = nodes.length; n--;) {
             promises.push(Annomatic.getAnnotations(nodes[n]));
         }
         $q.all(promises).then(function() {
@@ -45,7 +46,7 @@ angular.module('Pundit2.Annomatic')
         });
     };
 
-    $scope.getSuggestionsArea = function(){
+    $scope.getSuggestionsArea = function() {
         Annomatic.getAnnotationByArea();
     }
 
@@ -56,7 +57,7 @@ angular.module('Pundit2.Annomatic')
     $scope.saveReview = function() {
         Annomatic.saveAll();
     };
-    
+
     $scope.Annomatic = Annomatic;
 
     $scope.$watch(function() {
@@ -67,7 +68,9 @@ angular.module('Pundit2.Annomatic')
 
     // Watching changes on the select
     $scope.$watch('filteredTypes', function(filtered, oldFiltered) {
-        if (typeof(filtered) === "undefined" && typeof(oldFiltered) === "undefined") { return; }
+        if (typeof(filtered) === "undefined" && typeof(oldFiltered) === "undefined") {
+            return;
+        }
         Annomatic.setTypeFilter(filtered);
     }, true);
 

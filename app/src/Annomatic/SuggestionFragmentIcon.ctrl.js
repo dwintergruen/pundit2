@@ -1,4 +1,5 @@
 angular.module('Pundit2.Annomatic')
+
 .controller('SuggestionFragmentIconCtrl', function($scope, $popover, $element, $rootScope,
     TextFragmentAnnotator, XpointersHelper, Annomatic) {
 
@@ -26,15 +27,15 @@ angular.module('Pundit2.Annomatic')
 
         // Add 'ann-auto' class to every bit belonging to this fragment
         // TODO: make 'ann-auto' configurable? .options?
-        angular.element('.'+$scope.fragment).addClass('ann-auto');
+        angular.element('.' + $scope.fragment).addClass('ann-auto');
 
         var options = {
-            content: ""+$scope.num,
+            content: "" + $scope.num,
             placement: 'bottom',
             template: 'src/Annomatic/AnnomaticPopover.tmpl.html',
             trigger: 'manual'
-            //scope: $rootScope.$new(),
-            //container: "[data-ng-app='Pundit2']"
+                //scope: $rootScope.$new(),
+                //container: "[data-ng-app='Pundit2']"
         };
 
         $scope.popover = $popover(
@@ -55,7 +56,9 @@ angular.module('Pundit2.Annomatic')
     };
 
     $scope.clickHandler = function(event) {
-        if (Annomatic.ann.byNum[$scope.num].hidden) { return; }
+        if (Annomatic.ann.byNum[$scope.num].hidden) {
+            return;
+        }
 
         if (!$scope.popover.$isShown) {
             $scope.show();
@@ -63,7 +66,7 @@ angular.module('Pundit2.Annomatic')
             $scope.hide();
         }
 
-        event.stopPropagation();               
+        event.stopPropagation();
         event.preventDefault();
     };
 
@@ -90,8 +93,8 @@ angular.module('Pundit2.Annomatic')
         // remove it directly?
 
         // Set the state class on every bit belonging to this fragment
-        angular.element('.'+$scope.fragment).removeClass(from + ' ann-active');
-        angular.element('.'+$scope.fragment).addClass(to);
+        angular.element('.' + $scope.fragment).removeClass(from + ' ann-active');
+        angular.element('.' + $scope.fragment).addClass(to);
 
         if (from === Annomatic.stateClassMap.hidden) {
             element.removeClass('ann-hidden');

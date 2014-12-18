@@ -1,4 +1,5 @@
 angular.module('Pundit2.Annomatic')
+
 .service('GramsciResource', function($resource) {
 
     var baseURL = "http://metasound.dibet.univpm.it:8080/DOMAnnotationService/api/annotator/v1/gramsci-dictionary";

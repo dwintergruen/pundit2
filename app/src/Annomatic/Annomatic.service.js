@@ -1,4 +1,5 @@
 angular.module('Pundit2.Annomatic')
+
 .constant('ANNOMATICDEFAULTS', {
     /**
      * @module punditConfig
@@ -49,7 +50,7 @@ angular.module('Pundit2.Annomatic')
      * @description
      * `string`
      *
-     * Set the service called by Annomatic to get annotation suggested: 'DataTXT' or 'gramsci' 
+     * Set the service called by Annomatic to get annotation suggested: 'DataTXT' or 'gramsci'
      *
      * Default value:
      * <pre> source: 'gramsci' </pre>
@@ -65,7 +66,7 @@ angular.module('Pundit2.Annomatic')
      * `string` or `obj`
      *
      * Propety used to save the annotations on the server. You can pass the uri of the property (this must be available in pundit)
-     * or the complete object as pundit property convention ({uri, type, label, range, domain ...}) 
+     * or the complete object as pundit property convention ({uri, type, label, range, domain ...})
      *
      * Default value:
      * <pre> property: 'http://purl.org/pundit/ont/oa#isRelatedTo' </pre>
@@ -86,9 +87,9 @@ angular.module('Pundit2.Annomatic')
  * For the configuration of this module, see {@link #!/api/punditConfig/object/modules#Annomatic here}
  */
 .service('Annomatic', function(ANNOMATICDEFAULTS, BaseComponent, EventDispatcher, NameSpace, DataTXTResource, XpointersHelper,
-                               ItemsExchange, TextFragmentHandler, ImageHandler, TypesHelper, Toolbar,
-                               DBPediaSpotlightResource, Item, GramsciResource, AnnotationsCommunication,
-                               $rootScope, $timeout, $document, $window, $q, Consolidation, ContextualMenu) {
+    ItemsExchange, TextFragmentHandler, ImageHandler, TypesHelper, Toolbar,
+    DBPediaSpotlightResource, Item, GramsciResource, AnnotationsCommunication,
+    $rootScope, $timeout, $document, $window, $q, Consolidation, ContextualMenu) {
 
     var annomatic = new BaseComponent('Annomatic', ANNOMATICDEFAULTS);
 
@@ -118,10 +119,10 @@ angular.module('Pundit2.Annomatic')
     };
 
     annomatic.area = null;
-    
+
     annomatic.annotationNumber = 0;
 
-    if(annomatic.options.partialSelection){
+    if (annomatic.options.partialSelection) {
         ContextualMenu.addAction({
             type: [
                 annomatic.options.cMenuType
@@ -160,7 +161,7 @@ angular.module('Pundit2.Annomatic')
         // Cycle over the nodes in the stack: depth first. We start from the given node
         while ((currentNode = stack.pop()) && currentAnnotationNum < annotations.length) {
 
-            annomatic.log("Popped node ", currentNode, ' current offset = '+currentOffset);
+            annomatic.log("Popped node ", currentNode, ' current offset = ' + currentOffset);
 
             // Spaces added to the current offsets to match the real content, it will
             // be used to create valid ranges
@@ -171,13 +172,13 @@ angular.module('Pundit2.Annomatic')
             if (!XpointersHelper.isTextNode(currentNode)) {
                 if (currentNode.hasChildNodes()) {
                     var childNodes = currentNode.childNodes;
-                    for (var len=childNodes.length; len--;) {
+                    for (var len = childNodes.length; len--;) {
                         stack.push(childNodes[len]);
                         annomatic.log('Pushing node ', childNodes[len]);
                     }
                 }
 
-            // If it's a text node.. let the dance begin!
+                // If it's a text node.. let the dance begin!
             } else {
 
                 // Trimmed content: DataTXT strips multiple spaces (more than allowed in HTML)
@@ -202,7 +203,7 @@ angular.module('Pundit2.Annomatic')
                             currentOffset += 1;
                             correctedEmtpyNode = true;
                         } else {
-                            annomatic.log('OUCH! trimDoubleSpaces fail?!!? --'+trimDoubleSpaces(currentNode.textContent)+'--');
+                            annomatic.log('OUCH! trimDoubleSpaces fail?!!? --' + trimDoubleSpaces(currentNode.textContent) + '--');
                         }
                     }
 
@@ -235,9 +236,9 @@ angular.module('Pundit2.Annomatic')
                             end = spacesLen[l] + currentAnnotation.end - currentOffset + addedSpaces;
                             sub = currentNode.textContent.substring(start, end);
 
-                            annomatic.log('Trying to add '+spacesLen[l]+' spaces: --' +
-                                sub + '-- vs --'+ currentAnnotation.spot+'-- (' +
-                                start+' to '+end+')');
+                            annomatic.log('Trying to add ' + spacesLen[l] + ' spaces: --' +
+                                sub + '-- vs --' + currentAnnotation.spot + '-- (' +
+                                start + ' to ' + end + ')');
 
                             // TODO: we are losing all those annotations which are multiple words AND
                             // in the DOM are splitted by spaces like "aa     bb" or "aa\n    bb".
@@ -249,7 +250,7 @@ angular.module('Pundit2.Annomatic')
                             if (currentAnnotation.spot === sub) {
                                 addedSpaces += spacesLen[l];
                                 found = true;
-                                annomatic.log('@@ Found annotation '+ currentAnnotation.spot);
+                                annomatic.log('@@ Found annotation ' + currentAnnotation.spot);
 
                                 var range = $document[0].createRange();
                                 range.setStart(currentNode, start);
@@ -291,10 +292,10 @@ angular.module('Pundit2.Annomatic')
 
                     if (doubleSpaceTrimmed.match(/^\s\s*/) && (correctedEmtpyNode || currentOffset === 0)) {
                         currentOffset += doubleSpaceTrimmed.length - 1;
-                        annomatic.log('Moving to next node (corrected by leading space) with current offset = '+ currentOffset);
+                        annomatic.log('Moving to next node (corrected by leading space) with current offset = ' + currentOffset);
                     } else {
                         currentOffset += doubleSpaceTrimmed.length;
-                        annomatic.log('Moving to next node with current offset = '+ currentOffset);
+                        annomatic.log('Moving to next node with current offset = ' + currentOffset);
                     }
                     correctedEmtpyNode = false;
 
@@ -303,7 +304,7 @@ angular.module('Pundit2.Annomatic')
 
         } // while currentNode
 
-        annomatic.log('Dance finished, found '+foundAnnotations.length+' annotations: ', foundAnnotations);
+        annomatic.log('Dance finished, found ' + foundAnnotations.length + ' annotations: ', foundAnnotations);
         return foundAnnotations;
     }; // findAnnotations()
 
@@ -330,7 +331,7 @@ angular.module('Pundit2.Annomatic')
         }
 
         // New lines? Replace them with a space ...
-        for (var len=ret.length; len--;) {
+        for (var len = ret.length; len--;) {
             if (ret[len].match(/\n/)) {
                 ret[len] = ret[len].replace(/[\r\n]/g, " ");
             }
@@ -351,7 +352,7 @@ angular.module('Pundit2.Annomatic')
 
         var ret = [],
             seen = {};
-        for (var i=0; i<len; i++) {
+        for (var i = 0; i < len; i++) {
             var current = doubleSpaces[i].length - 1;
             if (typeof(seen[current]) === "undefined") {
                 seen[current] = true;
@@ -360,18 +361,20 @@ angular.module('Pundit2.Annomatic')
         }
 
         // Return them sorted numerically
-        return ret.sort(function(a, b) { return a-b; });
+        return ret.sort(function(a, b) {
+            return a - b;
+        });
     };
 
 
     // TODO: move this to some kind of configured CONSTANTS,
     // and use them instead of magic 'strings'
     annomatic.stateClassMap = {
-        'waiting' : 'ann-waiting',
-        'active'  : 'ann-active',
+        'waiting': 'ann-waiting',
+        'active': 'ann-active',
         'accepted': 'ann-ok',
-        'removed' : 'ann-removed',
-        'hidden'  : 'ann-hidden'
+        'removed': 'ann-removed',
+        'hidden': 'ann-hidden'
     };
 
 
@@ -382,9 +385,9 @@ angular.module('Pundit2.Annomatic')
      * @function
      *
      * @description
-     * Reset all annomatic states 
+     * Reset all annomatic states
      *
-    */
+     */
     // TODO: do we need to do more stuff to reset everything and start from scratch?
     annomatic.reset = function() {
         annomatic.ann.typesOptions = [];
@@ -402,9 +405,9 @@ angular.module('Pundit2.Annomatic')
         var byId = annomatic.ann.byId,
             byType = annomatic.ann.byType;
 
-        annomatic.log('Analyzing from '+from+' to '+to);
+        annomatic.log('Analyzing from ' + from + ' to ' + to);
 
-        for (var l=from; l<to; l++) {
+        for (var l = from; l < to; l++) {
             var ann = annomatic.ann.byNum[l],
                 id = ann.id,
                 types = ann.types || [];
@@ -415,14 +418,16 @@ angular.module('Pundit2.Annomatic')
             } else {
                 byId[id] = [l];
             }
-            
+
             // index by type
-            for (var typeLen=types.length; typeLen--;) {
+            for (var typeLen = types.length; typeLen--;) {
                 var t = types[typeLen];
                 if (t in byType) {
                     byType[t].push(l);
                 } else {
-                    annomatic.ann.typesOptions.push({value: t});
+                    annomatic.ann.typesOptions.push({
+                        value: t
+                    });
                     byType[t] = [l];
                 }
             }
@@ -436,20 +441,20 @@ angular.module('Pundit2.Annomatic')
 
         // Recalculate the number of annotations for each type and update the labels
         // for the select
-        for (l=annomatic.ann.typesOptions.length; l--;) {
+        for (l = annomatic.ann.typesOptions.length; l--;) {
             var op = annomatic.ann.typesOptions[l],
                 uri = op.value;
 
-            op.label = TypesHelper.getLabel(uri) + " ("+ byType[uri].length+")";
+            op.label = TypesHelper.getLabel(uri) + " (" + byType[uri].length + ")";
         }
 
         // Sort them from most used to least used
-        annomatic.ann.typesOptions = annomatic.ann.typesOptions.sort(function(a, b){
+        annomatic.ann.typesOptions = annomatic.ann.typesOptions.sort(function(a, b) {
             return byType[b.value].length - byType[a.value].length;
         });
-        
+
     }; // analyze()
-    
+
     var updateStates = function(num, from, to) {
         var byState = annomatic.ann.byState,
             idx = byState[from].indexOf(num);
@@ -470,14 +475,14 @@ angular.module('Pundit2.Annomatic')
      * @param {number} number of the annotation
      * @param {boolean} value of the new state
      *
-    */
+     */
     annomatic.setState = function(num, state) {
         var ann = annomatic.ann.byNum[num],
             scope = annomatic.ann.autoAnnScopes[num];
 
         // Update counters and indexes for states
         updateStates(num, ann.state, state);
-        
+
         // Save the lastState for hover effects
         ann.lastState = ann.state;
 
@@ -485,13 +490,13 @@ angular.module('Pundit2.Annomatic')
 
         var stateClass = annomatic.stateClassMap[state];
         if (ann.hidden) {
-            stateClass += ' '+annomatic.stateClassMap.hidden;
+            stateClass += ' ' + annomatic.stateClassMap.hidden;
         }
 
         scope.setStateClass(annomatic.stateClassMap[ann.lastState], stateClass);
 
     };
-    
+
     /**
      * @ngdoc method
      * @name Annomatic#setLastState
@@ -503,17 +508,17 @@ angular.module('Pundit2.Annomatic')
      *
      * @param {number} number of the annotation
      *
-    */
+     */
     annomatic.setLastState = function(num) {
         var ann = annomatic.ann.byNum[num],
             scope = annomatic.ann.autoAnnScopes[num];
-            
+
         updateStates(num, ann.state, ann.lastState);
         ann.state = ann.lastState;
 
         var stateClass = annomatic.stateClassMap[ann.state];
         if (ann.hidden) {
-            stateClass += ' '+annomatic.stateClassMap.hidden;
+            stateClass += ' ' + annomatic.stateClassMap.hidden;
         }
 
         scope.setStateClass(annomatic.stateClassMap[ann.lastState], stateClass);
@@ -532,7 +537,7 @@ angular.module('Pundit2.Annomatic')
      * @param {DOMElement} current node to be processed
      * @return {Promise} promise will be resolved when the data is returned from datatxt
      *
-    */
+     */
     annomatic.getDataTXTAnnotations = function(node) {
         var promise = $q.defer(),
             element = angular.element(node),
@@ -553,11 +558,11 @@ angular.module('Pundit2.Annomatic')
                 "$app_id": "cc85cdd8",
                 "$app_key": "668e4ac4f00f64c43ab4fefd5c8899fa",
                 text: content
-                // html: content
+                    // html: content
             },
             function(data) {
 
-                annomatic.log('Received '+data.annotations.length+' annotations from DataTXT');
+                annomatic.log('Received ' + data.annotations.length + ' annotations from DataTXT');
                 var item,
                     allValidAnnotations = findAnnotations(element, data.annotations),
                     validAnnotations = [],
@@ -565,8 +570,8 @@ angular.module('Pundit2.Annomatic')
 
                 // validAnnotations = allValidAnnotations;
                 // TODO: improve confidence management
-                for (var a in allValidAnnotations){
-                    if (allValidAnnotations[a].annotation.confidence > annomatic.options.minConfidence){
+                for (var a in allValidAnnotations) {
+                    if (allValidAnnotations[a].annotation.confidence > annomatic.options.minConfidence) {
                         validAnnotations.push(allValidAnnotations[a]);
                     }
                 }
@@ -574,7 +579,7 @@ angular.module('Pundit2.Annomatic')
                 annomatic.annotationNumber += validAnnotations.length;
                 annomatic.currAnn = 0;
 
-                for (var l=validAnnotations.length, i=0; i<l; i++) {
+                for (var l = validAnnotations.length, i = 0; i < l; i++) {
                     var currentIndex = oldAnnotationNumber + i;
                     item = TextFragmentHandler.createItemFromRange(validAnnotations[i].range);
 
@@ -626,7 +631,7 @@ angular.module('Pundit2.Annomatic')
 
         return new Item(values.uri, values);
     };
-    
+
     /**
      * @ngdoc method
      * @name Annomatic#hideAnn
@@ -638,7 +643,7 @@ angular.module('Pundit2.Annomatic')
      *
      * @param {number} number of the annotation
      *
-    */
+     */
     annomatic.hideAnn = function(num) {
         var ann = annomatic.ann.byNum[num],
             scope = annomatic.ann.autoAnnScopes[num];
@@ -658,7 +663,7 @@ angular.module('Pundit2.Annomatic')
      *
      * @param {number} number of the annotation
      *
-    */
+     */
     annomatic.showAnn = function(num) {
         var ann = annomatic.ann.byNum[num],
             scope = annomatic.ann.autoAnnScopes[num];
@@ -666,8 +671,8 @@ angular.module('Pundit2.Annomatic')
         ann.hidden = false;
         scope.setStateClass(annomatic.stateClassMap.hidden, annomatic.stateClassMap[ann.state]);
     };
-    
-    
+
+
 
     /**
      * @ngdoc method
@@ -681,9 +686,9 @@ angular.module('Pundit2.Annomatic')
      *
      * @param {array} list of types
      *
-    */
+     */
     annomatic.setTypeFilter = function(types) {
-    
+
         var byType = annomatic.ann.byType,
             byNum = annomatic.ann.byNum,
             toShow = {};
@@ -692,20 +697,20 @@ angular.module('Pundit2.Annomatic')
 
         // No filters: just show all
         if (types.length === 0) {
-            for (var i=byNum.length; i--;) {
+            for (var i = byNum.length; i--;) {
                 annomatic.showAnn(i);
             }
         } else {
             // Get a unique list of ids to show
             for (var t in types) {
                 var type = types[t];
-                for (var j=byType[type].length; j--;) {
+                for (var j = byType[type].length; j--;) {
                     toShow[byType[type][j]] = true;
                 }
             }
-        
+
             // Cycle over all annotations and show/hide when needed
-            for (var k=byNum.length; k--;) {
+            for (var k = byNum.length; k--;) {
                 if (k in toShow) {
                     annomatic.showAnn(k);
                 } else {
@@ -725,7 +730,7 @@ angular.module('Pundit2.Annomatic')
         }
 
     };
-    
+
     /**
      * @ngdoc method
      * @name Annomatic#closeAll
@@ -736,14 +741,14 @@ angular.module('Pundit2.Annomatic')
      * Close all popover of the annotations
      *
      *
-    */
+     */
     annomatic.closeAll = function() {
-        for (var l=annomatic.ann.byState.active.length; l--;){
+        for (var l = annomatic.ann.byState.active.length; l--;) {
             var num = annomatic.ann.byState.active[l];
             annomatic.ann.autoAnnScopes[num].hide();
         }
     };
-    
+
     // If called with no parameter continues from last annotation
     annomatic.currAnn = 0;
 
@@ -758,7 +763,7 @@ angular.module('Pundit2.Annomatic')
      *
      * @param {number} number of the started annotation
      *
-    */
+     */
     annomatic.reviewNext = function(from) {
 
         if (annomatic.annotationNumber === 0) {
@@ -770,7 +775,7 @@ angular.module('Pundit2.Annomatic')
             annomatic.log('All reviewed!');
             return;
         }
-        
+
         annomatic.closeAll();
 
         // No from, start from last currentAnn
@@ -779,7 +784,7 @@ angular.module('Pundit2.Annomatic')
         } else {
             from = parseInt(from, 10);
         }
-        
+
         // Start from 0 if we reach the ends
         if (from >= annomatic.annotationNumber || from < 0) {
             annomatic.currAnn = 0;
@@ -790,7 +795,9 @@ angular.module('Pundit2.Annomatic')
         // Look for the next 'waiting' state starting from the current one
         while (annomatic.ann.byNum[annomatic.currAnn].hidden === true || annomatic.ann.byNum[annomatic.currAnn].state !== "waiting") {
             annomatic.currAnn++;
-            if (annomatic.currAnn === annomatic.annotationNumber) { break; }
+            if (annomatic.currAnn === annomatic.annotationNumber) {
+                break;
+            }
         }
 
         if (annomatic.currAnn < annomatic.annotationNumber) {
@@ -817,7 +824,7 @@ angular.module('Pundit2.Annomatic')
      * Reset the states and all annotations in annomatic
      *
      *
-    */
+     */
     annomatic.hardReset = function() {
         ItemsExchange.wipeContainer(annomatic.options.container);
         annomatic.ann = {
@@ -847,7 +854,7 @@ angular.module('Pundit2.Annomatic')
      * @description
      * Start annomatic
      *
-    */
+     */
     annomatic.run = function() {
         state.isRunning = true;
         TextFragmentHandler.turnOff();
@@ -856,7 +863,7 @@ angular.module('Pundit2.Annomatic')
             Toolbar.toggleTemplateMode();
         }
 
-        if(annomatic.options.partialSelection){
+        if (annomatic.options.partialSelection) {
             angular.element('body').on('mousedown', mouseDownHandler);
         }
 
@@ -872,15 +879,15 @@ angular.module('Pundit2.Annomatic')
      * @description
      * Stop annomatic
      *
-    */    
-    annomatic.stop = function(){
+     */
+    annomatic.stop = function() {
         annomatic.hardReset();
         // ItemsExchange.wipeContainer(annomatic.options.container);
         state.isRunning = false;
         TextFragmentHandler.turnOn();
         ImageHandler.turnOn();
 
-        if(annomatic.options.partialSelection){
+        if (annomatic.options.partialSelection) {
             angular.element('body').off('mousedown', mouseDownHandler);
             angular.element('body').off('mouseup', mouseUpHandler);
         }
@@ -888,7 +895,7 @@ angular.module('Pundit2.Annomatic')
         $rootScope.$emit('annomatic-stop');
     };
 
-    var buildTargets = function(subUri, predUri, objUri){
+    var buildTargets = function(subUri, predUri, objUri) {
 
         var sub = ItemsExchange.getItemByUri(subUri),
             pred = ItemsExchange.getItemByUri(predUri),
@@ -897,19 +904,19 @@ angular.module('Pundit2.Annomatic')
 
         if (typeof(sub) === 'undefined' || typeof(pred) === 'undefined' || typeof(obj) === 'undefined') {
             return;
-        }        
+        }
 
-        if (sub.isTextFragment() || sub.isImage() || sub.isImageFragment() ){
+        if (sub.isTextFragment() || sub.isImage() || sub.isImageFragment()) {
             if (res.indexOf(sub.uri) === -1) {
                 res.push(sub.uri);
             }
         }
-        if (pred.isTextFragment() || pred.isImage() || pred.isImageFragment() ){
+        if (pred.isTextFragment() || pred.isImage() || pred.isImageFragment()) {
             if (res.indexOf(pred.uri) === -1) {
                 res.push(pred.uri);
             }
-        }        
-        if (obj.isTextFragment() || obj.isImage() || obj.isImageFragment() ){
+        }
+        if (obj.isTextFragment() || obj.isImage() || obj.isImageFragment()) {
             if (res.indexOf(obj.uri) === -1) {
                 res.push(obj.uri);
             }
@@ -919,7 +926,7 @@ angular.module('Pundit2.Annomatic')
     };
 
     var buildGraph = function(subUri, predUri, objUri) {
-        
+
         var sub = ItemsExchange.getItemByUri(subUri),
             pred = ItemsExchange.getItemByUri(predUri),
             obj = ItemsExchange.getItemByUri(objUri),
@@ -928,9 +935,12 @@ angular.module('Pundit2.Annomatic')
         if (typeof(sub) === 'undefined' || typeof(pred) === 'undefined' || typeof(obj) === 'undefined') {
             return;
         }
-        
+
         res[sub.uri] = {};
-        res[sub.uri][pred.uri] = [{type: 'uri', value: obj.uri}];
+        res[sub.uri][pred.uri] = [{
+            type: 'uri',
+            value: obj.uri
+        }];
 
         return res;
     };
@@ -952,22 +962,31 @@ angular.module('Pundit2.Annomatic')
         res[obj.uri] = obj.toRdf();
 
         // add object types and its label
-        obj.type.forEach(function(e, i){
+        obj.type.forEach(function(e, i) {
             var type = obj.type[i];
-            res[type] = { };
-            res[type][NameSpace.rdfs.label] = [{type: 'literal', value: TypesHelper.getLabel(e)}];
+            res[type] = {};
+            res[type][NameSpace.rdfs.label] = [{
+                type: 'literal',
+                value: TypesHelper.getLabel(e)
+            }];
         });
         // add subject types and its label
-        sub.type.forEach(function(e, i){
+        sub.type.forEach(function(e, i) {
             var type = sub.type[i];
-            res[type] = { };
-            res[type][NameSpace.rdfs.label] = [{type: 'literal', value: TypesHelper.getLabel(e)}];
+            res[type] = {};
+            res[type][NameSpace.rdfs.label] = [{
+                type: 'literal',
+                value: TypesHelper.getLabel(e)
+            }];
         });
         // add predicate types and its label
-        pred.type.forEach(function(e, i){
+        pred.type.forEach(function(e, i) {
             var type = pred.type[i];
-            res[type] = { };
-            res[type][NameSpace.rdfs.label] = [{type: 'literal', value: TypesHelper.getLabel(e)}];
+            res[type] = {};
+            res[type][NameSpace.rdfs.label] = [{
+                type: 'literal',
+                value: TypesHelper.getLabel(e)
+            }];
         });
 
         return res;
@@ -985,8 +1004,8 @@ angular.module('Pundit2.Annomatic')
      *
      * @param {number} number of the annotation to be saved
      *
-    */
-    annomatic.save = function(num){
+     */
+    annomatic.save = function(num) {
         var uri = annomatic.ann.numToUriMap[num];
         var ann = annomatic.ann.byUri[uri];
 
@@ -994,7 +1013,7 @@ angular.module('Pundit2.Annomatic')
         var graph = buildGraph(uri, annomatic.options.property, ann.uri);
         var targets = buildTargets(uri, annomatic.options.property, ann.uri);
 
-        AnnotationsCommunication.saveAnnotation(graph, items, targets, undefined, true).then(function(annId){
+        AnnotationsCommunication.saveAnnotation(graph, items, targets, undefined, true).then(function(annId) {
             annomatic.ann.savedById.push(annId);
             annomatic.ann.savedByNum.push(num);
             annomatic.setState(num, 'accepted');
@@ -1021,7 +1040,7 @@ angular.module('Pundit2.Annomatic')
      *
      * @return {boolean} current state of annomatic
      *
-    */
+     */
     annomatic.isRunning = function() {
         return state.isRunning;
     };
@@ -1040,11 +1059,11 @@ angular.module('Pundit2.Annomatic')
      * @param {DOMElement} current node to be processed
      * @return {Promise} promise will be resolved when the data is returned from gramsci service
      *
-    */
-    annomatic.getGrasciAnnotations = function(node){
+     */
+    annomatic.getGrasciAnnotations = function(node) {
         var promise = $q.defer();
 
-        if(typeof(node) === 'undefined'){
+        if (typeof(node) === 'undefined') {
             promise.resolve();
             return;
         }
@@ -1059,7 +1078,7 @@ angular.module('Pundit2.Annomatic')
             },
             function(data) {
                 consolidateGramsciSpots(data);
-                promise.resolve();               
+                promise.resolve();
             },
             function(msg) {
                 annomatic.log('Error msg: ', msg);
@@ -1077,16 +1096,16 @@ angular.module('Pundit2.Annomatic')
      * @function
      *
      * @description
-     * Call service set in the configuration 
+     * Call service set in the configuration
      *
      * @param {DOMElement} current node to be processed
      * @return {Promise} promise will be resolved when the data is returned from the current service
      *
-    */
-    annomatic.getAnnotations = function(node){
-        if(annomatic.options.source === 'DataTXT'){
+     */
+    annomatic.getAnnotations = function(node) {
+        if (annomatic.options.source === 'DataTXT') {
             return annomatic.getDataTXTAnnotations(node);
-        } else if(annomatic.options.source === 'gramsci'){
+        } else if (annomatic.options.source === 'gramsci') {
             return annomatic.getGrasciAnnotations(node);
         }
     };
@@ -1096,7 +1115,7 @@ angular.module('Pundit2.Annomatic')
     };
 
     // get the html content to be sent to gramsci
-    var getGramsciHtml = function () {
+    var getGramsciHtml = function() {
         return angular.element('.pundit-content').html();
     };
 
@@ -1108,7 +1127,7 @@ angular.module('Pundit2.Annomatic')
         values.label = ann.label;
         if (values.label.length > TextFragmentHandler.options.labelMaxLength) {
             values.label = values.label.substr(0, TextFragmentHandler.options.labelMaxLength) + ' ..';
-        }        
+        }
 
         // TODO what types ?
         if (typeof(ann.types) === "undefined") {
@@ -1127,15 +1146,15 @@ angular.module('Pundit2.Annomatic')
 
 
     // consolidate all gramsci spots (wrap text inside span and add popover toggle icon)
-    var consolidateGramsciSpots = function (data) {
+    var consolidateGramsciSpots = function(data) {
 
         // var annotations = getGramsciAnnotations();
         var annotations = data.annotations;
         var validAnnotations = [];
         var i;
-        
+
         // cycle on all annotations received from gramsci
-        for (i=0; i<annotations.length; i++) {
+        for (i = 0; i < annotations.length; i++) {
 
             var ann = annotations[i];
             // get the current node from xpath
@@ -1184,7 +1203,7 @@ angular.module('Pundit2.Annomatic')
 
         // cycle over the valid annotations (range and spot match)
         // and update the state
-        for (i=0; i<validAnnotations.length; i++) {
+        for (i = 0; i < validAnnotations.length; i++) {
 
             var currentIndex = i + oldAnnotationNumber;
             var ann = validAnnotations[i].ann;
@@ -1201,7 +1220,7 @@ angular.module('Pundit2.Annomatic')
 
     var getSelectedRange = function() {
         var range;
-        
+
         if ($window.getSelection().rangeCount === 0) {
             // console.log('Range count 0!');
             return null;
@@ -1210,7 +1229,7 @@ angular.module('Pundit2.Annomatic')
         range = $window.getSelection().getRangeAt(0);
 
         // If the selected range is empty (this happens when the user clicks on something)...
-        if  (range !== null && (range.startContainer === range.endContainer) && (range.startOffset === range.endOffset)) {
+        if (range !== null && (range.startContainer === range.endContainer) && (range.startOffset === range.endOffset)) {
             // console.log("Range is not null, but start/end containers and offsets match: no selected range.");
             return null;
         }
@@ -1218,11 +1237,11 @@ angular.module('Pundit2.Annomatic')
         return range;
 
     }; // getSelectedRange()
-    
+
     var ancestor;
     var mouseCheck = false;
 
-    var mouseDownHandler = function(){
+    var mouseDownHandler = function() {
         angular.element('body').on('mousemove', function() {
             var r = getSelectedRange();
 
@@ -1231,7 +1250,7 @@ angular.module('Pundit2.Annomatic')
                     angular.element(ancestor).removeClass('selecting-ancestor');
                 }
                 ancestor = r.commonAncestorContainer;
-                
+
                 if (ancestor.nodeType === Node.TEXT_NODE) {
                     ancestor = ancestor.parentNode;
                 }
@@ -1273,14 +1292,16 @@ angular.module('Pundit2.Annomatic')
      * @description
      * Given an HTML node, will query the current service for annotations of the selected area
      *
-    */
-    annomatic.getAnnotationByArea = function(){
+     */
+    annomatic.getAnnotationByArea = function() {
         annotationsRootNode = annomatic.area;
-        if(annotationsRootNode == null){ return; }
+        if (annotationsRootNode == null) {
+            return;
+        }
 
         annomatic.hardReset();
         EventDispatcher.sendEvent('Annomatic.loading', true);
-        annomatic.getAnnotations(annotationsRootNode).then(function(){
+        annomatic.getAnnotations(annotationsRootNode).then(function() {
             // AnnotationSidebar.toggleLoading();
             EventDispatcher.sendEvent('Annomatic.loading', false);
             Consolidation.consolidate(ItemsExchange.getItemsByContainer(annomatic.options.container));

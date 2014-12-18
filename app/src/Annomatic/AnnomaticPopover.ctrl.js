@@ -1,4 +1,5 @@
 angular.module('Pundit2.Annomatic')
+
 .controller('AnnomaticPopoverCtrl', function($rootScope, $scope, Annomatic, EventDispatcher) {
 
     // Using popover's content variable to pass the number of the 
@@ -16,33 +17,33 @@ angular.module('Pundit2.Annomatic')
     $scope.hide = function(event) {
         $scope.$hide();
         Annomatic.setLastState($scope.num);
-        event.stopPropagation();               
+        event.stopPropagation();
         event.preventDefault();
     };
 
     $scope.setOk = function(event) {
         $scope.$hide();
 
-        if($scope.ann.savedByNum.indexOf($scope.num) === -1){
+        if ($scope.ann.savedByNum.indexOf($scope.num) === -1) {
             Annomatic.save($scope.num);
-        } else{
+        } else {
             Annomatic.setState($scope.num, 'accepted');
         }
-        event.stopPropagation();               
+        event.stopPropagation();
         event.preventDefault();
     };
-    
+
     $scope.setKo = function() {
         $scope.$hide();
         Annomatic.setState($scope.num, 'removed');
         Annomatic.reviewNext($scope.num + 1);
     };
-    
+
     $scope.goNext = function(event) {
         $scope.$hide();
         Annomatic.setLastState($scope.num);
         Annomatic.reviewNext($scope.num + 1);
-        event.stopPropagation();               
+        event.stopPropagation();
         event.preventDefault();
     };
 
@@ -51,7 +52,7 @@ angular.module('Pundit2.Annomatic')
     //     Annomatic.setLastState($scope.num);
     //     Annomatic.reviewNext($scope.num - 1);  
     // };
-    
+
     // $scope.acceptAll = function() {
     //     // TODO move this in service
     //     var id = $scope.ann.byNum[$scope.num].id,
@@ -65,19 +66,19 @@ angular.module('Pundit2.Annomatic')
     //         }
     //         // Annomatic.setState(similar[i], 'accepted');
     //     }
-        
+
     //     $scope.$hide();
     //     // Annomatic.reviewNext($scope.num + 1);
     // };
-    
+
     $scope.toggleSimilar = function() {
         var ann = $scope.ann.byNum[$scope.num],
             id = ann.id,
             similar = $scope.ann.byId[id];
-            
+
         // Skipping num so we dont toggle the state of the current
         // automatic annotation
-        for (var i=similar.length; i--;) {
+        for (var i = similar.length; i--;) {
             if (similar[i] !== $scope.num) {
                 var similarAnn = Annomatic.ann.byNum[similar[i]];
                 if (similarAnn.state !== "active") {
@@ -87,7 +88,7 @@ angular.module('Pundit2.Annomatic')
                 }
             }
         }
-        
+
     };
 
     EventDispatcher.addListener('AnnotationSidebar.activateAnnotationsPanel', function() {
