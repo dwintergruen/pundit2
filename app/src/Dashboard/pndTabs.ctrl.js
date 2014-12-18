@@ -259,7 +259,33 @@ angular.module('Pundit2.Dashboard')
 
         var pane = $scope.panes[$scope.active];
 
-        Analytics.track('buttons', 'click', $scope.panes[$scope.active].hierarchystring);
+        // Temporary solution to find hierarchystring.
+        var eventLabel = undefined;
+        if ($scope.panes[$scope.active].hasOwnProperty('hierarchystring') ) {
+            eventLabel = $scope.panes[$scope.active].hierarchystring;
+        }
+        else if (!$scope.panes[$scope.active].hasOwnProperty('hierarchystring') 
+            || typeof($scope.panes[$scope.active].hierarchystring) === 'undefined') {
+            var myScope = $scope;
+            do {
+                if (typeof(myScope) === 'undefined') {
+                    break;
+                }
+                if (myScope.hasOwnProperty('pane')) {
+                    if (myScope.pane.hasOwnProperty('hierarchystring')) {
+                        eventLabel = myScope.pane.hierarchystring + '--' + $scope.panes[$scope.active].title;
+                    }
+                    break;
+                }
+                myScope = myScope.$parent;
+            }
+            while (typeof(myScope) !== 'undefined');
+        }
+
+        if (typeof(eventLabel) === 'undefined') {
+            eventLabel = 'unracked-tab-' . $scope.panes[$scope.active].title;
+        }
+        Analytics.track('buttons', 'click', eventLabel);
 
     };
 
