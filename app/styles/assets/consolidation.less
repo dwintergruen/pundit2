@@ -1,17 +1,22 @@
-.pnd-cons-img {
-	border: 2px solid green !important;
-}
+/**
+ * CONSOLIDATION
+ *
+ * Style of inline text fragments and images involved in annotations
+ */
 
+/* ------------------------------------ *\
+   #CONSOLIDATION
+\* ------------------------------------ */
 .pnd-cons {
-	background-color: @text-fragment-color;
-	padding: 0.2em 0em;
-	color: darken(@brand-warning, 25%); 
-	line-height: 1.8em;	
-	
-	&.pnd-textfragment-highlight {
-		background-color: lighten(@brand-warning, 10%);
-		color: darken(@brand-warning, 35%);
-		}
+    background-color: @text-fragment-color;
+    padding: 0.2em 0em;
+    color: darken(@brand-warning, 25%);
+    line-height: 1.8em;
+
+    &.pnd-textfragment-highlight {
+        background-color: lighten(@brand-warning, 10%);
+        color: darken(@brand-warning, 35%);
+    }
 
     &.pnd-textfragment-hidden {
         background-color: inherit;
@@ -22,55 +27,64 @@
         opacity: 0.6;
     }
 
-	}
-	
+}
+
 .pnd-text-fragment-icon {
-	font-size: 12px;
-	margin-left: 0.5em;
-	cursor: context-menu;
-	color: @brand-warning;
-	vertical-align: baseline;
-	text-decoration: none;
-		
-	&:hover {
-		color: darken(@brand-warning, 12%);
-		text-decoration: none;
-		}
-	
-	&.pnd-icon-bookmark {
-		color: @brand-success;
-		
-		&:hover {
-			color: darken(@brand-success, 12%);
-			text-decoration: none;
-			}
-		
-		}			
+    font-size: 12px;
+    margin-left: 0.5em;
+    cursor: context-menu;
+    color: @brand-warning;
+    vertical-align: baseline;
+    text-decoration: none;
+
+    &:hover {
+        color: darken(@brand-warning, 12%);
+        text-decoration: none;
+    }
+
+    &.pnd-icon-bookmark {
+        color: @brand-success;
+
+        &:hover {
+            color: darken(@brand-success, 12%);
+            text-decoration: none;
+        }
+
+    }
 }
 
 a {
 
-	& .pnd-cons {
-		color: darken(@brand-warning, 60%);
-		text-decoration: none;
-		cursor: pointer;
-		}
-	
-	.pnd-text-fragment-icon {
-		text-decoration: none;
-		color: @brand-warning; 
-			
-		&:hover {
-			text-decoration: none;
-			}
-		}		
+    & .pnd-cons {
+        // color: darken(@brand-warning, 60%);
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .pnd-text-fragment-icon {
+        text-decoration: none;
+        color: @brand-warning;
+
+        &:hover {
+            text-decoration: none;
+        }
+    }
 }
-		
+
 sup {
 
-	.pnd-text-fragment-icon {
-		font-size: 12px;
-		position: absolute;
-		top: 0.3em;
-		}
+    .pnd-text-fragment-icon {
+        font-size: 12px;
+        position: absolute;
+        top: 0.3em;
+    }
 }
+
+/* ------------------------------------ *\
+   #IMAGE-CONSOLIDATION
+\* ------------------------------------ */
+
+.pnd-cons-img {
+    border: 2px solid @brand-primary !important;
+}
+
