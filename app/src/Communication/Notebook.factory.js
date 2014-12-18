@@ -1,11 +1,13 @@
 angular.module('Pundit2.Communication')
+
 .constant('NOTEBOOKDEFAULTS', {
     iconDefault: 'pnd-icon pnd-icon-book',
     classDefault: 'pnd-item-default'
 
 })
+
 .factory('Notebook', function(BaseComponent, NameSpace, MyPundit, Analytics, NotebookExchange, NOTEBOOKDEFAULTS,
-                                $http, $q) {
+    $http, $q) {
 
     var notebookComponent = new BaseComponent("Notebook", NOTEBOOKDEFAULTS);
 
@@ -14,7 +16,7 @@ angular.module('Pundit2.Communication')
     // notebook is created on the server
     function Notebook(id, isMyNotebook) {
         this._q = $q.defer();
-        
+
         if (typeof(id) !== "undefined") {
             this.id = id;
             this.load();
@@ -94,47 +96,51 @@ angular.module('Pundit2.Communication')
         if (typeof(useCache) === "undefined") {
             useCache = true;
         }
-        
-        notebookComponent.log("Loading notebook "+self.id+" metadata with cache "+useCache);
+
+        notebookComponent.log("Loading notebook " + self.id + " metadata with cache " + useCache);
 
         var httpPromise,
             nsKey = MyPundit.isUserLogged() ? 'asNBMeta' : 'asOpenNBMeta';
 
         httpPromise = $http({
-            headers: { 'Accept': 'application/json' },
+            headers: {
+                'Accept': 'application/json'
+            },
             method: 'GET',
             cache: useCache,
-            url: NameSpace.get(nsKey, {id: self.id}),
+            url: NameSpace.get(nsKey, {
+                id: self.id
+            }),
             withCredentials: true
         }).success(function(data) {
             readData(self, data);
             self._q.resolve(self);
             Analytics.track('api', 'get', 'notebook meta');
-            notebookComponent.log("Retrieved notebook "+self.id+" metadata");
+            notebookComponent.log("Retrieved notebook " + self.id + " metadata");
 
         }).error(function(data, statusCode) {
             // TODO: 404 not found, nothing to do about it, but 403 forbidden might be
             //       recoverable by loggin in
-            self._q.reject("Error from server while retrieving notebook "+self.id+": "+ statusCode);
+            self._q.reject("Error from server while retrieving notebook " + self.id + ": " + statusCode);
             Analytics.track('api', 'error', 'get notebook meta', statusCode);
-            notebookComponent.err("Error getting notebook "+self.id+" metadata. Server answered with status code "+statusCode);
+            notebookComponent.err("Error getting notebook " + self.id + " metadata. Server answered with status code " + statusCode);
 
         });
-        
+
     }; // Notebook.load()
-    
+
     var readData = function(nb, data) {
         // For some weird reason, the first level of the object
         // is the notebook's URI
         for (var nbUri in data) {
             nb.uri = nbUri;
         }
-        
+
         var ns = NameSpace.notebook,
             nbData = data[nb.uri];
 
         if (typeof(nbData) === 'undefined') {
-            notebookComponent.err('Malformed notebook uri='+nb.uri+', wrong metadata: ', data);
+            notebookComponent.err('Malformed notebook uri=' + nb.uri + ', wrong metadata: ', data);
             return false;
         }
 
@@ -143,9 +149,9 @@ angular.module('Pundit2.Communication')
         // doing some sanity checks
         for (var property in ns) {
             var propertyURI = ns[property];
-                
+
             if (propertyURI in nbData) {
-                if(property === 'type'){
+                if (property === 'type') {
                     nb[property] = [nbData[propertyURI][0].value];
                 } else {
                     nb[property] = nbData[propertyURI][0].value;
@@ -154,7 +160,7 @@ angular.module('Pundit2.Communication')
                 nb[property] = '';
             }
         }
-        
+
         // .includes is an array of annotation URIs. Parse out the ID
         // and put it in an array
         var includes = nbData[ns.includes];
@@ -165,7 +171,7 @@ angular.module('Pundit2.Communication')
                 nb.includes.push(annId[0]);
             }
         }
-        
+
     }; // readData()
 
     // Returns a promise associated with a notebook. The user will

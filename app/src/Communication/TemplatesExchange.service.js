@@ -1,5 +1,6 @@
 angular.module('Pundit2.Communication')
-    .service('TemplatesExchange', function(BaseComponent) {
+
+.service('TemplatesExchange', function(BaseComponent) {
 
     var templatesExchange = new BaseComponent("TemplatesExchange");
 
@@ -15,7 +16,7 @@ angular.module('Pundit2.Communication')
 
     templatesExchange.addTemplate = function(tmpl) {
         if (tmpl.id in tmplListById) {
-            templatesExchange.log('Not adding template '+tmpl.id+': already present.');
+            templatesExchange.log('Not adding template ' + tmpl.id + ': already present.');
         } else {
             tmplListById[tmpl.id] = tmpl;
             tmplList.push(tmpl);
@@ -28,7 +29,7 @@ angular.module('Pundit2.Communication')
             tmplList.splice(index, 1);
             delete tmplListById[id];
         } else {
-            templatesExchange.log('Impossible to remove template '+id+': not exist.');
+            templatesExchange.log('Impossible to remove template ' + id + ': not exist.');
         }
     };
 

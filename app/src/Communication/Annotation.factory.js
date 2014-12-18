@@ -1,7 +1,8 @@
 angular.module('Pundit2.Communication')
+
 .factory('Annotation', function(BaseComponent, NameSpace, Utils, Item, TypesHelper, Analytics,
-                                AnnotationsExchange, Consolidation, MyPundit, ItemsExchange, PageItemsContainer,
-                                $http, $q) {
+    AnnotationsExchange, Consolidation, MyPundit, ItemsExchange, PageItemsContainer,
+    $http, $q) {
 
     var annotationComponent = new BaseComponent("Annotation");
 
@@ -10,7 +11,7 @@ angular.module('Pundit2.Communication')
     // is created on the server
     function Annotation(id, useCache) {
         this._q = $q.defer();
-        
+
         if (typeof(id) !== "undefined") {
             this.id = id;
             this.load(useCache);
@@ -28,31 +29,35 @@ angular.module('Pundit2.Communication')
     };
 
     // update local annotation info reading from server
-    Annotation.prototype.update = function(){
+    Annotation.prototype.update = function() {
 
         var self = this,
             promise = $q.defer();
 
         $http({
-            headers: { 'Accept': 'application/json' },
+            headers: {
+                'Accept': 'application/json'
+            },
             method: 'GET',
-            url: NameSpace.get('asAnn', {id: self.id}),
+            url: NameSpace.get('asAnn', {
+                id: self.id
+            }),
             withCredentials: true
         }).success(function(data) {
 
             // update info
             readAnnotationData(self, data);
-            
+
             promise.resolve();
-            annotationComponent.log("Retrieved annotation "+self.id+" metadata");
+            annotationComponent.log("Retrieved annotation " + self.id + " metadata");
         }).error(function(data, statusCode) {
             promise.reject();
-            annotationComponent.err("Error getting annotation "+self.id+". Server answered with status code "+statusCode);
+            annotationComponent.err("Error getting annotation " + self.id + ". Server answered with status code " + statusCode);
         });
 
         return promise.promise;
     };
-    
+
     Annotation.prototype.load = function(useCache) {
         var self = this,
             nsKey = (MyPundit.isUserLogged()) ? 'asAnn' : 'asOpenAnn';
@@ -60,15 +65,19 @@ angular.module('Pundit2.Communication')
         if (typeof(useCache) === "undefined") {
             useCache = true;
         }
-        
-        annotationComponent.log("Loading annotation "+self.id+" with cache "+useCache);
-        
+
+        annotationComponent.log("Loading annotation " + self.id + " with cache " + useCache);
+
         var httpPromise;
         httpPromise = $http({
-            headers: { 'Accept': 'application/json' },
+            headers: {
+                'Accept': 'application/json'
+            },
             method: 'GET',
             cache: useCache,
-            url: NameSpace.get(nsKey, {id: self.id}),
+            url: NameSpace.get(nsKey, {
+                id: self.id
+            }),
             withCredentials: true
 
         }).success(function(data) {
@@ -80,19 +89,19 @@ angular.module('Pundit2.Communication')
             // TODO: set an error flag and let the user try load() again?
 
             self._q.resolve(self);
-            annotationComponent.log("Retrieved annotation "+self.id+" metadata");
+            annotationComponent.log("Retrieved annotation " + self.id + " metadata");
             Analytics.track('api', 'get', 'annotation');
 
         }).error(function(data, statusCode) {
 
             // TODO: 404 not found, nothing to do about it, but 403 forbidden might be
             // recoverable by loggin in??
-            self._q.reject("Error from server while retrieving annotation "+self.id+": "+ statusCode);
-            annotationComponent.err("Error getting annotation "+self.id+". Server answered with status code "+statusCode);
+            self._q.reject("Error from server while retrieving annotation " + self.id + ": " + statusCode);
+            annotationComponent.err("Error getting annotation " + self.id + ". Server answered with status code " + statusCode);
             Analytics.track('api', 'error', 'get annotation', statusCode);
 
         });
-        
+
     };
 
     Annotation.prototype.isBroken = function() {
@@ -101,10 +110,10 @@ angular.module('Pundit2.Communication')
 
         // TODO: add support for web pages and external text/image fragment
 
-        for (var i in items){
+        for (var i in items) {
             currentItem = ItemsExchange.getItemByUri(items[i].uri);
-            if (currentItem.isTextFragment() || currentItem.isImage() || currentItem.isImageFragment() || currentItem.isWebPage()){
-                if (Consolidation.isConsolidated(currentItem)){
+            if (currentItem.isTextFragment() || currentItem.isImage() || currentItem.isImageFragment() || currentItem.isWebPage()) {
+                if (Consolidation.isConsolidated(currentItem)) {
                     return false;
                 }
             }
@@ -120,7 +129,7 @@ angular.module('Pundit2.Communication')
             typeof(data.graph) === "undefined" ||
             typeof(data.metadata) === "undefined" ||
             typeof(data.items) === "undefined") {
-            annotationComponent.err('Malformed annotation id='+ann.id+': ', data);
+            annotationComponent.err('Malformed annotation id=' + ann.id + ': ', data);
             return false;
         }
 
@@ -135,7 +144,7 @@ angular.module('Pundit2.Communication')
 
         // if there wasnt that first level ... not good news.
         if (typeof(ann.uri) === "undefined") {
-            annotationComponent.err('Malformed annotation id='+ann.id+', wrong metadata: ', data);
+            annotationComponent.err('Malformed annotation id=' + ann.id + ', wrong metadata: ', data);
             return false;
         }
 
@@ -167,11 +176,11 @@ angular.module('Pundit2.Communication')
         // .target is always an array
         if (ns.target in annData) {
             ann.target = [];
-            
+
             for (var t = 0; t < annData[ns.target].length; t++) {
                 ann.target.push(annData[ns.target][t].value);
             }
-            
+
         }
 
         // Extract all of the entities and items involved in this annotation:
