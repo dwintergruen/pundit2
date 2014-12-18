@@ -44,7 +44,8 @@ angular.module('Pundit2.ContextualMenu')
         content: null,
         // mock Menu is showed outside screen to calculate the menu dimensions 
         // and to define the real menu placement to prevent window scrool
-        mockMenu: null
+        mockMenu: null,
+        init: false
     };
 
     // var overflowContentClass = contextualMenu.options.overflowContentClass;
@@ -75,6 +76,8 @@ angular.module('Pundit2.ContextualMenu')
             options.placement = contextualMenu.options.position;
         }
         options.template = 'src/ContextualMenu/dropdown.tmpl.html';
+
+        state.init = true;
 
         return $dropdown(state.anchor, options);
 
@@ -235,8 +238,13 @@ angular.module('Pundit2.ContextualMenu')
         state.lastX = x;
         state.lastY = y;
 
-        state.mockMenu = init(mockOptions);
-        state.mockMenu.$promise.then(state.mockMenu.show);
+        if (!state.init) {
+            state.mockMenu = init(mockOptions);
+            state.mockMenu.$promise.then(state.mockMenu.show);    
+        } else {
+            state.mockMenu.show();
+        }
+        
 
     };
 
