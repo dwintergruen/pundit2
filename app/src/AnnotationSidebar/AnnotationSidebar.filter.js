@@ -1,15 +1,16 @@
 angular.module('Pundit2.AnnotationSidebar')
-.filter('orderObjectBy', function(){
+
+.filter('orderObjectBy', function() {
     return function(input, attribute, order) {
         var results = [];
-        
-        if (!angular.isObject(input)){
+
+        if (!angular.isObject(input)) {
             return input;
         }
-        for(var key in input) {
+        for (var key in input) {
             results.push(input[key]);
         }
-        results.sort( function(a, b) {
+        results.sort(function(a, b) {
             // parseInt for textual attribute
             a = parseInt(a[attribute], 10);
             b = parseInt(b[attribute], 10);
@@ -19,13 +20,14 @@ angular.module('Pundit2.AnnotationSidebar')
         return results;
     };
 })
+
 .filter('freeText', function() {
     return function(input, search) {
         var results = [];
 
         if (search.length > 0) {
-            angular.forEach(input, function (annotation) {
-                for (var i in annotation.items){
+            angular.forEach(input, function(annotation) {
+                for (var i in annotation.items) {
                     var label = annotation.items[i].label;
                     var str = search.toLowerCase().replace(/\s+/g, ' '),
                         strParts = str.split(' '),
@@ -36,17 +38,17 @@ angular.module('Pundit2.AnnotationSidebar')
                         return;
                     }
                 }
-                for (var subject in annotation.graph){
-                    for (var predicate in annotation.graph[subject]){
-                        for (var object in annotation.graph[subject][predicate]){
+                for (var subject in annotation.graph) {
+                    for (var predicate in annotation.graph[subject]) {
+                        for (var object in annotation.graph[subject][predicate]) {
                             var currentObject = annotation.graph[subject][predicate][object];
-                            if (currentObject.type === 'literal'){
+                            if (currentObject.type === 'literal') {
                                 var literal = currentObject.value;
-                                var str = search.toLowerCase().replace(/\s+/g, ' '),
-                                    strParts = str.split(' '),
-                                    reg = new RegExp(strParts.join('.*'));
+                                var str2 = search.toLowerCase().replace(/\s+/g, ' '),
+                                    strParts2 = str2.split(' '),
+                                    reg2 = new RegExp(strParts2.join('.*'));
 
-                                if (literal.toLowerCase().match(reg) !== null) {
+                                if (literal.toLowerCase().match(reg2) !== null) {
                                     results.push(annotation);
                                     return;
                                 }
@@ -61,13 +63,14 @@ angular.module('Pundit2.AnnotationSidebar')
         return results;
     };
 })
+
 .filter('broken', function() {
     return function(input, search) {
         var results = [];
 
         if (search.length > 0) {
-            for (var annotation in input){
-                if(!input[annotation].broken){
+            for (var annotation in input) {
+                if (!input[annotation].broken) {
                     results.push(input[annotation]);
                 }
             }
@@ -84,7 +87,7 @@ angular.module('Pundit2.AnnotationSidebar')
         var currentAuthor;
 
         if (search.length > 0) {
-            angular.forEach(input, function (annotation) {
+            angular.forEach(input, function(annotation) {
                 currentAuthor = annotation.creator;
                 if (search.indexOf(currentAuthor) !== -1) {
                     results.push(annotation);
@@ -96,13 +99,14 @@ angular.module('Pundit2.AnnotationSidebar')
         return results;
     };
 })
+
 .filter('notebooks', function() {
     return function(input, search) {
         var results = [];
         var currentNotebook;
 
         if (search.length > 0) {
-            angular.forEach(input, function (annotation) {
+            angular.forEach(input, function(annotation) {
                 currentNotebook = annotation.isIncludedInUri;
                 if (search.indexOf(currentNotebook) !== -1) {
                     results.push(annotation);
@@ -114,14 +118,15 @@ angular.module('Pundit2.AnnotationSidebar')
         return results;
     };
 })
+
 .filter('predicates', function() {
     return function(input, search) {
         var results = [];
         var currentPredicate;
 
         if (search.length > 0) {
-            angular.forEach(input, function (annotation) {
-                for (var p in annotation.predicates){
+            angular.forEach(input, function(annotation) {
+                for (var p in annotation.predicates) {
                     currentPredicate = annotation.predicates[p];
                     if (search.indexOf(currentPredicate) !== -1) {
                         results.push(annotation);
@@ -135,14 +140,15 @@ angular.module('Pundit2.AnnotationSidebar')
         return results;
     };
 })
+
 .filter('entities', function() {
     return function(input, search) {
         var results = [];
         var currentEnt;
 
         if (search.length > 0) {
-            angular.forEach(input, function (annotation) {
-                for (var e in annotation.entities){
+            angular.forEach(input, function(annotation) {
+                for (var e in annotation.entities) {
                     currentEnt = annotation.entities[e];
                     if (search.indexOf(currentEnt) !== -1) {
                         results.push(annotation);
@@ -156,16 +162,17 @@ angular.module('Pundit2.AnnotationSidebar')
         return results;
     };
 })
+
 .filter('types', function() {
     return function(input, search) {
         var results = [];
         var currentTyp;
 
         if (search.length > 0) {
-            angular.forEach(input, function (annotation) {
-                for (var i in annotation.items){
+            angular.forEach(input, function(annotation) {
+                for (var i in annotation.items) {
                     var item = annotation.items[i];
-                    for (var t in item.type){
+                    for (var t in item.type) {
                         currentTyp = item.type[t];
                         if (search.indexOf(currentTyp) !== -1) {
                             results.push(annotation);
@@ -181,18 +188,19 @@ angular.module('Pundit2.AnnotationSidebar')
         return results;
     };
 })
+
 .filter('fromDate', function() {
     return function(input, fromValue) {
         var results = [];
         var fromDateParsed;
 
         if (fromValue) {
-            fromDateParsed = new Date( (fromValue && !isNaN(Date.parse(fromValue))) ? Date.parse(fromValue) : 0 );
+            fromDateParsed = new Date((fromValue && !isNaN(Date.parse(fromValue))) ? Date.parse(fromValue) : 0);
             fromDateParsed.setHours(0, 0, 0);
-        
-            angular.forEach(input,function (annotation) {
+
+            angular.forEach(input, function(annotation) {
                 var currentAnnotationData = Date.parse(annotation.created);
-                if (currentAnnotationData >= fromDateParsed){
+                if (currentAnnotationData >= fromDateParsed) {
                     results.push(annotation);
                 }
             });
@@ -202,18 +210,19 @@ angular.module('Pundit2.AnnotationSidebar')
         return results;
     };
 })
+
 .filter('toDate', function() {
     return function(input, toValue) {
         var results = [];
         var toDateParsed;
 
         if (toValue) {
-            toDateParsed = new Date( (toValue && !isNaN(Date.parse(toValue))) ? Date.parse(toValue) : new Date().getTime() );
+            toDateParsed = new Date((toValue && !isNaN(Date.parse(toValue))) ? Date.parse(toValue) : new Date().getTime());
             toDateParsed.setHours(23, 59, 59);
-        
-            angular.forEach(input,function (annotation) {
+
+            angular.forEach(input, function(annotation) {
                 var currentAnnotationData = Date.parse(annotation.created);
-                if (currentAnnotationData <= toDateParsed){
+                if (currentAnnotationData <= toDateParsed) {
                     results.push(annotation);
                 }
             });

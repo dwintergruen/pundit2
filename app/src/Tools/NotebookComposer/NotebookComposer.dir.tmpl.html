@@ -1,53 +1,107 @@
 <!-- HEADER -->
-
 <div class="pnd-panel-tab-content-header">
     {{notebookComposerHeader}}
-</div> <!-- end pnd-panel-tab-content-header -->
+</div> 
+<!-- end pnd-panel-tab-content-header -->
 
 <!-- CONTENT -->
-
 <div class="pnd-panel-tab-content-content">
 
-    <div class="form-group pnd-notebook-composer-container" ng-hide="saving">
+    <div 
+        class="form-group pnd-notebook-composer-container" 
+        ng-hide="saving">
+
     	<p>
-        <input type="text" class="form-control" placeholder="Enter notebook name" ng-model="notebook.name">
+            <input 
+                type="text" 
+                class="form-control" 
+                placeholder="Enter notebook name" 
+                ng-model="notebook.name">
     	</p>
-        <div class="checkbox" ng-class="{'pnd-notebook-composer-element-active': notebook.current}">
-        <label>
-            <input type="checkbox" ng-model="notebook.current" ng-disabled="editMode && isCurrentNotebook">
-            <span class="pnd-icon pnd-icon-pencil-square"></span> Set as current
-        </label>
-        </div>
-        <div class="radio" ng-class="{'pnd-notebook-composer-element-active': notebook.visibility == 'public'}">
+
+        <div 
+            class="checkbox" 
+            ng-class="{'pnd-notebook-composer-element-active': notebook.current}">
             <label>
-                <input type="radio" name="visibility" value="public" ng-model="notebook.visibility">
-                <span class="pnd-icon pnd-icon-group"></span> Public
+                <input 
+                    type="checkbox" 
+                    ng-model="notebook.current" 
+                    ng-disabled="editMode && isCurrentNotebook">
+                <span 
+                    class="pnd-icon pnd-icon-pencil-square"></span> 
+                Set as current
             </label>
         </div>
-        <div class="radio" ng-class="{'pnd-notebook-composer-element-active': notebook.visibility == 'private'}">
+
+        <div 
+            class="radio" 
+            ng-class="{'pnd-notebook-composer-element-active': notebook.visibility == 'public'}">
             <label>
-                <input type="radio" name="visibility" value="private" ng-model="notebook.visibility">
-                <span class="pnd-icon pnd-icon-lock"></span> Private
+                <input 
+                    type="radio" 
+                    name="visibility" 
+                    value="public" 
+                    ng-model="notebook.visibility">
+                <span 
+                    class="pnd-icon pnd-icon-group"></span> 
+                Public
+            </label>
+        </div>
+
+        <div 
+            class="radio" 
+            ng-class="{'pnd-notebook-composer-element-active': notebook.visibility == 'private'}">
+            <label>
+                <input 
+                    type="radio" 
+                    name="visibility" 
+                    value="private" 
+                    ng-model="notebook.visibility">
+                <span 
+                    class="pnd-icon pnd-icon-lock"></span> 
+                Private
             </label>
         </div>
     </div>
 
     <!-- message-->
-    <div class="pnd-notebook-saving-content" ng-if="saving">
+    <div 
+        class="pnd-notebook-saving-content" 
+        ng-if="saving">
         <span class="pnd-icon {{savingIcon}} pnd-icon-2x"></span>
-        <span class="{{shortMessageClass}}">{{shortMessagge}}</span>
+        <span class="{{shortMessageClass}}">
+            {{shortMessagge}}
+        </span>
         {{textMessage}}
     </div>
     <!-- // end message-->
 
-</div> <!-- end pnd-panel-tab-content-content -->
+</div> 
+<!-- end pnd-panel-tab-content-content -->
 
 <!-- FOOTER -->
-
 <div class="pnd-panel-tab-content-footer">
 
-    <button class="pnd-notebookcomposer-add-blank btn btn-success btn-xs" ng-if="!editMode" ng-class="{disabled: notebook.name == ''}" ng-click="save()">Save</button>
-    <button class="pnd-notebookcomposer-add-blank btn btn-success btn-xs" ng-if="editMode" ng-class="{disabled: notebook.name == ''}" ng-click="edit()">Save</button>
-    <button class="pnd-notebookcomposer-save btn btn-info btn-xs" ng-class="{disabled: notebook.name == ''}" ng-click="clear()">Clear</button>
+    <button 
+        class="pnd-notebookcomposer-add-blank btn btn-success btn-xs pnd-btn-full" 
+        ng-if="!editMode" 
+        ng-class="{disabled: notebook.name == ''}" 
+        ng-click="save()">
+        Save
+    </button>
+    <button 
+        class="pnd-notebookcomposer-add-blank btn btn-success btn-xs pnd-btn-full" 
+        ng-if="editMode" 
+        ng-class="{disabled: notebook.name == ''}" 
+        ng-click="edit()">
+        Save
+    </button>
+    <button 
+        class="pnd-notebookcomposer-save btn btn-info btn-xs pnd-btn-full" 
+        ng-class="{disabled: notebook.name == ''}" 
+        ng-click="clear()">
+        Reset
+    </button>
 
-</div> <!-- end pnd-panel-tab-content-footer -->
+</div> 
+<!-- end pnd-panel-tab-content-footer -->

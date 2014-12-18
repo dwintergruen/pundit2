@@ -2,7 +2,7 @@
 
     <!-- HEADER -->
 
-    <div class="pnd-panel-tab-content-header" ng-if="!useInKorbo || (useInKorbo && !isItemEmpty())">
+    <div class="pnd-panel-tab-content-header pnd-panel-tab-content-header-border" ng-if="!useInKorbo || (useInKorbo && !isItemEmpty())">
         <span ng-if="!isItemEmpty()" class="{{getItemIcon()}}"></span>
         <span class="pnd-dashboard-preview-panel-heading" ng-if="isItemEmpty() && !useInKorbo">{{getWelcomeHeaderMessage()}}</span>
         <span class="pnd-dashboard-preview-panel-label" ng-if="!isItemEmpty()">{{itemDashboardPreview.label}}</span>
@@ -35,7 +35,7 @@
             class="btn btn-success btn-xs pnd-btn-full pnd-dashboard-preview-clear-sticky-button" 
             ng-click="clearSticky()" 
             ng-class="{disabled: !isStickyItem()}">
-            Clear sticky
+            Clear
         </button>
 
         <!-- More info -->

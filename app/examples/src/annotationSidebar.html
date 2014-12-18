@@ -21,7 +21,7 @@
 
     var AnnotationSidebarDemoCtrl = function($rootScope, $scope, $q, AnnotationSidebar,
                                              AnnotationsExchange, Consolidation, ItemsExchange,
-                                             Annotation, AnnotationsCommunication, AnnotationDetails, TextFragmentAnnotator) {
+                                             Annotation, AnnotationsCommunication, AnnotationDetails, TextFragmentAnnotator, EventDispatcher) {
 
         $scope.toogle = function(){
             AnnotationSidebar.toggle();
@@ -68,7 +68,7 @@
 
         AnnotationsCommunication.getAnnotations();
 
-        $rootScope.$emit('pundit-boot-done');
+        EventDispatcher.sendEvent('Client.boot');
         // ---
 
     }

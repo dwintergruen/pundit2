@@ -45,7 +45,7 @@ angular.module('Pundit2.MyNotebooksContainer')
             type: cMenuTypes,
             label: "Open graph",
             priority: 102,
-            showIf: function(nt) {
+            showIf: function() {
                 return lodLive;
             },
             action: function(nt) {
@@ -134,7 +134,9 @@ angular.module('Pundit2.MyNotebooksContainer')
                     Dashboard.toggle();
                 }
                 // then swicth to notebook composer tab
-                $rootScope.$emit('pnd-dashboard-show-tab', NotebookComposer.options.clientDashboardTabTitle);
+
+                //EventDispatcher.sendEvent('Dashboard.showTab', NotebookComposer.options.clientDashboardTabTitle);
+                EventDispatcher.sendEvent('MyNotebooksContainer.editNotebook', NotebookComposer.options.clientDashboardTabTitle);
                 NotebookComposer.setNotebookToEdit(nt);
                 // TODO open if the panel is collapsed
             }

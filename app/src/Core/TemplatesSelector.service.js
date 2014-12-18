@@ -1,7 +1,8 @@
 angular.module('Pundit2.Core')
+
 .service('TemplatesSelector', function(BaseComponent, Config, $http, $q,
     Item, Template, ItemsExchange, TemplatesExchange, FreebaseSelector) {
-    
+
     var templatesSelector = new BaseComponent("TemplatesSelector");
 
     var container = "templateRelations";
@@ -19,22 +20,22 @@ angular.module('Pundit2.Core')
         var urls = Config.templates,
             promiseArr = [];
 
-        // set the first as current
-        if (urls.length > 0) {
-            TemplatesExchange.setCurrent(urls[0]);
-        }
-
         for (var i in urls) {
             promiseArr.push(templatesSelector.get(urls[i]));
         }
-            
+
+        $q.all(promiseArr).then(function() {
+            if (urls.length > 0 && typeof(TemplatesExchange.getCurrent()) === 'undefined') {
+                TemplatesExchange.setFirstAsCurrent();
+            }
+        });
+
         templatesSelector.log("Loading templates from", urls);
-        
         return $q.all(promiseArr);
     };
 
     // make a jsonp to get template object from url
-    templatesSelector.get = function(url){
+    templatesSelector.get = function(url) {
 
         // promise il always resolved to use $q.all
         // if the result value is undefined
@@ -48,11 +49,11 @@ angular.module('Pundit2.Core')
         } else {
             appenedUrl = "?jsonp=JSON_CALLBACK";
         }
-        $http.jsonp(url+appenedUrl)
-            .success(function(data){
+        $http.jsonp(url + appenedUrl)
+            .success(function(data) {
 
                 if (typeof(data) === 'undefined' || typeof(data.triples) === 'undefined') {
-                    templatesSelector.log("Impossible to get templates from: "+url);
+                    templatesSelector.log("Impossible to get templates from: " + url);
                     promise.resolve(undefined);
                     return;
                 }
@@ -62,7 +63,7 @@ angular.module('Pundit2.Core')
 
                 var i, trp = data.triples;
 
-                for(i in trp) {
+                for (i in trp) {
                     // read predicate and made a real item
                     if (typeof(trp[i].predicate) !== 'undefined') {
                         trp[i].predicate.type = ["http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"];
@@ -75,9 +76,9 @@ angular.module('Pundit2.Core')
                         }
                     }
                 }
-                
+
                 var tmpl = new Template(data.id, data);
-                for(i in trp) {
+                for (i in trp) {
                     // if the type is an uri we must get items from uri
                     if (typeof(trp[i].object) !== 'undefined' && trp[i].object.type === 'uri') {
                         // identify how selector use by parsing the uri
@@ -94,7 +95,7 @@ angular.module('Pundit2.Core')
                                     uri: -1
                                 };
                                 var p = $q.defer();
-                                p.promise.then(function(ret){
+                                p.promise.then(function(ret) {
                                     // when promise is resolved the item
                                     // is compleated, override uri with complete item values
                                     tmpl.triples[_i].object.type = 'item';
@@ -105,7 +106,7 @@ angular.module('Pundit2.Core')
                                 });
                                 selector.getItemDetails(item, p);
                             })(i);
-                            
+
                         }
                     }
                 }
@@ -118,7 +119,7 @@ angular.module('Pundit2.Core')
                 promise.resolve(tmpl);
 
             })
-            .error(function(){
+            .error(function() {
                 promise.resolve(undefined);
             });
 
@@ -127,5 +128,4 @@ angular.module('Pundit2.Core')
     };
 
     return templatesSelector;
-
 });

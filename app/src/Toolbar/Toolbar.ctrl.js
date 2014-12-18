@@ -1,14 +1,16 @@
 /*global PUNDITVERSION, escape*/
 
 angular.module('Pundit2.Toolbar')
+
 .controller('ToolbarCtrl', function($scope, $rootScope, $modal, $http, $window, NameSpace, Config, Toolbar, SelectorsManager, Fp3,
-    MyPundit, Dashboard, TripleComposer, AnnotationSidebar, Annomatic, ResourcePanel, NotebookExchange, NotebookCommunication, TemplatesExchange) {
+    MyPundit, Dashboard, TripleComposer, AnnotationSidebar, Annomatic, ResourcePanel, NotebookExchange, NotebookCommunication, TemplatesExchange, Analytics) {
 
     $scope.dropdownTemplate = "src/ContextualMenu/dropdown.tmpl.html";
     $scope.dropdownTemplateMyNotebook = "src/Toolbar/myNotebooksDropdown.tmpl.html";
     $scope.dropdownTemplateTemplates = "src/Toolbar/templatesDropdown.tmpl.html";
 
     $scope.isAnnotationSidebarExpanded = false;
+    $scope.isAnnotationFiltersActive = false;
     $scope.isDashboardVisible = false;
 
     $scope.isUserLogged = false;
@@ -24,15 +26,15 @@ angular.module('Pundit2.Toolbar')
 
     var menuCustom = Toolbar.options.menuCustom;
 
-    if (menuCustom.active){
+    if (menuCustom.active) {
         $scope.menuCustom = true;
         if (menuCustom.dropdown) {
             angular.forEach(menuCustom.list, function(value, key) {
-                $scope.menuCustomDropdown.push({ 
-                    text: key, 
+                $scope.menuCustomDropdown.push({
+                    text: key,
                     click: function() {
                         $scope.openUrl(value);
-                    } 
+                    }
                 });
             });
         } else {
@@ -45,31 +47,49 @@ angular.module('Pundit2.Toolbar')
     }
     if (Config.modules.Dashboard.active) {
         $scope.dashboard = true;
-    }    
+    }
     if (Config.modules.AnnotationSidebar.active) {
         $scope.sidebar = true;
     }
 
     var lodLive = false;
-    if(typeof(Config.lodLive) !== 'undefined' && Config.lodLive.active){
+    if (typeof(Config.lodLive) !== 'undefined' && Config.lodLive.active) {
         lodLive = true;
     }
-    
-    $scope.login = function() {
+
+    $scope.myNoteboockSigninClick = function() {
+        $scope.login('toolbar--myNotebooks--login');
+    }
+
+    $scope.loginButtonClick = function () {
+        $scope.login('toolbar--login');
+    }
+
+    $scope.login = function(trackingLoginName) {
         ResourcePanel.hide();
         MyPundit.login();
+        if (trackingLoginName == undefined) {
+            trackingLoginName = 'toolbar--otherLogin'
+        }
+        Analytics.track('buttons', 'click', trackingLoginName);
     };
-    
+
     var logout = function() {
         ResourcePanel.hide();
         MyPundit.logout();
+        Analytics.track('buttons', 'toolbar--logout');
     };
 
-    var lodliveOpen = function(){
-        if(MyPundit.isUserLogged()){
+    var lodliveOpen = function() {
+        if (MyPundit.isUserLogged()) {
             var userData = MyPundit.getUserData();
-            $window.open(Config.lodLive.baseUrl+Config.pndPurl+'user/'+userData.id, '_blank');
+            $window.open(Config.lodLive.baseUrl + Config.pndPurl + 'user/' + userData.id, '_blank');
+            Analytics.track('buttons', 'toolbar--openYourGraph');
         }
+    };
+
+    $scope.askThePunditClick = function() {
+        Analytics.track('buttons', 'toolbar--askThePundit', $scope.isUserLogged ? 'logged' : 'anonymous');
     }
 
     // modal
@@ -93,13 +113,26 @@ angular.module('Pundit2.Toolbar')
     });
 
     infoModalScope.titleMessage = "About Pundit";
-    infoModalScope.info = [
-        {label: "Pundit version: ", value: PUNDITVERSION.version},
-        {label: "Annotation server URL: ", value: NameSpace.as},
-        {label: "Korbo basket: ", value: "-"}, // is always defined? read from korbo selector instance? if i have more than one instance}?
-        {label: "Contact the Pundit team:", value: "punditdev@netseven.it"},
-        {label: "License: ", value: "http://url3.com"},
-        {label: "Credits: ", value: "-"}
+    infoModalScope.info = [{
+            label: "Pundit version: ",
+            value: PUNDITVERSION.version
+        }, {
+            label: "Annotation server URL: ",
+            value: NameSpace.as
+        }, {
+            label: "Korbo basket: ",
+            value: "-"
+        }, // is always defined? read from korbo selector instance? if i have more than one instance}?
+        {
+            label: "Contact the Pundit team:",
+            value: "punditdev@netseven.it"
+        }, {
+            label: "License: ",
+            value: "http://url3.com"
+        }, {
+            label: "Credits: ",
+            value: "-"
+        }
     ];
 
     infoModalScope.links = [{
@@ -116,19 +149,32 @@ angular.module('Pundit2.Toolbar')
     }
 
     if (Config.vocabularies.length > 0) {
-        infoModalScope.info.push({label: "Predicates vocabularies: ", value: Config.vocabularies.toString()});
+        infoModalScope.info.push({
+            label: "Predicates vocabularies: ",
+            value: Config.vocabularies.toString()
+        });
     } else if (Config.useBasicRelations) {
-        infoModalScope.info.push({label: "Predicates vocabularies: ", value: "Pundit default basic relations"});
+        infoModalScope.info.push({
+            label: "Predicates vocabularies: ",
+            value: "Pundit default basic relations"
+        });
     }
 
-    var str = "", providers = SelectorsManager.getActiveSelectors();
+    var str = "",
+        providers = SelectorsManager.getActiveSelectors();
     for (var p in providers) {
-        str += " "+providers[p].config.label;
+        str += " " + providers[p].config.label;
     }
-    infoModalScope.info.push({label: "Providers:", value: str});
+    infoModalScope.info.push({
+        label: "Providers:",
+        value: str
+    });
 
     sendModalScope.titleMessage = "Found a bug? tell us!";
-    sendModalScope.text = {msg: "", subject: ""};
+    sendModalScope.text = {
+        msg: "",
+        subject: ""
+    };
 
     var sendMail = function(subject, body) {
         var user = MyPundit.getUserData();
@@ -136,8 +182,8 @@ angular.module('Pundit2.Toolbar')
             "?cc=" +
             "&subject=" + escape(subject) +
             "&body=" + escape(body) +
-            "%0A%0A" + "Pundit version: "+ PUNDITVERSION.version +
-            "%0A%0A" + "Configuration file: "+ Config.confURL +
+            "%0A%0A" + "Pundit version: " + PUNDITVERSION.version +
+            "%0A%0A" + "Configuration file: " + Config.confURL +
             "%0A" + "Web page: " + document.URL +
             "%0A" + "Broswer info: " + window.navigator.userAgent +
             "%0A%0A" + "User openid: " + user.openid +
@@ -162,12 +208,12 @@ angular.module('Pundit2.Toolbar')
     // var removeWatch;
     infoModalScope.send = function() {
         // open a second modal to report a bug
-        sendModal.$promise.then(function(){
+        sendModal.$promise.then(function() {
 
             sendModalScope.text.msg = "";
             sendModalScope.text.subject = "";
             sendModal.show();
-            
+
             var sendBtn = angular.element('.pnd-send-modal-send');
             $scope.$watch(function() {
                 return sendModalScope.text.subject;
@@ -190,6 +236,7 @@ angular.module('Pundit2.Toolbar')
     // open info modal
     var showInfo = function() {
         infoModal.$promise.then(infoModal.show);
+        Analytics.track('buttons', 'toolbar--aboutPundit');
     };
 
     // open bug modal
@@ -199,12 +246,12 @@ angular.module('Pundit2.Toolbar')
 
     $scope.isAnnomaticRunning = false;
 
-     // Watch Annomatic status
+    // Watch Annomatic status
     $scope.$watch(function() {
         return Annomatic.isRunning();
     }, function(currentState) {
         $scope.isAnnomaticRunning = currentState;
-    });     
+    });
 
     // Watch Sidebar status
     $scope.$watch(function() {
@@ -213,37 +260,56 @@ angular.module('Pundit2.Toolbar')
         $scope.isAnnotationSidebarExpanded = currentState;
     });
 
+    $scope.$watch(function() {
+        return AnnotationSidebar.needToFilter();
+    }, function(currentState) {
+        $scope.isAnnotationFiltersActive = currentState;
+    });
+
     // Watch Toolbar status
     $scope.$watch(function() {
         return Dashboard.isDashboardVisible();
     }, function(currentState) {
         $scope.isDashboardVisible = currentState;
     });
-    
+
     $scope.errorMessageDropdown = Toolbar.getErrorMessageDropdown();
 
-    $scope.userNotLoggedDropdown = [
-        { text: 'Please sign in to use Pundit', header: true },
-        { text: 'Sign in', click: $scope.login }
-    ];
+    $scope.userNotLoggedDropdown = [{
+        text: 'Please sign in to use Pundit',
+        header: true
+    }, {
+        text: 'Sign in',
+        click: $scope.myNoteboockSigninClick
+    }];
 
-    $scope.infoDropdown = [
-        { text: 'About Pundit', click: showInfo },
-        { text: 'Report a bug', click: showBug },
-    ];
+    $scope.infoDropdown = [{
+        text: 'About Pundit',
+        click: showInfo
+    }, {
+        text: 'Report a bug',
+        click: showBug
+    }, ];
     if (Fp3.options.active) {
-        $scope.infoDropdown.push({ text: Fp3.options.label, click: Fp3.post });
+        $scope.infoDropdown.push({
+            text: Fp3.options.label,
+            click: Fp3.post
+        });
     }
-    
-    if(lodLive){
-        $scope.userLoggedInDropdown = [
-            { text: 'Open your graph', click: lodliveOpen },
-            { text: 'Log out', click: logout }
-        ];
-    } else{
-        $scope.userLoggedInDropdown = [
-            { text: 'Log out', click: logout }
-        ];
+
+    if (lodLive) {
+        $scope.userLoggedInDropdown = [{
+            text: 'Open your graph',
+            click: lodliveOpen
+        }, {
+            text: 'Log out',
+            click: logout
+        }];
+    } else {
+        $scope.userLoggedInDropdown = [{
+            text: 'Log out',
+            click: logout
+        }];
     }
 
 
@@ -267,27 +333,31 @@ angular.module('Pundit2.Toolbar')
             $scope.currentNotebookLabel = newCurr.label;
         }
     });
-    
-    $scope.userNotebooksDropdown = [{text: 'Please select notebook you want to use', header: true }];
 
-    var updateMyNotebooks = function(){
+    $scope.userNotebooksDropdown = [{
+        text: 'Please select notebook you want to use',
+        header: true
+    }];
+
+    var updateMyNotebooks = function() {
         var notebooks = myNotebooks;
         var j = 1;
-        for (var i = 0; i<notebooks.length; i++){
+        for (var i = 0; i < notebooks.length; i++) {
             $scope.userNotebooksDropdown[j] = {
                 text: notebooks[i].label,
-                currentNotebook: function(){
+                currentNotebook: function() {
                     var current = NotebookExchange.getCurrentNotebooks();
-                    if (typeof(current)!== "undefined" && notebooks[i].id === current.id) {
+                    if (typeof(current) !== "undefined" && notebooks[i].id === current.id) {
                         return true;
                     } else {
                         return false;
                     }
                 }(),
                 visibility: notebooks[i].visibility,
-                click: function(_i){
-                    return function(){
+                click: function(_i) {
+                    return function() {
                         NotebookCommunication.setCurrent(notebooks[_i].id);
+                        Analytics.track('buttons', 'click', 'toolbar--userNotebook');
                     };
                 }(i)
             };
@@ -305,7 +375,10 @@ angular.module('Pundit2.Toolbar')
 
     if ($scope.useTemplates) {
 
-        $scope.userTemplateDropdown = [{text: 'Select the template you wish to use', header: true }];
+        $scope.userTemplateDropdown = [{
+            text: 'Select the template you wish to use',
+            header: true
+        }];
         $scope.currentTemplateLabel = "Loading...";
 
         $scope.$watch(function() {
@@ -339,30 +412,31 @@ angular.module('Pundit2.Toolbar')
                 templateSwitchSpan.addClass('pnd-toolbar-not-active-element');
             }
         });
-        
-        var updateTemplates = function(){
+
+        var updateTemplates = function() {
             var templates = TemplatesExchange.getTemplates();
             var j = 1;
-            for (var i = 0; i<templates.length; i++){
+            for (var i = 0; i < templates.length; i++) {
                 $scope.userTemplateDropdown[j] = {
                     text: templates[i].label,
                     hasColor: templates[i].hasColor,
-                    currentTemplate: function(){
+                    currentTemplate: function() {
                         var current = TemplatesExchange.getCurrent();
-                        if (typeof(current)!== "undefined" && templates[i].id === current.id) {
+                        if (typeof(current) !== "undefined" && templates[i].id === current.id) {
                             return true;
                         } else {
                             return false;
                         }
                     }(),
-                    click: function(_i){
-                        return function(){
+                    click: function(_i) {
+                        return function() {
                             TemplatesExchange.setCurrent(templates[_i].id);
                             if (Toolbar.isActiveTemplateMode()) {
                                 TripleComposer.showCurrentTemplate();
                                 // disable save btn
                                 angular.element('.pnd-triplecomposer-save').addClass('disabled');
                             }
+                            Analytics.track('buttons', 'click', 'toolbar--userTemplate');
                         };
                     }(i)
                 };
@@ -375,7 +449,9 @@ angular.module('Pundit2.Toolbar')
     $scope.userData = {};
     // listener for user status
     // when user is logged in, set flag isUserLogged to true
-    $scope.$watch(function() { return MyPundit.isUserLogged(); }, function(newStatus) {
+    $scope.$watch(function() {
+        return MyPundit.isUserLogged();
+    }, function(newStatus) {
         $scope.isUserLogged = newStatus;
         $scope.userData = MyPundit.getUserData();
     });
@@ -384,7 +460,7 @@ angular.module('Pundit2.Toolbar')
     $scope.showStatusButtonOk = function() {
         return !Toolbar.getErrorShown() && !Toolbar.isLoading();
     };
-    
+
     // return true if an error is occured --> status button error must be visible
     $scope.showStatusButtonError = function() {
         return Toolbar.getErrorShown();
@@ -398,7 +474,7 @@ angular.module('Pundit2.Toolbar')
     $scope.showLogin = function() {
         return $scope.isUserLogged === false;
     };
-    
+
     // return true if user is logged in --> user button must be visible
     $scope.showUserButton = function() {
         return $scope.isUserLogged === true;
@@ -414,18 +490,24 @@ angular.module('Pundit2.Toolbar')
             return;
         }
         ResourcePanel.hide();
+        Analytics.track('buttons', 'click', 'toolbar--templateActivation--' + (Toolbar.isActiveTemplateMode() ? 'deactivate' : 'activate'));
         Toolbar.toggleTemplateMode();
     };
 
     $scope.onClickTemplateDropdown = function() {
+        Analytics.track('buttons', 'click', 'toolbar--templateList');
         ResourcePanel.hide();
     };
-    
+
+    $scope.onClickNotebookDropdown = function() {
+        Analytics.track('buttons', 'click', 'toolbar--notebooks--' + ($scope.isUserLogged ? 'logged' : 'anonymous'));
+    };
+
     // return true if user is logged in --> template menu is active
     $scope.isTemplateMenuActive = function() {
         return $scope.isUserLogged === true;
     };
-    
+
     // return true if user is logged in --> notebook menu is active
     $scope.isNotebookMenuActive = function() {
         return $scope.isUserLogged === true;
@@ -437,14 +519,16 @@ angular.module('Pundit2.Toolbar')
     };
 
     $scope.dashboardClickHandler = function() {
-        if(!$scope.isAnnomaticRunning){
+        if (!$scope.isAnnomaticRunning) {
             ResourcePanel.hide();
+            Analytics.track('buttons', 'click', 'toolbar--dashboard--' + (Dashboard.isDashboardVisible() ? 'closed' : 'open'));
             Dashboard.toggle();
         }
     };
 
     $scope.annotationsClickHandler = function() {
         ResourcePanel.hide();
+        Analytics.track('buttons', 'click', 'toolbar--annotationsSidebar' + (AnnotationSidebar.isAnnotationSidebarExpanded() ? 'closed' : 'open'));
         AnnotationSidebar.toggle();
     };
 

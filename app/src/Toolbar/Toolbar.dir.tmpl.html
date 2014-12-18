@@ -10,12 +10,12 @@
                 </li>
                 
                 <!-- OK button -->
-                <li ng-show="showStatusButtonOk()" class="pnd-toolbar-status-button-ok">
+                <li ng-show="showStatusButtonOk()" class="pnd-toolbar-status-button-ok pnd-calltoaction-btn">
                     <a href="javascript:void(0)" template="{{dropdownTemplate}}" bs-dropdown="infoDropdown"><span class="pnd-icon pnd-icon-check"></span></a>
                 </li>
 
                 <!-- Loading button -->
-                <li ng-show="showStatusButtonLoading()" class="pnd-toolbar-loading-button">
+                <li ng-show="showStatusButtonLoading()" class="pnd-toolbar-loading-button pnd-calltoaction-btn">
                     <a href="javascript:void(0)" template="{{dropdownTemplate}}" bs-dropdown="infoDropdown">
                         <!-- <span></span> -->
                         <span class="pnd-icon pnd-icon-refresh pnd-icon-spin"></span>
@@ -23,19 +23,19 @@
                 </li>
 
                 <!-- Login button -->
-                <li ng-show="showLogin()" class="pnd-toolbar-login-button pnd-toolbar-button-active">
+                <li ng-show="showLogin()" class="pnd-toolbar-login-button pnd-toolbar-button-active pnd-calltoaction-btn">
                     <!-- <a href="javascript:void(0)" template="{{dropdownTemplate}}" bs-dropdown="userNotLoggedDropdown"><span>Login</span></a> -->
-                    <a href="javascript:void(0)" ng-click="login()"><span>Login</span></a>
+                    <a href="javascript:void(0)" ng-click="loginButtonClick()"><span>Login</span></a>
                 </li>
                 
                 <!-- User button -->
-                <li ng-show="showUserButton()" class="pnd-toolbar-user-button  pnd-toolbar-button-active">
+                <li ng-show="showUserButton()" class="pnd-toolbar-user-button  pnd-toolbar-button-active pnd-calltoaction-btn">
                     <a href="javascript:void(0)" template="{{dropdownTemplate}}" bs-dropdown="userLoggedInDropdown"><span>{{userData.fullName}}</span></a>
                 </li>
                 
                 <!-- Ask the Pundit button-->
-                <li class="pnd-toolbar-ask-button pnd-toolbar-ask-button-active" ng-if="askThePundit">
-                    <a href="{{getAskLink()}}" target="_blank">
+                <li class="pnd-toolbar-ask-button pnd-toolbar-ask-button-active pnd-calltoaction-btn pnd-triangular-btn" ng-if="askThePundit">
+                    <a href="{{getAskLink()}}" target="_blank" ng-click="askThePunditClick()">
                         <span ng-if="!isUserLogged">Ask the Pundit</span>
                         <span ng-if="isUserLogged">My Ask the Pundit</span>
                     </a>
@@ -48,9 +48,9 @@
                 </li>
                 
                 <!-- Dashboard button -->
-                <li 
+                <li class="pnd-toolbar-toggle-button"
                     ng-if="dashboard" 
-                    ng-class="{'pnd-not-clickable':isAnnomaticRunning, 'pnd-toolbar-dashboard-button-active': isDashboardVisible, 'pnd-toolbar-dashboard-button': askThePundit}">
+                    ng-class="{'pnd-not-clickable':isAnnomaticRunning, 'pnd-toolbar-button-active': isDashboardVisible, 'pnd-toolbar-dashboard-button': askThePundit}">
                     <a href="javascript:void(0)" ng-click="dashboardClickHandler()">
                         <span class="pnd-toolbar-active-element">Dashboard</span>
                     </a>
@@ -76,7 +76,7 @@
                 </li>
                 
                 <!-- Notebooks menu -->
-                <li class="pnd-toolbar-notebook-menu-button" ng-if="myNotebooks">
+                <li class="pnd-toolbar-notebook-menu-button" ng-if="myNotebooks" ng-click="onClickNotebookDropdown()">
                     <a ng-show="isUserLogged" href="javascript:void(0)" placement="bottom-right" template="{{dropdownTemplateMyNotebook}}" bs-dropdown="userNotebooksDropdown"><span class="pnd-icon pnd-icon-book"> </span> <span class="pnd-toolbar-active-element">{{currentNotebookLabel}}</span></a>
                     <a ng-show="!isUserLogged" href="javascript:void(0)" placement="bottom-right" template="{{dropdownTemplate}}" bs-dropdown="userNotLoggedDropdown"><span class="pnd-toolbar-not-active-element">My notebooks</span></a>
                 </li>
@@ -89,9 +89,15 @@
                 </li>
                 
                 <!-- Annotations menu -->
-                <li class="pnd-toolbar-annotations-button" ng-if="sidebar" ng-class="{'pnd-toolbar-annotations-button-active': isAnnotationSidebarExpanded}">
+                <li class="pnd-toolbar-annotations-button pnd-toolbar-toggle-button" ng-if="sidebar" ng-class="{'pnd-toolbar-button-active': isAnnotationSidebarExpanded}">
                     <a href="javascript:void(0)" ng-click="annotationsClickHandler()">
-                        <span class="pnd-toolbar-active-element">Annotations sidebar</span>
+                        <span class="pnd-toolbar-active-element">
+                            Sidebar 
+                            <span 
+                                class="pnd-icon pnd-icon-filter"
+                                ng-class="{'pnd-filter-active': isAnnotationFiltersActive}">
+                            </span>
+                        </span>
                     </a>
                 </li>
 

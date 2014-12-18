@@ -1,6 +1,7 @@
 /*jshint camelcase: false*/
 
 angular.module('Pundit2.Vocabularies')
+
 .constant('KORBOBASKETSELECTORDEFAULTS', {
 
     /**
@@ -48,7 +49,7 @@ angular.module('Pundit2.Vocabularies')
     // TODO not used, remove?
     korboItemsBaseURL: 'http://purl.org/net7/korbo',
     korboSchemaBaseURL: 'http://purl.org/net7/korbo/type/',
-    
+
     /**
      * @module punditConfig
      * @ngdoc property
@@ -103,10 +104,10 @@ angular.module('Pundit2.Vocabularies')
      * @description
      * `Array of object`
      *
-     * Array of korbo instances, each object in the array allows you to add and configure 
+     * Array of korbo instances, each object in the array allows you to add and configure
      * an instance of the vocabulary. By default, the vocabulary has only one instance.
      * Each instance has its own tab in the interface, with its list of items.
-     * 
+     *
      *
      * Default value:
      * <pre> instances: [
@@ -120,16 +121,14 @@ angular.module('Pundit2.Vocabularies')
      *   }
      * ] </pre>
      */
-    instances: [
-        {
-            // where items is stored inside itemsExchange service
-            container: 'korboBasket',
-            // instance label tab title
-            label: 'KorboBasket',
-            // enable or disable the instance
-            active: true
-        }
-    ],
+    instances: [{
+        // where items is stored inside itemsExchange service
+        container: 'korboBasket',
+        // instance label tab title
+        label: 'KorboBasket',
+        // enable or disable the instance
+        active: true
+    }],
 
     /**
      * @module punditConfig
@@ -147,8 +146,9 @@ angular.module('Pundit2.Vocabularies')
     debug: false
 
 })
+
 .factory('KorboBasketSelector', function(BaseComponent, KORBOBASKETSELECTORDEFAULTS, Item, ItemsExchange, SelectorsManager,
-                                            $http, $q) {
+    $http, $q) {
 
     var korboBasketSelector = new BaseComponent('KorboBasketSelector', KORBOBASKETSELECTORDEFAULTS);
     korboBasketSelector.name = 'KorboBasketSelector';
@@ -160,14 +160,18 @@ angular.module('Pundit2.Vocabularies')
     }
 
     // selector instance constructor
-    var KorboBasketFactory = function(config){
+    var KorboBasketFactory = function(config) {
         this.config = config;
     };
 
     // if two search are launched in parallel on the same term then won the last one is completed
     // you can change this behavior
     // eg. removing the wipeContainer() to produce a union of two research results
-    KorboBasketFactory.prototype.getItems = function(term){
+    KorboBasketFactory.prototype.getItems = function(term) {
+        if (typeof(term) === 'undefined') {
+            return;
+        }
+
         var self = this,
             promise = $q.defer(),
             container = self.config.container + term.split(' ').join('$');
@@ -184,10 +188,10 @@ angular.module('Pundit2.Vocabularies')
 
         // TODO if the server not response the http timeout is very long (120s)
         // and the error notification arrive only after this time
-        $http.jsonp(korboBasketSelector.options.korboBasketReconURL+korboBasketSelector.options.baskets[0]+"?jsonp=JSON_CALLBACK", config)
-            .success(function(data){
+        $http.jsonp(korboBasketSelector.options.korboBasketReconURL + korboBasketSelector.options.baskets[0] + "?jsonp=JSON_CALLBACK", config)
+            .success(function(data) {
 
-                korboBasketSelector.log('Http success, get items '+self.config.label, data);
+                korboBasketSelector.log('Http success, get items ' + self.config.label, data);
 
                 if (data.result.length === 0) {
                     korboBasketSelector.log('Http success, but empty response');
@@ -200,7 +204,7 @@ angular.module('Pundit2.Vocabularies')
                 var promiseArr = [];
                 var deferArr = [];
                 var itemsArr = [];
-                for (var i=0; i<data.result.length; i++) {
+                for (var i = 0; i < data.result.length; i++) {
                     var current = data.result[i];
 
                     var item = {
@@ -216,23 +220,23 @@ angular.module('Pundit2.Vocabularies')
 
                 }
 
-                $q.all(promiseArr).then(function(){
+                $q.all(promiseArr).then(function() {
                     korboBasketSelector.log('Completed all items http request');
                     // when all http request are completed we can wipe itemsExchange
                     // and put new items inside relative container
                     ItemsExchange.wipeContainer(container);
-                    for (i=0; i<itemsArr.length; i++) {
+                    for (i = 0; i < itemsArr.length; i++) {
                         ItemsExchange.addItemToContainer(new Item(itemsArr[i].uri, itemsArr[i]), container);
                     }
                     // promise is always resolved
                     promise.resolve();
                 });
 
-                for (i=0; i<data.result.length; i++) {
+                for (i = 0; i < data.result.length; i++) {
                     self.getItemDetails(itemsArr[i], deferArr[i]);
                 }
 
-            }).error(function () {
+            }).error(function() {
                 // promise is always resolved
                 promise.resolve();
             });
@@ -241,11 +245,11 @@ angular.module('Pundit2.Vocabularies')
 
     };
 
-    KorboBasketFactory.prototype.getItemDetails = function(item, itemPromise){
+    KorboBasketFactory.prototype.getItemDetails = function(item, itemPromise) {
 
         // var self = this;
 
-        korboBasketSelector.log('Loading metadata for item '+ item.uri);
+        korboBasketSelector.log('Loading metadata for item ' + item.uri);
 
         var config = {
             params: {
@@ -254,8 +258,8 @@ angular.module('Pundit2.Vocabularies')
             withCredentials: true
         };
 
-        $http.jsonp(korboBasketSelector.options.korboBasketMetadataURL+korboBasketSelector.options.baskets[0]+"?jsonp=JSON_CALLBACK", config)
-            .success(function(data){
+        $http.jsonp(korboBasketSelector.options.korboBasketMetadataURL + korboBasketSelector.options.baskets[0] + "?jsonp=JSON_CALLBACK", config)
+            .success(function(data) {
 
                 korboBasketSelector.log('Http item details success, get item', data);
 
@@ -269,14 +273,13 @@ angular.module('Pundit2.Vocabularies')
                 if ('description' in o) {
                     item.description = o.description;
                 }
-                    
+
                 if (('rdftype' in o) && ('length' in o.rdftype)) {
                     for (var j = o.rdftype.length; j--;) {
                         if (typeof(o.rdftype[j]) === 'string') {
                             item.type.push(o.rdftype[j]);
-                        }
-                        else {
-                            korboBasketSelector.log('ERROR: Weird type is weird? '+typeof(o.rdftype[j])+': '+o.rdftype[j]);
+                        } else {
+                            korboBasketSelector.log('ERROR: Weird type is weird? ' + typeof(o.rdftype[j]) + ': ' + o.rdftype[j]);
                         }
                     }
                 }
@@ -284,7 +287,7 @@ angular.module('Pundit2.Vocabularies')
                 // resolve item promise
                 itemPromise.resolve();
 
-            }).error(function () {
+            }).error(function() {
                 // resolve item promise
                 itemPromise.resolve();
             });

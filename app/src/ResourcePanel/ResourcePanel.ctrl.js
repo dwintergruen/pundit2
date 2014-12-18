@@ -1,164 +1,176 @@
 angular.module('Pundit2.ResourcePanel')
-    .controller('ResourcePanelCtrl', function($rootScope, $scope, MyItems, PageItemsContainer, ItemsExchange, MyPundit, $filter, Client, SelectorsManager, ResourcePanel, Config, $window, KorboCommunicationService) {
 
-        // var myItemsContainer = MyItems.options.container;
-        // var pageItemsContainer = PageItemsContainer.options.container;
-        // var propertiesContainer = Client.options.relationsContainer;
-        $scope.moduleName = 'Pundit2';
+.controller('ResourcePanelCtrl', function($rootScope, $scope, $timeout, $filter, $window,
+    Client, Config, ItemsExchange, MyItems, MyPundit, PageItemsContainer, Preview,
+    ResourcePanel, SelectorsManager, KorboCommunicationService, EventDispatcher) {
 
-        var actualContainer;
+    var actualContainer;
+    var selectors = SelectorsManager.getActiveSelectors();
+    var searchTimer;
 
-        $scope.contentTabs.activeTab = 0;
+    $scope.label = '';
 
-        // build tabs by reading active selectors inside selectors manager
+    $scope.moduleName = 'Pundit2';
+    $scope.subjectIcon = ResourcePanel.options.inputIconSearch;
+    $scope.itemSelected = null;
+    $scope.isUseActive = false;
+    $scope.contentTabs.activeTab = 0;
 
-        var selectors = SelectorsManager.getActiveSelectors();
-        if($scope.type !== 'pr'){
-            for (var j=0; j<selectors.length; j++) {
-                $scope.contentTabs.push({
-                    title: selectors[j].config.label,
-                    template: 'src/Lists/itemList.tmpl.html',
-                    itemsContainer: selectors[j].config.container,
-                    items: [],
-                    module: 'Pundit2',
-                    isStarted: false
-                });
-            }
+    // build tabs by reading active selectors inside selectors manager
+    if ($scope.type !== 'pr') {
+        for (var j = 0; j < selectors.length; j++) {
+            $scope.contentTabs.push({
+                title: selectors[j].config.label,
+                template: 'src/Lists/itemList.tmpl.html',
+                itemsContainer: selectors[j].config.container,
+                items: [],
+                module: 'Pundit2',
+                isStarted: false
+            });
         }
+    }
 
-        var onWindowResize = function(){
-            ResourcePanel.hide();
-        };
-        angular.element($window).resize(onWindowResize);
+    // TODO: global window resize management
+    var onWindowResize = function() {
+        ResourcePanel.updatePosition();
+    };
+    angular.element($window).resize(onWindowResize);
 
-        $scope.$watch(function() {
-            return $scope.contentTabs.activeTab;
-        }, function(newActive, oldActive) {
-            if (newActive !== oldActive){
-                actualContainer = $scope.contentTabs[$scope.contentTabs.activeTab].itemsContainer + $scope.label.split(' ').join('$');
-                $scope.showUseAndCopyButton();
-            }
-        });
+    // TODO: really useful?
+    var removeSpace = function(str) {
+        return str.replace(/ /g, '');
+    };
 
-        $rootScope.$watch(function() {
-            return MyPundit.isUserLogged();
-        }, function(newStatus) {
-            $scope.userLoggedIn = newStatus;
-        });
-
-        var removeSpace = function(str){
-            return str.replace(/ /g,'');
-        };
-
-        // getter function used inside template to order items
-        // return the items property value used to order
-        $scope.getOrderProperty = function(item){
-            return removeSpace(item.label);
-        };
-
-        // TODO the items list are not always updated
-        // if we open the resource panel during pundit loading
-        // is not guaranteed that all items is showed
-        var allItemsArrays = [];
-        var copyItemsArray = function() {
-            for (var j=0; j<$scope.contentTabs.length; j++) {
-                var title = $scope.contentTabs[j].title;
-                if (title === 'My Items' ||  title === 'Page Items' || title === 'Properties') {
-                    allItemsArrays.push(angular.copy($scope.contentTabs[j].items));
-                } else {
-                    // vocab is not necessary they are never filtered
-                    // make a fake copy only to sync arrays index
-                    allItemsArrays.push([]);
-                }
-                
-            }
-        };
-        copyItemsArray();
-        
-        $scope.$watch('label', function(newLabel, oldLabel) {
-                for(var i=0; i<$scope.contentTabs.length; i++){
-                    
-                    if($scope.contentTabs[i].title === 'My Items'){
-                        $scope.contentTabs[i].items = $filter('filterByLabel')(allItemsArrays[i], newLabel);
-                    }
-
-                    if($scope.contentTabs[i].title === 'Page Items'){
-                        $scope.contentTabs[i].items = $filter('filterByLabel')(allItemsArrays[i], newLabel);
-                    }
-
-                    if($scope.contentTabs[i].title === 'Properties'){
-                        $scope.contentTabs[i].items = $filter('filterByLabel')(allItemsArrays[i], newLabel);
-                    }
-                }
-        });
-
-        $scope.itemSelected = null;
+    var resetSelection = function() {
         $scope.isUseActive = false;
+        $scope.itemSelected = null;
+    };
 
-        $scope.isSelected = function(item){
-            if ($scope.itemSelected !== null && $scope.itemSelected.uri === item.uri){
-                return true;
-            } else {
-                return false;
+    // getter function used inside template to order items
+    // return the items property value used to order
+    $scope.getOrderProperty = function(item) {
+        return removeSpace(item.label);
+    };
+
+    $scope.isSelected = function(item) {
+        if ($scope.itemSelected !== null && $scope.itemSelected.uri === item.uri) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
+    $scope.select = function(item) {
+        Preview.setItemDashboardSticky(item);
+        EventDispatcher.sendEvent('Pundit.changeSelection');
+        $scope.isUseActive = true;
+        $scope.itemSelected = item;
+    };
+
+    $scope.showUseAndCopyButton = function() {
+        var currTab = $scope.contentTabs[$scope.contentTabs.activeTab].title;
+        //if(Config.korbo.active && (currTab !== 'KorboBasket' && currTab !== 'Page Items' && currTab !== 'My Items')){
+        if (Config.korbo.active && currTab === 'Freebase') {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
+    $scope.showNewButton = function() {
+
+        if (typeof(Config.korbo) !== 'undefined' && Config.korbo.active && $scope.type !== 'pr') {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
+    $scope.createNew = function() {
+        var name = $window[Config.korbo.confName].globalObjectName;
+        $window[name].callOpenNew();
+    };
+
+    $scope.useAndCopy = function(elem) {
+        var name = $window[Config.korbo.confName].globalObjectName;
+        $window[name].callCopyAndUse(elem);
+    };
+
+    $scope.showCopyInEditorButton = function() {
+        var currTab = $scope.contentTabs[$scope.contentTabs.activeTab].title;
+        //if(Config.korbo.active && (currTab !== 'KorboBasket' && currTab !== 'Page Items' && currTab !== 'My Items')){
+        if (Config.korbo.active && currTab === 'Freebase') {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
+    $scope.copyInEditor = function() {
+        var obj = {};
+        //TODO costruisce l'id di freebase, cambiare metodo nel caso vengano gestiti più provider
+        obj.uri = "__m__" + $scope.itemSelected.uri.substring($scope.itemSelected.uri.lastIndexOf('/') + 1);
+        obj.providerFrom = 'freebase';
+
+        KorboCommunicationService.setEntityToCopy(obj);
+
+        var name = $window[Config.korbo.confName].globalObjectName;
+        $window[name].callOpenNew();
+    };
+
+    $scope.updateSearch = function(term) {
+        var caller = '';
+        if (typeof(term) !== 'undefined' && term.length > 2) {
+            switch ($scope.type) {
+                case 'sub':
+                    caller = 'subject';
+                    break;
+                case 'pr':
+                    caller = 'predicate';
+                    break;
+                case 'obj':
+                    caller = 'object';
+                    break;
             }
-        };
-
-        $scope.select = function(item){
-            $scope.isUseActive = true;
-            $scope.itemSelected = item;
-        };
-
-        $scope.showUseAndCopyButton = function(){
-            var currTab = $scope.contentTabs[$scope.contentTabs.activeTab].title;
-            //if(Config.korbo.active && (currTab !== 'KorboBasket' && currTab !== 'Page Items' && currTab !== 'My Items')){
-            if(Config.korbo.active && currTab === 'Freebase'){
-                return true;
-            } else {
-                return false;
+            if (caller !== 'pr' && caller !== '') {
+                $timeout.cancel(searchTimer);
+                searchTimer = $timeout(function() {
+                    ResourcePanel.updateVocabSearch(term, $scope.triple, caller);
+                }, ResourcePanel.options.vocabSearchTimer);
             }
-        };
+        } else {
+            $timeout.cancel(searchTimer);
+            // TODO: add specific method in ResourcePanel to reset search
+            ResourcePanel.updateVocabSearch('', $scope.triple, caller);
+        }
+    };
 
-        $scope.showNewButton = function(){
-            
-            if(typeof(Config.korbo) !== 'undefined' && Config.korbo.active && $scope.type !== 'pr'){
-                return true;
-            } else {
-                return false;
-            }
-        };
+    $scope.escapeEvent = function(e) {
+        if (e.which === 27){
+            e.stopPropagation();
+        }
+    };
 
-        $scope.createNew = function(){
-            var name = $window[Config.korbo.confName].globalObjectName;
-            $window[name].callOpenNew();
-        };
-
-        $scope.useAndCopy = function(elem){
-            var name = $window[Config.korbo.confName].globalObjectName;
-            $window[name].callCopyAndUse(elem);
-        };
-
-        $scope.showCopyInEditorButton = function(){
-            var currTab = $scope.contentTabs[$scope.contentTabs.activeTab].title;
-            //if(Config.korbo.active && (currTab !== 'KorboBasket' && currTab !== 'Page Items' && currTab !== 'My Items')){
-            if(Config.korbo.active && currTab === 'Freebase'){
-                return true;
-            } else {
-                return false;
-            }
-        };
-
-        $scope.copyInEditor = function(){
-            var obj = {};
-            //TODO costruisce l'id di freebase, cambiare metodo nel caso vengano gestiti più provider
-            obj.uri = "__m__"+$scope.itemSelected.uri.substring($scope.itemSelected.uri.lastIndexOf('/') + 1);
-            obj.providerFrom = 'freebase';
-
-            KorboCommunicationService.setEntityToCopy(obj);
-
-            var name = $window[Config.korbo.confName].globalObjectName;
-            $window[name].callOpenNew();
-
-        };
-
-
+    // TODO: why?!
+    $scope.$watch(function() {
+        return $scope.contentTabs.activeTab;
+    }, function(newActive, oldActive) {
+        if (newActive !== oldActive) {
+            var labTemp = $scope.label ? $scope.label : '';
+            actualContainer = $scope.contentTabs[$scope.contentTabs.activeTab].itemsContainer + labTemp.split(' ').join('$');
+            $scope.showUseAndCopyButton();
+        }
     });
+
+    // TODO: replace watch with EventDispatcher 
+    $rootScope.$watch(function() {
+        return MyPundit.isUserLogged();
+    }, function(newStatus) {
+        $scope.userLoggedIn = newStatus;
+    });
+
+    EventDispatcher.addListener('Pundit.changeSelection', function(){
+        resetSelection();
+    });
+
+});

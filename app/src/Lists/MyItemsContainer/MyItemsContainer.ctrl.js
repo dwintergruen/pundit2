@@ -1,6 +1,7 @@
 angular.module('Pundit2.MyItemsContainer')
 .controller('MyItemsContainerCtrl', function($scope, $rootScope, $modal, $timeout, $element,
-    MyItemsContainer, ItemsExchange, MyItems, MyPundit, Preview, TypesHelper, PageHandler) {
+    MyItemsContainer, ItemsExchange, MyItems, MyPundit, Preview, TypesHelper, PageHandler, 
+    TripleComposer, EventDispatcher, Status, Analytics) {
 
     // read by <item> directive (in Lists/itemList.tmpl.html)
     // specifie how contextual menu type show on item
@@ -8,6 +9,12 @@ angular.module('Pundit2.MyItemsContainer')
 
     // This is the centralized template to dropdown
     $scope.dropdownTemplate = "src/ContextualMenu/dropdown.tmpl.html";
+
+    $scope.itemSelected = null;
+    $scope.isUseActive = false;
+
+    $scope.canAddItemAsSubject = false;
+    $scope.canAddItemAsObject = false;
 
     var deleteBtn = angular.element($element).find('.my-items-btn-delete'),
         orderBtn = angular.element($element).find('.my-items-btn-order');
@@ -86,6 +93,13 @@ angular.module('Pundit2.MyItemsContainer')
 
     // index of the active tab (the tab that currently shows its content)
     $scope.tabs.activeTab = MyItemsContainer.options.initialActiveTab;
+
+    var resetContainer = function(){
+        $scope.itemSelected = null;
+        $scope.isUseActive = false;
+        $scope.canAddItemAsSubject = false;
+        $scope.canAddItemAsObject = false;
+    };
 
 
     // set as active a label in contextual menu
@@ -310,5 +324,64 @@ angular.module('Pundit2.MyItemsContainer')
         modalScope.notifyMessage = "Are you sure you want to delete all my items? After you can no longer recover.";
         confirmModal.$promise.then(confirmModal.show);
     };
+
+    $scope.isSelected = function(item) {
+        if ($scope.itemSelected !== null && $scope.itemSelected.uri === item.uri) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
+    $scope.select = function(item) {
+        Preview.setItemDashboardSticky(item);
+        EventDispatcher.sendEvent('Pundit.changeSelection');
+        
+        $scope.isUseActive = true;
+        $scope.itemSelected = item;
+
+        $scope.canAddItemAsSubject = TripleComposer.canAddItemAsSubject(item);
+        $scope.canAddItemAsObject = TripleComposer.canAddItemAsObject(item);
+    };
+
+    $scope.onClickRemove = function() {
+        if ($scope.itemSelected === null) {
+            return;
+        }
+
+        if (Status.getUserStatus() && ItemsExchange.isItemInContainer($scope.itemSelected, MyItems.options.container)) {
+            MyItems.deleteItemAndConsolidate($scope.itemSelected);
+        }
+
+        resetContainer();
+    }
+
+    $scope.onClickUseSubject = function() {
+        if ($scope.itemSelected === null) {
+            return;
+        }
+
+        if (Status.getTemplateModeStatus()) {
+            TripleComposer.addToAllSubject($scope.itemSelected);
+        } else {
+            TripleComposer.addToSubject($scope.itemSelected);
+        }
+
+        resetContainer();
+    }
+
+    $scope.onClickUseObject = function() {
+        if ($scope.itemSelected === null) {
+            return;
+        }
+
+        TripleComposer.addToObject($scope.itemSelected);
+
+        resetContainer();
+    }
+
+    EventDispatcher.addListener('Pundit.changeSelection', function(){
+        resetContainer();
+    });
 
 });

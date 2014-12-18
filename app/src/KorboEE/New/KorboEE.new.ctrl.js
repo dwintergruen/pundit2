@@ -55,10 +55,10 @@ angular.module('KorboEE')
         var pushCurrentLang = function(lang){
             if($scope.tabs.length === 1){
                 addActionToContextualMenu(lang);
-                ContextualMenu.modifyHeaderActionByName('rml'+$scope.tabs[0].name, true);
+                ContextualMenu.modifyDisabled('rml'+$scope.tabs[0].name, true);
             } else if($scope.tabs.length === 2){
                 addActionToContextualMenu(lang);
-                ContextualMenu.modifyHeaderActionByName('rml'+$scope.tabs[0].name, false);
+                ContextualMenu.modifyDisabled('rml'+$scope.tabs[0].name, false);
             } else if($scope.tabs.length > 2){
                 addActionToContextualMenu(lang);
             }
@@ -75,7 +75,7 @@ angular.module('KorboEE')
                 },
                 action: function(){
                     $scope.originalUrlCheck = false;
-                    ContextualMenu.modifyHeaderActionByName('editURL', true);
+                    ContextualMenu.modifyDisabled('editURL', true);
                 }
             });
 
@@ -559,7 +559,7 @@ angular.module('KorboEE')
             $scope.tabs.push(lang);
             addActionToContextualMenu(lang);
             if($scope.tabs.length === 2){
-                ContextualMenu.modifyHeaderActionByName('rml'+$scope.tabs[0].name, false);
+                ContextualMenu.modifyDisabled('rml'+$scope.tabs[0].name, false);
             }
         };
 
@@ -569,7 +569,7 @@ angular.module('KorboEE')
             $scope.disactiveLanguages.push(lang);
             ContextualMenu.removeActionByName('rml'+lang.name);
             if($scope.tabs.length < 2){
-                ContextualMenu.modifyHeaderActionByName('rml'+$scope.tabs[0].name, true);
+                ContextualMenu.modifyDisabled('rml'+$scope.tabs[0].name, true);
             }
         };
 

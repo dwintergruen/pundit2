@@ -1,0 +1,41 @@
+<div class="pnd-panel-tab-content">
+
+    <ng-include src="'src/Lists/itemsContainer.tmpl.html'"></ng-include>
+
+    <!-- FOOTER -->
+    <div class="pnd-panel-tab-content-footer">
+        <button
+            class="pnd-triplecomposer-cancel btn btn-subject btn-xs pnd-btn-full" 
+            title="Use as subject" 
+            ng-disabled="!isUseActive || !canAddItemAsSubject"
+            ng-click="onClickUseSubject()">
+            Set subject
+        </button>
+        <button 
+            class="pnd-triplecomposer-cancel btn btn-object btn-xs pnd-btn-full" 
+            title="Use as object"
+            ng-disabled="!isUseActive || !canAddItemAsObject" 
+            ng-click="onClickUseObject()">
+            Set object
+        </button>
+        <button
+                class="pnd-triplecomposer-cancel btn btn-info btn-xs pnd-btn-full"
+                title="Add to my items"
+                ng-disabled="!isUseActive"
+                ng-click="onClickAdd()">
+            Add to myItems
+        </button>
+
+        <button 
+            type="button" 
+            class="btn btn-xs btn-link pnd-btn-full vocab-items-btn-order pnd-btn-lists" 
+            template="{{dropdownTemplate}}"
+            placement="top-left"
+            bs-dropdown="dropdownOrdering" 
+            title="Order vocabularies">
+            <span class="pnd-icon pnd-icon-sort-amount-asc"></span>
+        </button>
+    </div> 
+    <!-- end pnd-panel-tab-content-footer -->
+
+</div>

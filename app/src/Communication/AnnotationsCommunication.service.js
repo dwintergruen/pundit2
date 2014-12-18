@@ -11,7 +11,7 @@ angular.module('Pundit2.Communication')
     var annotationsCommunication = new BaseComponent("AnnotationsCommunication", ANNOTATIONSCOMMUNICATIONDEFAULTS);
 
     var setLoading = function(state) {
-        EventDispatcher.sendEvent('Pundit.loading', state);
+        EventDispatcher.sendEvent('AnnotationsCommunication.loading', state);
     };
 
     // get all annotations of the page from the server
@@ -278,12 +278,11 @@ angular.module('Pundit2.Communication')
                 if (completed > 0) {
                     AnnotationsExchange.getAnnotationById(annID).update().then(function() {
                         Consolidation.consolidateAll();
-                        // $rootScope.$emit('update-annotation-completed', annID);
                         EventDispatcher.sendEvent('AnnotationsCommunication.editAnnotation', annID);
+                        setLoading(false);
                         promise.resolve();
                     });
                 }
-                setLoading(false);
                 completed++;
                 annotationsCommunication.log("Graph correctly updated: " + annID);
             }).error(function() {
@@ -306,12 +305,11 @@ angular.module('Pundit2.Communication')
                 if (completed > 0) {
                     AnnotationsExchange.getAnnotationById(annID).update().then(function() {
                         Consolidation.consolidateAll();
-                        // $rootScope.$emit('update-annotation-completed', annID);
                         EventDispatcher.sendEvent('AnnotationsCommunication.editAnnotation', annID);
+                        setLoading(false);
                         promise.resolve();
                     });
                 }
-                setLoading(false);
                 completed++;
                 annotationsCommunication.log("Items correctly updated: " + annID);
             }).error(function() {

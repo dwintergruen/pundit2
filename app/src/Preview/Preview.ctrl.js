@@ -1,5 +1,5 @@
 angular.module('Pundit2.Preview')
-.controller('PreviewCtrl', function($scope, Preview, TypesHelper, $window, Toolbar) {
+.controller('PreviewCtrl', function($scope, Preview, TypesHelper, $window, Config) {
 
     $scope.itemDashboardPreview = null;
 
@@ -77,7 +77,7 @@ angular.module('Pundit2.Preview')
     };
 
     $scope.openNotebookUrl = function(id){
-        var url = Toolbar.options.askLinkDefault + '#/myNotebooks/'+id;
+        var url = Config.askBaseURL + '#/myNotebooks/'+id;
         $window.open(url);
     };
 

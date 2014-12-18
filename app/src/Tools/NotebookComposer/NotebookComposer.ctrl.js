@@ -2,7 +2,7 @@ angular.module('Pundit2.NotebookComposer')
     .controller('NotebookComposerCtrl', function($scope, EventDispatcher, NotebookComposer, $timeout, NotebookExchange, NotebookCommunication, $q) {
 
         var setLoading = function (state) {
-            EventDispatcher.sendEvent('Pundit.loading', state);
+            EventDispatcher.sendEvent('NotebookComposerCtrl.loading', state);
         };
 
         $scope.notebook = {};

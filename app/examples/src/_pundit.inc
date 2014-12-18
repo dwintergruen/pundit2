@@ -114,28 +114,18 @@
     <script src="../src/Item/Item.js"></script>
     <script src="../src/Item/Item.dir.js"></script>
     <script src="../src/Item/Item.ctrl.js"></script>
-
-    <script src="../src/Notebook/Notebook.js"></script>
-    <script src="../src/Notebook/Notebook.dir.js"></script>
-    <script src="../src/Notebook/Notebook.ctrl.js"></script>
+    <script src="../src/Item/ItemNotebook.dir.js"></script>
+    <script src="../src/Item/ItemNotebook.ctrl.js"></script>
 
     <script src="../src/Lists/MyItemsContainer/MyItemsContainer.js"></script>
     <script src="../src/Lists/MyItemsContainer/MyItemsContainer.dir.js"></script>
     <script src="../src/Lists/MyItemsContainer/MyItemsContainer.ctrl.js"></script>
     <script src="../src/Lists/MyItemsContainer/MyItemsContainer.service.js"></script>
-    <script src="../src/Lists/MyItemsContainer/MyItems.service.js"></script>
+    <script src="../src/Lists/MyItemsContainer/MyItems.service.js"></script>    
 
-    <script src="../src/Lists/Vocabularies/Vocabularies.js"></script>
-    <script src="../src/Lists/Vocabularies/FreebaseSelector.service.js"></script>
-    <script src="../src/Lists/Vocabularies/MurucaSelector.service.js"></script>
-    <script src="../src/Lists/Vocabularies/KorboBasketSelector.service.js"></script>
-    <script src="../src/Lists/Vocabularies/Korbo2Selector.service.js"></script>
-    <script src="../src/Lists/Vocabularies/EuropeanaSelector.service.js"></script>
-    <script src="../src/Lists/Vocabularies/GeonamesSelector.service.js"></script>
-    <script src="../src/Lists/Vocabularies/DbpediaSelector.service.js"></script>
-    <script src="../src/Lists/Vocabularies/SelectorsManager.service.js"></script>
-    <script src="../src/Lists/Vocabularies/VocabulariesContainer/VocabulariesContainer.dir.js"></script>
-    <script src="../src/Lists/Vocabularies/VocabulariesContainer/VocabulariesContainer.ctrl.js"></script>
+    <script src="../src/Lists/VocabulariesContainer/VocabulariesContainer.js"></script>
+    <script src="../src/Lists/VocabulariesContainer/VocabulariesContainer.dir.js"></script>
+    <script src="../src/Lists/VocabulariesContainer/VocabulariesContainer.ctrl.js"></script>
 
     <script src="../src/Tools/TripleComposer/TripleComposer.js"></script>
     <script src="../src/Tools/TripleComposer/TripleComposer.dir.js"></script>
@@ -162,6 +152,7 @@
 
     <script src="../src/ResourcePanel/ResourcePanel.js"></script>
     <script src="../src/ResourcePanel/ResourcePanel.filter.js"></script>
+    <script src="../src/ResourcePanel/CalendarDateFormat.dir.js"></script>
     <script src="../src/ResourcePanel/ResourcePanel.service.js"></script>
     <script src="../src/ResourcePanel/ResourcePanel.ctrl.js"></script>
 
@@ -169,6 +160,16 @@
     <script src="../src/Tools/NotebookComposer/NotebookComposer.dir.js"></script>
     <script src="../src/Tools/NotebookComposer/NotebookComposer.ctrl.js"></script>
     <script src="../src/Tools/NotebookComposer/NotebookComposer.service.js"></script>
+
+    <script src="../src/Vocabularies/Vocabularies.js"></script>
+    <script src="../src/Vocabularies/FreebaseSelector.factory.js"></script>
+    <script src="../src/Vocabularies/MurucaSelector.factory.js"></script>
+    <script src="../src/Vocabularies/KorboBasketSelector.factory.js"></script>
+    <script src="../src/Vocabularies/Korbo2Selector.factory.js"></script>
+    <script src="../src/Vocabularies/EuropeanaSelector.factory.js"></script>
+    <script src="../src/Vocabularies/GeonamesSelector.factory.js"></script>
+    <script src="../src/Vocabularies/DbpediaSelector.factory.js"></script>
+    <script src="../src/Vocabularies/SelectorsManager.service.js"></script>
 
     <script src="../src/korboee-template.js"></script>
 

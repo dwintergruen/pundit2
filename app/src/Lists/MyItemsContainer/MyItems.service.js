@@ -68,7 +68,7 @@ angular.module("Pundit2.MyItemsContainer")
     var opInProgress = false;
 
     var setLoading = function (state) {
-        EventDispatcher.sendEvent('Pundit.loading', state);
+        EventDispatcher.sendEvent('MyItems.loading', state);
     };
 
     var initContextualMenu = function() {
@@ -324,6 +324,12 @@ angular.module("Pundit2.MyItemsContainer")
         return promise.promise;
     };
 
+    myItems.deleteItemAndConsolidate = function(item) {
+        myItems.deleteItem(item).then(function() {
+            Consolidation.consolidateAll();
+        });
+    };
+
     // add one item to my items on pundit server
     myItems.addItem = function(value){
 
@@ -381,6 +387,12 @@ angular.module("Pundit2.MyItemsContainer")
         });
 
         return promise.promise;
+    };
+
+    myItems.addItemAndConsolidate = function(item) {
+        myItems.addItem(item).then(function() {
+            Consolidation.consolidateAll();
+        });
     };
 
     return myItems;

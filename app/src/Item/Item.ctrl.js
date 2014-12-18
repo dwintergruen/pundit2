@@ -1,18 +1,19 @@
 angular.module('Pundit2.Item')
+
 .controller('ItemCtrl', function($scope, ItemsExchange, TypesHelper, Preview, ContextualMenu) {
 
     // get item by uri (passed as directive uri param)
     $scope.item = ItemsExchange.getItemByUri($scope.uri);
     // get item type label (then show it inside template)
-    if ($scope.item.type.length > 0) {
+    if (typeof($scope.item.type) !== 'undefined' && $scope.item.type.length > 0) {
         $scope.itemTypeLabel = TypesHelper.getLabel($scope.item.type[0]);
     }
 
-    $scope.onItemMouseOver = function(){
+    $scope.onItemMouseOver = function() {
         Preview.showDashboardPreview($scope.item);
     };
 
-    $scope.onItemMouseLeave = function(){
+    $scope.onItemMouseLeave = function() {
         Preview.hideDashboardPreview();
     };
 
@@ -20,7 +21,7 @@ angular.module('Pundit2.Item')
         return Preview.isStickyItem($scope.item);
     };
 
-    $scope.onClickSticky = function(evt){
+    $scope.onClickSticky = function(evt) {
         if (Preview.isStickyItem($scope.item)) {
             Preview.clearItemDashboardSticky();
         } else {
@@ -30,8 +31,18 @@ angular.module('Pundit2.Item')
         evt.stopPropagation();
         return false;
     };
-    
-    $scope.onClickMenu = function(evt){
+
+    $scope.setStickInForceMode = function() {
+        if ($scope.forceSticky) {
+            if (Preview.isStickyItem($scope.item)) {
+                Preview.clearItemDashboardSticky();
+            } else {
+                Preview.setItemDashboardSticky($scope.item);
+            }
+        }
+    };
+
+    $scope.onClickMenu = function(evt) {
         // show menu on item, the action is added by MyItemsContainer or PageItemsContainer service
         // the type of menu to show is relative to pageItems or myItems
         ContextualMenu.show(evt.pageX, evt.pageY, $scope.item, $scope.menuType);
@@ -40,12 +51,12 @@ angular.module('Pundit2.Item')
         return false;
     };
 
-    $scope.isItemSelected = function(){
-      if($scope.isSelected === false || typeof($scope.isSelected) === 'undefined'){
-          return false;
-      } else {
-          return true;
-      }
+    $scope.isItemSelected = function() {
+        if ($scope.isSelected === false || typeof($scope.isSelected) === 'undefined') {
+            return false;
+        } else {
+            return true;
+        }
     };
 
 });

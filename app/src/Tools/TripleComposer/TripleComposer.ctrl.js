@@ -1,5 +1,6 @@
 angular.module('Pundit2.TripleComposer')
-.controller('TripleComposerCtrl', function($rootScope, $scope, $http, $q, $timeout, NameSpace,
+
+.controller('TripleComposerCtrl', function($rootScope, $scope, $http, $q, $timeout, NameSpace, EventDispatcher,
     MyPundit, Toolbar, TripleComposer, AnnotationsCommunication, AnnotationsExchange, TemplatesExchange) {
 
     // statements objects are extend by this.addStatementScope()
@@ -32,7 +33,7 @@ angular.module('Pundit2.TripleComposer')
         if (newVal) {
             lastHeader = $scope.headerMessage;
             $scope.headerMessage = "Complete your annotation and save!";
-        } else if(newVal !== oldVal) {
+        } else if (newVal !== oldVal) {
             $scope.headerMessage = lastHeader;
         }
     });
@@ -53,7 +54,7 @@ angular.module('Pundit2.TripleComposer')
     $scope.savingIcon = loadIcon;
     $scope.shortMessageClass = loadMessageClass;
 
-    this.removeStatement = function(id){
+    this.removeStatement = function(id) {
         id = parseInt(id, 10);
         TripleComposer.removeStatement(id);
         if (TripleComposer.isAnnotationComplete()) {
@@ -66,34 +67,52 @@ angular.module('Pundit2.TripleComposer')
         TripleComposer.addStatementScope(id, scope);
     };
 
-    this.duplicateStatement = function(id){
+    this.duplicateStatement = function(id) {
         id = parseInt(id, 10);
         TripleComposer.duplicateStatement(id);
     };
 
-    this.isAnnotationComplete = function(){
+    this.isAnnotationComplete = function() {
         if (TripleComposer.isAnnotationComplete()) {
             angular.element('.pnd-triplecomposer-save').removeClass('disabled');
         }
     };
 
-    this.isTripleErasable = function(){
+    this.isTripleErasable = function() {
         TripleComposer.isTripleErasable();
     };
 
-    $scope.onClickAddStatement = function(){
+    $scope.isAnnotationErasable = function() {
+        return !TripleComposer.isTripleEmpty();
+    };
+
+    $scope.onClickAddStatement = function() {
         angular.element('.pnd-triplecomposer-save').addClass('disabled');
         TripleComposer.addStatement();
     };
 
-    $scope.cancel = function(){
+    $scope.cancel = function() {
         if ($scope.editMode) {
+            angular.element('.pnd-triplecomposer-save').addClass('disabled');
             TripleComposer.reset();
             TripleComposer.setEditMode(false);
+            TripleComposer.updateVisibility();
         }
+
+        EventDispatcher.sendEvent('Pundit.changeSelection');
     };
 
-    $scope.editAnnotation = function(){
+    $scope.resetComposer = function() {
+        angular.element('.pnd-triplecomposer-save').addClass('disabled');
+        if ($scope.templateMode) {
+            TripleComposer.wipeNotFixedItems();
+            return;
+        }
+        TripleComposer.reset();
+        EventDispatcher.sendEvent('Pundit.changeSelection');
+    };
+
+    $scope.editAnnotation = function() {
         var annID = TripleComposer.getEditAnnID();
 
         if (typeof(annID) !== 'undefined') {
@@ -106,14 +125,14 @@ angular.module('Pundit2.TripleComposer')
                 TripleComposer.buildGraph(),
                 TripleComposer.buildItems(),
                 TripleComposer.buildTargets()
-            ).then(function(){
+            ).then(function() {
                 stopSavingProcess(
                     savePromise,
                     TripleComposer.options.notificationSuccessMsg,
                     TripleComposer.options.notificationMsgTime,
                     false
                 );
-            }, function(){
+            }, function() {
                 stopSavingProcess(
                     savePromise,
                     TripleComposer.options.notificationErrorMsg,
@@ -126,7 +145,7 @@ angular.module('Pundit2.TripleComposer')
 
     // update triple composer messagge then after "time" (ms)
     // restore default template content
-    var updateMessagge = function(msg, time, err){
+    var updateMessagge = function(msg, time, err) {
         $scope.textMessage = msg;
 
         if (err) {
@@ -138,8 +157,8 @@ angular.module('Pundit2.TripleComposer')
             $scope.savingIcon = successIcon;
             $scope.shortMessageClass = successMessageClass;
         }
-        
-        $timeout(function(){
+
+        $timeout(function() {
             TripleComposer.setEditMode(false);
             angular.element('.pnd-triplecomposer-cancel').removeClass('disabled');
             $scope.saving = false;
@@ -161,7 +180,9 @@ angular.module('Pundit2.TripleComposer')
         promiseResolved = false;
         //savePromise = $timeout(function(){ promiseResolved = true; }, TripleComposer.options.savingMsgTime);
         $scope.saving = true;
-        return $timeout(function(){ promiseResolved = true; }, TripleComposer.options.savingMsgTime);
+        return $timeout(function() {
+            promiseResolved = true;
+        }, TripleComposer.options.savingMsgTime);
     };
 
     var stopSavingProcess = function(promise, msg, msgTime, err) {
@@ -170,7 +191,7 @@ angular.module('Pundit2.TripleComposer')
         if (promiseResolved) {
             updateMessagge(msg, msgTime, err);
         } else {
-            promise.then(function(){
+            promise.then(function() {
                 updateMessagge(msg, msgTime, err);
             });
         }
@@ -183,18 +204,18 @@ angular.module('Pundit2.TripleComposer')
         TripleComposer.reset();
     };
 
-    $scope.saveAnnotation = function(){
+    $scope.saveAnnotation = function() {
 
         var promise = $q.defer();
 
         MyPundit.login().then(function(logged) {
-            
+
             if (logged) {
-                var abort = $scope.statements.some(function(el){
+                var abort = $scope.statements.some(function(el) {
                     var t = el.scope.get();
                     // if the triple is mandatory it must be completed before saving annotation
                     // if the triple is not mandatory it can be saved with incomplete triples (this triples is skipped)
-                    if (el.scope.isMandatory && (t.subject===null || t.predicate===null || t.object===null)) {
+                    if (el.scope.isMandatory && (t.subject === null || t.predicate === null || t.object === null)) {
                         return true;
                     }
                 });
@@ -210,18 +231,18 @@ angular.module('Pundit2.TripleComposer')
                 var httpPromise;
                 if ($scope.templateMode) {
                     httpPromise = AnnotationsCommunication.saveAnnotation(
-                                    TripleComposer.buildGraph(),
-                                    TripleComposer.buildItems(),
-                                    TripleComposer.buildTargets(),
-                                    TemplatesExchange.getCurrent().id);
+                        TripleComposer.buildGraph(),
+                        TripleComposer.buildItems(),
+                        TripleComposer.buildTargets(),
+                        TemplatesExchange.getCurrent().id);
                 } else {
                     httpPromise = AnnotationsCommunication.saveAnnotation(
-                                    TripleComposer.buildGraph(),
-                                    TripleComposer.buildItems(),
-                                    TripleComposer.buildTargets());
+                        TripleComposer.buildGraph(),
+                        TripleComposer.buildItems(),
+                        TripleComposer.buildTargets());
                 }
-                
-                httpPromise.then(function(){
+
+                httpPromise.then(function() {
                     // resolved
                     stopSavingProcess(
                         savePromise,
@@ -230,7 +251,7 @@ angular.module('Pundit2.TripleComposer')
                         false
                     );
                     promise.resolve();
-                }, function(){
+                }, function() {
                     // rejected
                     TripleComposer.closeAfterOpOff();
                     stopSavingProcess(
@@ -245,27 +266,38 @@ angular.module('Pundit2.TripleComposer')
             } //end if logged
         }); // end my pundit login
 
+        EventDispatcher.sendEvent('Pundit.changeSelection');
+
         return promise.promise;
 
     }; // end save function
 
-    $rootScope.$on('pnd-save-annotation', function(){
-        var uncomplete = $scope.statements.some(function(el){
+    EventDispatcher.addListener('ResourcePanel.toggle', function(e) {
+        var isResourcePanelOpend = e.args;
+        if (isResourcePanelOpend) {
+            angular.element('.pnd-triplecomposer-statements-container').addClass('pnd-triplecomposer-statement-not-scroll');
+        } else {
+            angular.element('.pnd-triplecomposer-statements-container').removeClass('pnd-triplecomposer-statement-not-scroll');
+        }
+    });
+
+    EventDispatcher.addListener('Annotators.saveAnnotation', function() {
+        var uncomplete = $scope.statements.some(function(el) {
             var t = el.scope.get();
-            if (t.subject===null || t.predicate===null || t.object===null) {
+            if (t.subject === null || t.predicate === null || t.object === null) {
                 return true;
             }
         });
         if (uncomplete) {
             TripleComposer.openTripleComposer();
         } else {
-            $scope.saveAnnotation().catch(function(){
+            $scope.saveAnnotation().catch(function() {
                 // incomplete annotation
                 // open triple composer to tell user to complete the annotation
                 TripleComposer.openTripleComposer();
             });
         }
-        
+
     });
 
 });

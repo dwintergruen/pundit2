@@ -1,5 +1,5 @@
 angular.module('Pundit2.Annomatic')
-.controller('AnnomaticPopoverCtrl', function($rootScope, $scope, Annomatic) {
+.controller('AnnomaticPopoverCtrl', function($rootScope, $scope, Annomatic, EventDispatcher) {
 
     // Using popover's content variable to pass the number of the 
     // annotation
@@ -90,7 +90,7 @@ angular.module('Pundit2.Annomatic')
         
     };
 
-    $rootScope.$on('suggestions-mode-closed', function() {
+    EventDispatcher.addListener('AnnotationSidebar.activateAnnotationsPanel', function() {
         $scope.$hide();
     });
 

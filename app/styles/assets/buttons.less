@@ -1,19 +1,83 @@
-//
-// Buttons full height 
-// --------------------------------------------------
+/**
+ * BUTTONS
+ *
+ * Style for custom buttons
+ */
 
 
+/* ------------------------------------ *\
+   #BUTTONS-CUSTOM-HEIGHTS
+\* ------------------------------------ */
+
+/* Higher button used in panels and resource panel's footer */
+.pnd-btn-full {
+    height: 29px;
+    padding: 0 10px;
+    border: 0;
+}
+
+/* Smaller button */
+.pnd-btn-half {
+    height: 20px;
+    padding: 0 10px;
+    border: 0;
+}
+
+
+/* ------------------------------------ *\
+   #DISABLED BUTTONS
+\* ------------------------------------ */
 .btn {
+    /* Custom opacity for disabled buttons */
+    &.disabled,
+    &[disabled] {
+        .opacity(.5);
+    }
+}
 
-	&.pnd-btn-full {
-		height: inherit;
-		margin-top: -5px;
-		margin-left: -5px;
-		padding: 0px 10px;
-		border: 0px;
-		
-		& + .pnd-btn-full {
-			border-left: 1px solid #fff;
-			}
-		}
+
+/* ------------------------------------ *\
+   #SUBJECT-PREDICATE-OBJECT-COLORS
+\* ------------------------------------ */
+
+/* Custom colors for buttons reffering to subject, predicate, object */
+.btn-subject {
+    .button-variant(#ffffff; @subject-color; @subject-color);
+}
+
+.btn-predicate {
+    .button-variant(#ffffff; @predicate-color; @predicate-color);
+}
+
+.btn-object {
+    .button-variant(#ffffff; @object-color; @object-color);
+}
+
+
+/* ------------------------------------ *\
+   #AVAILABLE-WIDTH-FILL-BUTTONS
+\* ------------------------------------ */
+
+/*
+The buttons with the class "pnd-btn-fill-width" always
+try to fill the available with.
+This class works for one, two or three buttons but
+can be extended to support more buttons
+*/
+
+/* One button */
+.pnd-btn-fill-width:first-child:nth-last-child(1) {
+    width: 100%;
+}
+
+/* Two buttons */
+.pnd-btn-fill-width:first-child:nth-last-child(2),
+.pnd-btn-fill-width:first-child:nth-last-child(2) ~ .pnd-btn-fill-width {
+    width: 50%;
+}
+
+/* Three buttons  */
+.pnd-btn-fill-width:first-child:nth-last-child(3),
+.pnd-btn-fill-width:first-child:nth-last-child(3) ~ .pnd-btn-fill-width {
+    width: 33.3333%;
 }

@@ -1,10 +1,17 @@
-angular.module('Pundit2.Vocabularies')
-.controller('VocabulariesContainerCtrl', function($scope, $timeout, $injector, $element, $q, BaseComponent,
-                                                    SelectorsManager, ItemsExchange, TypesHelper) {
+angular.module('Pundit2.VocabulariesContainer')
+.controller('VocabulariesContainerCtrl', function($scope, $timeout, $injector, $element, $q, 
+    BaseComponent, SelectorsManager, ItemsExchange, TypesHelper, Preview, TripleComposer,
+    MyItems, EventDispatcher, Status) {
 
     // SelectorsManager is initialized inside client.boot()
 
     $scope.dropdownTemplate = "src/ContextualMenu/dropdown.tmpl.html";
+
+    $scope.itemSelected = null;
+    $scope.isUseActive = false;
+
+    $scope.canAddItemAsSubject = false;
+    $scope.canAddItemAsObject = false;
 
     var orderBtn = angular.element($element).find('.vocab-items-btn-order');
 
@@ -44,6 +51,13 @@ angular.module('Pundit2.Vocabularies')
             $scope.dropdownOrdering[i].isActive = false;
         }
         $scope.dropdownOrdering[index].isActive = true;
+    };
+
+    var resetContainer = function(){
+        $scope.itemSelected = null;
+        $scope.isUseActive = false;
+        $scope.canAddItemAsSubject = false;
+        $scope.canAddItemAsObject = false;
     };
 
     // sort button dropdown content
@@ -176,6 +190,65 @@ angular.module('Pundit2.Vocabularies')
             actualContainer = $scope.tabs[$scope.tabs.activeTab].itemsContainer + $scope.search.term.split(' ').join('$');
             updateMessage();
         }
+    });
+
+    $scope.isSelected = function(item) {
+        if ($scope.itemSelected !== null && $scope.itemSelected.uri === item.uri) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
+    $scope.select = function(item) {
+        Preview.setItemDashboardSticky(item);
+        EventDispatcher.sendEvent('Pundit.changeSelection');
+        
+        $scope.isUseActive = true;
+        $scope.itemSelected = item;
+
+        $scope.canAddItemAsSubject = TripleComposer.canAddItemAsSubject(item);
+        $scope.canAddItemAsObject = TripleComposer.canAddItemAsObject(item);
+    };
+
+    $scope.onClickAdd = function() {
+        if ($scope.itemSelected === null) {
+            return;
+        }
+
+        if (Status.getUserStatus() && !ItemsExchange.isItemInContainer($scope.itemSelected, MyItems.options.container)) {
+            MyItems.addItemAndConsolidate($scope.itemSelected);
+        }
+
+        resetContainer();
+    }
+
+    $scope.onClickUseSubject = function() {
+        if ($scope.itemSelected === null) {
+            return;
+        }
+
+        if (Status.getTemplateModeStatus()) {
+            TripleComposer.addToAllSubject($scope.itemSelected);
+        } else {
+            TripleComposer.addToSubject($scope.itemSelected);
+        }
+
+        resetContainer();
+    }
+
+    $scope.onClickUseObject = function() {
+        if ($scope.itemSelected === null) {
+            return;
+        }
+
+        TripleComposer.addToObject($scope.itemSelected);
+
+        resetContainer();
+    }
+
+    EventDispatcher.addListener('Pundit.changeSelection', function(){
+        resetContainer();
     });
 
 });

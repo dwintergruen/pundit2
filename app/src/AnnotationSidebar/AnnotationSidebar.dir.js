@@ -1,4 +1,5 @@
 angular.module('Pundit2.AnnotationSidebar')
+
 .directive('annotationSidebar', function(AnnotationSidebar) {
     return {
         restrict: 'E',

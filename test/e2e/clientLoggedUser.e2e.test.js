@@ -215,12 +215,15 @@ describe("Client interaction when user is logged in", function() {
             });
         });
         // check triple composer object
-        p.findElement(protractor.By.css('triple-composer statement .pnd-statement-object .pnd-statement-mandatory-object')).then(function(o){
-            // it must have solid red border
-            o.getCssValue('border').then(function(border){
-                expect(border).toBeDefined();
-                expect(border.indexOf('1px solid')).toBeGreaterThan(-1);
-            });
+        p.findElement(protractor.By.css('triple-composer statement .pnd-statement-object .pnd-statement-label')).then(function(o){
+            // it must have *
+            expect(o.getText()).toBe('Add an object*');
+
+            // we are leaving old test code for likely future changes
+            // o.getCssValue('border').then(function(border){
+            //     expect(border).toBeDefined();
+            //     expect(border.indexOf('1px solid')).toBeGreaterThan(-1);
+            // });
         });
     });
 
@@ -302,31 +305,31 @@ describe("Client interaction when user is logged in", function() {
         });
     });
 
-    it("should correctly show ctx menu voice when triple composer is empty", function(){
+    // it("should correctly show ctx menu voice when triple composer is empty", function(){
 
-        // open dashboard
-        p.findElement(protractor.By.css('toolbar .pnd-toolbar-dashboard-button')).click();
-        // collapse tools panel
-        p.findElement(protractor.By.css('dashboard-panel[paneltitle=tools] .btn.btn-default')).click();
-        // open page items tab
-        p.findElement(protractor.By.css("dashboard dashboard-panel .pnd-tab-header li [data-index='1']")).click();
-        // mouseover on item
-        var item = p.findElement(protractor.By.css("dashboard dashboard-panel .pnd-tab-content item")),
-            menuBtn = p.findElement(protractor.By.css("dashboard dashboard-panel .pnd-tab-content item .pnd-icon-bars"));
-        p.actions().mouseMove(item).perform();
-        // wait animation
-        p.sleep(500);
-        // open ctx menu
-        menuBtn.click();
+    //     // open dashboard
+    //     p.findElement(protractor.By.css('toolbar .pnd-toolbar-dashboard-button')).click();
+    //     // collapse tools panel
+    //     p.findElement(protractor.By.css('dashboard-panel[paneltitle=tools] .btn.btn-default')).click();
+    //     // open page items tab
+    //     p.findElement(protractor.By.css("dashboard dashboard-panel .pnd-tab-header li [data-index='1']")).click();
+    //     // mouseover on item
+    //     var item = p.findElement(protractor.By.css("dashboard dashboard-panel .pnd-tab-content item")),
+    //         menuBtn = p.findElement(protractor.By.css("dashboard dashboard-panel .pnd-tab-content item .pnd-icon-bars"));
+    //     p.actions().mouseMove(item).perform();
+    //     // wait animation
+    //     p.sleep(500);
+    //     // open ctx menu
+    //     menuBtn.click();
 
-        // check triple composer statement subject text
-        p.findElements(protractor.By.css('.dropdown-menu li a')).then(function(a){
-            expect(a.length).toBe(3);
-            expect(a[0].getText()).toBe('Use as subject');
-            expect(a[1].getText()).toBe('Use as object');
-            expect(a[2].getText()).toBe('Add to my items');
-        });
-    });
+    //     // check triple composer statement subject text
+    //     p.findElements(protractor.By.css('.dropdown-menu li a')).then(function(a){
+    //         expect(a.length).toBe(3);
+    //         expect(a[0].getText()).toBe('Use as subject');
+    //         expect(a[1].getText()).toBe('Use as object');
+    //         expect(a[2].getText()).toBe('Add to my items');
+    //     });
+    // });
 
     it("should add my items by ctx menu showed on text selection", function(){
 
@@ -359,7 +362,7 @@ describe("Client interaction when user is logged in", function() {
         // open dashboard
         p.findElement(protractor.By.css('toolbar .pnd-toolbar-dashboard-button')).click();
         // open resource panel on subject
-        p.findElement(protractor.By.css(".pnd-statement-object input")).click();
+        p.findElement(protractor.By.css(".pnd-statement-object .pnd-statement-label")).click();
         // check if popover is showed
         p.findElements(protractor.By.css(".pnd-resource-panel-popover")).then(function(popover) {
             expect(popover.length).toBe(1);
@@ -383,7 +386,7 @@ describe("Client interaction when user is logged in", function() {
         // open dashboard
         p.findElement(protractor.By.css('toolbar .pnd-toolbar-dashboard-button')).click();
         // open resource panel on predicate
-        p.findElement(protractor.By.css(".pnd-statement-predicate input")).click();
+        p.findElement(protractor.By.css(".pnd-statement-predicate .pnd-statement-label")).click();
         // check if popover is showed
         p.findElements(protractor.By.css(".pnd-resource-panel-popover")).then(function(popover) {
             expect(popover.length).toBe(1);
@@ -405,18 +408,15 @@ describe("Client interaction when user is logged in", function() {
 
         // open dashboard
         p.findElement(protractor.By.css('toolbar .pnd-toolbar-dashboard-button')).click();
+
         // open resource panel on subject
-        p.findElement(protractor.By.css(".pnd-statement-subject input")).click();
+        p.findElement(protractor.By.css(".pnd-statement-subject .pnd-row-button-subject .pnd-statement-label")).click();
         // check if popover is showed
         p.findElements(protractor.By.css(".pnd-resource-panel-popover")).then(function(popover) {
             expect(popover.length).toBe(1);
         });
         // click item
         p.findElement(protractor.By.css(".pnd-resource-panel-popover .pnd-vertical-tab-content > .active li .pnd-item")).click();
-        // check if item have check icon
-        p.findElements(protractor.By.css(".pnd-resource-panel-popover .pnd-vertical-tab-content > .active li .pnd-item .pnd-item-buttons span.pnd-icon-check")).then(function(check) {
-            expect(check.length).toBe(1);
-        });
         // check if use button is enabled
         p.findElement(protractor.By.css(".pnd-resource-panel-popover .pnd-vertical-tab-footer-content .pnd-resource-panel-use-button")).then(function(useBtn) {
             useBtn.getAttribute('class').then(function(classes){
@@ -437,10 +437,10 @@ describe("Client interaction when user is logged in", function() {
         // open dashboard
         p.findElement(protractor.By.css('toolbar .pnd-toolbar-dashboard-button')).click();
         // open resource panel on predicate
-        p.findElement(protractor.By.css(".pnd-statement-predicate input")).click();
+        p.findElement(protractor.By.css(".pnd-statement-predicate .pnd-statement-label")).click();
         // add text inside input to filter predicates
         // add text to popover
-        p.findElement(protractor.By.css(".pnd-statement-predicate input")).sendKeys('has');
+        p.findElement(protractor.By.css(".pnd-resource-panel-popover .pnd-rsp-input")).sendKeys('has');
         
         // check popover vertical tabs showed number
         p.findElements(protractor.By.css(".pnd-resource-panel-popover .pnd-vertical-tabs li a span")).then(function(spans) {
@@ -459,7 +459,7 @@ describe("Client interaction when user is logged in", function() {
         // open dashboard
         p.findElement(protractor.By.css('toolbar .pnd-toolbar-dashboard-button')).click();
         // open resource panel
-        p.findElement(protractor.By.css(".pnd-statement-object input")).click();
+        p.findElement(protractor.By.css(".pnd-statement-object .pnd-statement-label")).click();
 
         // add item by click on resource panel item and use btn
         p.findElement(protractor.By.css(".pnd-resource-panel-popover .pnd-item")).click();
@@ -494,12 +494,12 @@ describe("Client interaction when user is logged in", function() {
             expect(tabs[4].getText()).toBe("My notebooks");
         });
         // move on notebook item
-        var item = p.findElement(protractor.By.css("dashboard-panel[paneltitle=lists] .pnd-tab-content > div.active my-notebooks-container notebook .pnd-item"));
+        var item = p.findElement(protractor.By.css("dashboard-panel[paneltitle=lists] .pnd-tab-content > div.active my-notebooks-container item-notebook .pnd-item"));
         p.actions().mouseMove(item).perform();
         // wait animation
         p.sleep(500);
         // open ctx menu
-        p.findElements(protractor.By.css("dashboard-panel[paneltitle=lists] .pnd-tab-content > div.active my-notebooks-container notebook .pnd-item-buttons")).then(function(btns){
+        p.findElements(protractor.By.css("dashboard-panel[paneltitle=lists] .pnd-tab-content > div.active my-notebooks-container item-notebook .pnd-item-buttons")).then(function(btns){
             btns[0].click();
         });
         // edit notebook
@@ -512,7 +512,7 @@ describe("Client interaction when user is logged in", function() {
         // check active tab title
         p.findElements(protractor.By.css("dashboard-panel[paneltitle=tools] .pnd-tab-header > li.active > a")).then(function(tabs) {
             expect(tabs.length).toBe(1);
-            expect(tabs[0].getText()).toBe("Notebooks composer");
+            expect(tabs[0].getText()).toBe("Notebook composer");
         });
         
         // TODO write notebook composer dedicated e2e tests
@@ -540,45 +540,45 @@ describe("Client interaction when user is logged in", function() {
         // check active tab title
         p.findElements(protractor.By.css("dashboard-panel[paneltitle=tools] .pnd-tab-header > li.active > a")).then(function(tabs) {
             expect(tabs.length).toBe(1);
-            expect(tabs[0].getText()).toBe("Notebooks composer");
+            expect(tabs[0].getText()).toBe("Notebook composer");
         });
     });
 
-    it("should correctly use ctx menu for use predicate", function(){
+    // it("should correctly use ctx menu for use predicate", function(){
         
-        p.driver.manage().window().setSize(1600, 960);
+    //     p.driver.manage().window().setSize(1600, 960);
 
-        // open dashboard
-        p.findElement(protractor.By.css('toolbar .pnd-toolbar-dashboard-button')).click();
-        // collapse tools panel
-        p.findElement(protractor.By.css('dashboard-panel[paneltitle=details] .btn.btn-default')).click();
-        // open page items tab
-        p.findElement(protractor.By.css("dashboard dashboard-panel .pnd-tab-header li [data-index='2']")).click();
-        // mouseover on item
-        var item = p.findElement(protractor.By.css("dashboard dashboard-panel predicates-container item")),
-            menuBtn = p.findElement(protractor.By.css("dashboard dashboard-panel predicates-container item .pnd-btn-bar"));
-        p.actions().mouseMove(item).perform();
-        // wait animation
-        p.sleep(500);
-        // open ctx menu
-        menuBtn.click();
+    //     // open dashboard
+    //     p.findElement(protractor.By.css('toolbar .pnd-toolbar-dashboard-button')).click();
+    //     // collapse tools panel
+    //     p.findElement(protractor.By.css('dashboard-panel[paneltitle=details] .btn.btn-default')).click();
+    //     // open page items tab
+    //     p.findElement(protractor.By.css("dashboard dashboard-panel .pnd-tab-header li [data-index='2']")).click();
+    //     // mouseover on item
+    //     var item = p.findElement(protractor.By.css("dashboard dashboard-panel predicates-container item")),
+    //         menuBtn = p.findElement(protractor.By.css("dashboard dashboard-panel predicates-container item .pnd-btn-bar"));
+    //     p.actions().mouseMove(item).perform();
+    //     // wait animation
+    //     p.sleep(500);
+    //     // open ctx menu
+    //     menuBtn.click();
 
-        p.findElements(protractor.By.css('.dropdown-menu li a')).then(function(a){
-            expect(a.length).toBe(1);
-            expect(a[0].getText()).toBe('Use as predicate');
-            a[0].click();
-        });
+    //     p.findElements(protractor.By.css('.dropdown-menu li a')).then(function(a){
+    //         expect(a.length).toBe(1);
+    //         expect(a[0].getText()).toBe('Use as predicate');
+    //         a[0].click();
+    //     });
 
-        p.actions().mouseMove(item).perform();
-        menuBtn.click();
+    //     p.actions().mouseMove(item).perform();
+    //     menuBtn.click();
 
-        p.findElements(protractor.By.css('.dropdown-menu li a')).then(function(a){
-            expect(a.length).toBe(0);
-        });
-        p.findElements(protractor.By.css('.dropdown-menu li span')).then(function(span){
-            expect(span.length).toBe(1);
-        });
+    //     p.findElements(protractor.By.css('.dropdown-menu li a')).then(function(a){
+    //         expect(a.length).toBe(0);
+    //     });
+    //     p.findElements(protractor.By.css('.dropdown-menu li span')).then(function(span){
+    //         expect(span.length).toBe(1);
+    //     });
 
-    });
+    // });
 
 });

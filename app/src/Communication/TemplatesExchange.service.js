@@ -43,6 +43,12 @@ angular.module('Pundit2.Communication')
         // If the template is not found, it will return undefined
     };
 
+    templatesExchange.setFirstAsCurrent = function() {
+        if (tmplList.length > 0) {
+            currentTmplID = tmplList[0].id;
+        }
+    };
+
     templatesExchange.setCurrent = function(id) {
         currentTmplID = id;
     };

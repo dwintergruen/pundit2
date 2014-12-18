@@ -1,5 +1,7 @@
 <div class="popover pnd-resource-panel-popover pnd-ignore" ng-controller="ResourcePanelCtrl">
-    <div class="arrow"></div>
+    <div 
+        class="arrow"
+        ng-style="{'margin-left': arrowLeft}"></div>
     <div 
         ng-model="contentTabs.activeTab" 
         bs-tabs="contentTabs" 

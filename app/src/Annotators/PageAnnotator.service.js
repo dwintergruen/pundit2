@@ -51,7 +51,7 @@ angular.module('Pundit2.Annotators')
                 pageAnnotator.log("Item not valid: not have type page "+ item.uri);
                 return false;
             } else if (item.uri !== XpointersHelper.getSafePageContext()){
-                pageAnnotator.log("Item not valid: not consolidable on this page")
+                pageAnnotator.log("Item not valid: not consolidable on this page");
                 return false;
             }
   
@@ -59,7 +59,7 @@ angular.module('Pundit2.Annotators')
             return true;
         };
 
-        pageAnnotator.consolidate = function(items) {
+        pageAnnotator.consolidate = function(/*items*/) {
             pageAnnotator.log('Consolidating!');
 
             // TODO Add something to the page?

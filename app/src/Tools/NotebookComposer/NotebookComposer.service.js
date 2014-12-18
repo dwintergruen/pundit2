@@ -3,7 +3,7 @@ angular.module('Pundit2.NotebookComposer')
 
     clientDashboardTemplate: "src/Tools/NotebookComposer/ClientNotebookComposer.tmpl.html",
     clientDashboardPanel: "tools",
-    clientDashboardTabTitle: "Notebooks composer",
+    clientDashboardTabTitle: "Notebook composer",
     savingMsg: "We are saving your notebook",
     editingMsg: "We are editing your notebook",
     savingMsgTime: 1250,

@@ -157,6 +157,7 @@ describe('Notebook Communication service', function() {
         // http mock for login
         $httpBackend.whenGET(NameSpace.get('asUsersCurrent')).respond(userLoggedIn);
         $httpBackend.whenGET(NameSpace.get('asNBCurrent')).respond(currentNotebook);
+        $httpBackend.whenGET(NameSpace.get('asOpenNBMeta')).respond({});
 
         MyPundit.login().then(function(){
             var p = NotebookCommunication.getCurrent();

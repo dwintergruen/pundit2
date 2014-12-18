@@ -1,6 +1,9 @@
 angular.module('Pundit2.Dashboard')
+
 .controller('pndTabsCtrl', function($document, $window, $rootScope, $scope, $element,
-    Dashboard, ResourcePanel) {
+    Dashboard, ResourcePanel, EventDispatcher, Analytics) {
+
+    // TODO: Create service and move some logic there.
 
     var options = {
         animation: 'am-fade',
@@ -9,9 +12,25 @@ angular.module('Pundit2.Dashboard')
     $scope.hiddenTabsDropdownTemplate = 'src/ContextualMenu/dropdown.tmpl.html';
 
     // Support animations
-    if(options.animation) {
+    if (options.animation) {
         $element.addClass(options.animation);
     }
+
+    var showTabByTitle = function (title) {
+        for (var i = 0; i < $scope.panes.length; i++) {
+            if ($scope.panes[i].title === title) {
+                if ($scope.active !== i) {
+                    $scope.setActive(i);
+                }
+                // parent scope must to be the scope of the
+                // dashboardPanel controller
+                if ($scope.$parent.isCollapsed) {
+                    $scope.$parent.toggleCollapse();
+                }
+                return;
+            }
+        }
+    };
 
     // contains tabs content and tabs title
     // passed in directive
@@ -39,7 +58,7 @@ angular.module('Pundit2.Dashboard')
     var panesLen = 0,
         panesJustChanged = false;
 
-        $scope.$watch(
+    $scope.$watch(
         function() {
             //return angular.element($element).find('ul.pnd-tab-header>li').length;
             // TODO not watch DOM element, other solution is possible ?
@@ -51,7 +70,8 @@ angular.module('Pundit2.Dashboard')
                 panesJustChanged = true;
                 check();
             }
-        });
+        }
+    );
 
     var panesWidth = 0;
 
@@ -67,12 +87,12 @@ angular.module('Pundit2.Dashboard')
             check();
 
             // update show-tabs button state
-            if(isTabHidden() === -1) {
+            if (isTabHidden() === -1) {
                 $scope.hiddenTabIsActive = false;
             } else {
                 $scope.hiddenTabIsActive = true;
             }
-    });
+        });
 
     // check if panels are renderer.
     // Init() is executed only when <li> tabs are changed in DOM
@@ -92,7 +112,7 @@ angular.module('Pundit2.Dashboard')
     var init = function() {
         //var tabsElement = angular.element($element).find('ul.pnd-tab-header>li');
         var tabsElement = angular.element($element).children('ul.pnd-tab-header').children('li:not(.pull-right)');
-        for (var i = 0; i < tabsElement.length; i++){
+        for (var i = 0; i < tabsElement.length; i++) {
             var w = parseInt(angular.element(tabsElement[i]).css('width'), 10);
             $scope.panes[i].width = w;
             //$scope.panes[i].isVisible = true;
@@ -114,11 +134,11 @@ angular.module('Pundit2.Dashboard')
         var w;
         // for each tabs, check if his width, added to the total current width
         // fit to the container width
-        for (var i = 0; i < $scope.panes.length; i++){
+        for (var i = 0; i < $scope.panes.length; i++) {
             currentTab = $scope.panes[i];
             w = tmpWidth + currentTab.width;
             // if tab doesn't fit, get index of first hidden tabs
-            if (w > widthToFit){
+            if (w > widthToFit) {
                 firstHiddenTab = i;
                 break;
             } else {
@@ -127,22 +147,22 @@ angular.module('Pundit2.Dashboard')
             }
         }
 
-        for (i = 0; i < $scope.panes.length; i++){
+        for (i = 0; i < $scope.panes.length; i++) {
             currentTab = $scope.panes[i];
             // for each tab, if his index is less than firstHiddenTab, show it
-            if(i < firstHiddenTab || typeof(firstHiddenTab) === 'undefined'){
+            if (i < firstHiddenTab || typeof(firstHiddenTab) === 'undefined') {
                 currentTab.isVisible = true;
             } else {
                 // otherwise hide it
                 currentTab.isVisible = false;
                 var t = {
                     text: currentTab.title,
-                    click: "setActive("+i+", $event)"
-                    //isActive: false
+                    click: "setActive(" + i + ", $event)"
+                        //isActive: false
                 };
 
                 // set hidden tabs active state
-                if(i === $scope.tabs.activeTab){
+                if (i === $scope.tabs.activeTab) {
                     t.isActive = true;
                 } else {
                     t.isActive = false;
@@ -161,21 +181,21 @@ angular.module('Pundit2.Dashboard')
     var isTabHidden = function(tab) {
         var tabToFind;
         // if there aren't hidden tabs return -1
-        if(typeof($scope.hiddenTabs) === 'undefined') {
+        if (typeof($scope.hiddenTabs) === 'undefined') {
             return -1;
         }
 
-        if($scope.hiddenTabs.length === 0) {
+        if ($scope.hiddenTabs.length === 0) {
             return -1;
         }
 
         // if there aren't active tabs return -1
-        if(typeof($scope.tabs.activeTab) === 'undefined') {
+        if (typeof($scope.tabs.activeTab) === 'undefined') {
             return -1;
         }
 
         // if tab is undefined, check the active tab, otherwise check tab given as parameter
-        if(tab === '' || typeof(tab) === 'undefined') {
+        if (tab === '' || typeof(tab) === 'undefined') {
             var index = $scope.tabs.activeTab;
             tabToFind = $scope.panes[index];
         } else {
@@ -183,8 +203,8 @@ angular.module('Pundit2.Dashboard')
         }
 
         // if tab is found in hiddenTabs array, return index of its position in the array
-        for(var j=0; j<$scope.hiddenTabs.length; j++){
-            if($scope.hiddenTabs[j].text === tabToFind.title){
+        for (var j = 0; j < $scope.hiddenTabs.length; j++) {
+            if ($scope.hiddenTabs[j].text === tabToFind.title) {
                 return j;
             }
         }
@@ -196,34 +216,29 @@ angular.module('Pundit2.Dashboard')
 
     $scope.active = $scope.activePane = 0;
 
-    $rootScope.$on('pnd-dashboard-show-tab', function(evt, title){
-        
-        for (var i=0; i<$scope.panes.length; i++) {
-            if ($scope.panes[i].title === title) {
-                if ($scope.active !== i) {
-                    $scope.setActive(i);
-                }
-                // parent scope must to be the scope of the
-                // dashboardPanel controller
-                if ($scope.$parent.isCollapsed) {
-                    $scope.$parent.toggleCollapse();
-                }
-                return;
-            }
+    EventDispatcher.addListeners(
+        [
+            'TripleComposer.openTripleComposer',
+            'AnnotationDetails.editAnnotation',
+            'MyNotebooksContainer.createNewNotebook',
+            'MyNotebooksContainer.editNotebook'
+        ],
+        function(e) {
+            var title = e.args;
+            showTabByTitle(title);
         }
-    });
+    );
 
     // set a tab as active
-    $scope.setActive = function(index) {
+    $scope.setActive = function(index, e) {
 
         ResourcePanel.hide();
 
         // reset state for hidden tabs if present
-        if($scope.hiddenTabs.length !== 0){
-            for(var i=0; i<$scope.hiddenTabs.length; i++){
+        if ($scope.hiddenTabs.length !== 0) {
+            for (var i = 0; i < $scope.hiddenTabs.length; i++) {
                 $scope.hiddenTabs[i].isActive = false;
             }
-
         }
 
         $scope.active = index;
@@ -231,16 +246,46 @@ angular.module('Pundit2.Dashboard')
         // Setting activeTab back into the original tabs array, so the provider of the tabs
         // can be notified when a tab is selected (eg: PageItemsContainer!)
         $scope.tabs.activeTab = index;
-        
+
         // set to true if an hidden tab is selected and is active
         //$scope.hiddenTabIsActive = !$scope.panes[index].isVisible;
-        if(!$scope.panes[index].isVisible) {
+        if (!$scope.panes[index].isVisible) {
             $scope.hiddenTabIsActive = true;
             var k = isTabHidden($scope.panes[index]);
             $scope.hiddenTabs[k].isActive = true;
         } else {
             $scope.hiddenTabIsActive = false;
         }
+
+        var pane = $scope.panes[$scope.active];
+
+        // Temporary solution to find hierarchystring.
+        var eventLabel = undefined;
+        if ($scope.panes[$scope.active].hasOwnProperty('hierarchystring') ) {
+            eventLabel = $scope.panes[$scope.active].hierarchystring;
+        }
+        else if (!$scope.panes[$scope.active].hasOwnProperty('hierarchystring') 
+            || typeof($scope.panes[$scope.active].hierarchystring) === 'undefined') {
+            var myScope = $scope;
+            do {
+                if (typeof(myScope) === 'undefined') {
+                    break;
+                }
+                if (myScope.hasOwnProperty('pane')) {
+                    if (myScope.pane.hasOwnProperty('hierarchystring')) {
+                        eventLabel = myScope.pane.hierarchystring + '--' + $scope.panes[$scope.active].title;
+                    }
+                    break;
+                }
+                myScope = myScope.$parent;
+            }
+            while (typeof(myScope) !== 'undefined');
+        }
+
+        if (typeof(eventLabel) === 'undefined') {
+            eventLabel = 'unracked-tab-' . $scope.panes[$scope.active].title;
+        }
+        Analytics.track('buttons', 'click', eventLabel);
 
     };
 
@@ -255,7 +300,7 @@ angular.module('Pundit2.Dashboard')
         },
         function() {
             hiddenTabsArePresent = $scope.hiddenTabs.length > 0;
-    });
+        });
 
     // return true if there are some hidden tabs to show
     $scope.hiddenTabsToShow = function() {

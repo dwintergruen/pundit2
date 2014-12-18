@@ -1,5 +1,8 @@
+// TODO: optimize panel resize
+
 angular.module('Pundit2.Dashboard')
-.controller('DashboardPanelCtrl', function($document, $window, $scope, $rootScope, $element, $timeout, Dashboard, ResourcePanel, Annomatic) {
+
+.controller('DashboardPanelCtrl', function($document, $window, $scope, $rootScope, $element, $timeout, Dashboard, ResourcePanel, Annomatic, Analytics) {
 
     // readed from default (not change)
     $scope.collapsedWidth = Dashboard.options.panelCollapseWidth;
@@ -8,7 +11,7 @@ angular.module('Pundit2.Dashboard')
     // overrided in Dashbpoard.addPanel()
     $scope.minWidth = 100;
     $scope.ratio = 1;
-    
+
     $scope.isCollapsed = false;
     $scope.canCollapsePanel = true;
 
@@ -21,11 +24,11 @@ angular.module('Pundit2.Dashboard')
 
     $scope.isAnnomaticRunning = false;
 
-     // Watch Annomatic status
+    // Watch Annomatic status
     $scope.$watch(function() {
         return Annomatic.isRunning();
     }, function(currentState) {
-        if(currentState && Dashboard.isDashboardVisible()){
+        if (currentState && Dashboard.isDashboardVisible()) {
             Dashboard.toggle();
         }
         $scope.isAnnomaticRunning = currentState;
@@ -35,44 +38,49 @@ angular.module('Pundit2.Dashboard')
     $scope.$watch(function() {
         return $scope.tabs.activeTab;
     }, function() {
-        $timeout(function(){
+        $timeout(function() {
             $scope.setTabContentHeight();
         }, 30);
     });
 
     $scope.toggleCollapse = function() {
-
         ResourcePanel.hide();
 
-        if( $scope.isCollapsed ) {
+        if ($scope.isCollapsed) {
             $scope.isCollapsed = !$scope.isCollapsed;
             var foo = {};
             foo[$scope.index] = $scope.minWidth;
             Dashboard.resizeAll(foo);
-            
-        } else if ( Dashboard.canCollapsePanel() ) {
+        } else if (Dashboard.canCollapsePanel()) {
             $scope.isCollapsed = !$scope.isCollapsed;
             Dashboard.resizeAll();
         }
+        Analytics.track('buttons', 'dashboard--panel' + ($scope.isCollapsed ? 'Collapse' : 'Expand'), $scope.paneltitle);
     };
 
-    $scope.addContent = function(tabName, tabContent){
+    $scope.addContent = function(tabName, tabContent) {
         $scope.tabs.push({
             title: tabName,
-            template: tabContent
+            template: tabContent,
+            hierarchystring: $scope.hierarchystring + '--' + tabName
         });
-        Dashboard.log('Added content '+tabName+' to panel '+$scope.title);
+        //Dashboard.log('Added content ' + tabName + ' to panel ' + $scope.paneltitle + ' [hierarchyString: ' + hierarchyString + ']');
+        Dashboard.log('Added content ' + tabName + ' to panel ' + $scope.paneltitle);
     };
 
     var lastPageX;
     var moveHandler = function(evt) {
         var resized,
             deltaX = evt.pageX - lastPageX;
-        if (deltaX === 0) { return; }
+        if (deltaX === 0) {
+            return;
+        }
         resized = Dashboard.tryToResizeCouples($scope.index, deltaX);
         if (resized) {
             lastPageX = evt.pageX;
         }
+
+        ResourcePanel.updatePosition();
     };
     var upHandler = function() {
         $document.off('mousemove', moveHandler);
@@ -80,7 +88,6 @@ angular.module('Pundit2.Dashboard')
     };
 
     $scope.mouseDownHandler = function(evt) {
-        ResourcePanel.hide();
         evt.preventDefault();
         lastPageX = evt.pageX;
         $document.on('mousemove', moveHandler);
@@ -93,7 +100,7 @@ angular.module('Pundit2.Dashboard')
         return Dashboard.getContainerHeight();
     }, function() {
         $scope.setTabContentHeight();
-    });    
+    });
 
     $scope.$watch(function() {
         return Dashboard.canCollapsePanel();
@@ -130,16 +137,16 @@ angular.module('Pundit2.Dashboard')
             // .pnd-inner .pnd-panel-tab-header height
             h -= Dashboard.options.panelInnerTabsHeight;
 
-            elInner.height(h-1);
+            elInner.height(h + 3);
         }
         if (elInnerScrollable.length > 0) {
-            // TODO why -7 ???
-            elInnerScrollable.height(h-7);
+            // TODO why +2 ???
+            elInnerScrollable.height(h + 2);
         }
         if (elInnerScrollableNoHeader.length > 0) {
-            // TODO why -7 ???
+            // TODO why -9 ???
             h += Dashboard.options.panelContentHeaderHeight;
-            elInnerScrollableNoHeader.height(h-9);
+            elInnerScrollableNoHeader.height(h - 9);
         }
 
     };
@@ -155,13 +162,13 @@ angular.module('Pundit2.Dashboard')
     var lastPageY;
     var footerMouseMoveHandler = function(event) {
         var dy = event.pageY - lastPageY;
-        if ( Dashboard.increaseContainerHeight(dy) ) {
+        if (Dashboard.increaseContainerHeight(dy)) {
             lastPageY = event.pageY;
         }
     };
 
     $scope.footerMouseDownHandler = function(event) {
-        if ( event.which === 1 ) {
+        if (event.which === 1) {
             event.preventDefault();
             $document.on('mouseup', footerMouseUpHandler);
             $document.on('mousemove', footerMouseMoveHandler);
@@ -172,5 +179,5 @@ angular.module('Pundit2.Dashboard')
 
     Dashboard.addPanel($scope);
     $rootScope.$$phase || $scope.$digest();
-    Dashboard.log('Panel '+$scope.title+' Controller Run');
+    Dashboard.log('Panel ' + $scope.title + ' Controller Run');
 });

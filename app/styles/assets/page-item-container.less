@@ -1,188 +1,167 @@
-.pnd-tab-content  {
-    padding: 0px;
-}   
-    
-//
-// Header
-// --------------------------------------------------
+.pnd-tab-content {
+    padding: 0;
+}
 
-//
-// Header
-// --------------------------------------------------
+/* ------------------------------------ *\
+   #HEADER
+\* ------------------------------------ */
 
+.pnd-panel-tab-content-header {
+    min-height: 36px;
+    border-bottom: 1px solid @gray-light;
+    padding: 0 0 0 10px;
+    margin: 10px 0 10px 0;
 
-.pnd-panel-tab-content-header{
-	min-height: 35px;
-	border-bottom: 1px solid @gray-light;
-	padding: 0px 0px 0px 10px;
-    margin: 10px 0px 10px 0px;
-    
-    
     &.pnd-panel-tab-content-header-no-border {
-    	min-height: 34px;
-		margin: 10px 10px 0px 0px;
-		border-bottom: 0px; 
-	    }
-	    
-    &.pnd-panel-tab-content-header-border {
-		margin: 10px 8px 0px 0px;
-	    }
-         
-	.left-inner-icon {
-	    position: relative;
-	    padding-right: 10px;
-	    }
-	
-	.left-inner-icon input {
-	    padding-right: 20px;
-	    font-weight: normal;   
-	    }
-	    
-	.left-inner-icon .pnd-icon {
-	    position: absolute;
-	    color: @gray-light;
-	    right: 12px;
-	    top: 0px;
-	    padding: 7px;
-	    -moz-box-sizing: border-box;
-	    -webkit-box-sizing: border-box;
-	    box-sizing: border-box;
-	    }
+        min-height: 35px;
+        margin-bottom: 0;
+        border-bottom: 0;
+    }
 
+    &.pnd-panel-tab-content-header-border {
+        margin-bottom: 0;
+    }
+
+    .left-inner-icon {
+        position: relative;
+        padding-right: 10px;
+    }
+
+    .left-inner-icon input {
+        padding-right: 20px;
+        font-weight: normal;
+    }
+
+    .left-inner-icon .pnd-icon {
+        position: absolute;
+        color: @gray-light;
+        right: 12px;
+        top: 0;
+        padding: 7px;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+    }
 
     // .pnd-icon-times is configured in *ItemsContainer.service.js defaults with
     // inputIconClear: 'pnd-icon-times'
     .left-inner-icon .pnd-icon.pnd-icon-times:hover {
-        color:  @brand-success;
+        color: @brand-success;
         cursor: pointer;
-        }
-
     }
-
-    
-    
-//
-// Content
-// --------------------------------------------------
-  
-.pnd-inner-scrollable  {
-  		overflow-y: auto;
-  		
-  		&.pnd-inner-no-tabs  {
-  			margin: 0px 10px 0px 0px;
-  			}		
-  	}
-
-
-.pnd-inner  {
-
-	.pnd-tab-content {
-  		margin: 0px 10px 0px 0px;
-  		overflow-y: auto;
-  		}
-  	}
-
-.pnd-panel-tab-content-content {
-    margin: 0px;
-    
-     .pnd-dashboard-welcome {
-	  		padding: 10px;
-  			}
-    
-	&.pnd-inner { 
-		
-		.show-tabs {
-			margin-right: 7px;
-			}
-    }
-    
- }
-  
-
-    
-//
-// Content Tabs
-// --------------------------------------------------
-
-.pnd-panel-tab-content  {
-
-
-	// Give the tabs something to sit on
-	.nav-tabs {
-	      margin-bottom: 5px;
-	      margin-right: 0px;
-	      background-color: #fff;
-	      border-top: 1px solid @gray-light;
-	      border-bottom: 1px solid @gray-light;
-		      
-	
-	  > li {
-	
-	
-	    // Actual tabs (as links)
-	    > a {
-		  color: @nav-tabs-active-link-hover-color;
-	      margin-right: 0px;
-	      line-height: @line-height-base;
-	      border: 0px;
-	      border-bottom: 1px solid @gray-light;
-	      border-top: 2px solid transparent;
-	      background-color: #fff;
-	
-	      
-	      &:hover {
-	        background-color: transparent;
-	        border-bottom: 1px solid @gray-light;
-	        color: #000;
-	        cursor: pointer;
-	      }
-	      
-	    }
-	
-	    // Active state, and its :hover to override normal :hover
-	    &.active > a {
-	      &,
-	      &:hover,
-	      &:focus {
-	        //border-bottom-color: transparent;
-	        border-top: 2px solid @gray;
-	        cursor: pointer;
-	      }
-	    }
-	
-	        
-	    
-	  }
-	
-	}
-	
-
-	
 }
 
-//
-// Footer
-// --------------------------------------------------
 
-	
-	.pnd-panel-tab-content-footer{
-		display: block;
-		border-top: 1px solid @gray-light;
-		background-color: #fff;
-		height: 30px;
-		padding: 5px;
-		position: absolute;
-		bottom: 0;
-		right: 10px;
-		left: 0;
-	}	
+/* ------------------------------------ *\
+   #CONTENT
+\* ------------------------------------ */
 
+.pnd-inner-scrollable {
+    overflow-y: auto;
 
-	// Footer Right
+    &.pnd-inner-no-tabs {
+        margin: 0; // 0 10px 0 0;
+    }
+}
 
+.pnd-inner {
+    .pnd-tab-content {
+        margin: 0; // 0 10px 0 0;
+        overflow-y: auto;
+    }
+}
+
+.pnd-panel-tab-content-content {
+    margin: 0;
+
+    .pnd-dashboard-welcome {
+        display: inline-block;
+        padding: 10px;
+    }
+
+    &.pnd-inner {
+        .show-tabs {
+            margin-right: 7px;
+        }
+    }
+}
+
+/* ------------------------------------ *\
+   #CONTENT-TABS
+\* ------------------------------------ */
+
+.pnd-panel-tab-content {
+
+    // Give the tabs something to sit on
+    .nav-tabs {
+        margin-bottom: 0; // 5px;
+        margin-right: 0;
+        background-color: #fff;
+        border-top: 1px solid @gray-light;
+        border-bottom: 1px solid @gray-light;
+
+        > li {
+
+            // Actual tabs (as links)
+            > a {
+                color: @nav-tabs-active-link-hover-color;
+                margin-right: 0;
+                line-height: @line-height-base;
+                border: 0;
+                border-bottom: 1px solid @gray-light;
+                border-top: 2px solid transparent;
+                background-color: #fff;
+
+                &:hover {
+                    background-color: transparent;
+                    border-bottom: 1px solid @gray-light;
+                    color: #000;
+                    cursor: pointer;
+                }
+            }
+
+            // Active state, and its :hover to override normal :hover
+            &.active > a {
+                &,
+                &:hover,
+                &:focus {
+                    //border-bottom-color: transparent;
+                    border-top: 2px solid @gray;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}
+
+/* ------------------------------------ *\
+   #FOOTER
+\* ------------------------------------ */
+
+.pnd-panel-tab-content-footer {
+    display: block;
+    border-top: 1px solid @gray-light;
+    background-color: #fff;
+    height: 30px;
+    position: absolute;
+    bottom: 0;
+    right: 7px;
+    left: 0;
+
+    .btn {
+        float: left;
+        border-right: 1px solid #fff;
+    }
+
+    .pnd-btn-lists.btn {
+        float: right;
+    }
+}
+
+/* Footer Right */
 .pnd-dashboard-panel-last {
 
-	.pnd-panel-tab-content-footer {
-		right: 0px;
-		}
-	}	
+    .pnd-panel-tab-content-footer {
+        right: 0;
+    }
+}

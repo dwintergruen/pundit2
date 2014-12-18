@@ -1,215 +1,310 @@
+/**
+ * TRIPLE COMPOSER
+ *
+ * Defining styles for Triple Composer component
+ */
+
 .pnd-triplecomposer-statements-container {
-	margin-right: 10px;
-	
 
-	.pnd-statement-row {
-		margin: 0px 10px 15px 10px;
-		position: relative;
-		min-height: 60px;
-	
-		.pnd-statement-widget {
-			position: absolute;
-			right: 25px;
-			left: 0px;
-			padding: 0px;
-			background-color: transparent;
-			overflow: hidden;
-			}
-			
-	    .pnd-statement-subject,
-	    .pnd-statement-object,
-	    .pnd-statement-predicate {
-	        padding: 5px;
-	        display: inline;
-	        width: 33.3%;
-	        float: left;
-	        background-color: @gray-lighter;
-	        
-	        }
-	
-	    .pnd-statement-object {
-	    	
-	    	.pnd-statement-mandatory-object {
-		        border: 1px solid lighten(@brand-danger, 20%);
-	        	}
-	    	}    
-	    
-	    .pnd-statement-subject {
-	    	    
-	    	.pnd-statement-subject-text {
-		    	color: lighten(@brand-danger, 20%);
-		    	font-style: italic;
-		    	} 
-	    
-	    	}
-	    		    	
-	    .pnd-statement-predicate {
-	    	}
-	    
-	    .pnd-statement-label  {
-	    	white-space: nowrap;
-	    	overflow: hidden;
-	    	text-overflow: ellipsis;
-	    	height: 26px;
-	    	}
-	    	
-	    	
-	    	
+    &.pnd-triplecomposer-statement-not-scroll {
+        overflow: hidden;
+    }
 
-	    	
-	//
-	// Right buttons
-	// --------------------------------------------------
-	
-	
-	    .pnd-statement-buttons {
-	        float: right;
-	        display: inline;
-	        width: 20px;
-	        
-	        .pnd-btn-statement  {
-		        height: 25px;
-		        width: 25px;
-		        margin-bottom: 3px;
-		        }
-	        }
-	
-	
-	//
-	// Row - buttons
-	// --------------------------------------------------
-	
-	
-	    .pnd-row-button-subject, 
-	    .pnd-row-button-predicate,
-		.pnd-row-button-object  {
-	        margin: 5px 0px 0px 0px;
-	        padding: 3px 0px;
-	        min-height: 25px;
-	        color: #fff;
-	        white-space: nowrap;
-		    overflow: hidden;
-		    text-overflow: ellipsis;
-		    
-		    	button {
-			    	vertical-align: bottom;
-	        		}
-	        }
-	    
-	    .pnd-row-button-subject {
-	        background-color: @subject-color;
-	        }
-	
-	    .pnd-row-button-predicate {
-	        background-color: @predicate-color;
-	        }
-	
-	    .pnd-row-button-object {
-	        background-color: @object-color;
-	        }
+    /* Single Triple */
+    .pnd-statement-row {
+        position: relative;
+        height: @triplecomposer-height + 2 * @triplecomposer-padding-inner;
+        margin-left: @triplecomposer-spacing;
+        margin-bottom: @triplecomposer-spacing;
+        margin-right: @triplecomposer-spacing;
 
-		
-	
-	//
-	// Input and icon
-	// --------------------------------------------------
-	
-	
-		.left-inner-icon {
-		    position: relative;
-		    padding: 0px;
-		    }
-		
-		.left-inner-icon input {
-		    padding-right: 20px;
-		    font-weight: normal;   
-		    }
-		    
-		.left-inner-icon .pnd-icon {
-		    position: absolute;
-		    color: @gray-light;
-		    right: 0px;
-		    top: 0px;
-		    padding: 7px;
-		    -moz-box-sizing: border-box;
-		    -webkit-box-sizing: border-box;
-		    box-sizing: border-box;
-		    }
-	
-	    // .pnd-icon-times is configured in *ItemsContainer.service.js defaults with
-	    // inputIconClear: 'pnd-icon-times'
-	    .left-inner-icon .pnd-icon.pnd-icon-times:hover {
-	        color:  @brand-success;
-	        cursor: pointer;
-	        }
-	
-	
-	//
-	// White buttons
-	// --------------------------------------------------
-	
-		.btn-link {
-		    color: #fff;
-		    	
-		    	&:hover,
-		    	&:focus,
-		    	&:active,
-		    	&.active   {
-			    color: #fff;
-			    outline: 0;
-			    box-shadow: none;
-			    }
-		    }
-	}
+        &:first-child {
+            margin-top: @triplecomposer-spacing;
+        }
 
+        &:last-child {
+            margin-top: @triplecomposer-spacing;
+        }
+
+        /* Div containing the three triple blocks */
+        .pnd-statement-widget {
+            position: absolute;
+            right: 24px;
+            left: 0;
+            padding: 0;
+            background-color: transparent;
+        }
+
+        /* Single block */
+        .pnd-statement-subject,
+        .pnd-statement-object,
+        .pnd-statement-predicate {
+            padding: @triplecomposer-padding-inner;
+            display: inline;
+            height: @triplecomposer-height + 2 * @triplecomposer-padding-inner;
+            width: 33.3%;
+            float: left;
+            background-color: @gray-lighter;
+        }
+
+        .pnd-statement-subject {
+            padding-right: 0;
+        }
+
+        .pnd-statement-object {
+            padding-left: 0;
+            padding-right: 3px;
+        }
+
+        /* Subject, Predicate, Object buttons. Common styles */
+        .pnd-row-button-subject,
+        .pnd-row-button-predicate,
+        .pnd-row-button-object {
+            position: relative;
+            height: @triplecomposer-height;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+
+            /* Text label */
+            .pnd-statement-label {
+                display: block;
+                overflow: hidden;
+                height: @triplecomposer-height;
+                padding-left: @triplecomposer-padding-inner;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                line-height: @triplecomposer-height;
+                cursor: pointer;
+                font-style: italic;
+            }
+
+            .pnd-statement-tmpl-mode {
+                cursor: default;
+            }
+
+            /* Label with one icon on the right */
+            &.pnd-statement-icon-one .pnd-statement-label {
+                margin-right: 26px;
+            }
+
+            /* Label with two icons on the right */
+            &.pnd-statement-icon-two .pnd-statement-label {
+                margin-right: 52px;
+            }
+
+            /* Buttons on the right (delete, date, literal) */
+            .pnd-row-button-rightbuttons {
+                position: absolute;
+                display: block;
+                top: 0;
+                right: 0;
+
+                button {
+                    height: @triplecomposer-height;
+                    width: @triplecomposer-height + 1;
+                    vertical-align: bottom;
+                    margin: 0;
+                    color: #fff;
+                    border-left-width: 1px;
+                    border-left-style: solid;
+                    float: right;
+                }
+
+                /* Centers the icon, considering the left border */
+                .pnd-icon {
+                    margin-left: 1px;
+                }
+            }
+
+            /* Color of text when an entity has been selected */
+            &.pnd-statement-found .pnd-statement-label{
+                color: #FFF;
+                font-style: normal;
+            }
+        }
+
+        /* Subject */
+        .pnd-row-button-subject {
+            .pnd-statement-label, button {
+                background-color: @subject-color;
+                &:hover {
+                    background-color: darken(@subject-color, 5);
+                }
+            }
+
+            .pnd-statement-label {
+                color: @subject-color-text;
+            }
+
+            button {
+                border-left-color: darken(@subject-color, 10);
+            }
+        }
+
+        /* Predicate */
+        .pnd-row-button-predicate {
+            .pnd-statement-label, button {
+                background-color: @predicate-color;
+                &:hover {
+                    background-color: darken(@predicate-color, 5);
+                }
+            }
+
+            .pnd-statement-label {
+                color: @predicate-color-text
+            }
+
+            button {
+                border-left-color: darken(@predicate-color, 10);
+            }
+        }
+
+        /* Object */
+        .pnd-row-button-object {
+            .pnd-statement-label, button {
+                background-color: @object-color;
+                &:hover {
+                    background-color: darken(@object-color, 5);
+                }
+            }
+
+            .pnd-statement-label {
+                color: @object-color-text;
+            }
+
+            button {
+                border-left-color: darken(@object-color, 10);
+            }
+        }
+
+        /* Templates: Mandatory Subject and object for Templates */
+        .pnd-statement-object {
+            .pnd-statement-mandatory-object {
+                // border: 1px solid lighten(@brand-danger, 20%);
+            }
+        }
+
+        .pnd-statement-subject {
+            .pnd-statement-subject-text {
+                // color: lighten(@brand-danger, 20%);
+                // font-style: italic;
+            }
+        }
+
+        /* Right button opening dropdown menu */
+        .pnd-statement-buttons {
+            position: absolute;
+            right: 0;
+            width: 25px;
+
+            .btn {
+                background-color: @gray-lighter;
+                height: @triplecomposer-height + 2 * @triplecomposer-padding-inner;
+            }
+
+            .pnd-icon {
+                color: @gray-light;
+
+
+                &:hover {
+                    color: @gray;
+                }
+            }
+        }
+
+        /* Input and icon */
+        /*
+        .left-inner-icon {
+            position: relative;
+            padding: 0px;
+        }
+
+        .left-inner-icon input {
+            padding-right: 20px;
+            font-weight: normal;
+        }
+
+        .left-inner-icon .pnd-icon {
+            position: absolute;
+            color: @gray-light;
+            right: 0px;
+            top: 0px;
+            padding: 7px;
+            -moz-box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+        */
+
+        // .pnd-icon-times is configured in *ItemsContainer.service.js defaults with
+        // inputIconClear: 'pnd-icon-times'
+        .left-inner-icon .pnd-icon.pnd-icon-times:hover {
+            color: @brand-success;
+            cursor: pointer;
+        }
+
+        /* White buttons */
+        .btn-link {
+            color: #fff;
+
+            &:hover,
+            &:focus,
+            &:active,
+            &.active {
+                color: #fff;
+                outline: 0;
+                box-shadow: none;
+            }
+        }
+    }
 }
 
 
-	//
-	// Messages
-	// --------------------------------------------------
-
+/* ------------------------------------ *\
+   #MESSAGES
+\* ------------------------------------ */
 
 .pnd-triplecomposer-saving-content,
 .pnd-saving-content,
 .pnd-notebook-saving-content {
-		padding: 10px;
-		text-align: center;
-		
-		.pnd-icon {
-			margin-bottom: 15px;
-			
-				&.pnd-icon-refresh {
-					color: @gray-light;
-					}
-					
-				&.pnd-icon-check-circle {
-					color: @brand-success;
-					}
-					
-				&.pnd-icon-exclamation-circle {
-					color: @brand-warning;
-					}				
-			}
-			
-		.pnd-message {
-			font-size: 15px;
-			display: block;
-			margin-bottom: 5px;
-			}
-			
-		.pnd-message-success {
-			font-size: 15px;
-			display: block;
-			margin-bottom: 5px;
-			color: @brand-success;
-			}
-			
-		.pnd-message-warning {
-			font-size: 15px;
-			display: block;
-			margin-bottom: 5px;
-			color: @brand-warning;
-			}
-		
-		}
+    padding: 10px;
+    text-align: center;
+
+    .pnd-icon {
+        margin-bottom: 15px;
+
+        &.pnd-icon-refresh {
+            color: @gray-light;
+        }
+
+        &.pnd-icon-check-circle {
+            color: @brand-success;
+        }
+
+        &.pnd-icon-exclamation-circle {
+            color: @brand-warning;
+        }
+    }
+
+    // TODO: Too much repetitions in this code!!
+    .pnd-message {
+        font-size: 15px;
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .pnd-message-success {
+        font-size: 15px;
+        display: block;
+        margin-bottom: 5px;
+        color: @brand-success;
+    }
+
+    .pnd-message-warning {
+        font-size: 15px;
+        display: block;
+        margin-bottom: 5px;
+        color: @brand-warning;
+    }
+}

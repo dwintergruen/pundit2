@@ -73,7 +73,7 @@ angular.module('Pundit2.Communication')
 
         }).success(function(data) {
 
-            var ret = readAnnotationData(self, data);
+            readAnnotationData(self, data);
 
             // TODO: if ret, resolve() .. otherwise reject()?
             // TODO: the annotation might be corrupted (no items? no something..)

@@ -3,7 +3,7 @@ angular.module('Pundit2.MyItemsContainer')
         return {
             restrict: 'E',
             scope: {
-                
+                hierarchystring: '@'
             },
             templateUrl: "src/Lists/MyItemsContainer/MyItemsContainer.dir.tmpl.html",
             controller: "MyItemsContainerCtrl"

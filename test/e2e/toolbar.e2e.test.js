@@ -271,6 +271,7 @@ describe("The toolbar module", function() {
 
     beforeEach(function() {
         p.addMockModule('httpBackendMock', httpMock);
+        p.driver.manage().window().setSize(1200, 960);
     });
 
     afterEach(function() {
@@ -329,25 +330,11 @@ describe("The toolbar module", function() {
 
         p.get('/app/examples/toolbar.html');
 
-        // TODO what kind of test is this?! check use case user logged or not logged
-        // check showed name
-        // p.findElements(protractor.By.css('toolbar .pnd-toolbar-notebook-menu-button span')).then(function(spans) {
-        //     expect(spans[0].getText()).toBe("My notebooks");
-        // });
-
         // click login button and get login
         p.findElement(protractor.By.css('.btn-example-login')).click();
 
         // get current info
         p.findElement(protractor.By.css('.pnd-test-get-current-notebook')).click();
-
-        // check showed name
-        p.findElements(protractor.By.css('toolbar .pnd-toolbar-notebook-menu-button span')).then(function(spans) {
-            expect(spans[1].getText()).toBe("Loading...");
-        });
-
-        // click get my notebooks button
-        p.findElement(protractor.By.css('.pnd-test-get-my-notebooks')).click();
 
         // check showed name
         p.findElements(protractor.By.css('toolbar .pnd-toolbar-notebook-menu-button span')).then(function(spans) {
