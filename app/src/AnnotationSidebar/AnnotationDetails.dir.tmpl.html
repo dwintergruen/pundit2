@@ -155,10 +155,10 @@
                                         <span class="pnd-annotation-details-literal">{{object.label}}</span>
                                     </span>
                                 </span>
-                                <p ng-if="object.class == 'pnd-item-entity' && moreInfo" class="pnd-annotation-details-more-info">
+                                <p ng-if="object.class == 'pnd-item-entity' && moreInfo" class="pnd-preview-bottom-links">
                                     <a href="{{object.uri}}" target="_blank">More info</a>
                                 </p>
-                                <p ng-if="lodLive && object.typeClass=='uri'">
+                                <p ng-if="lodLive && object.typeClass=='uri'" class="pnd-preview-bottom-links">
                                     <a href="{{lodLiveBaseUrl}}{{object.uri}}" target="_blank">Graph</a>
                                 </p>
                             </div>
@@ -172,12 +172,12 @@
             <button 
                 type="button" 
                 ng-if="showEdit()" 
-                class="btn btn-xs btn-success pnd-btn-full"
+                class="btn btn-xs btn-success pnd-btn-half"
                 ng-click="editAnnotation()"
                 ng-disable="isLoading">Edit</button>
             <button 
                 type="button" 
-                class="btn btn-xs btn-info pnd-btn-full"
+                class="btn btn-xs btn-info pnd-btn-half"
                 ng-click="deleteAnnotation()"
                 ng-disable="isLoading">Delete</button>
         </div>
