@@ -35,9 +35,9 @@ angular.module('Pundit2.TripleComposer')
     $scope.isMandatory = true;
 
     if (TripleComposer.getStatements().length < 2) {
-        ContextualMenu.modifyHeaderActionByName('removeTriple', true);
+        ContextualMenu.modifyDisabled('removeTriple', true);
     } else {
-        ContextualMenu.modifyHeaderActionByName('removeTriple', false);
+        ContextualMenu.modifyDisabled('removeTriple', false);
     }
 
     // reference to the items used inside this statement

@@ -415,7 +415,7 @@ angular.module('Pundit2.TripleComposer')
 
         if (statements.length === 1) {
             if (statements[0].scope.isStatementEmpty()) {
-                ContextualMenu.modifyHeaderActionByName('removeTriple', true);
+                ContextualMenu.modifyDisabled('removeTriple', true);
             }
         }
         tripleComposer.log('Try to remove statement at index', index);
@@ -463,7 +463,7 @@ angular.module('Pundit2.TripleComposer')
         }
 
         if (statements.length > 1) {
-            ContextualMenu.modifyHeaderActionByName('removeTriple', false);
+            ContextualMenu.modifyDisabled('removeTriple', false);
         }
 
         tripleComposer.log('statement extended with scope', statements[index]);
@@ -492,7 +492,7 @@ angular.module('Pundit2.TripleComposer')
         }
 
         if (statements.length > 1) {
-            ContextualMenu.modifyHeaderActionByName('removeTriple', false);
+            ContextualMenu.modifyDisabled('removeTriple', false);
         }
 
     };
@@ -725,9 +725,9 @@ angular.module('Pundit2.TripleComposer')
     tripleComposer.isTripleErasable = function() {
         if (statements.length === 1) {
             if (!statements[0].scope.isStatementEmpty()) {
-                ContextualMenu.modifyHeaderActionByName('removeTriple', false);
+                ContextualMenu.modifyDisabled('removeTriple', false);
             } else {
-                ContextualMenu.modifyHeaderActionByName('removeTriple', true);
+                ContextualMenu.modifyDisabled('removeTriple', true);
             }
         }
     };
