@@ -59,16 +59,16 @@ angular.module('Pundit2.Toolbar')
 
     $scope.myNoteboockSigninClick = function() {
         $scope.login('toolbar--myNotebooks--login');
-    }
+    };
 
     $scope.loginButtonClick = function() {
         $scope.login('toolbar--login');
-    }
+    };
 
     $scope.login = function(trackingLoginName) {
         ResourcePanel.hide();
         MyPundit.login();
-        if (trackingLoginName == undefined) {
+        if (trackingLoginName === undefined) {
             trackingLoginName = 'toolbar--otherLogin'
         }
         Analytics.track('buttons', 'click', trackingLoginName);
@@ -90,7 +90,7 @@ angular.module('Pundit2.Toolbar')
 
     $scope.askThePunditClick = function() {
         Analytics.track('buttons', 'toolbar--askThePundit', $scope.isUserLogged ? 'logged' : 'anonymous');
-    }
+    };
 
     // modal
     var infoModalScope = $rootScope.$new(),
