@@ -266,7 +266,7 @@ angular.module('Pundit2.Dashboard')
         } else if (!$scope.panes[$scope.active].hasOwnProperty('hierarchystring') || typeof($scope.panes[$scope.active].hierarchystring) === 'undefined') {
             var myScope = $scope;
             do {
-                if (typeof(myScope) === 'undefined') {
+                if (typeof(myScope) === 'undefined' || myScope === null) {
                     break;
                 }
                 if (myScope.hasOwnProperty('pane')) {
@@ -277,11 +277,11 @@ angular.module('Pundit2.Dashboard')
                 }
                 myScope = myScope.$parent;
             }
-            while (typeof(myScope) !== 'undefined');
+            while (typeof(myScope) !== 'undefined' && myScope !== null);
         }
 
         if (typeof(eventLabel) === 'undefined') {
-            eventLabel = 'unracked-tab-'.$scope.panes[$scope.active].title;
+            eventLabel = 'unracked-tab-' + $scope.panes[$scope.active].title;
         }
         Analytics.track('buttons', 'click', eventLabel);
 
