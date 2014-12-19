@@ -1,10 +1,10 @@
-angular.module('index');
+angular.module('home');
 /**
  * @ngdoc module
- * @name index
- * @module index
+ * @name home
+ * @module home
  *
  * @description
  *
- * Short descriotion of the documentation
+ * Pundit2 documentation
  **/

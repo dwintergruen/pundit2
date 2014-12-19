@@ -43,6 +43,7 @@ body.pnd-toolbar-active {
         height: @toolbar-height - @toolbar-border-bottom;
         border-right: 1px solid lighten(@navbar-inverse-link-hover-bg, 30);
         border-left: 0;
+        transition: none !important; /* Delete any transition */
         
         &:focus {
             background-color: transparent;
