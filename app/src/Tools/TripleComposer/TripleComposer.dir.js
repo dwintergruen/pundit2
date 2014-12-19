@@ -1,4 +1,5 @@
 angular.module('Pundit2.TripleComposer')
+
 .directive('tripleComposer', function() {
     return {
         restrict: 'E',

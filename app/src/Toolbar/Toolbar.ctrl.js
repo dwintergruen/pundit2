@@ -61,7 +61,7 @@ angular.module('Pundit2.Toolbar')
         $scope.login('toolbar--myNotebooks--login');
     }
 
-    $scope.loginButtonClick = function () {
+    $scope.loginButtonClick = function() {
         $scope.login('toolbar--login');
     }
 

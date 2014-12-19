@@ -1,7 +1,7 @@
 angular.module('Pundit2.TripleComposer')
 
 .controller('StatementCtrl', function($scope, $element,
-    TypesHelper, ContextualMenu, ResourcePanel, NameSpace, 
+    TypesHelper, ContextualMenu, ResourcePanel, NameSpace,
     TripleComposer, Toolbar, Preview, EventDispatcher) {
 
     // default values

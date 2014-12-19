@@ -818,9 +818,9 @@ angular.module('Pundit2.TripleComposer')
                     } else if (triples[i].object.type === 'literal') {
                         // TODO: add full support to date
                         if (Utils.isValidDate(triples[i].object.value)) {
-                            statements[i].scope.setObject(new Date(triples[i].object.value));                            
+                            statements[i].scope.setObject(new Date(triples[i].object.value));
                         } else {
-                            statements[i].scope.setObject(triples[i].object.value);                            
+                            statements[i].scope.setObject(triples[i].object.value);
                         }
                     } else {
                         tripleComposer.log('Try to add incompatible type of object', triples[i].object);
