@@ -1,7 +1,9 @@
 angular.module('Pundit2.Core')
+
 .constant("BASECOMPONENTDEFAULTS", {
     debug: false
 })
+
 .service('BaseComponent', function($log, Utils, BASECOMPONENTDEFAULTS, $window, Config) {
 
     var BaseComponent = function(name, options) {
@@ -37,7 +39,11 @@ angular.module('Pundit2.Core')
     // TODO: doc
     BaseComponent.prototype.err = function() {
         var fileErr = function() {
-            try { throw Error(''); } catch(err) { return err; }
+            try {
+                throw Error('');
+            } catch (err) {
+                return err;
+            }
         };
         var currentErr = fileErr();
         var callerLine = currentErr.stack.split('\n')[5];
@@ -58,6 +64,6 @@ angular.module('Pundit2.Core')
             $log.log.apply(null, args);
         }
     };
-    
+
     return BaseComponent;
 });

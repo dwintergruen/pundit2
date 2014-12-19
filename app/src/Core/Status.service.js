@@ -38,9 +38,9 @@ angular.module('Pundit2.Core')
             state.Pundit.loading = true;
             updateLoading(true);
 
-            loadingCount[eventName]++;
+            loadingCount[eventName] ++;
         } else {
-            loadingCount[eventName]--;
+            loadingCount[eventName] --;
             loadingState = Object.keys(loadingCount).filter(
                 function(index) {
                     return loadingCount[index] > 0;

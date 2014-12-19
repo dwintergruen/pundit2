@@ -1,8 +1,9 @@
 angular.module('Pundit2.Core')
-.constant('CONSOLIDATIONDEFAULTS', {
-})
+
+.constant('CONSOLIDATIONDEFAULTS', {})
+
 .service('Consolidation', function($rootScope, $location, CONSOLIDATIONDEFAULTS, BaseComponent, EventDispatcher, NameSpace, Config,
-                                   Item, ItemsExchange, XpointersHelper) {
+    Item, ItemsExchange, XpointersHelper) {
 
     var cc = new BaseComponent('Consolidation', CONSOLIDATIONDEFAULTS),
         state = {};
@@ -28,10 +29,10 @@ angular.module('Pundit2.Core')
     state.annotators = {};
 
     state.isRunningAnnomatic = false;
-    $rootScope.$on('annomatic-run', function(){
+    $rootScope.$on('annomatic-run', function() {
         state.isRunningAnnomatic = true;
     });
-    $rootScope.$on('annomatic-stop', function(){
+    $rootScope.$on('annomatic-stop', function() {
         state.isRunningAnnomatic = false;
     });
 
@@ -48,7 +49,7 @@ angular.module('Pundit2.Core')
             items = [items];
         }
 
-        for (var l=items.length; l--;) {
+        for (var l = items.length; l--;) {
             var item = items[l];
 
             var fragmentType = cc.isConsolidable(item);
@@ -71,10 +72,10 @@ angular.module('Pundit2.Core')
             }
 
             // Create or update parent list of fragments
-            if (typeof(item.parentItemXP) !== 'undefined'){
-                if (item.parentItemXP in state.fragmentsItemListByParentURI){
+            if (typeof(item.parentItemXP) !== 'undefined') {
+                if (item.parentItemXP in state.fragmentsItemListByParentURI) {
                     state.fragmentsItemListByParentURI[item.parentItemXP].push(item);
-                } else{
+                } else {
                     state.fragmentsItemListByParentURI[item.parentItemXP] = [item];
                 }
             }
@@ -101,7 +102,7 @@ angular.module('Pundit2.Core')
         if (typeof(Config.modules.MyItems) !== 'undefined') {
             allItems = allItems.concat(ItemsExchange.getItemsByContainer(Config.modules.MyItems.container));
         }
-        
+
         cc.log('Consolidating ALL items');
         cc.consolidate(allItems);
         EventDispatcher.sendEvent('Consolidation.consolidateAll');
@@ -113,16 +114,16 @@ angular.module('Pundit2.Core')
 
         // TODO: check if its not an array
 
-        cc.log('Will try to consolidate '+items.length+' items');
+        cc.log('Will try to consolidate ' + items.length + ' items');
         cc.wipe();
         addItems(items);
 
         for (var a in state.annotators) {
             if (a in state.itemListByType) {
-                cc.log('Consolidating annotator type '+ a +', '+ state.typeUriMap[a].length +' items');
+                cc.log('Consolidating annotator type ' + a + ', ' + state.typeUriMap[a].length + ' items');
                 state.annotators[a].consolidate(state.itemListByType[a]);
             } else {
-                cc.log('Skipping annotator type '+ a +': no item to consolidate.');
+                cc.log('Skipping annotator type ' + a + ': no item to consolidate.');
             }
         }
 
@@ -160,7 +161,7 @@ angular.module('Pundit2.Core')
     // be passed to the server looking for annotations.
     cc.getAvailableTargets = function(onlyNamedContents) {
         var ret = [],
-        nc = XpointersHelper.options.namedContentClasses;
+            nc = XpointersHelper.options.namedContentClasses;
 
         // The page URL is for xpointers out of named contents
         if (typeof(onlyNamedContents) === "undefined" || onlyNamedContents !== true) {
@@ -169,11 +170,11 @@ angular.module('Pundit2.Core')
 
         // Look for named content: an element with a class listed in .namedContentClasses
         // then get its about attribute
-        for (var l=nc.length; l--;) {
+        for (var l = nc.length; l--;) {
             var className = nc[l],
-                nodes = angular.element('.'+className);
+                nodes = angular.element('.' + className);
 
-            for (var n=nodes.length; n--;) {
+            for (var n = nodes.length; n--;) {
                 // If it doesnt have the attribute, dont add it
                 var uri = angular.element(nodes[n]).attr('about');
                 // TODO: better checks of what we find inside about attributes? A lil regexp

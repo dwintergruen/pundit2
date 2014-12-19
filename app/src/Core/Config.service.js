@@ -1,7 +1,8 @@
 angular.module('Pundit2.Core')
+
 .factory('Config', function(PUNDITDEFAULTCONF, $window, Utils) {
     var Config = {};
-    
+
     Utils.deepExtend(Config, PUNDITDEFAULTCONF);
 
     // Read 'punditConfig' from the global scope and use those settings
@@ -13,7 +14,7 @@ angular.module('Pundit2.Core')
         // TODO: set the rules for checking
         return true;
     };
-    
+
     // TODO: doc
     Config.isModuleActive = function(moduleName) {
         return angular.isObject(Config.modules[moduleName]) && Config.modules[moduleName].active === true;

@@ -1,6 +1,7 @@
 angular.module('Pundit2.Core')
+
 .constant('ANALYTICSDEFAULTS', {
-    
+
     /**
      * @module punditConfig
      * @ngdoc property
@@ -9,8 +10,8 @@ angular.module('Pundit2.Core')
      * @description
      * `object`
      *
-     * Configuration object for Analytics module. Analytics provides 
-     * methods to submit events tracked by other modules, by managing 
+     * Configuration object for Analytics module. Analytics provides
+     * methods to submit events tracked by other modules, by managing
      * queues to avoid losing packets
      */
 
@@ -104,8 +105,9 @@ angular.module('Pundit2.Core')
      */
     debug: false
 })
+
 .service('Analytics', function(BaseComponent, $window, $document, $interval, $timeout, ANALYTICSDEFAULTS) {
-    
+
     var analytics = new BaseComponent('Analytics', ANALYTICSDEFAULTS);
 
     var cache = {
@@ -138,19 +140,19 @@ angular.module('Pundit2.Core')
     ga('create', analytics.options.trackingCode, {
         'storage': 'none', // no cookies
         'cookieDomain': 'none' // no domain
-        // 'clientId' : getClientID() // custom id
+            // 'clientId' : getClientID() // custom id
     });
     // ga('set', 'checkProtocolTask', function() {}); //HACK
 
     var updateHits = function() {
-        if (currentHits >= analytics.options.maxHits){
+        if (currentHits >= analytics.options.maxHits) {
             isTimeRunning = false;
-            analytics.log(analytics.options.maxHits+' hits available again');
+            analytics.log(analytics.options.maxHits + ' hits available again');
             return;
         }
 
         updateHitsTimer = $timeout(function() {
-            currentHits = Math.min(currentHits+2, analytics.options.maxHits);
+            currentHits = Math.min(currentHits + 2, analytics.options.maxHits);
             //analytics.log('Hits: '+currentHits);
             updateHits();
             sendHits();
@@ -158,12 +160,12 @@ angular.module('Pundit2.Core')
     };
 
     var sendHits = function() {
-        if (cache.events.length === 0){
+        if (cache.events.length === 0) {
             isSendRunning = false;
             return;
         }
 
-        if (currentHits > 0){
+        if (currentHits > 0) {
             numSent++;
             var currentEvent = cache.events.shift();
 
@@ -175,13 +177,13 @@ angular.module('Pundit2.Core')
                 'eventValue': currentEvent.eventValue
             });
             currentHits--;
-            
-            if (!isTimeRunning){
+
+            if (!isTimeRunning) {
                 isTimeRunning = true;
                 updateHits();
             }
-            analytics.log('Tracked ('+numSent+' sent / '+currentHits+' available) event '+currentEvent.eventCategory+' ('+ currentEvent.eventAction +': '+ currentEvent.eventLabel +')');
-            
+            analytics.log('Tracked (' + numSent + ' sent / ' + currentHits + ' available) event ' + currentEvent.eventCategory + ' (' + currentEvent.eventAction + ': ' + currentEvent.eventLabel + ')');
+
             sendHits();
         }
     };
@@ -191,22 +193,22 @@ angular.module('Pundit2.Core')
     };
 
     analytics.track = function(category, action, label, value) {
-        if (!analytics.options.doTracking){
+        if (!analytics.options.doTracking) {
             return;
         }
-        if (!angular.isDefined(category) || !angular.isDefined(action)){
+        if (!angular.isDefined(category) || !angular.isDefined(action)) {
             analytics.err('Category and Action are required');
             return;
         }
 
         cache.events.push({
-          'eventCategory': category,
-          'eventAction': action,
-          'eventLabel': label,
-          'eventValue': value
+            'eventCategory': category,
+            'eventAction': action,
+            'eventLabel': label,
+            'eventValue': value
         });
 
-        if (!isSendRunning){
+        if (!isSendRunning) {
             isSendRunning = true;
             sendHits();
         }

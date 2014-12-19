@@ -1,4 +1,5 @@
 angular.module('Pundit2.Core')
+
 .constant('ITEMDEFAULTS', {
 
     /**
@@ -93,6 +94,7 @@ angular.module('Pundit2.Core')
     classWebPage: 'pnd-item-web-page',
     classEntity: 'pnd-item-entity'
 })
+
 .factory('Item', function(BaseComponent, NameSpace, Utils, ItemsExchange, ITEMDEFAULTS) {
     var itemComponent = new BaseComponent("Item", ITEMDEFAULTS);
 
@@ -107,7 +109,7 @@ angular.module('Pundit2.Core')
         this.label = 'default item label';
 
         if (angular.isObject(values)) {
-            itemComponent.log('Extending new Item with values '+this.uri, values);
+            itemComponent.log('Extending new Item with values ' + this.uri, values);
             Utils.deepExtend(this, values);
         }
 
@@ -220,41 +222,68 @@ angular.module('Pundit2.Core')
     ItemFactory.prototype.toRdf = function() {
         // All item properties are encoded by their uri
 
-        var i = { };
+        var i = {};
         // properties always present
-        i[NameSpace.item.label] = [{ type:'literal', value: this.label}];
+        i[NameSpace.item.label] = [{
+            type: 'literal',
+            value: this.label
+        }];
         i[NameSpace.item.type] = [];
 
-        this.type.forEach(function(typeUri){
-            i[NameSpace.item.type].push({ type:'uri', value: typeUri});
+        this.type.forEach(function(typeUri) {
+            i[NameSpace.item.type].push({
+                type: 'uri',
+                value: typeUri
+            });
         });
 
-        if (typeof(this.altLabel) !== 'undefined'){
-            i[NameSpace.item.altLabel] = [{ type:'literal', value: this.altLabel}];
+        if (typeof(this.altLabel) !== 'undefined') {
+            i[NameSpace.item.altLabel] = [{
+                type: 'literal',
+                value: this.altLabel
+            }];
         }
 
-        if (typeof(this.description) !== 'undefined'){
-            i[NameSpace.item.description] = [{ type:'literal', value: this.description}];
+        if (typeof(this.description) !== 'undefined') {
+            i[NameSpace.item.description] = [{
+                type: 'literal',
+                value: this.description
+            }];
         }
 
-        if (typeof(this.image) !== 'undefined'){
-            i[NameSpace.item.image] = [{type:'uri', value: this.image}];
+        if (typeof(this.image) !== 'undefined') {
+            i[NameSpace.item.image] = [{
+                type: 'uri',
+                value: this.image
+            }];
         }
 
-        if (typeof(this.pageContext) !== 'undefined'){
-            i[NameSpace.item.pageContext] = [{ type:'uri', value: this.pageContext}];
+        if (typeof(this.pageContext) !== 'undefined') {
+            i[NameSpace.item.pageContext] = [{
+                type: 'uri',
+                value: this.pageContext
+            }];
         }
 
-        if (typeof(this.isPartOf) !== 'undefined'){
-            i[NameSpace.item.isPartOf] = [{ type:'uri', value: this.isPartOf}];
+        if (typeof(this.isPartOf) !== 'undefined') {
+            i[NameSpace.item.isPartOf] = [{
+                type: 'uri',
+                value: this.isPartOf
+            }];
         }
 
-        if (typeof(this.parentItemXP) !== 'undefined'){
-            i[NameSpace.item.parentItemXP] = [{ type:'uri', value: this.parentItemXP}];
+        if (typeof(this.parentItemXP) !== 'undefined') {
+            i[NameSpace.item.parentItemXP] = [{
+                type: 'uri',
+                value: this.parentItemXP
+            }];
         }
 
-        if (typeof(this.polygonUri) !== 'undefined'){
-            i[NameSpace.item.selector] = [{ type:'uri', value: this.polygonUri}];
+        if (typeof(this.polygonUri) !== 'undefined') {
+            i[NameSpace.item.selector] = [{
+                type: 'uri',
+                value: this.polygonUri
+            }];
         }
 
         // TODO make a polygon selector uri and save

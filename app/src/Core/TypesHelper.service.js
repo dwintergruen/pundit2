@@ -1,4 +1,5 @@
 angular.module('Pundit2.Core')
+
 .service('TypesHelper', function(BaseComponent, NameSpace, Utils) {
     var typesHelper = new BaseComponent("TypesHelper"),
         types = {};
@@ -31,7 +32,7 @@ angular.module('Pundit2.Core')
     // Label is mandatory.
     typesHelper.add = function(uri, label, description) {
 
-        if(!(uri in types)) {
+        if (!(uri in types)) {
             types[uri] = {};
         }
         types[uri].label = label;

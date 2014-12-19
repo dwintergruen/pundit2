@@ -1,12 +1,14 @@
 angular.module('Pundit2.Core')
+
 .constant('FP3DEFAULTS', {
     label: 'Finish',
     link: '',
     active: false,
     debug: false
 })
+
 .service('Fp3', function(BaseComponent, FP3DEFAULTS, Config, $http, $q, $window) {
-    
+
     var fp3 = new BaseComponent("Fp3", FP3DEFAULTS);
 
     // the node that containt the html text passend inside POST
@@ -37,11 +39,13 @@ angular.module('Pundit2.Core')
             fp3.log("Error: do you must configure a link to POST data");
             return;
         }
-        
+
         $http({
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json'
+            },
             method: 'POST',
-            url: fp3.options.link+'?fp=on',
+            url: fp3.options.link + '?fp=on',
             data: {
                 punditContent: fp3.getPunditContentUrl(),
                 punditPage: fp3.getNodeContent(),

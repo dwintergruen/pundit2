@@ -1,13 +1,14 @@
 angular.module("Pundit2.Core")
+
 .service("NameSpace", function(BaseComponent, Config, $interpolate, $window) {
     var ns = new BaseComponent("NameSpace"),
-        _rdf  = "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+        _rdf = "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
         _rdfs = "http://www.w3.org/2000/01/rdf-schema#",
-        _dce  = "http://purl.org/dc/elements/1.1/",
-        _dct  = "http://purl.org/dc/terms/",
-        _pnd  = "http://purl.org/pundit/ont/ao#",
+        _dce = "http://purl.org/dc/elements/1.1/",
+        _dct = "http://purl.org/dc/terms/",
+        _pnd = "http://purl.org/pundit/ont/ao#",
         _skos = "http://www.w3.org/2004/02/skos/core#";
-        
+
     $window.PUNDIT.ns = ns;
 
     // BaseURL of every Pundit-created item, fragment, predicate etc. Will be used
@@ -16,17 +17,17 @@ angular.module("Pundit2.Core")
 
     // RDF namespace uris
     ns.rdf = {};
-    ns.rdf.type       = _rdf + "type";
-    ns.rdf.value      = _rdf + "value";
-    ns.rdf.property   = _rdf + "Property";
-    
+    ns.rdf.type = _rdf + "type";
+    ns.rdf.value = _rdf + "value";
+    ns.rdf.property = _rdf + "Property";
+
     // RDFS namespace uris
     ns.rdfs = {};
-    ns.rdfs.label    = _rdfs + "label";
-    ns.rdfs.comment  = _rdfs + "comment";
+    ns.rdfs.label = _rdfs + "label";
+    ns.rdfs.comment = _rdfs + "comment";
     ns.rdfs.resource = _rdfs + "Resource";
-    ns.rdfs.literal  = _rdfs + "Literal";
-    ns.rdfs.seeAlso  = _rdfs + "seeAlso";
+    ns.rdfs.literal = _rdfs + "Literal";
+    ns.rdfs.seeAlso = _rdfs + "seeAlso";
 
     ns.dateTime = "http://www.w3.org/2001/XMLSchema#dateTime";
 
@@ -55,9 +56,9 @@ angular.module("Pundit2.Core")
 
         // Closest named content or container for this item
         isPartOf: _dct + "isPartOf",
-        
+
         selector: "http://www.w3.org/ns/openannotation/core/hasSelector",
-        
+
         parentItemXP: _pnd + "parentItemXP"
     };
 
@@ -131,40 +132,40 @@ angular.module("Pundit2.Core")
     ns.fragmentBaseUri = "http://purl.org/pundit/fragment/";
 
     // Annotation server API
-    ns.as                  = Config.annotationServerBaseURL;
+    ns.as = Config.annotationServerBaseURL;
 
-    ns.asUsers             = ns.as + "api/users/";
-    ns.asUsersCurrent      = ns.as + "api/users/current";
-    ns.asUsersLogout       = ns.as + "api/users/logout";
+    ns.asUsers = ns.as + "api/users/";
+    ns.asUsersCurrent = ns.as + "api/users/current";
+    ns.asUsersLogout = ns.as + "api/users/logout";
 
-    ns.asNB                = ns.as + "api/notebooks";
-    ns.asNBEditMeta        = ns.as + "api/notebooks/{{id}}";
-    ns.asNBOwned           = ns.as + "api/notebooks/owned";
-    ns.asNBCurrent         = ns.as + "api/notebooks/current";
-    ns.asNBPrivate         = ns.as + "api/notebooks/private/{{id}}";
-    ns.asNBPublic          = ns.as + "api/notebooks/public/{{id}}";
-    ns.asNBMeta            = ns.as + "api/notebooks/{{id}}/metadata";
-    ns.asOpen              = ns.as + "api/open/";
-    ns.asOpenNBMeta        = ns.as + "api/open/notebooks/{{id}}/metadata";
-    ns.asOpenNBAnnMeta     = ns.as + "api/open/notebooks/{{id}}/annotations/metadata";
+    ns.asNB = ns.as + "api/notebooks";
+    ns.asNBEditMeta = ns.as + "api/notebooks/{{id}}";
+    ns.asNBOwned = ns.as + "api/notebooks/owned";
+    ns.asNBCurrent = ns.as + "api/notebooks/current";
+    ns.asNBPrivate = ns.as + "api/notebooks/private/{{id}}";
+    ns.asNBPublic = ns.as + "api/notebooks/public/{{id}}";
+    ns.asNBMeta = ns.as + "api/notebooks/{{id}}/metadata";
+    ns.asOpen = ns.as + "api/open/";
+    ns.asOpenNBMeta = ns.as + "api/open/notebooks/{{id}}/metadata";
+    ns.asOpenNBAnnMeta = ns.as + "api/open/notebooks/{{id}}/annotations/metadata";
 
-    ns.asAnnMetaSearch     = ns.as + "api/annotations/metadata/search";
+    ns.asAnnMetaSearch = ns.as + "api/annotations/metadata/search";
     ns.asOpenAnnMetaSearch = ns.as + "api/open/metadata/search";
-    ns.asAnn               = ns.as + "api/annotations/{{id}}";
-    ns.asOpenAnn           = ns.as + "api/open/annotations/{{id}}";
-    ns.asAnnContent        = ns.as + "api/annotations/{{id}}/content";
-    ns.asAnnItems          = ns.as + "api/annotations/{{id}}/items";
+    ns.asAnn = ns.as + "api/annotations/{{id}}";
+    ns.asOpenAnn = ns.as + "api/open/annotations/{{id}}";
+    ns.asAnnContent = ns.as + "api/annotations/{{id}}/content";
+    ns.asAnnItems = ns.as + "api/annotations/{{id}}/items";
 
-    ns.asPref              = ns.as + "api/services/preferences/{{key}}";
+    ns.asPref = ns.as + "api/services/preferences/{{key}}";
 
 
     // Gets a key of the namespace, interpolating variables if needed
     ns.get = function(key, context) {
-        
+
         // If it's not a string, it's nothing we can return (this
         // blocks the user from asking options or other weird stuff)
         if (typeof(ns[key]) !== "string") {
-            ns.err("get() cant find key "+key);
+            ns.err("get() cant find key " + key);
             return;
         }
 
@@ -172,24 +173,26 @@ angular.module("Pundit2.Core")
         if (typeof(context) === "undefined") {
             context = {};
         }
-        
+
         // Count how many variables are needed to interpolate this string
         var str = ns[key],
             variables = str.match(/{{([a-zA-Z0-9]*)}}/g),
             foo;
-            
+
         if (variables !== null && variables.length > 0) {
             var contextVariables = 0;
-            for (foo in context) { contextVariables++; }
+            for (foo in context) {
+                contextVariables++;
+            }
             if (variables.length > contextVariables) {
                 ns.err("Context variables mismatch! Expecting " + variables.join(", ") + " instead got " + JSON.stringify(context));
                 return;
             }
         }
-        
+
         return $interpolate(str)(context);
     };
-    
+
     ns.log("NameSpace up and running");
     return ns;
 });

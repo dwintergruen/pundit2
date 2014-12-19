@@ -1,4 +1,5 @@
 angular.module('Pundit2.Core')
+
 .factory('Template', function(BaseComponent, Utils, TemplatesExchange) {
 
     var templateComponent = new BaseComponent('Template');
@@ -12,7 +13,7 @@ angular.module('Pundit2.Core')
         this.id = id;
 
         if (angular.isObject(values)) {
-            templateComponent.log('Extending new Template with values '+this.id, values);
+            templateComponent.log('Extending new Template with values ' + this.id, values);
             Utils.deepExtend(this, values);
         }
 
