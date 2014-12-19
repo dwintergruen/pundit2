@@ -73,8 +73,34 @@ angular.module('Pundit2.Annomatic')
      */
     property: 'http://purl.org/pundit/ont/oa#isRelatedTo',
 
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#Annomatic.minConfidence
+     *
+     * @description
+     * `string`
+     *
+     * Min confidence
+     *
+     * Default value:
+     * <pre> minConfidence: 0.65 </pre>
+     */
     minConfidence: 0.65,
 
+    /**
+     * @module punditConfig
+     * @ngdoc property
+     * @name modules#Annomatic.partialSelection
+     *
+     * @description
+     * `boolean`
+     *
+     * Active/Disactive partial selection
+     *
+     * Default value:
+     * <pre> property: 'http://purl.org/pundit/ont/oa#isRelatedTo' </pre>
+     */
     partialSelection: false
 })
 
