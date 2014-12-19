@@ -1,4 +1,5 @@
 angular.module('Pundit2.MyItemsContainer')
+
 .constant('MYITEMSCONTAINERDEFAULTS', {
 
     /**
@@ -21,14 +22,14 @@ angular.module('Pundit2.MyItemsContainer')
      * @description
      * `boolean`
      *
-     * Default state of the MyItemsContainer module, if it is set to true 
+     * Default state of the MyItemsContainer module, if it is set to true
      * the client adds to the DOM (inside dashboard) the MyItemsContainer directive in the boot phase.
      *
      * Default value:
      * <pre> active: true </pre>
      */
 
-     /**
+    /**
      * @module punditConfig
      * @ngdoc property
      * @name modules#MyIyemsContainer.clientDashboardTemplate
@@ -36,7 +37,7 @@ angular.module('Pundit2.MyItemsContainer')
      * @description
      * `string`
      *
-     * Path of template containing myItemsContainer directive, client will append the content of this template 
+     * Path of template containing myItemsContainer directive, client will append the content of this template
      * to the DOM (inside dashboard directive) to bootstrap this component.
      *
      * Default value:
@@ -178,8 +179,9 @@ angular.module('Pundit2.MyItemsContainer')
      * <pre> debug: false </pre>
      */
     debug: false
-    
+
 })
+
 .service('MyItemsContainer', function(MYITEMSCONTAINERDEFAULTS, BaseComponent) {
 
     var myItemsContainer = new BaseComponent('MyItemsContainer', MYITEMSCONTAINERDEFAULTS);
@@ -192,11 +194,11 @@ angular.module('Pundit2.MyItemsContainer')
 
         // forEach tab build the relative items array
         // using the tab filter function
-        for (var i=0; i<tabs.length; i++) {
+        for (var i = 0; i < tabs.length; i++) {
             // check if it have the filter function
-            if ( angular.isObject(tabs[i]) && typeof(tabs[i].filterFunction) !== 'undefined' ) {
+            if (angular.isObject(tabs[i]) && typeof(tabs[i].filterFunction) !== 'undefined') {
                 // filter all items to obtain the specific tab array
-                itemsArrays[i] = items.filter(function(item){
+                itemsArrays[i] = items.filter(function(item) {
                     return tabs[i].filterFunction(item);
                 });
             }
@@ -205,7 +207,7 @@ angular.module('Pundit2.MyItemsContainer')
         return itemsArrays[activeTab];
     };
 
-    myItemsContainer.getItemsArrays = function(){
+    myItemsContainer.getItemsArrays = function() {
         return itemsArrays;
     };
 

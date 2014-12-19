@@ -1,5 +1,6 @@
 angular.module('Pundit2.PredicatesContainer')
-.controller('PredicatesContainerCtrl', function($scope, $rootScope, $element, 
+
+.controller('PredicatesContainerCtrl', function($scope, $rootScope, $element,
     Config, ItemsExchange, PredicatesContainer, TripleComposer, Preview,
     EventDispatcher) {
 
@@ -36,60 +37,57 @@ angular.module('Pundit2.PredicatesContainer')
 
     // set as active a label in contextual menu
     var setLabelActive = function(index) {
-        for(var i in $scope.dropdownOrdering){
+        for (var i in $scope.dropdownOrdering) {
             $scope.dropdownOrdering[i].isActive = false;
         }
         $scope.dropdownOrdering[index].isActive = true;
     };
 
-    var resetContainer = function(){
+    var resetContainer = function() {
         $scope.itemSelected = null;
         $scope.isUseActive = false;
         $scope.canBeUseAsPredicate = false;
     };
 
     // sort button dropdown content
-    $scope.dropdownOrdering = [
-        {
-            text: 'Label Asc',
-            click: function(){
-                order = 'label';
-                $scope.reverse = false;
-                setLabelActive(0);
-            },
-            isActive: order === 'label' && $scope.reverse === false
+    $scope.dropdownOrdering = [{
+        text: 'Label Asc',
+        click: function() {
+            order = 'label';
+            $scope.reverse = false;
+            setLabelActive(0);
         },
-        {
-            text: 'Label Desc',
-            click: function(){
-                order = 'label';
-                $scope.reverse = true;
-                setLabelActive(1);
-            },
-            isActive: order === 'label' && $scope.reverse === true
-        }
-    ];
+        isActive: order === 'label' && $scope.reverse === false
+    }, {
+        text: 'Label Desc',
+        click: function() {
+            order = 'label';
+            $scope.reverse = true;
+            setLabelActive(1);
+        },
+        isActive: order === 'label' && $scope.reverse === true
+    }];
 
-    var removeSpace = function(str){
-        return str.replace(/ /g,'');
+    var removeSpace = function(str) {
+        return str.replace(/ /g, '');
     };
 
     // getter function used inside template to order notebooks 
     // return the notebooks property value used to order
-    $scope.getOrderProperty = function(ns){
+    $scope.getOrderProperty = function(ns) {
         return removeSpace(ns.label);
     };
 
     // Filter notebooks which are shown
     // go to lowerCase and replace multiple space with single space, 
     // to make the regexp work properly
-    var filterItems = function(str){
+    var filterItems = function(str) {
 
         str = str.toLowerCase().replace(/\s+/g, ' ');
         var strParts = str.split(' '),
             reg = new RegExp(strParts.join('.*'));
 
-        $scope.displayedItems = allPredicates.filter(function(ns){
+        $scope.displayedItems = allPredicates.filter(function(ns) {
             if (typeof(ns.mergedLabel) === 'undefined') {
                 return ns.label.toLowerCase().match(reg) !== null;
             } else {
@@ -98,10 +96,10 @@ angular.module('Pundit2.PredicatesContainer')
         });
 
         // update text messagge
-        if(str === ''){
+        if (str === '') {
             $scope.message.text = "No predicates found.";
         } else {
-            $scope.message.text = "No predicates found to: "+str;
+            $scope.message.text = "No predicates found to: " + str;
         }
     };
 
@@ -145,7 +143,7 @@ angular.module('Pundit2.PredicatesContainer')
         return $scope.displayedItems.length;
     }, function(len) {
         // show empty lists messagge
-        if (len === 0){
+        if (len === 0) {
             $scope.message.flag = true;
             orderBtn.addClass('disabled');
         } else {
@@ -165,7 +163,7 @@ angular.module('Pundit2.PredicatesContainer')
     $scope.select = function(item) {
         Preview.setItemDashboardSticky(item);
         EventDispatcher.sendEvent('Pundit.changeSelection');
-        
+
         $scope.isUseActive = true;
         $scope.itemSelected = item;
 
@@ -182,7 +180,7 @@ angular.module('Pundit2.PredicatesContainer')
         resetContainer();
     }
 
-    EventDispatcher.addListener('Pundit.changeSelection', function(){
+    EventDispatcher.addListener('Pundit.changeSelection', function() {
         resetContainer();
     });
 

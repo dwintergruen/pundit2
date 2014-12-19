@@ -1,5 +1,6 @@
 angular.module('Pundit2.VocabulariesContainer')
-.controller('VocabulariesContainerCtrl', function($scope, $timeout, $injector, $element, $q, 
+
+.controller('VocabulariesContainerCtrl', function($scope, $timeout, $injector, $element, $q,
     BaseComponent, SelectorsManager, ItemsExchange, TypesHelper, Preview, TripleComposer,
     MyItems, EventDispatcher, Status) {
 
@@ -23,7 +24,7 @@ angular.module('Pundit2.VocabulariesContainer')
     // read by <item> directive (in Lists/itemList.tmpl.html)
     // will trigger this contextual menu type clicking on the contextual item icon
     $scope.itemMenuType = SelectorsManager.options.cMenuType;
-    
+
     // items property used to compare
     // legal value are: 'type' and 'label'
     var order = SelectorsManager.options.order;
@@ -47,13 +48,13 @@ angular.module('Pundit2.VocabulariesContainer')
 
     // set as active a label in contextual menu
     var setLabelActive = function(index) {
-        for(var i in $scope.dropdownOrdering){
+        for (var i in $scope.dropdownOrdering) {
             $scope.dropdownOrdering[i].isActive = false;
         }
         $scope.dropdownOrdering[index].isActive = true;
     };
 
-    var resetContainer = function(){
+    var resetContainer = function() {
         $scope.itemSelected = null;
         $scope.isUseActive = false;
         $scope.canAddItemAsSubject = false;
@@ -61,52 +62,47 @@ angular.module('Pundit2.VocabulariesContainer')
     };
 
     // sort button dropdown content
-    $scope.dropdownOrdering = [
-        {
-            text: 'Label Asc',
-            click: function(){
-                order = 'label';
-                $scope.reverse = false;
-                setLabelActive(0);
-            },
-            isActive: order === 'label' && $scope.reverse === false
+    $scope.dropdownOrdering = [{
+        text: 'Label Asc',
+        click: function() {
+            order = 'label';
+            $scope.reverse = false;
+            setLabelActive(0);
         },
-        {
-            text: 'Label Desc',
-            click: function(){
-                order = 'label';
-                $scope.reverse = true;
-                setLabelActive(1);
-            },
-            isActive: order === 'label' && $scope.reverse === true
+        isActive: order === 'label' && $scope.reverse === false
+    }, {
+        text: 'Label Desc',
+        click: function() {
+            order = 'label';
+            $scope.reverse = true;
+            setLabelActive(1);
         },
-        {
-            text: 'Type Asc',
-            click: function(){
-                order = 'type';
-                $scope.reverse = false;
-                setLabelActive(2);
-            },
-            isActive: order === 'type' && $scope.reverse === false
+        isActive: order === 'label' && $scope.reverse === true
+    }, {
+        text: 'Type Asc',
+        click: function() {
+            order = 'type';
+            $scope.reverse = false;
+            setLabelActive(2);
         },
-        {
-            text: 'Type Desc',
-            click: function(){
-                order = 'type';
-                $scope.reverse = true;
-                setLabelActive(3);
-            },
-            isActive: order === 'type' && $scope.reverse === true
-        }
-    ];
+        isActive: order === 'type' && $scope.reverse === false
+    }, {
+        text: 'Type Desc',
+        click: function() {
+            order = 'type';
+            $scope.reverse = true;
+            setLabelActive(3);
+        },
+        isActive: order === 'type' && $scope.reverse === true
+    }];
 
-    var removeSpace = function(str){
-        return str.replace(/ /g,'');
+    var removeSpace = function(str) {
+        return str.replace(/ /g, '');
     };
 
     // getter function used inside template to order items 
     // return the items property value used to order
-    $scope.getOrderProperty = function(item){
+    $scope.getOrderProperty = function(item) {
 
         if (order === 'label') {
             return removeSpace(item.label);
@@ -137,16 +133,16 @@ angular.module('Pundit2.VocabulariesContainer')
 
         // need to query vocab then update showed items
         $timeout.cancel(promise);
-        promise = $timeout(function(){
+        promise = $timeout(function() {
             querySelectors();
         }, 500);
 
     });
 
     $scope.displayedItems = [];
-    var updateMessage = function(){
-        if ($scope.displayedItems.length === 0 && $scope.search.term!=='' && typeof($scope.search.term)!=='undefined') {
-            $scope.message.text = "No item found to: "+$scope.search.term;
+    var updateMessage = function() {
+        if ($scope.displayedItems.length === 0 && $scope.search.term !== '' && typeof($scope.search.term) !== 'undefined') {
+            $scope.message.text = "No item found to: " + $scope.search.term;
         }
     };
 
@@ -155,22 +151,23 @@ angular.module('Pundit2.VocabulariesContainer')
     var queryPromise = null,
         actualContainer;
     // make a new research
-    var querySelectors = function(){
+    var querySelectors = function() {
         if (queryPromise !== null) {
             queryPromise.resolve();
         }
         queryPromise = $q.defer();
         SelectorsManager.getItems($scope.search.term, queryPromise.promise).then(
-            function(){
+            function() {
                 updateMessage();
-            }, function(){
+            },
+            function() {
                 updateMessage();
             });
         actualContainer = $scope.tabs[$scope.tabs.activeTab].itemsContainer + $scope.search.term.split(' ').join('$');
     };
 
     $scope.$watch(function() {
-            return ItemsExchange.getItemsByContainer(actualContainer);
+        return ItemsExchange.getItemsByContainer(actualContainer);
     }, function(newItems) {
         // update all items array and display new items
         $scope.displayedItems = newItems;
@@ -186,7 +183,7 @@ angular.module('Pundit2.VocabulariesContainer')
     $scope.$watch(function() {
         return $scope.tabs.activeTab;
     }, function(newActive, oldActive) {
-        if (newActive !== oldActive){
+        if (newActive !== oldActive) {
             actualContainer = $scope.tabs[$scope.tabs.activeTab].itemsContainer + $scope.search.term.split(' ').join('$');
             updateMessage();
         }
@@ -203,7 +200,7 @@ angular.module('Pundit2.VocabulariesContainer')
     $scope.select = function(item) {
         Preview.setItemDashboardSticky(item);
         EventDispatcher.sendEvent('Pundit.changeSelection');
-        
+
         $scope.isUseActive = true;
         $scope.itemSelected = item;
 
@@ -247,7 +244,7 @@ angular.module('Pundit2.VocabulariesContainer')
         resetContainer();
     }
 
-    EventDispatcher.addListener('Pundit.changeSelection', function(){
+    EventDispatcher.addListener('Pundit.changeSelection', function() {
         resetContainer();
     });
 

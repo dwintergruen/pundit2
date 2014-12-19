@@ -1,4 +1,5 @@
 angular.module('Pundit2.PageItemsContainer')
+
 .controller('PageItemsContainerCtrl', function($scope, $element,
     PageItemsContainer, ItemsExchange, Preview, TypesHelper,
     MyItems, TripleComposer, EventDispatcher, Status) {
@@ -32,48 +33,42 @@ angular.module('Pundit2.PageItemsContainer')
     $scope.reverse = PageItemsContainer.options.reverse;
 
     // tabs used to filter items list by type (all, text, image and pages)
-    $scope.tabs = [
-        {
-            title: 'All items',
-            template: 'src/Lists/itemList.tmpl.html',
-            filterFunction: function(){
-                return true;
-            }
-        },
-        {
-            title: 'Text',
-            template: 'src/Lists/itemList.tmpl.html',
-            filterFunction: function(item){
-                return item.isTextFragment();
-            }
-        },
-        {
-            title: 'Images',
-            template: 'src/Lists/itemList.tmpl.html',
-            filterFunction: function(item){
-                return item.isImage() || item.isImageFragment();
-            }
-        },
-        {
-            title: 'Entities',
-            template: 'src/Lists/itemList.tmpl.html',
-            filterFunction: function(item){
-                return item.isEntity();
-            }
-        },
-        {
-            title: 'Pages',
-            template: 'src/Lists/itemList.tmpl.html',
-            filterFunction: function(item){
-                return item.isWebPage();
-            }
+    $scope.tabs = [{
+        title: 'All items',
+        template: 'src/Lists/itemList.tmpl.html',
+        filterFunction: function() {
+            return true;
         }
-    ];
+    }, {
+        title: 'Text',
+        template: 'src/Lists/itemList.tmpl.html',
+        filterFunction: function(item) {
+            return item.isTextFragment();
+        }
+    }, {
+        title: 'Images',
+        template: 'src/Lists/itemList.tmpl.html',
+        filterFunction: function(item) {
+            return item.isImage() || item.isImageFragment();
+        }
+    }, {
+        title: 'Entities',
+        template: 'src/Lists/itemList.tmpl.html',
+        filterFunction: function(item) {
+            return item.isEntity();
+        }
+    }, {
+        title: 'Pages',
+        template: 'src/Lists/itemList.tmpl.html',
+        filterFunction: function(item) {
+            return item.isWebPage();
+        }
+    }];
 
     // index of the active tab (the tab that actualy show it content) 
     $scope.tabs.activeTab = PageItemsContainer.options.initialActiveTab;
 
-    var resetContainer = function(){
+    var resetContainer = function() {
         $scope.itemSelected = null;
         $scope.isUseActive = false;
         $scope.canAddItemAsSubject = false;
@@ -82,65 +77,60 @@ angular.module('Pundit2.PageItemsContainer')
 
     // set as active a label in contextual menu
     var setLabelActive = function(index) {
-        for(var i in $scope.dropdownOrdering){
+        for (var i in $scope.dropdownOrdering) {
             $scope.dropdownOrdering[i].isActive = false;
         }
         $scope.dropdownOrdering[index].isActive = true;
     };
 
     // sort button dropdown content
-    $scope.dropdownOrdering = [
-        {
-            text: 'Label asc',
-            click: function(){
-                order = 'label';
-                $scope.reverse = false;
-                setLabelActive(0);
-            },
-            isActive: order === 'label' && $scope.reverse === false
+    $scope.dropdownOrdering = [{
+        text: 'Label asc',
+        click: function() {
+            order = 'label';
+            $scope.reverse = false;
+            setLabelActive(0);
         },
-        {
-            text: 'Label desc',
-            click: function(){
-                order = 'label';
-                $scope.reverse = true;
-                setLabelActive(1);
-            },
-            isActive: order === 'label' && $scope.reverse === true
+        isActive: order === 'label' && $scope.reverse === false
+    }, {
+        text: 'Label desc',
+        click: function() {
+            order = 'label';
+            $scope.reverse = true;
+            setLabelActive(1);
         },
-        {
-            text: 'Type asc',
-            click: function(){
-                if ($scope.dropdownOrdering[2].disable) {
-                    return;
-                }
-                order = 'type';
-                $scope.reverse = false;
-                setLabelActive(2);
-            },
-            isActive: order === 'type' && $scope.reverse === false
+        isActive: order === 'label' && $scope.reverse === true
+    }, {
+        text: 'Type asc',
+        click: function() {
+            if ($scope.dropdownOrdering[2].disable) {
+                return;
+            }
+            order = 'type';
+            $scope.reverse = false;
+            setLabelActive(2);
         },
-        {
-            text: 'Type desc',
-            click: function(){
-                if ($scope.dropdownOrdering[3].disable) {
-                    return;
-                }
-                order = 'type';
-                $scope.reverse = true;
-                setLabelActive(3);
-            },
-            isActive: order === 'type' && $scope.reverse === true
-        }
-    ];
+        isActive: order === 'type' && $scope.reverse === false
+    }, {
+        text: 'Type desc',
+        click: function() {
+            if ($scope.dropdownOrdering[3].disable) {
+                return;
+            }
+            order = 'type';
+            $scope.reverse = true;
+            setLabelActive(3);
+        },
+        isActive: order === 'type' && $scope.reverse === true
+    }];
 
-    var removeSpace = function(str){
-        return str.replace(/ /g,'');
+    var removeSpace = function(str) {
+        return str.replace(/ /g, '');
     };
 
     // getter function used inside template to order items 
     // return the items property value used to order
-    $scope.getOrderProperty = function(item){
+    $scope.getOrderProperty = function(item) {
 
         if (order === 'label') {
             return removeSpace(item.label);
@@ -153,21 +143,21 @@ angular.module('Pundit2.PageItemsContainer')
     // Filter items which are shown
     // go to lowerCase and replace multiple space with single space, 
     // to make the regexp work properly
-    var filterItems = function(str){
+    var filterItems = function(str) {
 
         str = str.toLowerCase().replace(/\s+/g, ' ');
         var strParts = str.split(' '),
             reg = new RegExp(strParts.join('.*'));
 
-        $scope.displayedItems = PageItemsContainer.getItemsArrays()[$scope.tabs.activeTab].filter(function(items){
+        $scope.displayedItems = PageItemsContainer.getItemsArrays()[$scope.tabs.activeTab].filter(function(items) {
             return items.label.toLowerCase().match(reg) !== null;
         });
 
         // update text messagge
-        if(str === ''){
+        if (str === '') {
             $scope.message.text = "No page items found.";
         } else {
-            $scope.message.text = "No item found to: "+str;
+            $scope.message.text = "No item found to: " + str;
         }
     };
 
@@ -231,7 +221,7 @@ angular.module('Pundit2.PageItemsContainer')
         return $scope.displayedItems.length;
     }, function(len) {
         // show empty lists messagge
-        if (len === 0){
+        if (len === 0) {
             $scope.message.flag = true;
             orderBtn.addClass('disabled');
         } else {
@@ -251,7 +241,7 @@ angular.module('Pundit2.PageItemsContainer')
     $scope.select = function(item) {
         Preview.setItemDashboardSticky(item);
         EventDispatcher.sendEvent('Pundit.changeSelection');
-        
+
         $scope.isUseActive = true;
         $scope.itemSelected = item;
 
@@ -295,7 +285,7 @@ angular.module('Pundit2.PageItemsContainer')
         resetContainer();
     }
 
-    EventDispatcher.addListener('Pundit.changeSelection', function(){
+    EventDispatcher.addListener('Pundit.changeSelection', function() {
         resetContainer();
     });
 

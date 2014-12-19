@@ -1,6 +1,7 @@
 angular.module('Pundit2.MyItemsContainer')
+
 .controller('MyItemsContainerCtrl', function($scope, $rootScope, $modal, $timeout, $element,
-    MyItemsContainer, ItemsExchange, MyItems, MyPundit, Preview, TypesHelper, PageHandler, 
+    MyItemsContainer, ItemsExchange, MyItems, MyPundit, Preview, TypesHelper, PageHandler,
     TripleComposer, EventDispatcher, Status, Analytics) {
 
     // read by <item> directive (in Lists/itemList.tmpl.html)
@@ -29,9 +30,9 @@ angular.module('Pundit2.MyItemsContainer')
 
     $scope.isUserLogged = false;
 
-    $scope.$watch(function(){
+    $scope.$watch(function() {
         return MyPundit.isUserLogged();
-    }, function(logged){
+    }, function(logged) {
         if (logged) {
             $scope.isUserLogged = true;
             $scope.message.text = "No my items found.";
@@ -49,52 +50,46 @@ angular.module('Pundit2.MyItemsContainer')
     $scope.reverse = MyItemsContainer.options.reverse;
 
     // tabs used to filter items list by type (all, text, image and pages)
-    $scope.tabs = [
-        {
-            title: 'All Items',
-            // this is the centralized template to items list
-            template: 'src/Lists/itemList.tmpl.html',
-            filterFunction: function(){
-                return true;
-            }
-        },
-        {
-            title: 'Text',
-            // this is the centralized template to items list
-            template: 'src/Lists/itemList.tmpl.html',
-            filterFunction: function(item){
-                return item.isTextFragment();
-            }
-        },
-        {
-            title: 'Images',
-            // this is the centralized template to items list
-            template: 'src/Lists/itemList.tmpl.html',
-            filterFunction: function(item){
-                return item.isImage() || item.isImageFragment();
-            }
-        },
-        {
-            title: 'Entities',
-            template: 'src/Lists/itemList.tmpl.html',
-            filterFunction: function(item){
-                return item.isEntity();
-            }
-        },
-        {
-            title: 'Pages',
-            // this is the centralized template to items list
-            template: 'src/Lists/itemList.tmpl.html',
-            filterFunction: function(item){
-                return item.isWebPage();
-            }
+    $scope.tabs = [{
+        title: 'All Items',
+        // this is the centralized template to items list
+        template: 'src/Lists/itemList.tmpl.html',
+        filterFunction: function() {
+            return true;
         }
-    ];
+    }, {
+        title: 'Text',
+        // this is the centralized template to items list
+        template: 'src/Lists/itemList.tmpl.html',
+        filterFunction: function(item) {
+            return item.isTextFragment();
+        }
+    }, {
+        title: 'Images',
+        // this is the centralized template to items list
+        template: 'src/Lists/itemList.tmpl.html',
+        filterFunction: function(item) {
+            return item.isImage() || item.isImageFragment();
+        }
+    }, {
+        title: 'Entities',
+        template: 'src/Lists/itemList.tmpl.html',
+        filterFunction: function(item) {
+            return item.isEntity();
+        }
+    }, {
+        title: 'Pages',
+        // this is the centralized template to items list
+        template: 'src/Lists/itemList.tmpl.html',
+        filterFunction: function(item) {
+            return item.isWebPage();
+        }
+    }];
 
     // index of the active tab (the tab that currently shows its content)
     $scope.tabs.activeTab = MyItemsContainer.options.initialActiveTab;
 
-    var resetContainer = function(){
+    var resetContainer = function() {
         $scope.itemSelected = null;
         $scope.isUseActive = false;
         $scope.canAddItemAsSubject = false;
@@ -104,65 +99,60 @@ angular.module('Pundit2.MyItemsContainer')
 
     // set as active a label in contextual menu
     var setLabelActive = function(index) {
-        for(var i in $scope.dropdownOrdering){
+        for (var i in $scope.dropdownOrdering) {
             $scope.dropdownOrdering[i].isActive = false;
         }
         $scope.dropdownOrdering[index].isActive = true;
     };
 
     // sort button dropdown content
-    $scope.dropdownOrdering = [
-        {
-            text: 'Label asc',
-            click: function(){
-                order = 'label';
-                $scope.reverse = false;
-                setLabelActive(0);
-            },
-            isActive: order === 'label' && $scope.reverse === false
+    $scope.dropdownOrdering = [{
+        text: 'Label asc',
+        click: function() {
+            order = 'label';
+            $scope.reverse = false;
+            setLabelActive(0);
         },
-        {
-            text: 'Label desc',
-            click: function(){
-                order = 'label';
-                $scope.reverse = true;
-                setLabelActive(1);
-            },
-            isActive: order === 'label' && $scope.reverse === true
+        isActive: order === 'label' && $scope.reverse === false
+    }, {
+        text: 'Label desc',
+        click: function() {
+            order = 'label';
+            $scope.reverse = true;
+            setLabelActive(1);
         },
-        {
-            text: 'Type asc',
-            click: function(){
-                if ($scope.dropdownOrdering[2].disable) {
-                    return;
-                }
-                order = 'type';
-                $scope.reverse = false;
-                setLabelActive(2);
-            },
-            isActive: order === 'type' && $scope.reverse === false
+        isActive: order === 'label' && $scope.reverse === true
+    }, {
+        text: 'Type asc',
+        click: function() {
+            if ($scope.dropdownOrdering[2].disable) {
+                return;
+            }
+            order = 'type';
+            $scope.reverse = false;
+            setLabelActive(2);
         },
-        {
-            text: 'Type desc',
-            click: function(){
-                if ($scope.dropdownOrdering[3].disable) {
-                    return;
-                }
-                order = 'type';
-                $scope.reverse = true;
-                setLabelActive(3);
-            },
-            isActive: order === 'type' && $scope.reverse === true
-        }
-    ];
+        isActive: order === 'type' && $scope.reverse === false
+    }, {
+        text: 'Type desc',
+        click: function() {
+            if ($scope.dropdownOrdering[3].disable) {
+                return;
+            }
+            order = 'type';
+            $scope.reverse = true;
+            setLabelActive(3);
+        },
+        isActive: order === 'type' && $scope.reverse === true
+    }];
 
-    var removeSpace = function(str){
-        return str.replace(/ /g,'');
+    var removeSpace = function(str) {
+        return str.replace(/ /g, '');
     };
 
     // getter function used inside template to order items 
     // returns the items property value used to order
-    $scope.getOrderProperty = function(item){
+    $scope.getOrderProperty = function(item) {
 
         if (order === 'label') {
             return removeSpace(item.label);
@@ -173,7 +163,7 @@ angular.module('Pundit2.MyItemsContainer')
     };
 
     // delete all my Items
-    $scope.onClickDeleteAllMyItems = function(){
+    $scope.onClickDeleteAllMyItems = function() {
         openConfirmModal();
     };
 
@@ -195,14 +185,14 @@ angular.module('Pundit2.MyItemsContainer')
         if (typeof($scope.displayedItems) !== 'undefined' && typeof($scope.search.term) !== 'undefined') {
             filterItems($scope.search.term);
         }
-        
+
     });
 
     // add page to my items
-    $scope.onClickAddPageToMyItems = function(){
-        if(!MyPundit.isUserLogged()){
+    $scope.onClickAddPageToMyItems = function() {
+        if (!MyPundit.isUserLogged()) {
             MyItemsContainer.err('User not logged');
-        } else{
+        } else {
             var item = PageHandler.createItemFromPage();
             MyItems.addItem(item);
         }
@@ -211,24 +201,24 @@ angular.module('Pundit2.MyItemsContainer')
     // Filter items which are shown
     // go to lowerCase and replace multiple space with single space, 
     // to make the regexp work properly
-    var filterItems = function(str){
+    var filterItems = function(str) {
         str = str.toLowerCase().replace(/\s+/g, ' ');
         var strParts = str.split(' '),
             reg = new RegExp(strParts.join('.*'));
 
-        $scope.displayedItems = MyItemsContainer.getItemsArrays()[$scope.tabs.activeTab].filter(function(items){
+        $scope.displayedItems = MyItemsContainer.getItemsArrays()[$scope.tabs.activeTab].filter(function(items) {
             return items.label.toLowerCase().match(reg) !== null;
         });
 
         // update text messagge
-        if(str === ''){
+        if (str === '') {
             if (MyPundit.isUserLogged()) {
                 $scope.message.text = "No my items found.";
             } else {
                 $scope.message.text = "Please login to see your items.";
             }
         } else {
-            $scope.message.text = "No item found to: "+str;
+            $scope.message.text = "No item found to: " + str;
         }
     };
 
@@ -273,7 +263,7 @@ angular.module('Pundit2.MyItemsContainer')
         return $scope.displayedItems.length;
     }, function(len) {
         // show empty lists messagge
-        if (len === 0){
+        if (len === 0) {
             $scope.message.flag = true;
             // TODO Use ng-disable in all MyItems tmpl
             deleteBtn.addClass('disabled');
@@ -294,13 +284,13 @@ angular.module('Pundit2.MyItemsContainer')
     // confirm btn click
     modalScope.confirm = function() {
         if (MyPundit.isUserLogged()) {
-            MyItems.deleteAllItems().then(function(){
+            MyItems.deleteAllItems().then(function() {
                 modalScope.notifyMessage = "Success, my items correctly deleted.";
-            }, function(){
+            }, function() {
                 modalScope.notifyMessage = "Error impossible to delete my items, please retry.";
             });
         }
-        $timeout(function(){
+        $timeout(function() {
             confirmModal.hide();
         }, 1000);
     };
@@ -319,7 +309,7 @@ angular.module('Pundit2.MyItemsContainer')
     });
 
     // open modal
-    var openConfirmModal = function(){
+    var openConfirmModal = function() {
         // promise is needed to open modal when template is ready
         modalScope.notifyMessage = "Are you sure you want to delete all my items? After you can no longer recover.";
         confirmModal.$promise.then(confirmModal.show);
@@ -336,7 +326,7 @@ angular.module('Pundit2.MyItemsContainer')
     $scope.select = function(item) {
         Preview.setItemDashboardSticky(item);
         EventDispatcher.sendEvent('Pundit.changeSelection');
-        
+
         $scope.isUseActive = true;
         $scope.itemSelected = item;
 
@@ -380,7 +370,7 @@ angular.module('Pundit2.MyItemsContainer')
         resetContainer();
     }
 
-    EventDispatcher.addListener('Pundit.changeSelection', function(){
+    EventDispatcher.addListener('Pundit.changeSelection', function() {
         resetContainer();
     });
 

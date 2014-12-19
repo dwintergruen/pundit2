@@ -1,4 +1,5 @@
 angular.module("Pundit2.MyItemsContainer")
+
 .constant('MYITEMSDEFAULTS', {
 
     /**
@@ -59,15 +60,16 @@ angular.module("Pundit2.MyItemsContainer")
     debug: false
 
 })
+
 .service("MyItems", function(MYITEMSDEFAULTS, BaseComponent, EventDispatcher, NameSpace, Item, ItemsExchange,
-                             ContextualMenu, MyPundit, Config, Consolidation,
-                             $http, $rootScope, $q) {
+    ContextualMenu, MyPundit, Config, Consolidation,
+    $http, $rootScope, $q) {
 
     var myItems = new BaseComponent("MyItems", MYITEMSDEFAULTS);
 
     var opInProgress = false;
 
-    var setLoading = function (state) {
+    var setLoading = function(state) {
         EventDispatcher.sendEvent('MyItems.loading', state);
     };
 
@@ -143,11 +145,11 @@ angular.module("Pundit2.MyItemsContainer")
     // "new Item()" adds the item to itemsExchange "default" container
     // then we add it to "myItems" container too
 
-    myItems.getAllItems = function(){
+    myItems.getAllItems = function() {
         var item,
             promise = $q.defer();
 
-        if (opInProgress || !MyPundit.isUserLogged() ) {
+        if (opInProgress || !MyPundit.isUserLogged()) {
             myItems.log('User not logged');
             return;
         }
@@ -155,9 +157,13 @@ angular.module("Pundit2.MyItemsContainer")
         setLoading(true);
 
         $http({
-            headers: { 'Accept': 'application/json' },
+            headers: {
+                'Accept': 'application/json'
+            },
             method: 'GET',
-            url: NameSpace.get('asPref', { key: myItems.options.apiPreferencesKey }),
+            url: NameSpace.get('asPref', {
+                key: myItems.options.apiPreferencesKey
+            }),
             withCredentials: true
         }).success(function(data) {
             var num = 0;
@@ -197,14 +203,14 @@ angular.module("Pundit2.MyItemsContainer")
 
                 // create new item (now is a pundit2 item) (implicit add to default container)
                 item = new Item(data.value[i].uri, data.value[i]);
-                
+
                 // add to myItems container
                 ItemsExchange.addItemToContainer(item, myItems.options.container);
             }
 
             opInProgress = false;
             promise.resolve();
-            myItems.log('Retrieved my items from the server: '+num+' items');
+            myItems.log('Retrieved my items from the server: ' + num + ' items');
 
         }).error(function(msg) {
             setLoading(false);
@@ -216,11 +222,11 @@ angular.module("Pundit2.MyItemsContainer")
         return promise.promise;
     };
 
-    myItems.deleteAllItems = function(){
+    myItems.deleteAllItems = function() {
         var currentTime = new Date(),
-        promise = $q.defer();
+            promise = $q.defer();
 
-        if (opInProgress || !MyPundit.isUserLogged() ) {
+        if (opInProgress || !MyPundit.isUserLogged()) {
             myItems.log('User not logged');
             return;
         }
@@ -231,11 +237,18 @@ angular.module("Pundit2.MyItemsContainer")
         // remove all my item on pundit server
         // setting it to []
         $http({
-            headers: {"Content-Type":"application/json;charset=UTF-8;"},
+            headers: {
+                "Content-Type": "application/json;charset=UTF-8;"
+            },
             method: 'POST',
-            url: NameSpace.get('asPref', { key: myItems.options.apiPreferencesKey }),
+            url: NameSpace.get('asPref', {
+                key: myItems.options.apiPreferencesKey
+            }),
             withCredentials: true,
-            data: angular.toJson({value: [], created: currentTime.getTime()})
+            data: angular.toJson({
+                value: [],
+                created: currentTime.getTime()
+            })
         }).success(function(data) {
 
             setLoading(false);
@@ -252,7 +265,7 @@ angular.module("Pundit2.MyItemsContainer")
             opInProgress = false;
             promise.resolve();
             Consolidation.consolidateAll();
-            
+
             myItems.log('Deleted all my items on server', data);
         }).error(function(msg) {
             setLoading(false);
@@ -264,9 +277,9 @@ angular.module("Pundit2.MyItemsContainer")
         return promise.promise;
     };
 
-    myItems.deleteItem = function(value){
+    myItems.deleteItem = function(value) {
 
-        if (opInProgress || !MyPundit.isUserLogged() ) {
+        if (opInProgress || !MyPundit.isUserLogged()) {
             myItems.log('User not logged');
             return;
         }
@@ -280,7 +293,7 @@ angular.module("Pundit2.MyItemsContainer")
             promise = $q.defer();
 
         // remove item from the copied array
-        if(index > -1) {
+        if (index > -1) {
             copiedItems.splice(index, 1);
         }
 
@@ -290,11 +303,18 @@ angular.module("Pundit2.MyItemsContainer")
         // the new my items format is different from pundit1 item format
         // this break pundit1 compatibility
         $http({
-            headers: {"Content-Type":"application/json;charset=UTF-8;"},
+            headers: {
+                "Content-Type": "application/json;charset=UTF-8;"
+            },
             method: 'POST',
-            url: NameSpace.get('asPref', { key: myItems.options.apiPreferencesKey }),
+            url: NameSpace.get('asPref', {
+                key: myItems.options.apiPreferencesKey
+            }),
             withCredentials: true,
-            data: angular.toJson({value: copiedItems, created: currentTime.getTime()})
+            data: angular.toJson({
+                value: copiedItems,
+                created: currentTime.getTime()
+            })
         }).success(function(data) {
 
             if (typeof(data.redirectTo) !== 'undefined') {
@@ -312,7 +332,7 @@ angular.module("Pundit2.MyItemsContainer")
             opInProgress = false;
             setLoading(false);
 
-            myItems.log('Deleted from my item: '+ value.label);
+            myItems.log('Deleted from my item: ' + value.label);
 
         }).error(function(msg) {
             opInProgress = false;
@@ -331,10 +351,10 @@ angular.module("Pundit2.MyItemsContainer")
     };
 
     // add one item to my items on pundit server
-    myItems.addItem = function(value){
+    myItems.addItem = function(value) {
 
         // TODO gestire il caso in cui l'utente non era loggato (!)
-        if (opInProgress || !MyPundit.isUserLogged() ) {
+        if (opInProgress || !MyPundit.isUserLogged()) {
             myItems.log('User not logged');
             return;
         }
@@ -354,11 +374,18 @@ angular.module("Pundit2.MyItemsContainer")
         // the new my items format is different from pundit1 item format
         // this break punti1 compatibility
         $http({
-            headers: {"Content-Type":"application/json;charset=UTF-8;"},
+            headers: {
+                "Content-Type": "application/json;charset=UTF-8;"
+            },
             method: 'POST',
-            url: NameSpace.get('asPref', { key: myItems.options.apiPreferencesKey }),
+            url: NameSpace.get('asPref', {
+                key: myItems.options.apiPreferencesKey
+            }),
             withCredentials: true,
-            data: angular.toJson({value: items, created: currentTime.getTime()})
+            data: angular.toJson({
+                value: items,
+                created: currentTime.getTime()
+            })
         }).success(function(data) {
 
             if (typeof(data.redirectTo) !== 'undefined') {
@@ -376,7 +403,7 @@ angular.module("Pundit2.MyItemsContainer")
             setLoading(false);
             promise.resolve();
 
-            myItems.log('Added item to my items: '+ value.label);
+            myItems.log('Added item to my items: ' + value.label);
 
         }).error(function(msg) {
             opInProgress = false;

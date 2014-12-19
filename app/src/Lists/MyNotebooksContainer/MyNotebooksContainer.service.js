@@ -1,4 +1,5 @@
 angular.module('Pundit2.MyNotebooksContainer')
+
 .constant('MYNOTEBOOKSCONTAINERDEFAULTS', {
 
     clientDashboardTemplate: "src/Lists/MyNotebooksContainer/ClientMyNotebooksContainer.tmpl.html",
@@ -14,8 +15,9 @@ angular.module('Pundit2.MyNotebooksContainer')
     inputIconSearch: 'pnd-icon-search',
 
     inputIconClear: 'pnd-icon-times'
-    
+
 })
+
 .service('MyNotebooksContainer', function($rootScope, MYNOTEBOOKSCONTAINERDEFAULTS, BaseComponent, EventDispatcher,
     NotebookExchange, ItemsExchange, PageItemsContainer, AnnotationsExchange, NotebookCommunication, Consolidation,
     ContextualMenu, Config, Dashboard, NotebookComposer, AnnotationsCommunication, NameSpace,
@@ -29,14 +31,14 @@ angular.module('Pundit2.MyNotebooksContainer')
     var initContextualMenu = function() {
 
         // TODO: sanity checks on Config.modules.* ? Are they active? Think so??
-        var cMenuTypes = [ myNotebooksContainer.options.cMenuType ];
+        var cMenuTypes = [myNotebooksContainer.options.cMenuType];
 
         var lodLive = false;
-        if(typeof(Config.lodLive) !== 'undefined' && Config.lodLive.active){
+        if (typeof(Config.lodLive) !== 'undefined' && Config.lodLive.active) {
             lodLive = true;
         }
         var timeline = false;
-        if(typeof(Config.timeline) !== 'undefined' && Config.timeline.active){
+        if (typeof(Config.timeline) !== 'undefined' && Config.timeline.active) {
             timeline = true;
         }
 
@@ -49,7 +51,7 @@ angular.module('Pundit2.MyNotebooksContainer')
                 return lodLive;
             },
             action: function(nt) {
-                $window.open(Config.lodLive.baseUrl+Config.pndPurl+'notebook/'+nt.id, '_blank');
+                $window.open(Config.lodLive.baseUrl + Config.pndPurl + 'notebook/' + nt.id, '_blank');
             }
         });
 
@@ -62,7 +64,7 @@ angular.module('Pundit2.MyNotebooksContainer')
                 return timeline;
             },
             action: function(nt) {
-                $window.open(Config.timeline.baseUrl+'notebook-ids='+nt.id+'&namespace='+Config.pndPurl+'notebook/'+'&api='+NameSpace.asOpen, '_blank');
+                $window.open(Config.timeline.baseUrl + 'notebook-ids=' + nt.id + '&namespace=' + Config.pndPurl + 'notebook/' + '&api=' + NameSpace.asOpen, '_blank');
             }
         });
 
@@ -130,7 +132,7 @@ angular.module('Pundit2.MyNotebooksContainer')
             },
             action: function(nt) {
                 // open dashobard
-                if(!Dashboard.isDashboardVisible()){
+                if (!Dashboard.isDashboardVisible()) {
                     Dashboard.toggle();
                 }
                 // then swicth to notebook composer tab
@@ -156,11 +158,11 @@ angular.module('Pundit2.MyNotebooksContainer')
 
     // confirm btn click
     modalScope.confirm = function() {
-        
+
         // remove notebook and all annotation contained in it
-        NotebookCommunication.deleteNotebook(modalScope.notebook.id).then(function(){
+        NotebookCommunication.deleteNotebook(modalScope.notebook.id).then(function() {
             // success
-            modalScope.notifyMessage = "Notebook "+modalScope.notebook.label+" correctly deleted.";
+            modalScope.notifyMessage = "Notebook " + modalScope.notebook.label + " correctly deleted.";
             // remove annotations that belong to the notebook deleted
             AnnotationsExchange.wipe();
             // wipe page items
@@ -171,13 +173,13 @@ angular.module('Pundit2.MyNotebooksContainer')
             // all the informations is cache at initialization time
             AnnotationsCommunication.getAnnotations();
 
-            $timeout(function(){
+            $timeout(function() {
                 confirmModal.hide();
             }, 1000);
-        }, function(){
+        }, function() {
             // error
             modalScope.notifyMessage = "Error impossible to delete this notebook, please retry.";
-            $timeout(function(){
+            $timeout(function() {
                 confirmModal.hide();
             }, 1000);
         });
@@ -198,7 +200,7 @@ angular.module('Pundit2.MyNotebooksContainer')
     });
 
     // open modal
-    var openConfirmModal = function(nt){
+    var openConfirmModal = function(nt) {
         // promise is needed to open modal when template is ready
         modalScope.notifyMessage = "Are you sure you want to delete this notebook? will also remove all the annotation contained in it.";
         modalScope.notebook = nt;

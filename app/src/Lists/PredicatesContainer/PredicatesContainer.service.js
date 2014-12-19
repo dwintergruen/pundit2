@@ -1,4 +1,5 @@
 angular.module('Pundit2.PredicatesContainer')
+
 .constant('PREDICATESCONTAINERDEFAULTS', {
 
     /**
@@ -20,14 +21,14 @@ angular.module('Pundit2.PredicatesContainer')
      * @description
      * `boolean`
      *
-     * Default state of the PredicatesContainer module, if it is set to true 
+     * Default state of the PredicatesContainer module, if it is set to true
      * the client adds to the DOM (inside dashboard) the PredicatesContainer directive in the boot phase.
      *
      * Default value:
      * <pre> active: true </pre>
      */
 
-     /**
+    /**
      * @module punditConfig
      * @ngdoc property
      * @name modules#PredicatesContainer.clientDashboardTemplate
@@ -35,7 +36,7 @@ angular.module('Pundit2.PredicatesContainer')
      * @description
      * `string`
      *
-     * Path of template containing myItemsContainer directive, client will append the content of this template 
+     * Path of template containing myItemsContainer directive, client will append the content of this template
      * to the DOM (inside dashboard directive) to bootstrap this component
      *
      * Default value:
@@ -87,8 +88,9 @@ angular.module('Pundit2.PredicatesContainer')
      * <pre> cMenuType: 'predicates' </pre>
      */
     cMenuType: 'predicates'
-    
+
 })
+
 .service('PredicatesContainer', function(PREDICATESCONTAINERDEFAULTS, BaseComponent) {
 
     // empty service only used inside Client.service.js to read the default configuration

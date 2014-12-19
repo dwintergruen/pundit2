@@ -1,4 +1,5 @@
 angular.module('Pundit2.MyNotebooksContainer')
+
 .controller('MyNotebooksContainerCtrl', function($scope, $rootScope, $element, MyNotebooksContainer, NotebookExchange, NotebookComposer, EventDispatcher) {
 
     var inputIconSearch = 'pnd-icon-search',
@@ -29,45 +30,42 @@ angular.module('Pundit2.MyNotebooksContainer')
 
     // set as active a label in contextual menu
     var setLabelActive = function(index) {
-        for(var i in $scope.dropdownOrdering){
+        for (var i in $scope.dropdownOrdering) {
             $scope.dropdownOrdering[i].isActive = false;
         }
         $scope.dropdownOrdering[index].isActive = true;
     };
 
     // sort button dropdown content
-    $scope.dropdownOrdering = [
-        {
-            text: 'Label Asc',
-            click: function(){
-                order = 'label';
-                $scope.reverse = false;
-                setLabelActive(0);
-            },
-            isActive: order === 'label' && $scope.reverse === false
+    $scope.dropdownOrdering = [{
+        text: 'Label Asc',
+        click: function() {
+            order = 'label';
+            $scope.reverse = false;
+            setLabelActive(0);
         },
-        {
-            text: 'Label Desc',
-            click: function(){
-                order = 'label';
-                $scope.reverse = true;
-                setLabelActive(1);
-            },
-            isActive: order === 'label' && $scope.reverse === true
-        }
-    ];
+        isActive: order === 'label' && $scope.reverse === false
+    }, {
+        text: 'Label Desc',
+        click: function() {
+            order = 'label';
+            $scope.reverse = true;
+            setLabelActive(1);
+        },
+        isActive: order === 'label' && $scope.reverse === true
+    }];
 
-    var removeSpace = function(str){
-        return str.replace(/ /g,'');
+    var removeSpace = function(str) {
+        return str.replace(/ /g, '');
     };
 
     // getter function used inside template to order notebooks 
     // return the notebooks property value used to order
-    $scope.getOrderProperty = function(ns){
+    $scope.getOrderProperty = function(ns) {
         return removeSpace(ns.label);
     };
 
-    $scope.createNewNotebook = function(){
+    $scope.createNewNotebook = function() {
         //EventDispatcher.sendEvent('Dashboard.showTab', NotebookComposer.options.clientDashboardTabTitle);
         EventDispatcher.sendEvent('MyNotebooksContainer.createNewNotebook', NotebookComposer.options.clientDashboardTabTitle);
         NotebookComposer.setNotebookToEdit(null);
@@ -76,21 +74,21 @@ angular.module('Pundit2.MyNotebooksContainer')
     // Filter notebooks which are shown
     // go to lowerCase and replace multiple space with single space, 
     // to make the regexp work properly
-    var filterItems = function(str){
+    var filterItems = function(str) {
 
         str = str.toLowerCase().replace(/\s+/g, ' ');
         var strParts = str.split(' '),
             reg = new RegExp(strParts.join('.*'));
 
-        $scope.displayedNotebook = allNotebook.filter(function(ns){
+        $scope.displayedNotebook = allNotebook.filter(function(ns) {
             return ns.label.toLowerCase().match(reg) !== null;
         });
 
         // update text messagge
-        if(str === ''){
+        if (str === '') {
             $scope.message.text = "No notebook found.";
         } else {
-            $scope.message.text = "No notebook found to: "+str;
+            $scope.message.text = "No notebook found to: " + str;
         }
     };
 
@@ -134,7 +132,7 @@ angular.module('Pundit2.MyNotebooksContainer')
         return $scope.displayedNotebook.length;
     }, function(len) {
         // show empty lists messagge
-        if (len === 0){
+        if (len === 0) {
             $scope.message.flag = true;
             orderBtn.addClass('disabled');
         } else {
