@@ -56,10 +56,21 @@ angular.module('Pundit2.AnnotationSidebar')
     var resizeSidebarHeight = function() {
         var minHeightSidebar = AnnotationSidebar.minHeightRequired;
         var bodyHeight = body.innerHeight();
-        var windowHeight = $window.innerHeight;
+        var documentHeight = $document.innerHeight();
+        var difference;
 
-        state.sidebarNewHeight = Math.max(bodyHeight, windowHeight - state.toolbarHeight, minHeightSidebar);
+        // TODO: save old documentHeight and reset the view
+        state.sidebarNewHeight = Math.max(bodyHeight, documentHeight, minHeightSidebar);
         state.sidebarCurrentHeight = container.innerHeight();
+
+        if (Dashboard.isDashboardVisible()) {
+            difference = state.toolbarHeight + Dashboard.getContainerHeight();
+        } else {
+            difference = state.toolbarHeight;
+        }
+
+        state.sidebarNewHeight = state.sidebarNewHeight - difference;
+
         if (state.sidebarNewHeight !== state.sidebarCurrentHeight) {
             container.css('height', state.sidebarNewHeight + 'px');
         }
