@@ -1,6 +1,6 @@
 angular.module('Pundit2.SimplifiedClient')
 
-.service('ItemPopover', function(BaseComponent, $rootScope, $popover, AnnotationsExchange){
+.service('ItemPopover', function(BaseComponent, $rootScope, $popover, AnnotationsExchange) {
 
     var ip = new BaseComponent('ItemPopover');
 
@@ -89,10 +89,10 @@ angular.module('Pundit2.SimplifiedClient')
             return;
         }
         var div = options.placement === 'top' ? 1 : 2;
-        
+
         var el = angular.element('.pnd-item-popover'),
             newHeight = el.height(),
-            newTop = top + (height - newHeight)/div;
+            newTop = top + (height - newHeight) / div;
 
         el.css('top', newTop);
 
@@ -110,7 +110,7 @@ angular.module('Pundit2.SimplifiedClient')
     // check if popover content go out of the page
     // than update placement to show popover content
     // inside the page
-    options.scope.$on('tooltip.show', function(){
+    options.scope.$on('tooltip.show', function() {
         var el = angular.element('.pnd-item-popover'),
             pos = el.position();
 

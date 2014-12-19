@@ -1,4 +1,5 @@
 angular.module('Pundit2.SimplifiedClient')
+
 .controller('ItemPopoverCtrl', function($scope, ItemPopover) {
 
     $scope.annotations = ItemPopover.getAnnotation();

@@ -11,17 +11,17 @@ angular.module('Pundit2.SimplifiedClient')
  * Configuration object for SimplifiedClient module. By default this module is not enabled and Pundit
  * run in standard mode. If the moudule is enabled it expose an annotation toggle function trought the PUNDIT
  * global object available on the broswer window object as "window.PUNDIT.simplifiedClient.toggleAnnotation()".
- * 
+ *
  */
 
- /**
+/**
  * @ngdoc property
  * @name modules#SimplifiedClient.active
  *
  * @description
  * `boolean`
  *
- * Default state of the SimplifiedClient module, if it is set to true 
+ * Default state of the SimplifiedClient module, if it is set to true
  * the client run in simplified mode (only show annotation on the page) otherwise run in standard mode.
  *
  * Default value:
@@ -36,7 +36,7 @@ angular.module('Pundit2.SimplifiedClient')
 })
 
 .service('SimplifiedClient', function(BaseComponent, $rootScope, $window,
-    MyPundit, MyItems, AnnotationsCommunication, TextFragmentAnnotator, Consolidation, ItemPopover){
+    MyPundit, MyItems, AnnotationsCommunication, TextFragmentAnnotator, Consolidation, ItemPopover) {
 
     // This service only make a consolidation of the annotation on the page
     // it not have: toolbar, dashboard and siderbar
@@ -67,7 +67,7 @@ angular.module('Pundit2.SimplifiedClient')
 
     // expose the api trought the pundit global object
     $window.PUNDIT.simplifiedClient = {
-        toggleAnnotation : toggleAnnotation
+        toggleAnnotation: toggleAnnotation
     };
 
     sc.boot = function() {
