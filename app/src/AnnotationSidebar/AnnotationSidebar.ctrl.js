@@ -56,25 +56,13 @@ angular.module('Pundit2.AnnotationSidebar')
     var resizeSidebarHeight = function() {
         var minHeightSidebar = AnnotationSidebar.minHeightRequired;
         var bodyHeight = body.innerHeight();
-        // var htmlHeight = html.innerHeight();
+        var windowHeight = $window.innerHeight;
 
-        var newHeight = Math.max(minHeightSidebar, bodyHeight);
-        container.css('height', newHeight + 'px');
-
-        // var difference;
-        // var documentHeight = $document.innerHeight();
-
-        // if (documentHeight > minHeightSidebar && documentHeight > htmlHeight){
-        //     console.log("questo caso");
-        //     if (Dashboard.isDashboardVisible()){
-        //         difference = state.toolbarHeight + Dashboard.getContainerHeight();
-        //     } else {
-        //         difference = state.toolbarHeight;
-        //     }
-
-        //     newHeight = documentHeight - difference;
-        //     container.css('height', newHeight + 'px');      
-        // }
+        state.sidebarNewHeight = Math.max(bodyHeight, windowHeight - state.toolbarHeight, minHeightSidebar);
+        state.sidebarCurrentHeight = container.innerHeight();
+        if (state.sidebarNewHeight !== state.sidebarCurrentHeight) {
+            container.css('height', state.sidebarNewHeight + 'px');
+        }
     };
 
     // Temp fix for bs-datepicker issues min value
