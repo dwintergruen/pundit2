@@ -15,11 +15,9 @@ angular.module('Pundit2.ContextualMenu')
 
 /**
  * @ngdoc service
- * @name ContextualMenu
+ * @name Pundit2.ContextualMenu
  * @module Pundit2.ContextualMenu
- * @description
- *
- * Somethings...
+ * @description Pundit2 ContextualMenu Service
  *
  */
 .service('ContextualMenu', function($rootScope, BaseComponent, CONTEXTUALMENUDEFAULTS, $dropdown, $window) {
@@ -307,7 +305,7 @@ angular.module('Pundit2.ContextualMenu')
 
     /**
      * @ngdoc method
-     * @name ContextualMenu#addAction
+     * @name Pundit2.ContextualMenu#addAction
      * @module Pundit2.ContextualMenu
      * @function
      *
