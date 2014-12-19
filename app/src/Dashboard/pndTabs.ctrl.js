@@ -16,7 +16,7 @@ angular.module('Pundit2.Dashboard')
         $element.addClass(options.animation);
     }
 
-    var showTabByTitle = function (title) {
+    var showTabByTitle = function(title) {
         for (var i = 0; i < $scope.panes.length; i++) {
             if ($scope.panes[i].title === title) {
                 if ($scope.active !== i) {
@@ -261,11 +261,9 @@ angular.module('Pundit2.Dashboard')
 
         // Temporary solution to find hierarchystring.
         var eventLabel = undefined;
-        if ($scope.panes[$scope.active].hasOwnProperty('hierarchystring') ) {
+        if ($scope.panes[$scope.active].hasOwnProperty('hierarchystring')) {
             eventLabel = $scope.panes[$scope.active].hierarchystring;
-        }
-        else if (!$scope.panes[$scope.active].hasOwnProperty('hierarchystring') 
-            || typeof($scope.panes[$scope.active].hierarchystring) === 'undefined') {
+        } else if (!$scope.panes[$scope.active].hasOwnProperty('hierarchystring') || typeof($scope.panes[$scope.active].hierarchystring) === 'undefined') {
             var myScope = $scope;
             do {
                 if (typeof(myScope) === 'undefined') {
@@ -283,7 +281,7 @@ angular.module('Pundit2.Dashboard')
         }
 
         if (typeof(eventLabel) === 'undefined') {
-            eventLabel = 'unracked-tab-' . $scope.panes[$scope.active].title;
+            eventLabel = 'unracked-tab-'.$scope.panes[$scope.active].title;
         }
         Analytics.track('buttons', 'click', eventLabel);
 
