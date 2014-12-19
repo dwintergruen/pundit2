@@ -1,21 +1,24 @@
 angular.module('Pundit2.Preview')
+
 .controller('PreviewCtrl', function($scope, Preview, TypesHelper, $window, Config) {
 
     $scope.itemDashboardPreview = null;
 
 
     // check where a new item is selected to get a preview
-    $scope.$watch(function() { return Preview.getItemDashboardPreview(); }, function(newItem) {
+    $scope.$watch(function() {
+        return Preview.getItemDashboardPreview();
+    }, function(newItem) {
 
         $scope.itemDashboardPreview = newItem;
         // check if item has an image to show
-        if(newItem === null) {
+        if (newItem === null) {
 
             $scope.hasImage = false;
             $scope.itemIsAnImage = false;
 
         } else {
-            if(TypesHelper.getLabel(newItem.type[0]) === 'Notebook'){
+            if (TypesHelper.getLabel(newItem.type[0]) === 'Notebook') {
                 $scope.hasImage = false;
                 $scope.itemIsAnImage = false;
             } else {
@@ -28,7 +31,7 @@ angular.module('Pundit2.Preview')
     });
 
     $scope.getWelcomeHeaderMessage = function() {
-      return Preview.getWelcomeHeaderMessage();
+        return Preview.getWelcomeHeaderMessage();
     };
 
     $scope.getWelcomeBodyMessage = function() {
@@ -43,7 +46,7 @@ angular.module('Pundit2.Preview')
     // return true if dashboard preview is empty
     $scope.isNotebook = function() {
         // TODO: Use namespace
-        if($scope.itemDashboardPreview !== null && $scope.itemDashboardPreview.type[0] === "http://purl.org/pundit/ont/ao#Notebook"){
+        if ($scope.itemDashboardPreview !== null && $scope.itemDashboardPreview.type[0] === "http://purl.org/pundit/ont/ao#Notebook") {
             return true;
         } else {
             return false;
@@ -53,7 +56,7 @@ angular.module('Pundit2.Preview')
 
     // return true if no item is sticky
     $scope.isStickyItemEmpty = function() {
-        return  Preview.getItemDashboardSticky() === null;
+        return Preview.getItemDashboardSticky() === null;
     };
 
     // return true if current item in preview panel is the sticky item
@@ -76,19 +79,19 @@ angular.module('Pundit2.Preview')
         $window.open(url);
     };
 
-    $scope.openNotebookUrl = function(id){
-        var url = Config.askBaseURL + '#/myNotebooks/'+id;
+    $scope.openNotebookUrl = function(id) {
+        var url = Config.askBaseURL + '#/myNotebooks/' + id;
         $window.open(url);
     };
 
     $scope.getItemIcon = function() {
-        if (!$scope.isItemEmpty()){
+        if (!$scope.isItemEmpty()) {
             return $scope.itemDashboardPreview.getIcon();
         }
     };
 
     $scope.getItemClass = function() {
-        if (!$scope.isItemEmpty()){
+        if (!$scope.isItemEmpty()) {
             return $scope.itemDashboardPreview.getClass();
         }
     };
