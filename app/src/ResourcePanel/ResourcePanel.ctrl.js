@@ -146,7 +146,7 @@ angular.module('Pundit2.ResourcePanel')
     };
 
     $scope.escapeEvent = function(e) {
-        if (e.which === 27){
+        if (e.which === 27) {
             e.stopPropagation();
         }
     };
@@ -169,7 +169,7 @@ angular.module('Pundit2.ResourcePanel')
         $scope.userLoggedIn = newStatus;
     });
 
-    EventDispatcher.addListener('Pundit.changeSelection', function(){
+    EventDispatcher.addListener('Pundit.changeSelection', function() {
         resetSelection();
     });
 
