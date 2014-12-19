@@ -104,7 +104,7 @@ angular.module('DocsController', [])
   $cookies.platformPreference = $cookies.platformPreference || 'gitUnix';
 
   if (!$location.path() || INDEX_PATH.test($location.path())) {
-    $location.path('/api/index').replace();
+    $location.path('/api/home').replace();
   }
 
   // bind escape to hash reset callback

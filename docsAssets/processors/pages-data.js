@@ -14,7 +14,7 @@ function getNavGroup(pages, area, pageSorter, pageMapper) {
 
   var navItems = _(pages)
     // We don't want the child to include the index page as this is already catered for
-    .omit(function(page) { return page.id === 'index'; })
+    .omit(function(page) { return page.id === 'home'; })
 
     // Apply the supplied sorting function
     .sortBy(pageSorter)
