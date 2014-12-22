@@ -2,7 +2,7 @@
 
 ## License
 
-https://thepund.it/introductory-videos/license
+http://thepund.it/license/
 
 
 ## Install
