@@ -94,7 +94,7 @@ angular.module('Pundit2.Core')
 
         // Reset selection when template state change
         EventDispatcher.sendEvent('Pundit.changeSelection');
-    })
+    });
 
     // Error
     EventDispatcher.addListener('Pundit.error', function(e) {

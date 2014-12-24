@@ -162,13 +162,13 @@ angular.module('Pundit2.ResourcePanel')
         }
     });
 
-    // TODO: replace watch with EventDispatcher 
     $rootScope.$watch(function() {
         return MyPundit.isUserLogged();
     }, function(newStatus) {
         $scope.userLoggedIn = newStatus;
     });
 
+    // TODO: remove from ctrl and find a better way to reset the selection
     EventDispatcher.addListener('Pundit.changeSelection', function() {
         resetSelection();
     });

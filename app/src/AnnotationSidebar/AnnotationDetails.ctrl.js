@@ -3,7 +3,7 @@ angular.module('Pundit2.AnnotationSidebar')
 .controller('AnnotationDetailsCtrl', function($scope, $rootScope, $element, $modal, $timeout, $window,
     AnnotationSidebar, AnnotationDetails, AnnotationsExchange, AnnotationsCommunication, Config,
     EventDispatcher, NotebookExchange, ItemsExchange, TripleComposer, Dashboard, ImageAnnotator,
-    TextFragmentAnnotator, TypesHelper, MyPundit, Consolidation) {
+    TextFragmentAnnotator, TypesHelper, MyPundit, Consolidation, Status) {
 
     AnnotationDetails.addAnnotationReference($scope);
 
@@ -234,23 +234,26 @@ angular.module('Pundit2.AnnotationSidebar')
         }
     };
 
-    EventDispatcher.addListener('Pundit.loading', function(e) {
-        $scope.isLoading = e.args;
-    });
-
-    EventDispatcher.addListener('AnnotationSidebar.toggle', function(e) {
-        var isExpanded = e.args;
-        if (!isExpanded) {
-            AnnotationDetails.closeViewAndReset();
-        }
-    });
-
     var cancelWatchNotebookName = $scope.$watch(function() {
         return NotebookExchange.getNotebookById(notebookId);
     }, function(nb) {
         if (typeof(nb) !== 'undefined') {
             $scope.notebookName = nb.label;
             cancelWatchNotebookName();
+        }
+    });
+
+    $scope.$watch(function() {
+        return Status.getLoading();
+    }, function(isLoading) {
+        $scope.isLoading = isLoading;
+    });
+
+    $scope.$watch(function() {
+        return AnnotationSidebar.isAnnotationSidebarExpanded();
+    }, function(newState, oldState) {
+        if (newState !== oldState && !newState){
+            AnnotationDetails.closeViewAndReset();
         }
     });
 

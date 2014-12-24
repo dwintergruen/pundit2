@@ -271,11 +271,13 @@ angular.module('Pundit2.TripleComposer')
         }
 
         // check predicate range
-        if (item.range.indexOf(NameSpace.rdfs.literal) === -1 && item.range.length > 0) {
-            $scope.canBeObjectLiteral = false;
-        }
-        if (item.range.indexOf(NameSpace.dateTime) === -1 && item.range.length > 0) {
-            $scope.canBeObjectDate = false;
+        if (typeof(item.range) !== 'undefined') {
+            if (item.range.indexOf(NameSpace.rdfs.literal) === -1 && item.range.length > 0) {
+                $scope.canBeObjectLiteral = false;
+            }
+            if (item.range.indexOf(NameSpace.dateTime) === -1 && item.range.length > 0) {
+                $scope.canBeObjectDate = false;
+            }
         }
 
         ResourcePanel.hide();

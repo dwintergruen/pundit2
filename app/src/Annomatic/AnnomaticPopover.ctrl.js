@@ -91,6 +91,7 @@ angular.module('Pundit2.Annomatic')
 
     };
 
+    // TODO: move listener in service or use watch
     EventDispatcher.addListener('AnnotationSidebar.activateAnnotationsPanel', function() {
         $scope.$hide();
     });
