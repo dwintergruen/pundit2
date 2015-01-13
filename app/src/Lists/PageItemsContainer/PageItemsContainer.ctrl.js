@@ -282,7 +282,7 @@ angular.module('Pundit2.PageItemsContainer')
             MyItems.addItemAndConsolidate($scope.itemSelected);
 
             var eventLabel = getHierarchyString();
-            eventLabel += "--AddToMyItems";
+            eventLabel += "--addToMyItems";
             Analytics.track('buttons', 'click', eventLabel);
         }
 
@@ -301,7 +301,7 @@ angular.module('Pundit2.PageItemsContainer')
         }
 
         var eventLabel = getHierarchyString();
-        eventLabel += "--UseSubject";
+        eventLabel += "--setSubject";
         Analytics.track('buttons', 'click', eventLabel);
 
         resetContainer();
@@ -315,7 +315,7 @@ angular.module('Pundit2.PageItemsContainer')
         TripleComposer.addToObject($scope.itemSelected);
 
         var eventLabel = getHierarchyString();
-        eventLabel += "--UseObject";
+        eventLabel += "--setObject";
         Analytics.track('buttons', 'click', eventLabel);
 
         resetContainer();
