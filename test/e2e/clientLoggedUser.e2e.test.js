@@ -189,7 +189,7 @@ describe("Client interaction when user is logged in", function() {
         // open sidebar by click on annotation icon
         p.findElement(protractor.By.css('annotation-sidebar annotation-details[id=annid123]')).click();
         // should show confirm modal when click delete
-        p.findElement(protractor.By.css('annotation-sidebar annotation-details[id=annid123] .pnd-annotation-details-footer button.btn-danger')).click();
+        p.findElement(protractor.By.css('annotation-sidebar annotation-details[id=annid123] .pnd-annotation-details-footer button.btn-info')).click();
         // check if info modal exist
         p.findElements(protractor.By.css('.pnd-confirm-modal-container')).then(function(m){
             expect(m.length).toBe(1);
