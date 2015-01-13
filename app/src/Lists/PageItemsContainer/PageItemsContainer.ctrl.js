@@ -2,7 +2,7 @@ angular.module('Pundit2.PageItemsContainer')
 
 .controller('PageItemsContainerCtrl', function($scope, $element,
     PageItemsContainer, ItemsExchange, Preview, TypesHelper,
-    MyItems, TripleComposer, EventDispatcher, Status) {
+    MyItems, TripleComposer, EventDispatcher, Status, Analytics) {
 
     $scope.dropdownTemplate = "src/ContextualMenu/dropdown.tmpl.html";
 
@@ -161,6 +161,28 @@ angular.module('Pundit2.PageItemsContainer')
         }
     };
 
+    var getHierarchyString = function() {
+        // Temporary solution to find hierarchystring.
+        var eventLabel = "";
+        var myScope = $scope;
+        do {
+            if (typeof(myScope) === 'undefined' || myScope === null) {
+                break;
+            }
+            if (myScope.hasOwnProperty('pane')) {
+                if (myScope.pane.hasOwnProperty('hierarchystring')) {
+                    eventLabel = myScope.pane.hierarchystring;
+                }
+                break;
+            }
+            myScope = myScope.$parent;
+        }
+        while (typeof(myScope) !== 'undefined' && myScope !== null);
+
+        eventLabel += "--" + $scope.tabs[$scope.tabs.activeTab].title;
+        return eventLabel;
+    }
+
     // every time that change active tab show new items array
     $scope.$watch(function() {
         return $scope.tabs.activeTab;
@@ -256,6 +278,10 @@ angular.module('Pundit2.PageItemsContainer')
 
         if (Status.getUserStatus() && !ItemsExchange.isItemInContainer($scope.itemSelected, MyItems.options.container)) {
             MyItems.addItemAndConsolidate($scope.itemSelected);
+
+            var eventLabel = getHierarchyString();
+            eventLabel += "--AddToMyItems";
+            Analytics.track('buttons', 'click', eventLabel);
         }
 
         resetContainer();
@@ -272,6 +298,10 @@ angular.module('Pundit2.PageItemsContainer')
             TripleComposer.addToSubject($scope.itemSelected);
         }
 
+        var eventLabel = getHierarchyString();
+        eventLabel += "--UseSubject";
+        Analytics.track('buttons', 'click', eventLabel);
+
         resetContainer();
     }
 
@@ -281,6 +311,10 @@ angular.module('Pundit2.PageItemsContainer')
         }
 
         TripleComposer.addToObject($scope.itemSelected);
+
+        var eventLabel = getHierarchyString();
+        eventLabel += "--UseObject";
+        Analytics.track('buttons', 'click', eventLabel);
 
         resetContainer();
     }
