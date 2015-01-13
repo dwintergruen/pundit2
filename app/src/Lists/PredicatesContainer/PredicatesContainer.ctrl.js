@@ -2,7 +2,7 @@ angular.module('Pundit2.PredicatesContainer')
 
 .controller('PredicatesContainerCtrl', function($scope, $rootScope, $element,
     Config, ItemsExchange, PredicatesContainer, TripleComposer, Preview,
-    EventDispatcher) {
+    EventDispatcher, Analytics) {
 
     var inputIconSearch = 'pnd-icon-search',
         inputIconClear = 'pnd-icon-times';
@@ -103,6 +103,33 @@ angular.module('Pundit2.PredicatesContainer')
         }
     };
 
+    // getter function used to build hierarchystring.
+    // hierarchystring is used for tracking events with analytics.
+    var getHierarchyString = function() {
+        // Temporary solution to find hierarchystring.
+        var eventLabel = "";
+        var myScope = $scope;
+        do {
+            if (typeof(myScope) === 'undefined' || myScope === null) {
+                break;
+            }
+            if (myScope.hasOwnProperty('pane')) {
+                if (myScope.pane.hasOwnProperty('hierarchystring')) {
+                    eventLabel = myScope.pane.hierarchystring;
+                }
+                break;
+            }
+            myScope = myScope.$parent;
+        }
+        while (typeof(myScope) !== 'undefined' && myScope !== null);
+
+        if ($scope.hasOwnProperty('tabs')) {
+            eventLabel += "--" + $scope.tabs[$scope.tabs.activeTab].title;
+        }
+
+        return eventLabel;
+    }
+
     // every time that user digit text inside <input> filter the items showed
     // show only items that contain the $scope.search substring inside their label
     // the match function ignore multiple spaces
@@ -176,6 +203,10 @@ angular.module('Pundit2.PredicatesContainer')
         }
 
         TripleComposer.addToPredicate($scope.itemSelected);
+
+        var eventLabel = getHierarchyString();
+        eventLabel += "--Set predicate";
+        Analytics.track('buttons', 'click', eventLabel);
 
         resetContainer();
     }
