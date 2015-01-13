@@ -205,7 +205,7 @@ angular.module('Pundit2.PredicatesContainer')
         TripleComposer.addToPredicate($scope.itemSelected);
 
         var eventLabel = getHierarchyString();
-        eventLabel += "--Set predicate";
+        eventLabel += "--setPredicate";
         Analytics.track('buttons', 'click', eventLabel);
 
         resetContainer();
