@@ -2,7 +2,7 @@ angular.module('Pundit2.VocabulariesContainer')
 
 .controller('VocabulariesContainerCtrl', function($scope, $timeout, $injector, $element, $q,
     BaseComponent, SelectorsManager, ItemsExchange, TypesHelper, Preview, TripleComposer,
-    MyItems, EventDispatcher, Status) {
+    MyItems, EventDispatcher, Status, Analytics) {
 
     // SelectorsManager is initialized inside client.boot()
 
@@ -60,6 +60,33 @@ angular.module('Pundit2.VocabulariesContainer')
         $scope.canAddItemAsSubject = false;
         $scope.canAddItemAsObject = false;
     };
+
+    // getter function used to build hierarchystring.
+    // hierarchystring is used for tracking events with analytics.
+    var getHierarchyString = function() {
+        // Temporary solution to find hierarchystring.
+        var eventLabel = "";
+        var myScope = $scope;
+        do {
+            if (typeof(myScope) === 'undefined' || myScope === null) {
+                break;
+            }
+            if (myScope.hasOwnProperty('pane')) {
+                if (myScope.pane.hasOwnProperty('hierarchystring')) {
+                    eventLabel = myScope.pane.hierarchystring;
+                }
+                break;
+            }
+            myScope = myScope.$parent;
+        }
+        while (typeof(myScope) !== 'undefined' && myScope !== null);
+
+        if ($scope.hasOwnProperty('tabs')) {
+            eventLabel += "--" + $scope.tabs[$scope.tabs.activeTab].title;
+        }
+
+        return eventLabel;
+    }
 
     // sort button dropdown content
     $scope.dropdownOrdering = [{
@@ -215,6 +242,10 @@ angular.module('Pundit2.VocabulariesContainer')
 
         if (Status.getUserStatus() && !ItemsExchange.isItemInContainer($scope.itemSelected, MyItems.options.container)) {
             MyItems.addItemAndConsolidate($scope.itemSelected);
+
+            var eventLabel = getHierarchyString();
+            eventLabel += "--addToMyItems";
+            Analytics.track('buttons', 'click', eventLabel);
         }
 
         resetContainer();
@@ -231,6 +262,10 @@ angular.module('Pundit2.VocabulariesContainer')
             TripleComposer.addToSubject($scope.itemSelected);
         }
 
+        var eventLabel = getHierarchyString();
+        eventLabel += "--setSubject";
+        Analytics.track('buttons', 'click', eventLabel);
+
         resetContainer();
     }
 
@@ -240,6 +275,10 @@ angular.module('Pundit2.VocabulariesContainer')
         }
 
         TripleComposer.addToObject($scope.itemSelected);
+
+        var eventLabel = getHierarchyString();
+        eventLabel += "--setObject";
+        Analytics.track('buttons', 'click', eventLabel);
 
         resetContainer();
     }
