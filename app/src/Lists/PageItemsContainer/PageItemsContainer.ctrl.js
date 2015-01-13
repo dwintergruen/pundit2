@@ -161,6 +161,8 @@ angular.module('Pundit2.PageItemsContainer')
         }
     };
 
+    // getter function used to build hierarchystring.
+    // hierarchystring is used for tracking events with analytics.
     var getHierarchyString = function() {
         // Temporary solution to find hierarchystring.
         var eventLabel = "";
