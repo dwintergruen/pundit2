@@ -112,6 +112,10 @@ angular.module('Pundit2.MyItemsContainer')
             order = 'label';
             $scope.reverse = false;
             setLabelActive(0);
+
+            var eventLabel = getHierarchyString();
+            eventLabel += "--sort--labelAsc";
+            Analytics.track('buttons', 'click', eventLabel);
         },
         isActive: order === 'label' && $scope.reverse === false
     }, {
@@ -120,6 +124,10 @@ angular.module('Pundit2.MyItemsContainer')
             order = 'label';
             $scope.reverse = true;
             setLabelActive(1);
+
+            var eventLabel = getHierarchyString();
+            eventLabel += "--sort--labelDesc";
+            Analytics.track('buttons', 'click', eventLabel);
         },
         isActive: order === 'label' && $scope.reverse === true
     }, {
@@ -131,6 +139,10 @@ angular.module('Pundit2.MyItemsContainer')
             order = 'type';
             $scope.reverse = false;
             setLabelActive(2);
+
+            var eventLabel = getHierarchyString();
+            eventLabel += "--sort--typeAsc";
+            Analytics.track('buttons', 'click', eventLabel);
         },
         isActive: order === 'type' && $scope.reverse === false
     }, {
@@ -142,6 +154,10 @@ angular.module('Pundit2.MyItemsContainer')
             order = 'type';
             $scope.reverse = true;
             setLabelActive(3);
+
+            var eventLabel = getHierarchyString();
+            eventLabel += "--sort--typeDesc";
+            Analytics.track('buttons', 'click', eventLabel);
         },
         isActive: order === 'type' && $scope.reverse === true
     }];
@@ -219,6 +235,10 @@ angular.module('Pundit2.MyItemsContainer')
         } else {
             var item = PageHandler.createItemFromPage();
             MyItems.addItem(item);
+
+            var eventLabel = getHierarchyString();
+            eventLabel += "--addPageToMyItems";
+            Analytics.track('buttons', 'click', eventLabel);
         }
     };
 

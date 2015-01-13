@@ -56,6 +56,10 @@ angular.module('Pundit2.PredicatesContainer')
             order = 'label';
             $scope.reverse = false;
             setLabelActive(0);
+
+            var eventLabel = getHierarchyString();
+            eventLabel += "--sort--labelAsc";
+            Analytics.track('buttons', 'click', eventLabel);
         },
         isActive: order === 'label' && $scope.reverse === false
     }, {
@@ -64,6 +68,10 @@ angular.module('Pundit2.PredicatesContainer')
             order = 'label';
             $scope.reverse = true;
             setLabelActive(1);
+
+            var eventLabel = getHierarchyString();
+            eventLabel += "--sort--labelDesc";
+            Analytics.track('buttons', 'click', eventLabel);
         },
         isActive: order === 'label' && $scope.reverse === true
     }];

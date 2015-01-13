@@ -1,6 +1,6 @@
 angular.module('Pundit2.MyNotebooksContainer')
 
-.controller('MyNotebooksContainerCtrl', function($scope, $rootScope, $element, MyNotebooksContainer, NotebookExchange, NotebookComposer, EventDispatcher) {
+.controller('MyNotebooksContainerCtrl', function($scope, $rootScope, $element, MyNotebooksContainer, NotebookExchange, NotebookComposer, EventDispatcher, Analytics) {
 
     var inputIconSearch = 'pnd-icon-search',
         inputIconClear = 'pnd-icon-times';
@@ -43,6 +43,10 @@ angular.module('Pundit2.MyNotebooksContainer')
             order = 'label';
             $scope.reverse = false;
             setLabelActive(0);
+
+            var eventLabel = getHierarchyString();
+            eventLabel += "--sort--labelAsc";
+            Analytics.track('buttons', 'click', eventLabel);
         },
         isActive: order === 'label' && $scope.reverse === false
     }, {
@@ -51,6 +55,10 @@ angular.module('Pundit2.MyNotebooksContainer')
             order = 'label';
             $scope.reverse = true;
             setLabelActive(1);
+
+            var eventLabel = getHierarchyString();
+            eventLabel += "--sort--labelDesc";
+            Analytics.track('buttons', 'click', eventLabel);
         },
         isActive: order === 'label' && $scope.reverse === true
     }];
@@ -58,6 +66,33 @@ angular.module('Pundit2.MyNotebooksContainer')
     var removeSpace = function(str) {
         return str.replace(/ /g, '');
     };
+
+    // getter function used to build hierarchystring.
+    // hierarchystring is used for tracking events with analytics.
+    var getHierarchyString = function() {
+        // Temporary solution to find hierarchystring.
+        var eventLabel = "";
+        var myScope = $scope;
+        do {
+            if (typeof(myScope) === 'undefined' || myScope === null) {
+                break;
+            }
+            if (myScope.hasOwnProperty('pane')) {
+                if (myScope.pane.hasOwnProperty('hierarchystring')) {
+                    eventLabel = myScope.pane.hierarchystring;
+                }
+                break;
+            }
+            myScope = myScope.$parent;
+        }
+        while (typeof(myScope) !== 'undefined' && myScope !== null);
+
+        if ($scope.hasOwnProperty('tabs')) {
+            eventLabel += "--" + $scope.tabs[$scope.tabs.activeTab].title;
+        }
+
+        return eventLabel;
+    }
 
     // getter function used inside template to order notebooks 
     // return the notebooks property value used to order
@@ -69,6 +104,10 @@ angular.module('Pundit2.MyNotebooksContainer')
         //EventDispatcher.sendEvent('Dashboard.showTab', NotebookComposer.options.clientDashboardTabTitle);
         EventDispatcher.sendEvent('MyNotebooksContainer.createNewNotebook', NotebookComposer.options.clientDashboardTabTitle);
         NotebookComposer.setNotebookToEdit(null);
+
+        var eventLabel = getHierarchyString();
+        eventLabel += "--newNotebook";
+        Analytics.track('buttons', 'click', eventLabel);
     };
 
     // Filter notebooks which are shown
