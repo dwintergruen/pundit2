@@ -146,6 +146,30 @@ angular.module('Pundit2.MyItemsContainer')
         isActive: order === 'type' && $scope.reverse === true
     }];
 
+    // getter function used to build hierarchystring.
+    // hierarchystring is used for tracking events with analytics.
+    var getHierarchyString = function() {
+        // Temporary solution to find hierarchystring.
+        var eventLabel = "";
+        var myScope = $scope;
+        do {
+            if (typeof(myScope) === 'undefined' || myScope === null) {
+                break;
+            }
+            if (myScope.hasOwnProperty('pane')) {
+                if (myScope.pane.hasOwnProperty('hierarchystring')) {
+                    eventLabel = myScope.pane.hierarchystring;
+                }
+                break;
+            }
+            myScope = myScope.$parent;
+        }
+        while (typeof(myScope) !== 'undefined' && myScope !== null);
+
+        eventLabel += "--" + $scope.tabs[$scope.tabs.activeTab].title;
+        return eventLabel;
+    }
+
     var removeSpace = function(str) {
         return str.replace(/ /g, '');
     };
@@ -343,6 +367,10 @@ angular.module('Pundit2.MyItemsContainer')
             MyItems.deleteItemAndConsolidate($scope.itemSelected);
         }
 
+        var eventLabel = getHierarchyString();
+        eventLabel += "--remove";
+        Analytics.track('buttons', 'click', eventLabel);
+
         resetContainer();
     }
 
@@ -357,6 +385,10 @@ angular.module('Pundit2.MyItemsContainer')
             TripleComposer.addToSubject($scope.itemSelected);
         }
 
+        var eventLabel = getHierarchyString();
+        eventLabel += "--setSubject";
+        Analytics.track('buttons', 'click', eventLabel);
+
         resetContainer();
     }
 
@@ -366,6 +398,10 @@ angular.module('Pundit2.MyItemsContainer')
         }
 
         TripleComposer.addToObject($scope.itemSelected);
+
+        var eventLabel = getHierarchyString();
+        eventLabel += "--setObject";
+        Analytics.track('buttons', 'click', eventLabel);
 
         resetContainer();
     }
