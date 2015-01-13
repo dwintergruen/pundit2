@@ -236,12 +236,13 @@ angular.module('Pundit2.Toolbar')
     // open info modal
     var showInfo = function() {
         infoModal.$promise.then(infoModal.show);
-        Analytics.track('buttons', 'toolbar--aboutPundit');
+        Analytics.track('buttons', 'click', 'toolbar--aboutPundit');
     };
 
     // open bug modal
     var showBug = function() {
         infoModalScope.send();
+        Analytics.track('buttons', 'click', 'toolbar--reportBug');
     };
 
     $scope.isAnnomaticRunning = false;
