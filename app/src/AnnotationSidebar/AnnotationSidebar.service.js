@@ -637,15 +637,16 @@ angular.module('Pundit2.AnnotationSidebar')
                         broken: true
                     });
                 } else {
-                    var top, imgRef, xpathTemp;
+                    var top, imgRef, fragRef, xpathTemp;
                     currentItem = ItemsExchange.getItemByUri(firstValidUri);
 
                     if (currentItem.isTextFragment()) {
                         top = -1;
                         currentFragment = TextFragmentAnnotator.getFragmentIdByUri(firstValidUri);
+                        fragRef = angular.element('.' + currentFragment);
 
-                        if (typeof(currentFragment) !== 'undefined') {
-                            top = angular.element('.' + currentFragment).offset().top - toolbarHeight - dashboardHeight;
+                        if (typeof(currentFragment) !== 'undefined' && typeof(fragRef.offset()) !== 'undefined') {
+                            top = fragRef.offset().top - toolbarHeight - dashboardHeight;
                             // annotationSidebar.log("curr fr "+currentFragment + " alt "+ angular.element('.'+currentFragment).offset().top );
                         } else {
                             annotationSidebar.log("Something wrong with the fragments of this annotation: ", annotation);
