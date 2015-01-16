@@ -63,7 +63,7 @@ angular.module('Pundit2.AnnotationSidebar')
 .service('AnnotationDetails', function(ANNOTATIONDETAILSDEFAULTS, $rootScope, $filter, $timeout, $document,
     BaseComponent, EventDispatcher, Annotation, AnnotationSidebar, AnnotationsExchange, TemplatesExchange,
     Consolidation, ContextualMenu, Dashboard, ImageHandler, ItemsExchange, MyPundit, TextFragmentAnnotator,
-    TypesHelper) {
+    TypesHelper, Analytics) {
 
     var annotationDetails = new BaseComponent('AnnotationDetails', ANNOTATIONDETAILSDEFAULTS);
 
@@ -119,6 +119,8 @@ angular.module('Pundit2.AnnotationSidebar')
             state.isGhostedActive = true;
             TextFragmentAnnotator.ghostAll();
             TextFragmentAnnotator.ghostRemoveByUri(item.uri);
+
+            Analytics.track('buttons', 'click', 'contextualMenu--showAllAnnotationForItem');
         }
     });
 
