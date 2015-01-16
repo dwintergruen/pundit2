@@ -212,7 +212,7 @@ angular.module('Pundit2.TripleComposer')
 })
 
 .service('TripleComposer', function($rootScope, BaseComponent, EventDispatcher, TRIPLECOMPOSERDEFAULTS, TypesHelper, NameSpace, Config,
-    AnnotationsExchange, ItemsExchange, Dashboard, ContextualMenu, TemplatesExchange, Status, Utils) {
+    AnnotationsExchange, ItemsExchange, Dashboard, ContextualMenu, TemplatesExchange, Status, Utils, Analytics) {
 
     var tripleComposer = new BaseComponent('TripleComposer', TRIPLECOMPOSERDEFAULTS);
 
@@ -229,6 +229,11 @@ angular.module('Pundit2.TripleComposer')
     var statementChangeStatus = function() {
         EventDispatcher.sendEvent('TripleComposer.statementChange');
     };
+
+    var trackContextualEvent = function(eventString) {
+        var eventLabel = "tripleComposer--contextualMenu--" + eventString;
+        Analytics.track('buttons', 'click', eventLabel);
+    }
 
     // Contextual Menu actions for my items and page items
     var initContextualMenu = function() {
@@ -253,6 +258,7 @@ angular.module('Pundit2.TripleComposer')
                 } else {
                     tripleComposer.addToSubject(item);
                 }
+                trackContextualEvent('useAsSubject');
             }
         });
 
@@ -273,6 +279,7 @@ angular.module('Pundit2.TripleComposer')
             priority: 100,
             action: function(item) {
                 tripleComposer.addToObject(item);
+                trackContextualEvent('useAsObject');
             }
         });
 
@@ -293,6 +300,7 @@ angular.module('Pundit2.TripleComposer')
             priority: 100,
             action: function(item) {
                 tripleComposer.addToPredicate(item);
+                trackContextualEvent('useAsPredicate');
             }
         });
 
@@ -308,6 +316,7 @@ angular.module('Pundit2.TripleComposer')
                 angular.element('.pnd-triplecomposer-save').addClass('disabled');
                 tripleComposer.addStatement();
                 statementChangeStatus();
+                trackContextualEvent('newTriple');
             }
         });
 
@@ -323,6 +332,7 @@ angular.module('Pundit2.TripleComposer')
                 var id = parseInt(statement.id, 10);
                 tripleComposer.duplicateStatement(id);
                 statementChangeStatus();
+                trackContextualEvent('duplicateTriple');
             }
         });
 
@@ -341,6 +351,7 @@ angular.module('Pundit2.TripleComposer')
                     angular.element('.pnd-triplecomposer-save').removeClass('disabled');
                 }
                 statementChangeStatus();
+                trackContextualEvent('removeTriple');
             }
         });
 

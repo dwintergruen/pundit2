@@ -1,7 +1,7 @@
 angular.module('Pundit2.TripleComposer')
 
 .controller('TripleComposerCtrl', function($rootScope, $scope, $http, $q, $timeout, NameSpace, EventDispatcher,
-    MyPundit, Toolbar, TripleComposer, AnnotationsCommunication, AnnotationsExchange, TemplatesExchange) {
+    MyPundit, Toolbar, TripleComposer, AnnotationsCommunication, AnnotationsExchange, TemplatesExchange, Analytics) {
 
     // statements objects are extend by this.addStatementScope()
     // the function is called in the statement directive link function
@@ -110,6 +110,10 @@ angular.module('Pundit2.TripleComposer')
         }
         TripleComposer.reset();
         EventDispatcher.sendEvent('Pundit.changeSelection');
+
+        var eventLabel = getHierarchyString();
+        eventLabel += "--resetComposer";
+        Analytics.track('buttons', 'click', eventLabel);
     };
 
     $scope.editAnnotation = function() {
@@ -142,6 +146,29 @@ angular.module('Pundit2.TripleComposer')
             });
         }
     };
+
+    // getter function used to build hierarchystring.
+    // hierarchystring is used for tracking events with analytics.
+    var getHierarchyString = function() {
+        // Temporary solution to find hierarchystring.
+        var eventLabel = "";
+        var myScope = $scope;
+        do {
+            if (typeof(myScope) === 'undefined' || myScope === null) {
+                break;
+            }
+            if (myScope.hasOwnProperty('pane')) {
+                if (myScope.pane.hasOwnProperty('hierarchystring')) {
+                    eventLabel = myScope.pane.hierarchystring;
+                }
+                break;
+            }
+            myScope = myScope.$parent;
+        }
+        while (typeof(myScope) !== 'undefined' && myScope !== null);
+
+        return eventLabel;
+    }
 
     // update triple composer messagge then after "time" (ms)
     // restore default template content
@@ -267,6 +294,10 @@ angular.module('Pundit2.TripleComposer')
         }); // end my pundit login
 
         EventDispatcher.sendEvent('Pundit.changeSelection');
+
+        var eventLabel = getHierarchyString();
+        eventLabel += "--saveAnnotation";
+        Analytics.track('buttons', 'click', eventLabel);
 
         return promise.promise;
 
