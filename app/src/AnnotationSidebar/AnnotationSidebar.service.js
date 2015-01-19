@@ -829,7 +829,7 @@ angular.module('Pundit2.AnnotationSidebar')
     annotationSidebar.toggleFiltersContent = function() {
         state.isFiltersExpanded = !state.isFiltersExpanded;
         EventDispatcher.sendEvent('AnnotationSidebar.toggleFiltersContent', state.isFiltersExpanded);
-        Analytics.track('buttons', 'click', 'annotationSidebar--toggleFilterContent');
+        Analytics.track('buttons', 'click', 'sidebar--' + (state.isFiltersExpanded ? 'showFilters' : 'filters--hide'));
     };
     // Check if the sidebar is expanded
     annotationSidebar.isAnnotationSidebarExpanded = function() {
@@ -998,6 +998,7 @@ angular.module('Pundit2.AnnotationSidebar')
     // Activate / Disable a specific filter
     annotationSidebar.toggleActiveFilter = function(list, uri) {
         elementsList[list][uri].active = !elementsList[list][uri].active;
+        Analytics.track('buttons', 'click', 'sidebar--filters--filtersPanel--' + list + '--' + (elementsList[list][uri].active ? 'active' : 'inactive'));
     };
 
     // TODO: verificare che l'elemento sia presente fra gli elementi prima

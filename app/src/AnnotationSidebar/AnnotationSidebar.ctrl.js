@@ -111,7 +111,7 @@ angular.module('Pundit2.AnnotationSidebar')
         }
     };
 
-    $scope.toggleFilterList = function(event) {
+    $scope.toggleFilterList = function(event, trackingFilterLabel) {
         var previousElement = angular.element('.pnd-annotation-sidebar-filter-show');
         var currentElement = angular.element(event.target.parentElement);
 
@@ -125,8 +125,10 @@ angular.module('Pundit2.AnnotationSidebar')
         previousElement.not(currentElement).removeClass('pnd-annotation-sidebar-filter-show');
         currentElement.toggleClass('pnd-annotation-sidebar-filter-show');
 
-        var currentElementInnerText = angular.element(event.target).text().trim();
-        Analytics.track('buttons', 'click', 'annotationSidebar--toggleFilter--' + currentElementInnerText);
+        if (typeof trackingFilterLabel === 'undefined') {
+            trackingFilterLabel = angular.element(event.target).text().trim();
+        }
+        Analytics.track('buttons', 'click', 'sidebar--filters--filtersPanel--' + trackingFilterLabel);
     };
 
     $scope.toggleFilter = function(currentFilter, currentUri) {
@@ -141,11 +143,15 @@ angular.module('Pundit2.AnnotationSidebar')
     };
 
     $scope.toggleBrokenAnnotations = function() {
+        var trackingFilterLabel = '';
         if (AnnotationSidebar.filters.broken.expression === '') {
             AnnotationSidebar.filters.broken.expression = 'hideBroken';
+            trackingFilterLabel = 'hideBroken';
         } else {
             AnnotationSidebar.filters.broken.expression = '';
+            trackingFilterLabel = 'showBroken';
         }
+        Analytics.track('buttons', 'click', 'sidebar--filters--filtersPanel--' + trackingFilterLabel);
     };
 
     $scope.setSearchIcon = function(str) {

@@ -53,7 +53,7 @@
 
                     <!-- Authors -->
                     <div class="pnd-annotation-sidebar-filter">
-                        <div class="pnd-panel" ng-click = "toggleFilterList($event)">
+                        <div class="pnd-panel" ng-click = "toggleFilterList($event, 'authors')">
                             Annotation author
                         </div>
                         <div class="pnd-annotation-sidebar-filter-input pnd-annotation-sidebar-filter-search">
@@ -81,7 +81,7 @@
 
                     <!-- Notebooks -->
                     <div class="pnd-annotation-sidebar-filter">
-                        <div class="pnd-panel" ng-click = "toggleFilterList($event)">
+                        <div class="pnd-panel" ng-click = "toggleFilterList($event, 'notebooks')">
                             Notebooks
                         </div>
                         <div class="pnd-annotation-sidebar-filter-input pnd-annotation-sidebar-filter-search">
@@ -109,7 +109,7 @@
 
                     <!-- Types -->
                     <div class="pnd-annotation-sidebar-filter">
-                        <div class="pnd-panel" ng-click = "toggleFilterList($event)">
+                        <div class="pnd-panel" ng-click = "toggleFilterList($event, 'types')">
                             Types
                         </div>
                         <div class="pnd-annotation-sidebar-filter-input pnd-annotation-sidebar-filter-search">
@@ -137,7 +137,7 @@
                     <!-- Used predicate -->
                     <div class="pnd-annotation-sidebar-filter">
                         <div class="pnd-panel" 
-                            ng-click = "toggleFilterList($event)">
+                            ng-click = "toggleFilterList($event, 'predicates')">
                             Used predicate
                         </div>
                         <div class="pnd-annotation-sidebar-filter-input pnd-annotation-sidebar-filter-search">
@@ -163,7 +163,7 @@
 
                     <!-- Page items -->
                     <div class="pnd-annotation-sidebar-filter">
-                        <div class="pnd-panel" ng-click = "toggleFilterList($event)">
+                        <div class="pnd-panel" ng-click = "toggleFilterList($event, 'entities')">
                             Page items
                         </div>
                         <div class="pnd-annotation-sidebar-filter-input pnd-annotation-sidebar-filter-search">
@@ -191,7 +191,7 @@
 
                     <!-- Date -->
                     <div class="pnd-annotation-sidebar-filter">
-                        <div class="pnd-panel" ng-click = "toggleFilterList($event)">Date</div>
+                        <div class="pnd-panel" ng-click = "toggleFilterList($event, 'date')">Date</div>
                         <span 
                             ng-show="isFilterLabelShowed(annotationSidebar.filters.fromDate.expression)"
                             class="pnd-annotation-sidebar-filter-label">
