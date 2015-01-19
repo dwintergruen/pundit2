@@ -50,7 +50,6 @@ angular.module('Pundit2.Core')
             var lastData = e.data;
             if(!MyPundit.isUserLogged()) {
                 var der = EventDispatcher.addListener('Consolidation.consolidateAll', function() {
-                    console.log('POLIGOOOO');
                     var item = imageFragmentHelper.createItemFromPolygon(lastData.poly);
                     MyItems.addItem(item).then(function(){
                         childWindow.postMessage({type:'pundit-add-to-my-items-success'},'*');
