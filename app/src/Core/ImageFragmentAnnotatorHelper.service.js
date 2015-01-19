@@ -2,7 +2,7 @@
 
 angular.module('Pundit2.Core')
 .service('ImageFragmentAnnotatorHelper', function($rootScope, $modal, $window, BaseComponent, EventDispatcher, Config, NameSpace,
-    ContextualMenu, XpointersHelper, Item, MyItems, MyPundit) {
+    ContextualMenu, XpointersHelper, Item, MyItems, MyPundit, Analytics) {
     
     var imageFragmentHelper = new BaseComponent("ImageFragmentAnnotatorHelper");
 
@@ -28,6 +28,7 @@ angular.module('Pundit2.Core')
             priority: 99,
             action: function(item) {
                 open(item);
+                Analytics.track('buttons', 'click', 'contextualMenu--annotatePartOfImage');
             }
         });
     };
