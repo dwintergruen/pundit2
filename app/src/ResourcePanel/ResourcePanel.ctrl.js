@@ -2,7 +2,7 @@ angular.module('Pundit2.ResourcePanel')
 
 .controller('ResourcePanelCtrl', function($rootScope, $scope, $timeout, $filter, $window,
     Client, Config, ItemsExchange, MyItems, MyPundit, PageItemsContainer, Preview,
-    ResourcePanel, SelectorsManager, KorboCommunicationService, EventDispatcher) {
+    ResourcePanel, SelectorsManager, KorboCommunicationService, EventDispatcher, Analytics) {
 
     var actualContainer;
     var selectors = SelectorsManager.getActiveSelectors();
@@ -159,6 +159,9 @@ angular.module('Pundit2.ResourcePanel')
             var labTemp = $scope.label ? $scope.label : '';
             actualContainer = $scope.contentTabs[$scope.contentTabs.activeTab].itemsContainer + labTemp.split(' ').join('$');
             $scope.showUseAndCopyButton();
+
+            var panelTitle = $scope.contentTabs[$scope.contentTabs.activeTab].title;
+            Analytics.track('buttons', 'click', 'resourcePanel--' + panelTitle);
         }
     });
 

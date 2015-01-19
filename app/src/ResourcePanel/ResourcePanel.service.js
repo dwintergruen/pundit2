@@ -94,7 +94,7 @@ angular.module('Pundit2.ResourcePanel')
  */
 .service('ResourcePanel', function(BaseComponent, EventDispatcher, RESOURCEPANELDEFAULTS,
     ItemsExchange, MyItems, PageItemsContainer, Client, NameSpace, SelectorsManager,
-    $filter, $rootScope, $popover, $q, $timeout, Preview, $window, Config, Item, Utils) {
+    $filter, $rootScope, $popover, $q, $timeout, Preview, $window, Config, Item, Utils, Analytics) {
 
     var resourcePanel = new BaseComponent('ResourcePanel', RESOURCEPANELDEFAULTS);
 
@@ -184,12 +184,20 @@ angular.module('Pundit2.ResourcePanel')
                 state.resourcePromise.resolve(new Date(this.selectedDate));
                 Preview.hideDashboardPreview();
                 hide();
+
+                var eventLabel = 'resourcePanel--' + type
+                eventLabel += '--save';
+                Analytics.track('buttons', 'click', eventLabel);
+
             };
 
             // close popoverCalendar popover without saving
             state.popoverOptions.scope.cancel = function() {
                 Preview.hideDashboardPreview();
                 hide();
+                var eventLabel = 'resourcePanel--' + type;
+                eventLabel += '--cancel';
+                Analytics.track('buttons', 'click', eventLabel);
             };
 
             // initialize a literal popover
@@ -214,12 +222,20 @@ angular.module('Pundit2.ResourcePanel')
                 state.resourcePromise.resolve(this.literalText);
                 Preview.hideDashboardPreview();
                 hide();
+
+                var eventLabel = 'resourcePanel--' + type;
+                eventLabel += '--save';
+                Analytics.track('buttons', 'click', eventLabel);
             };
 
             // close popoverLiteral popover without saving
             state.popoverOptions.scope.cancel = function() {
                 Preview.hideDashboardPreview();
                 hide();
+
+                var eventLabel = 'resourcePanel--' + type;
+                eventLabel += '--cancel';
+                Analytics.track('buttons', 'click', eventLabel);
             };
 
             // initialize a resource panel popover
@@ -270,11 +286,23 @@ angular.module('Pundit2.ResourcePanel')
                 hide();
                 Preview.hideDashboardPreview();
                 state.resourcePromise.resolve(elem);
+
+                var eventLabel = 'resourcePanel--';
+                eventLabel += state.popoverOptions.scope.contentTabs[state.popoverOptions.scope.contentTabs.activeTab].title;
+                eventLabel += '--' + state.popoverOptions.scope.type;
+                eventLabel += '--save';
+                Analytics.track('buttons', 'click', eventLabel);
             };
             state.popoverOptions.scope.cancel = function() {
                 Preview.clearItemDashboardSticky();
                 Preview.hideDashboardPreview();
                 hide();
+
+                var eventLabel = 'resourcePanel--';
+                eventLabel += state.popoverOptions.scope.contentTabs[state.popoverOptions.scope.contentTabs.activeTab].title;
+                eventLabel += '--' + state.popoverOptions.scope.type;
+                eventLabel += '--cancel';
+                Analytics.track('buttons', 'click', eventLabel);
             };
         }
 
