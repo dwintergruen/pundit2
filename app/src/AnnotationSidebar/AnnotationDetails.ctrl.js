@@ -77,6 +77,9 @@ angular.module('Pundit2.AnnotationSidebar')
                 modalScope.notifyMessage = 'Impossible to delete the annotation. Please reatry later.';
             });
         }
+
+        Analytics.track('buttons', 'click', 'annotation--details--delete--confirm'));
+
         $timeout(function() {
             confirmModal.hide();
         }, 1000);
@@ -85,6 +88,7 @@ angular.module('Pundit2.AnnotationSidebar')
     // cancel btn click
     modalScope.cancel = function() {
         confirmModal.hide();
+        Analytics.track('buttons', 'click', 'annotation--details--delete--cancel'));
     };
 
     $scope.toggleAnnotation = function() {
@@ -113,6 +117,8 @@ angular.module('Pundit2.AnnotationSidebar')
 
     $scope.deleteAnnotation = function() {
         openConfirmModal();
+
+        Analytics.track('buttons', 'click', 'annotation--details--delete');
     };
 
     $scope.showEdit = function() {
@@ -126,6 +132,8 @@ angular.module('Pundit2.AnnotationSidebar')
             Dashboard.toggle();
         }
         EventDispatcher.sendEvent('AnnotationDetails.editAnnotation', TripleComposer.options.clientDashboardTabTitle);
+
+        Analytics.track('buttons', 'click', 'annotation--details--edit');
     };
 
     $scope.isUserToolShowed = function() {
