@@ -273,7 +273,7 @@ angular.module('Pundit2.AnnotationSidebar')
 
 .service('AnnotationSidebar', function(ANNOTATIONSIDEBARDEFAULTS, $rootScope, $filter, $timeout,
     BaseComponent, EventDispatcher, AnnotationsExchange, Annomatic, Consolidation, Dashboard,
-    ItemsExchange, NotebookExchange, TypesHelper, TextFragmentAnnotator, XpointersHelper) {
+    ItemsExchange, NotebookExchange, TypesHelper, TextFragmentAnnotator, XpointersHelper, Analytics) {
 
     var annotationSidebar = new BaseComponent('AnnotationSidebar', ANNOTATIONSIDEBARDEFAULTS);
 
@@ -829,6 +829,7 @@ angular.module('Pundit2.AnnotationSidebar')
     annotationSidebar.toggleFiltersContent = function() {
         state.isFiltersExpanded = !state.isFiltersExpanded;
         EventDispatcher.sendEvent('AnnotationSidebar.toggleFiltersContent', state.isFiltersExpanded);
+        Analytics.track('buttons', 'click', 'annotationSidebar--toggleFilterContent');
     };
     // Check if the sidebar is expanded
     annotationSidebar.isAnnotationSidebarExpanded = function() {
@@ -1044,6 +1045,8 @@ angular.module('Pundit2.AnnotationSidebar')
                 filter.expression = [];
             }
         });
+
+        Analytics.track('buttons', 'click', 'annotationSidebar--removeAllFilters');
     };
 
     EventDispatcher.addListener('Consolidation.consolidateAll', function() {

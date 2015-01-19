@@ -1,7 +1,7 @@
 angular.module('Pundit2.AnnotationSidebar')
 
 .controller('AnnotationSidebarCtrl', function($scope, $filter, $timeout, $document, $window,
-    EventDispatcher, AnnotationSidebar, Dashboard, Config) {
+    EventDispatcher, AnnotationSidebar, Dashboard, Config, Analytics) {
 
     var bodyClasses = AnnotationSidebar.options.bodyExpandedClass + ' ' + AnnotationSidebar.options.bodyCollapsedClass;
     var sidebarClasses = AnnotationSidebar.options.sidebarExpandedClass + ' ' + AnnotationSidebar.options.sidebarCollapsedClass;
@@ -124,6 +124,9 @@ angular.module('Pundit2.AnnotationSidebar')
         // Close all filter list and toggle the current
         previousElement.not(currentElement).removeClass('pnd-annotation-sidebar-filter-show');
         currentElement.toggleClass('pnd-annotation-sidebar-filter-show');
+
+        var currentElementInnerText = angular.element(event.target).text().trim();
+        Analytics.track('buttons', 'click', 'annotationSidebar--toggleFilter--' + currentElementInnerText);
     };
 
     $scope.toggleFilter = function(currentFilter, currentUri) {
