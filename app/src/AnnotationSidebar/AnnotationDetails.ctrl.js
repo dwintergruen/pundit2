@@ -3,7 +3,7 @@ angular.module('Pundit2.AnnotationSidebar')
 .controller('AnnotationDetailsCtrl', function($scope, $rootScope, $element, $modal, $timeout, $window,
     AnnotationSidebar, AnnotationDetails, AnnotationsExchange, AnnotationsCommunication, Config,
     EventDispatcher, NotebookExchange, ItemsExchange, TripleComposer, Dashboard, ImageAnnotator,
-    TextFragmentAnnotator, TypesHelper, MyPundit, Consolidation, Status) {
+    TextFragmentAnnotator, TypesHelper, MyPundit, Consolidation, Status, Analytics) {
 
     AnnotationDetails.addAnnotationReference($scope);
 
@@ -99,7 +99,17 @@ angular.module('Pundit2.AnnotationSidebar')
         if (!$scope.annotation.expanded) {
             AnnotationSidebar.setAllPosition(currentId, initialHeight);
         }
+
+        Analytics.track('buttons', 'click', 'annotation--details--' + (AnnotationSidebar.isAnnotationSidebarExpanded() ? 'expand' : 'collapse'));
     };
+
+    $scope.trackAnalyticsToggleEvent = function(label, expanded) {
+        Analytics.track('buttons', 'click', 'annotation--details--' + label + '--' + (expanded ? 'expand' : 'collapse'));
+    }
+
+    $scope.trackAnalyticsEvent = function(label) {
+        Analytics.track('buttons', 'click', 'annotation--details--' + label);
+    }
 
     $scope.deleteAnnotation = function() {
         openConfirmModal();

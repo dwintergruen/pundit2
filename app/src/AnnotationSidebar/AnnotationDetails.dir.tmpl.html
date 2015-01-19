@@ -8,31 +8,31 @@
         ng-mouseover="mouseoverHandler()"
         ng-mouseout="mouseoutHandler()">
         <div class="{{annotation.mainItem.class}}">
-		        <div class="pnd-annotation-item-header-text">
+                <div class="pnd-annotation-item-header-text">
                         <span ng-show="annotation.broken" class="pnd-annotation-icon-color">
                             <span class="pnd-icon pnd-icon-exclamation-circle"></span>
                         </span>
-		                <span 
+                        <span 
                             ng-show="!annotation.broken" 
                             class="pnd-annotation-icon-color" 
                             style="background-color: {{annotation.color}};">
                             <span 
                                 class="{{annotation.mainItem.icon}}"></span>
                         </span>
-		                <span class="pnd-item-title">{{annotation.mainItem.label}}</span> 		        
+                        <span class="pnd-item-title">{{annotation.mainItem.label}}</span>
                 </div>    
                 <button type="button" class="btn pull-right">
                     <span ng-class="{true:'pnd-icon-caret-up', false:'pnd-icon-sort-down'}[annotation.expanded]"></span>
                 </button>
         </div>
     </div>
-    <div class="pnd-annotation-details-container" ng-if="annotation.expanded">       
+    <div class="pnd-annotation-details-container" ng-if="annotation.expanded">
         <div class="pnd-annotation-details-content">
         
             <!-- meta -->
             <div class="pnd-annotation-details-meta" ng-init="meta = false">
                     <div class="pnd-annotation-details-item-header" 
-                        ng-click="meta = !meta"
+                        ng-click="meta = !meta; trackAnalyticsToggleEvent('meta', meta)"
                         ng-class="{'pnd-annotation-details-sub-open': meta}">
                         <div class="pnd-annotation-item-header-text">
                             <span class="pnd-icon pnd-icon-info-circle"></span>
@@ -46,21 +46,27 @@
                     <div ng-show="meta" class="pnd-sub-info">
                         <span ng-if="meta">
                             <div class="pnd-annotation-details-info-id">
-				                <strong>ID:</strong> {{annotation.id}}
-				            </div>
-				            <div class="pnd-annotation-details-info-author">
-				                <strong>Author:</strong> {{annotation.creatorName}}
-				            </div>
-				            <div class="pnd-annotation-details-info-date">
-				                <strong>Date:</strong> {{annotation.created | date : 'MMM d, y H:mm a'}}
-				            </div>       
-				            <div class="pnd-annotation-details-info-notebook">
-				                <strong>Notebook:</strong> <a href="{{askLink}}{{annotation.notebookId}}" target="_blank">
-				                    {{notebookName}}
-				                </a>
-				            </div>
+                                <strong>ID:</strong> {{annotation.id}}
+                            </div>
+                            <div class="pnd-annotation-details-info-author">
+                                <strong>Author:</strong> {{annotation.creatorName}}
+                            </div>
+                            <div class="pnd-annotation-details-info-date">
+                                <strong>Date:</strong> {{annotation.created | date : 'MMM d, y H:mm a'}}
+                            </div>       
+                            <div class="pnd-annotation-details-info-notebook">
+                                <strong>Notebook:</strong> 
+                                <a href="{{askLink}}{{annotation.notebookId}}" 
+                                   target="_blank"
+                                   ng-click="trackAnalyticsEvent('meta--notebook')">
+                                    {{notebookName}}
+                                </a>
+                            </div>
                             <div ng-show="lodLive">
-                                <strong>Graph:</strong> <a href="{{openGraph}}" target="_blank">
+                                <strong>Graph:</strong> 
+                                <a href="{{openGraph}}" 
+                                   target="_blank"
+                                   ng-click="trackAnalyticsEvent('meta--graph')">
                                     open graph of the annotation
                                 </a>
                             </div>  
@@ -78,12 +84,12 @@
                     ng-mouseout="mouseoutItemHandler(item.subject.uri)">
                         <div 
                             class="pnd-annotation-details-item-header" 
-                            ng-click="subInfo = !subInfo"
+                            ng-click="subInfo = !subInfo; trackAnalyticsToggleEvent('subInfo--subject', subInfo)"
                             ng-class="{'pnd-annotation-details-sub-open': subInfo}">
                             <!-- <span class="{{item.subject.icon}}"></span> -->
                             <div class="pnd-annotation-item-header-text">
-	                            <span class="pnd-icon pnd-icon-circle"></span>
-	                            <span ng-bind-html="item.subject.label">{{item.subject.label}}</span>
+                                <span class="pnd-icon pnd-icon-circle"></span>
+                                <span ng-bind-html="item.subject.label">{{item.subject.label}}</span>
                             </div>
                             <button type="button" class="btn btn-link pull-right">
                                 <span ng-class="{true:'pnd-icon-caret-up', false:'pnd-icon-sort-down'}[subInfo]"></span>
@@ -103,12 +109,12 @@
                     ng-init="preInfo = false">
                         <div 
                             class="pnd-annotation-details-item-header" 
-                            ng-click="preInfo = !preInfo"
+                            ng-click="preInfo = !preInfo; trackAnalyticsToggleEvent('subInfo--predicate', preInfo)"
                             ng-class="{'pnd-annotation-details-sub-open': preInfo}">
-                        	<div class="pnd-annotation-item-header-text">
-    	                    	<span class="pnd-icon pnd-icon-circle"></span>
-    	                    	<span ng-bind-html="item.predicate.label">{{item.predicate.label}}</span>
-                        	</div>
+                            <div class="pnd-annotation-item-header-text">
+                                <span class="pnd-icon pnd-icon-circle"></span>
+                                <span ng-bind-html="item.predicate.label">{{item.predicate.label}}</span>
+                            </div>
                             <button type="button" class="btn  btn-link pull-right">
                                 <span ng-class="{true:'pnd-icon-caret-up', false:'pnd-icon-sort-down'}[preInfo]"></span>
                             </button>
@@ -124,21 +130,21 @@
              <!-- // object -->
                 <div ng-repeat="object in item.objects">
                     <div 
-                        class="pnd-annotation-details-object"                         
+                        class="pnd-annotation-details-object"
                         ng-init="objInfo = false"
                         ng-mouseover="mouseoverItemHandler(object.uri)"
                         ng-mouseout="mouseoutItemHandler(object.uri)">
                             <div 
                                 class="pnd-annotation-details-item-header" 
-                                ng-click="objInfo = !objInfo"
+                                ng-click="objInfo = !objInfo; trackAnalyticsToggleEvent('subInfo--object', objInfo)"
                                 ng-class="{'pnd-annotation-details-sub-open': objInfo}">
                                 <!-- <span class="{{object.icon}}"></span> -->
                                 <div class="pnd-annotation-item-header-text">
-	                                <span class="pnd-icon pnd-icon-circle"></span>
+                                    <span class="pnd-icon pnd-icon-circle"></span>
                                     <span ng-if="object.typeClass!='uri'">
                                         {{object.label}}
                                     </span>
-	                                <span ng-if="object.typeClass=='uri'" ng-bind-html="object.label">
+                                    <span ng-if="object.typeClass=='uri'" ng-bind-html="object.label">
                                         {{object.label}}
                                     </span>
                                 </div>
@@ -165,7 +171,7 @@
                     </div>
                 </div>
              <!-- // end object -->
-            </div>    
+            </div>
         </div>
         <!-- footer -->
         <div class="pnd-annotation-details-footer" ng-show="isUserToolShowed()">
