@@ -20,7 +20,7 @@ angular.module('Pundit2.MyNotebooksContainer')
 
 .service('MyNotebooksContainer', function($rootScope, MYNOTEBOOKSCONTAINERDEFAULTS, BaseComponent, EventDispatcher,
     NotebookExchange, ItemsExchange, PageItemsContainer, AnnotationsExchange, NotebookCommunication, Consolidation,
-    ContextualMenu, Config, Dashboard, NotebookComposer, AnnotationsCommunication, NameSpace,
+    ContextualMenu, Config, Dashboard, NotebookComposer, AnnotationsCommunication, NameSpace, Analytics,
     $modal, $timeout, $window) {
 
     var myNotebooksContainer = new BaseComponent('MyNotebooksContainer', MYNOTEBOOKSCONTAINERDEFAULTS);
@@ -52,6 +52,7 @@ angular.module('Pundit2.MyNotebooksContainer')
             },
             action: function(nt) {
                 $window.open(Config.lodLive.baseUrl + Config.pndPurl + 'notebook/' + nt.id, '_blank');
+                Analytics.track('buttons', 'click', 'contextualMenu--notebook--openGraph');
             }
         });
 
@@ -65,6 +66,7 @@ angular.module('Pundit2.MyNotebooksContainer')
             },
             action: function(nt) {
                 $window.open(Config.timeline.baseUrl + 'notebook-ids=' + nt.id + '&namespace=' + Config.pndPurl + 'notebook/' + '&api=' + NameSpace.asOpen, '_blank');
+                Analytics.track('buttons', 'click', 'contextualMenu--notebook--openTimeline');
             }
         });
 
@@ -78,6 +80,7 @@ angular.module('Pundit2.MyNotebooksContainer')
             },
             action: function(nt) {
                 NotebookCommunication.setPrivate(nt.id);
+                Analytics.track('buttons', 'click', 'contextualMenu--notebook--setPrivate');
             }
         });
 
@@ -91,6 +94,7 @@ angular.module('Pundit2.MyNotebooksContainer')
             },
             action: function(nt) {
                 NotebookCommunication.setPublic(nt.id);
+                Analytics.track('buttons', 'click', 'contextualMenu--notebook--setPublic');
             }
         });
 
@@ -104,6 +108,7 @@ angular.module('Pundit2.MyNotebooksContainer')
             },
             action: function(nt) {
                 NotebookCommunication.setCurrent(nt.id);
+                Analytics.track('buttons', 'click', 'contextualMenu--notebook--setCurrent');
             }
         });
 
@@ -119,6 +124,7 @@ angular.module('Pundit2.MyNotebooksContainer')
                 // delete notebook is a dangerous action
                 // it also remove all contained annotation
                 openConfirmModal(nt);
+                Analytics.track('buttons', 'click', 'contextualMenu--notebook--delete');
             }
         });
 
@@ -140,6 +146,7 @@ angular.module('Pundit2.MyNotebooksContainer')
                 //EventDispatcher.sendEvent('Dashboard.showTab', NotebookComposer.options.clientDashboardTabTitle);
                 EventDispatcher.sendEvent('MyNotebooksContainer.editNotebook', NotebookComposer.options.clientDashboardTabTitle);
                 NotebookComposer.setNotebookToEdit(nt);
+                Analytics.track('buttons', 'click', 'contextualMenu--notebook--edit');
                 // TODO open if the panel is collapsed
             }
         });
@@ -184,11 +191,14 @@ angular.module('Pundit2.MyNotebooksContainer')
             }, 1000);
         });
 
+        Analytics.track('buttons', 'click', 'contextualMenu--notebook--delete--confirm');
+
     };
 
     // cancel btn click
     modalScope.cancel = function() {
         confirmModal.hide();
+        Analytics.track('buttons', 'click', 'contextualMenu--notebook--delete--cancel');
     };
 
     var confirmModal = $modal({
