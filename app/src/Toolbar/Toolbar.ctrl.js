@@ -77,19 +77,19 @@ angular.module('Pundit2.Toolbar')
     var logout = function() {
         ResourcePanel.hide();
         MyPundit.logout();
-        Analytics.track('buttons', 'toolbar--logout');
+        Analytics.track('buttons', 'click', 'toolbar--logout');
     };
 
     var lodliveOpen = function() {
         if (MyPundit.isUserLogged()) {
             var userData = MyPundit.getUserData();
             $window.open(Config.lodLive.baseUrl + Config.pndPurl + 'user/' + userData.id, '_blank');
-            Analytics.track('buttons', 'toolbar--openYourGraph');
+            Analytics.track('buttons', 'click', 'toolbar--openYourGraph');
         }
     };
 
     $scope.askThePunditClick = function() {
-        Analytics.track('buttons', 'toolbar--askThePundit', $scope.isUserLogged ? 'logged' : 'anonymous');
+        Analytics.track('buttons', 'click', 'toolbar--askThePundit--' + ($scope.isUserLogged ? 'logged' : 'anonymous'));
     };
 
     // modal
@@ -198,10 +198,12 @@ angular.module('Pundit2.Toolbar')
         // send a mail
         sendMail(sendModalScope.text.subject, sendModalScope.text.msg);
         sendModal.hide();
+        Analytics.track('buttons', 'click', 'toolbar--reportBug--send');
     };
 
     sendModalScope.cancel = function() {
         sendModal.hide();
+        Analytics.track('buttons', 'click', 'toolbar--reportBug--cancel');
     };
 
     // found bug btn
@@ -529,7 +531,7 @@ angular.module('Pundit2.Toolbar')
 
     $scope.annotationsClickHandler = function() {
         ResourcePanel.hide();
-        Analytics.track('buttons', 'click', 'toolbar--annotationsSidebar' + (AnnotationSidebar.isAnnotationSidebarExpanded() ? 'closed' : 'open'));
+        Analytics.track('buttons', 'click', 'toolbar--annotationsSidebar--' + (AnnotationSidebar.isAnnotationSidebarExpanded() ? 'closed' : 'open'));
         AnnotationSidebar.toggle();
     };
 

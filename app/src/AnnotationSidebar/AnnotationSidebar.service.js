@@ -1047,7 +1047,7 @@ angular.module('Pundit2.AnnotationSidebar')
             }
         });
 
-        Analytics.track('buttons', 'click', 'annotationSidebar--removeAllFilters');
+        Analytics.track('buttons', 'click', 'sidebar--filters--removeAllFilters');
     };
 
     EventDispatcher.addListener('Consolidation.consolidateAll', function() {

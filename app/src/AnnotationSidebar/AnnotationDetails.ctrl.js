@@ -78,7 +78,7 @@ angular.module('Pundit2.AnnotationSidebar')
             });
         }
 
-        Analytics.track('buttons', 'click', 'annotation--details--delete--confirm'));
+        Analytics.track('buttons', 'click', 'annotation--details--delete--confirm');
 
         $timeout(function() {
             confirmModal.hide();
@@ -88,7 +88,7 @@ angular.module('Pundit2.AnnotationSidebar')
     // cancel btn click
     modalScope.cancel = function() {
         confirmModal.hide();
-        Analytics.track('buttons', 'click', 'annotation--details--delete--cancel'));
+        Analytics.track('buttons', 'click', 'annotation--details--delete--cancel');
     };
 
     $scope.toggleAnnotation = function() {
@@ -104,7 +104,7 @@ angular.module('Pundit2.AnnotationSidebar')
             AnnotationSidebar.setAllPosition(currentId, initialHeight);
         }
 
-        Analytics.track('buttons', 'click', 'annotation--details--' + (AnnotationSidebar.isAnnotationSidebarExpanded() ? 'expand' : 'collapse'));
+        Analytics.track('buttons', 'click', 'annotation--details--' + ($scope.annotation.expanded ? 'expand' : 'collapse'));
     };
 
     $scope.trackAnalyticsToggleEvent = function(label, expanded) {

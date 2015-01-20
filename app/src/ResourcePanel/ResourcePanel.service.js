@@ -290,7 +290,7 @@ angular.module('Pundit2.ResourcePanel')
                 var eventLabel = 'resourcePanel--';
                 eventLabel += state.popoverOptions.scope.contentTabs[state.popoverOptions.scope.contentTabs.activeTab].title;
                 eventLabel += '--' + state.popoverOptions.scope.type;
-                eventLabel += '--save';
+                eventLabel += '--use';
                 Analytics.track('buttons', 'click', eventLabel);
             };
             state.popoverOptions.scope.cancel = function() {
