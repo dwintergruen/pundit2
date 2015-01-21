@@ -46,6 +46,19 @@ var ContextualMenuDemoCtrl = function($scope, $rootScope, $window, $dropdown, $t
             }
         },
         {
+            name: 'action12',
+            type: ['type1'],
+            label: "Action12 (type1) (disabled)",
+            disable: true,
+            priority: 1,
+            showIf: function(){
+                return true;
+            },
+            action: function(resource){
+                angular.element('.pnd-contexMenu-output').append('exe action11 '+resource.name);
+            }
+        },
+        {
             name: 'action13',
             type: ['type1'],
             label: "Action13 (type1)",

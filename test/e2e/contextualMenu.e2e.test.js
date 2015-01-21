@@ -133,4 +133,24 @@ describe("The contextualMenu module", function() {
 
     });
 
+    it('should correctly show and not execute action of disabled menu item', function() {
+
+        p.get('app/examples/contextualMenu.html');
+
+        p.findElement(protractor.By.css('.pnd-contexMenu-addAll-btn')).click();
+
+        p.findElement(protractor.By.css('.pnd-contexMenu-show1-btn')).click();
+
+        // Verify presence of disabled item and click on it.
+        p.findElement(protractor.By.css('.dropdown-menu > li.disabled')).click();
+
+        // Verify that no action has been executed.
+        p.findElement(protractor.By.css('.pnd-contexMenu-output')).then(function(element) {
+            element.getInnerHtml().then(function(innerHtml){
+                expect(innerHtml.indexOf('exe action')).toBeLessThan(0);
+            });
+        });
+
+    });
+
 });
