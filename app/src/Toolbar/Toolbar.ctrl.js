@@ -69,7 +69,7 @@ angular.module('Pundit2.Toolbar')
         ResourcePanel.hide();
         MyPundit.login();
         if (trackingLoginName === undefined) {
-            trackingLoginName = 'toolbar--otherLogin'
+            trackingLoginName = 'toolbar--otherLogin';
         }
         Analytics.track('buttons', 'click', trackingLoginName);
     };
