@@ -139,12 +139,13 @@ describe('ContextualMenu service', function() {
     };
     
 
-    it('should expose expected API', function(){
+    iit('should expose expected API', function(){
         expect(ContextualMenu.show).toBeDefined();
         expect(ContextualMenu.hide).toBeDefined();
         expect(ContextualMenu.addAction).toBeDefined();
         expect(ContextualMenu.addSubMenu).toBeDefined();
         expect(ContextualMenu.addDivider).toBeDefined();
+        expect(ContextualMenu.modifyDisabled).toBeDefined();
     });
 
     it('should add Action and not duplicate it', function(){
@@ -232,8 +233,21 @@ describe('ContextualMenu service', function() {
     it('should not show without content', function(){
         ContextualMenu.addSubMenu(typeTwoActions[1]);
         ContextualMenu.show(10, 10, {}, 'type99');
-        expect($log.error.logs.length).toBe(1);
+        expect($log.error.logs.length).toBe(1); 
         $log.reset();
+    });
+
+    it('should corectly disable and enable items', function(){
+        // add type1 actions
+        addActions(true, false);
+
+        var result = ContextualMenu.modifyDisabled('action2', true);
+        expect(result).toBe(true);
+        expect(state.menuElements[1].disable).toBe(true);
+        
+        result = ContextualMenu.modifyDisabled('action2', false);
+        expect(result).toBe(true);
+        expect(state.menuElements[1].disable).toBe(false);
     });
 
     it('should correctly position menu to place inside window', function(){
@@ -248,9 +262,9 @@ describe('ContextualMenu service', function() {
 
         var w = angular.element($window);
         expect(ContextualMenu.position(element, 55, 55)).toBe(CONTEXTUALMENUDEFAULTS.position);
-        expect( ContextualMenu.position(element, w.innerWidth()-10, 55) ).toBe('bottom-right');
-        expect(ContextualMenu.position(element, 55, w.innerHeight()-10)).toBe('top-left');
-        expect(ContextualMenu.position(element, w.innerWidth()-10, w.innerHeight()-10)).toBe('top-right');
+        expect(ContextualMenu.position(element, w.innerWidth() - 10, 55)).toBe('bottom-right');
+        expect(ContextualMenu.position(element, 55, w.innerHeight() - 10)).toBe('top-left');
+        expect(ContextualMenu.position(element, w.innerWidth() - 10, w.innerHeight() - 10)).toBe('top-right');
 
     });
 
