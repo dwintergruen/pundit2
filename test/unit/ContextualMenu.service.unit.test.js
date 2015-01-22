@@ -139,7 +139,7 @@ describe('ContextualMenu service', function() {
     };
     
 
-    iit('should expose expected API', function(){
+    it('should expose expected API', function(){
         expect(ContextualMenu.show).toBeDefined();
         expect(ContextualMenu.hide).toBeDefined();
         expect(ContextualMenu.addAction).toBeDefined();
