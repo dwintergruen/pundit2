@@ -16,7 +16,7 @@ describe("The contextualMenu module", function() {
         });
 
         p.findElements(protractor.By.css('.dropdown-menu > li')).then(function(elements) {
-            expect(elements.length).toBe(4);
+            expect(elements.length).toBe(5);
         });
 
         p.actions().mouseMove({x:-50, y:0}).click().perform();
@@ -55,7 +55,7 @@ describe("The contextualMenu module", function() {
         });
 
         p.findElements(protractor.By.css('.dropdown-menu > li > a')).then(function(elements) {
-            expect(elements.length).toBe(4);
+            expect(elements.length).toBe(5);
             elements[0].getInnerHtml().then(function(innerHtml){
                 expect(innerHtml.indexOf('type1')).toBeGreaterThan(-1);
             });
