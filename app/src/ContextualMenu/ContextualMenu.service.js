@@ -362,7 +362,7 @@ angular.module('Pundit2.ContextualMenu')
 
     contextualMenu.wipeActionsByType = function(type) {
         state.menuElements = state.menuElements.filter(function(el, index) {
-            if (type === state.menuElements[index].type) {
+            if (state.menuElements[index].type.indexOf(type) !== -1) {
                 return false;
             }
             return true;

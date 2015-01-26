@@ -267,6 +267,4 @@ describe('ContextualMenu service', function() {
         expect(ContextualMenu.position(element, w.innerWidth() - 10, w.innerHeight() - 10)).toBe('top-right');
 
     });
-
-
 });
