@@ -146,6 +146,9 @@ describe('ContextualMenu service', function() {
         expect(ContextualMenu.addSubMenu).toBeDefined();
         expect(ContextualMenu.addDivider).toBeDefined();
         expect(ContextualMenu.modifyDisabled).toBeDefined();
+        expect(ContextualMenu.removeActionByName).toBeDefined();
+        expect(ContextualMenu.wipeActionsByType).toBeDefined();
+        expect(ContextualMenu.modifyHeaderActionByName).toBeDefined();
     });
 
     it('should add Action and not duplicate it', function(){
@@ -233,7 +236,7 @@ describe('ContextualMenu service', function() {
     it('should not show without content', function(){
         ContextualMenu.addSubMenu(typeTwoActions[1]);
         ContextualMenu.show(10, 10, {}, 'type99');
-        expect($log.error.logs.length).toBe(1); 
+        expect($log.error.logs.length).toBe(1);
         $log.reset();
     });
 
@@ -265,6 +268,67 @@ describe('ContextualMenu service', function() {
         expect(ContextualMenu.position(element, w.innerWidth() - 10, 55)).toBe('bottom-right');
         expect(ContextualMenu.position(element, 55, w.innerHeight() - 10)).toBe('top-left');
         expect(ContextualMenu.position(element, w.innerWidth() - 10, w.innerHeight() - 10)).toBe('top-right');
+
+    });
+
+    it('should correctly hide and destroy menu', function(){
+        // Add type1 actions.
+        addActions(true, false);
+        // Show menu.
+        ContextualMenu.show(10, 10, 'pippo-resource', 'type1');
+        expect(state.content.length).toBeGreaterThan(0);
+        ContextualMenu.hide();
+        expect(state.menu).toBe(null);
+        $log.reset();
+    });
+
+    it('should correctly remove action by name', function(){
+        // Add type1 actions.
+        addActions(true, false);
+        // Show menu.
+        ContextualMenu.show(10, 10, 'pippo-resource', 'type1');
+        expect(state.menuElements.length).toBe(4);
+        
+        ContextualMenu.removeActionByName('fakeElement');
+        expect($log.error.logs.length).toBe(1); 
+        $log.reset();
+
+        ContextualMenu.removeActionByName('action1');
+        expect(state.menuElements.length).toBe(3);
+
+    });
+
+    it('should correctly wipe action by type', function(){
+        // Add type1 actions.
+        addActions(true, false);
+        // Show menu.
+        ContextualMenu.show(10, 10, 'pippo-resource', 'type1');
+        expect(state.menuElements.length).toBe(4);
+        
+        ContextualMenu.wipeActionsByType('fakeType');
+        expect(state.menuElements.length).toBe(4);
+
+        ContextualMenu.wipeActionsByType('type1');
+        expect(state.menuElements.length).toBe(0);
+
+    });
+
+    it('should correctly modify header action by name', function(){
+        // Add type1 actions.
+        addActions(true, false);
+        // Show menu.
+        ContextualMenu.show(10, 10, 'pippo-resource', 'type1');
+        expect(state.menuElements.length).toBe(4);
+        
+        ContextualMenu.modifyHeaderActionByName('fakeAction', true);
+        expect($log.error.logs.length).toBe(1); 
+        $log.reset();
+
+        ContextualMenu.modifyHeaderActionByName('action1', true);
+        expect(state.menuElements[0].header).toBe(true);
+
+        ContextualMenu.modifyHeaderActionByName('action1', false);
+        expect(state.menuElements[0].header).toBe(false);
 
     });
 });
