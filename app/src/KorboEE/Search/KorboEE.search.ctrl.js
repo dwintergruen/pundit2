@@ -180,11 +180,15 @@ angular.module('KorboEE')
             $scope.previewError = false;
             var param = {};
             param.endpoint = $scope.conf.endpoint;
+            // New AnnotationServer APIs require basketID.
+            /*
             if($scope.contentTabs[$scope.contentTabs.activeTab].provider === 'korbo'){
                 param.basketID = 'null';
             } else {
                 param.basketID = $scope.conf.basketID;
             }
+            */
+            param.basketID = $scope.conf.basketID
 
             param.language = $scope.defaultLan.value;
             param.provider = $scope.contentTabs[$scope.contentTabs.activeTab].provider;

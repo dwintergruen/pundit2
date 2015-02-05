@@ -208,7 +208,9 @@ angular.module('KorboEE')
             };
             $scope.loadingStatus = true;
 
-            var currentBasketID = (provider === 'korbo' ? null : $scope.conf.basketID);
+            // New AnnotationServer APIs require basketID.
+            //var currentBasketID = (provider === 'korbo' ? null : $scope.conf.basketID);
+            var currentBasketID = $scope.conf.basketID;
 
             var param = {
                 item: {uri: entityUri},

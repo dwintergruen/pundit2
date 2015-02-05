@@ -17,11 +17,11 @@
         },
         providers: {
             freebase: true,
-            dbpedia: false
+            dandeliondbpedia: true
         },
         type: [
             {  label: 'Place', state: false, URI:'http://place.uri'},
-            { label: 'Scientist', state: true, URI:'http://scientist.uri'},
+            { label: 'Scientist', state: false, URI:'http://scientist.uri'},
             { label: 'Writer', state: false, URI:'http://writer.uri'},
             { label: 'Type1', state: false, URI:'http://type1.uri'},
             { label: 'Type2', state: false, URI:'http://type2.uri'},
@@ -39,8 +39,8 @@
             { label: 'Type14', state: false, URI:'http://type14.uri'}
         ],
         buttonLabel: "Search",
-        visualizeUseButton: ['freebase', 'korbo'],
-        visualizeCopyButton: ['freebase'],
+        visualizeUseButton: ['dandeliondbpedia','freebase', 'korbo'],
+        visualizeCopyButton: ['dandeliondbpedia','freebase'],
         copyToKorboBeforeUse: true,
         visualizeEditButton: false,
 
@@ -118,6 +118,10 @@
             $window[name].callEdit(2598);
             // $window[name].callEdit(3176);
         };
+
+        $scope.new = function() {
+            $window[name].callOpenNew();
+        }
     };
 
 
@@ -133,5 +137,6 @@
     <korbo-entity-editor></korbo-entity-editor>
     <button class="btn btn-xs btn-success" style="margin-left: 50px; margin-bottom: 30px;" ng-click="openSearch()">Search</button>
     <button class="btn btn-xs btn-success" style="margin-left: 50px; margin-bottom: 30px;" ng-click="edit()">Edit</button>
+    <button class="btn btn-xs btn-success" style="margin-left: 50px; margin-bottom: 30px;" ng-click="new()">New</button>
 </div>
 <!-- buildexamples:section footer --><!-- /buildexamples -->
