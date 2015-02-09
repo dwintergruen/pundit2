@@ -1,4 +1,4 @@
-# Pundit 2 -- Version to work wit mpiwg linguisitic services
+# Pundit 2 -- Version to work with mpiwg linguisitic services
 
 This is a fork of pundi2 which enables lmguistic annotations. For more
 see:
@@ -8,12 +8,20 @@ https://it-dev.mpiwg-berlin.mpg.de/tracs/mpdl-project-content/wiki/pundit
 Copyright at MPIWG at 2015
 
 
+The annomatic modul has been adapted  to communicate with the texttool api
+at
+
+http://md.mpiwg-berlin.mpg.de/tt
+
 
 
 ## License
 
 http://thepund.it/license/
 
+and
+
+http://www.gnu.org/licenses/agpl-3.0.html for the MPIWG additions
 
 ## Install
 
