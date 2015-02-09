@@ -71,8 +71,8 @@ angular.module('Pundit2.Annomatic')
      * Default value:
      * <pre> property: 'http://purl.org/pundit/ont/oa#isRelatedTo' </pre>
      */
-    property: 'http://purl.org/pundit/ont/oa#isRelatedTo',
-
+   /*  property: 'http://purl.org/pundit/ont/oa#isRelatedTo', */
+    property: 'http://purl.org/pundit/ont/oa#l#hasDictionaryEntry',
     /**
      * @module punditConfig
      * @ngdoc property
@@ -154,17 +154,52 @@ angular.module('Pundit2.Annomatic')
                 annomatic.options.cMenuType
             ],
             name: 'showAllItems',
-            label: 'Search items in this area',
+            label: 'Analyse words (latin)',
             showIf: function() {
                 return true;
             },
             priority: 10,
             action: function() {
                 Consolidation.wipe();
-                annomatic.getAnnotationByArea();
+                annomatic.getAnnotationByArea("lat");
                 mouseCheck = false;
             }
-        });
+	    });
+	ContextualMenu.addAction({
+		type: [
+                annomatic.options.cMenuType
+		       ],
+		    name: 'showAllItems2',
+		    label: 'Analyse words (italian)',
+		    showIf: function() {
+		    return true;
+		},
+		    priority: 12,
+		    action: function() {
+		    Consolidation.wipe();
+		    annomatic.getAnnotationByArea("ita");
+		    mouseCheck = false;
+		}
+	    });
+
+	ContextualMenu.addAction({
+		type: [
+                annomatic.options.cMenuType
+		       ],
+		    name: 'showAllItems3',
+		    label: 'Analyse words (greek)',
+		    showIf: function() {
+		    return true;
+		},
+		    priority: 15,
+		    action: function() {
+		    Consolidation.wipe();
+		    annomatic.getAnnotationByArea("grc");
+		    mouseCheck = false;
+		}
+	    });
+
+
     }
 
     // Tries to find the given array of DataTXT annotations in the child nodes of the
@@ -564,7 +599,7 @@ angular.module('Pundit2.Annomatic')
      * @return {Promise} promise will be resolved when the data is returned from datatxt
      *
      */
-    annomatic.getDataTXTAnnotations = function(node) {
+    annomatic.getDataTXTAnnotations = function(node,lang) {
         var promise = $q.defer(),
             element = angular.element(node),
             content = element.text();
@@ -583,7 +618,8 @@ angular.module('Pundit2.Annomatic')
         annomatic.annotations = DataTXTResource.getAnnotations({
                 "$app_id": "cc85cdd8",
                 "$app_key": "668e4ac4f00f64c43ab4fefd5c8899fa",
-                text: content
+	    "lang":lang,
+            text: content,
                     // html: content
             },
             function(data) {
@@ -645,7 +681,7 @@ angular.module('Pundit2.Annomatic')
             values.type = angular.copy(ann.types);
         }
         values.description = ann.abstract;
-
+	values.type.push(NameSpace.types.page);
         values.label = ann.label;
         if (values.label.length > TextFragmentHandler.options.labelMaxLength) {
             values.label = values.label.substr(0, TextFragmentHandler.options.labelMaxLength) + ' ..';
@@ -1128,9 +1164,9 @@ angular.module('Pundit2.Annomatic')
      * @return {Promise} promise will be resolved when the data is returned from the current service
      *
      */
-    annomatic.getAnnotations = function(node) {
+    annomatic.getAnnotations = function(node,lang) {
         if (annomatic.options.source === 'DataTXT') {
-            return annomatic.getDataTXTAnnotations(node);
+            return annomatic.getDataTXTAnnotations(node,lang);
         } else if (annomatic.options.source === 'gramsci') {
             return annomatic.getGrasciAnnotations(node);
         }
@@ -1319,7 +1355,7 @@ angular.module('Pundit2.Annomatic')
      * Given an HTML node, will query the current service for annotations of the selected area
      *
      */
-    annomatic.getAnnotationByArea = function() {
+    annomatic.getAnnotationByArea = function(lang) {
         annotationsRootNode = annomatic.area;
         if (annotationsRootNode == null) {
             return;
@@ -1327,7 +1363,7 @@ angular.module('Pundit2.Annomatic')
 
         annomatic.hardReset();
         EventDispatcher.sendEvent('Annomatic.loading', true);
-        annomatic.getAnnotations(annotationsRootNode).then(function() {
+        annomatic.getAnnotations(annotationsRootNode,lang).then(function() {
             // AnnotationSidebar.toggleLoading();
             EventDispatcher.sendEvent('Annomatic.loading', false);
             Consolidation.consolidate(ItemsExchange.getItemsByContainer(annomatic.options.container));

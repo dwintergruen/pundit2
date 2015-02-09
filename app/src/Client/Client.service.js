@@ -430,7 +430,18 @@ angular.module('Pundit2.Client')
         "range": ["http://www.freebase.com/schema/language/human_language"],
         "vocabulary": "Basic Relation",
         "uri": "http://purl.org/pundit/ont/oa#isWrittenIn"
-    }]
+    },
+ {
+        "type": ["http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"],
+        "label": "has dictionary entry",
+        "description": "Describes relation to an dictionary entry",
+        "domain": [],
+        "range": [],
+        "vocabulary": "Basic Relation",
+        "uri": "http://purl.org/pundit/ont/oa#l#hasDictionaryEntry"
+    }
+
+]
 })
 
 // ImageAnnotator service MUST be injected before TextFragmentAnnotator

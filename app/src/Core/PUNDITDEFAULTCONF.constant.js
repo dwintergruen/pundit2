@@ -385,7 +385,7 @@ angular.module('Pundit2.Core')
         },
 
         Annomatic: {
-            active: false
+            active: true
         },
 
         Dashboard: {

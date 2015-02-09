@@ -2,7 +2,9 @@ angular.module('Pundit2.Annomatic')
 
 .service('DataTXTResource', function($resource) {
 
-    var baseURL = "https://api.dandelion.eu/datatxt/nex/v1";
+    //var baseURL = "https://api.dandelion.eu/datatxt/nex/v1";
+    //var baseURL = "http://localhost:8000/tt";
+    var baseURL = "http://md.mpiwg-berlin.mpg.de/tt";
 
     return $resource(baseURL, {}, {
         getAnnotations: {

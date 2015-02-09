@@ -1,4 +1,14 @@
-# Pundit 2
+# Pundit 2 -- Version to work wit mpiwg linguisitic services
+
+This is a fork of pundi2 which enables lmguistic annotations. For more
+see:
+
+https://it-dev.mpiwg-berlin.mpg.de/tracs/mpdl-project-content/wiki/pundit
+
+Copyright at MPIWG at 2015
+
+
+
 
 ## License
 
