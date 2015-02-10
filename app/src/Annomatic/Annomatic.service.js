@@ -616,8 +616,8 @@ angular.module('Pundit2.Annomatic')
 
 
         annomatic.annotations = DataTXTResource.getAnnotations({
-                "$app_id": "cc85cdd8",
-                "$app_key": "668e4ac4f00f64c43ab4fefd5c8899fa",
+                "$app_id": "XXXX",
+                "$app_key": "YYYYYYYY",
 	    "lang":lang,
             text: content,
                     // html: content

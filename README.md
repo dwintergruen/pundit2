@@ -13,7 +13,17 @@ at
 http://md.mpiwg-berlin.mpg.de/tt
 
 
+#### A  hint for installation:
 
+Pundit relies havily on cross-domain access. Therefore the server wehere you install pundit2 needs to have CORS aenabled from all websites otherwise some parts of the bookmarklet don't work. Also additional services which are loaded by pundid need to have CORS enabled.
+
+
+
+
+
+----------
+
+The following is the original README from Net7
 ## License
 
 http://thepund.it/license/
